@@ -12,7 +12,7 @@ import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationText;
-import com.azure.ai.translation.text.options.TranslateOptions;
+import com.azure.ai.translation.text.models.TranslateOptions;
 
 /**
  * Translate text from known source language to target language.
@@ -42,7 +42,7 @@ public class Translate {
         TranslatedTextItem translation = client.translate("This is a test.", translateOptions);
 
         for (TranslationText textTranslation : translation.getTranslations()) {
-            System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
         }
         // END: getTextTranslationMultiple
     }

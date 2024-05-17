@@ -29,26 +29,6 @@ public final class TranslationLanguage {
     @JsonProperty(value = "nativeName")
     private final String nativeName;
 
-    /**
-     * Get the name property: Display name of the language in the locale requested via Accept-Language header.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Get the nativeName property: Display name of the language in the locale native for this language.
-     *
-     * @return the nativeName value.
-     */
-    @Generated
-    public String getNativeName() {
-        return this.nativeName;
-    }
-
     /*
      * Directionality, which is rtl for right-to-left languages or ltr for left-to-right languages.
      */
@@ -71,6 +51,26 @@ public final class TranslationLanguage {
         this.name = name;
         this.nativeName = nativeName;
         this.directionality = directionality;
+    }
+
+    /**
+     * Get the name property: Display name of the language in the locale requested via Accept-Language header.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the nativeName property: Display name of the language in the locale native for this language.
+     *
+     * @return the nativeName value.
+     */
+    @Generated
+    public String getNativeName() {
+        return this.nativeName;
     }
 
     /**

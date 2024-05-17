@@ -14,17 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class TranslatedTextAlignment {
 
-    /**
-     * Creates an instance of TranslatedTextAlignment class.
-     *
-     * @param projections the projections value to set.
-     */
-    @Generated
-    @JsonCreator
-    private TranslatedTextAlignment(@JsonProperty(value = "proj") String projections) {
-        this.projections = projections;
-    }
-
     /*
      * Maps input text to translated text. The alignment information is only provided when the request 
      * parameter includeAlignment is true. Alignment is returned as a string value of the following 
@@ -36,6 +25,17 @@ public final class TranslatedTextAlignment {
     @Generated
     @JsonProperty(value = "proj")
     private final String projections;
+
+    /**
+     * Creates an instance of TranslatedTextAlignment class.
+     *
+     * @param projections the projections value to set.
+     */
+    @Generated
+    @JsonCreator
+    private TranslatedTextAlignment(@JsonProperty(value = "proj") String projections) {
+        this.projections = projections;
+    }
 
     /**
      * Get the projections property: Maps input text to translated text. The alignment information is only provided when

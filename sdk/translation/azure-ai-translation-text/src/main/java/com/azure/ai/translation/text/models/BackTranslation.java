@@ -31,6 +31,19 @@ public final class BackTranslation {
     private final String displayText;
 
     /*
+     * An integer representing the number of examples that are available for this translation pair.
+     * Actual examples must be retrieved with a separate call to lookup examples. The number is mostly
+     * intended to facilitate display in a UX. For example, a user interface may add a hyperlink
+     * to the back-translation if the number of examples is greater than zero and show the back-translation
+     * as plain text if there are no examples. Note that the actual number of examples returned
+     * by a call to lookup examples may be less than numExamples, because additional filtering may be
+     * applied on the fly to remove "bad" examples.
+     */
+    @Generated
+    @JsonProperty(value = "numExamples")
+    private final int examplesCount;
+
+    /*
      * An integer representing the frequency of this translation pair in the data. The main purpose of this
      * field is to provide a user interface with a means to sort back-translations so the most frequent terms are first.
      */
@@ -82,31 +95,6 @@ public final class BackTranslation {
     }
 
     /**
-     * Get the frequencyCount property: An integer representing the frequency of this translation pair in the data. The
-     * main purpose of this
-     * field is to provide a user interface with a means to sort back-translations so the most frequent terms are first.
-     *
-     * @return the frequencyCount value.
-     */
-    @Generated
-    public int getFrequencyCount() {
-        return this.frequencyCount;
-    }
-
-    /*
-     * An integer representing the number of examples that are available for this translation pair.
-     * Actual examples must be retrieved with a separate call to lookup examples. The number is mostly
-     * intended to facilitate display in a UX. For example, a user interface may add a hyperlink
-     * to the back-translation if the number of examples is greater than zero and show the back-translation
-     * as plain text if there are no examples. Note that the actual number of examples returned
-     * by a call to lookup examples may be less than numExamples, because additional filtering may be
-     * applied on the fly to remove "bad" examples.
-     */
-    @Generated
-    @JsonProperty(value = "numExamples")
-    private final int examplesCount;
-
-    /**
      * Get the examplesCount property: An integer representing the number of examples that are available for this
      * translation pair.
      * Actual examples must be retrieved with a separate call to lookup examples. The number is mostly
@@ -121,5 +109,17 @@ public final class BackTranslation {
     @Generated
     public int getExamplesCount() {
         return this.examplesCount;
+    }
+
+    /**
+     * Get the frequencyCount property: An integer representing the frequency of this translation pair in the data. The
+     * main purpose of this
+     * field is to provide a user interface with a means to sort back-translations so the most frequent terms are first.
+     *
+     * @return the frequencyCount value.
+     */
+    @Generated
+    public int getFrequencyCount() {
+        return this.frequencyCount;
     }
 }

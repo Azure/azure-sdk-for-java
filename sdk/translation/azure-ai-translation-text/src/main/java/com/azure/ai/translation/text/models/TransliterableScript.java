@@ -23,16 +23,6 @@ public final class TransliterableScript extends LanguageScript {
     private final List<LanguageScript> toScripts;
 
     /**
-     * Get the toScripts property: List of scripts available to convert text to.
-     *
-     * @return the toScripts value.
-     */
-    @Generated
-    public List<LanguageScript> getToScripts() {
-        return this.toScripts;
-    }
-
-    /**
      * Creates an instance of TransliterableScript class.
      *
      * @param code the code value to set.
@@ -49,5 +39,14 @@ public final class TransliterableScript extends LanguageScript {
         @JsonProperty(value = "toScripts") List<LanguageScript> toScripts) {
         super(code, name, nativeName, directionality);
         this.toScripts = toScripts;
+    }
+
+    /**
+     * Get the toScripts property: List of scripts available to convert text to.
+     *
+     * @return the toScripts value.
+     */
+    public List<LanguageScript> getTargetLanguageScripts() {
+        return this.toScripts;
     }
 }

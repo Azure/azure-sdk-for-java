@@ -7,7 +7,7 @@ import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
-import com.azure.ai.translation.text.options.TranslateOptions;
+import com.azure.ai.translation.text.models.TranslateOptions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class TranslateTests extends TextTranslationClientBase {
         TranslatedTextItem response = getTranslationClient().translate("cs", "Hola mundo");
 
         assertEquals(1, response.getTranslations().size());
-        assertEquals("cs", response.getTranslations().get(0).getTo());
+        assertEquals("cs", response.getTranslations().get(0).getTargetLanguage());
         assertNotNull(response.getTranslations().get(0).getText());
     }
 
@@ -36,7 +36,7 @@ public class TranslateTests extends TextTranslationClientBase {
         TranslatedTextItem response = getTranslationClient().translate("Hola mundo", translateOptions);
 
         assertEquals(1, response.getTranslations().size());
-        assertEquals("cs", response.getTranslations().get(0).getTo());
+        assertEquals("cs", response.getTranslations().get(0).getTargetLanguage());
         assertNotNull(response.getTranslations().get(0).getText());
     }
 
@@ -53,7 +53,7 @@ public class TranslateTests extends TextTranslationClientBase {
         List<TranslatedTextItem> response = getTranslationClient().translate(content, translateOptions);
 
         assertEquals(1, response.get(0).getTranslations().size());
-        assertEquals("cs", response.get(0).getTranslations().get(0).getTo());
+        assertEquals("cs", response.get(0).getTranslations().get(0).getTargetLanguage());
         assertNotNull(response.get(0).getTranslations().get(0).getText());
     }
 
@@ -66,7 +66,7 @@ public class TranslateTests extends TextTranslationClientBase {
 
         assertEquals("en", response.getDetectedLanguage().getLanguage());
         assertEquals(1, response.getTranslations().size());
-        assertEquals("cs", response.getTranslations().get(0).getTo());
+        assertEquals("cs", response.getTranslations().get(0).getTargetLanguage());
         assertNotNull(response.getTranslations().get(0).getText());
     }
 
@@ -92,7 +92,7 @@ public class TranslateTests extends TextTranslationClientBase {
         TranslatedTextItem response = getTranslationClient().translate("The word < mstrans:dictionary translation =\"wordomatic\">wordomatic</mstrans:dictionary> is a dictionary entry.", translateOptions);
 
         assertEquals(1, response.getTranslations().size());
-        assertEquals("es", response.getTranslations().get(0).getTo());
+        assertEquals("es", response.getTranslations().get(0).getTargetLanguage());
         assertTrue(response.getTranslations().get(0).getText().contains("wordomatic"));
     }
 
@@ -107,7 +107,7 @@ public class TranslateTests extends TextTranslationClientBase {
         TranslatedTextItem response = getTranslationClient().translate("hudha akhtabar.", translateOptions);
 
         assertNotNull(response.getSourceText().getText());
-        assertEquals("zh-Hans", response.getTranslations().get(0).getTo());
+        assertEquals("zh-Hans", response.getTranslations().get(0).getTargetLanguage());
         assertNotNull(response.getTranslations().get(0).getText());
     }
 

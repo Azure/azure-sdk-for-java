@@ -21,6 +21,14 @@ public final class DetectedLanguage {
     @JsonProperty(value = "language")
     private final String language;
 
+    /*
+     * A float value indicating the confidence in the result.
+     * The score is between zero and one and a low score indicates a low confidence.
+     */
+    @Generated
+    @JsonProperty(value = "score")
+    private final double confidence;
+
     /**
      * Creates an instance of DetectedLanguage class.
      *
@@ -44,14 +52,6 @@ public final class DetectedLanguage {
     public String getLanguage() {
         return this.language;
     }
-
-    /*
-     * A float value indicating the confidence in the result.
-     * The score is between zero and one and a low score indicates a low confidence.
-     */
-    @Generated
-    @JsonProperty(value = "score")
-    private final double confidence;
 
     /**
      * Get the confidence property: A float value indicating the confidence in the result.

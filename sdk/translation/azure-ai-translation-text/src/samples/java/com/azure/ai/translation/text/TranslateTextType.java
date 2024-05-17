@@ -12,7 +12,7 @@ import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationText;
-import com.azure.ai.translation.text.options.TranslateOptions;
+import com.azure.ai.translation.text.models.TranslateOptions;
 
 /**
  * You can select whether the translated text is plain text or HTML text. Any HTML needs to be a well-formed,
@@ -43,7 +43,7 @@ public class TranslateTextType {
         TranslatedTextItem translation = client.translate("<html><body>This <b>is</b> a test.</body></html>", translateOptions);
 
         for (TranslationText textTranslation : translation.getTranslations()) {
-            System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
         }
     }
 }

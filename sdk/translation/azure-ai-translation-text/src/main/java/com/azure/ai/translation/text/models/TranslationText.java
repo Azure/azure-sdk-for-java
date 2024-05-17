@@ -67,8 +67,7 @@ public final class TranslationText {
      *
      * @return the to value.
      */
-    @Generated
-    public String getTo() {
+    public String getTargetLanguage() {
         return this.to;
     }
 

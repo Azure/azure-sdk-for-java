@@ -12,7 +12,7 @@ import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationText;
-import com.azure.ai.translation.text.options.TranslateOptions;
+import com.azure.ai.translation.text.models.TranslateOptions;
 
 /**
  * Profanity handling: https://learn.microsoft.com/en-us/azure/cognitive-services/translator/reference/v3-0-translate#handle-profanity
@@ -53,7 +53,7 @@ public class TranslateProfanity {
         TranslatedTextItem translation = client.translate("This is ***.", translateOptions);
 
         for (TranslationText textTranslation : translation.getTranslations()) {
-            System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
         }
     }
 }

@@ -34,7 +34,7 @@ import java.util.Arrays;
 import java.util.List;
 import reactor.core.publisher.Mono;
 import com.azure.ai.translation.text.models.LanguageScope;
-import com.azure.ai.translation.text.options.TranslateOptions;
+import com.azure.ai.translation.text.models.TranslateOptions;
 
 /**
  * Initializes a new instance of the asynchronous TextTranslationClient type.

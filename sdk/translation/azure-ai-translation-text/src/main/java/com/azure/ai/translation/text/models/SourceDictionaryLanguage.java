@@ -30,49 +30,18 @@ public final class SourceDictionaryLanguage {
     private final String nativeName;
 
     /*
-     * List of languages with alterative translations and examples for the query expressed in the source language.
-     */
-    @Generated
-    @JsonProperty(value = "translations")
-    private final List<TargetDictionaryLanguage> translations;
-
-    /**
-     * Get the name property: Display name of the language in the locale requested via Accept-Language header.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Get the nativeName property: Display name of the language in the locale native for this language.
-     *
-     * @return the nativeName value.
-     */
-    @Generated
-    public String getNativeName() {
-        return this.nativeName;
-    }
-
-    /**
-     * Get the translations property: List of languages with alterative translations and examples for the query
-     * expressed in the source language.
-     *
-     * @return the translations value.
-     */
-    @Generated
-    public List<TargetDictionaryLanguage> getTranslations() {
-        return this.translations;
-    }
-
-    /*
      * Directionality, which is rtl for right-to-left languages or ltr for left-to-right languages.
      */
     @Generated
     @JsonProperty(value = "dir")
     private final LanguageDirectionality directionality;
+
+    /*
+     * List of languages with alterative translations and examples for the query expressed in the source language.
+     */
+    @Generated
+    @JsonProperty(value = "translations")
+    private final List<TargetDictionaryLanguage> translations;
 
     /**
      * Creates an instance of SourceDictionaryLanguage class.
@@ -95,6 +64,26 @@ public final class SourceDictionaryLanguage {
     }
 
     /**
+     * Get the name property: Display name of the language in the locale requested via Accept-Language header.
+     *
+     * @return the name value.
+     */
+    @Generated
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Get the nativeName property: Display name of the language in the locale native for this language.
+     *
+     * @return the nativeName value.
+     */
+    @Generated
+    public String getNativeName() {
+        return this.nativeName;
+    }
+
+    /**
      * Get the directionality property: Directionality, which is rtl for right-to-left languages or ltr for
      * left-to-right languages.
      *
@@ -103,5 +92,16 @@ public final class SourceDictionaryLanguage {
     @Generated
     public LanguageDirectionality getDirectionality() {
         return this.directionality;
+    }
+
+    /**
+     * Get the translations property: List of languages with alterative translations and examples for the query
+     * expressed in the source language.
+     *
+     * @return the translations value.
+     */
+    @Generated
+    public List<TargetDictionaryLanguage> getTranslations() {
+        return this.translations;
     }
 }

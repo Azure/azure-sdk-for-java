@@ -22,6 +22,14 @@ public final class BreakSentenceItem {
     @JsonProperty(value = "detectedLanguage")
     private DetectedLanguage detectedLanguage;
 
+    /*
+     * An integer array representing the lengths of the sentences in the input text.
+     * The length of the array is the number of sentences, and the values are the length of each sentence.
+     */
+    @Generated
+    @JsonProperty(value = "sentLen")
+    private final List<Integer> sentencesLengths;
+
     /**
      * Creates an instance of BreakSentenceItem class.
      *
@@ -43,14 +51,6 @@ public final class BreakSentenceItem {
     public DetectedLanguage getDetectedLanguage() {
         return this.detectedLanguage;
     }
-
-    /*
-     * An integer array representing the lengths of the sentences in the input text.
-     * The length of the array is the number of sentences, and the values are the length of each sentence.
-     */
-    @Generated
-    @JsonProperty(value = "sentLen")
-    private final List<Integer> sentencesLengths;
 
     /**
      * Get the sentencesLengths property: An integer array representing the lengths of the sentences in the input text.

@@ -12,7 +12,7 @@ import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TranslationText;
-import com.azure.ai.translation.text.options.TranslateOptions;
+import com.azure.ai.translation.text.models.TranslateOptions;
 
 /**
  * You can ask translator service to include sentence boundaries for the input text and the translated text.
@@ -42,7 +42,7 @@ public class TranslateSentenceLength {
         TranslatedTextItem translation = client.translate("The answer lies in machine translation. This is a test.", translateOptions);
 
         for (TranslationText textTranslation : translation.getTranslations()) {
-            System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
             System.out.println("Source Sentence length: " + textTranslation.getSentenceBoundaries().getSourceSentencesLengths());
             System.out.println("Translated Sentence length: " + textTranslation.getSentenceBoundaries().getTranslatedSentencesLengths());
         }
