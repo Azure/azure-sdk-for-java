@@ -256,12 +256,10 @@ public class ReactiveCosmosTemplateIT {
             assertThat(entity.getTransientProperty()).isNotNull();
         }
 
-        Flux<Person> insertAllResponse = cosmosTemplate.insertAll(personInfo, entitiesToSave);
+        Person insertAllResponse = cosmosTemplate.insertAll(personInfo, entitiesToSave).blockLast();
 
         //check that the transient field is retained in the response
-        insertAllResponse.subscribe(person -> {
-            assertThat(person.getTransientProperty()).isEqualTo(TRANSIENT_PROPERTY);
-        });
+        assertThat(insertAllResponse.getTransientProperty()).isEqualTo(TRANSIENT_PROPERTY);
 
         //check it is not persisted
         Mono<Person> findByIdResponse = cosmosTemplate.findById(Person.class.getSimpleName(), TEST_PERSON_5.getId(), Person.class);
