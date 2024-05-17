@@ -14,28 +14,23 @@ public final class FleetHubProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetHubProfile model = BinaryData.fromString(
-            "{\"dnsPrefix\":\"nhutjeltmrldhugj\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":false,\"enableVnetIntegration\":true,\"subnetId\":\"hocdgeab\"},\"agentProfile\":{\"subnetId\":\"huticndvkao\",\"vmSize\":\"yiftyhxhuro\"},\"fqdn\":\"tyxolniwpwc\",\"kubernetesVersion\":\"jfkgiawxk\",\"portalFqdn\":\"ypl\"}")
+            "{\"dnsPrefix\":\"ljdousk\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true},\"agentProfile\":{\"subnetId\":\"rcjd\",\"vmSize\":\"tnhxbn\"},\"fqdn\":\"iksqr\",\"kubernetesVersion\":\"ssainqpjwnzll\",\"portalFqdn\":\"mppeebvmgxs\"}")
             .toObject(FleetHubProfile.class);
-        Assertions.assertEquals("nhutjeltmrldhugj", model.dnsPrefix());
-        Assertions.assertEquals(false, model.apiServerAccessProfile().enablePrivateCluster());
-        Assertions.assertEquals(true, model.apiServerAccessProfile().enableVnetIntegration());
-        Assertions.assertEquals("hocdgeab", model.apiServerAccessProfile().subnetId());
-        Assertions.assertEquals("huticndvkao", model.agentProfile().subnetId());
-        Assertions.assertEquals("yiftyhxhuro", model.agentProfile().vmSize());
+        Assertions.assertEquals("ljdousk", model.dnsPrefix());
+        Assertions.assertEquals(true, model.apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertEquals("rcjd", model.agentProfile().subnetId());
+        Assertions.assertEquals("tnhxbn", model.agentProfile().vmSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetHubProfile model = new FleetHubProfile().withDnsPrefix("nhutjeltmrldhugj")
-            .withApiServerAccessProfile(new ApiServerAccessProfile().withEnablePrivateCluster(false)
-                .withEnableVnetIntegration(true).withSubnetId("hocdgeab"))
-            .withAgentProfile(new AgentProfile().withSubnetId("huticndvkao").withVmSize("yiftyhxhuro"));
+        FleetHubProfile model = new FleetHubProfile().withDnsPrefix("ljdousk")
+            .withApiServerAccessProfile(new ApiServerAccessProfile().withEnablePrivateCluster(true))
+            .withAgentProfile(new AgentProfile().withSubnetId("rcjd").withVmSize("tnhxbn"));
         model = BinaryData.fromObject(model).toObject(FleetHubProfile.class);
-        Assertions.assertEquals("nhutjeltmrldhugj", model.dnsPrefix());
-        Assertions.assertEquals(false, model.apiServerAccessProfile().enablePrivateCluster());
-        Assertions.assertEquals(true, model.apiServerAccessProfile().enableVnetIntegration());
-        Assertions.assertEquals("hocdgeab", model.apiServerAccessProfile().subnetId());
-        Assertions.assertEquals("huticndvkao", model.agentProfile().subnetId());
-        Assertions.assertEquals("yiftyhxhuro", model.agentProfile().vmSize());
+        Assertions.assertEquals("ljdousk", model.dnsPrefix());
+        Assertions.assertEquals(true, model.apiServerAccessProfile().enablePrivateCluster());
+        Assertions.assertEquals("rcjd", model.agentProfile().subnetId());
+        Assertions.assertEquals("tnhxbn", model.agentProfile().vmSize());
     }
 }

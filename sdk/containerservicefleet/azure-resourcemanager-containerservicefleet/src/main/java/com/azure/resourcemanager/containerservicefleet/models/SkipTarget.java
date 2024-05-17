@@ -20,7 +20,7 @@ public final class SkipTarget {
     private TargetType type;
 
     /*
-     * The skip target's name.
+     * The skip target's name. 
      * To skip a member/group/stage, use the member/group/stage's name;
      * Tp skip an after stage wait, use the parent stage's name.
      */
@@ -84,12 +84,12 @@ public final class SkipTarget {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model SkipTarget"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model SkipTarget"));
         }
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model SkipTarget"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SkipTarget"));
         }
     }
 

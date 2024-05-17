@@ -22,48 +22,42 @@ public final class FleetListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"hubProfile\":{\"dnsPrefix\":\"xqhabi\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true,\"enableVnetIntegration\":false,\"subnetId\":\"zb\"},\"agentProfile\":{\"subnetId\":\"npqxuh\",\"vmSize\":\"y\"},\"fqdn\":\"iwbybrkxvdumjg\",\"kubernetesVersion\":\"fwvuk\",\"portalFqdn\":\"audccsnhs\"}},\"eTag\":\"nyejhkryhtnap\",\"identity\":{\"principalId\":\"49001f48-1c5c-4e49-9eff-cbb4546b1b75\",\"tenantId\":\"5d578534-e9eb-425e-9053-b5f30fae8a41\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"mkkvnip\":{\"principalId\":\"a628debd-5b28-4bcd-934f-0d345785def9\",\"clientId\":\"25802801-4428-4ee1-b9f0-3bc56ae69949\"}}},\"location\":\"xzjnchgejs\",\"tags\":{\"ahuxinpm\":\"mailzydehojw\",\"vcputegj\":\"njaqwixjspro\",\"uuvmkjozkrwfnd\":\"wmfdatscmdvpjhul\",\"vwryoqpso\":\"odjpslwejd\"},\"id\":\"cctazakljlahbc\",\"name\":\"yffdfdos\",\"type\":\"gexpaojakhmsbz\"}],\"nextLink\":\"crzevdphlx\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"hubProfile\":{\"dnsPrefix\":\"xqhabi\",\"apiServerAccessProfile\":{\"enablePrivateCluster\":true},\"agentProfile\":{\"subnetId\":\"czbysc\",\"vmSize\":\"q\"},\"fqdn\":\"hiv\",\"kubernetesVersion\":\"n\",\"portalFqdn\":\"b\"}},\"eTag\":\"rkxvdum\",\"identity\":{\"principalId\":\"5572d0f4-4051-42f9-b466-e6e2d66e4c91\",\"tenantId\":\"f53609ed-09e0-45a9-91ae-6140d199138a\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"xgaudccs\":{\"principalId\":\"4c91f6cd-2119-4c24-9ad1-deb78daec639\",\"clientId\":\"9dadc282-ce7d-4f3f-a264-ffe4bdfbd20b\"},\"jcny\":{\"principalId\":\"e14c2186-4d87-46d0-b968-081016bf7044\",\"clientId\":\"2e2597a2-bc5b-4492-bc64-dd92ad62c5d5\"}}},\"location\":\"hkryhtn\",\"tags\":{\"okjye\":\"zw\",\"jnchgej\":\"kkvnipjox\",\"huxinpmqnj\":\"podmailzydehojwy\"},\"id\":\"qwixjspro\",\"name\":\"vcputegj\",\"type\":\"wmfdatscmdvpjhul\"}],\"nextLink\":\"uvm\"}")
             .toObject(FleetListResult.class);
-        Assertions.assertEquals("xzjnchgejs", model.value().get(0).location());
-        Assertions.assertEquals("mailzydehojw", model.value().get(0).tags().get("ahuxinpm"));
+        Assertions.assertEquals("hkryhtn", model.value().get(0).location());
+        Assertions.assertEquals("zw", model.value().get(0).tags().get("okjye"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
         Assertions.assertEquals("xqhabi", model.value().get(0).hubProfile().dnsPrefix());
         Assertions.assertEquals(true,
             model.value().get(0).hubProfile().apiServerAccessProfile().enablePrivateCluster());
-        Assertions.assertEquals(false,
-            model.value().get(0).hubProfile().apiServerAccessProfile().enableVnetIntegration());
-        Assertions.assertEquals("zb", model.value().get(0).hubProfile().apiServerAccessProfile().subnetId());
-        Assertions.assertEquals("npqxuh", model.value().get(0).hubProfile().agentProfile().subnetId());
-        Assertions.assertEquals("y", model.value().get(0).hubProfile().agentProfile().vmSize());
-        Assertions.assertEquals("crzevdphlx", model.nextLink());
+        Assertions.assertEquals("czbysc", model.value().get(0).hubProfile().agentProfile().subnetId());
+        Assertions.assertEquals("q", model.value().get(0).hubProfile().agentProfile().vmSize());
+        Assertions.assertEquals("uvm", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetListResult model = new FleetListResult()
-            .withValue(Arrays.asList(new FleetInner().withLocation("xzjnchgejs")
-                .withTags(mapOf("ahuxinpm", "mailzydehojw", "vcputegj", "njaqwixjspro", "uuvmkjozkrwfnd",
-                    "wmfdatscmdvpjhul", "vwryoqpso", "odjpslwejd"))
-                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("mkkvnip", new UserAssignedIdentity())))
-                .withHubProfile(new FleetHubProfile().withDnsPrefix("xqhabi")
-                    .withApiServerAccessProfile(new ApiServerAccessProfile().withEnablePrivateCluster(true)
-                        .withEnableVnetIntegration(false).withSubnetId("zb"))
-                    .withAgentProfile(new AgentProfile().withSubnetId("npqxuh").withVmSize("y")))))
-            .withNextLink("crzevdphlx");
+        FleetListResult model
+            = new FleetListResult()
+                .withValue(Arrays.asList(new FleetInner().withLocation("hkryhtn")
+                    .withTags(mapOf("okjye", "zw", "jnchgej", "kkvnipjox", "huxinpmqnj", "podmailzydehojwy"))
+                    .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                        .withUserAssignedIdentities(
+                            mapOf("xgaudccs", new UserAssignedIdentity(), "jcny", new UserAssignedIdentity())))
+                    .withHubProfile(new FleetHubProfile().withDnsPrefix("xqhabi")
+                        .withApiServerAccessProfile(new ApiServerAccessProfile().withEnablePrivateCluster(true))
+                        .withAgentProfile(new AgentProfile().withSubnetId("czbysc").withVmSize("q")))))
+                .withNextLink("uvm");
         model = BinaryData.fromObject(model).toObject(FleetListResult.class);
-        Assertions.assertEquals("xzjnchgejs", model.value().get(0).location());
-        Assertions.assertEquals("mailzydehojw", model.value().get(0).tags().get("ahuxinpm"));
+        Assertions.assertEquals("hkryhtn", model.value().get(0).location());
+        Assertions.assertEquals("zw", model.value().get(0).tags().get("okjye"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
         Assertions.assertEquals("xqhabi", model.value().get(0).hubProfile().dnsPrefix());
         Assertions.assertEquals(true,
             model.value().get(0).hubProfile().apiServerAccessProfile().enablePrivateCluster());
-        Assertions.assertEquals(false,
-            model.value().get(0).hubProfile().apiServerAccessProfile().enableVnetIntegration());
-        Assertions.assertEquals("zb", model.value().get(0).hubProfile().apiServerAccessProfile().subnetId());
-        Assertions.assertEquals("npqxuh", model.value().get(0).hubProfile().agentProfile().subnetId());
-        Assertions.assertEquals("y", model.value().get(0).hubProfile().agentProfile().vmSize());
-        Assertions.assertEquals("crzevdphlx", model.nextLink());
+        Assertions.assertEquals("czbysc", model.value().get(0).hubProfile().agentProfile().subnetId());
+        Assertions.assertEquals("q", model.value().get(0).hubProfile().agentProfile().vmSize());
+        Assertions.assertEquals("uvm", model.nextLink());
     }
 
     // Use "Map.of" if available
