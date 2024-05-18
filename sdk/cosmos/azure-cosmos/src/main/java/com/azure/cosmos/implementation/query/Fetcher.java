@@ -3,17 +3,14 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.FeedOperationContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -24,13 +21,10 @@ import reactor.core.publisher.SignalType;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -225,7 +219,7 @@ abstract class Fetcher<T> {
         URI firstContactedLocationEndpoint = diagnosticsAccessor.getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
 
         if (firstContactedLocationEndpoint != null) {
-            this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
+            this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
         }
     }
 }

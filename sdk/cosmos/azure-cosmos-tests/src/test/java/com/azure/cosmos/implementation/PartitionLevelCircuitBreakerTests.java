@@ -11,10 +11,13 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.faultinjection.FaultInjectionTestBase;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.guava25.base.Function;
+import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
@@ -38,6 +41,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -78,8 +82,36 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     }
 
-    @Test(groups = {"multi-master"})
-    public void readHits503InFirstPreferredRegion() {
+    @DataProvider(name = "partitionLevelCircuitBreakerTestConfigs")
+    public Object[][] partitionLevelCircuitBreakerTestConfigs() {
+        return new Object[][] {
+//            {FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
+//            {FaultInjectionOperationType.UPSERT_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
+//            {FaultInjectionOperationType.REPLACE_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
+//            {FaultInjectionOperationType.DELETE_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
+//            {FaultInjectionOperationType.PATCH_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
+//            {FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
+//            {FaultInjectionOperationType.QUERY_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
+            {FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false},
+            {FaultInjectionOperationType.UPSERT_ITEM, FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false},
+            {FaultInjectionOperationType.REPLACE_ITEM, FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false},
+            {FaultInjectionOperationType.DELETE_ITEM, FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false},
+            {FaultInjectionOperationType.PATCH_ITEM, FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false},
+            {FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false},
+            {FaultInjectionOperationType.QUERY_ITEM, FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false}
+        };
+    }
+
+    @Test(groups = {"multi-master"}, dataProvider = "partitionLevelCircuitBreakerTestConfigs")
+    public void operationHitsTerminalExceptionInFirstPreferredRegion(
+        FaultInjectionOperationType faultInjectionOperationType,
+        FaultInjectionServerErrorType faultInjectionServerErrorType,
+        int faultInjectionHitCount,
+        Duration faultInjectionDuration,
+        boolean shouldEndToEndTimeoutBeInjected,
+        boolean shouldThresholdBasedAvailabilityStrategyBeEnabled) {
+
+        logger.info("Checking circuit breaking behavior for {}", faultInjectionOperationType);
 
         List<String> preferredRegions = this.writeRegions;
         CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
@@ -87,7 +119,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
 
         if (connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("readHits503InPrimaryRegion test is not applicable to GATEWAY connectivity mode!");
+            throw new SkipException("Test is not applicable to GATEWAY connectivity mode!");
         }
 
         CosmosAsyncClient client = clientBuilder.buildAsyncClient();
@@ -97,7 +129,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         CosmosAsyncContainer container = null;
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(multiPartitionContainerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(50_000);
+        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(getProvisionedThroughputForContainer(faultInjectionOperationType));
 
         try {
 
@@ -108,14 +140,210 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
             Thread.sleep(10_000);
 
-            TestObject testObject = TestObject.create();
+            int testObjCountToBootstrapFrom = getTestObjectCountToBootstrapFrom(faultInjectionOperationType, 15);
+            List<TestObject> testObjects = new ArrayList<>();
 
-            String itemIdMappingToUnhealthyPartition = testObject.getId();
+            for (int i = 1; i <= testObjCountToBootstrapFrom; i++) {
+                TestObject testObject = TestObject.create();
+                testObjects.add(testObject);
+                container.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
+            }
+
+            FeedRange faultyFeedRange;
+
+            if (testObjects.size() != 1) {
+                faultyFeedRange = FeedRange.forFullRange();
+            } else {
+                faultyFeedRange = FeedRange.forLogicalPartition(new PartitionKey(testObjects.get(0).getId()));
+            }
+
+            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
+                .operationType(faultInjectionOperationType)
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .endpoints(new FaultInjectionEndpointBuilder(faultyFeedRange).build())
+                .region(preferredRegions.get(0))
+                .build();
+
+            FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+                .getResultBuilder(faultInjectionServerErrorType)
+                .build();
+
+            FaultInjectionRule faultInjectionRule = null;
+
+            if (faultInjectionServerErrorType == FaultInjectionServerErrorType.GONE) {
+                faultInjectionRule = new FaultInjectionRuleBuilder("gone-rule-" + UUID.randomUUID())
+                    .condition(faultInjectionCondition)
+                    .result(faultInjectionServerErrorResult)
+                    .duration(faultInjectionDuration)
+                    .build();
+            } else if (faultInjectionServerErrorType == FaultInjectionServerErrorType.SERVICE_UNAVAILABLE) {
+                faultInjectionRule = new FaultInjectionRuleBuilder("service-unavailable-rule-" + UUID.randomUUID())
+                    .condition(faultInjectionCondition)
+                    .result(faultInjectionServerErrorResult)
+                    .hitLimit(faultInjectionHitCount)
+                    .build();
+            }
+
+            if (faultInjectionRule != null) {
+
+                CosmosFaultInjectionHelper
+                    .configureFaultInjectionRules(container, Arrays.asList(faultInjectionRule))
+                    .block();
+
+                Function<OperationInvocationParamsWrapper, OperationExecutionResult<?>> faultInjectedFunc =
+                    generateOperation(faultInjectionOperationType);
+
+                assertThat(faultInjectedFunc).isNotNull().as("faultInjectedFunc cannot be null!");
+
+                OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+                operationInvocationParamsWrapper.cosmosAsyncContainer = container;
+
+                if (shouldEndToEndTimeoutBeInjected) {
+
+                    CosmosEndToEndOperationLatencyPolicyConfig e2eLatencyPolicyCfg = (shouldThresholdBasedAvailabilityStrategyBeEnabled) ?
+                        new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
+                            .availabilityStrategy(new ThresholdBasedAvailabilityStrategy()).build() :
+                        new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2)).build();
+
+                    operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions()
+                        .setCosmosEndToEndOperationLatencyPolicyConfig(e2eLatencyPolicyCfg);
+
+                    operationInvocationParamsWrapper.queryRequestOptions = new CosmosQueryRequestOptions()
+                        .setCosmosEndToEndOperationLatencyPolicyConfig(e2eLatencyPolicyCfg);
+
+                    operationInvocationParamsWrapper.patchItemRequestOptions = new CosmosPatchItemRequestOptions()
+                        .setCosmosEndToEndOperationLatencyPolicyConfig(e2eLatencyPolicyCfg);
+                }
+
+                for (int i = 1; i <= 15; i++) {
+                    operationInvocationParamsWrapper.createdTestObject = testObjects.isEmpty() ? null : testObjects.get(i % testObjects.size());
+                    OperationExecutionResult<?> response = faultInjectedFunc.apply(operationInvocationParamsWrapper);
+                    logger.info("Hit count : {}", faultInjectionRule.getHitCount());
+
+                    if (response.cosmosItemResponse != null) {
+                        assertThat(response.cosmosItemResponse).isNotNull();
+                        assertThat(response.cosmosItemResponse.getDiagnostics()).isNotNull();
+
+                        response.cosmosItemResponse.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    } else if (response.feedResponse != null) {
+                        assertThat(response.feedResponse).isNotNull();
+                        assertThat(response.feedResponse.getCosmosDiagnostics()).isNotNull();
+
+                        response.feedResponse.getCosmosDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    } else if (response.cosmosException != null) {
+                        assertThat(response.cosmosException).isNotNull();
+                        assertThat(response.cosmosException.getDiagnostics()).isNotNull();
+
+                        response.cosmosException.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    }
+                }
+
+                logger.info("Sleep for 120 seconds");
+                Thread.sleep(120_000);
+
+                for (int i = 16; i <= 30; i++) {
+                    operationInvocationParamsWrapper.createdTestObject = testObjects.isEmpty() ? null : testObjects.get(i % testObjects.size());
+                    OperationExecutionResult<?> response = faultInjectedFunc.apply(operationInvocationParamsWrapper);
+
+                    logger.info("Hit count : {}", faultInjectionRule.getHitCount());
+
+                    if (response.cosmosItemResponse != null) {
+                        assertThat(response.cosmosItemResponse).isNotNull();
+                        assertThat(response.cosmosItemResponse.getDiagnostics()).isNotNull();
+
+                        response.cosmosItemResponse.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    } else if (response.feedResponse != null) {
+                        assertThat(response.feedResponse).isNotNull();
+                        assertThat(response.feedResponse.getCosmosDiagnostics()).isNotNull();
+
+                        response.feedResponse.getCosmosDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    } else if (response.cosmosException != null) {
+                        assertThat(response.cosmosException).isNotNull();
+                        assertThat(response.cosmosException.getDiagnostics()).isNotNull();
+
+                        response.cosmosException.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    }
+                }
+            }
+
+            logger.info("End test");
+        } catch (InterruptedException ex) {
+            fail("InterruptedException should not have been thrown!");
+        } catch (Exception ex) {
+            logger.error("Exception thrown :", ex);
+            fail("Test should have passed!");
+        } finally {
+            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED");
+            safeDeleteCollection(container);
+            safeClose(client);
+        }
+    }
+
+    @Test(groups = {"multi-master"})
+    public void operationHitsTerminalExceptionInMultipleContainers() {
+        logger.info("Checking circuit breaking behavior for {}", FaultInjectionOperationType.READ_ITEM);
+
+        List<String> preferredRegions = this.writeRegions;
+        CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
+
+        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
+
+        if (connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
+            throw new SkipException("Test is not applicable to GATEWAY connectivity mode!");
+        }
+
+        CosmosAsyncClient client = clientBuilder.buildAsyncClient();
+        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
+
+        String multiPartitionContainerId1 = UUID.randomUUID() + "-multi-partition-test-container";
+        String multiPartitionContainerId2 = UUID.randomUUID() + "-multi-partition-test-container";
+
+        CosmosAsyncContainer container1 = null;
+        CosmosContainerProperties containerProperties1 = new CosmosContainerProperties(multiPartitionContainerId1, "/id");
+        ThroughputProperties throughputProperties1 = ThroughputProperties.createManualThroughput(12_000);
+
+        CosmosAsyncContainer container2 = null;
+        CosmosContainerProperties containerProperties2 = new CosmosContainerProperties(multiPartitionContainerId2, "/id");
+        ThroughputProperties throughputProperties2 = ThroughputProperties.createManualThroughput(12_000);
+
+        try {
+
+            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED", "true");
+
+            database.createContainerIfNotExists(containerProperties1, throughputProperties1).block();
+            container1 = database.getContainer(multiPartitionContainerId1);
+
+            database.createContainerIfNotExists(containerProperties2, throughputProperties2).block();
+            container2 = database.getContainer(multiPartitionContainerId2);
+
+            Thread.sleep(10_000);
+
+            int testObjCountToBootstrapFrom = 2;
+            List<TestObject> testObjects1 = new ArrayList<>();
+
+            for (int i = 1; i <= testObjCountToBootstrapFrom; i++) {
+                TestObject testObject = TestObject.create();
+                testObjects1.add(testObject);
+                container1.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
+                container2.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
+            }
 
             FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
                 .operationType(FaultInjectionOperationType.READ_ITEM)
                 .connectionType(FaultInjectionConnectionType.DIRECT)
-                .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey(itemIdMappingToUnhealthyPartition))).build())
+                .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey(testObjects1.get(0).getId()))).build())
                 .region(preferredRegions.get(0))
                 .build();
 
@@ -123,647 +351,400 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
                 .build();
 
-            FaultInjectionRule serviceUnavailableRule = new FaultInjectionRuleBuilder("service-unavailable-rule-" + UUID.randomUUID())
+            FaultInjectionRule faultInjectionRule1 = new FaultInjectionRuleBuilder("service-unavailable-rule-" + UUID.randomUUID())
                 .condition(faultInjectionCondition)
                 .result(faultInjectionServerErrorResult)
-                .hitLimit(13)
+                .hitLimit(11)
                 .build();
 
-            CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(container, Arrays.asList(serviceUnavailableRule))
-                .block();
+            FaultInjectionRule faultInjectionRule2 = new FaultInjectionRuleBuilder("service-unavailable-rule-" + UUID.randomUUID())
+                .condition(faultInjectionCondition)
+                .result(faultInjectionServerErrorResult)
+                .hitLimit(11)
+                .build();
 
-            container.createItem(testObject, new PartitionKey(itemIdMappingToUnhealthyPartition), new CosmosItemRequestOptions()).block();
+            if (faultInjectionRule1 != null && faultInjectionRule2 != null) {
 
-            for (int i = 1; i <= 15; i++) {
-                CosmosItemResponse<TestObject> response = container.readItem(itemIdMappingToUnhealthyPartition, new PartitionKey(itemIdMappingToUnhealthyPartition), TestObject.class).block();
-                logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
+                CosmosFaultInjectionHelper
+                    .configureFaultInjectionRules(container1, Arrays.asList(faultInjectionRule1))
+                    .block();
 
-                assertThat(response).isNotNull();
-                assertThat(response.getDiagnostics()).isNotNull();
+                CosmosFaultInjectionHelper
+                    .configureFaultInjectionRules(container2, Arrays.asList(faultInjectionRule2))
+                    .block();
 
-                response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                );
+                OperationInvocationParamsWrapper paramsWrapper1 = new OperationInvocationParamsWrapper();
+                OperationInvocationParamsWrapper paramsWrapper2 = new OperationInvocationParamsWrapper();
+
+                Function<OperationInvocationParamsWrapper, OperationExecutionResult<?>> faultInjectedFunc = generateOperation(FaultInjectionOperationType.READ_ITEM);
+
+                for (int i = 1; i <= 15; i++) {
+                    paramsWrapper1.createdTestObject = testObjects1.isEmpty() ? null : testObjects1.get(0);
+                    paramsWrapper1.cosmosAsyncContainer = container1;
+
+                    paramsWrapper2.createdTestObject = testObjects1.isEmpty() ? null : testObjects1.get(0);
+                    paramsWrapper2.cosmosAsyncContainer = container2;
+
+                    OperationExecutionResult<?> response1 = faultInjectedFunc.apply(paramsWrapper1);
+                    OperationExecutionResult<?> response2 = faultInjectedFunc.apply(paramsWrapper2);
+
+                    logger.info("Hit count : {}", faultInjectionRule1.getHitCount());
+                    logger.info("Hit count : {}", faultInjectionRule2.getHitCount());
+
+                    if (response1.cosmosItemResponse != null) {
+                        assertThat(response1.cosmosItemResponse).isNotNull();
+                        assertThat(response1.cosmosItemResponse.getDiagnostics()).isNotNull();
+
+                        response1.cosmosItemResponse.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    } else if (response1.feedResponse != null) {
+                        assertThat(response1.feedResponse).isNotNull();
+                        assertThat(response1.feedResponse.getCosmosDiagnostics()).isNotNull();
+
+                        response1.feedResponse.getCosmosDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    } else if (response1.cosmosException != null) {
+                        assertThat(response1.cosmosException).isNotNull();
+                        assertThat(response1.cosmosException.getDiagnostics()).isNotNull();
+
+                        response1.cosmosException.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    }
+                    if (response2.cosmosItemResponse != null) {
+                        assertThat(response2.cosmosItemResponse).isNotNull();
+                        assertThat(response2.cosmosItemResponse.getDiagnostics()).isNotNull();
+
+                        response2.cosmosItemResponse.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    } else if (response2.feedResponse != null) {
+                        assertThat(response2.feedResponse).isNotNull();
+                        assertThat(response2.feedResponse.getCosmosDiagnostics()).isNotNull();
+
+                        response2.feedResponse.getCosmosDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    } else if (response2.cosmosException != null) {
+                        assertThat(response2.cosmosException).isNotNull();
+                        assertThat(response2.cosmosException.getDiagnostics()).isNotNull();
+
+                        response2.cosmosException.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    }
+                }
+
+                logger.info("Sleep for 120 seconds");
+                Thread.sleep(120_000);
+
+                for (int i = 16; i <= 30; i++) {
+                    paramsWrapper1.createdTestObject = testObjects1.isEmpty() ? null : testObjects1.get(0);
+                    paramsWrapper1.cosmosAsyncContainer = container1;
+
+                    paramsWrapper2.createdTestObject = testObjects1.isEmpty() ? null : testObjects1.get(0);
+                    paramsWrapper2.cosmosAsyncContainer = container2;
+
+                    OperationExecutionResult<?> response1 = faultInjectedFunc.apply(paramsWrapper1);
+                    OperationExecutionResult<?> response2 = faultInjectedFunc.apply(paramsWrapper2);
+
+                    logger.info("Hit count : {}", faultInjectionRule1.getHitCount());
+                    logger.info("Hit count : {}", faultInjectionRule2.getHitCount());
+
+                    if (response1.cosmosItemResponse != null) {
+                        assertThat(response1.cosmosItemResponse).isNotNull();
+                        assertThat(response1.cosmosItemResponse.getDiagnostics()).isNotNull();
+
+                        response1.cosmosItemResponse.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    } else if (response1.feedResponse != null) {
+                        assertThat(response1.feedResponse).isNotNull();
+                        assertThat(response1.feedResponse.getCosmosDiagnostics()).isNotNull();
+
+                        response1.feedResponse.getCosmosDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    } else if (response1.cosmosException != null) {
+                        assertThat(response1.cosmosException).isNotNull();
+                        assertThat(response1.cosmosException.getDiagnostics()).isNotNull();
+
+                        response1.cosmosException.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    }
+                    if (response2.cosmosItemResponse != null) {
+                        assertThat(response2.cosmosItemResponse).isNotNull();
+                        assertThat(response2.cosmosItemResponse.getDiagnostics()).isNotNull();
+
+                        response2.cosmosItemResponse.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    } else if (response2.feedResponse != null) {
+                        assertThat(response2.feedResponse).isNotNull();
+                        assertThat(response2.feedResponse.getCosmosDiagnostics()).isNotNull();
+
+                        response2.feedResponse.getCosmosDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    } else if (response2.cosmosException != null) {
+                        assertThat(response2.cosmosException).isNotNull();
+                        assertThat(response2.cosmosException.getDiagnostics()).isNotNull();
+
+                        response2.cosmosException.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
+                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
+                        );
+                    }
+                }
             }
-
-            logger.info("Sleep for 60 seconds");
-
-            Thread.sleep(60_000);
-
-            for (int i = 1; i <= 30; i++) {
-                CosmosItemResponse<TestObject> response = container.readItem(itemIdMappingToUnhealthyPartition, new PartitionKey(itemIdMappingToUnhealthyPartition), TestObject.class).block();
-                logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
-
-                assertThat(response).isNotNull();
-                assertThat(response.getDiagnostics()).isNotNull();
-
-                response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                );
-            }
-
 
             logger.info("End test");
         } catch (InterruptedException ex) {
             fail("InterruptedException should not have been thrown!");
         } catch (Exception ex) {
             logger.error("Exception thrown :", ex);
-            fail("Read operations should have passed!");
+            fail("Test should have passed!");
         } finally {
             System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED");
-            safeDeleteCollection(container);
+            safeDeleteCollection(container1);
+            safeDeleteCollection(container2);
             safeClose(client);
+        }
+    }
+
+    private static int getTestObjectCountToBootstrapFrom(FaultInjectionOperationType faultInjectionOperationType, int opCount) {
+        switch (faultInjectionOperationType) {
+            case READ_ITEM:
+            case UPSERT_ITEM:
+            case REPLACE_ITEM:
+            case QUERY_ITEM:
+            case PATCH_ITEM:
+                return 1;
+            case DELETE_ITEM:
+                return 2 * opCount;
+            case CREATE_ITEM:
+                return 0;
+            default:
+                throw new UnsupportedOperationException(String.format("Operation of type : %s is not supported", faultInjectionOperationType));
+        }
+    }
+
+    private static Function<OperationInvocationParamsWrapper, OperationExecutionResult<?>> generateOperation(FaultInjectionOperationType faultInjectionOperationType) {
+
+        switch (faultInjectionOperationType) {
+            case READ_ITEM:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.cosmosAsyncContainer;
+                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
+
+                    try {
+
+                        CosmosItemResponse<TestObject> readItemResponse = asyncContainer.readItem(
+                                createdTestObject.getId(),
+                                new PartitionKey(createdTestObject.getId()),
+                                itemRequestOptions,
+                                TestObject.class)
+                            .block();
+
+                        return new OperationExecutionResult<>(readItemResponse);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new OperationExecutionResult<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            case UPSERT_ITEM:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.cosmosAsyncContainer;
+                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
+
+                    try {
+
+                        CosmosItemResponse<TestObject> upsertItemResponse = asyncContainer.upsertItem(
+                                createdTestObject,
+                                new PartitionKey(createdTestObject.getId()),
+                                itemRequestOptions)
+                            .block();
+
+                        return new OperationExecutionResult<>(upsertItemResponse);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new OperationExecutionResult<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            case CREATE_ITEM:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.cosmosAsyncContainer;
+                    TestObject createdTestObject = TestObject.create();
+                    CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
+
+                    try {
+
+                        CosmosItemResponse<TestObject> createItemResponse = asyncContainer.createItem(
+                                createdTestObject,
+                                new PartitionKey(createdTestObject.getId()),
+                                itemRequestOptions)
+                            .block();
+
+                        return new OperationExecutionResult<>(createItemResponse);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new OperationExecutionResult<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            case DELETE_ITEM:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.cosmosAsyncContainer;
+                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
+
+                    try {
+
+                        CosmosItemResponse<Object> deleteItemResponse = asyncContainer.deleteItem(
+                                createdTestObject.getId(),
+                                new PartitionKey(createdTestObject.getId()),
+                                itemRequestOptions)
+                            .block();
+
+                        return new OperationExecutionResult<>(deleteItemResponse);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new OperationExecutionResult<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            case PATCH_ITEM:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.cosmosAsyncContainer;
+                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    CosmosPatchItemRequestOptions patchItemRequestOptions = (CosmosPatchItemRequestOptions) paramsWrapper.patchItemRequestOptions;
+
+                    CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/number", 555);
+
+                    try {
+
+                        CosmosItemResponse<TestObject> patchItemResponse = asyncContainer.patchItem(
+                                createdTestObject.getId(),
+                                new PartitionKey(createdTestObject.getId()),
+                                patchOperations,
+                                patchItemRequestOptions,
+                                TestObject.class)
+                            .block();
+
+                        return new OperationExecutionResult<>(patchItemResponse);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new OperationExecutionResult<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            case QUERY_ITEM:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.cosmosAsyncContainer;
+                    CosmosQueryRequestOptions queryRequestOptions = paramsWrapper.queryRequestOptions;
+
+                    try {
+
+                        FeedResponse<TestObject> queryItemResponse = asyncContainer.queryItems(
+                                "SELECT * FROM C",
+                                queryRequestOptions,
+                                TestObject.class)
+                            .byPage()
+                            .blockLast();
+
+                        return new OperationExecutionResult<>(queryItemResponse);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new OperationExecutionResult<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            case REPLACE_ITEM:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.cosmosAsyncContainer;
+                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
+
+                    try {
+
+                        CosmosItemResponse<TestObject> deleteItemResponse = asyncContainer.replaceItem(
+                                createdTestObject,
+                                createdTestObject.getId(),
+                                new PartitionKey(createdTestObject.getId()),
+                                itemRequestOptions)
+                            .block();
+
+                        return new OperationExecutionResult<>(deleteItemResponse);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new OperationExecutionResult<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            default:
+                throw new UnsupportedOperationException(String.format("Operation of type : %s is not supported", faultInjectionOperationType));
+        }
+    }
+
+    private static int getProvisionedThroughputForContainer(FaultInjectionOperationType faultInjectionOperationType) {
+        switch (faultInjectionOperationType) {
+            case READ_ITEM:
+            case UPSERT_ITEM:
+            case REPLACE_ITEM:
+            case QUERY_ITEM:
+            case PATCH_ITEM:
+                return 12_000;
+            case DELETE_ITEM:
+            case CREATE_ITEM:
+                return 6_000;
+            default:
+                throw new UnsupportedOperationException(String.format("Operation of type : %s is not supported", faultInjectionOperationType));
         }
     }
 
     @Test(groups = {"multi-master"})
-    public void upsertHits503InFirstPreferredRegion() {
-        List<String> preferredRegions = this.writeRegions;
-        CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
-
-        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
-
-        if (connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("upsertHits503InFirstPreferredRegion test is not applicable to GATEWAY connectivity mode!");
-        }
-
-        CosmosAsyncClient client = clientBuilder.buildAsyncClient();
-        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
-
-        String multiPartitionContainerId = UUID.randomUUID() + "-multi-partition-test-container";
-
-        CosmosAsyncContainer container = null;
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(multiPartitionContainerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(50_000);
-
-        try {
-
-            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED", "true");
-
-            database.createContainerIfNotExists(containerProperties, throughputProperties).block();
-            container = database.getContainer(multiPartitionContainerId);
-
-            Thread.sleep(10_000);
-
-            TestObject testObject = TestObject.create();
-
-            String itemIdMappingToUnhealthyPartition = testObject.getId();
-
-            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-                .operationType(FaultInjectionOperationType.UPSERT_ITEM)
-                .connectionType(FaultInjectionConnectionType.DIRECT)
-                .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey(itemIdMappingToUnhealthyPartition))).build())
-                .region(preferredRegions.get(0))
-                .build();
-
-            FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
-                .build();
-
-            FaultInjectionRule serviceUnavailableRule = new FaultInjectionRuleBuilder("service-unavailable-rule-" + UUID.randomUUID())
-                .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult)
-                .hitLimit(13)
-                .build();
-
-            CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(container, Arrays.asList(serviceUnavailableRule))
-                .block();
-
-            container.createItem(testObject, new PartitionKey(itemIdMappingToUnhealthyPartition), new CosmosItemRequestOptions()).block();
-
-            for (int i = 1; i <= 15; i++) {
-                CosmosItemResponse<TestObject> response = container.upsertItem(testObject, new PartitionKey(itemIdMappingToUnhealthyPartition), new CosmosItemRequestOptions()).block();
-                logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
-
-                assertThat(response).isNotNull();
-                assertThat(response.getDiagnostics()).isNotNull();
-
-                response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                );
-            }
-
-            CosmosItemResponse<TestObject> response = container.upsertItem(testObject, new PartitionKey(itemIdMappingToUnhealthyPartition), new CosmosItemRequestOptions()).block();
-            logger.info("Sleep for 60 seconds");
-
-            Thread.sleep(60_000);
-
-            for (int i = 1; i <= 30; i++) {
-                response = container.upsertItem(testObject, new PartitionKey(itemIdMappingToUnhealthyPartition), new CosmosItemRequestOptions()).block();
-                logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
-
-                assertThat(response).isNotNull();
-                assertThat(response.getDiagnostics()).isNotNull();
-
-                response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                );
-            }
-
-
-            logger.info("End test");
-        } catch (InterruptedException ex) {
-            fail("InterruptedException should not have been thrown!");
-        } catch (Exception ex) {
-            logger.error("Exception thrown :", ex);
-            fail("Upsert operations should have passed!");
-        } finally {
-            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED");
-            safeDeleteCollection(container);
-            safeClose(client);
-        }
-    }
-
-    @Test(groups = {"multi-master"})
-    public void createHits503InFirstPreferredRegion() {
-        List<String> preferredRegions = this.writeRegions;
-        CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
-
-        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
-
-        if (connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("createHits503InFirstPreferredRegion test is not applicable to GATEWAY connectivity mode!");
-        }
-
-        CosmosAsyncClient client = clientBuilder.buildAsyncClient();
-        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
-
-        String multiPartitionContainerId = UUID.randomUUID() + "-single-partition-test-container";
-
-        CosmosAsyncContainer container = null;
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(multiPartitionContainerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(5000);
-
-        try {
-
-            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED", "true");
-
-            database.createContainerIfNotExists(containerProperties, throughputProperties).block();
-            container = database.getContainer(multiPartitionContainerId);
-
-            Thread.sleep(10_000);
-
-            TestObject testObject = TestObject.create();
-
-            String itemIdMappingToUnhealthyPartition = testObject.getId();
-
-            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-                .operationType(FaultInjectionOperationType.CREATE_ITEM)
-                .connectionType(FaultInjectionConnectionType.DIRECT)
-                .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forFullRange()).build())
-                .region(preferredRegions.get(0))
-                .build();
-
-            FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
-                .build();
-
-            FaultInjectionRule serviceUnavailableRule = new FaultInjectionRuleBuilder("service-unavailable-rule-" + UUID.randomUUID())
-                .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult)
-                .hitLimit(13)
-                .build();
-
-            CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(container, Arrays.asList(serviceUnavailableRule))
-                .block();
-
-            container.createItem(testObject, new PartitionKey(itemIdMappingToUnhealthyPartition), new CosmosItemRequestOptions()).block();
-
-            for (int i = 1; i <= 15; i++) {
-                testObject = TestObject.create();
-                CosmosItemResponse<TestObject> response = container.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
-                logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
-
-                assertThat(response).isNotNull();
-                assertThat(response.getDiagnostics()).isNotNull();
-
-                response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                );
-            }
-
-            testObject = TestObject.create();
-            CosmosItemResponse<TestObject> response = container.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
-            logger.info("Sleep for 60 seconds");
-
-            Thread.sleep(60_000);
-
-            for (int i = 1; i <= 30; i++) {
-                testObject = TestObject.create();
-                response = container.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
-                logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
-
-                assertThat(response).isNotNull();
-                assertThat(response.getDiagnostics()).isNotNull();
-
-                response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                );
-            }
-
-            logger.info("End test");
-        } catch (InterruptedException ex) {
-            fail("InterruptedException should not have been thrown!");
-        } catch (Exception ex) {
-            logger.error("Exception thrown :", ex);
-            fail("Create operations should have passed!");
-        } finally {
-            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED");
-            safeDeleteCollection(container);
-            safeClose(client);
-        }
-    }
-
-    @Test(groups = {"multi-master"})
-    public void deleteHits503InFirstPreferredRegion() {
-        List<String> preferredRegions = this.writeRegions;
-        CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
-
-        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
-
-        if (connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("deleteHits503InFirstPreferredRegion test is not applicable to GATEWAY connectivity mode!");
-        }
-
-        CosmosAsyncClient client = clientBuilder.buildAsyncClient();
-        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
-
-        String multiPartitionContainerId = UUID.randomUUID() + "-single-partition-test-container";
-
-        CosmosAsyncContainer container = null;
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(multiPartitionContainerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(5000);
-
-        try {
-
-            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED", "true");
-
-            database.createContainerIfNotExists(containerProperties, throughputProperties).block();
-            container = database.getContainer(multiPartitionContainerId);
-
-            Thread.sleep(10_000);
-
-            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-                .operationType(FaultInjectionOperationType.DELETE_ITEM)
-                .connectionType(FaultInjectionConnectionType.DIRECT)
-                .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forFullRange()).build())
-                .region(preferredRegions.get(0))
-                .build();
-
-            FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
-                .build();
-
-            FaultInjectionRule serviceUnavailableRule = new FaultInjectionRuleBuilder("service-unavailable-rule-" + UUID.randomUUID())
-                .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult)
-                .hitLimit(13)
-                .build();
-
-            CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(container, Arrays.asList(serviceUnavailableRule))
-                .block();
-
-            List<String> idAndPks = new ArrayList<>();
-
-            for (int i = 1; i <= 30; i++) {
-                TestObject testObject = TestObject.create();
-                CosmosItemResponse<TestObject> response = container.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
-
-                assertThat(response).isNotNull();
-                assertThat(response.getDiagnostics()).isNotNull();
-
-                idAndPks.add(testObject.getId());
-            }
-
-            for (int i = 0; i < 15; i++) {
-                CosmosItemResponse<Object> response = container.deleteItem(idAndPks.get(i), new PartitionKey(idAndPks.get(i)), new CosmosItemRequestOptions()).block();
-                logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
-
-                assertThat(response).isNotNull();
-                assertThat(response.getDiagnostics()).isNotNull();
-
-                response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                );
-            }
-
-            logger.info("Sleeping for a minute!");
-            Thread.sleep(60_000);
-
-            for (int i = 15; i < 30; i++) {
-                CosmosItemResponse<Object> response = container.deleteItem(idAndPks.get(i), new PartitionKey(idAndPks.get(i)), new CosmosItemRequestOptions()).block();
-                logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
-
-                assertThat(response).isNotNull();
-                assertThat(response.getDiagnostics()).isNotNull();
-
-                response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                );
-            }
-
-            logger.info("End test");
-        } catch (InterruptedException ex) {
-            fail("InterruptedException should not have been thrown!");
-        } catch (Exception ex) {
-            logger.error("Exception thrown :", ex);
-            fail("Create operations should have passed!");
-        } finally {
-            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED");
-            safeDeleteCollection(container);
-            safeClose(client);
-        }
-    }
-
-    @Test(groups = {"multi-master"})
-    public void patchHits503InFirstPreferredRegion() {
-        List<String> preferredRegions = this.writeRegions;
-        CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
-
-        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
-
-        if (connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("createHits503InFirstPreferredRegion test is not applicable to GATEWAY connectivity mode!");
-        }
-
-        CosmosAsyncClient client = clientBuilder.buildAsyncClient();
-        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
-
-        String multiPartitionContainerId = UUID.randomUUID() + "-single-partition-test-container";
-
-        CosmosAsyncContainer container = null;
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(multiPartitionContainerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(5000);
-
-        try {
-
-            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED", "true");
-
-            database.createContainerIfNotExists(containerProperties, throughputProperties).block();
-            container = database.getContainer(multiPartitionContainerId);
-
-            Thread.sleep(10_000);
-
-            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-                .operationType(FaultInjectionOperationType.PATCH_ITEM)
-                .connectionType(FaultInjectionConnectionType.DIRECT)
-                .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forFullRange()).build())
-                .region(preferredRegions.get(0))
-                .build();
-
-            FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
-                .build();
-
-            FaultInjectionRule serviceUnavailableRule = new FaultInjectionRuleBuilder("service-unavailable-rule-" + UUID.randomUUID())
-                .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult)
-                .hitLimit(13)
-                .build();
-
-            CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(container, Arrays.asList(serviceUnavailableRule))
-                .block();
-
-            TestObject testObject = TestObject.create();
-            container.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
-
-            CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/number", 555);
-
-            for (int i = 0; i < 15; i++) {
-                CosmosItemResponse<TestObject> response = container.patchItem(testObject.getId(), new PartitionKey(testObject.getId()), patchOperations, new CosmosPatchItemRequestOptions(), TestObject.class).block();
-                logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
-
-                assertThat(response).isNotNull();
-                assertThat(response.getDiagnostics()).isNotNull();
-
-                response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                );
-            }
-
-            logger.info("Sleep for 60 seconds!");
-            Thread.sleep(60_000);
-
-            for (int i = 0; i < 15; i++) {
-                CosmosItemResponse<TestObject> response = container.patchItem(testObject.getId(), new PartitionKey(testObject.getId()), patchOperations, new CosmosPatchItemRequestOptions(), TestObject.class).block();
-                logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
-
-                assertThat(response).isNotNull();
-                assertThat(response.getDiagnostics()).isNotNull();
-
-                response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                );
-            }
-
-            logger.info("End test");
-        } catch (InterruptedException ex) {
-            fail("InterruptedException should not have been thrown!");
-        } catch (Exception ex) {
-            logger.error("Exception thrown :", ex);
-            fail("Patch operations should have passed!");
-        } finally {
-            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED");
-            safeDeleteCollection(container);
-            safeClose(client);
-        }
-    }
-
-    @Test(groups = {"multi-master"})
-    public void replaceHits503InFirstPreferredRegion() {
-        List<String> preferredRegions = this.writeRegions;
-        CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
-
-        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
-
-        if (connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("createHits503InFirstPreferredRegion test is not applicable to GATEWAY connectivity mode!");
-        }
-
-        CosmosAsyncClient client = clientBuilder.buildAsyncClient();
-        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
-
-        String multiPartitionContainerId = UUID.randomUUID() + "-single-partition-test-container";
-
-        CosmosAsyncContainer container = null;
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(multiPartitionContainerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(5000);
-
-        try {
-
-            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED", "true");
-
-            database.createContainerIfNotExists(containerProperties, throughputProperties).block();
-            container = database.getContainer(multiPartitionContainerId);
-
-            Thread.sleep(10_000);
-
-            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-                .operationType(FaultInjectionOperationType.REPLACE_ITEM)
-                .connectionType(FaultInjectionConnectionType.DIRECT)
-                .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forFullRange()).build())
-                .region(preferredRegions.get(0))
-                .build();
-
-            FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
-                .build();
-
-            FaultInjectionRule serviceUnavailableRule = new FaultInjectionRuleBuilder("service-unavailable-rule-" + UUID.randomUUID())
-                .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult)
-                .hitLimit(13)
-                .build();
-
-            CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(container, Arrays.asList(serviceUnavailableRule))
-                .block();
-
-            TestObject testObject = TestObject.create();
-            container.createItem(testObject, new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
-
-            for (int i = 0; i < 15; i++) {
-                CosmosItemResponse<TestObject> response = container.replaceItem(testObject, testObject.getId(), new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
-                logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
-
-                assertThat(response).isNotNull();
-                assertThat(response.getDiagnostics()).isNotNull();
-
-                response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                );
-            }
-
-            logger.info("Sleep for 60 seconds!");
-            Thread.sleep(60_000);
-
-            for (int i = 0; i < 15; i++) {
-                CosmosItemResponse<TestObject> response = container.replaceItem(testObject, testObject.getId(), new PartitionKey(testObject.getId()), new CosmosItemRequestOptions()).block();
-                logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
-
-                assertThat(response).isNotNull();
-                assertThat(response.getDiagnostics()).isNotNull();
-
-                response.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                );
-            }
-
-            logger.info("End test");
-        } catch (InterruptedException ex) {
-            fail("InterruptedException should not have been thrown!");
-        } catch (Exception ex) {
-            logger.error("Exception thrown :", ex);
-            fail("Replace operations should have passed!");
-        } finally {
-            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED");
-            safeDeleteCollection(container);
-            safeClose(client);
-        }
-    }
-
-    @Test(groups = {"multi-master"})
-    public void queryHits503InFirstPreferredRegion() {
-        List<String> preferredRegions = this.writeRegions;
-        CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
-
-        ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
-
-        if (connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("readHits503InPrimaryRegion test is not applicable to GATEWAY connectivity mode!");
-        }
-
-        CosmosAsyncClient client = clientBuilder.buildAsyncClient();
-        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
-
-        String multiPartitionContainerId = UUID.randomUUID() + "-multi-partition-test-container";
-
-        CosmosAsyncContainer container = null;
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(multiPartitionContainerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(6_000);
-
-        try {
-
-            System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED", "true");
-
-            database.createContainerIfNotExists(containerProperties, throughputProperties).block();
-            container = database.getContainer(multiPartitionContainerId);
-
-            Thread.sleep(10_000);
-
-            TestObject testObject = TestObject.create();
-
-            String itemIdMappingToUnhealthyPartition = testObject.getId();
-
-            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-                .operationType(FaultInjectionOperationType.QUERY_ITEM)
-                .connectionType(FaultInjectionConnectionType.DIRECT)
-                .endpoints(new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey(itemIdMappingToUnhealthyPartition))).build())
-                .region(preferredRegions.get(0))
-                .build();
-
-            FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
-                .build();
-
-            FaultInjectionRule serviceUnavailableRule = new FaultInjectionRuleBuilder("service-unavailable-rule-" + UUID.randomUUID())
-                .condition(faultInjectionCondition)
-                .result(faultInjectionServerErrorResult)
-                .hitLimit(13)
-                .build();
-
-            CosmosFaultInjectionHelper
-                .configureFaultInjectionRules(container, Arrays.asList(serviceUnavailableRule))
-                .block();
-
-            container.createItem(testObject, new PartitionKey(itemIdMappingToUnhealthyPartition), new CosmosItemRequestOptions()).block();
-
-            for (int i = 1; i <= 15; i++) {
-                FeedResponse<TestObject> response = container.queryItems("SELECT * FROM c", TestObject.class).byPage().blockLast();
-                logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
-
-                assertThat(response).isNotNull();
-                assertThat(response.getCosmosDiagnostics()).isNotNull();
-
-                response.getCosmosDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                );
-
-                logger.info("CosmosDiagnostics : {}", response.getCosmosDiagnostics().toString());
-            }
-
-            logger.info("Sleep for 60 seconds!");
-            Thread.sleep(60_000);
-
-            for (int i = 1; i <= 30; i++) {
-                FeedResponse<TestObject> response = container.queryItems("SELECT * FROM c", TestObject.class).byPage().blockLast();
-                logger.info("Hit count : {}", serviceUnavailableRule.getHitCount());
-
-                assertThat(response).isNotNull();
-                assertThat(response.getCosmosDiagnostics()).isNotNull();
-
-                response.getCosmosDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                    regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                );
-            }
-
-            logger.info("End test");
-        } catch (InterruptedException ex) {
-            fail("InterruptedException should not have been thrown!");
-        } catch (Exception ex) {
-            logger.error("Exception thrown :", ex);
-            fail("Query operations should have passed!");
-        } finally {
-            System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED");
-            safeDeleteCollection(container);
-            safeClose(client);
-        }
-    }
+    public void operationHitsServiceUnavailableInSecondPreferredRegion() {}
 
     @Test(groups = {"multi-master"})
     public void queryWithNoThresholdBasedAvailabilityStrategyHits408InFirstPreferredRegion() {
@@ -921,7 +902,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         CosmosAsyncContainer container = null;
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(multiPartitionContainerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(50_000);
+        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(12_000);
 
         try {
 
@@ -1030,6 +1011,39 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             safeDeleteCollection(container);
             safeClose(client);
         }
+    }
+
+    static class OperationExecutionResult<T> {
+
+        private final CosmosItemResponse<T> cosmosItemResponse;
+        private final CosmosException cosmosException;
+        private final FeedResponse<T> feedResponse;
+
+        OperationExecutionResult(FeedResponse<T> feedResponse) {
+            this.feedResponse = feedResponse;
+            this.cosmosException = null;
+            this.cosmosItemResponse = null;
+        }
+
+        OperationExecutionResult(CosmosItemResponse<T> cosmosItemResponse) {
+            this.cosmosItemResponse = cosmosItemResponse;
+            this.cosmosException = null;
+            this.feedResponse = null;
+        }
+
+        OperationExecutionResult(CosmosException cosmosException) {
+            this.cosmosException = cosmosException;
+            this.cosmosItemResponse = null;
+            this.feedResponse = null;
+        }
+    }
+
+    static class OperationInvocationParamsWrapper {
+        public CosmosAsyncContainer cosmosAsyncContainer;
+        public TestObject createdTestObject;
+        public CosmosItemRequestOptions itemRequestOptions;
+        public CosmosQueryRequestOptions queryRequestOptions;
+        public CosmosItemRequestOptions patchItemRequestOptions;
     }
 
     private static Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {

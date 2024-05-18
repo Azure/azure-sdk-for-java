@@ -546,7 +546,11 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
 
-        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single().doOnSuccess(ignore -> this.globalPartitionEndpointManager.tryBookmarkRegionSuccessForPartitionKeyRange(request));
+        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single().doOnSuccess(ignore -> {
+            if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+                this.globalPartitionEndpointManager.handleLocationSuccessForPartitionKeyRange(request);
+            }
+        });
 
         MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(this.globalEndpointManager);
         metadataRequestRetryPolicy.onBeforeSendRequest(request);

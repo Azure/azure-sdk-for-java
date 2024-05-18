@@ -2953,6 +2953,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMap.v);
 
+                        req.requestContext.setPointOperationContext(pointOperationContext);
                         requestReference.set(req);
 
                         if (retryPolicyInstance != null) {
@@ -5596,7 +5597,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             checkNotNull(partitionKeyRange, "partitionKeyRange cannot be null!");
             checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
-            List<URI> unavailableLocationsForPartition = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableLocationsForPartition(partitionKeyRange);
+            List<URI> unavailableLocationsForPartition = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableLocationEndpointsForPartitionKeyRange(request.getResourceId(), partitionKeyRange);
             List<String> unavailableRegionsForPartition = unavailableLocationsForPartition.stream().map(unavailableLocationForPartition -> this.globalEndpointManager.getRegionName(unavailableLocationForPartition, request.getOperationType())).collect(Collectors.toList());
 
             request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
@@ -5623,7 +5624,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
             checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
-            List<URI> unavailableLocationsForPartition = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableLocationsForPartition(resolvedPartitionKeyRange);
+            List<URI> unavailableLocationsForPartition = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableLocationEndpointsForPartitionKeyRange(request.getResourceId(), resolvedPartitionKeyRange);
             List<String> unavailableRegionsForPartition = unavailableLocationsForPartition.stream().map(unavailableLocationForPartition -> this.globalEndpointManager.getRegionName(unavailableLocationForPartition, request.getOperationType())).collect(Collectors.toList());
 
             request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
@@ -6176,7 +6177,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         URI firstContactedLocationEndpoint = diagnosticsAccessor.getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
 
         if (firstContactedLocationEndpoint != null) {
-            this.globalPartitionEndpointManagerForCircuitBreaker.tryMarkRegionAsUnavailableForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
+            this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
         }
     }
 

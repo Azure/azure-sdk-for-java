@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.IGlobalPartitionEndpointManager;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -194,7 +193,10 @@ public class StoreClient implements IStoreClient {
         rxDocumentServiceResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
 
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker = addressResolver.getGlobalPartitionEndpointManagerForCircuitBreaker();
-        globalPartitionEndpointManagerForCircuitBreaker.tryBookmarkRegionSuccessForPartitionKeyRange(request);
+
+        if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+            globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request);
+        }
 
         return rxDocumentServiceResponse;
     }
