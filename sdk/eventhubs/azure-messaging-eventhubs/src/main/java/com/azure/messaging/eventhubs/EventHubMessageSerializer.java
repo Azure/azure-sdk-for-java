@@ -198,7 +198,7 @@ class EventHubMessageSerializer implements MessageSerializer {
         final Integer lastEnqueuedReplicationSegment = getValue(deliveryAnnotations,
             MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH, Integer.class, false);
 
-        return new LastEnqueuedEventProperties(lastSequenceNumber, Long.valueOf(lastEnqueuedOffset), lastEnqueuedTime,
+        return new LastEnqueuedEventProperties(lastSequenceNumber, lastEnqueuedOffset, lastEnqueuedTime,
             retrievalTime, lastEnqueuedReplicationSegment);
     }
 
