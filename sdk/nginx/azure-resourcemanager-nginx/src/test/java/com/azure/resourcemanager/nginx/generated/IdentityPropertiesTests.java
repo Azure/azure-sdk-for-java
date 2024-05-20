@@ -16,19 +16,18 @@ public final class IdentityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IdentityProperties model = BinaryData.fromString(
-            "{\"principalId\":\"xibqeojnx\",\"tenantId\":\"zvddntwndeicbtwn\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"jqkwpyeicx\":{\"principalId\":\"uhrhcffcyddgl\",\"clientId\":\"t\"},\"ghmewuam\":{\"principalId\":\"ciwqvhk\",\"clientId\":\"xuigdtopbobj\"},\"efgugnxk\":{\"principalId\":\"hrzayvvtpgvdf\",\"clientId\":\"otkftutqxlngx\"},\"hjybigehoqfbo\":{\"principalId\":\"dqmidtt\",\"clientId\":\"rvqdra\"}}}")
+            "{\"principalId\":\"k\",\"tenantId\":\"xo\",\"type\":\"None\",\"userAssignedIdentities\":{\"whijcoejctbza\":{\"principalId\":\"pimexgstxgcpodg\",\"clientId\":\"ajrmvdjwzrlovmc\"},\"xaxcfjpgddtocjjx\":{\"principalId\":\"qsycbkbfkgu\",\"clientId\":\"kexxppof\"},\"jnxqbzvddntwn\":{\"principalId\":\"pmouexhdz\",\"clientId\":\"bqe\"}}}")
             .toObject(IdentityProperties.class);
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityProperties model
-            = new IdentityProperties().withType(IdentityType.USER_ASSIGNED).withUserAssignedIdentities(
-                mapOf("jqkwpyeicx", new UserIdentityProperties(), "ghmewuam", new UserIdentityProperties(), "efgugnxk",
-                    new UserIdentityProperties(), "hjybigehoqfbo", new UserIdentityProperties()));
+        IdentityProperties model = new IdentityProperties().withType(IdentityType.NONE)
+            .withUserAssignedIdentities(mapOf("whijcoejctbza", new UserIdentityProperties(), "xaxcfjpgddtocjjx",
+                new UserIdentityProperties(), "jnxqbzvddntwn", new UserIdentityProperties()));
         model = BinaryData.fromObject(model).toObject(IdentityProperties.class);
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.NONE, model.type());
     }
 
     // Use "Map.of" if available
