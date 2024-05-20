@@ -276,7 +276,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
         final EventData expectedEvent = receivedEvents[4];
 
         // Choose the offset before it, so we get that event back.
-        final EventPosition position = EventPosition.fromOffset(expectedEvent.getOffset() - 1);
+        final EventPosition position = EventPosition.fromOffset(expectedEvent.getOffset());
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), position)

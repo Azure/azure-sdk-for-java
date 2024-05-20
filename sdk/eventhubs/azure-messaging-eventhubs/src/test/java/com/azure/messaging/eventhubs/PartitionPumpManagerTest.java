@@ -133,7 +133,7 @@ public class PartitionPumpManagerTest {
     public static Stream<Arguments> startPartitionPumpAtCorrectPosition() {
         final EventPosition mapPosition = EventPosition.fromSequenceNumber(165L);
         final long sequenceNumber = 15L;
-        final long offset = 10L;
+        final String offset = "10L";
         final int replicationSegment = 23;
 
         return Stream.of(
@@ -169,7 +169,7 @@ public class PartitionPumpManagerTest {
      */
     @MethodSource
     @ParameterizedTest
-    public void startPartitionPumpAtCorrectPosition(Long offset, Long sequenceNumber, Integer replicationSegment,
+    public void startPartitionPumpAtCorrectPosition(String offset, Long sequenceNumber, Integer replicationSegment,
         EventPosition initialPosition, EventPosition expectedPosition) {
 
         // Arrange
@@ -265,7 +265,7 @@ public class PartitionPumpManagerTest {
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
             DEFAULT_TRACER, options);
 
-        checkpoint.setOffset(1L).setSequenceNumber(10L);
+        checkpoint.setOffset("1L").setSequenceNumber(10L);
         partitionOwnership.setLastModifiedTime(OffsetDateTime.now().toEpochSecond());
 
         // Adds a partition pump, as if that there is already one started.
@@ -647,7 +647,7 @@ public class PartitionPumpManagerTest {
         initialPartitionPositions.put(partitionId, EventPosition.fromSequenceNumber(11L, true));
         initialPartitionPositions.put("another", EventPosition.earliest());
 
-        final long offset = 242343;
+        final String offset = "242343";
 
         checkpoint.setOffset(offset)
             .setSequenceNumber(null);
@@ -696,7 +696,7 @@ public class PartitionPumpManagerTest {
         initialPartitionPositions.put("another", EventPosition.earliest());
 
         final long sequenceNumber = 150;
-        final long offset = 242343;
+        final String offset = "242343";
         checkpoint.setSequenceNumber(sequenceNumber)
             .setOffset(offset);
 
@@ -739,7 +739,7 @@ public class PartitionPumpManagerTest {
         initialPartitionPositions.put("another", EventPosition.earliest());
 
         final long sequenceNumber = 150;
-        final long offset = 242343;
+        final String offset = "242343";
         final int replicationSegment = 23;
         checkpoint.setSequenceNumber(sequenceNumber)
             .setOffset(offset)

@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  */
 final class SystemProperties implements Map<String, Object> {
     private static final ClientLogger LOGGER = new ClientLogger(SystemProperties.class);
-    private final Long offset;
+    private final String offset;
     private final String partitionKey;
     private final Instant enqueuedTime;
     private final Long sequenceNumber;
@@ -44,7 +44,7 @@ final class SystemProperties implements Map<String, Object> {
         this.replicationSegment = null;
     }
 
-    SystemProperties(final AmqpAnnotatedMessage message, long offset, Instant enqueuedTime, long sequenceNumber,
+    SystemProperties(final AmqpAnnotatedMessage message, String offset, Instant enqueuedTime, long sequenceNumber,
         String partitionKey, Integer replicationSegment) {
         this.message = Objects.requireNonNull(message, "'message' cannot be null.");
         this.offset = offset;
@@ -59,7 +59,7 @@ final class SystemProperties implements Map<String, Object> {
      *
      * @return The offset within the Event Hubs stream.
      */
-    Long getOffset() {
+    String getOffset() {
         return offset;
     }
 

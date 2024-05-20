@@ -172,8 +172,8 @@ class EventHubPartitionAsyncConsumerTest {
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
-        final Long secondOffset = 54L;
-        final Long lastOffset = 65L;
+        final String secondOffset = "54";
+        final String lastOffset = "65";
         final AmqpAnnotatedMessage annotatedMessage1 = new AmqpAnnotatedMessage(
             AmqpMessageBody.fromData("Foo".getBytes(StandardCharsets.UTF_8)));
         final AmqpAnnotatedMessage annotatedMessage2 = new AmqpAnnotatedMessage(
@@ -182,7 +182,7 @@ class EventHubPartitionAsyncConsumerTest {
             AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
 
         final EventData event1 = new EventData(annotatedMessage1,
-            getSystemProperties(annotatedMessage1, 25L, 14L, null), Context.NONE);
+            getSystemProperties(annotatedMessage1, "24", 14L, null), Context.NONE);
         final EventData event2 = new EventData(annotatedMessage2,
             getSystemProperties(annotatedMessage2, secondOffset, 21L, 10L), Context.NONE);
         final EventData event3 = new EventData(annotatedMessage3,
@@ -214,7 +214,7 @@ class EventHubPartitionAsyncConsumerTest {
         // Assert that we have the current offset.
         final EventPosition firstPosition = currentPosition.get().get();
         Assertions.assertNotNull(firstPosition);
-        Assertions.assertEquals(secondOffset, Long.parseLong(firstPosition.getOffset()));
+        Assertions.assertEquals(secondOffset, firstPosition.getOffset());
         Assertions.assertFalse(firstPosition.isInclusive());
 
         StepVerifier.create(consumer.receive())
@@ -238,8 +238,8 @@ class EventHubPartitionAsyncConsumerTest {
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
-        final long secondOffset = 54L;
-        final long lastOffset = 65L;
+        final String secondOffset = "54L";
+        final String lastOffset = "65L";
         final AmqpAnnotatedMessage annotatedMessage1 = new AmqpAnnotatedMessage(
             AmqpMessageBody.fromData("Foo".getBytes(StandardCharsets.UTF_8)));
         final AmqpAnnotatedMessage annotatedMessage2 = new AmqpAnnotatedMessage(
@@ -248,7 +248,7 @@ class EventHubPartitionAsyncConsumerTest {
             AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
 
         final EventData event1 = new EventData(annotatedMessage1,
-            getSystemProperties(annotatedMessage1, 25L, 14L, null), Context.NONE);
+            getSystemProperties(annotatedMessage1, "25", 14L, null), Context.NONE);
         final EventData event2 = new EventData(annotatedMessage2,
             getSystemProperties(annotatedMessage2, secondOffset, 21L, 2L), Context.NONE);
         final EventData event3 = new EventData(annotatedMessage3,
@@ -330,7 +330,7 @@ class EventHubPartitionAsyncConsumerTest {
         }, FluxSink.OverflowStrategy.BUFFER);
     }
 
-    private static SystemProperties getSystemProperties(AmqpAnnotatedMessage amqpAnnotatedMessage, long offset,
+    private static SystemProperties getSystemProperties(AmqpAnnotatedMessage amqpAnnotatedMessage, String offset,
         long sequenceNumber, Long replicationSegment) {
 
         amqpAnnotatedMessage.getMessageAnnotations()

@@ -142,12 +142,12 @@ public class EventHubReactorSessionTest {
     }
 
     /**
-     * Tests that the correct offet expression is created.
+     * Tests that the correct offset expression is created.
      */
     @Test
     public void getOffsetExpression() {
         // Arrange
-        final long offset = 2501L;
+        final String offset = "2501L";
         final EventPosition eventPosition = EventPosition.fromOffset(offset);
 
         // -1 because replication segment is null.
@@ -166,7 +166,7 @@ public class EventHubReactorSessionTest {
         final Instant enqueuedTime = Instant.ofEpochMilli(1705519331970L);
 
         return Stream.of(
-            Arguments.of(EventPosition.fromOffset(position), "amqp.annotation.x-opt-offset > '2501'"),
+            Arguments.of(EventPosition.fromOffset("2501"), "amqp.annotation.x-opt-offset > '2501'"),
 
             Arguments.of(EventPosition.fromEnqueuedTime(enqueuedTime),
                 "amqp.annotation.x-opt-enqueued-time > '1705519331970'"),

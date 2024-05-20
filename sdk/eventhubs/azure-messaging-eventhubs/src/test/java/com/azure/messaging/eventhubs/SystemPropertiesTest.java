@@ -37,7 +37,7 @@ public class SystemPropertiesTest {
     private final byte[] data = "hello-world".getBytes(StandardCharsets.UTF_8);
     private final String partitionKey = "my-partition-key";
     private final Instant enqueuedTime = Instant.ofEpochSecond(1625810878);
-    private final long offset = 102L;
+    private final String offset = "102L";
     private final long sequenceNumber = 12345L;
     private final Integer replicationSegment = 110;
 

@@ -22,7 +22,7 @@ public final class EventPosition {
     /**
      * This is a constant defined to represent the start of a partition stream in EventHub.
      */
-    private static final Long START_OF_STREAM = -1L;
+    private static final String START_OF_STREAM = "-1";
 
     /**
      * This is a constant defined to represent the current end of a partition stream in EventHub. This can be used as an
@@ -40,9 +40,9 @@ public final class EventPosition {
     private final Instant enqueuedDateTime;
     private final Integer replicationSegment;
 
-    private EventPosition(final boolean isInclusive, final Long offset, final Long sequenceNumber,
+    private EventPosition(final boolean isInclusive, final String offset, final Long sequenceNumber,
                           final Instant enqueuedDateTime) {
-        this(isInclusive, String.valueOf(offset), sequenceNumber, enqueuedDateTime, null);
+        this(isInclusive, offset, sequenceNumber, enqueuedDateTime, null);
     }
 
     private EventPosition(final boolean isInclusive, final String offset, final Long sequenceNumber,
@@ -100,7 +100,7 @@ public final class EventPosition {
      * @param offset The offset of the event within that partition.
      * @return An {@link EventPosition} object.
      */
-    public static EventPosition fromOffset(long offset) {
+    public static EventPosition fromOffset(String offset) {
         return fromOffset(offset, false);
     }
 
@@ -113,7 +113,7 @@ public final class EventPosition {
      *     received.
      * @return An {@link EventPosition} object.
      */
-    private static EventPosition fromOffset(long offset, boolean isInclusive) {
+    private static EventPosition fromOffset(String offset, boolean isInclusive) {
         return new EventPosition(isInclusive, offset, null, null);
     }
 

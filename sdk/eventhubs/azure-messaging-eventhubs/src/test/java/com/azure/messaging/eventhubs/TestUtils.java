@@ -42,7 +42,7 @@ public final class TestUtils {
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
-    static final Long OFFSET = 1534L;
+    static final String OFFSET = "1534L";
     static final String PARTITION_KEY = "a-partition-key";
     static final Long SEQUENCE_NUMBER = 1025L;
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
@@ -114,7 +114,7 @@ public final class TestUtils {
     /**
      * Creates a message with the required system properties set.
      */
-    static Message getMessage(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
+    static Message getMessage(byte[] contents, Long sequenceNumber, String offsetNumber, Date enqueuedTime) {
         final Map<Symbol, Object> systemProperties = new HashMap<>();
         systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), offsetNumber);
         systemProperties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), enqueuedTime);
@@ -139,7 +139,7 @@ public final class TestUtils {
     /**
      * Creates an EventData with the received properties set.
      */
-    public static EventData getEventData(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
+    public static EventData getEventData(byte[] contents, Long sequenceNumber, String offsetNumber, Date enqueuedTime) {
         final Message message = getMessage(contents, sequenceNumber, offsetNumber, enqueuedTime);
         return MESSAGE_SERIALIZER.deserialize(message, EventData.class);
     }

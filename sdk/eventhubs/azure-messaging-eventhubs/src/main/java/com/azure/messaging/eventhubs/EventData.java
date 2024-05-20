@@ -294,7 +294,7 @@ public class EventData extends MessageContent {
      * @return The offset within the Event Hub partition of the received event. {@code null} if the {@link EventData}
      *     was not received from Event Hubs service.
      */
-    public Long getOffset() {
+    public String getOffset() {
         return systemProperties.getOffset();
     }
 

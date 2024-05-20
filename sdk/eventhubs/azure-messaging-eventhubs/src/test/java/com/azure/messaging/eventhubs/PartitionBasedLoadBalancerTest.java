@@ -118,7 +118,7 @@ public class PartitionBasedLoadBalancerTest {
         eventDataList = new ArrayList<>();
         IntStream.range(0, 25)
             .forEach(index -> {
-                final EventData eventData = TestUtils.getEventData(contents, (long) index, (long) index, enqueuedTime);
+                final EventData eventData = TestUtils.getEventData(contents, (long) index, String.valueOf(index), enqueuedTime);
                 eventDataList.add(eventData);
             });
 

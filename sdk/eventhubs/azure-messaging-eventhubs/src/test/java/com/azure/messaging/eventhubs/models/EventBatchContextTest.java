@@ -83,7 +83,7 @@ class EventBatchContextTest {
         events.add(eventData2);
 
         final Long sequenceNumber = 10L;
-        final Long offset = 15L;
+        final String offset = "15L";
         when(eventData2.getSequenceNumber()).thenReturn(sequenceNumber);
         when(eventData2.getOffset()).thenReturn(offset);
 
