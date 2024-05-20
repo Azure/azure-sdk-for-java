@@ -348,16 +348,10 @@ class PartitionPumpManager {
         // offset/sequence number in the checkpoint. If no checkpoint is available, start from
         // the position set in the InitializationContext (either the user provided initial position or the latest event
         // in the partition).
-        if (checkpoint != null && checkpoint.getSequenceNumber() != null) {
-
-            final int replicationSegment = checkpoint.getReplicationSegment() != null
-                ? checkpoint.getReplicationSegment()
-                : DEFAULT_REPLICATION_SEGMENT;
-
-            return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber(), replicationSegment);
-
-        } else if (checkpoint != null && checkpoint.getOffset() != null) {
+        if (checkpoint != null && checkpoint.getOffset() != null) {
             return EventPosition.fromOffset(checkpoint.getOffset());
+        } else if (checkpoint != null && checkpoint.getSequenceNumber() != null) {
+            return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber());
         }
 
         if (options.getInitialEventPositionProvider() != null) {
