@@ -152,7 +152,8 @@ public class StorageBlobContainersTests extends StorageManagementTest {
                 .backoff(2, ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10)))
                 .filter(throwable -> {
                     boolean resourceNotFoundException = false;
-                    if (throwable instanceof ManagementException exception) {
+                    if (throwable instanceof ManagementException) {
+                        ManagementException exception = (ManagementException) throwable;
                         if (exception.getResponse().getStatusCode() == 404) {
                             resourceNotFoundException = true;
                         }
