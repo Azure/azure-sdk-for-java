@@ -13,6 +13,8 @@ import com.azure.resourcemanager.resources.models.Subscription;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -187,7 +189,11 @@ public final class ResourceManagerUtils {
                     resource = removeTrailingSlash(resource);
                     break;
                 } else if (endpoint.getKey().equals(AzureEnvironment.Endpoint.STORAGE.identifier())) {
-                    resource = "https://storage.azure.com";
+                    try {
+                        resource = String.format("https://%s/", new URL(url).getAuthority());
+                    } catch (MalformedURLException e) {
+                        resource = "https://storage.azure.com";
+                    }
                     break;
                 }
             }
