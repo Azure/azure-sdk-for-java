@@ -3,10 +3,10 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.servicebus;
 
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.utils.AzureServiceBusPropertiesUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.context.annotation.ConditionContext;
-import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
 class AzureServiceBusProcessorCondition extends SpringBootCondition {
@@ -14,21 +14,19 @@ class AzureServiceBusProcessorCondition extends SpringBootCondition {
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
 
-        Environment environment = context.getEnvironment();
-        String entityType = environment.getProperty("spring.cloud.azure.servicebus.entity-type", "noType");
-        String processorEntityType = environment.getProperty("spring.cloud.azure.servicebus.processor.entity-type","noType");
-        String processorSubscriptionName = environment.getProperty("spring.cloud.azure.servicebus.processor.subscription-name", "noName");
+        String entityType = AzureServiceBusPropertiesUtils.getServiceBusProperties(context, "processor.entity-type", "entity-type");
+        String processorSubscriptionName = AzureServiceBusPropertiesUtils.getServiceBusProperties(context, "processor.subscription-name");
 
-        if ("queue".equalsIgnoreCase(entityType) || "queue".equalsIgnoreCase(processorEntityType)) {
+        if ("queue".equalsIgnoreCase(entityType)) {
             return ConditionOutcome.match();
         }
 
-        if ("topic".equalsIgnoreCase(entityType) || "topic".equalsIgnoreCase(processorEntityType)) {
-            if (!"noName".equals(processorSubscriptionName)) {
+        if ("topic".equalsIgnoreCase(entityType)) {
+            if (processorSubscriptionName != null) {
                 return ConditionOutcome.match();
             }
         }
 
-        return ConditionOutcome.noMatch("Topic need to have subscription name set.");
+        return ConditionOutcome.noMatch("spring.cloud.azure.servicebus.processor.subscription-name is missing/wrong.");
     }
 }
