@@ -45,8 +45,7 @@ public final class DiagnosticMetricSet {
     private String timeGrain;
 
     /*
-     * Collection of metric values for the selected period based on the
-     * {Microsoft.Web.Hosting.Administration.DiagnosticMetricSet.TimeGrain}
+     * Collection of metric values for the selected period based on the {Microsoft.Web.Hosting.Administration.DiagnosticMetricSet.TimeGrain}
      */
     @JsonProperty(value = "values")
     private List<DiagnosticMetricSample> values;

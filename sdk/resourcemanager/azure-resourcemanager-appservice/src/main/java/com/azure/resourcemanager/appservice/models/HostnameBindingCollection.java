@@ -69,8 +69,9 @@ public final class HostnameBindingCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model HostnameBindingCollection"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property value in model HostnameBindingCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

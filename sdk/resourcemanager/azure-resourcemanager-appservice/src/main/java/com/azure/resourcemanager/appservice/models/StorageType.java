@@ -4,58 +4,55 @@
 
 package com.azure.resourcemanager.appservice.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /**
- * Defines values for StorageType.
+ * Property to select Azure Storage type. Available options: blobContainer.
  */
-public enum StorageType {
+public final class StorageType extends ExpandableStringEnum<StorageType> {
     /**
-     * Enum value LocalNode.
+     * Static value blobContainer for StorageType.
      */
-    LOCAL_NODE("LocalNode"),
+    public static final StorageType BLOB_CONTAINER = fromString("blobContainer");
 
     /**
-     * Enum value NetworkFileSystem.
+     * Static value LocalNode for StorageType.
      */
-    NETWORK_FILE_SYSTEM("NetworkFileSystem");
+    public static final StorageType LOCAL_NODE = fromString("LocalNode");
 
     /**
-     * The actual serialized value for a StorageType instance.
+     * Static value NetworkFileSystem for StorageType.
      */
-    private final String value;
+    public static final StorageType NETWORK_FILE_SYSTEM = fromString("NetworkFileSystem");
 
-    StorageType(String value) {
-        this.value = value;
+    /**
+     * Creates a new instance of StorageType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageType() {
     }
 
     /**
-     * Parses a serialized value to a StorageType instance.
+     * Creates or finds a StorageType from its string representation.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed StorageType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding StorageType.
      */
     @JsonCreator
-    public static StorageType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        StorageType[] items = StorageType.values();
-        for (StorageType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static StorageType fromString(String name) {
+        return fromString(name, StorageType.class);
     }
 
     /**
-     * {@inheritDoc}
+     * Gets known StorageType values.
+     * 
+     * @return known StorageType values.
      */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<StorageType> values() {
+        return values(StorageType.class);
     }
 }

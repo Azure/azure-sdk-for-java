@@ -11,8 +11,7 @@ import com.azure.resourcemanager.appservice.fluent.models.DomainOwnershipIdentif
  */
 public final class DomainsCreateOrUpdateOwnershipIdentifierSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-01-01/examples/
-     * CreateAppServiceDomainOwnershipIdentifier.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2023-12-01/examples/CreateAppServiceDomainOwnershipIdentifier.json
      */
     /**
      * Sample code: Create App Service Domain OwnershipIdentifier.
@@ -20,9 +19,12 @@ public final class DomainsCreateOrUpdateOwnershipIdentifierSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createAppServiceDomainOwnershipIdentifier(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getDomains().createOrUpdateOwnershipIdentifierWithResponse(
-            "testrg123", "example.com", "SampleOwnershipId",
-            new DomainOwnershipIdentifierInner().withOwnershipId("SampleOwnershipId"),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getDomains()
+            .createOrUpdateOwnershipIdentifierWithResponse("testrg123", "example.com", "SampleOwnershipId",
+                new DomainOwnershipIdentifierInner().withOwnershipId("SampleOwnershipId"),
+                com.azure.core.util.Context.NONE);
     }
 }

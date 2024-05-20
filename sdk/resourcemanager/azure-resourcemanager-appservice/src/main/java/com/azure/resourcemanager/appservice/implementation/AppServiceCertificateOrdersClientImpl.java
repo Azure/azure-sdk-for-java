@@ -1054,7 +1054,8 @@ public final class AppServiceCertificateOrdersClientImpl
     private Mono<AppServiceCertificateOrderInner> createOrUpdateAsync(String resourceGroupName,
         String certificateOrderName, AppServiceCertificateOrderInner certificateDistinguishedName, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, certificateOrderName, certificateDistinguishedName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1885,8 +1886,10 @@ public final class AppServiceCertificateOrdersClientImpl
     public SyncPoller<PollResult<AppServiceCertificateResourceInner>, AppServiceCertificateResourceInner>
         beginCreateOrUpdateCertificate(String resourceGroupName, String certificateOrderName, String name,
             AppServiceCertificateResourceInner keyVaultCertificate, Context context) {
-        return this.beginCreateOrUpdateCertificateAsync(resourceGroupName, certificateOrderName, name,
-            keyVaultCertificate, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -1908,7 +1911,8 @@ public final class AppServiceCertificateOrdersClientImpl
     public Mono<AppServiceCertificateResourceInner> createOrUpdateCertificateAsync(String resourceGroupName,
         String certificateOrderName, String name, AppServiceCertificateResourceInner keyVaultCertificate) {
         return beginCreateOrUpdateCertificateAsync(resourceGroupName, certificateOrderName, name, keyVaultCertificate)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

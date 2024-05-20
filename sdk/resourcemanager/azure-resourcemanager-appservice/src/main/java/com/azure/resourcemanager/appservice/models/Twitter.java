@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class Twitter {
     /*
-     * <code>false</code> if the Twitter provider should not be enabled despite the set registration; otherwise,
-     * <code>true</code>.
+     * <code>false</code> if the Twitter provider should not be enabled despite the set registration; otherwise, <code>true</code>.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;

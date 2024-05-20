@@ -70,8 +70,9 @@ public final class StaticSiteCustomDomainOverviewCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model StaticSiteCustomDomainOverviewCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model StaticSiteCustomDomainOverviewCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

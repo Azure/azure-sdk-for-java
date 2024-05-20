@@ -70,8 +70,9 @@ public final class StaticSiteBasicAuthPropertiesCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model StaticSiteBasicAuthPropertiesCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model StaticSiteBasicAuthPropertiesCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

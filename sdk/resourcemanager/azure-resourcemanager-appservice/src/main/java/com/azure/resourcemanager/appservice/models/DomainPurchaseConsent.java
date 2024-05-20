@@ -15,8 +15,7 @@ import java.util.List;
 @Fluent
 public final class DomainPurchaseConsent {
     /*
-     * List of applicable legal agreement keys. This list can be retrieved using ListLegalAgreements API under
-     * <code>TopLevelDomain</code> resource.
+     * List of applicable legal agreement keys. This list can be retrieved using ListLegalAgreements API under <code>TopLevelDomain</code> resource.
      */
     @JsonProperty(value = "agreementKeys")
     private List<String> agreementKeys;

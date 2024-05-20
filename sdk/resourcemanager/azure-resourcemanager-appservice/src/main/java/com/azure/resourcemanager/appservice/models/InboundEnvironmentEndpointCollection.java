@@ -69,8 +69,9 @@ public final class InboundEnvironmentEndpointCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property value in model InboundEnvironmentEndpointCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model InboundEnvironmentEndpointCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

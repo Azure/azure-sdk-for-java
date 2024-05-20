@@ -118,8 +118,7 @@ public final class StaticSite {
     private EnterpriseGradeCdnStatus enterpriseGradeCdnStatus;
 
     /*
-     * State indicating whether public traffic are allowed or not for a static web app. Allowed Values: 'Enabled',
-     * 'Disabled' or an empty string.
+     * State indicating whether public traffic are allowed or not for a static web app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private String publicNetworkAccess;
@@ -390,8 +389,8 @@ public final class StaticSite {
     }
 
     /**
-     * Get the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static
-     * web app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
+     * Get the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static web
+     * app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
      * 
      * @return the publicNetworkAccess value.
      */
@@ -400,8 +399,8 @@ public final class StaticSite {
     }
 
     /**
-     * Set the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static
-     * web app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
+     * Set the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static web
+     * app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
      * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the StaticSite object itself.

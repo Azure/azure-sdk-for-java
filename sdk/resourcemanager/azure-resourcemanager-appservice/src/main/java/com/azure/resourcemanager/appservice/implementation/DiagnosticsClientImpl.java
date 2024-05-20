@@ -66,8 +66,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     }
 
     /**
-     * The interface defining all the services for WebSiteManagementClientDiagnostics to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for WebSiteManagementClientDiagnostics to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")

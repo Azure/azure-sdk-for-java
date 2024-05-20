@@ -322,8 +322,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the remoteDebuggingEnabled value.
      */
@@ -332,8 +332,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Set the remoteDebuggingEnabled property: &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      * 
      * @param remoteDebuggingEnabled the remoteDebuggingEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
@@ -464,8 +464,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is
-     * enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the detailedErrorLoggingEnabled value.
      */
@@ -474,8 +474,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is
-     * enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Set the detailedErrorLoggingEnabled property: &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @param detailedErrorLoggingEnabled the detailedErrorLoggingEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
@@ -535,8 +535,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the metadata property: Application metadata. This property cannot be retrieved, since it may contain
-     * secrets.
+     * Get the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
      * 
      * @return the metadata value.
      */
@@ -545,8 +544,7 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the metadata property: Application metadata. This property cannot be retrieved, since it may contain
-     * secrets.
+     * Set the metadata property: Application metadata. This property cannot be retrieved, since it may contain secrets.
      * 
      * @param metadata the metadata value to set.
      * @return the SiteConfigResourceInner object itself.
@@ -1037,8 +1035,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to
-     * have Virtual Network Security Groups and User Defined Routes applied.
+     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
      * 
      * @return the vnetRouteAllEnabled value.
      */
@@ -1047,8 +1045,8 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to
-     * have Virtual Network Security Groups and User Defined Routes applied.
+     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
      * 
      * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
      * @return the SiteConfigResourceInner object itself.
@@ -1663,9 +1661,9 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the websiteTimeZone property: Sets the time zone a site uses for generating timestamps. Compatible with
-     * Linux and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For
-     * Linux, expects tz database values https://www.iana.org/time-zones (for a quick reference see
+     * Get the websiteTimeZone property: Sets the time zone a site uses for generating timestamps. Compatible with Linux
+     * and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For Linux,
+     * expects tz database values https://www.iana.org/time-zones (for a quick reference see
      * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
      * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
      * 
@@ -1676,9 +1674,9 @@ public final class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the websiteTimeZone property: Sets the time zone a site uses for generating timestamps. Compatible with
-     * Linux and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For
-     * Linux, expects tz database values https://www.iana.org/time-zones (for a quick reference see
+     * Set the websiteTimeZone property: Sets the time zone a site uses for generating timestamps. Compatible with Linux
+     * and Windows App Service. Setting the WEBSITE_TIME_ZONE app setting takes precedence over this config. For Linux,
+     * expects tz database values https://www.iana.org/time-zones (for a quick reference see
      * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones). For Windows, expects one of the time zones listed
      * under HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
      * 

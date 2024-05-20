@@ -69,8 +69,9 @@ public final class PublicCertificateCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model PublicCertificateCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model PublicCertificateCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

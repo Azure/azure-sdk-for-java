@@ -82,9 +82,8 @@ public final class AppServiceEnvironmentInner {
     private Integer frontEndScaleFactor;
 
     /*
-     * <code>true</code> if the App Service Environment is suspended; otherwise, <code>false</code>. The environment
-     * can be suspended, e.g. when the management endpoint is no longer available
-     * (most likely because NSG blocked the incoming traffic).
+     * <code>true</code> if the App Service Environment is suspended; otherwise, <code>false</code>. The environment can be suspended, e.g. when the management endpoint is no longer available
+     *  (most likely because NSG blocked the incoming traffic).
      */
     @JsonProperty(value = "suspended", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean suspended;
@@ -308,9 +307,9 @@ public final class AppServiceEnvironmentInner {
     }
 
     /**
-     * Get the suspended property: &lt;code&gt;true&lt;/code&gt; if the App Service Environment is suspended;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;. The environment can be suspended, e.g. when the management endpoint
-     * is no longer available
+     * Get the suspended property: &lt;code&gt;true&lt;/code&gt; if the App Service Environment is suspended; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;. The environment can be suspended, e.g. when the management endpoint is no longer
+     * available
      * (most likely because NSG blocked the incoming traffic).
      * 
      * @return the suspended value.
@@ -486,8 +485,9 @@ public final class AppServiceEnvironmentInner {
      */
     public void validate() {
         if (virtualNetwork() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property virtualNetwork in model AppServiceEnvironmentInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualNetwork in model AppServiceEnvironmentInner"));
         } else {
             virtualNetwork().validate();
         }

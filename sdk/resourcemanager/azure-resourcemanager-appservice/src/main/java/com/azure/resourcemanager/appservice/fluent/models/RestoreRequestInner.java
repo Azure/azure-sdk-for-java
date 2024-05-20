@@ -266,8 +266,8 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the adjustConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should
-     * be set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the adjustConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should be
+     * set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the adjustConnectionStrings value.
      */
@@ -276,8 +276,8 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the adjustConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should
-     * be set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Set the adjustConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should be
+     * set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @param adjustConnectionStrings the adjustConnectionStrings value to set.
      * @return the RestoreRequestInner object itself.
