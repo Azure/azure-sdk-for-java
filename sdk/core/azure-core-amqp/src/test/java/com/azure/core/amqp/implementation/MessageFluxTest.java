@@ -56,21 +56,17 @@ public class MessageFluxTest {
     }
 
     private static Stream<Arguments> creditFlowModePrefetch() {
-        return Stream.of(
-            Arguments.of(CreditFlowMode.EmissionDriven, 1),
-            Arguments.of(CreditFlowMode.RequestDriven, 0)
-        );
+        return Stream.of(Arguments.of(CreditFlowMode.EmissionDriven, 1), Arguments.of(CreditFlowMode.RequestDriven, 0));
     }
 
     @ParameterizedTest
     @MethodSource("creditFlowModePrefetch")
-    public void shouldTerminateWhenUpstreamCompleteWithoutEmittingReceiver(CreditFlowMode creditFlowMode, int prefetch) {
+    public void shouldTerminateWhenUpstreamCompleteWithoutEmittingReceiver(CreditFlowMode creditFlowMode,
+        int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
         final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, retryPolicy);
 
-        StepVerifier.create(messageFlux)
-            .then(() -> upstream.complete())
-            .verifyComplete();
+        StepVerifier.create(messageFlux).then(() -> upstream.complete()).verifyComplete();
 
         upstream.assertCancelled();
     }
@@ -82,9 +78,7 @@ public class MessageFluxTest {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
         final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, retryPolicy);
 
-        StepVerifier.create(messageFlux)
-            .then(() -> upstream.error(error))
-            .verifyErrorMatches(e -> e == error);
+        StepVerifier.create(messageFlux).then(() -> upstream.error(error)).verifyErrorMatches(e -> e == error);
 
         upstream.assertCancelled();
     }
@@ -95,9 +89,7 @@ public class MessageFluxTest {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
         final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, retryPolicy);
 
-        StepVerifier.create(messageFlux)
-            .thenCancel()
-            .verify();
+        StepVerifier.create(messageFlux).thenCancel().verify();
 
         upstream.assertCancelled();
     }
@@ -154,10 +146,7 @@ public class MessageFluxTest {
         when(receiver.getEndpointStates()).thenReturn(Flux.never());
         when(receiver.closeAsync()).thenReturn(Mono.empty());
 
-        StepVerifier.create(messageFlux)
-            .then(() -> upstream.next(receiver))
-            .thenCancel()
-            .verify();
+        StepVerifier.create(messageFlux).then(() -> upstream.next(receiver)).thenCancel().verify();
 
         verify(receiver).closeAsync();
         upstream.assertCancelled();
@@ -176,9 +165,7 @@ public class MessageFluxTest {
         when(receiver.getEndpointStates()).thenReturn(Flux.error(error));
         when(receiver.closeAsync()).thenReturn(Mono.empty());
 
-        StepVerifier.create(messageFlux)
-            .then(() -> upstream.next(receiver))
-            .verifyErrorMatches(e -> e == error);
+        StepVerifier.create(messageFlux).then(() -> upstream.next(receiver)).verifyErrorMatches(e -> e == error);
 
         // Expecting closeAsync invocation from two call sites -
         // 1. before the retry to obtain the next receiver.
@@ -189,19 +176,19 @@ public class MessageFluxTest {
 
     @ParameterizedTest
     @MethodSource("creditFlowModePrefetch")
-    public void shouldTerminateWhenRetryDisabledAndFirstReceiverEmitsRetriableError(CreditFlowMode creditFlowMode, int prefetch) {
+    public void shouldTerminateWhenRetryDisabledAndFirstReceiverEmitsRetriableError(CreditFlowMode creditFlowMode,
+        int prefetch) {
         final AmqpException error = new AmqpException(true, "retriable", null);
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
-        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, MessageFlux.NULL_RETRY_POLICY);
+        final MessageFlux messageFlux
+            = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, MessageFlux.NULL_RETRY_POLICY);
 
         final ReactorReceiver receiver = mock(ReactorReceiver.class);
         when(receiver.receive()).thenReturn(Flux.empty());
         when(receiver.getEndpointStates()).thenReturn(Flux.error(error));
         when(receiver.closeAsync()).thenReturn(Mono.empty());
 
-        StepVerifier.create(messageFlux)
-            .then(() -> upstream.next(receiver))
-            .verifyErrorMatches(e -> e == error);
+        StepVerifier.create(messageFlux).then(() -> upstream.next(receiver)).verifyErrorMatches(e -> e == error);
 
         // Expecting closeAsync invocation from two call sites -
         // 1. before the NOP retry (NULL_RETRY_POLICY) when first receiver terminates with (retriable) error
@@ -214,16 +201,15 @@ public class MessageFluxTest {
     @MethodSource("creditFlowModePrefetch")
     public void shouldTerminateWhenRetryDisabledAndFirstReceiverCompletes(CreditFlowMode creditFlowMode, int prefetch) {
         final TestPublisher<ReactorReceiver> upstream = TestPublisher.create();
-        final MessageFlux messageFlux = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, MessageFlux.NULL_RETRY_POLICY);
+        final MessageFlux messageFlux
+            = new MessageFlux(upstream.flux(), prefetch, creditFlowMode, MessageFlux.NULL_RETRY_POLICY);
 
         final ReactorReceiver receiver = mock(ReactorReceiver.class);
         when(receiver.receive()).thenReturn(Flux.empty());
         when(receiver.getEndpointStates()).thenReturn(Flux.empty());
         when(receiver.closeAsync()).thenReturn(Mono.empty());
 
-        StepVerifier.create(messageFlux)
-            .then(() -> upstream.next(receiver))
-            .verifyComplete();
+        StepVerifier.create(messageFlux).then(() -> upstream.next(receiver)).verifyComplete();
 
         // Expecting closeAsync invocation from two call sites -
         // 1. before the NOP retry (NULL_RETRY_POLICY) when first receiver terminates with completion
@@ -241,9 +227,8 @@ public class MessageFluxTest {
         final int[] requests = new int[] { 24, 12, 6, 3, 3 };
         final int totalMessages = Arrays.stream(requests).sum();
         final Message message = mock(Message.class);
-        final List<Message> messages = IntStream.rangeClosed(1, totalMessages)
-            .mapToObj(__ -> message)
-            .collect(Collectors.toList());
+        final List<Message> messages
+            = IntStream.rangeClosed(1, totalMessages).mapToObj(__ -> message).collect(Collectors.toList());
         final TestPublisher<Message> receiverMessages = TestPublisher.createCold();
         receiverMessages.emit(messages.toArray(new Message[0]));
 

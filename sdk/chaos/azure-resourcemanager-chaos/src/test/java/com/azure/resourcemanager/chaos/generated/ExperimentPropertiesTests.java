@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ExperimentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExperimentProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Creating\",\"steps\":[{\"name\":\"mg\",\"branches\":[{\"name\":\"nkjzkdeslpvlop\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"yighxpk\"}]},{\"name\":\"wzbaiue\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"a\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"m\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"yqupedeojnabckh\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"mtxpsiebtfh\"}]},{\"name\":\"pesapskrdqmhjj\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"tldwkyzxuutk\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"cwscwsvlx\"}]}]},{\"name\":\"togt\",\"branches\":[{\"name\":\"upqsx\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"micykvceoveilo\"}]},{\"name\":\"notyfjfcnjbkcn\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"hbttkphyw\"}]},{\"name\":\"nv\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"oqnermclfpl\"}]}]},{\"name\":\"hoxus\",\"branches\":[{\"name\":\"pabgyeps\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"tazqugxywpmueefj\"}]},{\"name\":\"wfqkquj\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"suyonobglaocq\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"tcc\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"g\"}]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"dxyt\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"fudwpznt\":\"datarxv\",\"hckfrlhrx\":\"datahdzhlrqj\",\"ca\":\"databkyvp\",\"b\":\"datauzbpzkafku\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"rnwb\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"srtslhspkdeem\":\"dataseyvj\",\"ahvljuaha\":\"dataofmxagkvtmelmqkr\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"uhcdhm\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"pvfadmwsrcr\":\"dataaex\",\"fmisg\":\"datavxpvgomz\"}}]}")
-                .toObject(ExperimentProperties.class);
+        ExperimentProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Creating\",\"steps\":[{\"name\":\"mg\",\"branches\":[{\"name\":\"nkjzkdeslpvlop\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"yighxpk\"}]},{\"name\":\"wzbaiue\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"a\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"m\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"yqupedeojnabckh\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"mtxpsiebtfh\"}]},{\"name\":\"pesapskrdqmhjj\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"tldwkyzxuutk\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"cwscwsvlx\"}]}]},{\"name\":\"togt\",\"branches\":[{\"name\":\"upqsx\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"micykvceoveilo\"}]},{\"name\":\"notyfjfcnjbkcn\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"hbttkphyw\"}]},{\"name\":\"nv\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"oqnermclfpl\"}]}]},{\"name\":\"hoxus\",\"branches\":[{\"name\":\"pabgyeps\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"tazqugxywpmueefj\"}]},{\"name\":\"wfqkquj\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"suyonobglaocq\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"tcc\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"g\"}]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"dxyt\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"fudwpznt\":\"datarxv\",\"hckfrlhrx\":\"datahdzhlrqj\",\"ca\":\"databkyvp\",\"b\":\"datauzbpzkafku\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"rnwb\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"srtslhspkdeem\":\"dataseyvj\",\"ahvljuaha\":\"dataofmxagkvtmelmqkr\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"uhcdhm\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"pvfadmwsrcr\":\"dataaex\",\"fmisg\":\"datavxpvgomz\"}}]}")
+            .toObject(ExperimentProperties.class);
         Assertions.assertEquals("mg", model.steps().get(0).name());
         Assertions.assertEquals("nkjzkdeslpvlop", model.steps().get(0).branches().get(0).name());
         Assertions.assertEquals("yighxpk", model.steps().get(0).branches().get(0).actions().get(0).name());
@@ -32,90 +30,42 @@ public final class ExperimentPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExperimentProperties model =
-            new ExperimentProperties()
-                .withSteps(
-                    Arrays
-                        .asList(
-                            new ChaosExperimentStep()
-                                .withName("mg")
-                                .withBranches(
-                                    Arrays
-                                        .asList(
-                                            new ChaosExperimentBranch()
-                                                .withName("nkjzkdeslpvlop")
-                                                .withActions(
-                                                    Arrays.asList(new ChaosExperimentAction().withName("yighxpk"))),
-                                            new ChaosExperimentBranch()
-                                                .withName("wzbaiue")
-                                                .withActions(
-                                                    Arrays
-                                                        .asList(
-                                                            new ChaosExperimentAction().withName("a"),
-                                                            new ChaosExperimentAction().withName("m"),
-                                                            new ChaosExperimentAction().withName("yqupedeojnabckh"),
-                                                            new ChaosExperimentAction().withName("mtxpsiebtfh"))),
-                                            new ChaosExperimentBranch()
-                                                .withName("pesapskrdqmhjj")
-                                                .withActions(
-                                                    Arrays
-                                                        .asList(
-                                                            new ChaosExperimentAction().withName("tldwkyzxuutk"),
-                                                            new ChaosExperimentAction().withName("cwscwsvlx"))))),
-                            new ChaosExperimentStep()
-                                .withName("togt")
-                                .withBranches(
-                                    Arrays
-                                        .asList(
-                                            new ChaosExperimentBranch()
-                                                .withName("upqsx")
-                                                .withActions(
-                                                    Arrays
-                                                        .asList(
-                                                            new ChaosExperimentAction().withName("micykvceoveilo"))),
-                                            new ChaosExperimentBranch()
-                                                .withName("notyfjfcnjbkcn")
-                                                .withActions(
-                                                    Arrays.asList(new ChaosExperimentAction().withName("hbttkphyw"))),
-                                            new ChaosExperimentBranch()
-                                                .withName("nv")
-                                                .withActions(
-                                                    Arrays
-                                                        .asList(new ChaosExperimentAction().withName("oqnermclfpl"))))),
-                            new ChaosExperimentStep()
-                                .withName("hoxus")
-                                .withBranches(
-                                    Arrays
-                                        .asList(
-                                            new ChaosExperimentBranch()
-                                                .withName("pabgyeps")
-                                                .withActions(
-                                                    Arrays
-                                                        .asList(
-                                                            new ChaosExperimentAction().withName("tazqugxywpmueefj"))),
-                                            new ChaosExperimentBranch()
-                                                .withName("wfqkquj")
-                                                .withActions(
-                                                    Arrays
-                                                        .asList(
-                                                            new ChaosExperimentAction().withName("suyonobglaocq"),
-                                                            new ChaosExperimentAction().withName("tcc"),
-                                                            new ChaosExperimentAction().withName("g")))))))
-                .withSelectors(
-                    Arrays
-                        .asList(
-                            new ChaosTargetSelector()
-                                .withId("dxyt")
-                                .withFilter(new ChaosTargetFilter())
-                                .withAdditionalProperties(mapOf("type", "ChaosTargetSelector")),
-                            new ChaosTargetSelector()
-                                .withId("rnwb")
-                                .withFilter(new ChaosTargetFilter())
-                                .withAdditionalProperties(mapOf("type", "ChaosTargetSelector")),
-                            new ChaosTargetSelector()
-                                .withId("uhcdhm")
-                                .withFilter(new ChaosTargetFilter())
-                                .withAdditionalProperties(mapOf("type", "ChaosTargetSelector"))));
+        ExperimentProperties model = new ExperimentProperties()
+            .withSteps(Arrays.asList(
+                new ChaosExperimentStep().withName("mg")
+                    .withBranches(Arrays.asList(
+                        new ChaosExperimentBranch().withName("nkjzkdeslpvlop")
+                            .withActions(Arrays.asList(new ChaosExperimentAction().withName("yighxpk"))),
+                        new ChaosExperimentBranch().withName("wzbaiue")
+                            .withActions(Arrays.asList(new ChaosExperimentAction().withName("a"),
+                                new ChaosExperimentAction().withName("m"),
+                                new ChaosExperimentAction().withName("yqupedeojnabckh"),
+                                new ChaosExperimentAction().withName("mtxpsiebtfh"))),
+                        new ChaosExperimentBranch().withName("pesapskrdqmhjj")
+                            .withActions(
+                                Arrays.asList(new ChaosExperimentAction().withName("tldwkyzxuutk"),
+                                    new ChaosExperimentAction().withName("cwscwsvlx"))))),
+                new ChaosExperimentStep().withName("togt")
+                    .withBranches(Arrays.asList(
+                        new ChaosExperimentBranch().withName("upqsx").withActions(
+                            Arrays.asList(new ChaosExperimentAction().withName("micykvceoveilo"))),
+                        new ChaosExperimentBranch().withName("notyfjfcnjbkcn")
+                            .withActions(Arrays.asList(new ChaosExperimentAction().withName("hbttkphyw"))),
+                        new ChaosExperimentBranch().withName("nv")
+                            .withActions(Arrays.asList(new ChaosExperimentAction().withName("oqnermclfpl"))))),
+                new ChaosExperimentStep().withName("hoxus").withBranches(Arrays.asList(
+                    new ChaosExperimentBranch().withName("pabgyeps")
+                        .withActions(Arrays.asList(new ChaosExperimentAction().withName("tazqugxywpmueefj"))),
+                    new ChaosExperimentBranch().withName("wfqkquj")
+                        .withActions(Arrays.asList(new ChaosExperimentAction().withName("suyonobglaocq"),
+                            new ChaosExperimentAction().withName("tcc"), new ChaosExperimentAction().withName("g")))))))
+            .withSelectors(Arrays.asList(
+                new ChaosTargetSelector().withId("dxyt").withFilter(new ChaosTargetFilter())
+                    .withAdditionalProperties(mapOf("type", "ChaosTargetSelector")),
+                new ChaosTargetSelector().withId("rnwb").withFilter(new ChaosTargetFilter())
+                    .withAdditionalProperties(mapOf("type", "ChaosTargetSelector")),
+                new ChaosTargetSelector().withId("uhcdhm").withFilter(new ChaosTargetFilter())
+                    .withAdditionalProperties(mapOf("type", "ChaosTargetSelector"))));
         model = BinaryData.fromObject(model).toObject(ExperimentProperties.class);
         Assertions.assertEquals("mg", model.steps().get(0).name());
         Assertions.assertEquals("nkjzkdeslpvlop", model.steps().get(0).branches().get(0).name());

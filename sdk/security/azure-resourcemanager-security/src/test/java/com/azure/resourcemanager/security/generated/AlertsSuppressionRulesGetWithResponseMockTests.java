@@ -6,67 +6,40 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.AlertsSuppressionRule;
 import com.azure.resourcemanager.security.models.RuleState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AlertsSuppressionRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"alertType\":\"dc\",\"lastModifiedUtc\":\"2021-11-24T09:50:18Z\",\"expirationDateUtc\":\"2021-08-28T15:04:01Z\",\"reason\":\"fasfod\",\"state\":\"Enabled\",\"comment\":\"alvngtwy\",\"suppressionAlertsScope\":{\"allOf\":[{\"field\":\"gqrnt\",\"\":{\"zuppiyx\":\"datadrcjlvkrkegty\",\"abm\":\"datazmiyddeeqzq\",\"pfczewxtrl\":\"datavsexduetb\",\"kjpirgzxvbczw\":\"databpxya\"}},{\"field\":\"egbthm\",\"\":{\"fvua\":\"datatjbuiggruno\"}}]}},\"id\":\"jthoivsdwsngkr\",\"name\":\"ihscjvakmhzbhw\",\"type\":\"hf\"}";
 
-        String responseStr =
-            "{\"properties\":{\"alertType\":\"jqqwmtqsmoxsazu\",\"lastModifiedUtc\":\"2021-10-28T14:39:50Z\",\"expirationDateUtc\":\"2021-11-13T00:25:40Z\",\"reason\":\"ecywn\",\"state\":\"Disabled\",\"comment\":\"zzaczsinqbdn\",\"suppressionAlertsScope\":{\"allOf\":[]}},\"id\":\"bbozsyvr\",\"name\":\"kjmyitrchwudlx\",\"type\":\"eihtpmnoejh\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AlertsSuppressionRule response = manager.alertsSuppressionRules()
+            .getWithResponse("uafixlxicwgp", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AlertsSuppressionRule response =
-            manager.alertsSuppressionRules().getWithResponse("bpnjodf", com.azure.core.util.Context.NONE).getValue();
-
-        Assertions.assertEquals("jqqwmtqsmoxsazu", response.alertType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-13T00:25:40Z"), response.expirationDateUtc());
-        Assertions.assertEquals("ecywn", response.reason());
-        Assertions.assertEquals(RuleState.DISABLED, response.state());
-        Assertions.assertEquals("zzaczsinqbdn", response.comment());
+        Assertions.assertEquals("dc", response.alertType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T15:04:01Z"), response.expirationDateUtc());
+        Assertions.assertEquals("fasfod", response.reason());
+        Assertions.assertEquals(RuleState.ENABLED, response.state());
+        Assertions.assertEquals("alvngtwy", response.comment());
+        Assertions.assertEquals("gqrnt", response.suppressionAlertsScope().allOf().get(0).field());
     }
 }

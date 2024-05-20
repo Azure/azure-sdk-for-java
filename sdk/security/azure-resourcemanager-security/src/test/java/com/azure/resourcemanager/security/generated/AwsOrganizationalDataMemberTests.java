@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AwsOrganizationalDataMemberTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AwsOrganizationalDataMember model =
-            BinaryData
-                .fromString("{\"organizationMembershipType\":\"Member\",\"parentHierarchyId\":\"j\"}")
+        AwsOrganizationalDataMember model
+            = BinaryData.fromString("{\"organizationMembershipType\":\"Member\",\"parentHierarchyId\":\"zwuge\"}")
                 .toObject(AwsOrganizationalDataMember.class);
-        Assertions.assertEquals("j", model.parentHierarchyId());
+        Assertions.assertEquals("zwuge", model.parentHierarchyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AwsOrganizationalDataMember model = new AwsOrganizationalDataMember().withParentHierarchyId("j");
+        AwsOrganizationalDataMember model = new AwsOrganizationalDataMember().withParentHierarchyId("zwuge");
         model = BinaryData.fromObject(model).toObject(AwsOrganizationalDataMember.class);
-        Assertions.assertEquals("j", model.parentHierarchyId());
+        Assertions.assertEquals("zwuge", model.parentHierarchyId());
     }
 }

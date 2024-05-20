@@ -6,43 +6,18 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.ApiCollectionProperties;
-import java.util.HashMap;
-import java.util.Map;
-import org.junit.jupiter.api.Assertions;
 
 public final class ApiCollectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiCollectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"y\",\"additionalData\":{\"fkak\":\"mwineof\",\"knyuxgvttxpn\":\"oldtvevboclzhz\",\"ids\":\"upzaamrdixtre\",\"l\":\"yskbruff\"}}")
-                .toObject(ApiCollectionProperties.class);
-        Assertions.assertEquals("y", model.displayName());
-        Assertions.assertEquals("mwineof", model.additionalData().get("fkak"));
+        ApiCollectionProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Updating\",\"displayName\":\"ovmozsayebraz\",\"discoveredVia\":\"lpzbtzuykykipf\",\"baseUrl\":\"yepfn\",\"numberOfApiEndpoints\":2703217900378871776,\"numberOfInactiveApiEndpoints\":3362536922028546926,\"numberOfUnauthenticatedApiEndpoints\":1773202042768243354,\"numberOfExternalApiEndpoints\":3144374551812240182,\"numberOfApiEndpointsWithSensitiveDataExposed\":8903127144257691178,\"sensitivityLabel\":\"qejg\"}")
+            .toObject(ApiCollectionProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiCollectionProperties model =
-            new ApiCollectionProperties()
-                .withDisplayName("y")
-                .withAdditionalData(
-                    mapOf(
-                        "fkak", "mwineof", "knyuxgvttxpn", "oldtvevboclzhz", "ids", "upzaamrdixtre", "l", "yskbruff"));
+        ApiCollectionProperties model = new ApiCollectionProperties();
         model = BinaryData.fromObject(model).toObject(ApiCollectionProperties.class);
-        Assertions.assertEquals("y", model.displayName());
-        Assertions.assertEquals("mwineof", model.additionalData().get("fkak"));
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }

@@ -60,411 +60,481 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the SiteRecoveryManagementClientImpl type. */
+/**
+ * Initializes a new instance of the SiteRecoveryManagementClientImpl type.
+ */
 @ServiceClient(builder = SiteRecoveryManagementClientBuilder.class)
 public final class SiteRecoveryManagementClientImpl implements SiteRecoveryManagementClient {
-    /** The subscription Id. */
+    /**
+     * The subscription Id.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The subscription Id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The ReplicationAlertSettingsClient object to access its operations. */
+    /**
+     * The ReplicationAlertSettingsClient object to access its operations.
+     */
     private final ReplicationAlertSettingsClient replicationAlertSettings;
 
     /**
      * Gets the ReplicationAlertSettingsClient object to access its operations.
-     *
+     * 
      * @return the ReplicationAlertSettingsClient object.
      */
     public ReplicationAlertSettingsClient getReplicationAlertSettings() {
         return this.replicationAlertSettings;
     }
 
-    /** The ReplicationAppliancesClient object to access its operations. */
+    /**
+     * The ReplicationAppliancesClient object to access its operations.
+     */
     private final ReplicationAppliancesClient replicationAppliances;
 
     /**
      * Gets the ReplicationAppliancesClient object to access its operations.
-     *
+     * 
      * @return the ReplicationAppliancesClient object.
      */
     public ReplicationAppliancesClient getReplicationAppliances() {
         return this.replicationAppliances;
     }
 
-    /** The ReplicationEligibilityResultsOperationsClient object to access its operations. */
+    /**
+     * The ReplicationEligibilityResultsOperationsClient object to access its operations.
+     */
     private final ReplicationEligibilityResultsOperationsClient replicationEligibilityResultsOperations;
 
     /**
      * Gets the ReplicationEligibilityResultsOperationsClient object to access its operations.
-     *
+     * 
      * @return the ReplicationEligibilityResultsOperationsClient object.
      */
     public ReplicationEligibilityResultsOperationsClient getReplicationEligibilityResultsOperations() {
         return this.replicationEligibilityResultsOperations;
     }
 
-    /** The ReplicationEventsClient object to access its operations. */
+    /**
+     * The ReplicationEventsClient object to access its operations.
+     */
     private final ReplicationEventsClient replicationEvents;
 
     /**
      * Gets the ReplicationEventsClient object to access its operations.
-     *
+     * 
      * @return the ReplicationEventsClient object.
      */
     public ReplicationEventsClient getReplicationEvents() {
         return this.replicationEvents;
     }
 
-    /** The ReplicationFabricsClient object to access its operations. */
+    /**
+     * The ReplicationFabricsClient object to access its operations.
+     */
     private final ReplicationFabricsClient replicationFabrics;
 
     /**
      * Gets the ReplicationFabricsClient object to access its operations.
-     *
+     * 
      * @return the ReplicationFabricsClient object.
      */
     public ReplicationFabricsClient getReplicationFabrics() {
         return this.replicationFabrics;
     }
 
-    /** The ReplicationLogicalNetworksClient object to access its operations. */
+    /**
+     * The ReplicationLogicalNetworksClient object to access its operations.
+     */
     private final ReplicationLogicalNetworksClient replicationLogicalNetworks;
 
     /**
      * Gets the ReplicationLogicalNetworksClient object to access its operations.
-     *
+     * 
      * @return the ReplicationLogicalNetworksClient object.
      */
     public ReplicationLogicalNetworksClient getReplicationLogicalNetworks() {
         return this.replicationLogicalNetworks;
     }
 
-    /** The ReplicationNetworksClient object to access its operations. */
+    /**
+     * The ReplicationNetworksClient object to access its operations.
+     */
     private final ReplicationNetworksClient replicationNetworks;
 
     /**
      * Gets the ReplicationNetworksClient object to access its operations.
-     *
+     * 
      * @return the ReplicationNetworksClient object.
      */
     public ReplicationNetworksClient getReplicationNetworks() {
         return this.replicationNetworks;
     }
 
-    /** The ReplicationNetworkMappingsClient object to access its operations. */
+    /**
+     * The ReplicationNetworkMappingsClient object to access its operations.
+     */
     private final ReplicationNetworkMappingsClient replicationNetworkMappings;
 
     /**
      * Gets the ReplicationNetworkMappingsClient object to access its operations.
-     *
+     * 
      * @return the ReplicationNetworkMappingsClient object.
      */
     public ReplicationNetworkMappingsClient getReplicationNetworkMappings() {
         return this.replicationNetworkMappings;
     }
 
-    /** The ReplicationProtectionContainersClient object to access its operations. */
+    /**
+     * The ReplicationProtectionContainersClient object to access its operations.
+     */
     private final ReplicationProtectionContainersClient replicationProtectionContainers;
 
     /**
      * Gets the ReplicationProtectionContainersClient object to access its operations.
-     *
+     * 
      * @return the ReplicationProtectionContainersClient object.
      */
     public ReplicationProtectionContainersClient getReplicationProtectionContainers() {
         return this.replicationProtectionContainers;
     }
 
-    /** The ReplicationMigrationItemsClient object to access its operations. */
+    /**
+     * The ReplicationMigrationItemsClient object to access its operations.
+     */
     private final ReplicationMigrationItemsClient replicationMigrationItems;
 
     /**
      * Gets the ReplicationMigrationItemsClient object to access its operations.
-     *
+     * 
      * @return the ReplicationMigrationItemsClient object.
      */
     public ReplicationMigrationItemsClient getReplicationMigrationItems() {
         return this.replicationMigrationItems;
     }
 
-    /** The MigrationRecoveryPointsClient object to access its operations. */
+    /**
+     * The MigrationRecoveryPointsClient object to access its operations.
+     */
     private final MigrationRecoveryPointsClient migrationRecoveryPoints;
 
     /**
      * Gets the MigrationRecoveryPointsClient object to access its operations.
-     *
+     * 
      * @return the MigrationRecoveryPointsClient object.
      */
     public MigrationRecoveryPointsClient getMigrationRecoveryPoints() {
         return this.migrationRecoveryPoints;
     }
 
-    /** The ReplicationProtectableItemsClient object to access its operations. */
+    /**
+     * The ReplicationProtectableItemsClient object to access its operations.
+     */
     private final ReplicationProtectableItemsClient replicationProtectableItems;
 
     /**
      * Gets the ReplicationProtectableItemsClient object to access its operations.
-     *
+     * 
      * @return the ReplicationProtectableItemsClient object.
      */
     public ReplicationProtectableItemsClient getReplicationProtectableItems() {
         return this.replicationProtectableItems;
     }
 
-    /** The ReplicationProtectedItemsClient object to access its operations. */
+    /**
+     * The ReplicationProtectedItemsClient object to access its operations.
+     */
     private final ReplicationProtectedItemsClient replicationProtectedItems;
 
     /**
      * Gets the ReplicationProtectedItemsClient object to access its operations.
-     *
+     * 
      * @return the ReplicationProtectedItemsClient object.
      */
     public ReplicationProtectedItemsClient getReplicationProtectedItems() {
         return this.replicationProtectedItems;
     }
 
-    /** The RecoveryPointsClient object to access its operations. */
+    /**
+     * The RecoveryPointsClient object to access its operations.
+     */
     private final RecoveryPointsClient recoveryPoints;
 
     /**
      * Gets the RecoveryPointsClient object to access its operations.
-     *
+     * 
      * @return the RecoveryPointsClient object.
      */
     public RecoveryPointsClient getRecoveryPoints() {
         return this.recoveryPoints;
     }
 
-    /** The TargetComputeSizesClient object to access its operations. */
+    /**
+     * The TargetComputeSizesClient object to access its operations.
+     */
     private final TargetComputeSizesClient targetComputeSizes;
 
     /**
      * Gets the TargetComputeSizesClient object to access its operations.
-     *
+     * 
      * @return the TargetComputeSizesClient object.
      */
     public TargetComputeSizesClient getTargetComputeSizes() {
         return this.targetComputeSizes;
     }
 
-    /** The ReplicationProtectionContainerMappingsClient object to access its operations. */
+    /**
+     * The ReplicationProtectionContainerMappingsClient object to access its operations.
+     */
     private final ReplicationProtectionContainerMappingsClient replicationProtectionContainerMappings;
 
     /**
      * Gets the ReplicationProtectionContainerMappingsClient object to access its operations.
-     *
+     * 
      * @return the ReplicationProtectionContainerMappingsClient object.
      */
     public ReplicationProtectionContainerMappingsClient getReplicationProtectionContainerMappings() {
         return this.replicationProtectionContainerMappings;
     }
 
-    /** The ReplicationRecoveryServicesProvidersClient object to access its operations. */
+    /**
+     * The ReplicationRecoveryServicesProvidersClient object to access its operations.
+     */
     private final ReplicationRecoveryServicesProvidersClient replicationRecoveryServicesProviders;
 
     /**
      * Gets the ReplicationRecoveryServicesProvidersClient object to access its operations.
-     *
+     * 
      * @return the ReplicationRecoveryServicesProvidersClient object.
      */
     public ReplicationRecoveryServicesProvidersClient getReplicationRecoveryServicesProviders() {
         return this.replicationRecoveryServicesProviders;
     }
 
-    /** The StorageClassificationsClient object to access its operations. */
+    /**
+     * The StorageClassificationsClient object to access its operations.
+     */
     private final StorageClassificationsClient storageClassifications;
 
     /**
      * Gets the StorageClassificationsClient object to access its operations.
-     *
+     * 
      * @return the StorageClassificationsClient object.
      */
     public StorageClassificationsClient getStorageClassifications() {
         return this.storageClassifications;
     }
 
-    /** The StorageClassificationMappingsClient object to access its operations. */
+    /**
+     * The StorageClassificationMappingsClient object to access its operations.
+     */
     private final StorageClassificationMappingsClient storageClassificationMappings;
 
     /**
      * Gets the StorageClassificationMappingsClient object to access its operations.
-     *
+     * 
      * @return the StorageClassificationMappingsClient object.
      */
     public StorageClassificationMappingsClient getStorageClassificationMappings() {
         return this.storageClassificationMappings;
     }
 
-    /** The ReplicationvCentersClient object to access its operations. */
+    /**
+     * The ReplicationvCentersClient object to access its operations.
+     */
     private final ReplicationvCentersClient replicationvCenters;
 
     /**
      * Gets the ReplicationvCentersClient object to access its operations.
-     *
+     * 
      * @return the ReplicationvCentersClient object.
      */
     public ReplicationvCentersClient getReplicationvCenters() {
         return this.replicationvCenters;
     }
 
-    /** The ReplicationJobsClient object to access its operations. */
+    /**
+     * The ReplicationJobsClient object to access its operations.
+     */
     private final ReplicationJobsClient replicationJobs;
 
     /**
      * Gets the ReplicationJobsClient object to access its operations.
-     *
+     * 
      * @return the ReplicationJobsClient object.
      */
     public ReplicationJobsClient getReplicationJobs() {
         return this.replicationJobs;
     }
 
-    /** The ReplicationPoliciesClient object to access its operations. */
+    /**
+     * The ReplicationPoliciesClient object to access its operations.
+     */
     private final ReplicationPoliciesClient replicationPolicies;
 
     /**
      * Gets the ReplicationPoliciesClient object to access its operations.
-     *
+     * 
      * @return the ReplicationPoliciesClient object.
      */
     public ReplicationPoliciesClient getReplicationPolicies() {
         return this.replicationPolicies;
     }
 
-    /** The ReplicationProtectionIntentsClient object to access its operations. */
+    /**
+     * The ReplicationProtectionIntentsClient object to access its operations.
+     */
     private final ReplicationProtectionIntentsClient replicationProtectionIntents;
 
     /**
      * Gets the ReplicationProtectionIntentsClient object to access its operations.
-     *
+     * 
      * @return the ReplicationProtectionIntentsClient object.
      */
     public ReplicationProtectionIntentsClient getReplicationProtectionIntents() {
         return this.replicationProtectionIntents;
     }
 
-    /** The ReplicationRecoveryPlansClient object to access its operations. */
+    /**
+     * The ReplicationRecoveryPlansClient object to access its operations.
+     */
     private final ReplicationRecoveryPlansClient replicationRecoveryPlans;
 
     /**
      * Gets the ReplicationRecoveryPlansClient object to access its operations.
-     *
+     * 
      * @return the ReplicationRecoveryPlansClient object.
      */
     public ReplicationRecoveryPlansClient getReplicationRecoveryPlans() {
         return this.replicationRecoveryPlans;
     }
 
-    /** The SupportedOperatingSystemsOperationsClient object to access its operations. */
+    /**
+     * The SupportedOperatingSystemsOperationsClient object to access its operations.
+     */
     private final SupportedOperatingSystemsOperationsClient supportedOperatingSystemsOperations;
 
     /**
      * Gets the SupportedOperatingSystemsOperationsClient object to access its operations.
-     *
+     * 
      * @return the SupportedOperatingSystemsOperationsClient object.
      */
     public SupportedOperatingSystemsOperationsClient getSupportedOperatingSystemsOperations() {
         return this.supportedOperatingSystemsOperations;
     }
 
-    /** The ReplicationVaultHealthsClient object to access its operations. */
+    /**
+     * The ReplicationVaultHealthsClient object to access its operations.
+     */
     private final ReplicationVaultHealthsClient replicationVaultHealths;
 
     /**
      * Gets the ReplicationVaultHealthsClient object to access its operations.
-     *
+     * 
      * @return the ReplicationVaultHealthsClient object.
      */
     public ReplicationVaultHealthsClient getReplicationVaultHealths() {
         return this.replicationVaultHealths;
     }
 
-    /** The ReplicationVaultSettingsClient object to access its operations. */
+    /**
+     * The ReplicationVaultSettingsClient object to access its operations.
+     */
     private final ReplicationVaultSettingsClient replicationVaultSettings;
 
     /**
      * Gets the ReplicationVaultSettingsClient object to access its operations.
-     *
+     * 
      * @return the ReplicationVaultSettingsClient object.
      */
     public ReplicationVaultSettingsClient getReplicationVaultSettings() {
@@ -473,7 +543,7 @@ public final class SiteRecoveryManagementClientImpl implements SiteRecoveryManag
 
     /**
      * Initializes an instance of SiteRecoveryManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -481,19 +551,14 @@ public final class SiteRecoveryManagementClientImpl implements SiteRecoveryManag
      * @param subscriptionId The subscription Id.
      * @param endpoint server parameter.
      */
-    SiteRecoveryManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    SiteRecoveryManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-06-01";
+        this.apiVersion = "2023-08-01";
         this.operations = new OperationsClientImpl(this);
         this.replicationAlertSettings = new ReplicationAlertSettingsClientImpl(this);
         this.replicationAppliances = new ReplicationAppliancesClientImpl(this);
@@ -526,7 +591,7 @@ public final class SiteRecoveryManagementClientImpl implements SiteRecoveryManag
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -535,7 +600,7 @@ public final class SiteRecoveryManagementClientImpl implements SiteRecoveryManag
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -545,7 +610,7 @@ public final class SiteRecoveryManagementClientImpl implements SiteRecoveryManag
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -555,26 +620,15 @@ public final class SiteRecoveryManagementClientImpl implements SiteRecoveryManag
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -587,19 +641,16 @@ public final class SiteRecoveryManagementClientImpl implements SiteRecoveryManag
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
+                            SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }

@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.RoleInner;
 
-/** An instance of this class provides access to all the operations defined in RolesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RolesClient.
+ */
 public interface RolesClient {
     /**
      * Gets information about a cluster role.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param roleName The name of the cluster role.
@@ -32,7 +34,7 @@ public interface RolesClient {
 
     /**
      * Gets information about a cluster role.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param roleName The name of the cluster role.
@@ -46,7 +48,7 @@ public interface RolesClient {
 
     /**
      * Creates a new role or updates an existing role.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param roleName The name of the cluster role.
@@ -57,12 +59,12 @@ public interface RolesClient {
      * @return the {@link SyncPoller} for polling of represents a cluster role.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RoleInner>, RoleInner> beginCreate(
-        String resourceGroupName, String clusterName, String roleName, RoleInner parameters);
+    SyncPoller<PollResult<RoleInner>, RoleInner> beginCreate(String resourceGroupName, String clusterName,
+        String roleName, RoleInner parameters);
 
     /**
      * Creates a new role or updates an existing role.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param roleName The name of the cluster role.
@@ -74,12 +76,12 @@ public interface RolesClient {
      * @return the {@link SyncPoller} for polling of represents a cluster role.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RoleInner>, RoleInner> beginCreate(
-        String resourceGroupName, String clusterName, String roleName, RoleInner parameters, Context context);
+    SyncPoller<PollResult<RoleInner>, RoleInner> beginCreate(String resourceGroupName, String clusterName,
+        String roleName, RoleInner parameters, Context context);
 
     /**
      * Creates a new role or updates an existing role.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param roleName The name of the cluster role.
@@ -94,7 +96,7 @@ public interface RolesClient {
 
     /**
      * Creates a new role or updates an existing role.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param roleName The name of the cluster role.
@@ -106,12 +108,12 @@ public interface RolesClient {
      * @return represents a cluster role.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RoleInner create(
-        String resourceGroupName, String clusterName, String roleName, RoleInner parameters, Context context);
+    RoleInner create(String resourceGroupName, String clusterName, String roleName, RoleInner parameters,
+        Context context);
 
     /**
      * Deletes a cluster role.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param roleName The name of the cluster role.
@@ -125,7 +127,7 @@ public interface RolesClient {
 
     /**
      * Deletes a cluster role.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param roleName The name of the cluster role.
@@ -136,12 +138,12 @@ public interface RolesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String roleName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String roleName,
+        Context context);
 
     /**
      * Deletes a cluster role.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param roleName The name of the cluster role.
@@ -154,7 +156,7 @@ public interface RolesClient {
 
     /**
      * Deletes a cluster role.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param roleName The name of the cluster role.
@@ -168,7 +170,7 @@ public interface RolesClient {
 
     /**
      * List all the roles in a given cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,7 +183,7 @@ public interface RolesClient {
 
     /**
      * List all the roles in a given cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.

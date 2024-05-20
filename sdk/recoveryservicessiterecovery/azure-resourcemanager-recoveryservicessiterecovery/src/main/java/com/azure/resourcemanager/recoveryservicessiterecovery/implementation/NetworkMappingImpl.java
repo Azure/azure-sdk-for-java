@@ -73,8 +73,8 @@ public final class NetworkMappingImpl implements NetworkMapping, NetworkMapping.
 
     private UpdateNetworkMappingInput updateInput;
 
-    public NetworkMappingImpl withExistingReplicationNetwork(
-        String resourceName, String resourceGroupName, String fabricName, String networkName) {
+    public NetworkMappingImpl withExistingReplicationNetwork(String resourceName, String resourceGroupName,
+        String fabricName, String networkName) {
         this.resourceName = resourceName;
         this.resourceGroupName = resourceGroupName;
         this.fabricName = fabricName;
@@ -83,33 +83,19 @@ public final class NetworkMappingImpl implements NetworkMapping, NetworkMapping.
     }
 
     public NetworkMapping create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationNetworkMappings()
-                .create(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    networkName,
-                    networkMappingName,
-                    createInput,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getReplicationNetworkMappings().create(resourceName,
+            resourceGroupName, fabricName, networkName, networkMappingName, createInput, Context.NONE);
         return this;
     }
 
     public NetworkMapping create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationNetworkMappings()
-                .create(
-                    resourceName, resourceGroupName, fabricName, networkName, networkMappingName, createInput, context);
+        this.innerObject = serviceManager.serviceClient().getReplicationNetworkMappings().create(resourceName,
+            resourceGroupName, fabricName, networkName, networkMappingName, createInput, context);
         return this;
     }
 
-    NetworkMappingImpl(
-        String name, com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
+    NetworkMappingImpl(String name,
+        com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = new NetworkMappingInner();
         this.serviceManager = serviceManager;
         this.networkMappingName = name;
@@ -122,61 +108,40 @@ public final class NetworkMappingImpl implements NetworkMapping, NetworkMapping.
     }
 
     public NetworkMapping apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationNetworkMappings()
-                .update(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    networkName,
-                    networkMappingName,
-                    updateInput,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getReplicationNetworkMappings().update(resourceName,
+            resourceGroupName, fabricName, networkName, networkMappingName, updateInput, Context.NONE);
         return this;
     }
 
     public NetworkMapping apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationNetworkMappings()
-                .update(
-                    resourceName, resourceGroupName, fabricName, networkName, networkMappingName, updateInput, context);
+        this.innerObject = serviceManager.serviceClient().getReplicationNetworkMappings().update(resourceName,
+            resourceGroupName, fabricName, networkName, networkMappingName, updateInput, context);
         return this;
     }
 
-    NetworkMappingImpl(
-        NetworkMappingInner innerObject,
+    NetworkMappingImpl(NetworkMappingInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "vaults");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fabricName = Utils.getValueFromIdByName(innerObject.id(), "replicationFabrics");
-        this.networkName = Utils.getValueFromIdByName(innerObject.id(), "replicationNetworks");
-        this.networkMappingName = Utils.getValueFromIdByName(innerObject.id(), "replicationNetworkMappings");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.fabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationFabrics");
+        this.networkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationNetworks");
+        this.networkMappingName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationNetworkMappings");
     }
 
     public NetworkMapping refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationNetworkMappings()
-                .getWithResponse(
-                    resourceName, resourceGroupName, fabricName, networkName, networkMappingName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getReplicationNetworkMappings()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkMapping refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationNetworkMappings()
-                .getWithResponse(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getReplicationNetworkMappings()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context)
+            .getValue();
         return this;
     }
 

@@ -20,13 +20,15 @@ public final class AutomationRuleSet {
     @JsonProperty(value = "rules")
     private List<AutomationTriggeringRule> rules;
 
-    /** Creates an instance of AutomationRuleSet class. */
+    /**
+     * Creates an instance of AutomationRuleSet class.
+     */
     public AutomationRuleSet() {
     }
 
     /**
      * Get the rules property: The rules property.
-     *
+     * 
      * @return the rules value.
      */
     public List<AutomationTriggeringRule> rules() {
@@ -35,7 +37,7 @@ public final class AutomationRuleSet {
 
     /**
      * Set the rules property: The rules property.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the AutomationRuleSet object itself.
      */
@@ -46,7 +48,7 @@ public final class AutomationRuleSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

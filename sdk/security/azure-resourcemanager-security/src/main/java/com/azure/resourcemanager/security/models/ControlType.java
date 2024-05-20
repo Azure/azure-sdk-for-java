@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of security control (for example, BuiltIn). */
+/**
+ * The type of security control (for example, BuiltIn).
+ */
 public final class ControlType extends ExpandableStringEnum<ControlType> {
-    /** Static value BuiltIn for ControlType. */
+    /**
+     * Static value BuiltIn for ControlType.
+     */
     public static final ControlType BUILT_IN = fromString("BuiltIn");
 
-    /** Static value Custom for ControlType. */
+    /**
+     * Static value Custom for ControlType.
+     */
     public static final ControlType CUSTOM = fromString("Custom");
 
     /**
      * Creates a new instance of ControlType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ControlType extends ExpandableStringEnum<ControlType> {
 
     /**
      * Creates or finds a ControlType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ControlType.
      */
@@ -38,7 +44,7 @@ public final class ControlType extends ExpandableStringEnum<ControlType> {
 
     /**
      * Gets known ControlType values.
-     *
+     * 
      * @return known ControlType values.
      */
     public static Collection<ControlType> values() {

@@ -8,87 +8,97 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.PolicyInner;
 
-/** An immutable client-side representation of Policy. */
+/**
+ * An immutable client-side representation of Policy.
+ */
 public interface Policy {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the properties property: The custom data.
-     *
+     * 
      * @return the properties value.
      */
     PolicyProperties properties();
 
     /**
      * Gets the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.PolicyInner object.
-     *
+     * 
      * @return the inner object.
      */
     PolicyInner innerModel();
 
-    /** The entirety of the Policy definition. */
+    /**
+     * The entirety of the Policy definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The Policy definition stages. */
+    /**
+     * The Policy definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Policy definition. */
+        /**
+         * The first stage of the Policy definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the Policy definition allowing to specify parent resource. */
+        /**
+         * The stage of the Policy definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceName, resourceGroupName.
-             *
+             * 
              * @param resourceName The name of the recovery services vault.
              * @param resourceGroupName The name of the resource group where the recovery services vault is present.
              * @return the next definition stage.
@@ -103,25 +113,27 @@ public interface Policy {
         interface WithCreate extends DefinitionStages.WithProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Policy create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             Policy create(Context context);
         }
 
-        /** The stage of the Policy definition allowing to specify properties. */
+        /**
+         * The stage of the Policy definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Policy creation properties..
-             *
+             * 
              * @param properties Policy creation properties.
              * @return the next definition stage.
              */
@@ -131,36 +143,42 @@ public interface Policy {
 
     /**
      * Begins update for the Policy resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     Policy.Update update();
 
-    /** The template for Policy update. */
+    /**
+     * The template for Policy update.
+     */
     interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         Policy apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         Policy apply(Context context);
     }
 
-    /** The Policy update stages. */
+    /**
+     * The Policy update stages.
+     */
     interface UpdateStages {
-        /** The stage of the Policy update allowing to specify properties. */
+        /**
+         * The stage of the Policy update allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: The ReplicationProviderSettings..
-             *
+             * 
              * @param properties The ReplicationProviderSettings.
              * @return the next definition stage.
              */
@@ -170,14 +188,14 @@ public interface Policy {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Policy refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

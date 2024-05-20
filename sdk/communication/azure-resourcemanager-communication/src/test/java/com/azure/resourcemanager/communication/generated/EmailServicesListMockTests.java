@@ -32,7 +32,7 @@ public final class EmailServicesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"dataLocation\":\"dowwquuvxzxclvit\"},\"location\":\"qzonosggbhcohf\",\"tags\":{\"dkzzewkfvhqcrail\":\"jnkaljutiiswacff\",\"rwdmhdlxyjrxsa\":\"pnppfuf\"},\"id\":\"afcnih\",\"name\":\"wqapnedgfbcvk\",\"type\":\"vq\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"dataLocation\":\"vkr\"},\"location\":\"wbxqzvszjfau\",\"tags\":{\"tvtc\":\"dxxiv\",\"wvxysl\":\"aqtdoqmcbx\",\"ytkblmpew\":\"bhsfxob\",\"shqjohxcrsbf\":\"wfbkrvrns\"},\"id\":\"vasrruvwb\",\"name\":\"sqfsubcgjbirxb\",\"type\":\"ybsrfbjfdtwss\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,8 +51,8 @@ public final class EmailServicesListMockTests {
 
         PagedIterable<EmailServiceResource> response = manager.emailServices().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qzonosggbhcohf", response.iterator().next().location());
-        Assertions.assertEquals("jnkaljutiiswacff", response.iterator().next().tags().get("dkzzewkfvhqcrail"));
-        Assertions.assertEquals("dowwquuvxzxclvit", response.iterator().next().dataLocation());
+        Assertions.assertEquals("wbxqzvszjfau", response.iterator().next().location());
+        Assertions.assertEquals("dxxiv", response.iterator().next().tags().get("tvtc"));
+        Assertions.assertEquals("vkr", response.iterator().next().dataLocation());
     }
 }

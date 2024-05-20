@@ -7,7 +7,9 @@ package com.azure.resourcemanager.iotfirmwaredefense.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of a matching paired key or certificate. */
+/**
+ * Details of a matching paired key or certificate.
+ */
 @Fluent
 public final class PairedKey {
     /*
@@ -22,19 +24,15 @@ public final class PairedKey {
     @JsonProperty(value = "type")
     private String type;
 
-    /*
-     * Additional paired key properties
+    /**
+     * Creates an instance of PairedKey class.
      */
-    @JsonProperty(value = "additionalProperties")
-    private Object additionalProperties;
-
-    /** Creates an instance of PairedKey class. */
     public PairedKey() {
     }
 
     /**
      * Get the id property: ID of the paired key or certificate.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +41,7 @@ public final class PairedKey {
 
     /**
      * Set the id property: ID of the paired key or certificate.
-     *
+     * 
      * @param id the id value to set.
      * @return the PairedKey object itself.
      */
@@ -54,7 +52,7 @@ public final class PairedKey {
 
     /**
      * Get the type property: The type indicating whether the paired object is a key or certificate.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -63,7 +61,7 @@ public final class PairedKey {
 
     /**
      * Set the type property: The type indicating whether the paired object is a key or certificate.
-     *
+     * 
      * @param type the type value to set.
      * @return the PairedKey object itself.
      */
@@ -73,28 +71,8 @@ public final class PairedKey {
     }
 
     /**
-     * Get the additionalProperties property: Additional paired key properties.
-     *
-     * @return the additionalProperties value.
-     */
-    public Object additionalProperties() {
-        return this.additionalProperties;
-    }
-
-    /**
-     * Set the additionalProperties property: Additional paired key properties.
-     *
-     * @param additionalProperties the additionalProperties value to set.
-     * @return the PairedKey object itself.
-     */
-    public PairedKey withAdditionalProperties(Object additionalProperties) {
-        this.additionalProperties = additionalProperties;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

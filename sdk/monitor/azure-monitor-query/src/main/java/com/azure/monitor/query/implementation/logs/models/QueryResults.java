@@ -5,8 +5,11 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,29 +18,25 @@ import java.util.List;
  * Contains the tables, columns &amp; rows resulting from a query.
  */
 @Fluent
-public final class QueryResults {
+public final class QueryResults implements JsonSerializable<QueryResults> {
     /*
      * The results of the query in tabular format.
      */
-    @JsonProperty(value = "tables", required = true)
-    private List<Table> tables;
+    private final List<Table> tables;
 
     /*
      * Statistics represented in JSON format.
      */
-    @JsonProperty(value = "statistics")
     private Object statistics;
 
     /*
      * Visualization data in JSON format.
      */
-    @JsonProperty(value = "render")
     private Object render;
 
     /*
      * The code and message for an error.
      */
-    @JsonProperty(value = "error")
     private ErrorInfo error;
 
     /**
@@ -45,8 +44,7 @@ public final class QueryResults {
      * 
      * @param tables the tables value to set.
      */
-    @JsonCreator
-    public QueryResults(@JsonProperty(value = "tables", required = true) List<Table> tables) {
+    public QueryResults(List<Table> tables) {
         this.tables = tables;
     }
 
@@ -117,5 +115,60 @@ public final class QueryResults {
     public QueryResults setError(ErrorInfo error) {
         this.error = error;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeUntypedField("statistics", this.statistics);
+        jsonWriter.writeUntypedField("render", this.render);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryResults from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryResults if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the QueryResults.
+     */
+    public static QueryResults fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean tablesFound = false;
+            List<Table> tables = null;
+            Object statistics = null;
+            Object render = null;
+            ErrorInfo error = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tables".equals(fieldName)) {
+                    tables = reader.readArray(reader1 -> Table.fromJson(reader1));
+                    tablesFound = true;
+                } else if ("statistics".equals(fieldName)) {
+                    statistics = reader.readUntyped();
+                } else if ("render".equals(fieldName)) {
+                    render = reader.readUntyped();
+                } else if ("error".equals(fieldName)) {
+                    error = ErrorInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (tablesFound) {
+                QueryResults deserializedQueryResults = new QueryResults(tables);
+                deserializedQueryResults.statistics = statistics;
+                deserializedQueryResults.render = render;
+                deserializedQueryResults.error = error;
+
+                return deserializedQueryResults;
+            }
+            throw new IllegalStateException("Missing required property: tables");
+        });
     }
 }

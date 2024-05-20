@@ -90,6 +90,13 @@ public final class CreationData {
     @JsonProperty(value = "elasticSanResourceId")
     private String elasticSanResourceId;
 
+    /*
+     * If this field is set on a snapshot and createOption is CopyStart, the snapshot will be copied at a quicker
+     * speed.
+     */
+    @JsonProperty(value = "provisionedBandwidthCopySpeed")
+    private ProvisionedBandwidthCopyOption provisionedBandwidthCopySpeed;
+
     /**
      * Creates an instance of CreationData class.
      */
@@ -345,6 +352,29 @@ public final class CreationData {
      */
     public CreationData withElasticSanResourceId(String elasticSanResourceId) {
         this.elasticSanResourceId = elasticSanResourceId;
+        return this;
+    }
+
+    /**
+     * Get the provisionedBandwidthCopySpeed property: If this field is set on a snapshot and createOption is
+     * CopyStart, the snapshot will be copied at a quicker speed.
+     * 
+     * @return the provisionedBandwidthCopySpeed value.
+     */
+    public ProvisionedBandwidthCopyOption provisionedBandwidthCopySpeed() {
+        return this.provisionedBandwidthCopySpeed;
+    }
+
+    /**
+     * Set the provisionedBandwidthCopySpeed property: If this field is set on a snapshot and createOption is
+     * CopyStart, the snapshot will be copied at a quicker speed.
+     * 
+     * @param provisionedBandwidthCopySpeed the provisionedBandwidthCopySpeed value to set.
+     * @return the CreationData object itself.
+     */
+    public CreationData
+        withProvisionedBandwidthCopySpeed(ProvisionedBandwidthCopyOption provisionedBandwidthCopySpeed) {
+        this.provisionedBandwidthCopySpeed = provisionedBandwidthCopySpeed;
         return this;
     }
 

@@ -4,49 +4,54 @@
 
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Namespace/NotificationHub Connection String. */
-@Fluent
+/**
+ * Response for the POST request that returns Namespace or NotificationHub access keys (connection strings).
+ */
+@Immutable
 public final class ResourceListKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceListKeysInner.class);
-
     /*
-     * PrimaryConnectionString of the AuthorizationRule.
+     * Gets or sets primaryConnectionString of the AuthorizationRule.
      */
-    @JsonProperty(value = "primaryConnectionString")
+    @JsonProperty(value = "primaryConnectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryConnectionString;
 
     /*
-     * SecondaryConnectionString of the created AuthorizationRule
+     * Gets or sets secondaryConnectionString of the created
+     * AuthorizationRule
      */
-    @JsonProperty(value = "secondaryConnectionString")
+    @JsonProperty(value = "secondaryConnectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryConnectionString;
 
     /*
-     * PrimaryKey of the created AuthorizationRule.
+     * Gets or sets primaryKey of the created AuthorizationRule.
      */
-    @JsonProperty(value = "primaryKey")
+    @JsonProperty(value = "primaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryKey;
 
     /*
-     * SecondaryKey of the created AuthorizationRule
+     * Gets or sets secondaryKey of the created AuthorizationRule
      */
-    @JsonProperty(value = "secondaryKey")
+    @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
 
     /*
-     * KeyName of the created AuthorizationRule
+     * Gets or sets keyName of the created AuthorizationRule
      */
-    @JsonProperty(value = "keyName")
+    @JsonProperty(value = "keyName", access = JsonProperty.Access.WRITE_ONLY)
     private String keyName;
 
     /**
-     * Get the primaryConnectionString property: PrimaryConnectionString of the AuthorizationRule.
-     *
+     * Creates an instance of ResourceListKeysInner class.
+     */
+    public ResourceListKeysInner() {
+    }
+
+    /**
+     * Get the primaryConnectionString property: Gets or sets primaryConnectionString of the AuthorizationRule.
+     * 
      * @return the primaryConnectionString value.
      */
     public String primaryConnectionString() {
@@ -54,19 +59,9 @@ public final class ResourceListKeysInner {
     }
 
     /**
-     * Set the primaryConnectionString property: PrimaryConnectionString of the AuthorizationRule.
-     *
-     * @param primaryConnectionString the primaryConnectionString value to set.
-     * @return the ResourceListKeysInner object itself.
-     */
-    public ResourceListKeysInner withPrimaryConnectionString(String primaryConnectionString) {
-        this.primaryConnectionString = primaryConnectionString;
-        return this;
-    }
-
-    /**
-     * Get the secondaryConnectionString property: SecondaryConnectionString of the created AuthorizationRule.
-     *
+     * Get the secondaryConnectionString property: Gets or sets secondaryConnectionString of the created
+     * AuthorizationRule.
+     * 
      * @return the secondaryConnectionString value.
      */
     public String secondaryConnectionString() {
@@ -74,19 +69,8 @@ public final class ResourceListKeysInner {
     }
 
     /**
-     * Set the secondaryConnectionString property: SecondaryConnectionString of the created AuthorizationRule.
-     *
-     * @param secondaryConnectionString the secondaryConnectionString value to set.
-     * @return the ResourceListKeysInner object itself.
-     */
-    public ResourceListKeysInner withSecondaryConnectionString(String secondaryConnectionString) {
-        this.secondaryConnectionString = secondaryConnectionString;
-        return this;
-    }
-
-    /**
-     * Get the primaryKey property: PrimaryKey of the created AuthorizationRule.
-     *
+     * Get the primaryKey property: Gets or sets primaryKey of the created AuthorizationRule.
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -94,19 +78,8 @@ public final class ResourceListKeysInner {
     }
 
     /**
-     * Set the primaryKey property: PrimaryKey of the created AuthorizationRule.
-     *
-     * @param primaryKey the primaryKey value to set.
-     * @return the ResourceListKeysInner object itself.
-     */
-    public ResourceListKeysInner withPrimaryKey(String primaryKey) {
-        this.primaryKey = primaryKey;
-        return this;
-    }
-
-    /**
-     * Get the secondaryKey property: SecondaryKey of the created AuthorizationRule.
-     *
+     * Get the secondaryKey property: Gets or sets secondaryKey of the created AuthorizationRule.
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -114,19 +87,8 @@ public final class ResourceListKeysInner {
     }
 
     /**
-     * Set the secondaryKey property: SecondaryKey of the created AuthorizationRule.
-     *
-     * @param secondaryKey the secondaryKey value to set.
-     * @return the ResourceListKeysInner object itself.
-     */
-    public ResourceListKeysInner withSecondaryKey(String secondaryKey) {
-        this.secondaryKey = secondaryKey;
-        return this;
-    }
-
-    /**
-     * Get the keyName property: KeyName of the created AuthorizationRule.
-     *
+     * Get the keyName property: Gets or sets keyName of the created AuthorizationRule.
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -134,19 +96,8 @@ public final class ResourceListKeysInner {
     }
 
     /**
-     * Set the keyName property: KeyName of the created AuthorizationRule.
-     *
-     * @param keyName the keyName value to set.
-     * @return the ResourceListKeysInner object itself.
-     */
-    public ResourceListKeysInner withKeyName(String keyName) {
-        this.keyName = keyName;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

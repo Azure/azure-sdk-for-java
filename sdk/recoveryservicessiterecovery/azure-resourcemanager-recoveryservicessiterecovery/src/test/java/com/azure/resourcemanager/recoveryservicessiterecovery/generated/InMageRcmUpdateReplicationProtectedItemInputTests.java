@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageRcmUpdateReplicationProtectedItemInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmUpdateReplicationProtectedItemInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMageRcm\",\"targetVmName\":\"tuxy\",\"targetVmSize\":\"hfcaeo\",\"targetResourceGroupId\":\"fqd\",\"targetAvailabilitySetId\":\"jflobhahqmomf\",\"targetAvailabilityZone\":\"o\",\"targetProximityPlacementGroupId\":\"fr\",\"targetBootDiagnosticsStorageAccountId\":\"gbmxldjmz\",\"targetNetworkId\":\"bjesylslur\",\"testNetworkId\":\"fygpnyhgd\",\"vmNics\":[{\"nicId\":\"sc\",\"isPrimaryNic\":\"gqyvouprsytqzss\",\"isSelectedForFailover\":\"mgw\",\"targetSubnetName\":\"ivrxpfduiol\",\"targetStaticIPAddress\":\"yqvpbfjpo\",\"testSubnetName\":\"ucfzluczdquu\",\"testStaticIPAddress\":\"ormvh\"},{\"nicId\":\"zielbprnq\",\"isPrimaryNic\":\"jywzcqyg\",\"isSelectedForFailover\":\"nwsvhbngqiwye\",\"targetSubnetName\":\"ob\",\"targetStaticIPAddress\":\"rpnrehkunsbfjh\",\"testSubnetName\":\"w\",\"testStaticIPAddress\":\"kvegeattbzkgtzq\"}],\"licenseType\":\"NoLicenseType\"}")
-                .toObject(InMageRcmUpdateReplicationProtectedItemInput.class);
+        InMageRcmUpdateReplicationProtectedItemInput model = BinaryData.fromString(
+            "{\"instanceType\":\"InMageRcm\",\"targetVmName\":\"tuxy\",\"targetVmSize\":\"hfcaeo\",\"targetResourceGroupId\":\"fqd\",\"targetAvailabilitySetId\":\"jflobhahqmomf\",\"targetAvailabilityZone\":\"o\",\"targetProximityPlacementGroupId\":\"fr\",\"targetBootDiagnosticsStorageAccountId\":\"gbmxldjmz\",\"targetNetworkId\":\"bjesylslur\",\"testNetworkId\":\"fygpnyhgd\",\"vmNics\":[{\"nicId\":\"sc\",\"isPrimaryNic\":\"gqyvouprsytqzss\",\"isSelectedForFailover\":\"mgw\",\"targetSubnetName\":\"ivrxpfduiol\",\"targetStaticIPAddress\":\"yqvpbfjpo\",\"testSubnetName\":\"ucfzluczdquu\",\"testStaticIPAddress\":\"ormvh\"},{\"nicId\":\"zielbprnq\",\"isPrimaryNic\":\"jywzcqyg\",\"isSelectedForFailover\":\"nwsvhbngqiwye\",\"targetSubnetName\":\"ob\",\"targetStaticIPAddress\":\"rpnrehkunsbfjh\",\"testSubnetName\":\"w\",\"testStaticIPAddress\":\"kvegeattbzkgtzq\"}],\"licenseType\":\"NoLicenseType\"}")
+            .toObject(InMageRcmUpdateReplicationProtectedItemInput.class);
         Assertions.assertEquals("tuxy", model.targetVmName());
         Assertions.assertEquals("hfcaeo", model.targetVmSize());
         Assertions.assertEquals("fqd", model.targetResourceGroupId());
@@ -40,37 +38,21 @@ public final class InMageRcmUpdateReplicationProtectedItemInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmUpdateReplicationProtectedItemInput model =
-            new InMageRcmUpdateReplicationProtectedItemInput()
-                .withTargetVmName("tuxy")
-                .withTargetVmSize("hfcaeo")
-                .withTargetResourceGroupId("fqd")
-                .withTargetAvailabilitySetId("jflobhahqmomf")
-                .withTargetAvailabilityZone("o")
-                .withTargetProximityPlacementGroupId("fr")
-                .withTargetBootDiagnosticsStorageAccountId("gbmxldjmz")
-                .withTargetNetworkId("bjesylslur")
-                .withTestNetworkId("fygpnyhgd")
-                .withVmNics(
-                    Arrays
-                        .asList(
-                            new InMageRcmNicInput()
-                                .withNicId("sc")
-                                .withIsPrimaryNic("gqyvouprsytqzss")
-                                .withIsSelectedForFailover("mgw")
-                                .withTargetSubnetName("ivrxpfduiol")
-                                .withTargetStaticIpAddress("yqvpbfjpo")
-                                .withTestSubnetName("ucfzluczdquu")
-                                .withTestStaticIpAddress("ormvh"),
-                            new InMageRcmNicInput()
-                                .withNicId("zielbprnq")
-                                .withIsPrimaryNic("jywzcqyg")
-                                .withIsSelectedForFailover("nwsvhbngqiwye")
-                                .withTargetSubnetName("ob")
-                                .withTargetStaticIpAddress("rpnrehkunsbfjh")
-                                .withTestSubnetName("w")
-                                .withTestStaticIpAddress("kvegeattbzkgtzq")))
-                .withLicenseType(LicenseType.NO_LICENSE_TYPE);
+        InMageRcmUpdateReplicationProtectedItemInput model = new InMageRcmUpdateReplicationProtectedItemInput()
+            .withTargetVmName("tuxy").withTargetVmSize("hfcaeo").withTargetResourceGroupId("fqd")
+            .withTargetAvailabilitySetId("jflobhahqmomf").withTargetAvailabilityZone("o")
+            .withTargetProximityPlacementGroupId("fr").withTargetBootDiagnosticsStorageAccountId("gbmxldjmz")
+            .withTargetNetworkId("bjesylslur").withTestNetworkId("fygpnyhgd")
+            .withVmNics(Arrays.asList(
+                new InMageRcmNicInput().withNicId("sc").withIsPrimaryNic("gqyvouprsytqzss")
+                    .withIsSelectedForFailover("mgw").withTargetSubnetName("ivrxpfduiol")
+                    .withTargetStaticIpAddress("yqvpbfjpo").withTestSubnetName("ucfzluczdquu")
+                    .withTestStaticIpAddress("ormvh"),
+                new InMageRcmNicInput().withNicId("zielbprnq").withIsPrimaryNic("jywzcqyg")
+                    .withIsSelectedForFailover("nwsvhbngqiwye").withTargetSubnetName("ob")
+                    .withTargetStaticIpAddress("rpnrehkunsbfjh").withTestSubnetName("w")
+                    .withTestStaticIpAddress("kvegeattbzkgtzq")))
+            .withLicenseType(LicenseType.NO_LICENSE_TYPE);
         model = BinaryData.fromObject(model).toObject(InMageRcmUpdateReplicationProtectedItemInput.class);
         Assertions.assertEquals("tuxy", model.targetVmName());
         Assertions.assertEquals("hfcaeo", model.targetVmSize());

@@ -11,22 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class GovernanceRuleEmailNotificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GovernanceRuleEmailNotification model =
-            BinaryData
-                .fromString("{\"disableManagerEmailNotification\":false,\"disableOwnerEmailNotification\":true}")
-                .toObject(GovernanceRuleEmailNotification.class);
-        Assertions.assertEquals(false, model.disableManagerEmailNotification());
-        Assertions.assertEquals(true, model.disableOwnerEmailNotification());
+        GovernanceRuleEmailNotification model = BinaryData
+            .fromString("{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":false}")
+            .toObject(GovernanceRuleEmailNotification.class);
+        Assertions.assertEquals(true, model.disableManagerEmailNotification());
+        Assertions.assertEquals(false, model.disableOwnerEmailNotification());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GovernanceRuleEmailNotification model =
-            new GovernanceRuleEmailNotification()
-                .withDisableManagerEmailNotification(false)
-                .withDisableOwnerEmailNotification(true);
+        GovernanceRuleEmailNotification model
+            = new GovernanceRuleEmailNotification().withDisableManagerEmailNotification(true)
+                .withDisableOwnerEmailNotification(false);
         model = BinaryData.fromObject(model).toObject(GovernanceRuleEmailNotification.class);
-        Assertions.assertEquals(false, model.disableManagerEmailNotification());
-        Assertions.assertEquals(true, model.disableOwnerEmailNotification());
+        Assertions.assertEquals(true, model.disableManagerEmailNotification());
+        Assertions.assertEquals(false, model.disableOwnerEmailNotification());
     }
 }

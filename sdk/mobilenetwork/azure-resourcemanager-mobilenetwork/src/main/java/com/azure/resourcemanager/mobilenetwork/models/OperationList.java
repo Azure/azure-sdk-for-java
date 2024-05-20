@@ -9,7 +9,9 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.OperationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of the operations. */
+/**
+ * List of the operations.
+ */
 @Immutable
 public final class OperationList {
     /*
@@ -24,13 +26,15 @@ public final class OperationList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of OperationList class. */
+    /**
+     * Creates an instance of OperationList class.
+     */
     public OperationList() {
     }
 
     /**
      * Get the value property: List of Microsoft.MobileNetwork operations.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationInner> value() {
@@ -39,7 +43,7 @@ public final class OperationList {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class OperationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

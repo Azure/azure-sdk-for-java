@@ -1,0 +1,89 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/serialization/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/serialization/
+
+parameters:
+  - name: release_azurejson
+    displayName: 'azure-json'
+    type: boolean
+    default: false
+  - name: release_azurexml
+    displayName: 'azure-xml'
+    type: boolean
+    default: false
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: serialization
+    JavadocSafeJavaBuildVersion: '1.21'
+    TimeoutInMinutes: 90
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-json
+        groupId: com.azure
+        safeName: azurejson
+        releaseInBatch: ${{ parameters.release_azurejson }}
+      - name: azure-xml
+        groupId: com.azure
+        safeName: azurexml
+        releaseInBatch: ${{ parameters.release_azurexml }}
+    AdditionalStagesAfterBuild:
+      - stage: AzureJsonReflectVersionSupport
+        displayName: 'azure-json-reflect Version Support'
+        dependsOn: []
+        jobs:
+          - template: /eng/pipelines/templates/jobs/ci.versions.tests.yml
+            parameters:
+              Artifacts:
+                - name: azure-json-reflect
+                  groupId: com.azure
+                  safeName: azurejsonreflect
+              VersionOverrides:
+                - gson_2.4
+                - gson_2.5
+                - gson_2.6
+                - gson_2.7
+                - gson_2.8
+                - gson_2.9
+                - gson_2.10
+                - jackson_2.10
+                - jackson_2.11
+                - jackson_2.12
+                - jackson_2.13
+                - jackson_2.14
+                - jackson_2.15
+                - jackson_2.16
+                - jackson_2.17
+              TestGoals: surefire:test
+
+    LiveTestStages:
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          ServiceDirectory: serialization
+          Artifacts:
+            - name: azure-json
+              groupId: com.azure
+              safeName: azurejson
+            - name: azure-xml
+              groupId: com.azure
+              safeName: azurexml

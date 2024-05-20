@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.NetworkProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network model. */
+/**
+ * Network model.
+ */
 @Fluent
 public final class NetworkInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class NetworkInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of NetworkInner class. */
+    /**
+     * Creates an instance of NetworkInner class.
+     */
     public NetworkInner() {
     }
 
     /**
      * Get the properties property: The Network Properties.
-     *
+     * 
      * @return the properties value.
      */
     public NetworkProperties properties() {
@@ -39,7 +43,7 @@ public final class NetworkInner extends ProxyResource {
 
     /**
      * Set the properties property: The Network Properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the NetworkInner object itself.
      */
@@ -50,7 +54,7 @@ public final class NetworkInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class NetworkInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the NetworkInner object itself.
      */
@@ -70,7 +74,7 @@ public final class NetworkInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

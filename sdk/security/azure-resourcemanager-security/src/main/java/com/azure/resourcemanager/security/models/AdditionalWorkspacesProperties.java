@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the additional workspaces. */
+/**
+ * Properties of the additional workspaces.
+ */
 @Fluent
 public final class AdditionalWorkspacesProperties {
     /*
@@ -29,13 +31,15 @@ public final class AdditionalWorkspacesProperties {
     @JsonProperty(value = "dataTypes")
     private List<AdditionalWorkspaceDataType> dataTypes;
 
-    /** Creates an instance of AdditionalWorkspacesProperties class. */
+    /**
+     * Creates an instance of AdditionalWorkspacesProperties class.
+     */
     public AdditionalWorkspacesProperties() {
     }
 
     /**
      * Get the workspace property: Workspace resource id.
-     *
+     * 
      * @return the workspace value.
      */
     public String workspace() {
@@ -44,7 +48,7 @@ public final class AdditionalWorkspacesProperties {
 
     /**
      * Set the workspace property: Workspace resource id.
-     *
+     * 
      * @param workspace the workspace value to set.
      * @return the AdditionalWorkspacesProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class AdditionalWorkspacesProperties {
 
     /**
      * Get the type property: Workspace type.
-     *
+     * 
      * @return the type value.
      */
     public AdditionalWorkspaceType type() {
@@ -64,7 +68,7 @@ public final class AdditionalWorkspacesProperties {
 
     /**
      * Set the type property: Workspace type.
-     *
+     * 
      * @param type the type value to set.
      * @return the AdditionalWorkspacesProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class AdditionalWorkspacesProperties {
 
     /**
      * Get the dataTypes property: List of data types sent to workspace.
-     *
+     * 
      * @return the dataTypes value.
      */
     public List<AdditionalWorkspaceDataType> dataTypes() {
@@ -84,7 +88,7 @@ public final class AdditionalWorkspacesProperties {
 
     /**
      * Set the dataTypes property: List of data types sent to workspace.
-     *
+     * 
      * @param dataTypes the dataTypes value to set.
      * @return the AdditionalWorkspacesProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class AdditionalWorkspacesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

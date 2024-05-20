@@ -16,8 +16,7 @@ public final class StorageTargetOperationsImpl implements StorageTargetOperation
 
     private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    public StorageTargetOperationsImpl(
-        StorageTargetOperationsClient innerClient,
+    public StorageTargetOperationsImpl(StorageTargetOperationsClient innerClient,
         com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

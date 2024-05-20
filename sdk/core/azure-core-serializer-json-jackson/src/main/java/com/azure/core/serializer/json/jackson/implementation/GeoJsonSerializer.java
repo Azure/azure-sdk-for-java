@@ -33,8 +33,8 @@ import java.util.Map;
 final class GeoJsonSerializer extends JsonSerializer<GeoObject> {
     private static final ClientLogger LOGGER = new ClientLogger(GeoJsonSerializer.class);
 
-    private static final SimpleModule MODULE = new SimpleModule().addSerializer(GeoObject.class, new GeoJsonSerializer());
-
+    private static final SimpleModule MODULE
+        = new SimpleModule().addSerializer(GeoObject.class, new GeoJsonSerializer());
 
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson ObjectMapper.
@@ -139,8 +139,7 @@ final class GeoJsonSerializer extends JsonSerializer<GeoObject> {
         gen.writeStringField(GeoJsonDeserializer.TYPE_PROPERTY, type.toString());
     }
 
-    private static void writeBoundingBox(GeoBoundingBox boundingBox, JsonGenerator gen)
-        throws IOException {
+    private static void writeBoundingBox(GeoBoundingBox boundingBox, JsonGenerator gen) throws IOException {
         if (boundingBox == null) {
             return;
         }

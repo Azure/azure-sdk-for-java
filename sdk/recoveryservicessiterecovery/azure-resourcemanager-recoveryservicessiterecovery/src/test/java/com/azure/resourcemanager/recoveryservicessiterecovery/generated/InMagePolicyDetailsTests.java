@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMagePolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMagePolicyDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMage\",\"recoveryPointThresholdInMinutes\":841361482,\"recoveryPointHistory\":1070639613,\"appConsistentFrequencyInMinutes\":977949832,\"multiVmSyncStatus\":\"ac\"}")
-                .toObject(InMagePolicyDetails.class);
+        InMagePolicyDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"InMage\",\"recoveryPointThresholdInMinutes\":841361482,\"recoveryPointHistory\":1070639613,\"appConsistentFrequencyInMinutes\":977949832,\"multiVmSyncStatus\":\"ac\"}")
+            .toObject(InMagePolicyDetails.class);
         Assertions.assertEquals(841361482, model.recoveryPointThresholdInMinutes());
         Assertions.assertEquals(1070639613, model.recoveryPointHistory());
         Assertions.assertEquals(977949832, model.appConsistentFrequencyInMinutes());
@@ -24,12 +22,9 @@ public final class InMagePolicyDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMagePolicyDetails model =
-            new InMagePolicyDetails()
-                .withRecoveryPointThresholdInMinutes(841361482)
-                .withRecoveryPointHistory(1070639613)
-                .withAppConsistentFrequencyInMinutes(977949832)
-                .withMultiVmSyncStatus("ac");
+        InMagePolicyDetails model = new InMagePolicyDetails().withRecoveryPointThresholdInMinutes(841361482)
+            .withRecoveryPointHistory(1070639613).withAppConsistentFrequencyInMinutes(977949832)
+            .withMultiVmSyncStatus("ac");
         model = BinaryData.fromObject(model).toObject(InMagePolicyDetails.class);
         Assertions.assertEquals(841361482, model.recoveryPointThresholdInMinutes());
         Assertions.assertEquals(1070639613, model.recoveryPointHistory());

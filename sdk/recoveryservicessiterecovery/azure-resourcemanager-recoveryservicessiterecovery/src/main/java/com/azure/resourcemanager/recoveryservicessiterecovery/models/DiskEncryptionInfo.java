@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Recovery disk encryption info (BEK and KEK). */
+/**
+ * Recovery disk encryption info (BEK and KEK).
+ */
 @Fluent
 public final class DiskEncryptionInfo {
     /*
@@ -22,13 +24,15 @@ public final class DiskEncryptionInfo {
     @JsonProperty(value = "keyEncryptionKeyInfo")
     private KeyEncryptionKeyInfo keyEncryptionKeyInfo;
 
-    /** Creates an instance of DiskEncryptionInfo class. */
+    /**
+     * Creates an instance of DiskEncryptionInfo class.
+     */
     public DiskEncryptionInfo() {
     }
 
     /**
      * Get the diskEncryptionKeyInfo property: The recovery KeyVault reference for secret.
-     *
+     * 
      * @return the diskEncryptionKeyInfo value.
      */
     public DiskEncryptionKeyInfo diskEncryptionKeyInfo() {
@@ -37,7 +41,7 @@ public final class DiskEncryptionInfo {
 
     /**
      * Set the diskEncryptionKeyInfo property: The recovery KeyVault reference for secret.
-     *
+     * 
      * @param diskEncryptionKeyInfo the diskEncryptionKeyInfo value to set.
      * @return the DiskEncryptionInfo object itself.
      */
@@ -48,7 +52,7 @@ public final class DiskEncryptionInfo {
 
     /**
      * Get the keyEncryptionKeyInfo property: The recovery KeyVault reference for key.
-     *
+     * 
      * @return the keyEncryptionKeyInfo value.
      */
     public KeyEncryptionKeyInfo keyEncryptionKeyInfo() {
@@ -57,7 +61,7 @@ public final class DiskEncryptionInfo {
 
     /**
      * Set the keyEncryptionKeyInfo property: The recovery KeyVault reference for key.
-     *
+     * 
      * @param keyEncryptionKeyInfo the keyEncryptionKeyInfo value to set.
      * @return the DiskEncryptionInfo object itself.
      */
@@ -68,7 +72,7 @@ public final class DiskEncryptionInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

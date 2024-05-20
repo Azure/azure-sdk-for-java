@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of RegulatoryComplianceAssessments. */
+/**
+ * Resource collection API of RegulatoryComplianceAssessments.
+ */
 public interface RegulatoryComplianceAssessments {
     /**
      * Details and state of assessments mapped to selected regulatory compliance control.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -20,12 +22,12 @@ public interface RegulatoryComplianceAssessments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of regulatory compliance assessment response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RegulatoryComplianceAssessment> list(
-        String regulatoryComplianceStandardName, String regulatoryComplianceControlName);
+    PagedIterable<RegulatoryComplianceAssessment> list(String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName);
 
     /**
      * Details and state of assessments mapped to selected regulatory compliance control.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param filter OData filter. Optional.
@@ -35,15 +37,12 @@ public interface RegulatoryComplianceAssessments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of regulatory compliance assessment response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RegulatoryComplianceAssessment> list(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
-        String filter,
-        Context context);
+    PagedIterable<RegulatoryComplianceAssessment> list(String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName, String filter, Context context);
 
     /**
      * Supported regulatory compliance details and state for selected assessment.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
@@ -53,15 +52,12 @@ public interface RegulatoryComplianceAssessments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return regulatory compliance assessment details and state along with {@link Response}.
      */
-    Response<RegulatoryComplianceAssessment> getWithResponse(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
-        String regulatoryComplianceAssessmentName,
-        Context context);
+    Response<RegulatoryComplianceAssessment> getWithResponse(String regulatoryComplianceStandardName,
+        String regulatoryComplianceControlName, String regulatoryComplianceAssessmentName, Context context);
 
     /**
      * Supported regulatory compliance details and state for selected assessment.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param regulatoryComplianceControlName Name of the regulatory compliance control object.
      * @param regulatoryComplianceAssessmentName Name of the regulatory compliance assessment object.
@@ -70,8 +66,6 @@ public interface RegulatoryComplianceAssessments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return regulatory compliance assessment details and state.
      */
-    RegulatoryComplianceAssessment get(
-        String regulatoryComplianceStandardName,
-        String regulatoryComplianceControlName,
+    RegulatoryComplianceAssessment get(String regulatoryComplianceStandardName, String regulatoryComplianceControlName,
         String regulatoryComplianceAssessmentName);
 }

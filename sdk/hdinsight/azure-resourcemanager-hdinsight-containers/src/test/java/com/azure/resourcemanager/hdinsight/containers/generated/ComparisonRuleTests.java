@@ -12,20 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ComparisonRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComparisonRule model =
-            BinaryData
-                .fromString("{\"operator\":\"greaterThan\",\"threshold\":36.36004}")
-                .toObject(ComparisonRule.class);
-        Assertions.assertEquals(ComparisonOperator.GREATER_THAN, model.operator());
-        Assertions.assertEquals(36.36004f, model.threshold());
+        ComparisonRule model = BinaryData.fromString("{\"operator\":\"lessThanOrEqual\",\"threshold\":22.792763}")
+            .toObject(ComparisonRule.class);
+        Assertions.assertEquals(ComparisonOperator.LESS_THAN_OR_EQUAL, model.operator());
+        Assertions.assertEquals(22.792763f, model.threshold());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComparisonRule model =
-            new ComparisonRule().withOperator(ComparisonOperator.GREATER_THAN).withThreshold(36.36004f);
+        ComparisonRule model
+            = new ComparisonRule().withOperator(ComparisonOperator.LESS_THAN_OR_EQUAL).withThreshold(22.792763f);
         model = BinaryData.fromObject(model).toObject(ComparisonRule.class);
-        Assertions.assertEquals(ComparisonOperator.GREATER_THAN, model.operator());
-        Assertions.assertEquals(36.36004f, model.threshold());
+        Assertions.assertEquals(ComparisonOperator.LESS_THAN_OR_EQUAL, model.operator());
+        Assertions.assertEquals(22.792763f, model.threshold());
     }
 }

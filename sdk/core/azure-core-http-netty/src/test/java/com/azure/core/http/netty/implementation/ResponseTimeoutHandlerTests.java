@@ -3,21 +3,15 @@
 
 package com.azure.core.http.netty.implementation;
 
+import com.azure.core.http.netty.mocking.MockChannelHandlerContext;
+import com.azure.core.http.netty.mocking.MockEventExecutor;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.DefaultEventExecutor;
-import io.netty.util.concurrent.EventExecutor;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link ResponseTimeoutHandler}.
@@ -27,38 +21,31 @@ public class ResponseTimeoutHandlerTests {
     public void noTimeoutDoesNotAddWatcher() {
         ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(0);
 
-        EventExecutor eventExecutor = mock(EventExecutor.class);
-        when(eventExecutor.schedule(any(Runnable.class), anyLong(), any())).thenReturn(null);
-
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.executor()).thenReturn(eventExecutor);
+        MockEventExecutor eventExecutor = new MockEventExecutor();
+        ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
         responseTimeoutHandler.handlerAdded(ctx);
 
-        verify(eventExecutor, never()).schedule(any(Runnable.class), anyLong(), any());
+        assertEquals(0, eventExecutor.getScheduleCallCount());
     }
 
     @Test
     public void timeoutAddsWatcher() {
         ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(1);
 
-        EventExecutor eventExecutor = mock(EventExecutor.class);
-        when(eventExecutor.schedule(any(Runnable.class), eq(1L), any())).thenReturn(null);
-
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.executor()).thenReturn(eventExecutor);
+        MockEventExecutor eventExecutor = new MockEventExecutor();
+        ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
         responseTimeoutHandler.handlerAdded(ctx);
 
-        verify(eventExecutor, times(1)).schedule(any(Runnable.class), eq(1L), any());
+        assertEquals(1, eventExecutor.getScheduleCallCount(1));
     }
 
     @Test
     public void removingHandlerCancelsTimeout() {
         ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(100);
 
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.executor()).thenReturn(new DefaultEventExecutor());
+        ChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
         responseTimeoutHandler.handlerAdded(ctx);
         responseTimeoutHandler.handlerRemoved(ctx);
@@ -70,14 +57,13 @@ public class ResponseTimeoutHandlerTests {
     public void responseTimesOut() {
         ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(100);
 
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.executor()).thenReturn(new DefaultEventExecutor());
+        MockChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
         responseTimeoutHandler.handlerAdded(ctx);
 
         // Fake that the scheduled timer completed before any response is received.
         responseTimeoutHandler.responseTimedOut(ctx);
 
-        verify(ctx, atLeast(1)).fireExceptionCaught(any());
+        assertTrue(ctx.getFireExceptionCaughtCallCount() >= 1);
     }
 }

@@ -67,15 +67,13 @@ public class WebSocketsProxyConnectionHandlerTest {
     private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, PROXY_ADDRESS);
     private static final String USERNAME = "test-user";
     private static final String PASSWORD = "test-password";
-    private static final ProxyOptions PROXY_OPTIONS =
-        new ProxyOptions(ProxyAuthenticationType.DIGEST, PROXY, USERNAME, PASSWORD);
+    private static final ProxyOptions PROXY_OPTIONS
+        = new ProxyOptions(ProxyAuthenticationType.DIGEST, PROXY, USERNAME, PASSWORD);
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
-    private static final List<Header> HEADER_LIST = Collections.singletonList(
-        new Header("foo-bar", "some-values"));
-    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions()
-        .setHeaders(HEADER_LIST);
+    private static final List<Header> HEADER_LIST = Collections.singletonList(new Header("foo-bar", "some-values"));
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions().setHeaders(HEADER_LIST);
 
     private final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, 2192);
 
@@ -100,9 +98,8 @@ public class WebSocketsProxyConnectionHandlerTest {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
         this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP,
-            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
-            CLIENT_VERSION);
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP, new AmqpRetryOptions(),
+            ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
         this.originalProxySelector = ProxySelector.getDefault();
         this.proxySelector = mock(ProxySelector.class, Mockito.CALLS_REAL_METHODS);
@@ -179,13 +176,12 @@ public class WebSocketsProxyConnectionHandlerTest {
         // Arrange
         final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
         final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
-        final ProxyOptions proxyOptions = new ProxyOptions(ProxyAuthenticationType.BASIC, newProxy, USERNAME,
-            PASSWORD);
+        final ProxyOptions proxyOptions = new ProxyOptions(ProxyAuthenticationType.BASIC, newProxy, USERNAME, PASSWORD);
 
         when(proxySelector.select(any())).thenReturn(Collections.singletonList(PROXY));
 
-        this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions, proxyOptions,
-            peerDetails, AmqpMetricsProvider.noop());
+        this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions, proxyOptions, peerDetails,
+            AmqpMetricsProvider.noop());
 
         // Act and Assert
         Assertions.assertEquals(address.getHostName(), handler.getHostname());
@@ -203,11 +199,10 @@ public class WebSocketsProxyConnectionHandlerTest {
         // Arrange
         final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
         final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
-        final ProxyOptions proxyOptions = new ProxyOptions(ProxyAuthenticationType.BASIC, newProxy, USERNAME,
-            PASSWORD);
+        final ProxyOptions proxyOptions = new ProxyOptions(ProxyAuthenticationType.BASIC, newProxy, USERNAME, PASSWORD);
 
-        this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions,
-            proxyOptions, peerDetails, AmqpMetricsProvider.noop());
+        this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions, proxyOptions, peerDetails,
+            AmqpMetricsProvider.noop());
 
         // Act and Assert
         try (MockedConstruction<ProxyImpl> mockConstruction = mockConstruction(ProxyImpl.class)) {
@@ -232,15 +227,14 @@ public class WebSocketsProxyConnectionHandlerTest {
         // Arrange
         final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
         final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
-        final ProxyOptions proxyOptions = new ProxyOptions(ProxyAuthenticationType.BASIC, newProxy, USERNAME,
-            PASSWORD);
+        final ProxyOptions proxyOptions = new ProxyOptions(ProxyAuthenticationType.BASIC, newProxy, USERNAME, PASSWORD);
         final String customEndpointHostname = "order-events.contoso.com";
         final int customEndpointPort = 200;
 
-        final ConnectionOptions connectionOptionsWithCustomEndpoint = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP_WEB_SOCKETS,
-            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
-            CLIENT_VERSION, customEndpointHostname, customEndpointPort);
+        final ConnectionOptions connectionOptionsWithCustomEndpoint
+            = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope",
+                AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler,
+                CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, customEndpointHostname, customEndpointPort);
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptionsWithCustomEndpoint,
             proxyOptions, peerDetails, AmqpMetricsProvider.noop());
@@ -291,7 +285,8 @@ public class WebSocketsProxyConnectionHandlerTest {
     @Test
     void onConnectionCloseMetrics() {
         // Arrange
-        final ErrorCondition errorCondition = new ErrorCondition(Symbol.valueOf(AmqpErrorCode.SERVER_BUSY_ERROR.toString()), "");
+        final ErrorCondition errorCondition
+            = new ErrorCondition(Symbol.valueOf(AmqpErrorCode.SERVER_BUSY_ERROR.toString()), "");
         Event openEvent = mock(Event.class);
         Event closeEventWithError = mock(Event.class);
         Event closeEventNoError = mock(Event.class);
@@ -311,8 +306,8 @@ public class WebSocketsProxyConnectionHandlerTest {
         when(connectionNoError.getRemoteState()).thenReturn(EndpointState.ACTIVE);
 
         TestMeter meter = new TestMeter();
-        WebSocketsProxyConnectionHandler handlerWithMetrics = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptions, PROXY_OPTIONS,
-            peerDetails, new AmqpMetricsProvider(meter, HOSTNAME, null));
+        WebSocketsProxyConnectionHandler handlerWithMetrics = new WebSocketsProxyConnectionHandler(CONNECTION_ID,
+            connectionOptions, PROXY_OPTIONS, peerDetails, new AmqpMetricsProvider(meter, HOSTNAME, null));
 
         handlerWithMetrics.onConnectionInit(openEvent);
         handlerWithMetrics.onConnectionInit(openEvent);
@@ -320,14 +315,16 @@ public class WebSocketsProxyConnectionHandlerTest {
         handlerWithMetrics.onConnectionFinal(closeEventNoError);
 
         // Assert
-        List<TestMeasurement<Long>> closedConnections = meter.getCounters().get("messaging.az.amqp.client.connections.closed").getMeasurements();
+        List<TestMeasurement<Long>> closedConnections
+            = meter.getCounters().get("messaging.az.amqp.client.connections.closed").getMeasurements();
         assertEquals(2, closedConnections.size());
 
         assertEquals(1, closedConnections.get(0).getValue());
         assertEquals(1, closedConnections.get(1).getValue());
 
         assertEquals(HOSTNAME, closedConnections.get(0).getAttributes().get(ClientConstants.HOSTNAME_KEY));
-        assertEquals("com.microsoft:server-busy", closedConnections.get(0).getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
+        assertEquals("com.microsoft:server-busy",
+            closedConnections.get(0).getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
         assertEquals("ok", closedConnections.get(1).getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
     }
 }

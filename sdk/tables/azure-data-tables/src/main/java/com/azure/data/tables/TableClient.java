@@ -31,10 +31,11 @@ import com.azure.data.tables.implementation.models.OdataMetadataFormat;
 import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.SignedIdentifier;
+import com.azure.data.tables.implementation.models.SignedIdentifierWrapper;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
-import com.azure.data.tables.implementation.models.TableServiceError;
+import com.azure.data.tables.implementation.models.TableServiceJsonError;
 import com.azure.data.tables.implementation.models.TablesGetAccessPolicyHeaders;
 import com.azure.data.tables.implementation.models.TablesQueryEntitiesHeaders;
 import com.azure.data.tables.implementation.models.TablesQueryEntityWithPartitionAndRowKeyHeaders;
@@ -72,6 +73,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.CoreUtils.getResultWithTimeout;
+import static com.azure.data.tables.implementation.TableUtils.callIterableWithOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.callWithOptionalTimeout;
 import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
 import static com.azure.data.tables.implementation.TableUtils.mapThrowableToTableServiceException;
@@ -157,7 +159,7 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * <!-- src_embed com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode -->
  * <pre>
  *
- * TableEntity myTableEntity = new TableEntity&#40;&quot;paritionKey&quot;, &quot;rowKey&quot;&#41;
+ * TableEntity myTableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
  *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
  *
  * tableClient.updateEntity&#40;myTableEntity, TableEntityUpdateMode.REPLACE&#41;;
@@ -770,7 +772,7 @@ public final class TableClient {
      * <!-- src_embed com.azure.data.tables.tableClient.updateEntity#TableEntity-TableEntityUpdateMode -->
      * <pre>
      *
-     * TableEntity myTableEntity = new TableEntity&#40;&quot;paritionKey&quot;, &quot;rowKey&quot;&#41;
+     * TableEntity myTableEntity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
      *     .addProperty&#40;&quot;Property&quot;, &quot;Value&quot;&#41;;
      *
      * tableClient.updateEntity&#40;myTableEntity, TableEntityUpdateMode.REPLACE&#41;;
@@ -1061,18 +1063,16 @@ public final class TableClient {
             () -> listEntitiesFirstPage(context, options, TableEntity.class),
             token -> listEntitiesNextPage(token, context, options, TableEntity.class));
 
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
+        return callIterableWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
     }
 
-    private <T extends TableEntity> PagedResponse<T> listEntitiesFirstPage(Context context,
-                                                                           ListEntitiesOptions options,
-                                                                           Class<T> resultType) {
+    private <T extends TableEntity> PagedResponse<T> listEntitiesFirstPage(Context context, ListEntitiesOptions options,
+        Class<T> resultType) {
         return listEntities(null, null, context, options, resultType);
     }
 
     private <T extends TableEntity> PagedResponse<T> listEntitiesNextPage(String token, Context context,
-                                                                          ListEntitiesOptions options,
-                                                                          Class<T> resultType) {
+        ListEntitiesOptions options, Class<T> resultType) {
         if (token == null) {
             return null;
         }
@@ -1305,10 +1305,10 @@ public final class TableClient {
         Context contextValue = TableUtils.setContext(context, true);
 
         Supplier<Response<TableAccessPolicies>> callable = () -> {
-            ResponseBase<TablesGetAccessPolicyHeaders, List<SignedIdentifier>> response =
+            ResponseBase<TablesGetAccessPolicyHeaders, SignedIdentifierWrapper> response =
                 tablesImplementation.getTables().getAccessPolicyWithResponse(tableName, null, null, contextValue);
             return new SimpleResponse<>(response,
-                new TableAccessPolicies(response.getValue() == null ? null : response.getValue().stream()
+                new TableAccessPolicies(response.getValue() == null ? null : response.getValue().items().stream()
                     .map(TableUtils::toTableSignedIdentifier)
                     .collect(Collectors.toList())));
         };
@@ -1717,8 +1717,8 @@ public final class TableClient {
     }
 
     private Response<List<TableTransactionActionResponse>> parseResponse(TransactionalBatchRequestBody requestBody,
-                                                                               ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> response) {
-        TableServiceError error = null;
+        ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> response) {
+        TableServiceJsonError error = null;
         String errorMessage = null;
         TransactionalBatchChangeSet changes = null;
         TransactionalBatchAction failedAction = null;
@@ -1739,8 +1739,8 @@ public final class TableClient {
 
             // If one sub-response was an error, we need to throw even though the service responded with 202
             if (subResponse.getStatusCode() >= 400 && error == null && errorMessage == null) {
-                if (subResponse.getValue() instanceof TableServiceError) {
-                    error = (TableServiceError) subResponse.getValue();
+                if (subResponse.getValue() instanceof TableServiceJsonError) {
+                    error = (TableServiceJsonError) subResponse.getValue();
 
                     // Make a best effort to locate the failed operation and include it in the message
                     if (changes != null && error.getOdataError() != null

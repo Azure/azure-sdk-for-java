@@ -5,7 +5,6 @@ package com.azure.communication.callautomation.models.streaming.transcription;
 
 import com.azure.communication.callautomation.models.streaming.StreamingData;
 import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.List;
@@ -38,6 +37,11 @@ public final class TranscriptionData extends StreamingData {
     private final long offset;
 
     /*
+     * Duration in ticks. 1 tick = 100 nanoseconds.
+     */
+    private final long duration;
+
+    /*
      * The result for each word of the phrase
      */
     private final List<Word> words;
@@ -59,18 +63,20 @@ public final class TranscriptionData extends StreamingData {
      * @param format The format of text
      * @param confidence Confidence of recognition of the whole phrase, from 0.0 (no confidence) to 1.0 (full confidence)
      * @param offset The position of this payload
+     * @param duration The Duration in ticks. 1 tick = 100 nanoseconds.
      * @param words The result for each word of the phrase
      * @param participantRawID The identified speaker based on participant raw ID
      * @param resultStatus Status of the result of transcription
      */
-    public TranscriptionData(String text, String format, double confidence, long offset, List<Word> words, String participantRawID, String resultStatus) {
+    public TranscriptionData(String text, String format, double confidence, long offset, long duration, List<Word> words, String participantRawID, String resultStatus) {
         this.text = text;
         this.format = convertToTextFormatEnum(format);
         this.confidence = confidence;
         this.offset = offset;
+        this.duration = duration;
         this.words = words;
         if (participantRawID != null && !participantRawID.isEmpty()) {
-            this.participant = new CommunicationUserIdentifier(participantRawID);
+            this.participant = CommunicationIdentifier.fromRawId(participantRawID);
         } else {
             participant = null;
         }
@@ -131,7 +137,14 @@ public final class TranscriptionData extends StreamingData {
     public Long getOffset() {
         return offset;
     }
-
+    /**
+     * Get the duration property.
+     *
+     * @return the duration value.
+     */
+    public Long getDuration() {
+        return duration;
+    }
     /**
      * Get the words property.
      *

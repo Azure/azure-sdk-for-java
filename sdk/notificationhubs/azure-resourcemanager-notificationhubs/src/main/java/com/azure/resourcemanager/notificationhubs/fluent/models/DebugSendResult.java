@@ -4,99 +4,75 @@
 
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Immutable;
+import com.azure.resourcemanager.notificationhubs.models.RegistrationResult;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** The DebugSendResult model. */
-@Fluent
+/**
+ * Result of DebugSend operations.
+ */
+@Immutable
 public final class DebugSendResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DebugSendResult.class);
+    /*
+     * Gets or sets successful send
+     */
+    @JsonProperty(value = "success", access = JsonProperty.Access.WRITE_ONLY)
+    private Long success;
 
     /*
-     * successful send
+     * Gets or sets send failure
      */
-    @JsonProperty(value = "success")
-    private Float success;
+    @JsonProperty(value = "failure", access = JsonProperty.Access.WRITE_ONLY)
+    private Long failure;
 
     /*
-     * send failure
+     * Gets or sets actual failure description
      */
-    @JsonProperty(value = "failure")
-    private Float failure;
-
-    /*
-     * actual failure description
-     */
-    @JsonProperty(value = "results")
-    private Object results;
+    @JsonProperty(value = "results", access = JsonProperty.Access.WRITE_ONLY)
+    private List<RegistrationResult> results;
 
     /**
-     * Get the success property: successful send.
-     *
+     * Creates an instance of DebugSendResult class.
+     */
+    public DebugSendResult() {
+    }
+
+    /**
+     * Get the success property: Gets or sets successful send.
+     * 
      * @return the success value.
      */
-    public Float success() {
+    public Long success() {
         return this.success;
     }
 
     /**
-     * Set the success property: successful send.
-     *
-     * @param success the success value to set.
-     * @return the DebugSendResult object itself.
-     */
-    public DebugSendResult withSuccess(Float success) {
-        this.success = success;
-        return this;
-    }
-
-    /**
-     * Get the failure property: send failure.
-     *
+     * Get the failure property: Gets or sets send failure.
+     * 
      * @return the failure value.
      */
-    public Float failure() {
+    public Long failure() {
         return this.failure;
     }
 
     /**
-     * Set the failure property: send failure.
-     *
-     * @param failure the failure value to set.
-     * @return the DebugSendResult object itself.
-     */
-    public DebugSendResult withFailure(Float failure) {
-        this.failure = failure;
-        return this;
-    }
-
-    /**
-     * Get the results property: actual failure description.
-     *
+     * Get the results property: Gets or sets actual failure description.
+     * 
      * @return the results value.
      */
-    public Object results() {
+    public List<RegistrationResult> results() {
         return this.results;
     }
 
     /**
-     * Set the results property: actual failure description.
-     *
-     * @param results the results value to set.
-     * @return the DebugSendResult object itself.
-     */
-    public DebugSendResult withResults(Object results) {
-        this.results = results;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (results() != null) {
+            results().forEach(e -> e.validate());
+        }
     }
 }

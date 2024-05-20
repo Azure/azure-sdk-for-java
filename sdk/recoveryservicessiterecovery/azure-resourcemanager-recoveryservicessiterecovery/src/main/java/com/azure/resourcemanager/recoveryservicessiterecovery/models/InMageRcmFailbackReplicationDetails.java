@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** InMageRcmFailback provider specific details. */
+/**
+ * InMageRcmFailback provider specific details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcmFailback")
 @Fluent
@@ -192,13 +194,15 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
     @JsonProperty(value = "isAgentRegistrationSuccessfulAfterFailover", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isAgentRegistrationSuccessfulAfterFailover;
 
-    /** Creates an instance of InMageRcmFailbackReplicationDetails class. */
+    /**
+     * Creates an instance of InMageRcmFailbackReplicationDetails class.
+     */
     public InMageRcmFailbackReplicationDetails() {
     }
 
     /**
      * Get the internalIdentifier property: The virtual machine internal identifier.
-     *
+     * 
      * @return the internalIdentifier value.
      */
     public String internalIdentifier() {
@@ -207,7 +211,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the azureVirtualMachineId property: The ARM Id of the azure VM.
-     *
+     * 
      * @return the azureVirtualMachineId value.
      */
     public String azureVirtualMachineId() {
@@ -216,7 +220,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the multiVmGroupName property: The multi VM group name.
-     *
+     * 
      * @return the multiVmGroupName value.
      */
     public String multiVmGroupName() {
@@ -225,7 +229,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the reprotectAgentId property: The reprotect agent Id.
-     *
+     * 
      * @return the reprotectAgentId value.
      */
     public String reprotectAgentId() {
@@ -234,7 +238,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the reprotectAgentName property: The reprotect agent name.
-     *
+     * 
      * @return the reprotectAgentName value.
      */
     public String reprotectAgentName() {
@@ -243,7 +247,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the osType property: The type of the OS on the VM.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -252,7 +256,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the logStorageAccountId property: The log storage account ARM Id.
-     *
+     * 
      * @return the logStorageAccountId value.
      */
     public String logStorageAccountId() {
@@ -261,7 +265,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the targetvCenterId property: The target vCenter Id.
-     *
+     * 
      * @return the targetvCenterId value.
      */
     public String targetvCenterId() {
@@ -270,7 +274,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the targetDataStoreName property: The target datastore name.
-     *
+     * 
      * @return the targetDataStoreName value.
      */
     public String targetDataStoreName() {
@@ -279,7 +283,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the targetVmName property: The target VM name.
-     *
+     * 
      * @return the targetVmName value.
      */
     public String targetVmName() {
@@ -288,7 +292,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the initialReplicationProgressPercentage property: The initial replication progress percentage.
-     *
+     * 
      * @return the initialReplicationProgressPercentage value.
      */
     public Integer initialReplicationProgressPercentage() {
@@ -298,7 +302,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
     /**
      * Get the initialReplicationProcessedBytes property: The initial replication processed bytes. This includes sum of
      * total bytes transferred and matched bytes on all selected disks in source VM.
-     *
+     * 
      * @return the initialReplicationProcessedBytes value.
      */
     public Long initialReplicationProcessedBytes() {
@@ -308,7 +312,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
     /**
      * Get the initialReplicationTransferredBytes property: The initial replication transferred bytes from source VM to
      * target for all selected disks on source VM.
-     *
+     * 
      * @return the initialReplicationTransferredBytes value.
      */
     public Long initialReplicationTransferredBytes() {
@@ -317,7 +321,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the initialReplicationProgressHealth property: The initial replication progress health.
-     *
+     * 
      * @return the initialReplicationProgressHealth value.
      */
     public VmReplicationProgressHealth initialReplicationProgressHealth() {
@@ -326,7 +330,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the resyncProgressPercentage property: The resync progress percentage.
-     *
+     * 
      * @return the resyncProgressPercentage value.
      */
     public Integer resyncProgressPercentage() {
@@ -336,7 +340,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
     /**
      * Get the resyncProcessedBytes property: The resync processed bytes. This includes sum of total bytes transferred
      * and matched bytes on all selected disks in source VM.
-     *
+     * 
      * @return the resyncProcessedBytes value.
      */
     public Long resyncProcessedBytes() {
@@ -346,7 +350,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
     /**
      * Get the resyncTransferredBytes property: The resync transferred bytes from source VM to target for all selected
      * disks on source VM.
-     *
+     * 
      * @return the resyncTransferredBytes value.
      */
     public Long resyncTransferredBytes() {
@@ -355,7 +359,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the resyncProgressHealth property: The resync progress health.
-     *
+     * 
      * @return the resyncProgressHealth value.
      */
     public VmReplicationProgressHealth resyncProgressHealth() {
@@ -364,7 +368,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the resyncRequired property: A value indicating whether resync is required.
-     *
+     * 
      * @return the resyncRequired value.
      */
     public String resyncRequired() {
@@ -373,7 +377,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the resyncState property: The resync state.
-     *
+     * 
      * @return the resyncState value.
      */
     public ResyncState resyncState() {
@@ -382,7 +386,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the protectedDisks property: The list of protected disks.
-     *
+     * 
      * @return the protectedDisks value.
      */
     public List<InMageRcmFailbackProtectedDiskDetails> protectedDisks() {
@@ -391,19 +395,19 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Set the protectedDisks property: The list of protected disks.
-     *
+     * 
      * @param protectedDisks the protectedDisks value to set.
      * @return the InMageRcmFailbackReplicationDetails object itself.
      */
-    public InMageRcmFailbackReplicationDetails withProtectedDisks(
-        List<InMageRcmFailbackProtectedDiskDetails> protectedDisks) {
+    public InMageRcmFailbackReplicationDetails
+        withProtectedDisks(List<InMageRcmFailbackProtectedDiskDetails> protectedDisks) {
         this.protectedDisks = protectedDisks;
         return this;
     }
 
     /**
      * Get the mobilityAgentDetails property: The mobility agent information.
-     *
+     * 
      * @return the mobilityAgentDetails value.
      */
     public InMageRcmFailbackMobilityAgentDetails mobilityAgentDetails() {
@@ -412,19 +416,19 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Set the mobilityAgentDetails property: The mobility agent information.
-     *
+     * 
      * @param mobilityAgentDetails the mobilityAgentDetails value to set.
      * @return the InMageRcmFailbackReplicationDetails object itself.
      */
-    public InMageRcmFailbackReplicationDetails withMobilityAgentDetails(
-        InMageRcmFailbackMobilityAgentDetails mobilityAgentDetails) {
+    public InMageRcmFailbackReplicationDetails
+        withMobilityAgentDetails(InMageRcmFailbackMobilityAgentDetails mobilityAgentDetails) {
         this.mobilityAgentDetails = mobilityAgentDetails;
         return this;
     }
 
     /**
      * Get the vmNics property: The network details.
-     *
+     * 
      * @return the vmNics value.
      */
     public List<InMageRcmFailbackNicDetails> vmNics() {
@@ -433,7 +437,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Set the vmNics property: The network details.
-     *
+     * 
      * @param vmNics the vmNics value to set.
      * @return the InMageRcmFailbackReplicationDetails object itself.
      */
@@ -444,7 +448,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the lastPlannedFailoverStartTime property: The last planned failover start time.
-     *
+     * 
      * @return the lastPlannedFailoverStartTime value.
      */
     public OffsetDateTime lastPlannedFailoverStartTime() {
@@ -453,7 +457,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the lastPlannedFailoverStatus property: The last planned failover status.
-     *
+     * 
      * @return the lastPlannedFailoverStatus value.
      */
     public PlannedFailoverStatus lastPlannedFailoverStatus() {
@@ -462,7 +466,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the discoveredVmDetails property: The discovered VM information.
-     *
+     * 
      * @return the discoveredVmDetails value.
      */
     public InMageRcmFailbackDiscoveredProtectedVmDetails discoveredVmDetails() {
@@ -471,19 +475,19 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Set the discoveredVmDetails property: The discovered VM information.
-     *
+     * 
      * @param discoveredVmDetails the discoveredVmDetails value to set.
      * @return the InMageRcmFailbackReplicationDetails object itself.
      */
-    public InMageRcmFailbackReplicationDetails withDiscoveredVmDetails(
-        InMageRcmFailbackDiscoveredProtectedVmDetails discoveredVmDetails) {
+    public InMageRcmFailbackReplicationDetails
+        withDiscoveredVmDetails(InMageRcmFailbackDiscoveredProtectedVmDetails discoveredVmDetails) {
         this.discoveredVmDetails = discoveredVmDetails;
         return this;
     }
 
     /**
      * Get the lastUsedPolicyId property: The policy Id used by the forward replication.
-     *
+     * 
      * @return the lastUsedPolicyId value.
      */
     public String lastUsedPolicyId() {
@@ -492,7 +496,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Get the lastUsedPolicyFriendlyName property: The policy friendly name used by the forward replication.
-     *
+     * 
      * @return the lastUsedPolicyFriendlyName value.
      */
     public String lastUsedPolicyFriendlyName() {
@@ -502,7 +506,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
     /**
      * Get the isAgentRegistrationSuccessfulAfterFailover property: A value indicating whether agent registration was
      * successful after failover.
-     *
+     * 
      * @return the isAgentRegistrationSuccessfulAfterFailover value.
      */
     public Boolean isAgentRegistrationSuccessfulAfterFailover() {
@@ -511,7 +515,7 @@ public final class InMageRcmFailbackReplicationDetails extends ReplicationProvid
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

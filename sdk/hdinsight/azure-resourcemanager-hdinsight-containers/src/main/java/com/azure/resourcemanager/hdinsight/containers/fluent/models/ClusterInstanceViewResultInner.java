@@ -6,12 +6,12 @@ package com.azure.resourcemanager.hdinsight.containers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.hdinsight.containers.models.ClusterInstanceViewPropertiesStatus;
-import com.azure.resourcemanager.hdinsight.containers.models.ServiceStatus;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterInstanceViewResultProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
-/** Cluster Instance View. */
+/**
+ * Cluster Instance View.
+ */
 @Fluent
 public final class ClusterInstanceViewResultInner {
     /*
@@ -24,15 +24,17 @@ public final class ClusterInstanceViewResultInner {
      * Properties of the instance view.
      */
     @JsonProperty(value = "properties", required = true)
-    private ClusterInstanceViewResultProperties innerProperties = new ClusterInstanceViewResultProperties();
+    private ClusterInstanceViewResultProperties properties;
 
-    /** Creates an instance of ClusterInstanceViewResultInner class. */
+    /**
+     * Creates an instance of ClusterInstanceViewResultInner class.
+     */
     public ClusterInstanceViewResultInner() {
     }
 
     /**
      * Get the name property: Name of the instance view.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -41,7 +43,7 @@ public final class ClusterInstanceViewResultInner {
 
     /**
      * Set the name property: Name of the instance view.
-     *
+     * 
      * @param name the name value to set.
      * @return the ClusterInstanceViewResultInner object itself.
      */
@@ -51,81 +53,40 @@ public final class ClusterInstanceViewResultInner {
     }
 
     /**
-     * Get the innerProperties property: Properties of the instance view.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: Properties of the instance view.
+     * 
+     * @return the properties value.
      */
-    private ClusterInstanceViewResultProperties innerProperties() {
-        return this.innerProperties;
+    public ClusterInstanceViewResultProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the status property: Status of the instance view.
-     *
-     * @return the status value.
-     */
-    public ClusterInstanceViewPropertiesStatus status() {
-        return this.innerProperties() == null ? null : this.innerProperties().status();
-    }
-
-    /**
-     * Set the status property: Status of the instance view.
-     *
-     * @param status the status value to set.
+     * Set the properties property: Properties of the instance view.
+     * 
+     * @param properties the properties value to set.
      * @return the ClusterInstanceViewResultInner object itself.
      */
-    public ClusterInstanceViewResultInner withStatus(ClusterInstanceViewPropertiesStatus status) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterInstanceViewResultProperties();
-        }
-        this.innerProperties().withStatus(status);
-        return this;
-    }
-
-    /**
-     * Get the serviceStatuses property: List of statuses of relevant services that make up the HDInsight on aks cluster
-     * to surface to the customer.
-     *
-     * @return the serviceStatuses value.
-     */
-    public List<ServiceStatus> serviceStatuses() {
-        return this.innerProperties() == null ? null : this.innerProperties().serviceStatuses();
-    }
-
-    /**
-     * Set the serviceStatuses property: List of statuses of relevant services that make up the HDInsight on aks cluster
-     * to surface to the customer.
-     *
-     * @param serviceStatuses the serviceStatuses value to set.
-     * @return the ClusterInstanceViewResultInner object itself.
-     */
-    public ClusterInstanceViewResultInner withServiceStatuses(List<ServiceStatus> serviceStatuses) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ClusterInstanceViewResultProperties();
-        }
-        this.innerProperties().withServiceStatuses(serviceStatuses);
+    public ClusterInstanceViewResultInner withProperties(ClusterInstanceViewResultProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ClusterInstanceViewResultInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ClusterInstanceViewResultInner"));
         }
-        if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ClusterInstanceViewResultInner"));
+        if (properties() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model ClusterInstanceViewResultInner"));
         } else {
-            innerProperties().validate();
+            properties().validate();
         }
     }
 

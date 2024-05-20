@@ -10,16 +10,15 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.Replication
 public final class ReplicationProviderSpecificContainerCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationProviderSpecificContainerCreationInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"ReplicationProviderSpecificContainerCreationInput\"}")
+        ReplicationProviderSpecificContainerCreationInput model
+            = BinaryData.fromString("{\"instanceType\":\"ReplicationProviderSpecificContainerCreationInput\"}")
                 .toObject(ReplicationProviderSpecificContainerCreationInput.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicationProviderSpecificContainerCreationInput model =
-            new ReplicationProviderSpecificContainerCreationInput();
+        ReplicationProviderSpecificContainerCreationInput model
+            = new ReplicationProviderSpecificContainerCreationInput();
         model = BinaryData.fromObject(model).toObject(ReplicationProviderSpecificContainerCreationInput.class);
     }
 }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMage Azure V2 provider specific recovery point details. */
+/**
+ * InMage Azure V2 provider specific recovery point details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageAzureV2")
 @Fluent
@@ -20,13 +22,15 @@ public final class InMageAzureV2RecoveryPointDetails extends ProviderSpecificRec
     @JsonProperty(value = "isMultiVmSyncPoint")
     private String isMultiVmSyncPoint;
 
-    /** Creates an instance of InMageAzureV2RecoveryPointDetails class. */
+    /**
+     * Creates an instance of InMageAzureV2RecoveryPointDetails class.
+     */
     public InMageAzureV2RecoveryPointDetails() {
     }
 
     /**
      * Get the isMultiVmSyncPoint property: A value indicating whether the recovery point is multi VM consistent.
-     *
+     * 
      * @return the isMultiVmSyncPoint value.
      */
     public String isMultiVmSyncPoint() {
@@ -35,7 +39,7 @@ public final class InMageAzureV2RecoveryPointDetails extends ProviderSpecificRec
 
     /**
      * Set the isMultiVmSyncPoint property: A value indicating whether the recovery point is multi VM consistent.
-     *
+     * 
      * @param isMultiVmSyncPoint the isMultiVmSyncPoint value to set.
      * @return the InMageAzureV2RecoveryPointDetails object itself.
      */
@@ -46,7 +50,7 @@ public final class InMageAzureV2RecoveryPointDetails extends ProviderSpecificRec
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

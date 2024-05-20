@@ -8,70 +8,60 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/** The TablesQueryEntityWithPartitionAndRowKeyHeaders model. */
-@JacksonXmlRootElement(localName = "null")
+/**
+ * The TablesQueryEntityWithPartitionAndRowKeyHeaders model.
+ */
 @Fluent
 public final class TablesQueryEntityWithPartitionAndRowKeyHeaders {
     /*
      * The x-ms-version property.
      */
-    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The x-ms-continuation-NextPartitionKey property.
      */
-    @JsonProperty(value = "x-ms-continuation-NextPartitionKey")
     private String xMsContinuationNextPartitionKey;
 
     /*
      * The ETag property.
      */
-    @JsonProperty(value = "ETag")
     private String eTag;
 
     /*
      * The x-ms-continuation-NextRowKey property.
      */
-    @JsonProperty(value = "x-ms-continuation-NextRowKey")
     private String xMsContinuationNextRowKey;
 
     /*
      * The x-ms-request-id property.
      */
-    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The x-ms-client-request-id property.
      */
-    @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
 
     /*
      * The Date property.
      */
-    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
-    private static final HttpHeaderName X_MS_CONTINUATION_NEXT_PARTITION_KEY =
-            HttpHeaderName.fromString("x-ms-continuation-NextPartitionKey");
+    private static final HttpHeaderName X_MS_CONTINUATION_NEXT_PARTITION_KEY
+        = HttpHeaderName.fromString("x-ms-continuation-NextPartitionKey");
 
-    private static final HttpHeaderName X_MS_CONTINUATION_NEXT_ROW_KEY =
-            HttpHeaderName.fromString("x-ms-continuation-NextRowKey");
-
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+    private static final HttpHeaderName X_MS_CONTINUATION_NEXT_ROW_KEY
+        = HttpHeaderName.fromString("x-ms-continuation-NextRowKey");
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of TablesQueryEntityWithPartitionAndRowKeyHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public TablesQueryEntityWithPartitionAndRowKeyHeaders(HttpHeaders rawHeaders) {
@@ -79,7 +69,7 @@ public final class TablesQueryEntityWithPartitionAndRowKeyHeaders {
         this.xMsContinuationNextPartitionKey = rawHeaders.getValue(X_MS_CONTINUATION_NEXT_PARTITION_KEY);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.xMsContinuationNextRowKey = rawHeaders.getValue(X_MS_CONTINUATION_NEXT_ROW_KEY);
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
@@ -89,7 +79,7 @@ public final class TablesQueryEntityWithPartitionAndRowKeyHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -98,7 +88,7 @@ public final class TablesQueryEntityWithPartitionAndRowKeyHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the TablesQueryEntityWithPartitionAndRowKeyHeaders object itself.
      */
@@ -109,7 +99,7 @@ public final class TablesQueryEntityWithPartitionAndRowKeyHeaders {
 
     /**
      * Get the xMsContinuationNextPartitionKey property: The x-ms-continuation-NextPartitionKey property.
-     *
+     * 
      * @return the xMsContinuationNextPartitionKey value.
      */
     public String getXMsContinuationNextPartitionKey() {
@@ -118,19 +108,19 @@ public final class TablesQueryEntityWithPartitionAndRowKeyHeaders {
 
     /**
      * Set the xMsContinuationNextPartitionKey property: The x-ms-continuation-NextPartitionKey property.
-     *
+     * 
      * @param xMsContinuationNextPartitionKey the xMsContinuationNextPartitionKey value to set.
      * @return the TablesQueryEntityWithPartitionAndRowKeyHeaders object itself.
      */
-    public TablesQueryEntityWithPartitionAndRowKeyHeaders setXMsContinuationNextPartitionKey(
-            String xMsContinuationNextPartitionKey) {
+    public TablesQueryEntityWithPartitionAndRowKeyHeaders
+        setXMsContinuationNextPartitionKey(String xMsContinuationNextPartitionKey) {
         this.xMsContinuationNextPartitionKey = xMsContinuationNextPartitionKey;
         return this;
     }
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -139,7 +129,7 @@ public final class TablesQueryEntityWithPartitionAndRowKeyHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the TablesQueryEntityWithPartitionAndRowKeyHeaders object itself.
      */
@@ -150,7 +140,7 @@ public final class TablesQueryEntityWithPartitionAndRowKeyHeaders {
 
     /**
      * Get the xMsContinuationNextRowKey property: The x-ms-continuation-NextRowKey property.
-     *
+     * 
      * @return the xMsContinuationNextRowKey value.
      */
     public String getXMsContinuationNextRowKey() {
@@ -159,19 +149,19 @@ public final class TablesQueryEntityWithPartitionAndRowKeyHeaders {
 
     /**
      * Set the xMsContinuationNextRowKey property: The x-ms-continuation-NextRowKey property.
-     *
+     * 
      * @param xMsContinuationNextRowKey the xMsContinuationNextRowKey value to set.
      * @return the TablesQueryEntityWithPartitionAndRowKeyHeaders object itself.
      */
-    public TablesQueryEntityWithPartitionAndRowKeyHeaders setXMsContinuationNextRowKey(
-            String xMsContinuationNextRowKey) {
+    public TablesQueryEntityWithPartitionAndRowKeyHeaders
+        setXMsContinuationNextRowKey(String xMsContinuationNextRowKey) {
         this.xMsContinuationNextRowKey = xMsContinuationNextRowKey;
         return this;
     }
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -180,7 +170,7 @@ public final class TablesQueryEntityWithPartitionAndRowKeyHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the TablesQueryEntityWithPartitionAndRowKeyHeaders object itself.
      */
@@ -191,7 +181,7 @@ public final class TablesQueryEntityWithPartitionAndRowKeyHeaders {
 
     /**
      * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
@@ -200,7 +190,7 @@ public final class TablesQueryEntityWithPartitionAndRowKeyHeaders {
 
     /**
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the TablesQueryEntityWithPartitionAndRowKeyHeaders object itself.
      */
@@ -211,7 +201,7 @@ public final class TablesQueryEntityWithPartitionAndRowKeyHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -223,7 +213,7 @@ public final class TablesQueryEntityWithPartitionAndRowKeyHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the TablesQueryEntityWithPartitionAndRowKeyHeaders object itself.
      */

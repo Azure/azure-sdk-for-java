@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** Job details based on specific job type. */
+/**
+ * Job details based on specific job type.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -24,8 +26,7 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "ExportJobDetails", value = ExportJobDetails.class),
     @JsonSubTypes.Type(name = "FailoverJobDetails", value = FailoverJobDetails.class),
     @JsonSubTypes.Type(name = "SwitchProtectionJobDetails", value = SwitchProtectionJobDetails.class),
-    @JsonSubTypes.Type(name = "TestFailoverJobDetails", value = TestFailoverJobDetails.class)
-})
+    @JsonSubTypes.Type(name = "TestFailoverJobDetails", value = TestFailoverJobDetails.class) })
 @Fluent
 public class JobDetails {
     /*
@@ -36,14 +37,16 @@ public class JobDetails {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> affectedObjectDetails;
 
-    /** Creates an instance of JobDetails class. */
+    /**
+     * Creates an instance of JobDetails class.
+     */
     public JobDetails() {
     }
 
     /**
      * Get the affectedObjectDetails property: The affected object properties like source server, source cloud, target
      * server, target cloud etc. based on the workflow object details.
-     *
+     * 
      * @return the affectedObjectDetails value.
      */
     public Map<String, String> affectedObjectDetails() {
@@ -53,7 +56,7 @@ public class JobDetails {
     /**
      * Set the affectedObjectDetails property: The affected object properties like source server, source cloud, target
      * server, target cloud etc. based on the workflow object details.
-     *
+     * 
      * @param affectedObjectDetails the affectedObjectDetails value to set.
      * @return the JobDetails object itself.
      */
@@ -64,7 +67,7 @@ public class JobDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

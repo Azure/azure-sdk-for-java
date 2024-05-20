@@ -14,7 +14,7 @@ import java.util.Map;
 public final class AccessListClustersSamples {
     /*
      * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Access_ClusterList.json
+     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Access_ClusterList.json
      */
     /**
      * Sample code: Access_ClusterList.

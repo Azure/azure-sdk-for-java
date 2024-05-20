@@ -8,32 +8,34 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.CustomEntityStoreAssignmentInner;
 
-/** An immutable client-side representation of CustomEntityStoreAssignment. */
+/**
+ * An immutable client-side representation of CustomEntityStoreAssignment.
+ */
 public interface CustomEntityStoreAssignment {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
@@ -41,45 +43,56 @@ public interface CustomEntityStoreAssignment {
     /**
      * Gets the principal property: The principal assigned with entity store. Format of principal is: [AAD
      * type]=[PrincipalObjectId];[TenantId].
-     *
+     * 
      * @return the principal value.
      */
     String principal();
 
     /**
      * Gets the entityStoreDatabaseLink property: The link to entity store database.
-     *
+     * 
      * @return the entityStoreDatabaseLink value.
      */
     String entityStoreDatabaseLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.CustomEntityStoreAssignmentInner object.
-     *
+     * 
      * @return the inner object.
      */
     CustomEntityStoreAssignmentInner innerModel();
 
-    /** The entirety of the CustomEntityStoreAssignment definition. */
+    /**
+     * The entirety of the CustomEntityStoreAssignment definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
-    /** The CustomEntityStoreAssignment definition stages. */
+
+    /**
+     * The CustomEntityStoreAssignment definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the CustomEntityStoreAssignment definition. */
+        /**
+         * The first stage of the CustomEntityStoreAssignment definition.
+         */
         interface Blank extends WithResourceGroup {
         }
-        /** The stage of the CustomEntityStoreAssignment definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the CustomEntityStoreAssignment definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-             *     insensitive.
+             * insensitive.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the CustomEntityStoreAssignment definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -87,42 +100,46 @@ public interface CustomEntityStoreAssignment {
         interface WithCreate extends DefinitionStages.WithPrincipal {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             CustomEntityStoreAssignment create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             CustomEntityStoreAssignment create(Context context);
         }
-        /** The stage of the CustomEntityStoreAssignment definition allowing to specify principal. */
+
+        /**
+         * The stage of the CustomEntityStoreAssignment definition allowing to specify principal.
+         */
         interface WithPrincipal {
             /**
              * Specifies the principal property: The principal assigned with entity store. If not provided, will use
              * caller principal. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
-             *
+             * 
              * @param principal The principal assigned with entity store. If not provided, will use caller principal.
-             *     Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
+             * Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
              * @return the next definition stage.
              */
             WithCreate withPrincipal(String principal);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     CustomEntityStoreAssignment refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

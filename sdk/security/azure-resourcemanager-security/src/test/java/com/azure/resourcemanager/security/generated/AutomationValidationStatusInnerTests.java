@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AutomationValidationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomationValidationStatusInner model =
-            BinaryData
-                .fromString("{\"isValid\":false,\"message\":\"tczheydbsdshmkx\"}")
-                .toObject(AutomationValidationStatusInner.class);
-        Assertions.assertEquals(false, model.isValid());
-        Assertions.assertEquals("tczheydbsdshmkx", model.message());
+        AutomationValidationStatusInner model = BinaryData.fromString("{\"isValid\":true,\"message\":\"jpdn\"}")
+            .toObject(AutomationValidationStatusInner.class);
+        Assertions.assertEquals(true, model.isValid());
+        Assertions.assertEquals("jpdn", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationValidationStatusInner model =
-            new AutomationValidationStatusInner().withIsValid(false).withMessage("tczheydbsdshmkx");
+        AutomationValidationStatusInner model
+            = new AutomationValidationStatusInner().withIsValid(true).withMessage("jpdn");
         model = BinaryData.fromObject(model).toObject(AutomationValidationStatusInner.class);
-        Assertions.assertEquals(false, model.isValid());
-        Assertions.assertEquals("tczheydbsdshmkx", model.message());
+        Assertions.assertEquals(true, model.isValid());
+        Assertions.assertEquals("jpdn", model.message());
     }
 }

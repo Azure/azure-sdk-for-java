@@ -37,8 +37,16 @@ import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper
 import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper.mapLogsQueryError;
 
 /**
- * The asynchronous client for querying Azure Monitor logs.
- * <p><strong>Instantiating an asynchronous Logs query Client</strong></p>
+ * <p>Provides an asynchronous service client for querying logs in the Azure Monitor Service.</p>
+ *
+ * <p>The LogsQueryClient is an asynchronous client that provides methods to execute Kusto queries against
+ * Azure Monitor logs. It provides methods to query logs in a specific workspace, execute a batch of queries, and
+ * query logs for a specific Azure resource.</p>
+ *
+ * <h2>Getting Started</h2>
+ *
+ * <p>Authenticating and building instances of this client are handled by {@link LogsQueryClientBuilder}.
+ * This sample shows how to authenticate and build a LogQueryAsyncClient instance using LogQueryClientBuilder.</p>
  *
  * <!-- src_embed com.azure.monitor.query.LogsQueryAsyncClient.instantiation -->
  * <pre>
@@ -47,6 +55,38 @@ import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper
  *         .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.monitor.query.LogsQueryAsyncClient.instantiation -->
+ *
+ * <p>For more information on building and authenticating, see the {@link LogsQueryClientBuilder} documentation.</p>
+ *
+ * <h3>Client Usage</h3>
+ *
+ * <p>
+ *     For more information on how to use this client, see the following method documentation:
+ * </p>
+ *
+ * <ul>
+ *     <li>
+ *         {@link LogsQueryAsyncClient#queryWorkspace(String, String, QueryTimeInterval) queryWorkspace(String, String, QueryTimeInterval)} - Query logs from a workspace.
+ *     </li>
+ *     <li>
+ *         {@link LogsQueryAsyncClient#queryWorkspaceWithResponse(String, String, QueryTimeInterval, LogsQueryOptions) queryWorkspaceWithResponse(String, String, QueryTimeInterval, LogsQueryOptions)} - Query logs from a workspace using query options with service response returned.
+ *     </li>
+ *     <li>
+ *         {@link LogsQueryAsyncClient#queryBatch(LogsBatchQuery) queryBatch(LogsBatchQuery)} - Execute a batch of logs queries.
+ *     </li>
+ *     <li>
+ *         {@link LogsQueryAsyncClient#queryBatchWithResponse(LogsBatchQuery) queryBatchWithResponse(LogsBatchQuery)} - Execute a batch of logs queries with service response returned.
+ *     </li>
+ *     <li>
+ *         {@link LogsQueryAsyncClient#queryResource(String, String, QueryTimeInterval) queryResource(String, String, QueryTimeInterval)} - Query logs for an Azure resource.
+ *     </li>
+ *     <li>
+ *         {@link LogsQueryAsyncClient#queryResourceWithResponse(String, String, QueryTimeInterval, LogsQueryOptions) queryResourceWithResponse(String, String, QueryTimeInterval, LogsQueryOptions)} - Query logs for an Azure resource using query options with service response returned.
+ *     </li>
+ * </ul>
+ *
+ * @see com.azure.monitor.query
+ * @see LogsQueryClientBuilder
  */
 @ServiceClient(builder = LogsQueryClientBuilder.class, isAsync = true)
 public final class LogsQueryAsyncClient {

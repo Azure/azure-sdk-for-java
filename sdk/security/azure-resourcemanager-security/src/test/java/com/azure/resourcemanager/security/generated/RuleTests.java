@@ -14,32 +14,28 @@ import org.junit.jupiter.api.Assertions;
 public final class RuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Rule model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"dfgsftufqobrj\",\"direction\":\"Outbound\",\"destinationPort\":1823557197,\"protocols\":[\"UDP\",\"TCP\",\"TCP\"],\"ipAddresses\":[\"kizvytn\",\"zvulj\"]}")
-                .toObject(Rule.class);
-        Assertions.assertEquals("dfgsftufqobrj", model.name());
-        Assertions.assertEquals(Direction.OUTBOUND, model.direction());
-        Assertions.assertEquals(1823557197, model.destinationPort());
-        Assertions.assertEquals(TransportProtocol.UDP, model.protocols().get(0));
-        Assertions.assertEquals("kizvytn", model.ipAddresses().get(0));
+        Rule model = BinaryData.fromString(
+            "{\"name\":\"vogygzyvneez\",\"direction\":\"Inbound\",\"destinationPort\":1673103368,\"protocols\":[\"TCP\",\"UDP\",\"UDP\"],\"ipAddresses\":[\"ffhzbkrkjjjavfq\",\"vhnqo\"]}")
+            .toObject(Rule.class);
+        Assertions.assertEquals("vogygzyvneez", model.name());
+        Assertions.assertEquals(Direction.INBOUND, model.direction());
+        Assertions.assertEquals(1673103368, model.destinationPort());
+        Assertions.assertEquals(TransportProtocol.TCP, model.protocols().get(0));
+        Assertions.assertEquals("ffhzbkrkjjjavfq", model.ipAddresses().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Rule model =
-            new Rule()
-                .withName("dfgsftufqobrj")
-                .withDirection(Direction.OUTBOUND)
-                .withDestinationPort(1823557197)
-                .withProtocols(Arrays.asList(TransportProtocol.UDP, TransportProtocol.TCP, TransportProtocol.TCP))
-                .withIpAddresses(Arrays.asList("kizvytn", "zvulj"));
+        Rule model = new Rule().withName("vogygzyvneez")
+            .withDirection(Direction.INBOUND)
+            .withDestinationPort(1673103368)
+            .withProtocols(Arrays.asList(TransportProtocol.TCP, TransportProtocol.UDP, TransportProtocol.UDP))
+            .withIpAddresses(Arrays.asList("ffhzbkrkjjjavfq", "vhnqo"));
         model = BinaryData.fromObject(model).toObject(Rule.class);
-        Assertions.assertEquals("dfgsftufqobrj", model.name());
-        Assertions.assertEquals(Direction.OUTBOUND, model.direction());
-        Assertions.assertEquals(1823557197, model.destinationPort());
-        Assertions.assertEquals(TransportProtocol.UDP, model.protocols().get(0));
-        Assertions.assertEquals("kizvytn", model.ipAddresses().get(0));
+        Assertions.assertEquals("vogygzyvneez", model.name());
+        Assertions.assertEquals(Direction.INBOUND, model.direction());
+        Assertions.assertEquals(1673103368, model.destinationPort());
+        Assertions.assertEquals(TransportProtocol.TCP, model.protocols().get(0));
+        Assertions.assertEquals("ffhzbkrkjjjavfq", model.ipAddresses().get(0));
     }
 }

@@ -11,21 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class A2ACrossClusterMigrationEnableProtectionInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2ACrossClusterMigrationEnableProtectionInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"A2ACrossClusterMigration\",\"fabricObjectId\":\"lickduoi\",\"recoveryContainerId\":\"amt\"}")
-                .toObject(A2ACrossClusterMigrationEnableProtectionInput.class);
+        A2ACrossClusterMigrationEnableProtectionInput model = BinaryData.fromString(
+            "{\"instanceType\":\"A2ACrossClusterMigration\",\"fabricObjectId\":\"lickduoi\",\"recoveryContainerId\":\"amt\"}")
+            .toObject(A2ACrossClusterMigrationEnableProtectionInput.class);
         Assertions.assertEquals("lickduoi", model.fabricObjectId());
         Assertions.assertEquals("amt", model.recoveryContainerId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2ACrossClusterMigrationEnableProtectionInput model =
-            new A2ACrossClusterMigrationEnableProtectionInput()
-                .withFabricObjectId("lickduoi")
-                .withRecoveryContainerId("amt");
+        A2ACrossClusterMigrationEnableProtectionInput model = new A2ACrossClusterMigrationEnableProtectionInput()
+            .withFabricObjectId("lickduoi").withRecoveryContainerId("amt");
         model = BinaryData.fromObject(model).toObject(A2ACrossClusterMigrationEnableProtectionInput.class);
         Assertions.assertEquals("lickduoi", model.fabricObjectId());
         Assertions.assertEquals("amt", model.recoveryContainerId());

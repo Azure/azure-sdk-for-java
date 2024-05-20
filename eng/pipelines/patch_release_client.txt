@@ -19,6 +19,7 @@
 # ensuring that all tests (recorded, live, etc.) are in a good state to ensure releases maintain quality and avoid
 # performance regressions or bugs. They are also responsible for smoke testing their library after every release.
 
+com.azure:azure-ai-contentsafety # Tests owner: zhaiyutong
 com.azure:azure-ai-formrecognizer # Tests owner: samvaity
 com.azure:azure-ai-metricsadvisor # Tests owner: samvaity
 com.azure:azure-ai-textanalytics # Tests owner: mssfang
@@ -28,6 +29,7 @@ com.azure:azure-communication-common # Tests owner: AikoBB, maximrytych-ms, mjaf
 com.azure:azure-communication-email # Tests owner: yogeshmo, kagbakpem
 com.azure:azure-communication-identity # Tests owner: AikoBB, maximrytych-ms, mjafferi-msft
 com.azure:azure-communication-jobrouter # Tests owner: cparisineti
+com.azure:azure-communication-messages # Tests owner: arifibrahim4, juancamilor
 com.azure:azure-communication-phonenumbers # Tests owner: whisper6284, miguhern, danielortega-msft
 com.azure:azure-communication-sms # Tests owner: besh2014, DimaKolomiiets
 com.azure:azure-communication-rooms # Tests owner: minnieliu, Mrayyan
@@ -46,6 +48,7 @@ com.azure:azure-messaging-eventhubs # Tests owner: conniey
 com.azure:azure-messaging-eventhubs-checkpointstore-blob # Tests owner: conniey
 com.azure:azure-messaging-servicebus # Tests owner: ki1729
 com.azure:azure-messaging-webpubsub # Tests owner: weidongxu-microsoft
+com.azure:azure-messaging-webpubsub-client # Tests owner: weidongxu-microsoft
 com.azure:azure-mixedreality-authentication # Tests owner: craigktreasure, RamonArguelles
 com.azure:azure-mixedreality-remoterendering # Tests owner: FlorianBorn71, MichaelZp0, jloehr
 com.azure:azure-monitor-query # Tests owner: srnagar

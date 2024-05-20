@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 /**
- Utilities to compute hashes in tests.
+ * Utilities to compute hashes in tests.
  */
 public final class MessageDigestUtils {
 

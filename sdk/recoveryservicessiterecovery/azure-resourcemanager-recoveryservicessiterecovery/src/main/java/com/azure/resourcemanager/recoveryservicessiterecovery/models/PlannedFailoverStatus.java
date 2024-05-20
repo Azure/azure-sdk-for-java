@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The last planned failover status. */
+/**
+ * The last planned failover status.
+ */
 public final class PlannedFailoverStatus extends ExpandableStringEnum<PlannedFailoverStatus> {
-    /** Static value Succeeded for PlannedFailoverStatus. */
+    /**
+     * Static value Succeeded for PlannedFailoverStatus.
+     */
     public static final PlannedFailoverStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for PlannedFailoverStatus. */
+    /**
+     * Static value Failed for PlannedFailoverStatus.
+     */
     public static final PlannedFailoverStatus FAILED = fromString("Failed");
 
-    /** Static value Cancelled for PlannedFailoverStatus. */
+    /**
+     * Static value Cancelled for PlannedFailoverStatus.
+     */
     public static final PlannedFailoverStatus CANCELLED = fromString("Cancelled");
 
-    /** Static value Unknown for PlannedFailoverStatus. */
+    /**
+     * Static value Unknown for PlannedFailoverStatus.
+     */
     public static final PlannedFailoverStatus UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of PlannedFailoverStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class PlannedFailoverStatus extends ExpandableStringEnum<PlannedFai
 
     /**
      * Creates or finds a PlannedFailoverStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PlannedFailoverStatus.
      */
@@ -44,7 +54,7 @@ public final class PlannedFailoverStatus extends ExpandableStringEnum<PlannedFai
 
     /**
      * Gets known PlannedFailoverStatus values.
-     *
+     * 
      * @return known PlannedFailoverStatus values.
      */
     public static Collection<PlannedFailoverStatus> values() {

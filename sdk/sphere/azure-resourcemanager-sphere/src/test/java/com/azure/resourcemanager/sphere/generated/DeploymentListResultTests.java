@@ -8,40 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sphere.fluent.models.DeploymentInner;
 import com.azure.resourcemanager.sphere.fluent.models.ImageInner;
 import com.azure.resourcemanager.sphere.models.DeploymentListResult;
+import com.azure.resourcemanager.sphere.models.DeploymentProperties;
+import com.azure.resourcemanager.sphere.models.ImageProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class DeploymentListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"deploymentId\":\"idnsezcxtb\",\"deployedImages\":[{\"properties\":{},\"id\":\"yc\",\"name\":\"sne\",\"type\":\"mdwzjeiachboo\"},{\"properties\":{},\"id\":\"lnrosfqp\",\"name\":\"eeh\",\"type\":\"zvypyqrimzinp\"}],\"deploymentDateUtc\":\"2021-01-25T11:13:44Z\",\"provisioningState\":\"Deleting\"},\"id\":\"kirsoodqxhc\",\"name\":\"mnoh\",\"type\":\"t\"},{\"properties\":{\"deploymentId\":\"h\",\"deployedImages\":[{\"properties\":{},\"id\":\"fiyipjxsqwpgrj\",\"name\":\"znorcj\",\"type\":\"vsnb\"},{\"properties\":{},\"id\":\"qabnmoc\",\"name\":\"cyshurzafbljjgp\",\"type\":\"toqcjmklja\"},{\"properties\":{},\"id\":\"qidtqajzyu\",\"name\":\"pku\",\"type\":\"jkrlkhbzhfepg\"},{\"properties\":{},\"id\":\"qex\",\"name\":\"locx\",\"type\":\"c\"}],\"deploymentDateUtc\":\"2021-01-04T21:09:36Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"hhbcsglummajtjao\",\"name\":\"xobnbdxkqpxok\",\"type\":\"jionpimexgstxgc\"}],\"nextLink\":\"dg\"}")
-                .toObject(DeploymentListResult.class);
-        Assertions.assertEquals("idnsezcxtb", model.value().get(0).deploymentId());
-        Assertions.assertEquals("dg", model.nextLink());
+        DeploymentListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"deploymentId\":\"jmkljavbqidtqajz\",\"deployedImages\":[{\"properties\":{},\"id\":\"u\",\"name\":\"jkrlkhbzhfepg\",\"type\":\"gqexzlocxs\"}],\"deploymentDateUtc\":\"2021-11-18T07:05:01Z\",\"provisioningState\":\"Canceled\"},\"id\":\"hhbcsglummajtjao\",\"name\":\"xobnbdxkqpxok\",\"type\":\"jionpimexgstxgc\"}],\"nextLink\":\"dg\"}")
+            .toObject(DeploymentListResult.class);
+        Assertions.assertEquals("jmkljavbqidtqajz", model.value().get(0).properties().deploymentId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentListResult model =
-            new DeploymentListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DeploymentInner()
-                                .withDeploymentId("idnsezcxtb")
-                                .withDeployedImages(Arrays.asList(new ImageInner(), new ImageInner())),
-                            new DeploymentInner()
-                                .withDeploymentId("h")
-                                .withDeployedImages(
-                                    Arrays
-                                        .asList(
-                                            new ImageInner(), new ImageInner(), new ImageInner(), new ImageInner()))))
-                .withNextLink("dg");
+        DeploymentListResult model = new DeploymentListResult().withValue(Arrays
+            .asList(new DeploymentInner().withProperties(new DeploymentProperties().withDeploymentId("jmkljavbqidtqajz")
+                .withDeployedImages(Arrays.asList(new ImageInner().withProperties(new ImageProperties()))))));
         model = BinaryData.fromObject(model).toObject(DeploymentListResult.class);
-        Assertions.assertEquals("idnsezcxtb", model.value().get(0).deploymentId());
-        Assertions.assertEquals("dg", model.nextLink());
+        Assertions.assertEquals("jmkljavbqidtqajz", model.value().get(0).properties().deploymentId());
     }
 }

@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomAlertRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomAlertRule model =
-            BinaryData
-                .fromString(
-                    "{\"ruleType\":\"CustomAlertRule\",\"displayName\":\"gqywgndrv\",\"description\":\"hzgpphrcgyncocpe\",\"isEnabled\":false}")
-                .toObject(CustomAlertRule.class);
-        Assertions.assertEquals(false, model.isEnabled());
+        CustomAlertRule model = BinaryData.fromString(
+            "{\"ruleType\":\"CustomAlertRule\",\"displayName\":\"vp\",\"description\":\"hxqszdtmaajquh\",\"isEnabled\":true}")
+            .toObject(CustomAlertRule.class);
+        Assertions.assertEquals(true, model.isEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomAlertRule model = new CustomAlertRule().withIsEnabled(false);
+        CustomAlertRule model = new CustomAlertRule().withIsEnabled(true);
         model = BinaryData.fromObject(model).toObject(CustomAlertRule.class);
-        Assertions.assertEquals(false, model.isEnabled());
+        Assertions.assertEquals(true, model.isEnabled());
     }
 }

@@ -12,7 +12,8 @@ public class UserDatabase {
     @JsonProperty("userdata")
     private List<UserData> userList;
 
-    public UserDatabase() { }
+    public UserDatabase() {
+    }
 
     public List<UserData> getUserList() {
         return userList;

@@ -19,6 +19,12 @@ import reactor.core.publisher.Mono;
 public class ScrubEtagPolicy implements HttpPipelinePolicy {
 
     /**
+     * Creates a new instance of {@link ScrubEtagPolicy}.
+     */
+    public ScrubEtagPolicy() {
+    }
+
+    /**
      * Wraps any potential error responses from the service and applies post-processing of the response's eTag header to
      * standardize the value.
      *

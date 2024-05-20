@@ -32,41 +32,28 @@ public final class ServicesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"48a3f512-7134-4ee4-aa24-ca905f619ca5\",\"tenantId\":\"7db02f48-1618-4f8a-8b83-ad0f5215e1e8\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"gc\":{\"principalId\":\"8523a145-df2c-4612-8aaa-dd0b78e6c31a\",\"clientId\":\"b0a8388c-970b-40f7-83dc-055df8b2d737\"},\"clxxwrljdo\":{\"principalId\":\"141690ac-3047-45e6-b13a-b9f1c2de8ff3\",\"clientId\":\"dcca8e7a-3249-4823-a9ec-482eb372a7a9\"},\"cqvkocrcjdkwtn\":{\"principalId\":\"1932a072-a923-48c2-a191-bb0c8fd4b7c9\",\"clientId\":\"582cc7d4-08ae-4dd0-a71c-9d84b1cd0d84\"}}},\"location\":\"bnjbiksqrglssain\",\"tags\":{\"mgxsab\":\"wnzlljfmppeeb\",\"jczdzevndh\":\"yqduujit\",\"feusnhut\":\"rwpdappdsbdkvwrw\"},\"id\":\"eltmrldhugjzzdat\",\"name\":\"xhocdgeablgphuti\",\"type\":\"ndv\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"6a734486-5c53-4a37-b47b-df965b1665f1\",\"tenantId\":\"f7668c9a-9dea-4b04-99b7-775fccae75bd\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ctobg\":{\"principalId\":\"73f7d595-a7fa-4e07-8f0a-5584d8814194\",\"clientId\":\"abc2645d-e551-4a56-8312-8db199d8a9d9\"},\"moizpos\":{\"principalId\":\"3ecb246c-6558-4017-92b0-499cf3b840bc\",\"clientId\":\"6d743c2e-dc54-4f13-9bea-45a9402233e6\"}}},\"location\":\"grcfb\",\"tags\":{\"jy\":\"mfqjhhkxbp\",\"u\":\"jhxxjyn\",\"xqzvszjfa\":\"ivkrtsw\",\"ivetvtcq\":\"vjfdx\"},\"id\":\"qtdo\",\"name\":\"mcbxvwvxysl\",\"type\":\"bhsfxob\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiCenterManager manager =
-            ApiCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Service> response = manager.services().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bnjbiksqrglssain", response.iterator().next().location());
-        Assertions.assertEquals("wnzlljfmppeeb", response.iterator().next().tags().get("mgxsab"));
-        Assertions
-            .assertEquals(
-                ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("grcfb", response.iterator().next().location());
+        Assertions.assertEquals("mfqjhhkxbp", response.iterator().next().tags().get("jy"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
     }
 }

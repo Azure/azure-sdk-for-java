@@ -65,7 +65,7 @@ public class QueryParameterTest {
     public void testGetValues() {
         // Arrange
         String name = "a";
-        String[] values = {"b", "c"};
+        String[] values = { "b", "c" };
 
         // Act
         final QueryParameter parameter = new QueryParameter(name, values[0]);
@@ -76,9 +76,6 @@ public class QueryParameterTest {
     }
 
     private static Stream<Arguments> testNullArgsConstructor() {
-        return Stream.of(
-            Arguments.arguments(null, "a"),
-            Arguments.arguments(null, null)
-        );
+        return Stream.of(Arguments.arguments(null, "a"), Arguments.arguments(null, null));
     }
 }

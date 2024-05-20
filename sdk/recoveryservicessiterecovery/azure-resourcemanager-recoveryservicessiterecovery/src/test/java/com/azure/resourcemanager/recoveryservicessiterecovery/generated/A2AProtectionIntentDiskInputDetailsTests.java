@@ -12,21 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class A2AProtectionIntentDiskInputDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2AProtectionIntentDiskInputDetails model =
-            BinaryData
-                .fromString(
-                    "{\"diskUri\":\"atbwbqam\",\"recoveryAzureStorageAccountCustomInput\":{\"resourceType\":\"StorageAccountCustomDetails\"},\"primaryStagingStorageAccountCustomInput\":{\"resourceType\":\"StorageAccountCustomDetails\"}}")
-                .toObject(A2AProtectionIntentDiskInputDetails.class);
+        A2AProtectionIntentDiskInputDetails model = BinaryData.fromString(
+            "{\"diskUri\":\"atbwbqam\",\"recoveryAzureStorageAccountCustomInput\":{\"resourceType\":\"StorageAccountCustomDetails\"},\"primaryStagingStorageAccountCustomInput\":{\"resourceType\":\"StorageAccountCustomDetails\"}}")
+            .toObject(A2AProtectionIntentDiskInputDetails.class);
         Assertions.assertEquals("atbwbqam", model.diskUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2AProtectionIntentDiskInputDetails model =
-            new A2AProtectionIntentDiskInputDetails()
-                .withDiskUri("atbwbqam")
-                .withRecoveryAzureStorageAccountCustomInput(new StorageAccountCustomDetails())
-                .withPrimaryStagingStorageAccountCustomInput(new StorageAccountCustomDetails());
+        A2AProtectionIntentDiskInputDetails model = new A2AProtectionIntentDiskInputDetails().withDiskUri("atbwbqam")
+            .withRecoveryAzureStorageAccountCustomInput(new StorageAccountCustomDetails())
+            .withPrimaryStagingStorageAccountCustomInput(new StorageAccountCustomDetails());
         model = BinaryData.fromObject(model).toObject(A2AProtectionIntentDiskInputDetails.class);
         Assertions.assertEquals("atbwbqam", model.diskUri());
     }

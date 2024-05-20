@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** A2A specific switch protection input. */
+/**
+ * A2A specific switch protection input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -93,13 +95,15 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
     @JsonProperty(value = "diskEncryptionInfo")
     private DiskEncryptionInfo diskEncryptionInfo;
 
-    /** Creates an instance of A2ASwitchProtectionInput class. */
+    /**
+     * Creates an instance of A2ASwitchProtectionInput class.
+     */
     public A2ASwitchProtectionInput() {
     }
 
     /**
      * Get the recoveryContainerId property: The recovery container Id.
-     *
+     * 
      * @return the recoveryContainerId value.
      */
     public String recoveryContainerId() {
@@ -108,7 +112,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Set the recoveryContainerId property: The recovery container Id.
-     *
+     * 
      * @param recoveryContainerId the recoveryContainerId value to set.
      * @return the A2ASwitchProtectionInput object itself.
      */
@@ -119,7 +123,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Get the vmDisks property: The list of vm disk details.
-     *
+     * 
      * @return the vmDisks value.
      */
     public List<A2AVmDiskInputDetails> vmDisks() {
@@ -128,7 +132,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Set the vmDisks property: The list of vm disk details.
-     *
+     * 
      * @param vmDisks the vmDisks value to set.
      * @return the A2ASwitchProtectionInput object itself.
      */
@@ -139,7 +143,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Get the vmManagedDisks property: The list of vm managed disk details.
-     *
+     * 
      * @return the vmManagedDisks value.
      */
     public List<A2AVmManagedDiskInputDetails> vmManagedDisks() {
@@ -148,7 +152,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Set the vmManagedDisks property: The list of vm managed disk details.
-     *
+     * 
      * @param vmManagedDisks the vmManagedDisks value to set.
      * @return the A2ASwitchProtectionInput object itself.
      */
@@ -159,7 +163,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Get the recoveryResourceGroupId property: The recovery resource group Id. Valid for V2 scenarios.
-     *
+     * 
      * @return the recoveryResourceGroupId value.
      */
     public String recoveryResourceGroupId() {
@@ -168,7 +172,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Set the recoveryResourceGroupId property: The recovery resource group Id. Valid for V2 scenarios.
-     *
+     * 
      * @param recoveryResourceGroupId the recoveryResourceGroupId value to set.
      * @return the A2ASwitchProtectionInput object itself.
      */
@@ -179,7 +183,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Get the recoveryCloudServiceId property: The recovery cloud service Id. Valid for V1 scenarios.
-     *
+     * 
      * @return the recoveryCloudServiceId value.
      */
     public String recoveryCloudServiceId() {
@@ -188,7 +192,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Set the recoveryCloudServiceId property: The recovery cloud service Id. Valid for V1 scenarios.
-     *
+     * 
      * @param recoveryCloudServiceId the recoveryCloudServiceId value to set.
      * @return the A2ASwitchProtectionInput object itself.
      */
@@ -199,7 +203,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Get the recoveryAvailabilitySetId property: The recovery availability set.
-     *
+     * 
      * @return the recoveryAvailabilitySetId value.
      */
     public String recoveryAvailabilitySetId() {
@@ -208,7 +212,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Set the recoveryAvailabilitySetId property: The recovery availability set.
-     *
+     * 
      * @param recoveryAvailabilitySetId the recoveryAvailabilitySetId value to set.
      * @return the A2ASwitchProtectionInput object itself.
      */
@@ -219,7 +223,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Get the policyId property: The Policy Id.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -228,7 +232,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Set the policyId property: The Policy Id.
-     *
+     * 
      * @param policyId the policyId value to set.
      * @return the A2ASwitchProtectionInput object itself.
      */
@@ -239,7 +243,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Get the recoveryBootDiagStorageAccountId property: The boot diagnostic storage account.
-     *
+     * 
      * @return the recoveryBootDiagStorageAccountId value.
      */
     public String recoveryBootDiagStorageAccountId() {
@@ -248,7 +252,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Set the recoveryBootDiagStorageAccountId property: The boot diagnostic storage account.
-     *
+     * 
      * @param recoveryBootDiagStorageAccountId the recoveryBootDiagStorageAccountId value to set.
      * @return the A2ASwitchProtectionInput object itself.
      */
@@ -259,7 +263,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Get the recoveryAvailabilityZone property: The recovery availability zone.
-     *
+     * 
      * @return the recoveryAvailabilityZone value.
      */
     public String recoveryAvailabilityZone() {
@@ -268,7 +272,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Set the recoveryAvailabilityZone property: The recovery availability zone.
-     *
+     * 
      * @param recoveryAvailabilityZone the recoveryAvailabilityZone value to set.
      * @return the A2ASwitchProtectionInput object itself.
      */
@@ -279,7 +283,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Get the recoveryProximityPlacementGroupId property: The recovery proximity placement group Id.
-     *
+     * 
      * @return the recoveryProximityPlacementGroupId value.
      */
     public String recoveryProximityPlacementGroupId() {
@@ -288,7 +292,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Set the recoveryProximityPlacementGroupId property: The recovery proximity placement group Id.
-     *
+     * 
      * @param recoveryProximityPlacementGroupId the recoveryProximityPlacementGroupId value to set.
      * @return the A2ASwitchProtectionInput object itself.
      */
@@ -299,7 +303,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Get the recoveryVirtualMachineScaleSetId property: The virtual machine scale set id.
-     *
+     * 
      * @return the recoveryVirtualMachineScaleSetId value.
      */
     public String recoveryVirtualMachineScaleSetId() {
@@ -308,7 +312,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Set the recoveryVirtualMachineScaleSetId property: The virtual machine scale set id.
-     *
+     * 
      * @param recoveryVirtualMachineScaleSetId the recoveryVirtualMachineScaleSetId value to set.
      * @return the A2ASwitchProtectionInput object itself.
      */
@@ -319,7 +323,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Get the recoveryCapacityReservationGroupId property: The recovery capacity reservation group Id.
-     *
+     * 
      * @return the recoveryCapacityReservationGroupId value.
      */
     public String recoveryCapacityReservationGroupId() {
@@ -328,7 +332,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Set the recoveryCapacityReservationGroupId property: The recovery capacity reservation group Id.
-     *
+     * 
      * @param recoveryCapacityReservationGroupId the recoveryCapacityReservationGroupId value to set.
      * @return the A2ASwitchProtectionInput object itself.
      */
@@ -339,7 +343,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Get the diskEncryptionInfo property: The recovery disk encryption information.
-     *
+     * 
      * @return the diskEncryptionInfo value.
      */
     public DiskEncryptionInfo diskEncryptionInfo() {
@@ -348,7 +352,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Set the diskEncryptionInfo property: The recovery disk encryption information.
-     *
+     * 
      * @param diskEncryptionInfo the diskEncryptionInfo value to set.
      * @return the A2ASwitchProtectionInput object itself.
      */
@@ -359,7 +363,7 @@ public final class A2ASwitchProtectionInput extends SwitchProtectionProviderSpec
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

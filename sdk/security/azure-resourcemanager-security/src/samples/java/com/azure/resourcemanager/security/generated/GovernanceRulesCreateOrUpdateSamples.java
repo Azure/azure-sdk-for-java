@@ -14,20 +14,21 @@ import com.azure.resourcemanager.security.models.GovernanceRuleType;
 import java.io.IOException;
 import java.util.Arrays;
 
-/** Samples for GovernanceRules CreateOrUpdate. */
+/**
+ * Samples for GovernanceRules CreateOrUpdate.
+ */
 public final class GovernanceRulesCreateOrUpdateSamples {
     /*
      * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/PutManagementGroupGovernanceRule_example.json
      */
     /**
      * Sample code: Create or update governance rule over management group scope.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void createOrUpdateGovernanceRuleOverManagementGroupScope(
         com.azure.resourcemanager.security.SecurityManager manager) throws IOException {
-        manager
-            .governanceRules()
+        manager.governanceRules()
             .define("ad9a8e26-29d9-4829-bb30-e597a58cdbb8")
             .withExistingScope("providers/Microsoft.Management/managementGroups/contoso")
             .withDisplayName("Management group rule")
@@ -39,23 +40,14 @@ public final class GovernanceRulesCreateOrUpdateSamples {
             .withRuleType(GovernanceRuleType.INTEGRATED)
             .withSourceResourceType(GovernanceRuleSourceResourceType.ASSESSMENTS)
             .withExcludedScopes(Arrays.asList("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23"))
-            .withConditionSets(
-                Arrays
-                    .asList(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize(
-                                "{\"conditions\":[{\"operator\":\"In\",\"property\":\"$.AssessmentKey\",\"value\":\"[\\\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\\\","
-                                    + " \\\"fe83f80b-073d-4ccf-93d9-6797eb870201\\\"]\"}]}",
-                                Object.class,
-                                SerializerEncoding.JSON)))
-            .withOwnerSource(
-                new GovernanceRuleOwnerSource()
-                    .withType(GovernanceRuleOwnerSourceType.MANUALLY)
-                    .withValue("user@contoso.com"))
+            .withConditionSets(Arrays.asList(SerializerFactory.createDefaultManagementSerializerAdapter()
+                .deserialize(
+                    "{\"conditions\":[{\"operator\":\"In\",\"property\":\"$.AssessmentKey\",\"value\":\"[\\\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\\\", \\\"fe83f80b-073d-4ccf-93d9-6797eb870201\\\"]\"}]}",
+                    Object.class, SerializerEncoding.JSON)))
+            .withOwnerSource(new GovernanceRuleOwnerSource().withType(GovernanceRuleOwnerSourceType.MANUALLY)
+                .withValue("user@contoso.com"))
             .withGovernanceEmailNotification(
-                new GovernanceRuleEmailNotification()
-                    .withDisableManagerEmailNotification(true)
+                new GovernanceRuleEmailNotification().withDisableManagerEmailNotification(true)
                     .withDisableOwnerEmailNotification(false))
             .create();
     }
@@ -65,13 +57,12 @@ public final class GovernanceRulesCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create or update governance rule over security connector scope.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void createOrUpdateGovernanceRuleOverSecurityConnectorScope(
         com.azure.resourcemanager.security.SecurityManager manager) throws IOException {
-        manager
-            .governanceRules()
+        manager.governanceRules()
             .define("ad9a8e26-29d9-4829-bb30-e597a58cdbb8")
             .withExistingScope(
                 "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector")
@@ -83,23 +74,14 @@ public final class GovernanceRulesCreateOrUpdateSamples {
             .withIsDisabled(false)
             .withRuleType(GovernanceRuleType.INTEGRATED)
             .withSourceResourceType(GovernanceRuleSourceResourceType.ASSESSMENTS)
-            .withConditionSets(
-                Arrays
-                    .asList(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize(
-                                "{\"conditions\":[{\"operator\":\"In\",\"property\":\"$.AssessmentKey\",\"value\":\"[\\\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\\\","
-                                    + " \\\"fe83f80b-073d-4ccf-93d9-6797eb870201\\\"]\"}]}",
-                                Object.class,
-                                SerializerEncoding.JSON)))
-            .withOwnerSource(
-                new GovernanceRuleOwnerSource()
-                    .withType(GovernanceRuleOwnerSourceType.MANUALLY)
-                    .withValue("user@contoso.com"))
+            .withConditionSets(Arrays.asList(SerializerFactory.createDefaultManagementSerializerAdapter()
+                .deserialize(
+                    "{\"conditions\":[{\"operator\":\"In\",\"property\":\"$.AssessmentKey\",\"value\":\"[\\\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\\\", \\\"fe83f80b-073d-4ccf-93d9-6797eb870201\\\"]\"}]}",
+                    Object.class, SerializerEncoding.JSON)))
+            .withOwnerSource(new GovernanceRuleOwnerSource().withType(GovernanceRuleOwnerSourceType.MANUALLY)
+                .withValue("user@contoso.com"))
             .withGovernanceEmailNotification(
-                new GovernanceRuleEmailNotification()
-                    .withDisableManagerEmailNotification(true)
+                new GovernanceRuleEmailNotification().withDisableManagerEmailNotification(true)
                     .withDisableOwnerEmailNotification(false))
             .create();
     }
@@ -109,13 +91,12 @@ public final class GovernanceRulesCreateOrUpdateSamples {
      */
     /**
      * Sample code: Create or update governance rule over subscription scope.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void createOrUpdateGovernanceRuleOverSubscriptionScope(
         com.azure.resourcemanager.security.SecurityManager manager) throws IOException {
-        manager
-            .governanceRules()
+        manager.governanceRules()
             .define("ad9a8e26-29d9-4829-bb30-e597a58cdbb8")
             .withExistingScope("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23")
             .withDisplayName("Admin's rule")
@@ -126,23 +107,14 @@ public final class GovernanceRulesCreateOrUpdateSamples {
             .withIsDisabled(false)
             .withRuleType(GovernanceRuleType.INTEGRATED)
             .withSourceResourceType(GovernanceRuleSourceResourceType.ASSESSMENTS)
-            .withConditionSets(
-                Arrays
-                    .asList(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize(
-                                "{\"conditions\":[{\"operator\":\"In\",\"property\":\"$.AssessmentKey\",\"value\":\"[\\\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\\\","
-                                    + " \\\"fe83f80b-073d-4ccf-93d9-6797eb870201\\\"]\"}]}",
-                                Object.class,
-                                SerializerEncoding.JSON)))
-            .withOwnerSource(
-                new GovernanceRuleOwnerSource()
-                    .withType(GovernanceRuleOwnerSourceType.MANUALLY)
-                    .withValue("user@contoso.com"))
+            .withConditionSets(Arrays.asList(SerializerFactory.createDefaultManagementSerializerAdapter()
+                .deserialize(
+                    "{\"conditions\":[{\"operator\":\"In\",\"property\":\"$.AssessmentKey\",\"value\":\"[\\\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\\\", \\\"fe83f80b-073d-4ccf-93d9-6797eb870201\\\"]\"}]}",
+                    Object.class, SerializerEncoding.JSON)))
+            .withOwnerSource(new GovernanceRuleOwnerSource().withType(GovernanceRuleOwnerSourceType.MANUALLY)
+                .withValue("user@contoso.com"))
             .withGovernanceEmailNotification(
-                new GovernanceRuleEmailNotification()
-                    .withDisableManagerEmailNotification(false)
+                new GovernanceRuleEmailNotification().withDisableManagerEmailNotification(false)
                     .withDisableOwnerEmailNotification(false))
             .create();
     }

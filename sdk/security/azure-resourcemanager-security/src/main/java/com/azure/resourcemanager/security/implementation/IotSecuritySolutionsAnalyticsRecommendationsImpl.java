@@ -29,27 +29,22 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsImpl
         this.serviceManager = serviceManager;
     }
 
-    public Response<IoTSecurityAggregatedRecommendation> getWithResponse(
-        String resourceGroupName, String solutionName, String aggregatedRecommendationName, Context context) {
-        Response<IoTSecurityAggregatedRecommendationInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, solutionName, aggregatedRecommendationName, context);
+    public Response<IoTSecurityAggregatedRecommendation> getWithResponse(String resourceGroupName, String solutionName,
+        String aggregatedRecommendationName, Context context) {
+        Response<IoTSecurityAggregatedRecommendationInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, solutionName, aggregatedRecommendationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IoTSecurityAggregatedRecommendationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public IoTSecurityAggregatedRecommendation get(
-        String resourceGroupName, String solutionName, String aggregatedRecommendationName) {
-        IoTSecurityAggregatedRecommendationInner inner =
-            this.serviceClient().get(resourceGroupName, solutionName, aggregatedRecommendationName);
+    public IoTSecurityAggregatedRecommendation get(String resourceGroupName, String solutionName,
+        String aggregatedRecommendationName) {
+        IoTSecurityAggregatedRecommendationInner inner
+            = this.serviceClient().get(resourceGroupName, solutionName, aggregatedRecommendationName);
         if (inner != null) {
             return new IoTSecurityAggregatedRecommendationImpl(inner, this.manager());
         } else {
@@ -58,16 +53,18 @@ public final class IotSecuritySolutionsAnalyticsRecommendationsImpl
     }
 
     public PagedIterable<IoTSecurityAggregatedRecommendation> list(String resourceGroupName, String solutionName) {
-        PagedIterable<IoTSecurityAggregatedRecommendationInner> inner =
-            this.serviceClient().list(resourceGroupName, solutionName);
-        return Utils.mapPage(inner, inner1 -> new IoTSecurityAggregatedRecommendationImpl(inner1, this.manager()));
+        PagedIterable<IoTSecurityAggregatedRecommendationInner> inner
+            = this.serviceClient().list(resourceGroupName, solutionName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new IoTSecurityAggregatedRecommendationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<IoTSecurityAggregatedRecommendation> list(
-        String resourceGroupName, String solutionName, Integer top, Context context) {
-        PagedIterable<IoTSecurityAggregatedRecommendationInner> inner =
-            this.serviceClient().list(resourceGroupName, solutionName, top, context);
-        return Utils.mapPage(inner, inner1 -> new IoTSecurityAggregatedRecommendationImpl(inner1, this.manager()));
+    public PagedIterable<IoTSecurityAggregatedRecommendation> list(String resourceGroupName, String solutionName,
+        Integer top, Context context) {
+        PagedIterable<IoTSecurityAggregatedRecommendationInner> inner
+            = this.serviceClient().list(resourceGroupName, solutionName, top, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new IoTSecurityAggregatedRecommendationImpl(inner1, this.manager()));
     }
 
     private IotSecuritySolutionsAnalyticsRecommendationsClient serviceClient() {

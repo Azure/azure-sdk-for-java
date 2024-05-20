@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.hdinsight.containers.generated;
 
-/** Samples for ClusterPools ListByResourceGroup. */
+/**
+ * Samples for ClusterPools ListByResourceGroup.
+ */
 public final class ClusterPoolsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-06-01-preview/examples/ListClusterPools.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * ListClusterPools.json
      */
     /**
      * Sample code: ClusterPoolsListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to HDInsightContainersManager.
      */
     public static void clusterPoolsListByResourceGroup(

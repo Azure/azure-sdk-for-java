@@ -28,49 +28,44 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CreateTracerTests {
-    private final SdkTracerProvider tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(InMemorySpanExporter.create()))
+    private final SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
+        .addSpanProcessor(SimpleSpanProcessor.create(InMemorySpanExporter.create()))
         .build();
 
     private final OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
+
     @Test
     public void createTracerNoOptions() {
-        Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer("test", null, null, null);
+        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, null, null);
 
         assertFalse(tracer.isEnabled());
     }
 
     @Test
     public void createTracerEnabled() {
-        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setOpenTelemetry(openTelemetry);
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer("test", null, null, options);
+        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, null, options);
 
         assertTrue(tracer.isEnabled());
     }
 
     @Test
     public void createTracerDisabled() {
-        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setOpenTelemetry(openTelemetry);
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
         options.setEnabled(false);
 
-        Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer("test", null, null, options);
+        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, null, options);
 
         assertFalse(tracer.isEnabled());
     }
 
     @Test
     public void createTracerNoAzNamespace() {
-        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setOpenTelemetry(openTelemetry);
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer("test", null, null, options);
+        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, null, options);
 
         Context span = tracer.start("test", Context.NONE);
         SpanData data = getSpanData(span);
@@ -79,11 +74,9 @@ public class CreateTracerTests {
 
     @Test
     public void createTracerWithAzNamespace() {
-        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setOpenTelemetry(openTelemetry);
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer("test", null, "namespace", options);
+        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, "namespace", options);
 
         Context span = tracer.start("test", Context.NONE);
         SpanData data = getSpanData(span);
@@ -93,11 +86,9 @@ public class CreateTracerTests {
 
     @Test
     public void createTracerWithAzNamespaceInContext() {
-        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setOpenTelemetry(openTelemetry);
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer("test", null, "namespace", options);
+        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, "namespace", options);
 
         Context span = tracer.start("test", new Context("az.namespace", "another"));
         SpanData data = getSpanData(span);
@@ -107,15 +98,12 @@ public class CreateTracerTests {
 
     @Test
     public void defaultSchemaVersion() {
-        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setOpenTelemetry(openTelemetry);
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer("test", null, null, options);
+        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, null, options);
 
-        StartSpanOptions startSpanOptions = new StartSpanOptions(SpanKind.PRODUCER)
-            .setAttribute("hostname", "addr")
-            .setAttribute("not-mapped", 42);
+        StartSpanOptions startSpanOptions
+            = new StartSpanOptions(SpanKind.PRODUCER).setAttribute("hostname", "addr").setAttribute("not-mapped", 42);
 
         Context span = tracer.start("test", startSpanOptions, Context.NONE);
         tracer.setAttribute("entity-path", "foo", span);
@@ -129,31 +117,29 @@ public class CreateTracerTests {
 
     @Test
     public void instrumentationScopeNameOnly() {
-        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setOpenTelemetry(openTelemetry);
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer("test", null, null, options);
+        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", null, null, options);
 
         Context span = tracer.start("test", Context.NONE);
         ReadableSpan readableSpan = getReadableSpan(span);
         assertEquals("test", readableSpan.getInstrumentationScopeInfo().getName());
-        assertEquals("https://opentelemetry.io/schemas/1.23.1", readableSpan.getInstrumentationScopeInfo().getSchemaUrl());
+        assertEquals("https://opentelemetry.io/schemas/1.23.1",
+            readableSpan.getInstrumentationScopeInfo().getSchemaUrl());
         assertNull(readableSpan.getInstrumentationScopeInfo().getVersion());
     }
 
     @Test
     public void instrumentationScopeVersion() {
-        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions()
-            .setOpenTelemetry(openTelemetry);
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer("test", "1.2.3-beta.45", null, options);
+        Tracer tracer = TracerProvider.getDefaultProvider().createTracer("test", "1.2.3-beta.45", null, options);
 
         Context span = tracer.start("test", Context.NONE);
         ReadableSpan readableSpan = getReadableSpan(span);
         assertEquals("test", readableSpan.getInstrumentationScopeInfo().getName());
-        assertEquals("https://opentelemetry.io/schemas/1.23.1", readableSpan.getInstrumentationScopeInfo().getSchemaUrl());
+        assertEquals("https://opentelemetry.io/schemas/1.23.1",
+            readableSpan.getInstrumentationScopeInfo().getSchemaUrl());
         assertEquals("1.2.3-beta.45", readableSpan.getInstrumentationScopeInfo().getVersion());
     }
 

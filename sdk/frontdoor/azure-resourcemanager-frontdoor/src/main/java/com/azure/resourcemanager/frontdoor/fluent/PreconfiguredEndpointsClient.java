@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.frontdoor.fluent.models.PreconfiguredEndpointInner;
 
-/** An instance of this class provides access to all the operations defined in PreconfiguredEndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PreconfiguredEndpointsClient.
+ */
 public interface PreconfiguredEndpointsClient {
     /**
      * Gets a list of Preconfigured Endpoints.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,7 +29,7 @@ public interface PreconfiguredEndpointsClient {
 
     /**
      * Gets a list of Preconfigured Endpoints.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName The Profile identifier associated with the Tenant and Partner.
      * @param context The context to associate with this operation.

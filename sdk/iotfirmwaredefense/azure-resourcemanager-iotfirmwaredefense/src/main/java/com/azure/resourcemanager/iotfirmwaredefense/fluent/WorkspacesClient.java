@@ -14,11 +14,13 @@ import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.WorkspaceInner
 import com.azure.resourcemanager.iotfirmwaredefense.models.GenerateUploadUrlRequest;
 import com.azure.resourcemanager.iotfirmwaredefense.models.WorkspaceUpdateDefinition;
 
-/** An instance of this class provides access to all the operations defined in WorkspacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspacesClient.
+ */
 public interface WorkspacesClient {
     /**
      * Lists all of the firmware analysis workspaces in the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return return a list of firmware analysis workspaces as paginated response with {@link PagedIterable}.
@@ -28,7 +30,7 @@ public interface WorkspacesClient {
 
     /**
      * Lists all of the firmware analysis workspaces in the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +42,7 @@ public interface WorkspacesClient {
 
     /**
      * Lists all of the firmware analysis workspaces in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,7 +54,7 @@ public interface WorkspacesClient {
 
     /**
      * Lists all of the firmware analysis workspaces in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +67,7 @@ public interface WorkspacesClient {
 
     /**
      * The operation to create or update a firmware analysis workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param workspace Parameters when creating a firmware analysis workspace.
@@ -76,12 +78,12 @@ public interface WorkspacesClient {
      * @return firmware analysis workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceInner> createWithResponse(
-        String resourceGroupName, String workspaceName, WorkspaceInner workspace, Context context);
+    Response<WorkspaceInner> createWithResponse(String resourceGroupName, String workspaceName,
+        WorkspaceInner workspace, Context context);
 
     /**
      * The operation to create or update a firmware analysis workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param workspace Parameters when creating a firmware analysis workspace.
@@ -95,7 +97,7 @@ public interface WorkspacesClient {
 
     /**
      * The operation to update a firmware analysis workspaces.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param workspace Parameters when updating a firmware analysis workspace.
@@ -106,12 +108,12 @@ public interface WorkspacesClient {
      * @return firmware analysis workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceInner> updateWithResponse(
-        String resourceGroupName, String workspaceName, WorkspaceUpdateDefinition workspace, Context context);
+    Response<WorkspaceInner> updateWithResponse(String resourceGroupName, String workspaceName,
+        WorkspaceUpdateDefinition workspace, Context context);
 
     /**
      * The operation to update a firmware analysis workspaces.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param workspace Parameters when updating a firmware analysis workspace.
@@ -125,7 +127,7 @@ public interface WorkspacesClient {
 
     /**
      * The operation to delete a firmware analysis workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param context The context to associate with this operation.
@@ -139,7 +141,7 @@ public interface WorkspacesClient {
 
     /**
      * The operation to delete a firmware analysis workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,7 +153,7 @@ public interface WorkspacesClient {
 
     /**
      * Get firmware analysis workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param context The context to associate with this operation.
@@ -161,12 +163,12 @@ public interface WorkspacesClient {
      * @return firmware analysis workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<WorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Get firmware analysis workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -179,7 +181,7 @@ public interface WorkspacesClient {
 
     /**
      * The operation to get a url for file upload.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param generateUploadUrl Parameters when requesting a URL to upload firmware.
@@ -190,12 +192,12 @@ public interface WorkspacesClient {
      * @return url data for creating or accessing a blob file along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UrlTokenInner> generateUploadUrlWithResponse(
-        String resourceGroupName, String workspaceName, GenerateUploadUrlRequest generateUploadUrl, Context context);
+    Response<UrlTokenInner> generateUploadUrlWithResponse(String resourceGroupName, String workspaceName,
+        GenerateUploadUrlRequest generateUploadUrl, Context context);
 
     /**
      * The operation to get a url for file upload.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param generateUploadUrl Parameters when requesting a URL to upload firmware.
@@ -205,6 +207,6 @@ public interface WorkspacesClient {
      * @return url data for creating or accessing a blob file.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UrlTokenInner generateUploadUrl(
-        String resourceGroupName, String workspaceName, GenerateUploadUrlRequest generateUploadUrl);
+    UrlTokenInner generateUploadUrl(String resourceGroupName, String workspaceName,
+        GenerateUploadUrlRequest generateUploadUrl);
 }

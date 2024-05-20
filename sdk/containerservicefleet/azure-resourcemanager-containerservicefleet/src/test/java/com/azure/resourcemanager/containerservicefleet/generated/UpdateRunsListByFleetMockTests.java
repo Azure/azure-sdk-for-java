@@ -6,81 +6,47 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager;
 import com.azure.resourcemanager.containerservicefleet.models.ManagedClusterUpgradeType;
 import com.azure.resourcemanager.containerservicefleet.models.NodeImageSelectionType;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRun;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class UpdateRunsListByFleetMockTests {
     @Test
     public void testListByFleet() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"updateStrategyId\":\"dlkzgxhuri\",\"strategy\":{\"stages\":[{\"name\":\"podxunkb\",\"groups\":[{\"name\":\"mubyynt\"},{\"name\":\"lrb\"},{\"name\":\"tkoievseotgq\"},{\"name\":\"l\"}],\"afterStageWaitInSeconds\":1147743130},{\"name\":\"u\",\"groups\":[{\"name\":\"uwz\"},{\"name\":\"zxb\"},{\"name\":\"pgcjefuzmuvp\"}],\"afterStageWaitInSeconds\":887975126},{\"name\":\"d\",\"groups\":[{\"name\":\"rp\"},{\"name\":\"xe\"},{\"name\":\"mnzb\"},{\"name\":\"bhjpglkfgohdne\"}],\"afterStageWaitInSeconds\":1635108212},{\"name\":\"fphsdyhtozfikdow\",\"groups\":[{\"name\":\"uvxzxclvi\"},{\"name\":\"hhqzonosgg\"}],\"afterStageWaitInSeconds\":218924487}]},\"managedClusterUpdate\":{\"upgrade\":{\"type\":\"ControlPlaneOnly\",\"kubernetesVersion\":\"fwdsj\"},\"nodeImageSelection\":{\"type\":\"Consistent\"}},\"status\":{\"status\":{\"startTime\":\"2021-03-28T17:35:22Z\",\"completedTime\":\"2021-08-31T11:12:28Z\",\"state\":\"Failed\"},\"stages\":[{\"status\":{},\"name\":\"dkzzewkfvhqcrail\",\"groups\":[{}],\"afterStageWaitStatus\":{}},{\"status\":{},\"name\":\"uflrwd\",\"groups\":[{},{}],\"afterStageWaitStatus\":{}}],\"nodeImageSelection\":{\"selectedNodeImageVersions\":[{}]}}},\"eTag\":\"xsaga\",\"id\":\"nihgwqapnedg\",\"name\":\"bcvkcvqvpkeq\",\"type\":\"cvdrhvoodsot\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"updateStrategyId\":\"tppjflcx\",\"strategy\":{\"stages\":[{\"name\":\"okonzmnsikvmkqz\",\"groups\":[{\"name\":\"kdltfzxmhhvhg\"},{\"name\":\"r\"}],\"afterStageWaitInSeconds\":191107441},{\"name\":\"kwobdagxtibq\",\"groups\":[{\"name\":\"xwak\"},{\"name\":\"ogqxndlkzgxhuri\"}],\"afterStageWaitInSeconds\":1090180987},{\"name\":\"podxunkb\",\"groups\":[{\"name\":\"mubyynt\"},{\"name\":\"lrb\"},{\"name\":\"tkoievseotgq\"},{\"name\":\"l\"}],\"afterStageWaitInSeconds\":1147743130}]},\"managedClusterUpdate\":{\"upgrade\":{\"type\":\"Full\",\"kubernetesVersion\":\"lauwzizxbmpgcjef\"},\"nodeImageSelection\":{\"type\":\"Latest\"}},\"status\":{\"status\":{\"startTime\":\"2021-06-02T10:08:07Z\",\"completedTime\":\"2021-05-23T17:52:43Z\",\"state\":\"Completed\"},\"stages\":[{\"status\":{},\"name\":\"xe\",\"groups\":[{},{}],\"afterStageWaitStatus\":{}}],\"nodeImageSelection\":{\"selectedNodeImageVersions\":[{},{},{},{}]}}},\"eTag\":\"jpglkfgohdne\",\"id\":\"lfphsdyhtozfikd\",\"name\":\"wwquuvxzxclvithh\",\"type\":\"zonosgg\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ContainerServiceFleetManager manager = ContainerServiceFleetManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<UpdateRun> response
+            = manager.updateRuns().listByFleet("gureodkwobdag", "tibqdxbxwakb", com.azure.core.util.Context.NONE);
 
-        ContainerServiceFleetManager manager =
-            ContainerServiceFleetManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<UpdateRun> response =
-            manager.updateRuns().listByFleet("d", "lvwiwubmwmbesl", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("tppjflcx", response.iterator().next().updateStrategyId());
-        Assertions.assertEquals("okonzmnsikvmkqz", response.iterator().next().strategy().stages().get(0).name());
-        Assertions
-            .assertEquals(
-                "kdltfzxmhhvhg", response.iterator().next().strategy().stages().get(0).groups().get(0).name());
-        Assertions
-            .assertEquals(191107441, response.iterator().next().strategy().stages().get(0).afterStageWaitInSeconds());
-        Assertions
-            .assertEquals(
-                ManagedClusterUpgradeType.FULL, response.iterator().next().managedClusterUpdate().upgrade().type());
-        Assertions
-            .assertEquals(
-                "lauwzizxbmpgcjef", response.iterator().next().managedClusterUpdate().upgrade().kubernetesVersion());
-        Assertions
-            .assertEquals(
-                NodeImageSelectionType.LATEST,
-                response.iterator().next().managedClusterUpdate().nodeImageSelection().type());
+        Assertions.assertEquals("dlkzgxhuri", response.iterator().next().updateStrategyId());
+        Assertions.assertEquals("podxunkb", response.iterator().next().strategy().stages().get(0).name());
+        Assertions.assertEquals("mubyynt",
+            response.iterator().next().strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1147743130,
+            response.iterator().next().strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals(ManagedClusterUpgradeType.CONTROL_PLANE_ONLY,
+            response.iterator().next().managedClusterUpdate().upgrade().type());
+        Assertions.assertEquals("fwdsj",
+            response.iterator().next().managedClusterUpdate().upgrade().kubernetesVersion());
+        Assertions.assertEquals(NodeImageSelectionType.CONSISTENT,
+            response.iterator().next().managedClusterUpdate().nodeImageSelection().type());
     }
 }

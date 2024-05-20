@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.ComplianceProperties;
 public final class CompliancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComplianceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"assessmentTimestampUtcDate\":\"2021-11-22T21:44:45Z\",\"resourceCount\":2043686923,\"assessmentResult\":[{\"segmentType\":\"xje\",\"percentage\":84.10933716066732},{\"segmentType\":\"wxuqlcvydypatdoo\",\"percentage\":48.53263087805991},{\"segmentType\":\"iodkooebwnujhem\",\"percentage\":70.84255746706634}]}")
-                .toObject(ComplianceProperties.class);
+        ComplianceProperties model = BinaryData.fromString(
+            "{\"assessmentTimestampUtcDate\":\"2021-11-13T23:35:47Z\",\"resourceCount\":922056801,\"assessmentResult\":[{\"segmentType\":\"x\",\"percentage\":19.21714111001248},{\"segmentType\":\"ddtocjjxhvp\",\"percentage\":41.11226825045171},{\"segmentType\":\"hd\",\"percentage\":5.346817034336282},{\"segmentType\":\"eojnxqbzvddn\",\"percentage\":19.32644653583042}]}")
+            .toObject(ComplianceProperties.class);
     }
 
     @org.junit.jupiter.api.Test

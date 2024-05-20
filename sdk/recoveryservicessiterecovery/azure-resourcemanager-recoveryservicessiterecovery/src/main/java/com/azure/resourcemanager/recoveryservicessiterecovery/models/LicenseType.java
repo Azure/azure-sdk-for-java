@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** License type. */
+/**
+ * License type.
+ */
 public final class LicenseType extends ExpandableStringEnum<LicenseType> {
-    /** Static value NotSpecified for LicenseType. */
+    /**
+     * Static value NotSpecified for LicenseType.
+     */
     public static final LicenseType NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value NoLicenseType for LicenseType. */
+    /**
+     * Static value NoLicenseType for LicenseType.
+     */
     public static final LicenseType NO_LICENSE_TYPE = fromString("NoLicenseType");
 
-    /** Static value WindowsServer for LicenseType. */
+    /**
+     * Static value WindowsServer for LicenseType.
+     */
     public static final LicenseType WINDOWS_SERVER = fromString("WindowsServer");
 
     /**
      * Creates a new instance of LicenseType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class LicenseType extends ExpandableStringEnum<LicenseType> {
 
     /**
      * Creates or finds a LicenseType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LicenseType.
      */
@@ -41,7 +49,7 @@ public final class LicenseType extends ExpandableStringEnum<LicenseType> {
 
     /**
      * Gets known LicenseType values.
-     *
+     * 
      * @return known LicenseType values.
      */
     public static Collection<LicenseType> values() {

@@ -6,31 +6,31 @@ package com.azure.resourcemanager.storagecache.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemHsmSettings;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class AmlFilesystemHsmSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmlFilesystemHsmSettings model =
-            BinaryData
-                .fromString(
-                    "{\"container\":\"jgzjaoyfhrtx\",\"loggingContainer\":\"lnerkujysvleju\",\"importPrefix\":\"qawrlyxwj\"}")
-                .toObject(AmlFilesystemHsmSettings.class);
-        Assertions.assertEquals("jgzjaoyfhrtx", model.container());
-        Assertions.assertEquals("lnerkujysvleju", model.loggingContainer());
-        Assertions.assertEquals("qawrlyxwj", model.importPrefix());
+        AmlFilesystemHsmSettings model = BinaryData.fromString(
+            "{\"container\":\"np\",\"loggingContainer\":\"qfpjk\",\"importPrefix\":\"xofpdvhpfxxypi\",\"importPrefixesInitial\":[\"mayhuybbkpodepoo\",\"inuvamiheogn\",\"rxzxtheo\"]}")
+            .toObject(AmlFilesystemHsmSettings.class);
+        Assertions.assertEquals("np", model.container());
+        Assertions.assertEquals("qfpjk", model.loggingContainer());
+        Assertions.assertEquals("xofpdvhpfxxypi", model.importPrefix());
+        Assertions.assertEquals("mayhuybbkpodepoo", model.importPrefixesInitial().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmlFilesystemHsmSettings model =
-            new AmlFilesystemHsmSettings()
-                .withContainer("jgzjaoyfhrtx")
-                .withLoggingContainer("lnerkujysvleju")
-                .withImportPrefix("qawrlyxwj");
+        AmlFilesystemHsmSettings model = new AmlFilesystemHsmSettings().withContainer("np")
+            .withLoggingContainer("qfpjk")
+            .withImportPrefix("xofpdvhpfxxypi")
+            .withImportPrefixesInitial(Arrays.asList("mayhuybbkpodepoo", "inuvamiheogn", "rxzxtheo"));
         model = BinaryData.fromObject(model).toObject(AmlFilesystemHsmSettings.class);
-        Assertions.assertEquals("jgzjaoyfhrtx", model.container());
-        Assertions.assertEquals("lnerkujysvleju", model.loggingContainer());
-        Assertions.assertEquals("qawrlyxwj", model.importPrefix());
+        Assertions.assertEquals("np", model.container());
+        Assertions.assertEquals("qfpjk", model.loggingContainer());
+        Assertions.assertEquals("xofpdvhpfxxypi", model.importPrefix());
+        Assertions.assertEquals("mayhuybbkpodepoo", model.importPrefixesInitial().get(0));
     }
 }

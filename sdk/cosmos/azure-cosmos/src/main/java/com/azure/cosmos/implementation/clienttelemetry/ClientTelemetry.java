@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.clienttelemetry;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.CosmosDaemonThreadFactory;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -36,8 +35,6 @@ import org.HdrHistogram.DoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -51,7 +48,6 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -98,9 +94,6 @@ public class ClientTelemetry {
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final HttpClient httpClient;
     private final HttpClient metadataHttpClient;
-    private final ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(1,
-        new CosmosDaemonThreadFactory("ClientTelemetry-" + instanceCount.incrementAndGet()));
-    private final Scheduler scheduler = Schedulers.fromExecutor(scheduledExecutorService);
     private static final Logger logger = LoggerFactory.getLogger(ClientTelemetry.class);
     private volatile boolean isClosed;
 
@@ -223,7 +216,6 @@ public class ClientTelemetry {
 
     public void close() {
         this.isClosed = true;
-        this.scheduledExecutorService.shutdown();
         logger.debug("GlobalEndpointManager closed.");
     }
 
@@ -280,7 +272,7 @@ public class ClientTelemetry {
                         URI targetEndpoint = new URI(endpoint);
                         ByteBuffer byteBuffer =
                             InternalObjectNode.serializeJsonToByteBuffer(this.clientTelemetryInfo,
-                                ClientTelemetry.OBJECT_MAPPER,
+                                CosmosItemSerializer.DEFAULT_SERIALIZER,
                                 null);
                         byte[] tempBuffer = RxDocumentServiceRequest.toByteArray(byteBuffer);
                         Map<String, String> headers = new HashMap<>();
@@ -346,7 +338,7 @@ public class ClientTelemetry {
                     ". Exception: ", ex);
                 clearDataForNextRun();
                 return this.sendClientTelemetry();
-            }).subscribeOn(scheduler);
+            }).subscribeOn(CosmosSchedulers.CLIENT_TELEMETRY_BOUNDED_ELASTIC);
     }
 
     private void populateAzureVmMetaData(AzureVMMetadata azureVMMetadata) {

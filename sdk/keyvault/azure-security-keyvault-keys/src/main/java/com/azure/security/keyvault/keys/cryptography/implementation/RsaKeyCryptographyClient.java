@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.keys.cryptography.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
@@ -17,6 +16,7 @@ import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyOperation;
 import reactor.core.publisher.Mono;
 
 import java.security.GeneralSecurityException;
@@ -25,473 +25,421 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.verifyKeyPermissions;
+
 class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
-    private static final ClientLogger LOGGER = new ClientLogger(RsaKeyCryptographyClient.class);
+    private final KeyPair rsaKeyPair;
 
-    private KeyPair keyPair;
+    RsaKeyCryptographyClient(JsonWebKey jsonWebKey, CryptographyClientImpl implClient) {
+        super(jsonWebKey, implClient);
 
-    RsaKeyCryptographyClient(JsonWebKey key, CryptographyClientImpl implClient) {
-        super(implClient);
-
-        keyPair = key.toRsa(key.hasPrivateKey());
-    }
-
-    private KeyPair getKeyPair(JsonWebKey key) {
-        if (keyPair == null) {
-            keyPair = key.toRsa(key.hasPrivateKey());
-        }
-
-        return keyPair;
+        rsaKeyPair = jsonWebKey.toRsa(jsonWebKey.hasPrivateKey());
     }
 
     @Override
-    public Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm,
-        byte[] plaintext,
-        JsonWebKey jsonWebKey,
-        Context context) {
-        if (algorithm == null) {
-            return Mono.error(new NullPointerException("Encryption algorithm cannot be null."));
-        }
-
-        if (plaintext == null) {
-            return Mono.error(new NullPointerException("Plaintext cannot be null."));
-        }
-
-        keyPair = getKeyPair(jsonWebKey);
-
-        // Interpret the requested algorithm
-        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
-
-        if (baseAlgorithm == null) {
-            if (serviceClientAvailable()) {
-                return implClient.encryptAsync(algorithm, plaintext, context);
-            }
-
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
-        } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
-        }
-
-        if (keyPair.getPublic() == null) {
-            if (serviceClientAvailable()) {
-                return implClient.encryptAsync(algorithm, plaintext, context);
-            }
-
-            return Mono.error(new IllegalArgumentException(
-                "Public portion of the key not available to perform encrypt operation"));
-        }
-
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
-
-        return Mono.fromCallable(() -> {
-            ICryptoTransform transform = algo.createEncryptor(keyPair);
-
-            return new EncryptResult(transform.doFinal(plaintext), algorithm, jsonWebKey.getId());
-        });
-    }
-
-    @Override
-    public EncryptResult encrypt(EncryptionAlgorithm algorithm,
-        byte[] plaintext,
-        JsonWebKey jsonWebKey,
-        Context context) {
+    public Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
         Objects.requireNonNull(plaintext, "Plaintext cannot be null.");
 
-        keyPair = getKeyPair(jsonWebKey);
+        // Interpret the requested algorithm
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
+
+        if (baseAlgorithm == null) {
+            if (implClient != null) {
+                return implClient.encryptAsync(algorithm, plaintext, context);
+            }
+
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+        } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+        }
+
+        if (rsaKeyPair.getPublic() == null) {
+            if (implClient != null) {
+                return implClient.encryptAsync(algorithm, plaintext, context);
+            }
+
+            throw new IllegalArgumentException(
+                "The public portion of the key is not available to perform the encrypt operation.");
+        }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.ENCRYPT);
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
+
+        return Mono.fromCallable(() -> {
+            ICryptoTransform transform = algo.createEncryptor(rsaKeyPair);
+
+            return new EncryptResult(transform.doFinal(plaintext), algorithm, jsonWebKey.getId());
+        });
+    }
+
+    @Override
+    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
+        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(plaintext, "Plaintext cannot be null.");
 
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
-            if (serviceClientAvailable()) {
+            if (implClient != null) {
                 return implClient.encrypt(algorithm, plaintext, context);
             }
 
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
-        if (keyPair.getPublic() == null) {
-            if (serviceClientAvailable()) {
+        if (rsaKeyPair.getPublic() == null) {
+            if (implClient != null) {
                 return implClient.encrypt(algorithm, plaintext, context);
             }
 
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Public portion of the key not available to perform encrypt operation"));
+            throw new IllegalArgumentException(
+                "The public portion of the key is not available to perform the encrypt operation.");
         }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.ENCRYPT);
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
         try {
-            ICryptoTransform transform = algo.createEncryptor(keyPair);
+            ICryptoTransform transform = algo.createEncryptor(rsaKeyPair);
 
             return new EncryptResult(transform.doFinal(plaintext), algorithm, jsonWebKey.getId());
         } catch (GeneralSecurityException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Mono<EncryptResult> encryptAsync(EncryptParameters encryptParameters, JsonWebKey jsonWebKey, Context context) {
-        return Mono.fromCallable(() -> encrypt(encryptParameters, jsonWebKey, context));
+    public Mono<EncryptResult> encryptAsync(EncryptParameters encryptParameters, Context context) {
+        return Mono.fromCallable(() -> encrypt(encryptParameters, context));
     }
 
     @Override
-    public EncryptResult encrypt(EncryptParameters encryptParameters, JsonWebKey jsonWebKey, Context context) {
+    public EncryptResult encrypt(EncryptParameters encryptParameters, Context context) {
         Objects.requireNonNull(encryptParameters, "Encrypt parameters cannot be null.");
 
-        return encrypt(encryptParameters.getAlgorithm(), encryptParameters.getPlainText(), jsonWebKey, context);
+        return encrypt(encryptParameters.getAlgorithm(), encryptParameters.getPlainText(), context);
     }
 
     @Override
-    public Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm,
-        byte[] ciphertext,
-        JsonWebKey jsonWebKey,
-        Context context) {
-        if (algorithm == null) {
-            return Mono.error(new NullPointerException("Encryption algorithm cannot be null."));
-        }
-
-        if (ciphertext == null) {
-            return Mono.error(new NullPointerException("Ciphertext cannot be null."));
-        }
-
-        keyPair = getKeyPair(jsonWebKey);
-
-        // Interpret the requested algorithm
-        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
-
-        if (baseAlgorithm == null) {
-            if (serviceClientAvailable()) {
-                return implClient.decryptAsync(algorithm, ciphertext, context);
-            }
-
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
-        } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
-        }
-
-        if (keyPair.getPrivate() == null) {
-            if (serviceClientAvailable()) {
-                return implClient.decryptAsync(algorithm, ciphertext, context);
-            }
-
-            return Mono.error(new IllegalArgumentException(
-                "Private portion of the key not available to perform decrypt operation"));
-        }
-
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
-
-        return Mono.fromCallable(() -> {
-            ICryptoTransform transform = algo.createDecryptor(keyPair);
-
-            return new DecryptResult(transform.doFinal(ciphertext), algorithm, jsonWebKey.getId());
-        });
-    }
-
-    @Override
-    public DecryptResult decrypt(EncryptionAlgorithm algorithm,
-        byte[] ciphertext,
-        JsonWebKey jsonWebKey,
-        Context context) {
+    public Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
         Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
         Objects.requireNonNull(ciphertext, "Ciphertext cannot be null.");
 
-        keyPair = getKeyPair(jsonWebKey);
+        // Interpret the requested algorithm
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
+
+        if (baseAlgorithm == null) {
+            if (implClient != null) {
+                return implClient.decryptAsync(algorithm, ciphertext, context);
+            }
+
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+        } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+        }
+
+        if (rsaKeyPair.getPrivate() == null) {
+            if (implClient != null) {
+                return implClient.decryptAsync(algorithm, ciphertext, context);
+            }
+
+            throw new IllegalArgumentException(
+                "The private portion of the key is not available to perform the decrypt operation.");
+        }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.DECRYPT);
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
+
+        return Mono.fromCallable(() -> {
+            ICryptoTransform transform = algo.createDecryptor(rsaKeyPair);
+
+            return new DecryptResult(transform.doFinal(ciphertext), algorithm, jsonWebKey.getId());
+        });
+    }
+
+    @Override
+    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
+        Objects.requireNonNull(algorithm, "Encryption algorithm cannot be null.");
+        Objects.requireNonNull(ciphertext, "Ciphertext cannot be null.");
 
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
-            if (serviceClientAvailable()) {
+            if (implClient != null) {
                 return implClient.decrypt(algorithm, ciphertext, context);
             }
 
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
-        if (keyPair.getPrivate() == null) {
-            if (serviceClientAvailable()) {
+        if (rsaKeyPair.getPrivate() == null) {
+            if (implClient != null) {
                 return implClient.decrypt(algorithm, ciphertext, context);
             }
 
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Private portion of the key not available to perform decrypt operation"));
+            throw new IllegalArgumentException(
+                "The private portion of the key is not available to perform the decrypt operation.");
         }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.DECRYPT);
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
         try {
-            ICryptoTransform transform = algo.createDecryptor(keyPair);
+            ICryptoTransform transform = algo.createDecryptor(rsaKeyPair);
 
             return new DecryptResult(transform.doFinal(ciphertext), algorithm, jsonWebKey.getId());
         } catch (GeneralSecurityException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Mono<DecryptResult> decryptAsync(DecryptParameters decryptParameters, JsonWebKey jsonWebKey, Context context) {
-        return Mono.fromCallable(() -> decrypt(decryptParameters, jsonWebKey, context));
+    public Mono<DecryptResult> decryptAsync(DecryptParameters decryptParameters, Context context) {
+        return Mono.fromCallable(() -> decrypt(decryptParameters, context));
     }
 
     @Override
-    public DecryptResult decrypt(DecryptParameters decryptParameters, JsonWebKey jsonWebKey, Context context) {
+    public DecryptResult decrypt(DecryptParameters decryptParameters, Context context) {
         Objects.requireNonNull(decryptParameters, "Decrypt parameters cannot be null.");
 
-        return decrypt(decryptParameters.getAlgorithm(), decryptParameters.getCipherText(), jsonWebKey,
-            context);
+        return decrypt(decryptParameters.getAlgorithm(), decryptParameters.getCipherText(), context);
     }
 
     @Override
-    public Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, JsonWebKey key, Context context) {
-        return serviceClientAvailable()
+    public Mono<SignResult> signAsync(SignatureAlgorithm algorithm, byte[] digest, Context context) {
+        return implClient != null
             ? implClient.signAsync(algorithm, digest, context)
             : Mono.error(new UnsupportedOperationException(
-                "Sign operation on Local RSA key is not supported currently."));
+                "The sign operation on local RSA key is not currently supported."));
     }
 
     @Override
-    public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, JsonWebKey key, Context context) {
-        if (serviceClientAvailable()) {
+    public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
+        if (implClient != null) {
             return implClient.sign(algorithm, digest, context);
         } else {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException("Sign operation on Local RSA key is not supported currently."));
+            throw new UnsupportedOperationException("The sign operation on local RSA key is not currently supported.");
         }
     }
 
     @Override
-    public Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm,
-        byte[] digest,
-        byte[] signature,
-        JsonWebKey key,
-        Context context) {
-        return serviceClientAvailable()
+    public Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
+                                          Context context) {
+        return implClient != null
             ? implClient.verifyAsync(algorithm, digest, signature, context)
             : Mono.error(new UnsupportedOperationException(
-                "Verify operation on Local RSA key is not supported currently."));
+                "The verify operation on a local RSA key is not currently supported."));
     }
 
-    public VerifyResult verify(SignatureAlgorithm algorithm,
-        byte[] digest,
-        byte[] signature,
-        JsonWebKey key,
-        Context context) {
-        if (serviceClientAvailable()) {
+    @Override
+    public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
+        if (implClient != null) {
             return implClient.verify(algorithm, digest, signature, context);
         } else {
-            throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException("Verify operation on Local RSA key is not supported currently."));
+            throw new UnsupportedOperationException(
+                "The verify operation on a local RSA key is not currently supported.");
         }
     }
 
     @Override
-    public Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, JsonWebKey jsonWebKey, Context context) {
-        if (algorithm == null) {
-            return Mono.error(new NullPointerException("Key wrap algorithm cannot be null."));
-        }
-
-        if (key == null) {
-            return Mono.error(new NullPointerException("Key content to be wrapped cannot be null."));
-        }
-
-        keyPair = getKeyPair(jsonWebKey);
+    public Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] keyToWrap, Context context) {
+        Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
+        Objects.requireNonNull(keyToWrap, "Key content to be wrapped cannot be null.");
 
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
-            if (serviceClientAvailable()) {
-                return implClient.wrapKeyAsync(algorithm, key, context);
+            if (implClient != null) {
+                return implClient.wrapKeyAsync(algorithm, keyToWrap, context);
             }
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
-        if (keyPair.getPublic() == null) {
-            if (serviceClientAvailable()) {
-                return implClient.wrapKeyAsync(algorithm, key, context);
+        if (rsaKeyPair.getPublic() == null) {
+            if (implClient != null) {
+                return implClient.wrapKeyAsync(algorithm, keyToWrap, context);
             }
-            return Mono.error(new IllegalArgumentException(
-                "Public portion of the key not available to perform wrap key operation"));
+
+            throw new IllegalArgumentException(
+                "The public portion of the key is not available to perform the key wrap operation.");
         }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.WRAP_KEY);
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
         return Mono.fromCallable(() -> {
-            ICryptoTransform transform = algo.createEncryptor(keyPair);
-            return new WrapResult(transform.doFinal(key), algorithm, jsonWebKey.getId());
+            ICryptoTransform transform = algo.createEncryptor(rsaKeyPair);
+
+            return new WrapResult(transform.doFinal(keyToWrap), algorithm, jsonWebKey.getId());
         });
     }
 
     @Override
-    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, JsonWebKey jsonWebKey, Context context) {
+    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] keyToWrap, Context context) {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
-        Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
-
-        keyPair = getKeyPair(jsonWebKey);
+        Objects.requireNonNull(keyToWrap, "Key content to be wrapped cannot be null.");
 
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
-            if (serviceClientAvailable()) {
-                return implClient.wrapKey(algorithm, key, context);
+            if (implClient != null) {
+                return implClient.wrapKey(algorithm, keyToWrap, context);
             }
 
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
-        if (keyPair.getPublic() == null) {
-            if (serviceClientAvailable()) {
-                return implClient.wrapKey(algorithm, key, context);
+        if (rsaKeyPair.getPublic() == null) {
+            if (implClient != null) {
+                return implClient.wrapKey(algorithm, keyToWrap, context);
             }
 
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Public portion of the key not available to perform wrap key operation"));
+            throw new IllegalArgumentException(
+                "The public portion of the key is not available to perform the key wrap operation.");
         }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.WRAP_KEY);
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
         try {
-            ICryptoTransform transform = algo.createEncryptor(keyPair);
-            return new WrapResult(transform.doFinal(key), algorithm, jsonWebKey.getId());
+            ICryptoTransform transform = algo.createEncryptor(rsaKeyPair);
+
+            return new WrapResult(transform.doFinal(keyToWrap), algorithm, jsonWebKey.getId());
         } catch (GeneralSecurityException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm,
-        byte[] encryptedKey,
-        JsonWebKey jsonWebKey,
-        Context context) {
-        if (algorithm == null) {
-            return Mono.error(new NullPointerException("Key wrap algorithm cannot be null."));
-        }
-
-        if (encryptedKey == null) {
-            return Mono.error(new NullPointerException("Encrypted key content to be unwrapped cannot be null."));
-        }
-
-        keyPair = getKeyPair(jsonWebKey);
-
-        // Interpret the requested algorithm
-        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
-
-        if (baseAlgorithm == null) {
-            if (serviceClientAvailable()) {
-                return implClient.unwrapKeyAsync(algorithm, encryptedKey, context);
-            }
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
-        } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            return Mono.error(new NoSuchAlgorithmException(algorithm.toString()));
-        }
-
-        if (keyPair.getPrivate() == null) {
-            if (serviceClientAvailable()) {
-                return implClient.unwrapKeyAsync(algorithm, encryptedKey, context);
-            }
-            return Mono.error(new IllegalArgumentException(
-                "Private portion of the key not available to perform unwrap operation"));
-        }
-
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
-
-        return Mono.fromCallable(() -> {
-            ICryptoTransform transform = algo.createDecryptor(keyPair);
-            return new UnwrapResult(transform.doFinal(encryptedKey), algorithm, jsonWebKey.getId());
-        });
-    }
-
-    @Override
-    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm,
-        byte[] encryptedKey,
-        JsonWebKey jsonWebKey,
-        Context context) {
+    public Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
-        keyPair = getKeyPair(jsonWebKey);
+        // Interpret the requested algorithm
+        Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
+
+        if (baseAlgorithm == null) {
+            if (implClient != null) {
+                return implClient.unwrapKeyAsync(algorithm, encryptedKey, context);
+            }
+
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+        } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
+        }
+
+        if (rsaKeyPair.getPrivate() == null) {
+            if (implClient != null) {
+                return implClient.unwrapKeyAsync(algorithm, encryptedKey, context);
+            }
+
+            throw new IllegalArgumentException(
+                "The private portion of the key is not available to perform the key unwrap operation.");
+        }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.UNWRAP_KEY);
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
+
+        return Mono.fromCallable(() -> {
+            ICryptoTransform transform = algo.createDecryptor(rsaKeyPair);
+
+            return new UnwrapResult(transform.doFinal(encryptedKey), algorithm, jsonWebKey.getId());
+        });
+    }
+
+    @Override
+    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
+        Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
+        Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.DEFAULT.get(algorithm.toString());
 
         if (baseAlgorithm == null) {
-            if (serviceClientAvailable()) {
+            if (implClient != null) {
                 return implClient.unwrapKey(algorithm, encryptedKey, context);
             }
 
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         } else if (!(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(new NoSuchAlgorithmException(algorithm.toString())));
+            throw new RuntimeException(new NoSuchAlgorithmException(algorithm.toString()));
         }
 
-        if (keyPair.getPrivate() == null) {
-            if (serviceClientAvailable()) {
+        if (rsaKeyPair.getPrivate() == null) {
+            if (implClient != null) {
                 return implClient.unwrapKey(algorithm, encryptedKey, context);
             }
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Private portion of the key not available to perform unwrap operation"));
+
+            throw new IllegalArgumentException(
+                "The private portion of the key is not available to perform the key unwrap operation.");
         }
+
+        verifyKeyPermissions(jsonWebKey, KeyOperation.UNWRAP_KEY);
 
         AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
         try {
-            ICryptoTransform transform = algo.createDecryptor(keyPair);
+            ICryptoTransform transform = algo.createDecryptor(rsaKeyPair);
+
             return new UnwrapResult(transform.doFinal(encryptedKey), algorithm, jsonWebKey.getId());
         } catch (GeneralSecurityException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, JsonWebKey key, Context context) {
+    public Mono<SignResult> signDataAsync(SignatureAlgorithm algorithm, byte[] data, Context context) {
         try {
-            return signAsync(algorithm, calculateDigest(algorithm, data), key, context);
+            return signAsync(algorithm, calculateDigest(algorithm, data), context);
         } catch (NoSuchAlgorithmException e) {
-            return Mono.error(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public SignResult signData(SignatureAlgorithm algorithm, byte[] data, JsonWebKey key, Context context) {
+    public SignResult signData(SignatureAlgorithm algorithm, byte[] data, Context context) {
         try {
-            return sign(algorithm, calculateDigest(algorithm, data), key, context);
+            return sign(algorithm, calculateDigest(algorithm, data), context);
         } catch (NoSuchAlgorithmException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm,
-        byte[] data,
-        byte[] signature,
-        JsonWebKey key,
-        Context context) {
+    public Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
+                                              Context context) {
         try {
-            return verifyAsync(algorithm, calculateDigest(algorithm, data), signature, key, context);
+            return verifyAsync(algorithm, calculateDigest(algorithm, data), signature, context);
         } catch (NoSuchAlgorithmException e) {
-            return Mono.error(e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public VerifyResult verifyData(SignatureAlgorithm algorithm,
-        byte[] data,
-        byte[] signature,
-        JsonWebKey key,
-        Context context) {
+    public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
         try {
-            return verify(algorithm, calculateDigest(algorithm, data), signature, key, context);
+            return verify(algorithm, calculateDigest(algorithm, data), signature, context);
         } catch (NoSuchAlgorithmException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw new RuntimeException(e);
         }
     }
 
@@ -503,9 +451,4 @@ class RsaKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         return md.digest();
     }
-
-    private boolean serviceClientAvailable() {
-        return implClient != null;
-    }
-
 }

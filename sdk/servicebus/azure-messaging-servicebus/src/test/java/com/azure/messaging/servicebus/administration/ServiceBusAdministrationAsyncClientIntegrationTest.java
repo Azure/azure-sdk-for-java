@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus.administration;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -45,7 +44,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -70,8 +68,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 
 /**
  * Tests {@link ServiceBusAdministrationAsyncClient}.
@@ -92,19 +88,20 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
     static final List<TestProxyRequestMatcher> TEST_PROXY_REQUEST_MATCHERS;
 
     static {
-        AUTHORIZATION_HEADER = new TestProxySanitizer("SupplementaryAuthorization", null, "SharedAccessSignature sr=https%3A%2F%2Ffoo.servicebus.windows.net&sig=dummyValue%3D&se=1687267490&skn=dummyKey", TestProxySanitizerType.HEADER);
+        AUTHORIZATION_HEADER = new TestProxySanitizer("SupplementaryAuthorization", null,
+            "SharedAccessSignature sr=https%3A%2F%2Ffoo.servicebus.windows.net&sig=dummyValue%3D&se=1687267490&skn=dummyKey",
+            TestProxySanitizerType.HEADER);
         TEST_PROXY_SANITIZERS = Collections.singletonList(AUTHORIZATION_HEADER);
 
-        final List<String> skippedHeaders = Arrays.asList("ServiceBusDlqSupplementaryAuthorization", "ServiceBusSupplementaryAuthorization");
+        final List<String> skippedHeaders = Arrays.asList("ServiceBusDlqSupplementaryAuthorization",
+            "ServiceBusSupplementaryAuthorization");
         final CustomMatcher customMatcher = new CustomMatcher().setExcludedHeaders(skippedHeaders);
 
         TEST_PROXY_REQUEST_MATCHERS = Collections.singletonList(customMatcher);
     }
 
     static Stream<Arguments> createHttpClients() {
-        return Stream.of(
-            Arguments.of(new NettyAsyncHttpClientBuilder().build())
-        );
+        return Stream.of(Arguments.of(new NettyAsyncHttpClientBuilder().build()));
     }
 
     /**
@@ -120,10 +117,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
         final TokenCredential tokenCredential;
         if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = mock(TokenCredential.class);
-            Mockito.when(tokenCredential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.fromCallable(() -> {
-                return new AccessToken("foo-bar", OffsetDateTime.now().plus(Duration.ofMinutes(5)));
-            }));
+            tokenCredential = request -> Mono.fromCallable(() ->
+                new AccessToken("foo-bar", OffsetDateTime.now().plus(Duration.ofMinutes(5))));
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
         }
@@ -147,15 +142,10 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .assertNext(properties -> {
                 assertNotNull(properties);
 
-                final String expectedName;
-                if (interceptorManager.isPlaybackMode()) {
-                    expectedName = TestUtils.TEST_NAMESPACE;
-                } else {
+                if (!interceptorManager.isPlaybackMode()) {
                     final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
-                    expectedName = split[0];
+                    assertEquals(split[0], properties.getName());
                 }
-
-                assertEquals(expectedName, properties.getName());
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -168,7 +158,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
      */
     @Test
     void azureSasCredentialsTest() {
-        // Arrrange
+        // Arrange
         assumeTrue(interceptorManager.isLiveMode(), "Azure Identity test is for live test only");
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
 
@@ -577,13 +567,9 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
         final String queueName = testResourceNamer.randomName("queue", 10);
 
-        client.createQueue(queueName)
-            .onErrorResume(ResourceExistsException.class, e -> Mono.empty())
-            .block(TIMEOUT);
-
         // Act & Assert
         StepVerifier.create(client.deleteQueue(queueName))
-            .expectComplete()
+            .expectError(ResourceNotFoundException.class)
             .verify(DEFAULT_TIMEOUT);
     }
 
@@ -716,19 +702,15 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
     void getNamespace(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String expectedName;
-        if (interceptorManager.isPlaybackMode()) {
-            expectedName = TestUtils.TEST_NAMESPACE;
-        } else {
-            final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
-            expectedName = split[0];
-        }
 
         // Act & Assert
         StepVerifier.create(client.getNamespaceProperties())
             .assertNext(properties -> {
                 assertEquals(NamespaceType.MESSAGING, properties.getNamespaceType());
-                assertEquals(expectedName, properties.getName());
+                if (!interceptorManager.isPlaybackMode()) {
+                    final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
+                    assertEquals(split[0], properties.getName());
+                }
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -1217,8 +1199,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         } else if (interceptorManager.isLiveMode()) {
             builder.httpClient(httpClient);
         } else {
-            builder.httpClient(httpClient)
-                .addPolicy(interceptorManager.getRecordPolicy());
+            builder.httpClient(httpClient).addPolicy(interceptorManager.getRecordPolicy());
         }
 
         if (!interceptorManager.isLiveMode()) {

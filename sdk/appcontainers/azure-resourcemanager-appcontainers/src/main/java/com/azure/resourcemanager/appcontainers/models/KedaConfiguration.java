@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration properties Keda component. */
+/**
+ * Configuration properties Keda component.
+ */
 @Immutable
 public final class KedaConfiguration {
     /*
@@ -16,13 +18,15 @@ public final class KedaConfiguration {
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
-    /** Creates an instance of KedaConfiguration class. */
+    /**
+     * Creates an instance of KedaConfiguration class.
+     */
     public KedaConfiguration() {
     }
 
     /**
      * Get the version property: The version of Keda.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -31,7 +35,7 @@ public final class KedaConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

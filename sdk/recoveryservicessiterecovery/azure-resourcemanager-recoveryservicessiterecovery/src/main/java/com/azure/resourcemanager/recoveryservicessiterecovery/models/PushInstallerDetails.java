@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Push installer details. */
+/**
+ * Push installer details.
+ */
 @Immutable
 public final class PushInstallerDetails {
     /*
@@ -66,13 +68,15 @@ public final class PushInstallerDetails {
     @JsonProperty(value = "healthErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthError> healthErrors;
 
-    /** Creates an instance of PushInstallerDetails class. */
+    /**
+     * Creates an instance of PushInstallerDetails class.
+     */
     public PushInstallerDetails() {
     }
 
     /**
      * Get the id property: The push installer Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -81,7 +85,7 @@ public final class PushInstallerDetails {
 
     /**
      * Get the name property: The push installer name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -90,7 +94,7 @@ public final class PushInstallerDetails {
 
     /**
      * Get the biosId property: The push installer Bios Id.
-     *
+     * 
      * @return the biosId value.
      */
     public String biosId() {
@@ -99,7 +103,7 @@ public final class PushInstallerDetails {
 
     /**
      * Get the fabricObjectId property: The fabric object Id.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -108,7 +112,7 @@ public final class PushInstallerDetails {
 
     /**
      * Get the fqdn property: The push installer Fqdn.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -117,7 +121,7 @@ public final class PushInstallerDetails {
 
     /**
      * Get the version property: The version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -126,7 +130,7 @@ public final class PushInstallerDetails {
 
     /**
      * Get the lastHeartbeatUtc property: The last heartbeat received from the push installer.
-     *
+     * 
      * @return the lastHeartbeatUtc value.
      */
     public OffsetDateTime lastHeartbeatUtc() {
@@ -135,7 +139,7 @@ public final class PushInstallerDetails {
 
     /**
      * Get the health property: The health of the push installer.
-     *
+     * 
      * @return the health value.
      */
     public ProtectionHealth health() {
@@ -144,7 +148,7 @@ public final class PushInstallerDetails {
 
     /**
      * Get the healthErrors property: The health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -153,7 +157,7 @@ public final class PushInstallerDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -26,7 +26,7 @@ public class FhirR4Resource {
      */
     @Generated
     @JsonProperty(value = "resourceType")
-    private String resourceType;
+    private final String resourceType;
 
     /*
      * Resource Id

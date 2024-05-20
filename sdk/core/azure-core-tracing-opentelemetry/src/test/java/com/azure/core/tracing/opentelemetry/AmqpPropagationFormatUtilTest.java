@@ -24,9 +24,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AmqpPropagationFormatUtilTest {
 
     private static final SdkTracerProvider TRACER_PROVIDER = SdkTracerProvider.builder().build();
-    private static final OpenTelemetry OPEN_TELEMETRY = OpenTelemetrySdk.builder().setTracerProvider(TRACER_PROVIDER).build();
+    private static final OpenTelemetry OPEN_TELEMETRY
+        = OpenTelemetrySdk.builder().setTracerProvider(TRACER_PROVIDER).build();
     private static final Tracer TRACER = new OpenTelemetryTracer("test", null, null,
         new OpenTelemetryTracingOptions().setOpenTelemetry(OPEN_TELEMETRY));
+
     @Test
     public void extractContextReturnsSpanContext() {
 
@@ -52,7 +54,8 @@ public class AmqpPropagationFormatUtilTest {
     @Test
     public void getValidSpanContext() {
         // Act
-        Context context = TRACER.extractContext("00-0af7651916cd43dd8448eb211c80319c-b9c7c989f97918e1-01", Context.NONE);
+        Context context
+            = TRACER.extractContext("00-0af7651916cd43dd8448eb211c80319c-b9c7c989f97918e1-01", Context.NONE);
 
         // Assert
         assertNotNull(context);
@@ -62,14 +65,15 @@ public class AmqpPropagationFormatUtilTest {
 
     @Test
     public void getValidDiagnosticId() {
-        //Arrange
+        // Arrange
 
         final Context contextWithSpan = TRACER.start("test", Context.NONE);
-        Span span = Span.fromContext((io.opentelemetry.context.Context) contextWithSpan.getData(PARENT_TRACE_CONTEXT_KEY).get());
+        Span span = Span
+            .fromContext((io.opentelemetry.context.Context) contextWithSpan.getData(PARENT_TRACE_CONTEXT_KEY).get());
 
         AtomicReference<String> diagnosticId = new AtomicReference<>();
         TRACER.injectContext((name, value) -> {
-            if (name.equals("traceparent"))  {
+            if (name.equals("traceparent")) {
                 diagnosticId.set(value);
             }
         }, contextWithSpan);

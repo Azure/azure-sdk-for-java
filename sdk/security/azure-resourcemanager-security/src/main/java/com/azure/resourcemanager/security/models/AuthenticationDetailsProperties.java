@@ -7,24 +7,33 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Settings for cloud authentication management. */
+/**
+ * Settings for cloud authentication management.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "authenticationType",
-    defaultImpl = AuthenticationDetailsProperties.class)
+    defaultImpl = AuthenticationDetailsProperties.class,
+    visible = true)
 @JsonTypeName("AuthenticationDetailsProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "awsCreds", value = AwsCredsAuthenticationDetailsProperties.class),
     @JsonSubTypes.Type(name = "awsAssumeRole", value = AwAssumeRoleAuthenticationDetailsProperties.class),
-    @JsonSubTypes.Type(name = "gcpCredentials", value = GcpCredentialsDetailsProperties.class)
-})
+    @JsonSubTypes.Type(name = "gcpCredentials", value = GcpCredentialsDetailsProperties.class) })
 @Immutable
 public class AuthenticationDetailsProperties {
+    /*
+     * Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use account organization credentials.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "authenticationType", required = true)
+    private AuthenticationType authenticationType;
+
     /*
      * State of the multi-cloud connector
      */
@@ -37,13 +46,26 @@ public class AuthenticationDetailsProperties {
     @JsonProperty(value = "grantedPermissions", access = JsonProperty.Access.WRITE_ONLY)
     private List<PermissionProperty> grantedPermissions;
 
-    /** Creates an instance of AuthenticationDetailsProperties class. */
+    /**
+     * Creates an instance of AuthenticationDetailsProperties class.
+     */
     public AuthenticationDetailsProperties() {
+        this.authenticationType = AuthenticationType.fromString("AuthenticationDetailsProperties");
+    }
+
+    /**
+     * Get the authenticationType property: Connect to your cloud account, for AWS use either account credentials or
+     * role-based authentication. For GCP use account organization credentials.
+     * 
+     * @return the authenticationType value.
+     */
+    public AuthenticationType authenticationType() {
+        return this.authenticationType;
     }
 
     /**
      * Get the authenticationProvisioningState property: State of the multi-cloud connector.
-     *
+     * 
      * @return the authenticationProvisioningState value.
      */
     public AuthenticationProvisioningState authenticationProvisioningState() {
@@ -52,7 +74,7 @@ public class AuthenticationDetailsProperties {
 
     /**
      * Get the grantedPermissions property: The permissions detected in the cloud account.
-     *
+     * 
      * @return the grantedPermissions value.
      */
     public List<PermissionProperty> grantedPermissions() {
@@ -61,7 +83,7 @@ public class AuthenticationDetailsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

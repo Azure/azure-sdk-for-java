@@ -13,24 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplicationProtectionIntentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationProtectionIntentInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"friendlyName\":\"er\",\"jobId\":\"tvsoxhlwntsj\",\"jobState\":\"rsxypruuu\",\"isActive\":true,\"creationTimeUTC\":\"hrszi\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"uelyetndn\",\"id\":\"fqyggagflnlgmtr\",\"name\":\"ahzjmucftb\",\"type\":\"r\"}")
-                .toObject(ReplicationProtectionIntentInner.class);
+        ReplicationProtectionIntentInner model = BinaryData.fromString(
+            "{\"properties\":{\"friendlyName\":\"er\",\"jobId\":\"tvsoxhlwntsj\",\"jobState\":\"rsxypruuu\",\"isActive\":true,\"creationTimeUTC\":\"hrszi\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"uelyetndn\",\"id\":\"fqyggagflnlgmtr\",\"name\":\"ahzjmucftb\",\"type\":\"r\"}")
+            .toObject(ReplicationProtectionIntentInner.class);
         Assertions.assertEquals("er", model.properties().friendlyName());
         Assertions.assertEquals("uelyetndn", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicationProtectionIntentInner model =
-            new ReplicationProtectionIntentInner()
-                .withProperties(
-                    new ReplicationProtectionIntentProperties()
-                        .withFriendlyName("er")
-                        .withProviderSpecificDetails(new ReplicationProtectionIntentProviderSpecificSettings()))
-                .withLocation("uelyetndn");
+        ReplicationProtectionIntentInner model = new ReplicationProtectionIntentInner()
+            .withProperties(new ReplicationProtectionIntentProperties().withFriendlyName("er")
+                .withProviderSpecificDetails(new ReplicationProtectionIntentProviderSpecificSettings()))
+            .withLocation("uelyetndn");
         model = BinaryData.fromObject(model).toObject(ReplicationProtectionIntentInner.class);
         Assertions.assertEquals("er", model.properties().friendlyName());
         Assertions.assertEquals("uelyetndn", model.location());

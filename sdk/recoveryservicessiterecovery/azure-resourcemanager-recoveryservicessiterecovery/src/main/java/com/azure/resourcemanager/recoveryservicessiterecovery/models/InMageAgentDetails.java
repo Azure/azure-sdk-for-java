@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The details of the InMage agent. */
+/**
+ * The details of the InMage agent.
+ */
 @Fluent
 public final class InMageAgentDetails {
     /*
@@ -35,13 +37,15 @@ public final class InMageAgentDetails {
     @JsonProperty(value = "agentExpiryDate")
     private OffsetDateTime agentExpiryDate;
 
-    /** Creates an instance of InMageAgentDetails class. */
+    /**
+     * Creates an instance of InMageAgentDetails class.
+     */
     public InMageAgentDetails() {
     }
 
     /**
      * Get the agentVersion property: The agent version.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -50,7 +54,7 @@ public final class InMageAgentDetails {
 
     /**
      * Set the agentVersion property: The agent version.
-     *
+     * 
      * @param agentVersion the agentVersion value to set.
      * @return the InMageAgentDetails object itself.
      */
@@ -61,7 +65,7 @@ public final class InMageAgentDetails {
 
     /**
      * Get the agentUpdateStatus property: A value indicating whether installed agent needs to be updated.
-     *
+     * 
      * @return the agentUpdateStatus value.
      */
     public String agentUpdateStatus() {
@@ -70,7 +74,7 @@ public final class InMageAgentDetails {
 
     /**
      * Set the agentUpdateStatus property: A value indicating whether installed agent needs to be updated.
-     *
+     * 
      * @param agentUpdateStatus the agentUpdateStatus value to set.
      * @return the InMageAgentDetails object itself.
      */
@@ -81,7 +85,7 @@ public final class InMageAgentDetails {
 
     /**
      * Get the postUpdateRebootStatus property: A value indicating whether reboot is required after update is applied.
-     *
+     * 
      * @return the postUpdateRebootStatus value.
      */
     public String postUpdateRebootStatus() {
@@ -90,7 +94,7 @@ public final class InMageAgentDetails {
 
     /**
      * Set the postUpdateRebootStatus property: A value indicating whether reboot is required after update is applied.
-     *
+     * 
      * @param postUpdateRebootStatus the postUpdateRebootStatus value to set.
      * @return the InMageAgentDetails object itself.
      */
@@ -101,7 +105,7 @@ public final class InMageAgentDetails {
 
     /**
      * Get the agentExpiryDate property: Agent expiry date.
-     *
+     * 
      * @return the agentExpiryDate value.
      */
     public OffsetDateTime agentExpiryDate() {
@@ -110,7 +114,7 @@ public final class InMageAgentDetails {
 
     /**
      * Set the agentExpiryDate property: Agent expiry date.
-     *
+     * 
      * @param agentExpiryDate the agentExpiryDate value to set.
      * @return the InMageAgentDetails object itself.
      */
@@ -121,7 +125,7 @@ public final class InMageAgentDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

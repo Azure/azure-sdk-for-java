@@ -88,16 +88,13 @@ public class GeoPolygonTests {
             Arguments.of(polygon, 1, false),
 
             // Other is itself.
-            Arguments.of(polygon, polygon, true),
-            Arguments.of(polygon1, polygon1, true),
+            Arguments.of(polygon, polygon, true), Arguments.of(polygon1, polygon1, true),
 
             // Other is a different value.
-            Arguments.of(polygon, polygon1, false),
-            Arguments.of(polygon1, polygon, false),
+            Arguments.of(polygon, polygon1, false), Arguments.of(polygon1, polygon, false),
 
             // Other is the same value.
             Arguments.of(polygon, new GeoPolygon(squareLine), true),
-            Arguments.of(polygon1, new GeoPolygon(triangleLine, boundingBox, properties), true)
-        );
+            Arguments.of(polygon1, new GeoPolygon(triangleLine, boundingBox, properties), true));
     }
 }

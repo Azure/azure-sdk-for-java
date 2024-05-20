@@ -34,6 +34,27 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
      */
     private Boolean exhaustive;
 
+    /*
+     * Oversampling factor. Minimum value is 1. It overrides the 'defaultOversampling' parameter configured in the
+     * index definition. It can be set only when 'rerankWithOriginalVectors' is true. This parameter is only permitted
+     * when a compression method is used on the underlying vector field.
+     */
+    private Double oversampling;
+
+    /*
+     * Relative weight of the vector query when compared to other vector query and/or the text query within the same
+     * search request. This value is used when combining the results of multiple ranking lists produced by the
+     * different vector queries and/or the results retrieved through the text query. The higher the weight, the higher
+     * the documents that matched that query will be in the final ranking. Default is 1.0 and the value needs to be a
+     * positive number larger than zero.
+     */
+    private Float weight;
+
+    /*
+     * The threshold used for vector queries. Note this can only be set if all 'fields' use the same similarity metric.
+     */
+    private VectorThreshold threshold;
+
     /**
      * Creates an instance of VectorQuery class.
      */
@@ -104,12 +125,89 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
         return this;
     }
 
+    /**
+     * Get the oversampling property: Oversampling factor. Minimum value is 1. It overrides the 'defaultOversampling'
+     * parameter configured in the index definition. It can be set only when 'rerankWithOriginalVectors' is true. This
+     * parameter is only permitted when a compression method is used on the underlying vector field.
+     *
+     * @return the oversampling value.
+     */
+    public Double getOversampling() {
+        return this.oversampling;
+    }
+
+    /**
+     * Set the oversampling property: Oversampling factor. Minimum value is 1. It overrides the 'defaultOversampling'
+     * parameter configured in the index definition. It can be set only when 'rerankWithOriginalVectors' is true. This
+     * parameter is only permitted when a compression method is used on the underlying vector field.
+     *
+     * @param oversampling the oversampling value to set.
+     * @return the VectorQuery object itself.
+     */
+    public VectorQuery setOversampling(Double oversampling) {
+        this.oversampling = oversampling;
+        return this;
+    }
+
+    /**
+     * Get the weight property: Relative weight of the vector query when compared to other vector query and/or the text
+     * query within the same search request. This value is used when combining the results of multiple ranking lists
+     * produced by the different vector queries and/or the results retrieved through the text query. The higher the
+     * weight, the higher the documents that matched that query will be in the final ranking. Default is 1.0 and the
+     * value needs to be a positive number larger than zero.
+     *
+     * @return the weight value.
+     */
+    public Float getWeight() {
+        return this.weight;
+    }
+
+    /**
+     * Set the weight property: Relative weight of the vector query when compared to other vector query and/or the text
+     * query within the same search request. This value is used when combining the results of multiple ranking lists
+     * produced by the different vector queries and/or the results retrieved through the text query. The higher the
+     * weight, the higher the documents that matched that query will be in the final ranking. Default is 1.0 and the
+     * value needs to be a positive number larger than zero.
+     *
+     * @param weight the weight value to set.
+     * @return the VectorQuery object itself.
+     */
+    public VectorQuery setWeight(Float weight) {
+        this.weight = weight;
+        return this;
+    }
+
+    /**
+     * Get the threshold property: The threshold used for vector queries. Note this can only be set if all 'fields' use
+     * the same similarity metric.
+     *
+     * @return the threshold value.
+     */
+    public VectorThreshold getThreshold() {
+        return this.threshold;
+    }
+
+    /**
+     * Set the threshold property: The threshold used for vector queries. Note this can only be set if all 'fields' use
+     * the same similarity metric.
+     *
+     * @param threshold the threshold value to set.
+     * @return the VectorQuery object itself.
+     */
+    public VectorQuery setThreshold(VectorThreshold threshold) {
+        this.threshold = threshold;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("k", this.kNearestNeighborsCount);
         jsonWriter.writeStringField("fields", this.fields);
         jsonWriter.writeBooleanField("exhaustive", this.exhaustive);
+        jsonWriter.writeNumberField("oversampling", this.oversampling);
+        jsonWriter.writeNumberField("weight", this.weight);
+        jsonWriter.writeJsonField("threshold", this.threshold);
         return jsonWriter.writeEndObject();
     }
 
@@ -141,6 +239,10 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
             // Use the discriminator value to determine which subtype should be deserialized.
             if ("text".equals(discriminatorValue)) {
                 return VectorizableTextQuery.fromJson(readerToUse.reset());
+            } else if ("imageUrl".equals(discriminatorValue)) {
+                return VectorizableImageUrlQuery.fromJson(readerToUse.reset());
+            } else if ("imageBinary".equals(discriminatorValue)) {
+                return VectorizableImageBinaryQuery.fromJson(readerToUse.reset());
             } else if ("vector".equals(discriminatorValue)) {
                 return VectorizedQuery.fromJson(readerToUse.reset());
             } else {
@@ -161,6 +263,12 @@ public class VectorQuery implements JsonSerializable<VectorQuery> {
                     deserializedVectorQuery.fields = reader.getString();
                 } else if ("exhaustive".equals(fieldName)) {
                     deserializedVectorQuery.exhaustive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("oversampling".equals(fieldName)) {
+                    deserializedVectorQuery.oversampling = reader.getNullable(JsonReader::getDouble);
+                } else if ("weight".equals(fieldName)) {
+                    deserializedVectorQuery.weight = reader.getNullable(JsonReader::getFloat);
+                } else if ("threshold".equals(fieldName)) {
+                    deserializedVectorQuery.threshold = VectorThreshold.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

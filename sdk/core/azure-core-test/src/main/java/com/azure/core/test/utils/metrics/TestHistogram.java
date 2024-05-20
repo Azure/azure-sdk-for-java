@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class TestHistogram implements DoubleHistogram {
     private final ConcurrentLinkedQueue<TestMeasurement<Double>> measurements = new ConcurrentLinkedQueue<>();
     private final boolean isEnabled;
+
     TestHistogram(boolean isEnabled) {
         this.isEnabled = isEnabled;
     }

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A2A Policy creation input. */
+/**
+ * A2A Policy creation input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -39,13 +41,16 @@ public final class A2APolicyCreationInput extends PolicyProviderSpecificInput {
     @JsonProperty(value = "multiVmSyncStatus", required = true)
     private SetMultiVmSyncStatus multiVmSyncStatus;
 
-    /** Creates an instance of A2APolicyCreationInput class. */
+    /**
+     * Creates an instance of A2APolicyCreationInput class.
+     */
     public A2APolicyCreationInput() {
     }
 
     /**
-     * Get the recoveryPointHistory property: The duration in minutes until which the recovery points need to be stored.
-     *
+     * Get the recoveryPointHistory property: The duration in minutes until which the recovery points need to be
+     * stored.
+     * 
      * @return the recoveryPointHistory value.
      */
     public Integer recoveryPointHistory() {
@@ -53,8 +58,9 @@ public final class A2APolicyCreationInput extends PolicyProviderSpecificInput {
     }
 
     /**
-     * Set the recoveryPointHistory property: The duration in minutes until which the recovery points need to be stored.
-     *
+     * Set the recoveryPointHistory property: The duration in minutes until which the recovery points need to be
+     * stored.
+     * 
      * @param recoveryPointHistory the recoveryPointHistory value to set.
      * @return the A2APolicyCreationInput object itself.
      */
@@ -65,7 +71,7 @@ public final class A2APolicyCreationInput extends PolicyProviderSpecificInput {
 
     /**
      * Get the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency (in minutes).
-     *
+     * 
      * @return the crashConsistentFrequencyInMinutes value.
      */
     public Integer crashConsistentFrequencyInMinutes() {
@@ -74,7 +80,7 @@ public final class A2APolicyCreationInput extends PolicyProviderSpecificInput {
 
     /**
      * Set the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency (in minutes).
-     *
+     * 
      * @param crashConsistentFrequencyInMinutes the crashConsistentFrequencyInMinutes value to set.
      * @return the A2APolicyCreationInput object itself.
      */
@@ -85,7 +91,7 @@ public final class A2APolicyCreationInput extends PolicyProviderSpecificInput {
 
     /**
      * Get the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency (in minutes).
-     *
+     * 
      * @return the appConsistentFrequencyInMinutes value.
      */
     public Integer appConsistentFrequencyInMinutes() {
@@ -94,7 +100,7 @@ public final class A2APolicyCreationInput extends PolicyProviderSpecificInput {
 
     /**
      * Set the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency (in minutes).
-     *
+     * 
      * @param appConsistentFrequencyInMinutes the appConsistentFrequencyInMinutes value to set.
      * @return the A2APolicyCreationInput object itself.
      */
@@ -106,7 +112,7 @@ public final class A2APolicyCreationInput extends PolicyProviderSpecificInput {
     /**
      * Get the multiVmSyncStatus property: A value indicating whether multi-VM sync has to be enabled. Value should be
      * 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the multiVmSyncStatus value.
      */
     public SetMultiVmSyncStatus multiVmSyncStatus() {
@@ -116,7 +122,7 @@ public final class A2APolicyCreationInput extends PolicyProviderSpecificInput {
     /**
      * Set the multiVmSyncStatus property: A value indicating whether multi-VM sync has to be enabled. Value should be
      * 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param multiVmSyncStatus the multiVmSyncStatus value to set.
      * @return the A2APolicyCreationInput object itself.
      */
@@ -127,17 +133,15 @@ public final class A2APolicyCreationInput extends PolicyProviderSpecificInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (multiVmSyncStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property multiVmSyncStatus in model A2APolicyCreationInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property multiVmSyncStatus in model A2APolicyCreationInput"));
         }
     }
 

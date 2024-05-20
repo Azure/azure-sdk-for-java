@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** This class represents details for switch protection job. */
+/**
+ * This class represents details for switch protection job.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("SwitchProtectionJobDetails")
 @Fluent
@@ -21,13 +23,15 @@ public final class SwitchProtectionJobDetails extends JobDetails {
     @JsonProperty(value = "newReplicationProtectedItemId")
     private String newReplicationProtectedItemId;
 
-    /** Creates an instance of SwitchProtectionJobDetails class. */
+    /**
+     * Creates an instance of SwitchProtectionJobDetails class.
+     */
     public SwitchProtectionJobDetails() {
     }
 
     /**
      * Get the newReplicationProtectedItemId property: ARM Id of the new replication protected item.
-     *
+     * 
      * @return the newReplicationProtectedItemId value.
      */
     public String newReplicationProtectedItemId() {
@@ -36,7 +40,7 @@ public final class SwitchProtectionJobDetails extends JobDetails {
 
     /**
      * Set the newReplicationProtectedItemId property: ARM Id of the new replication protected item.
-     *
+     * 
      * @param newReplicationProtectedItemId the newReplicationProtectedItemId value to set.
      * @return the SwitchProtectionJobDetails object itself.
      */
@@ -45,7 +49,9 @@ public final class SwitchProtectionJobDetails extends JobDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SwitchProtectionJobDetails withAffectedObjectDetails(Map<String, String> affectedObjectDetails) {
         super.withAffectedObjectDetails(affectedObjectDetails);
@@ -54,7 +60,7 @@ public final class SwitchProtectionJobDetails extends JobDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

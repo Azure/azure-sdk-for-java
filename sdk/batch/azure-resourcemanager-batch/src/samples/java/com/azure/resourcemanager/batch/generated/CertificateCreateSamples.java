@@ -12,7 +12,7 @@ import com.azure.resourcemanager.batch.models.CertificateFormat;
 public final class CertificateCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateCreate_Full.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/CertificateCreate_Full.json
      */
     /**
      * Sample code: CreateCertificate - Full.
@@ -28,7 +28,7 @@ public final class CertificateCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateCreate_Minimal.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/CertificateCreate_Minimal.json
      */
     /**
      * Sample code: CreateCertificate - Minimal Pfx.
@@ -43,7 +43,7 @@ public final class CertificateCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/CertificateCreate_MinimalCer.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/CertificateCreate_MinimalCer.json
      */
     /**
      * Sample code: CreateCertificate - Minimal Cer.

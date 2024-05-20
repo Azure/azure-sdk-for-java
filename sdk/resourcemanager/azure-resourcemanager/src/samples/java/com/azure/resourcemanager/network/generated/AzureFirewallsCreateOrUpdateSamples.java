@@ -36,7 +36,7 @@ import java.util.Map;
 public final class AzureFirewallsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/AzureFirewallPutWithIpGroups.
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/AzureFirewallPutWithIpGroups.
      * json
      */
     /**
@@ -109,7 +109,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/AzureFirewallPutWithZones.
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/AzureFirewallPutWithZones.
      * json
      */
     /**
@@ -182,7 +182,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/AzureFirewallPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/AzureFirewallPut.json
      */
     /**
      * Sample code: Create Azure Firewall.
@@ -253,7 +253,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
      * AzureFirewallPutWithAdditionalProperties.json
      */
     /**
@@ -329,7 +329,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/AzureFirewallPutInHub.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/AzureFirewallPutInHub.json
      */
     /**
      * Sample code: Create Azure Firewall in virtual Hub.
@@ -352,7 +352,7 @@ public final class AzureFirewallsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
      * AzureFirewallPutWithMgmtSubnet.json
      */
     /**

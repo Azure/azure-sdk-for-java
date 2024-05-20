@@ -16,7 +16,9 @@ import com.azure.resourcemanager.security.models.VmRecommendation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a machines group and set of rules to be allowed running on a machine. */
+/**
+ * Represents a machines group and set of rules to be allowed running on a machine.
+ */
 @Fluent
 public final class AdaptiveApplicationControlGroupData {
     /*
@@ -26,8 +28,7 @@ public final class AdaptiveApplicationControlGroupData {
     private EnforcementMode enforcementMode;
 
     /*
-     * The protection mode of the collection/file types. Exe/Msi/Script are used for Windows, Executable is used for
-     * Linux.
+     * The protection mode of the collection/file types. Exe/Msi/Script are used for Windows, Executable is used for Linux.
      */
     @JsonProperty(value = "protectionMode")
     private ProtectionMode protectionMode;
@@ -68,14 +69,16 @@ public final class AdaptiveApplicationControlGroupData {
     @JsonProperty(value = "pathRecommendations")
     private List<PathRecommendation> pathRecommendations;
 
-    /** Creates an instance of AdaptiveApplicationControlGroupData class. */
+    /**
+     * Creates an instance of AdaptiveApplicationControlGroupData class.
+     */
     public AdaptiveApplicationControlGroupData() {
     }
 
     /**
      * Get the enforcementMode property: The application control policy enforcement/protection mode of the machine
      * group.
-     *
+     * 
      * @return the enforcementMode value.
      */
     public EnforcementMode enforcementMode() {
@@ -85,7 +88,7 @@ public final class AdaptiveApplicationControlGroupData {
     /**
      * Set the enforcementMode property: The application control policy enforcement/protection mode of the machine
      * group.
-     *
+     * 
      * @param enforcementMode the enforcementMode value to set.
      * @return the AdaptiveApplicationControlGroupData object itself.
      */
@@ -97,7 +100,7 @@ public final class AdaptiveApplicationControlGroupData {
     /**
      * Get the protectionMode property: The protection mode of the collection/file types. Exe/Msi/Script are used for
      * Windows, Executable is used for Linux.
-     *
+     * 
      * @return the protectionMode value.
      */
     public ProtectionMode protectionMode() {
@@ -107,7 +110,7 @@ public final class AdaptiveApplicationControlGroupData {
     /**
      * Set the protectionMode property: The protection mode of the collection/file types. Exe/Msi/Script are used for
      * Windows, Executable is used for Linux.
-     *
+     * 
      * @param protectionMode the protectionMode value to set.
      * @return the AdaptiveApplicationControlGroupData object itself.
      */
@@ -118,7 +121,7 @@ public final class AdaptiveApplicationControlGroupData {
 
     /**
      * Get the configurationStatus property: The configuration status of the machines group or machine or rule.
-     *
+     * 
      * @return the configurationStatus value.
      */
     public ConfigurationStatus configurationStatus() {
@@ -127,7 +130,7 @@ public final class AdaptiveApplicationControlGroupData {
 
     /**
      * Get the recommendationStatus property: The initial recommendation status of the machine group or machine.
-     *
+     * 
      * @return the recommendationStatus value.
      */
     public RecommendationStatus recommendationStatus() {
@@ -136,7 +139,7 @@ public final class AdaptiveApplicationControlGroupData {
 
     /**
      * Get the issues property: The issues property.
-     *
+     * 
      * @return the issues value.
      */
     public List<AdaptiveApplicationControlIssueSummary> issues() {
@@ -145,7 +148,7 @@ public final class AdaptiveApplicationControlGroupData {
 
     /**
      * Get the sourceSystem property: The source type of the machine group.
-     *
+     * 
      * @return the sourceSystem value.
      */
     public SourceSystem sourceSystem() {
@@ -154,7 +157,7 @@ public final class AdaptiveApplicationControlGroupData {
 
     /**
      * Get the vmRecommendations property: The vmRecommendations property.
-     *
+     * 
      * @return the vmRecommendations value.
      */
     public List<VmRecommendation> vmRecommendations() {
@@ -163,7 +166,7 @@ public final class AdaptiveApplicationControlGroupData {
 
     /**
      * Set the vmRecommendations property: The vmRecommendations property.
-     *
+     * 
      * @param vmRecommendations the vmRecommendations value to set.
      * @return the AdaptiveApplicationControlGroupData object itself.
      */
@@ -174,7 +177,7 @@ public final class AdaptiveApplicationControlGroupData {
 
     /**
      * Get the pathRecommendations property: The pathRecommendations property.
-     *
+     * 
      * @return the pathRecommendations value.
      */
     public List<PathRecommendation> pathRecommendations() {
@@ -183,7 +186,7 @@ public final class AdaptiveApplicationControlGroupData {
 
     /**
      * Set the pathRecommendations property: The pathRecommendations property.
-     *
+     * 
      * @param pathRecommendations the pathRecommendations value to set.
      * @return the AdaptiveApplicationControlGroupData object itself.
      */
@@ -194,7 +197,7 @@ public final class AdaptiveApplicationControlGroupData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

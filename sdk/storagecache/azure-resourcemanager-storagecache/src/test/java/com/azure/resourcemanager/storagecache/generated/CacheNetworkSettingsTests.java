@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class CacheNetworkSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CacheNetworkSettings model =
-            BinaryData
-                .fromString(
-                    "{\"mtu\":613009021,\"utilityAddresses\":[\"v\"],\"dnsServers\":[\"ynqwwncwzzhxgk\",\"rmgucnap\",\"t\"],\"dnsSearchDomain\":\"ellwptfdy\",\"ntpServer\":\"fqbuaceopzf\"}")
-                .toObject(CacheNetworkSettings.class);
-        Assertions.assertEquals(613009021, model.mtu());
-        Assertions.assertEquals("ynqwwncwzzhxgk", model.dnsServers().get(0));
-        Assertions.assertEquals("ellwptfdy", model.dnsSearchDomain());
-        Assertions.assertEquals("fqbuaceopzf", model.ntpServer());
+        CacheNetworkSettings model = BinaryData.fromString(
+            "{\"mtu\":109255739,\"utilityAddresses\":[\"tramxjez\",\"lwnwxuqlcvydyp\"],\"dnsServers\":[\"ooaojkniodkooebw\",\"ujhemmsbvdkcrodt\",\"infwjlfltkacjve\",\"kdlfoa\"],\"dnsSearchDomain\":\"gkfpaga\",\"ntpServer\":\"pulpqblylsyxk\"}")
+            .toObject(CacheNetworkSettings.class);
+        Assertions.assertEquals(109255739, model.mtu());
+        Assertions.assertEquals("ooaojkniodkooebw", model.dnsServers().get(0));
+        Assertions.assertEquals("gkfpaga", model.dnsSearchDomain());
+        Assertions.assertEquals("pulpqblylsyxk", model.ntpServer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheNetworkSettings model =
-            new CacheNetworkSettings()
-                .withMtu(613009021)
-                .withDnsServers(Arrays.asList("ynqwwncwzzhxgk", "rmgucnap", "t"))
-                .withDnsSearchDomain("ellwptfdy")
-                .withNtpServer("fqbuaceopzf");
+        CacheNetworkSettings model = new CacheNetworkSettings().withMtu(109255739)
+            .withDnsServers(Arrays.asList("ooaojkniodkooebw", "ujhemmsbvdkcrodt", "infwjlfltkacjve", "kdlfoa"))
+            .withDnsSearchDomain("gkfpaga")
+            .withNtpServer("pulpqblylsyxk");
         model = BinaryData.fromObject(model).toObject(CacheNetworkSettings.class);
-        Assertions.assertEquals(613009021, model.mtu());
-        Assertions.assertEquals("ynqwwncwzzhxgk", model.dnsServers().get(0));
-        Assertions.assertEquals("ellwptfdy", model.dnsSearchDomain());
-        Assertions.assertEquals("fqbuaceopzf", model.ntpServer());
+        Assertions.assertEquals(109255739, model.mtu());
+        Assertions.assertEquals("ooaojkniodkooebw", model.dnsServers().get(0));
+        Assertions.assertEquals("gkfpaga", model.dnsSearchDomain());
+        Assertions.assertEquals("pulpqblylsyxk", model.ntpServer());
     }
 }

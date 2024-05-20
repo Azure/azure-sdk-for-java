@@ -6,12 +6,14 @@ package com.azure.core.implementation.jackson;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.serializer.MemberNameConverter;
+import com.azure.json.JsonSerializable;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,8 +46,8 @@ public final class ObjectMapperShim {
     private static final int CACHE_SIZE_LIMIT = 10000;
 
     private static final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
-    private static final Map<Type, ReflectiveInvoker> TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE =
-        new ConcurrentHashMap<>();
+    private static final Map<Type, ReflectiveInvoker> TYPE_TO_STRONGLY_TYPED_HEADERS_CONSTRUCTOR_CACHE
+        = new ConcurrentHashMap<>();
 
     // Dummy constant that indicates an HttpHeaders-based constructor wasn't found for the Type.
     private static final ReflectiveInvoker NO_CONSTRUCTOR_REFLECTIVE_INVOKER = ReflectionUtils.createNoOpInvoker();
@@ -294,6 +296,7 @@ public final class ObjectMapperShim {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private JavaType createJavaType(Type type) {
         if (type == null) {
             return null;
@@ -310,7 +313,28 @@ public final class ObjectMapperShim {
             return getFromTypeCache(type, t -> mapper.getTypeFactory()
                 .constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments));
         } else {
-            return getFromTypeCache(type, t -> mapper.getTypeFactory().constructType(t));
+            return getFromTypeCache(type, t -> {
+                JavaType javaType = mapper.constructType(t);
+
+                // Need additional handling here so that the JavaType returned has the correct value handler for
+                // JsonSerializable types.
+                // While JsonSerializableDeserializer is registered with the ObjectMapper, and it mutates the
+                // JsonSerializer used by Jackson to handle as a JsonSerializable type, there have been cases where
+                // collection types (List, Map, etc) have not been handled correctly. So, additional handling is done
+                // here to ensure that the JavaType returned has the correct value handler.
+
+                if (!(t instanceof Class<?>)) {
+                    // Not a Class, so can't be a JsonSerializable type.
+                    return javaType;
+                }
+
+                if (ReflectionSerializable.supportsJsonSerializable((Class<?>) t)) {
+                    // JsonSerializable type, so add the JsonSerializableDeserializer as the value handler.
+                    return javaType.withValueHandler(new JsonSerializableDeserializer((Class<JsonSerializable<?>>) t));
+                }
+
+                return javaType;
+            });
         }
     }
 

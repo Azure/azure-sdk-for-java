@@ -7,8 +7,10 @@ package com.azure.resourcemanager.security.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.AutomationProperties;
 import com.azure.resourcemanager.security.models.AutomationAction;
+import com.azure.resourcemanager.security.models.AutomationRuleSet;
 import com.azure.resourcemanager.security.models.AutomationScope;
 import com.azure.resourcemanager.security.models.AutomationSource;
+import com.azure.resourcemanager.security.models.AutomationTriggeringRule;
 import com.azure.resourcemanager.security.models.EventSource;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -16,56 +18,60 @@ import org.junit.jupiter.api.Assertions;
 public final class AutomationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"irctymoxoftpipiw\",\"isEnabled\":false,\"scopes\":[{\"description\":\"a\",\"scopePath\":\"qjlihhyuspska\"},{\"description\":\"vlmfwdgzxulucv\",\"scopePath\":\"mrsreuzvxurisjnh\"},{\"description\":\"txifqj\",\"scopePath\":\"xmrhu\"},{\"description\":\"wp\",\"scopePath\":\"sutrgjup\"}],\"sources\":[{\"eventSource\":\"SubAssessmentsSnapshot\",\"ruleSets\":[]},{\"eventSource\":\"RegulatoryComplianceAssessment\",\"ruleSets\":[]},{\"eventSource\":\"Alerts\",\"ruleSets\":[]},{\"eventSource\":\"RegulatoryComplianceAssessmentSnapshot\",\"ruleSets\":[]}],\"actions\":[{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"}]}")
-                .toObject(AutomationProperties.class);
-        Assertions.assertEquals("irctymoxoftpipiw", model.description());
-        Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("a", model.scopes().get(0).description());
-        Assertions.assertEquals("qjlihhyuspska", model.scopes().get(0).scopePath());
-        Assertions.assertEquals(EventSource.SUB_ASSESSMENTS_SNAPSHOT, model.sources().get(0).eventSource());
+        AutomationProperties model = BinaryData.fromString(
+            "{\"description\":\"jid\",\"isEnabled\":true,\"scopes\":[{\"description\":\"yxvxevblbjed\",\"scopePath\":\"jlageu\"},{\"description\":\"lxunsmjbnkppxy\",\"scopePath\":\"nlsvxeiz\"},{\"description\":\"wklnsrmffeyc\",\"scopePath\":\"ktp\"}],\"sources\":[{\"eventSource\":\"Alerts\",\"ruleSets\":[{\"rules\":[{},{}]},{\"rules\":[{}]},{\"rules\":[{},{},{}]}]},{\"eventSource\":\"SecureScoreControlsSnapshot\",\"ruleSets\":[{\"rules\":[{},{}]},{\"rules\":[{},{}]},{\"rules\":[{},{},{}]},{\"rules\":[{}]}]},{\"eventSource\":\"SubAssessmentsSnapshot\",\"ruleSets\":[{\"rules\":[{}]},{\"rules\":[{}]}]},{\"eventSource\":\"SecureScoreControlsSnapshot\",\"ruleSets\":[{\"rules\":[{},{}]},{\"rules\":[{},{},{}]},{\"rules\":[{},{},{}]},{\"rules\":[{}]}]}],\"actions\":[{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"}]}")
+            .toObject(AutomationProperties.class);
+        Assertions.assertEquals("jid", model.description());
+        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals("yxvxevblbjed", model.scopes().get(0).description());
+        Assertions.assertEquals("jlageu", model.scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.ALERTS, model.sources().get(0).eventSource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationProperties model =
-            new AutomationProperties()
-                .withDescription("irctymoxoftpipiw")
-                .withIsEnabled(false)
-                .withScopes(
-                    Arrays
-                        .asList(
-                            new AutomationScope().withDescription("a").withScopePath("qjlihhyuspska"),
-                            new AutomationScope().withDescription("vlmfwdgzxulucv").withScopePath("mrsreuzvxurisjnh"),
-                            new AutomationScope().withDescription("txifqj").withScopePath("xmrhu"),
-                            new AutomationScope().withDescription("wp").withScopePath("sutrgjup")))
-                .withSources(
-                    Arrays
-                        .asList(
-                            new AutomationSource()
-                                .withEventSource(EventSource.SUB_ASSESSMENTS_SNAPSHOT)
-                                .withRuleSets(Arrays.asList()),
-                            new AutomationSource()
-                                .withEventSource(EventSource.REGULATORY_COMPLIANCE_ASSESSMENT)
-                                .withRuleSets(Arrays.asList()),
-                            new AutomationSource().withEventSource(EventSource.ALERTS).withRuleSets(Arrays.asList()),
-                            new AutomationSource()
-                                .withEventSource(EventSource.REGULATORY_COMPLIANCE_ASSESSMENT_SNAPSHOT)
-                                .withRuleSets(Arrays.asList())))
-                .withActions(
-                    Arrays
-                        .asList(
-                            new AutomationAction(),
-                            new AutomationAction(),
-                            new AutomationAction(),
-                            new AutomationAction()));
+        AutomationProperties model = new AutomationProperties().withDescription("jid")
+            .withIsEnabled(true)
+            .withScopes(Arrays.asList(new AutomationScope().withDescription("yxvxevblbjed").withScopePath("jlageu"),
+                new AutomationScope().withDescription("lxunsmjbnkppxy").withScopePath("nlsvxeiz"),
+                new AutomationScope().withDescription("wklnsrmffeyc").withScopePath("ktp")))
+            .withSources(Arrays.asList(
+                new AutomationSource().withEventSource(EventSource.ALERTS)
+                    .withRuleSets(Arrays.asList(
+                        new AutomationRuleSet()
+                            .withRules(Arrays.asList(new AutomationTriggeringRule(), new AutomationTriggeringRule())),
+                        new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule())),
+                        new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule(),
+                            new AutomationTriggeringRule(), new AutomationTriggeringRule())))),
+                new AutomationSource().withEventSource(EventSource.SECURE_SCORE_CONTROLS_SNAPSHOT)
+                    .withRuleSets(Arrays.asList(
+                        new AutomationRuleSet()
+                            .withRules(Arrays.asList(new AutomationTriggeringRule(), new AutomationTriggeringRule())),
+                        new AutomationRuleSet()
+                            .withRules(Arrays.asList(new AutomationTriggeringRule(), new AutomationTriggeringRule())),
+                        new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule(),
+                            new AutomationTriggeringRule(), new AutomationTriggeringRule())),
+                        new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule())))),
+                new AutomationSource().withEventSource(EventSource.SUB_ASSESSMENTS_SNAPSHOT)
+                    .withRuleSets(
+                        Arrays.asList(new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule())),
+                            new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule())))),
+                new AutomationSource().withEventSource(EventSource.SECURE_SCORE_CONTROLS_SNAPSHOT)
+                    .withRuleSets(Arrays.asList(
+                        new AutomationRuleSet()
+                            .withRules(Arrays.asList(new AutomationTriggeringRule(), new AutomationTriggeringRule())),
+                        new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule(),
+                            new AutomationTriggeringRule(), new AutomationTriggeringRule())),
+                        new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule(),
+                            new AutomationTriggeringRule(), new AutomationTriggeringRule())),
+                        new AutomationRuleSet().withRules(Arrays.asList(new AutomationTriggeringRule()))))))
+            .withActions(Arrays.asList(new AutomationAction(), new AutomationAction(), new AutomationAction(),
+                new AutomationAction()));
         model = BinaryData.fromObject(model).toObject(AutomationProperties.class);
-        Assertions.assertEquals("irctymoxoftpipiw", model.description());
-        Assertions.assertEquals(false, model.isEnabled());
-        Assertions.assertEquals("a", model.scopes().get(0).description());
-        Assertions.assertEquals("qjlihhyuspska", model.scopes().get(0).scopePath());
-        Assertions.assertEquals(EventSource.SUB_ASSESSMENTS_SNAPSHOT, model.sources().get(0).eventSource());
+        Assertions.assertEquals("jid", model.description());
+        Assertions.assertEquals(true, model.isEnabled());
+        Assertions.assertEquals("yxvxevblbjed", model.scopes().get(0).description());
+        Assertions.assertEquals("jlageu", model.scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.ALERTS, model.sources().get(0).eventSource());
     }
 }

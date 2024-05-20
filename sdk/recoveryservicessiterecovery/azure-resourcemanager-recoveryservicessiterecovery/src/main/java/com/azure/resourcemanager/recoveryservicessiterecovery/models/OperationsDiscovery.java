@@ -6,7 +6,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.OperationsDiscoveryInner;
 
-/** An immutable client-side representation of OperationsDiscovery. */
+/**
+ * An immutable client-side representation of OperationsDiscovery.
+ */
 public interface OperationsDiscovery {
     /**
      * Gets the name property: Name of the API. The name of the operation being performed on this particular object. It
@@ -21,14 +23,14 @@ public interface OperationsDiscovery {
      * Namespace}/register/action" operation in their response. This API is used to register for their service, and
      * should include details about the operation (e.g. a localized name for the resource provider + any special
      * considerations like PII release).
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the display property: Object type.
-     *
+     * 
      * @return the display value.
      */
     Display display();
@@ -36,14 +38,14 @@ public interface OperationsDiscovery {
     /**
      * Gets the origin property: Origin. The intended executor of the operation; governs the display of the operation in
      * the RBAC UX and the audit logs UX. Default value is "user,system".
-     *
+     * 
      * @return the origin value.
      */
     String origin();
 
     /**
      * Gets the properties property: Properties. Reserved for future use.
-     *
+     * 
      * @return the properties value.
      */
     Object properties();
@@ -51,7 +53,7 @@ public interface OperationsDiscovery {
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.OperationsDiscoveryInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     OperationsDiscoveryInner innerModel();

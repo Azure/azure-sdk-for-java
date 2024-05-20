@@ -32,8 +32,7 @@ public class HttpAuthorizationTests {
 
             // Constructor arguments cannot be empty strings.
             Arguments.of("", "parameter", IllegalArgumentException.class),
-            Arguments.of("scheme", "", IllegalArgumentException.class)
-        );
+            Arguments.of("scheme", "", IllegalArgumentException.class));
     }
 
     @Test

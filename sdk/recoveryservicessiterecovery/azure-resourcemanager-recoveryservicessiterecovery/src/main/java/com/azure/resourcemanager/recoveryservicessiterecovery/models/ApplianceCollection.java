@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Repl
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of appliance details. */
+/**
+ * Collection of appliance details.
+ */
 @Fluent
 public final class ApplianceCollection {
     /*
@@ -24,13 +26,15 @@ public final class ApplianceCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ApplianceCollection class. */
+    /**
+     * Creates an instance of ApplianceCollection class.
+     */
     public ApplianceCollection() {
     }
 
     /**
      * Get the value property: The appliance details.
-     *
+     * 
      * @return the value value.
      */
     public List<ReplicationApplianceInner> value() {
@@ -39,7 +43,7 @@ public final class ApplianceCollection {
 
     /**
      * Set the value property: The appliance details.
-     *
+     * 
      * @param value the value value to set.
      * @return the ApplianceCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class ApplianceCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ApplianceCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ApplianceCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class ApplianceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ExistingStorageAccountTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExistingStorageAccount model =
-            BinaryData
-                .fromString("{\"resourceType\":\"Existing\",\"azureStorageAccountId\":\"tixmqrudjiz\"}")
+        ExistingStorageAccount model
+            = BinaryData.fromString("{\"resourceType\":\"Existing\",\"azureStorageAccountId\":\"tixmqrudjiz\"}")
                 .toObject(ExistingStorageAccount.class);
         Assertions.assertEquals("tixmqrudjiz", model.azureStorageAccountId());
     }

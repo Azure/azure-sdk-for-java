@@ -18,9 +18,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Repl
 public interface ReplicationEligibilityResultsOperationsClient {
     /**
      * Gets the validation errors in case the VM is unsuitable for protection.
-     *
-     * <p>Validates whether a given VM can be protected or not in which case returns list of errors.
-     *
+     * 
+     * Validates whether a given VM can be protected or not in which case returns list of errors.
+     * 
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param virtualMachineName Virtual Machine name.
      * @param context The context to associate with this operation.
@@ -30,14 +30,14 @@ public interface ReplicationEligibilityResultsOperationsClient {
      * @return replication eligibility results collection response model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReplicationEligibilityResultsCollectionInner> listWithResponse(
-        String resourceGroupName, String virtualMachineName, Context context);
+    Response<ReplicationEligibilityResultsCollectionInner> listWithResponse(String resourceGroupName,
+        String virtualMachineName, Context context);
 
     /**
      * Gets the validation errors in case the VM is unsuitable for protection.
-     *
-     * <p>Validates whether a given VM can be protected or not in which case returns list of errors.
-     *
+     * 
+     * Validates whether a given VM can be protected or not in which case returns list of errors.
+     * 
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param virtualMachineName Virtual Machine name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,9 +50,9 @@ public interface ReplicationEligibilityResultsOperationsClient {
 
     /**
      * Gets the validation errors in case the VM is unsuitable for protection.
-     *
-     * <p>Validates whether a given VM can be protected or not in which case returns list of errors.
-     *
+     * 
+     * Validates whether a given VM can be protected or not in which case returns list of errors.
+     * 
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param virtualMachineName Virtual Machine name.
      * @param context The context to associate with this operation.
@@ -62,14 +62,14 @@ public interface ReplicationEligibilityResultsOperationsClient {
      * @return replication eligibility results response model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReplicationEligibilityResultsInner> getWithResponse(
-        String resourceGroupName, String virtualMachineName, Context context);
+    Response<ReplicationEligibilityResultsInner> getWithResponse(String resourceGroupName, String virtualMachineName,
+        Context context);
 
     /**
      * Gets the validation errors in case the VM is unsuitable for protection.
-     *
-     * <p>Validates whether a given VM can be protected or not in which case returns list of errors.
-     *
+     * 
+     * Validates whether a given VM can be protected or not in which case returns list of errors.
+     * 
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param virtualMachineName Virtual Machine name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

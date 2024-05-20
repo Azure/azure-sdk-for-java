@@ -17,7 +17,9 @@ import java.util.stream.Stream;
  * This class provides utility to iterate over {@link PagedResponse} using {@link Stream} and {@link Iterable}
  * interfaces.
  *
- * <p><strong>Code sample using {@link Stream} by page</strong></p>
+ * <p>
+ * <strong>Code sample using {@link Stream} by page</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.PagedIterable.streamByPage -->
  * <pre>
@@ -31,7 +33,9 @@ import java.util.stream.Stream;
  * </pre>
  * <!-- end com.azure.core.http.rest.PagedIterable.streamByPage -->
  *
- * <p><strong>Code sample using {@link Iterable} by page</strong></p>
+ * <p>
+ * <strong>Code sample using {@link Iterable} by page</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.PagedIterable.iterableByPage -->
  * <pre>
@@ -44,7 +48,9 @@ import java.util.stream.Stream;
  * </pre>
  * <!-- end com.azure.core.http.rest.PagedIterable.iterableByPage -->
  *
- * <p><strong>Code sample using {@link Iterable} by page and while loop</strong></p>
+ * <p>
+ * <strong>Code sample using {@link Iterable} by page and while loop</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.PagedIterable.iterableByPage.while -->
  * <pre>
@@ -57,7 +63,9 @@ import java.util.stream.Stream;
  * </pre>
  * <!-- end com.azure.core.http.rest.PagedIterable.iterableByPage.while -->
  *
- * <p><strong>Code sample using {@link Iterable} by page and continuation token</strong></p>
+ * <p>
+ * <strong>Code sample using {@link Iterable} by page and continuation token</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.rest.PagedIterable.pagesWithContinuationToken -->
  * <pre>
@@ -147,16 +155,16 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      *     nextPageRetriever&#41;;
      * </pre>
      * <!-- end com.azure.core.http.rest.PagedIterable.instantiation -->
-
+    
      * @param firstPageRetriever Supplier that retrieves the first page
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */
     public PagedIterable(Supplier<PagedResponse<T>> firstPageRetriever,
         Function<String, PagedResponse<T>> nextPageRetriever) {
-        this(() -> (continuationToken, pageSize) ->
-            continuationToken == null
-                 ? firstPageRetriever.get()
-                 : nextPageRetriever.apply(continuationToken),
+        this(
+            () -> (continuationToken, pageSize) -> continuationToken == null
+                ? firstPageRetriever.get()
+                : nextPageRetriever.apply(continuationToken),
             pageSize -> firstPageRetriever.get(),
             (continuationToken, pageSize) -> nextPageRetriever.apply(continuationToken));
     }
@@ -182,8 +190,8 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
     public PagedIterable(Function<Integer, PagedResponse<T>> firstPageRetriever,
         BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever) {
         this(() -> (continuationToken, pageSize) -> continuationToken == null
-             ? firstPageRetriever.apply(pageSize)
-             : nextPageRetriever.apply(continuationToken, pageSize), firstPageRetriever, nextPageRetriever);
+            ? firstPageRetriever.apply(pageSize)
+            : nextPageRetriever.apply(continuationToken, pageSize), firstPageRetriever, nextPageRetriever);
     }
 
     /**
@@ -219,8 +227,8 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      * @param nextPageRetriever next page retriever function to get the next page given a continuation token and the page size.
      */
     private PagedIterable(Supplier<PageRetrieverSync<String, PagedResponse<T>>> provider,
-                          Function<Integer, PagedResponse<T>> firstPageRetriever,
-                          BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever) {
+        Function<Integer, PagedResponse<T>> firstPageRetriever,
+        BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever) {
         super(provider);
         this.pagedFlux = null;
         this.firstPageRetriever = firstPageRetriever;
@@ -231,15 +239,13 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
         if (pagedResponse == null) {
             return null;
         }
-        return new PagedResponseBase<String, S>(pagedResponse.getRequest(),
-            pagedResponse.getStatusCode(),
+        return new PagedResponseBase<String, S>(pagedResponse.getRequest(), pagedResponse.getStatusCode(),
             pagedResponse.getHeaders(),
             pagedResponse.getValue()
                 .stream()
                 .map(mapper)
                 .collect(Collectors.toCollection(() -> new ArrayList<>(pagedResponse.getValue().size()))),
-            pagedResponse.getContinuationToken(),
-            null);
+            pagedResponse.getContinuationToken(), null);
     }
 
 }

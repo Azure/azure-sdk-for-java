@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.HttpConstants
 import reactor.util.concurrent.Queues
 
 // cosmos db related constants
-private object CosmosConstants {
+private[cosmos] object CosmosConstants {
   private[this] val propertiesFileName = "azure-cosmos-spark.properties"
   val currentVersion: String =
     CoreUtils.getProperties(propertiesFileName).get("version")

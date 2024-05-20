@@ -15,8 +15,8 @@ public final class AlertsSuppressionRuleImpl implements AlertsSuppressionRule {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    AlertsSuppressionRuleImpl(
-        AlertsSuppressionRuleInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    AlertsSuppressionRuleImpl(AlertsSuppressionRuleInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

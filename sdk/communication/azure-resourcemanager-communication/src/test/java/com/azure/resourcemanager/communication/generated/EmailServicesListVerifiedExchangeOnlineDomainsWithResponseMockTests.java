@@ -30,7 +30,7 @@ public final class EmailServicesListVerifiedExchangeOnlineDomainsWithResponseMoc
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "[\"zvqtmnubexkp\",\"ksmond\"]";
+        String responseStr = "[\"olpsslqlf\",\"mdnbbglzpswiy\"]";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,6 +50,6 @@ public final class EmailServicesListVerifiedExchangeOnlineDomainsWithResponseMoc
         List<String> response = manager.emailServices()
             .listVerifiedExchangeOnlineDomainsWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("zvqtmnubexkp", response.get(0));
+        Assertions.assertEquals("olpsslqlf", response.get(0));
     }
 }

@@ -11,25 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class GovernanceAssignmentAdditionalDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GovernanceAssignmentAdditionalData model =
-            BinaryData
-                .fromString("{\"ticketNumber\":885021040,\"ticketLink\":\"njuhpsprkzya\",\"ticketStatus\":\"ia\"}")
-                .toObject(GovernanceAssignmentAdditionalData.class);
-        Assertions.assertEquals(885021040, model.ticketNumber());
-        Assertions.assertEquals("njuhpsprkzya", model.ticketLink());
-        Assertions.assertEquals("ia", model.ticketStatus());
+        GovernanceAssignmentAdditionalData model = BinaryData
+            .fromString("{\"ticketNumber\":1724138900,\"ticketLink\":\"sgplsakn\",\"ticketStatus\":\"fsynljphuop\"}")
+            .toObject(GovernanceAssignmentAdditionalData.class);
+        Assertions.assertEquals(1724138900, model.ticketNumber());
+        Assertions.assertEquals("sgplsakn", model.ticketLink());
+        Assertions.assertEquals("fsynljphuop", model.ticketStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GovernanceAssignmentAdditionalData model =
-            new GovernanceAssignmentAdditionalData()
-                .withTicketNumber(885021040)
-                .withTicketLink("njuhpsprkzya")
-                .withTicketStatus("ia");
+        GovernanceAssignmentAdditionalData model = new GovernanceAssignmentAdditionalData().withTicketNumber(1724138900)
+            .withTicketLink("sgplsakn")
+            .withTicketStatus("fsynljphuop");
         model = BinaryData.fromObject(model).toObject(GovernanceAssignmentAdditionalData.class);
-        Assertions.assertEquals(885021040, model.ticketNumber());
-        Assertions.assertEquals("njuhpsprkzya", model.ticketLink());
-        Assertions.assertEquals("ia", model.ticketStatus());
+        Assertions.assertEquals(1724138900, model.ticketNumber());
+        Assertions.assertEquals("sgplsakn", model.ticketLink());
+        Assertions.assertEquals("fsynljphuop", model.ticketStatus());
     }
 }

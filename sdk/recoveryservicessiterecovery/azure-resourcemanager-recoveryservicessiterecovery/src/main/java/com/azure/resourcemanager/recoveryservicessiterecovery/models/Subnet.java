@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Subnets of the network. */
+/**
+ * Subnets of the network.
+ */
 @Fluent
 public final class Subnet {
     /*
@@ -29,13 +31,15 @@ public final class Subnet {
     @JsonProperty(value = "addressList")
     private List<String> addressList;
 
-    /** Creates an instance of Subnet class. */
+    /**
+     * Creates an instance of Subnet class.
+     */
     public Subnet() {
     }
 
     /**
      * Get the name property: The subnet name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +48,7 @@ public final class Subnet {
 
     /**
      * Set the name property: The subnet name.
-     *
+     * 
      * @param name the name value to set.
      * @return the Subnet object itself.
      */
@@ -55,7 +59,7 @@ public final class Subnet {
 
     /**
      * Get the friendlyName property: The subnet friendly name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -64,7 +68,7 @@ public final class Subnet {
 
     /**
      * Set the friendlyName property: The subnet friendly name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the Subnet object itself.
      */
@@ -75,7 +79,7 @@ public final class Subnet {
 
     /**
      * Get the addressList property: The list of addresses for the subnet.
-     *
+     * 
      * @return the addressList value.
      */
     public List<String> addressList() {
@@ -84,7 +88,7 @@ public final class Subnet {
 
     /**
      * Set the addressList property: The list of addresses for the subnet.
-     *
+     * 
      * @param addressList the addressList value to set.
      * @return the Subnet object itself.
      */
@@ -95,7 +99,7 @@ public final class Subnet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

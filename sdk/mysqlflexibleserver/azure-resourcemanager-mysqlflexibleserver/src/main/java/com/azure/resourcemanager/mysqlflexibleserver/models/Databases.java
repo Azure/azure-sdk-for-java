@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Databases. */
+/**
+ * Resource collection API of Databases.
+ */
 public interface Databases {
     /**
      * Deletes a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
@@ -24,7 +26,7 @@ public interface Databases {
 
     /**
      * Deletes a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
@@ -37,7 +39,7 @@ public interface Databases {
 
     /**
      * Gets information about a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
@@ -47,12 +49,12 @@ public interface Databases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a database along with {@link Response}.
      */
-    Response<Database> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    Response<Database> getWithResponse(String resourceGroupName, String serverName, String databaseName,
+        Context context);
 
     /**
      * Gets information about a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
@@ -65,7 +67,7 @@ public interface Databases {
 
     /**
      * List all the databases in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,7 +79,7 @@ public interface Databases {
 
     /**
      * List all the databases in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -90,7 +92,7 @@ public interface Databases {
 
     /**
      * Gets information about a database.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -101,7 +103,7 @@ public interface Databases {
 
     /**
      * Gets information about a database.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,7 +115,7 @@ public interface Databases {
 
     /**
      * Deletes a database.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -123,7 +125,7 @@ public interface Databases {
 
     /**
      * Deletes a database.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +136,7 @@ public interface Databases {
 
     /**
      * Begins definition for a new Database resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Database definition.
      */

@@ -15,44 +15,32 @@ import org.junit.jupiter.api.Assertions;
 public final class BaselineAdjustedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BaselineAdjustedResult model =
-            BinaryData
-                .fromString(
-                    "{\"baseline\":{\"expectedResults\":[[\"mfzsbf\"],[\"rzx\",\"dew\",\"rsxkr\",\"lbjazejww\"]],\"updatedTime\":\"2021-03-06T21:39:52Z\"},\"status\":\"Finding\",\"resultsNotInBaseline\":[[\"hbrnnhjx\",\"qwjhqkbiwetpozyc\",\"qiqyhgfsetzlexbs\"],[\"e\",\"ynojpziuw\",\"bzkkd\"]],\"resultsOnlyInBaseline\":[[\"sycljsel\",\"kpbafvafhl\"],[\"lc\"],[\"evxrhyz\",\"fwrsofpltdbmair\",\"hvhfnracw\"]]}")
-                .toObject(BaselineAdjustedResult.class);
-        Assertions.assertEquals("mfzsbf", model.baseline().expectedResults().get(0).get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-06T21:39:52Z"), model.baseline().updatedTime());
-        Assertions.assertEquals(RuleStatus.FINDING, model.status());
-        Assertions.assertEquals("hbrnnhjx", model.resultsNotInBaseline().get(0).get(0));
-        Assertions.assertEquals("sycljsel", model.resultsOnlyInBaseline().get(0).get(0));
+        BaselineAdjustedResult model = BinaryData.fromString(
+            "{\"baseline\":{\"expectedResults\":[[\"hqnrn\",\"pxehuwrykqga\",\"fmviklby\",\"vkhbejdznx\"],[\"dsrhnjiv\",\"lvtno\",\"qfzgemjdftul\"],[\"tduceamt\",\"czu\"]],\"updatedTime\":\"2021-07-25T15:19:26Z\"},\"status\":\"NonFinding\",\"resultsNotInBaseline\":[[\"qioknssxmojm\",\"vpkjpr\"]],\"resultsOnlyInBaseline\":[[\"fz\"],[\"jyxgtczh\",\"ydbsd\",\"hmkxmaehvbb\"],[\"ripltf\",\"htba\",\"kgxywr\"]]}")
+            .toObject(BaselineAdjustedResult.class);
+        Assertions.assertEquals("hqnrn", model.baseline().expectedResults().get(0).get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T15:19:26Z"), model.baseline().updatedTime());
+        Assertions.assertEquals(RuleStatus.NON_FINDING, model.status());
+        Assertions.assertEquals("qioknssxmojm", model.resultsNotInBaseline().get(0).get(0));
+        Assertions.assertEquals("fz", model.resultsOnlyInBaseline().get(0).get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BaselineAdjustedResult model =
-            new BaselineAdjustedResult()
-                .withBaseline(
-                    new Baseline()
-                        .withExpectedResults(
-                            Arrays.asList(Arrays.asList("mfzsbf"), Arrays.asList("rzx", "dew", "rsxkr", "lbjazejww")))
-                        .withUpdatedTime(OffsetDateTime.parse("2021-03-06T21:39:52Z")))
-                .withStatus(RuleStatus.FINDING)
-                .withResultsNotInBaseline(
-                    Arrays
-                        .asList(
-                            Arrays.asList("hbrnnhjx", "qwjhqkbiwetpozyc", "qiqyhgfsetzlexbs"),
-                            Arrays.asList("e", "ynojpziuw", "bzkkd")))
-                .withResultsOnlyInBaseline(
-                    Arrays
-                        .asList(
-                            Arrays.asList("sycljsel", "kpbafvafhl"),
-                            Arrays.asList("lc"),
-                            Arrays.asList("evxrhyz", "fwrsofpltdbmair", "hvhfnracw")));
+        BaselineAdjustedResult model = new BaselineAdjustedResult()
+            .withBaseline(new Baseline()
+                .withExpectedResults(Arrays.asList(Arrays.asList("hqnrn", "pxehuwrykqga", "fmviklby", "vkhbejdznx"),
+                    Arrays.asList("dsrhnjiv", "lvtno", "qfzgemjdftul"), Arrays.asList("tduceamt", "czu")))
+                .withUpdatedTime(OffsetDateTime.parse("2021-07-25T15:19:26Z")))
+            .withStatus(RuleStatus.NON_FINDING)
+            .withResultsNotInBaseline(Arrays.asList(Arrays.asList("qioknssxmojm", "vpkjpr")))
+            .withResultsOnlyInBaseline(Arrays.asList(Arrays.asList("fz"),
+                Arrays.asList("jyxgtczh", "ydbsd", "hmkxmaehvbb"), Arrays.asList("ripltf", "htba", "kgxywr")));
         model = BinaryData.fromObject(model).toObject(BaselineAdjustedResult.class);
-        Assertions.assertEquals("mfzsbf", model.baseline().expectedResults().get(0).get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-06T21:39:52Z"), model.baseline().updatedTime());
-        Assertions.assertEquals(RuleStatus.FINDING, model.status());
-        Assertions.assertEquals("hbrnnhjx", model.resultsNotInBaseline().get(0).get(0));
-        Assertions.assertEquals("sycljsel", model.resultsOnlyInBaseline().get(0).get(0));
+        Assertions.assertEquals("hqnrn", model.baseline().expectedResults().get(0).get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T15:19:26Z"), model.baseline().updatedTime());
+        Assertions.assertEquals(RuleStatus.NON_FINDING, model.status());
+        Assertions.assertEquals("qioknssxmojm", model.resultsNotInBaseline().get(0).get(0));
+        Assertions.assertEquals("fz", model.resultsOnlyInBaseline().get(0).get(0));
     }
 }

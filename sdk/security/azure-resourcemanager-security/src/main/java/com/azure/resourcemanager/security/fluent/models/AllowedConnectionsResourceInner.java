@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The resource whose properties describes the allowed traffic between Azure resources. */
+/**
+ * The resource whose properties describes the allowed traffic between Azure resources.
+ */
 @Immutable
 public final class AllowedConnectionsResourceInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class AllowedConnectionsResourceInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of AllowedConnectionsResourceInner class. */
+    /**
+     * Creates an instance of AllowedConnectionsResourceInner class.
+     */
     public AllowedConnectionsResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Describes the allowed traffic between Azure resources.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AllowedConnectionsResourceProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class AllowedConnectionsResourceInner extends ProxyResource {
 
     /**
      * Get the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -50,7 +54,7 @@ public final class AllowedConnectionsResourceInner extends ProxyResource {
 
     /**
      * Get the calculatedDateTime property: The UTC time on which the allowed connections resource was calculated.
-     *
+     * 
      * @return the calculatedDateTime value.
      */
     public OffsetDateTime calculatedDateTime() {
@@ -59,7 +63,7 @@ public final class AllowedConnectionsResourceInner extends ProxyResource {
 
     /**
      * Get the connectableResources property: List of connectable resources.
-     *
+     * 
      * @return the connectableResources value.
      */
     public List<ConnectableResource> connectableResources() {
@@ -68,7 +72,7 @@ public final class AllowedConnectionsResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

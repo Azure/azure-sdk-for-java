@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** HyperVReplicaAzureFailback specific planned failover input. */
+/**
+ * HyperVReplicaAzureFailback specific planned failover input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVReplicaAzureFailback")
 @Fluent
@@ -32,13 +34,15 @@ public final class HyperVReplicaAzureFailbackProviderInput extends PlannedFailov
     @JsonProperty(value = "providerIdForAlternateRecovery")
     private String providerIdForAlternateRecovery;
 
-    /** Creates an instance of HyperVReplicaAzureFailbackProviderInput class. */
+    /**
+     * Creates an instance of HyperVReplicaAzureFailbackProviderInput class.
+     */
     public HyperVReplicaAzureFailbackProviderInput() {
     }
 
     /**
      * Get the dataSyncOption property: Data sync option.
-     *
+     * 
      * @return the dataSyncOption value.
      */
     public String dataSyncOption() {
@@ -47,7 +51,7 @@ public final class HyperVReplicaAzureFailbackProviderInput extends PlannedFailov
 
     /**
      * Set the dataSyncOption property: Data sync option.
-     *
+     * 
      * @param dataSyncOption the dataSyncOption value to set.
      * @return the HyperVReplicaAzureFailbackProviderInput object itself.
      */
@@ -58,7 +62,7 @@ public final class HyperVReplicaAzureFailbackProviderInput extends PlannedFailov
 
     /**
      * Get the recoveryVmCreationOption property: ALR options to create alternate recovery.
-     *
+     * 
      * @return the recoveryVmCreationOption value.
      */
     public String recoveryVmCreationOption() {
@@ -67,7 +71,7 @@ public final class HyperVReplicaAzureFailbackProviderInput extends PlannedFailov
 
     /**
      * Set the recoveryVmCreationOption property: ALR options to create alternate recovery.
-     *
+     * 
      * @param recoveryVmCreationOption the recoveryVmCreationOption value to set.
      * @return the HyperVReplicaAzureFailbackProviderInput object itself.
      */
@@ -78,7 +82,7 @@ public final class HyperVReplicaAzureFailbackProviderInput extends PlannedFailov
 
     /**
      * Get the providerIdForAlternateRecovery property: Provider Id for alternate location.
-     *
+     * 
      * @return the providerIdForAlternateRecovery value.
      */
     public String providerIdForAlternateRecovery() {
@@ -87,19 +91,19 @@ public final class HyperVReplicaAzureFailbackProviderInput extends PlannedFailov
 
     /**
      * Set the providerIdForAlternateRecovery property: Provider Id for alternate location.
-     *
+     * 
      * @param providerIdForAlternateRecovery the providerIdForAlternateRecovery value to set.
      * @return the HyperVReplicaAzureFailbackProviderInput object itself.
      */
-    public HyperVReplicaAzureFailbackProviderInput withProviderIdForAlternateRecovery(
-        String providerIdForAlternateRecovery) {
+    public HyperVReplicaAzureFailbackProviderInput
+        withProviderIdForAlternateRecovery(String providerIdForAlternateRecovery) {
         this.providerIdForAlternateRecovery = providerIdForAlternateRecovery;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

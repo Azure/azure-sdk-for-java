@@ -33,23 +33,28 @@ import com.azure.resourcemanager.security.fluent.models.AlertsSuppressionRuleInn
 import com.azure.resourcemanager.security.models.AlertsSuppressionRulesList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AlertsSuppressionRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AlertsSuppressionRulesClient.
+ */
 public final class AlertsSuppressionRulesClientImpl implements AlertsSuppressionRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AlertsSuppressionRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of AlertsSuppressionRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AlertsSuppressionRulesClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy
-                .create(AlertsSuppressionRulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AlertsSuppressionRulesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,162 +65,114 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterAlerts")
     public interface AlertsSuppressionRulesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AlertsSuppressionRulesList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("AlertType") String alertType,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AlertsSuppressionRulesList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("AlertType") String alertType, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules/{alertsSuppressionRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules/{alertsSuppressionRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AlertsSuppressionRuleInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<AlertsSuppressionRuleInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("alertsSuppressionRuleName") String alertsSuppressionRuleName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules/{alertsSuppressionRuleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules/{alertsSuppressionRuleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AlertsSuppressionRuleInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<AlertsSuppressionRuleInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("alertsSuppressionRuleName") String alertsSuppressionRuleName,
             @BodyParam("application/json") AlertsSuppressionRuleInner alertsSuppressionRule,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules/{alertsSuppressionRuleName}")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules/{alertsSuppressionRuleName}")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("alertsSuppressionRuleName") String alertsSuppressionRuleName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AlertsSuppressionRulesList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List of all the dismiss rules for the given subscription.
-     *
+     * 
      * @param alertType Type of the alert to get rules for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return suppression rules list for subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertsSuppressionRuleInner>> listSinglePageAsync(String alertType) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            alertType,
-                            accept,
-                            context))
-            .<PagedResponse<AlertsSuppressionRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                alertType, accept, context))
+            .<PagedResponse<AlertsSuppressionRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List of all the dismiss rules for the given subscription.
-     *
+     * 
      * @param alertType Type of the alert to get rules for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return suppression rules list for subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertsSuppressionRuleInner>> listSinglePageAsync(String alertType, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2019-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), alertType, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List of all the dismiss rules for the given subscription.
-     *
+     * 
      * @param alertType Type of the alert to get rules for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -229,7 +186,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
 
     /**
      * List of all the dismiss rules for the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return suppression rules list for subscription as paginated response with {@link PagedFlux}.
@@ -242,7 +199,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
 
     /**
      * List of all the dismiss rules for the given subscription.
-     *
+     * 
      * @param alertType Type of the alert to get rules for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -252,13 +209,13 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AlertsSuppressionRuleInner> listAsync(String alertType, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(alertType, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(alertType, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List of all the dismiss rules for the given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return suppression rules list for subscription as paginated response with {@link PagedIterable}.
@@ -271,7 +228,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
 
     /**
      * List of all the dismiss rules for the given subscription.
-     *
+     * 
      * @param alertType Type of the alert to get rules for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -286,104 +243,78 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
 
     /**
      * Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertsSuppressionRuleInner>> getWithResponseAsync(String alertsSuppressionRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (alertsSuppressionRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter alertsSuppressionRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter alertsSuppressionRuleName is required and cannot be null."));
         }
         final String apiVersion = "2019-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            alertsSuppressionRuleName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                alertsSuppressionRuleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AlertsSuppressionRuleInner>> getWithResponseAsync(
-        String alertsSuppressionRuleName, Context context) {
+    private Mono<Response<AlertsSuppressionRuleInner>> getWithResponseAsync(String alertsSuppressionRuleName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (alertsSuppressionRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter alertsSuppressionRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter alertsSuppressionRuleName is required and cannot be null."));
         }
         final String apiVersion = "2019-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                alertsSuppressionRuleName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            alertsSuppressionRuleName, accept, context);
     }
 
     /**
      * Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AlertsSuppressionRuleInner> getAsync(String alertsSuppressionRuleName) {
@@ -392,14 +323,14 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
 
     /**
      * Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription along with {@link
-     *     Response}.
+     * @return dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AlertsSuppressionRuleInner> getWithResponse(String alertsSuppressionRuleName, Context context) {
@@ -408,7 +339,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
 
     /**
      * Get dismiss rule, with name: {alertsSuppressionRuleName}, for the given subscription.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -422,7 +353,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
 
     /**
      * Update existing rule or create new rule if it doesn't exist.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @param alertsSuppressionRule Suppression rule object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -431,25 +362,19 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @return describes the suppression rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AlertsSuppressionRuleInner>> updateWithResponseAsync(
-        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule) {
+    private Mono<Response<AlertsSuppressionRuleInner>> updateWithResponseAsync(String alertsSuppressionRuleName,
+        AlertsSuppressionRuleInner alertsSuppressionRule) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (alertsSuppressionRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter alertsSuppressionRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter alertsSuppressionRuleName is required and cannot be null."));
         }
         if (alertsSuppressionRule == null) {
             return Mono
@@ -460,23 +385,14 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
         final String apiVersion = "2019-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            alertsSuppressionRuleName,
-                            alertsSuppressionRule,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), alertsSuppressionRuleName, alertsSuppressionRule, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update existing rule or create new rule if it doesn't exist.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @param alertsSuppressionRule Suppression rule object.
      * @param context The context to associate with this operation.
@@ -486,25 +402,19 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @return describes the suppression rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AlertsSuppressionRuleInner>> updateWithResponseAsync(
-        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule, Context context) {
+    private Mono<Response<AlertsSuppressionRuleInner>> updateWithResponseAsync(String alertsSuppressionRuleName,
+        AlertsSuppressionRuleInner alertsSuppressionRule, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (alertsSuppressionRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter alertsSuppressionRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter alertsSuppressionRuleName is required and cannot be null."));
         }
         if (alertsSuppressionRule == null) {
             return Mono
@@ -515,20 +425,13 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
         final String apiVersion = "2019-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                alertsSuppressionRuleName,
-                alertsSuppressionRule,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            alertsSuppressionRuleName, alertsSuppressionRule, accept, context);
     }
 
     /**
      * Update existing rule or create new rule if it doesn't exist.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @param alertsSuppressionRule Suppression rule object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -537,15 +440,15 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @return describes the suppression rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AlertsSuppressionRuleInner> updateAsync(
-        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule) {
+    private Mono<AlertsSuppressionRuleInner> updateAsync(String alertsSuppressionRuleName,
+        AlertsSuppressionRuleInner alertsSuppressionRule) {
         return updateWithResponseAsync(alertsSuppressionRuleName, alertsSuppressionRule)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update existing rule or create new rule if it doesn't exist.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @param alertsSuppressionRule Suppression rule object.
      * @param context The context to associate with this operation.
@@ -555,14 +458,14 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @return describes the suppression rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AlertsSuppressionRuleInner> updateWithResponse(
-        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule, Context context) {
+    public Response<AlertsSuppressionRuleInner> updateWithResponse(String alertsSuppressionRuleName,
+        AlertsSuppressionRuleInner alertsSuppressionRule, Context context) {
         return updateWithResponseAsync(alertsSuppressionRuleName, alertsSuppressionRule, context).block();
     }
 
     /**
      * Update existing rule or create new rule if it doesn't exist.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @param alertsSuppressionRule Suppression rule object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -571,14 +474,14 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
      * @return describes the suppression rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AlertsSuppressionRuleInner update(
-        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule) {
+    public AlertsSuppressionRuleInner update(String alertsSuppressionRuleName,
+        AlertsSuppressionRuleInner alertsSuppressionRule) {
         return updateWithResponse(alertsSuppressionRuleName, alertsSuppressionRule, Context.NONE).getValue();
     }
 
     /**
      * Delete dismiss alert rule for this subscription.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -588,42 +491,28 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String alertsSuppressionRuleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (alertsSuppressionRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter alertsSuppressionRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter alertsSuppressionRuleName is required and cannot be null."));
         }
         final String apiVersion = "2019-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            alertsSuppressionRuleName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), alertsSuppressionRuleName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete dismiss alert rule for this subscription.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -634,39 +523,27 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String alertsSuppressionRuleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (alertsSuppressionRuleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter alertsSuppressionRuleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter alertsSuppressionRuleName is required and cannot be null."));
         }
         final String apiVersion = "2019-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                alertsSuppressionRuleName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            alertsSuppressionRuleName, accept, context);
     }
 
     /**
      * Delete dismiss alert rule for this subscription.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -680,7 +557,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
 
     /**
      * Delete dismiss alert rule for this subscription.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -695,7 +572,7 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
 
     /**
      * Delete dismiss alert rule for this subscription.
-     *
+     * 
      * @param alertsSuppressionRuleName The unique name of the suppression alert rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -708,14 +585,15 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return suppression rules list for subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertsSuppressionRuleInner>> listNextSinglePageAsync(String nextLink) {
@@ -723,37 +601,28 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AlertsSuppressionRuleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AlertsSuppressionRuleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return suppression rules list for subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertsSuppressionRuleInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -761,23 +630,13 @@ public final class AlertsSuppressionRulesClientImpl implements AlertsSuppression
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

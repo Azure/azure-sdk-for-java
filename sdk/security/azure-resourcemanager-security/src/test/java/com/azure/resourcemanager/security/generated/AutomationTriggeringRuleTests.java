@@ -13,29 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class AutomationTriggeringRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomationTriggeringRule model =
-            BinaryData
-                .fromString(
-                    "{\"propertyJPath\":\"nbaeqphchqn\",\"propertyType\":\"Integer\",\"expectedValue\":\"x\",\"operator\":\"LesserThan\"}")
-                .toObject(AutomationTriggeringRule.class);
-        Assertions.assertEquals("nbaeqphchqn", model.propertyJPath());
+        AutomationTriggeringRule model = BinaryData.fromString(
+            "{\"propertyJPath\":\"b\",\"propertyType\":\"Integer\",\"expectedValue\":\"jrwhryvy\",\"operator\":\"EndsWith\"}")
+            .toObject(AutomationTriggeringRule.class);
+        Assertions.assertEquals("b", model.propertyJPath());
         Assertions.assertEquals(PropertyType.INTEGER, model.propertyType());
-        Assertions.assertEquals("x", model.expectedValue());
-        Assertions.assertEquals(Operator.LESSER_THAN, model.operator());
+        Assertions.assertEquals("jrwhryvy", model.expectedValue());
+        Assertions.assertEquals(Operator.ENDS_WITH, model.operator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationTriggeringRule model =
-            new AutomationTriggeringRule()
-                .withPropertyJPath("nbaeqphchqn")
-                .withPropertyType(PropertyType.INTEGER)
-                .withExpectedValue("x")
-                .withOperator(Operator.LESSER_THAN);
+        AutomationTriggeringRule model = new AutomationTriggeringRule().withPropertyJPath("b")
+            .withPropertyType(PropertyType.INTEGER)
+            .withExpectedValue("jrwhryvy")
+            .withOperator(Operator.ENDS_WITH);
         model = BinaryData.fromObject(model).toObject(AutomationTriggeringRule.class);
-        Assertions.assertEquals("nbaeqphchqn", model.propertyJPath());
+        Assertions.assertEquals("b", model.propertyJPath());
         Assertions.assertEquals(PropertyType.INTEGER, model.propertyType());
-        Assertions.assertEquals("x", model.expectedValue());
-        Assertions.assertEquals(Operator.LESSER_THAN, model.operator());
+        Assertions.assertEquals("jrwhryvy", model.expectedValue());
+        Assertions.assertEquals(Operator.ENDS_WITH, model.operator());
     }
 }

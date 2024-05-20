@@ -17,7 +17,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Security alert. */
+/**
+ * Security alert.
+ */
 @Fluent
 public final class AlertInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class AlertInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AlertProperties innerProperties;
 
-    /** Creates an instance of AlertInner class. */
+    /**
+     * Creates an instance of AlertInner class.
+     */
     public AlertInner() {
     }
 
     /**
      * Get the innerProperties property: describes security alert properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AlertProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the version property: Schema version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -51,7 +55,7 @@ public final class AlertInner extends ProxyResource {
     /**
      * Get the alertType property: Unique identifier for the detection logic (all alert instances from the same
      * detection logic will have the same alertType).
-     *
+     * 
      * @return the alertType value.
      */
     public String alertType() {
@@ -60,7 +64,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the systemAlertId property: Unique identifier for the alert.
-     *
+     * 
      * @return the systemAlertId value.
      */
     public String systemAlertId() {
@@ -70,7 +74,7 @@ public final class AlertInner extends ProxyResource {
     /**
      * Get the productComponentName property: The name of Azure Security Center pricing tier which powering this alert.
      * Learn more: https://docs.microsoft.com/en-us/azure/security-center/security-center-pricing.
-     *
+     * 
      * @return the productComponentName value.
      */
     public String productComponentName() {
@@ -79,7 +83,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the alertDisplayName property: The display name of the alert.
-     *
+     * 
      * @return the alertDisplayName value.
      */
     public String alertDisplayName() {
@@ -88,7 +92,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the description property: Description of the suspicious activity that was detected.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -98,7 +102,7 @@ public final class AlertInner extends ProxyResource {
     /**
      * Get the severity property: The risk level of the threat that was detected. Learn more:
      * https://docs.microsoft.com/en-us/azure/security-center/security-center-alerts-overview#how-are-alerts-classified.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -108,7 +112,7 @@ public final class AlertInner extends ProxyResource {
     /**
      * Get the intent property: The kill chain related intent behind the alert. For list of supported values, and
      * explanations of Azure Security Center's supported kill chain intents.
-     *
+     * 
      * @return the intent value.
      */
     public Intent intent() {
@@ -118,7 +122,7 @@ public final class AlertInner extends ProxyResource {
     /**
      * Get the startTimeUtc property: The UTC time of the first event or activity included in the alert in ISO8601
      * format.
-     *
+     * 
      * @return the startTimeUtc value.
      */
     public OffsetDateTime startTimeUtc() {
@@ -127,7 +131,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the endTimeUtc property: The UTC time of the last event or activity included in the alert in ISO8601 format.
-     *
+     * 
      * @return the endTimeUtc value.
      */
     public OffsetDateTime endTimeUtc() {
@@ -138,7 +142,7 @@ public final class AlertInner extends ProxyResource {
      * Get the resourceIdentifiers property: The resource identifiers that can be used to direct the alert to the right
      * product exposure group (tenant, workspace, subscription etc.). There can be multiple identifiers of different
      * type per alert.
-     *
+     * 
      * @return the resourceIdentifiers value.
      */
     public List<ResourceIdentifier> resourceIdentifiers() {
@@ -147,7 +151,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the remediationSteps property: Manual action items to take to remediate the alert.
-     *
+     * 
      * @return the remediationSteps value.
      */
     public List<String> remediationSteps() {
@@ -156,7 +160,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the vendorName property: The name of the vendor that raises the alert.
-     *
+     * 
      * @return the vendorName value.
      */
     public String vendorName() {
@@ -165,7 +169,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the status property: The life cycle status of the alert.
-     *
+     * 
      * @return the status value.
      */
     public AlertStatus status() {
@@ -174,7 +178,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the extendedLinks property: Links related to the alert.
-     *
+     * 
      * @return the extendedLinks value.
      */
     public List<Map<String, String>> extendedLinks() {
@@ -183,7 +187,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the alertUri property: A direct link to the alert page in Azure Portal.
-     *
+     * 
      * @return the alertUri value.
      */
     public String alertUri() {
@@ -192,7 +196,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the timeGeneratedUtc property: The UTC time the alert was generated in ISO8601 format.
-     *
+     * 
      * @return the timeGeneratedUtc value.
      */
     public OffsetDateTime timeGeneratedUtc() {
@@ -203,7 +207,7 @@ public final class AlertInner extends ProxyResource {
      * Get the productName property: The name of the product which published this alert (Microsoft Sentinel, Microsoft
      * Defender for Identity, Microsoft Defender for Endpoint, Microsoft Defender for Office, Microsoft Defender for
      * Cloud Apps, and so on).
-     *
+     * 
      * @return the productName value.
      */
     public String productName() {
@@ -212,7 +216,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the processingEndTimeUtc property: The UTC processing end time of the alert in ISO8601 format.
-     *
+     * 
      * @return the processingEndTimeUtc value.
      */
     public OffsetDateTime processingEndTimeUtc() {
@@ -221,7 +225,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the entities property: A list of entities related to the alert.
-     *
+     * 
      * @return the entities value.
      */
     public List<AlertEntity> entities() {
@@ -231,7 +235,7 @@ public final class AlertInner extends ProxyResource {
     /**
      * Get the isIncident property: This field determines whether the alert is an incident (a compound grouping of
      * several alerts) or a single alert.
-     *
+     * 
      * @return the isIncident value.
      */
     public Boolean isIncident() {
@@ -241,7 +245,7 @@ public final class AlertInner extends ProxyResource {
     /**
      * Get the correlationKey property: Key for corelating related alerts. Alerts with the same correlation key
      * considered to be related.
-     *
+     * 
      * @return the correlationKey value.
      */
     public String correlationKey() {
@@ -250,7 +254,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the extendedProperties property: Custom properties for the alert.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
@@ -259,7 +263,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Set the extendedProperties property: Custom properties for the alert.
-     *
+     * 
      * @param extendedProperties the extendedProperties value to set.
      * @return the AlertInner object itself.
      */
@@ -273,7 +277,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the compromisedEntity property: The display name of the resource most related to this alert.
-     *
+     * 
      * @return the compromisedEntity value.
      */
     public String compromisedEntity() {
@@ -282,7 +286,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the techniques property: kill chain related techniques behind the alert.
-     *
+     * 
      * @return the techniques value.
      */
     public List<String> techniques() {
@@ -291,7 +295,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the subTechniques property: Kill chain related sub-techniques behind the alert.
-     *
+     * 
      * @return the subTechniques value.
      */
     public List<String> subTechniques() {
@@ -300,7 +304,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the supportingEvidence property: Changing set of properties depending on the supportingEvidence type.
-     *
+     * 
      * @return the supportingEvidence value.
      */
     public AlertPropertiesSupportingEvidence supportingEvidence() {
@@ -309,7 +313,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Set the supportingEvidence property: Changing set of properties depending on the supportingEvidence type.
-     *
+     * 
      * @param supportingEvidence the supportingEvidence value to set.
      * @return the AlertInner object itself.
      */
@@ -323,7 +327,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

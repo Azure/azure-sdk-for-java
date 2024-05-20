@@ -6,9 +6,14 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 
 /**
- * REST response with a strongly-typed content specified.
+ * This class represents a simple HTTP response with a strongly-typed content.
+ * It encapsulates the HTTP request that resulted in the response, the status code of the HTTP response,
+ * the headers of the HTTP response, and the deserialized value of the HTTP response.
  *
- * @param <T> The deserialized type of the response content.
+ * <p>This class is useful when you want to work with the response of an HTTP request where the body of the response
+ * is expected to be in a specific format (the generic type {@code T}).</p>
+ *
+ * @param <T> The type of the deserialized response content.
  */
 public class SimpleResponse<T> implements Response<T> {
     private final HttpRequest request;

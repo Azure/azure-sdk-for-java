@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InconsistentVmDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InconsistentVmDetails model =
-            BinaryData
-                .fromString(
-                    "{\"vmName\":\"laimouxwk\",\"cloudName\":\"mud\",\"details\":[\"oibi\",\"ziuswsw\",\"rk\",\"qsj\"],\"errorIds\":[\"qqvyfscyrfw\",\"iv\"]}")
-                .toObject(InconsistentVmDetails.class);
+        InconsistentVmDetails model = BinaryData.fromString(
+            "{\"vmName\":\"laimouxwk\",\"cloudName\":\"mud\",\"details\":[\"oibi\",\"ziuswsw\",\"rk\",\"qsj\"],\"errorIds\":[\"qqvyfscyrfw\",\"iv\"]}")
+            .toObject(InconsistentVmDetails.class);
         Assertions.assertEquals("laimouxwk", model.vmName());
         Assertions.assertEquals("mud", model.cloudName());
         Assertions.assertEquals("oibi", model.details().get(0));
@@ -25,12 +23,9 @@ public final class InconsistentVmDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InconsistentVmDetails model =
-            new InconsistentVmDetails()
-                .withVmName("laimouxwk")
-                .withCloudName("mud")
-                .withDetails(Arrays.asList("oibi", "ziuswsw", "rk", "qsj"))
-                .withErrorIds(Arrays.asList("qqvyfscyrfw", "iv"));
+        InconsistentVmDetails model = new InconsistentVmDetails().withVmName("laimouxwk").withCloudName("mud")
+            .withDetails(Arrays.asList("oibi", "ziuswsw", "rk", "qsj"))
+            .withErrorIds(Arrays.asList("qqvyfscyrfw", "iv"));
         model = BinaryData.fromObject(model).toObject(InconsistentVmDetails.class);
         Assertions.assertEquals("laimouxwk", model.vmName());
         Assertions.assertEquals("mud", model.cloudName());

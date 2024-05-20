@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Network Mapping fabric specific settings. */
+/**
+ * Network Mapping fabric specific settings.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,17 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureToAzure", value = AzureToAzureNetworkMappingSettings.class),
     @JsonSubTypes.Type(name = "VmmToAzure", value = VmmToAzureNetworkMappingSettings.class),
-    @JsonSubTypes.Type(name = "VmmToVmm", value = VmmToVmmNetworkMappingSettings.class)
-})
+    @JsonSubTypes.Type(name = "VmmToVmm", value = VmmToVmmNetworkMappingSettings.class) })
 @Immutable
 public class NetworkMappingFabricSpecificSettings {
-    /** Creates an instance of NetworkMappingFabricSpecificSettings class. */
+    /**
+     * Creates an instance of NetworkMappingFabricSpecificSettings class.
+     */
     public NetworkMappingFabricSpecificSettings() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

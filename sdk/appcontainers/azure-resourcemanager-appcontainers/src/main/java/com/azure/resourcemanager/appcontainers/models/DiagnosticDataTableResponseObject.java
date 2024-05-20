@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Diagnostics data table. */
+/**
+ * Diagnostics data table.
+ */
 @Fluent
 public final class DiagnosticDataTableResponseObject {
     /*
@@ -29,13 +31,15 @@ public final class DiagnosticDataTableResponseObject {
     @JsonProperty(value = "rows")
     private List<Object> rows;
 
-    /** Creates an instance of DiagnosticDataTableResponseObject class. */
+    /**
+     * Creates an instance of DiagnosticDataTableResponseObject class.
+     */
     public DiagnosticDataTableResponseObject() {
     }
 
     /**
      * Get the tableName property: Table name.
-     *
+     * 
      * @return the tableName value.
      */
     public String tableName() {
@@ -44,7 +48,7 @@ public final class DiagnosticDataTableResponseObject {
 
     /**
      * Set the tableName property: Table name.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the DiagnosticDataTableResponseObject object itself.
      */
@@ -55,7 +59,7 @@ public final class DiagnosticDataTableResponseObject {
 
     /**
      * Get the columns property: Columns in the table.
-     *
+     * 
      * @return the columns value.
      */
     public List<DiagnosticDataTableResponseColumn> columns() {
@@ -64,7 +68,7 @@ public final class DiagnosticDataTableResponseObject {
 
     /**
      * Set the columns property: Columns in the table.
-     *
+     * 
      * @param columns the columns value to set.
      * @return the DiagnosticDataTableResponseObject object itself.
      */
@@ -75,7 +79,7 @@ public final class DiagnosticDataTableResponseObject {
 
     /**
      * Get the rows property: Rows in the table.
-     *
+     * 
      * @return the rows value.
      */
     public List<Object> rows() {
@@ -84,7 +88,7 @@ public final class DiagnosticDataTableResponseObject {
 
     /**
      * Set the rows property: Rows in the table.
-     *
+     * 
      * @param rows the rows value to set.
      * @return the DiagnosticDataTableResponseObject object itself.
      */
@@ -95,7 +99,7 @@ public final class DiagnosticDataTableResponseObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resolve health input. */
+/**
+ * Resolve health input.
+ */
 @Fluent
 public final class ResolveHealthInput {
     /*
@@ -16,13 +18,15 @@ public final class ResolveHealthInput {
     @JsonProperty(value = "properties")
     private ResolveHealthInputProperties properties;
 
-    /** Creates an instance of ResolveHealthInput class. */
+    /**
+     * Creates an instance of ResolveHealthInput class.
+     */
     public ResolveHealthInput() {
     }
 
     /**
      * Get the properties property: Disable resolve health input properties.
-     *
+     * 
      * @return the properties value.
      */
     public ResolveHealthInputProperties properties() {
@@ -31,7 +35,7 @@ public final class ResolveHealthInput {
 
     /**
      * Set the properties property: Disable resolve health input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ResolveHealthInput object itself.
      */
@@ -42,7 +46,7 @@ public final class ResolveHealthInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

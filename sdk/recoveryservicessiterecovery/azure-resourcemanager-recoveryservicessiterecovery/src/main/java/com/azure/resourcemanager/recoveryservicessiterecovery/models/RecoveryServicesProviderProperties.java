@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Recovery services provider properties. */
+/**
+ * Recovery services provider properties.
+ */
 @Fluent
 public final class RecoveryServicesProviderProperties {
     /*
@@ -132,13 +134,15 @@ public final class RecoveryServicesProviderProperties {
     @JsonProperty(value = "providerVersionDetails")
     private VersionDetails providerVersionDetails;
 
-    /** Creates an instance of RecoveryServicesProviderProperties class. */
+    /**
+     * Creates an instance of RecoveryServicesProviderProperties class.
+     */
     public RecoveryServicesProviderProperties() {
     }
 
     /**
      * Get the fabricType property: Type of the site.
-     *
+     * 
      * @return the fabricType value.
      */
     public String fabricType() {
@@ -147,7 +151,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the fabricType property: Type of the site.
-     *
+     * 
      * @param fabricType the fabricType value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -158,7 +162,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the friendlyName property: Friendly name of the DRA.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -167,7 +171,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the friendlyName property: Friendly name of the DRA.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -178,7 +182,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the providerVersion property: The provider version.
-     *
+     * 
      * @return the providerVersion value.
      */
     public String providerVersion() {
@@ -187,7 +191,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the providerVersion property: The provider version.
-     *
+     * 
      * @param providerVersion the providerVersion value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -198,7 +202,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the serverVersion property: The fabric provider.
-     *
+     * 
      * @return the serverVersion value.
      */
     public String serverVersion() {
@@ -207,7 +211,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the serverVersion property: The fabric provider.
-     *
+     * 
      * @param serverVersion the serverVersion value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -218,7 +222,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the providerVersionState property: DRA version status.
-     *
+     * 
      * @return the providerVersionState value.
      */
     public String providerVersionState() {
@@ -227,7 +231,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the providerVersionState property: DRA version status.
-     *
+     * 
      * @param providerVersionState the providerVersionState value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -238,7 +242,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the providerVersionExpiryDate property: Expiry date of the version.
-     *
+     * 
      * @return the providerVersionExpiryDate value.
      */
     public OffsetDateTime providerVersionExpiryDate() {
@@ -247,7 +251,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the providerVersionExpiryDate property: Expiry date of the version.
-     *
+     * 
      * @param providerVersionExpiryDate the providerVersionExpiryDate value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -258,7 +262,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the fabricFriendlyName property: The fabric friendly name.
-     *
+     * 
      * @return the fabricFriendlyName value.
      */
     public String fabricFriendlyName() {
@@ -267,7 +271,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the fabricFriendlyName property: The fabric friendly name.
-     *
+     * 
      * @param fabricFriendlyName the fabricFriendlyName value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -278,7 +282,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the lastHeartBeat property: Time when last heartbeat was sent by the DRA.
-     *
+     * 
      * @return the lastHeartBeat value.
      */
     public OffsetDateTime lastHeartBeat() {
@@ -287,7 +291,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the lastHeartBeat property: Time when last heartbeat was sent by the DRA.
-     *
+     * 
      * @param lastHeartBeat the lastHeartBeat value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -298,7 +302,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the connectionStatus property: A value indicating whether DRA is responsive.
-     *
+     * 
      * @return the connectionStatus value.
      */
     public String connectionStatus() {
@@ -307,7 +311,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the connectionStatus property: A value indicating whether DRA is responsive.
-     *
+     * 
      * @param connectionStatus the connectionStatus value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -318,7 +322,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the protectedItemCount property: Number of protected VMs currently managed by the DRA.
-     *
+     * 
      * @return the protectedItemCount value.
      */
     public Integer protectedItemCount() {
@@ -327,7 +331,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the protectedItemCount property: Number of protected VMs currently managed by the DRA.
-     *
+     * 
      * @param protectedItemCount the protectedItemCount value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -338,7 +342,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the allowedScenarios property: The scenarios allowed on this provider.
-     *
+     * 
      * @return the allowedScenarios value.
      */
     public List<String> allowedScenarios() {
@@ -347,7 +351,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the allowedScenarios property: The scenarios allowed on this provider.
-     *
+     * 
      * @param allowedScenarios the allowedScenarios value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -358,7 +362,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the healthErrorDetails property: The recovery services provider health error details.
-     *
+     * 
      * @return the healthErrorDetails value.
      */
     public List<HealthError> healthErrorDetails() {
@@ -367,7 +371,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the healthErrorDetails property: The recovery services provider health error details.
-     *
+     * 
      * @param healthErrorDetails the healthErrorDetails value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -378,7 +382,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the draIdentifier property: The DRA Id.
-     *
+     * 
      * @return the draIdentifier value.
      */
     public String draIdentifier() {
@@ -387,7 +391,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the draIdentifier property: The DRA Id.
-     *
+     * 
      * @param draIdentifier the draIdentifier value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -398,7 +402,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the machineId property: The machine Id.
-     *
+     * 
      * @return the machineId value.
      */
     public String machineId() {
@@ -407,7 +411,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the machineId property: The machine Id.
-     *
+     * 
      * @param machineId the machineId value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -418,7 +422,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the machineName property: The machine name.
-     *
+     * 
      * @return the machineName value.
      */
     public String machineName() {
@@ -427,7 +431,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the machineName property: The machine name.
-     *
+     * 
      * @param machineName the machineName value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -438,7 +442,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the biosId property: The Bios Id.
-     *
+     * 
      * @return the biosId value.
      */
     public String biosId() {
@@ -447,7 +451,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the biosId property: The Bios Id.
-     *
+     * 
      * @param biosId the biosId value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -458,7 +462,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Get the authenticationIdentityDetails property: The authentication identity details.
-     *
+     * 
      * @return the authenticationIdentityDetails value.
      */
     public IdentityProviderDetails authenticationIdentityDetails() {
@@ -467,19 +471,19 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the authenticationIdentityDetails property: The authentication identity details.
-     *
+     * 
      * @param authenticationIdentityDetails the authenticationIdentityDetails value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
-    public RecoveryServicesProviderProperties withAuthenticationIdentityDetails(
-        IdentityProviderDetails authenticationIdentityDetails) {
+    public RecoveryServicesProviderProperties
+        withAuthenticationIdentityDetails(IdentityProviderDetails authenticationIdentityDetails) {
         this.authenticationIdentityDetails = authenticationIdentityDetails;
         return this;
     }
 
     /**
      * Get the resourceAccessIdentityDetails property: The resource access identity details.
-     *
+     * 
      * @return the resourceAccessIdentityDetails value.
      */
     public IdentityProviderDetails resourceAccessIdentityDetails() {
@@ -488,19 +492,19 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the resourceAccessIdentityDetails property: The resource access identity details.
-     *
+     * 
      * @param resourceAccessIdentityDetails the resourceAccessIdentityDetails value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
-    public RecoveryServicesProviderProperties withResourceAccessIdentityDetails(
-        IdentityProviderDetails resourceAccessIdentityDetails) {
+    public RecoveryServicesProviderProperties
+        withResourceAccessIdentityDetails(IdentityProviderDetails resourceAccessIdentityDetails) {
         this.resourceAccessIdentityDetails = resourceAccessIdentityDetails;
         return this;
     }
 
     /**
      * Get the dataPlaneAuthenticationIdentityDetails property: The data plane authentication identity details.
-     *
+     * 
      * @return the dataPlaneAuthenticationIdentityDetails value.
      */
     public IdentityProviderDetails dataPlaneAuthenticationIdentityDetails() {
@@ -509,19 +513,19 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the dataPlaneAuthenticationIdentityDetails property: The data plane authentication identity details.
-     *
+     * 
      * @param dataPlaneAuthenticationIdentityDetails the dataPlaneAuthenticationIdentityDetails value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
-    public RecoveryServicesProviderProperties withDataPlaneAuthenticationIdentityDetails(
-        IdentityProviderDetails dataPlaneAuthenticationIdentityDetails) {
+    public RecoveryServicesProviderProperties
+        withDataPlaneAuthenticationIdentityDetails(IdentityProviderDetails dataPlaneAuthenticationIdentityDetails) {
         this.dataPlaneAuthenticationIdentityDetails = dataPlaneAuthenticationIdentityDetails;
         return this;
     }
 
     /**
      * Get the providerVersionDetails property: The provider version details.
-     *
+     * 
      * @return the providerVersionDetails value.
      */
     public VersionDetails providerVersionDetails() {
@@ -530,7 +534,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Set the providerVersionDetails property: The provider version details.
-     *
+     * 
      * @param providerVersionDetails the providerVersionDetails value to set.
      * @return the RecoveryServicesProviderProperties object itself.
      */
@@ -541,7 +545,7 @@ public final class RecoveryServicesProviderProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -25,7 +25,7 @@ Use this library to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai-assistants</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -193,13 +193,24 @@ For the full sample, please follow this [link][function_tool_call_full_sample].
 ```java readme-sample-functionDefinition
 private FunctionToolDefinition getUserFavoriteCityToolDefinition() {
 
-    class UserFavoriteCityParameters {
+    class UserFavoriteCityParameters implements JsonSerializable<UserFavoriteCityParameters> {
 
-        @JsonProperty("type")
         private String type = "object";
 
-        @JsonProperty("properties")
-        private Map<String, Object> properties = new HashMap<>();
+        private Map<String, JsonSerializable<?>> properties = new HashMap<>();
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("type", this.type);
+            jsonWriter.writeStartObject("properties");
+            for (Map.Entry<String, JsonSerializable<?>> entry : this.properties.entrySet()) {
+                jsonWriter.writeFieldName(entry.getKey());
+                entry.getValue().toJson(jsonWriter);
+            }
+            jsonWriter.writeEndObject();
+            return jsonWriter.writeEndObject();
+        }
     }
 
     return new FunctionToolDefinition(

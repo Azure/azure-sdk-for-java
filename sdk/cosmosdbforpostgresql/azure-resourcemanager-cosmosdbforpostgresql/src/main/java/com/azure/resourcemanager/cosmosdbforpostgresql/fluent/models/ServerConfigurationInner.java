@@ -11,7 +11,9 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.models.ConfigurationDataT
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a configuration. */
+/**
+ * Represents a configuration.
+ */
 @Fluent
 public final class ServerConfigurationInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class ServerConfigurationInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ServerConfigurationInner class. */
+    /**
+     * Creates an instance of ServerConfigurationInner class.
+     */
     public ServerConfigurationInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerConfigurationProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class ServerConfigurationInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,7 +54,7 @@ public final class ServerConfigurationInner extends ProxyResource {
 
     /**
      * Get the value property: Value of the configuration.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -59,7 +63,7 @@ public final class ServerConfigurationInner extends ProxyResource {
 
     /**
      * Set the value property: Value of the configuration.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServerConfigurationInner object itself.
      */
@@ -73,7 +77,7 @@ public final class ServerConfigurationInner extends ProxyResource {
 
     /**
      * Get the source property: Source of the configuration.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -82,7 +86,7 @@ public final class ServerConfigurationInner extends ProxyResource {
 
     /**
      * Get the description property: Description of the configuration.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -91,7 +95,7 @@ public final class ServerConfigurationInner extends ProxyResource {
 
     /**
      * Get the defaultValue property: Default value of the configuration.
-     *
+     * 
      * @return the defaultValue value.
      */
     public String defaultValue() {
@@ -100,7 +104,7 @@ public final class ServerConfigurationInner extends ProxyResource {
 
     /**
      * Get the dataType property: Data type of the configuration.
-     *
+     * 
      * @return the dataType value.
      */
     public ConfigurationDataType dataType() {
@@ -109,7 +113,7 @@ public final class ServerConfigurationInner extends ProxyResource {
 
     /**
      * Get the allowedValues property: Allowed values of the configuration.
-     *
+     * 
      * @return the allowedValues value.
      */
     public String allowedValues() {
@@ -118,7 +122,7 @@ public final class ServerConfigurationInner extends ProxyResource {
 
     /**
      * Get the requiresRestart property: If configuration change requires restart.
-     *
+     * 
      * @return the requiresRestart value.
      */
     public Boolean requiresRestart() {
@@ -127,7 +131,7 @@ public final class ServerConfigurationInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -136,7 +140,7 @@ public final class ServerConfigurationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

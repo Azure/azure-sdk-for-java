@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SelfHostedIntegrationRuntimeNodeInner;
 import com.azure.resourcemanager.datafactory.fluent.models.SelfHostedIntegrationRuntimeStatusTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -18,10 +19,21 @@ import java.util.Map;
 /**
  * Self-hosted integration runtime status.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SelfHostedIntegrationRuntimeStatus.class,
+    visible = true)
 @JsonTypeName("SelfHosted")
 @Fluent
 public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
+    /*
+     * Type of integration runtime.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private IntegrationRuntimeType type = IntegrationRuntimeType.SELF_HOSTED;
+
     /*
      * Self-hosted integration runtime status type properties.
      */
@@ -33,6 +45,16 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
      * Creates an instance of SelfHostedIntegrationRuntimeStatus class.
      */
     public SelfHostedIntegrationRuntimeStatus() {
+    }
+
+    /**
+     * Get the type property: Type of integration runtime.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public IntegrationRuntimeType type() {
+        return this.type;
     }
 
     /**
@@ -228,7 +250,8 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
      * @return the selfContainedInteractiveAuthoringEnabled value.
      */
     public Boolean selfContainedInteractiveAuthoringEnabled() {
-        return this.innerTypeProperties() == null ? null
+        return this.innerTypeProperties() == null
+            ? null
             : this.innerTypeProperties().selfContainedInteractiveAuthoringEnabled();
     }
 
@@ -241,8 +264,9 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model SelfHostedIntegrationRuntimeStatus"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SelfHostedIntegrationRuntimeStatus"));
         } else {
             innerTypeProperties().validate();
         }

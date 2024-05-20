@@ -10,8 +10,8 @@ import com.azure.resourcemanager.security.models.TopologySingleResourceChild;
 public final class TopologySingleResourceChildTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TopologySingleResourceChild model =
-            BinaryData.fromString("{\"resourceId\":\"wxeqocljmygvkzqk\"}").toObject(TopologySingleResourceChild.class);
+        TopologySingleResourceChild model
+            = BinaryData.fromString("{\"resourceId\":\"ehpphthdklmveta\"}").toObject(TopologySingleResourceChild.class);
     }
 
     @org.junit.jupiter.api.Test

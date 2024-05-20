@@ -141,8 +141,7 @@ public class AzureMethodSourceArgumentsProviderTests {
             Arguments.of("alpha", "ga", TestMode.LIVE, true, Arrays.asList(ALPHA, BETA, GA)),
             Arguments.of("beta", "ga", TestMode.LIVE, true, Arrays.asList(BETA, GA)),
             Arguments.of("alpha", "beta", TestMode.LIVE, true, Arrays.asList(ALPHA, BETA)),
-            Arguments.of("beta", "beta", TestMode.LIVE, true, Collections.singletonList(BETA))
-        );
+            Arguments.of("beta", "beta", TestMode.LIVE, true, Collections.singletonList(BETA)));
     }
 
     @Test
@@ -184,8 +183,10 @@ public class AzureMethodSourceArgumentsProviderTests {
     private static Stream<Arguments> invokeSupplierMethodSupplier() {
         return Stream.of(
             // Using a fully-qualified source that's in this class.
-            Arguments.of(null, "com.azure.core.test.implementation.AzureMethodSourceArgumentsProviderTests"
-                + "#staticAndValidReturnType", staticAndValidReturnType()),
+            Arguments.of(null,
+                "com.azure.core.test.implementation.AzureMethodSourceArgumentsProviderTests"
+                    + "#staticAndValidReturnType",
+                staticAndValidReturnType()),
 
             // Using a fully-qualified source that's in another class.
             Arguments.of(null,
@@ -194,8 +195,7 @@ public class AzureMethodSourceArgumentsProviderTests {
 
             // Using a relative source.
             Arguments.of(getMockExtensionContext(AzureMethodSourceArgumentsProviderTests.class),
-                "staticAndValidReturnType", staticAndValidReturnType())
-        );
+                "staticAndValidReturnType", staticAndValidReturnType()));
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
@@ -228,8 +228,7 @@ public class AzureMethodSourceArgumentsProviderTests {
             Arguments.of("com.azure.core.test.implementation.FullyQualifiedSourceSupplierTestHelper"
                 + "#staticAndValidReturnTypeButHasParameters", IllegalArgumentException.class),
             Arguments.of("com.azure.core.test.implementation.FullyQualifiedSourceSupplierTestHelper"
-                + "#staticAndValidReturnTypeButHasParameters", IllegalArgumentException.class)
-        );
+                + "#staticAndValidReturnTypeButHasParameters", IllegalArgumentException.class));
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
@@ -239,15 +238,12 @@ public class AzureMethodSourceArgumentsProviderTests {
     }
 
     private static Stream<Arguments> validateSourceSupplierTestSupplier() throws NoSuchMethodException {
-        Class<AzureMethodSourceArgumentsProviderTests> thisClass =
-            AzureMethodSourceArgumentsProviderTests.class;
+        Class<AzureMethodSourceArgumentsProviderTests> thisClass = AzureMethodSourceArgumentsProviderTests.class;
 
         Class<FullyQualifiedSourceSupplierTestHelper> anotherClass = FullyQualifiedSourceSupplierTestHelper.class;
 
-        return Stream.of(
-            Arguments.of(thisClass.getMethod("staticAndValidReturnType")),
-            Arguments.of(anotherClass.getMethod("staticAndValidReturnType"))
-        );
+        return Stream.of(Arguments.of(thisClass.getMethod("staticAndValidReturnType")),
+            Arguments.of(anotherClass.getMethod("staticAndValidReturnType")));
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
@@ -257,13 +253,11 @@ public class AzureMethodSourceArgumentsProviderTests {
     }
 
     private static Stream<Arguments> invalidSourceSupplerSupplier() throws NoSuchMethodException {
-        Class<AzureMethodSourceArgumentsProviderTests> thisClass =
-            AzureMethodSourceArgumentsProviderTests.class;
+        Class<AzureMethodSourceArgumentsProviderTests> thisClass = AzureMethodSourceArgumentsProviderTests.class;
 
         Class<FullyQualifiedSourceSupplierTestHelper> anotherClass = FullyQualifiedSourceSupplierTestHelper.class;
 
-        return Stream.of(
-            Arguments.of(thisClass.getMethod("nonStaticAndInvalidReturnTypeMethod")),
+        return Stream.of(Arguments.of(thisClass.getMethod("nonStaticAndInvalidReturnTypeMethod")),
             Arguments.of(thisClass.getMethod("anotherNonStaticAndInvalidReturnTypeMethod")),
             Arguments.of(thisClass.getMethod("nonStaticMethod")),
             Arguments.of(thisClass.getMethod("staticButInvalidReturnTypeMethod")),
@@ -273,8 +267,7 @@ public class AzureMethodSourceArgumentsProviderTests {
             Arguments.of(anotherClass.getMethod("anotherNonStaticAndInvalidReturnTypeMethod")),
             Arguments.of(anotherClass.getMethod("nonStaticMethod")),
             Arguments.of(anotherClass.getMethod("staticButInvalidReturnTypeMethod")),
-            Arguments.of(anotherClass.getMethod("anotherStaticButInvalidReturnTypeMethod"))
-        );
+            Arguments.of(anotherClass.getMethod("anotherStaticButInvalidReturnTypeMethod")));
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
@@ -293,8 +286,7 @@ public class AzureMethodSourceArgumentsProviderTests {
             Arguments.of(getMockExtensionContext(TestBase.class), "notARealMethod", IllegalArgumentException.class),
 
             // Source method isn't static.
-            Arguments.of(getMockExtensionContext(TestBase.class), "getTestMode", IllegalArgumentException.class)
-        );
+            Arguments.of(getMockExtensionContext(TestBase.class), "getTestMode", IllegalArgumentException.class));
     }
 
     private static ExtensionContext getMockExtensionContext(Class<?> testClass) {
@@ -313,10 +305,8 @@ public class AzureMethodSourceArgumentsProviderTests {
         Arguments emptyArguments = () -> null;
         Arguments nonEmptyArguments = Arguments.of("1", 1, null, new byte[0]);
 
-        return Stream.of(
-            Arguments.of(emptyArguments, emptyArguments),
-            Arguments.of(nonEmptyArguments, nonEmptyArguments)
-        );
+        return Stream.of(Arguments.of(emptyArguments, emptyArguments),
+            Arguments.of(nonEmptyArguments, nonEmptyArguments));
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
@@ -326,13 +316,8 @@ public class AzureMethodSourceArgumentsProviderTests {
     }
 
     private static Stream<Arguments> invalidArgumentTypesSupplier() {
-        return Stream.of(
-            Arguments.of(1),
-            Arguments.of("1"),
-            Arguments.of(1.0),
-            Arguments.of(true),
-            Arguments.of(new Object())
-        );
+        return Stream.of(Arguments.of(1), Arguments.of("1"), Arguments.of(1.0), Arguments.of(true),
+            Arguments.of(new Object()));
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
@@ -361,31 +346,19 @@ public class AzureMethodSourceArgumentsProviderTests {
                 Collections.singletonList(Arguments.arguments(noOpHttpClient, alpha))),
 
             Arguments.of(Arrays.asList(noOpHttpClient, alwaysErrorHttpClient), Collections.singletonList(alpha),
-                Arrays.asList(
-                    Arguments.of(noOpHttpClient, alpha),
-                    Arguments.of(alwaysErrorHttpClient, alpha)
-                )),
+                Arrays.asList(Arguments.of(noOpHttpClient, alpha), Arguments.of(alwaysErrorHttpClient, alpha))),
 
             Arguments.of(Collections.singletonList(noOpHttpClient), Arrays.asList(alpha, beta, ga),
-                Arrays.asList(
-                    Arguments.of(noOpHttpClient, alpha),
-                    Arguments.of(noOpHttpClient, beta),
-                    Arguments.of(noOpHttpClient, ga)
-                )),
+                Arrays.asList(Arguments.of(noOpHttpClient, alpha), Arguments.of(noOpHttpClient, beta),
+                    Arguments.of(noOpHttpClient, ga))),
 
             Arguments.of(Arrays.asList(noOpHttpClient, alwaysErrorHttpClient), Arrays.asList(alpha, beta, ga),
-                Arrays.asList(
-                    Arguments.of(noOpHttpClient, alpha),
-                    Arguments.of(noOpHttpClient, beta),
+                Arrays.asList(Arguments.of(noOpHttpClient, alpha), Arguments.of(noOpHttpClient, beta),
                     Arguments.of(noOpHttpClient, ga),
 
-                    Arguments.of(alwaysErrorHttpClient, alpha),
-                    Arguments.of(alwaysErrorHttpClient, beta),
-                    Arguments.of(alwaysErrorHttpClient, ga)
-                ))
-        );
+                    Arguments.of(alwaysErrorHttpClient, alpha), Arguments.of(alwaysErrorHttpClient, beta),
+                    Arguments.of(alwaysErrorHttpClient, ga))));
     }
-
 
     @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("createNonHttpPermutationsTestSupplier")
@@ -413,30 +386,17 @@ public class AzureMethodSourceArgumentsProviderTests {
                 Collections.singletonList(Arguments.of(alpha, 1, 2))),
 
             Arguments.of(Arrays.asList(alpha, beta, ga), Collections.singletonList(simpleArguments),
-                Arrays.asList(
-                    Arguments.of(alpha, 1, 2),
-                    Arguments.of(beta, 1, 2),
-                    Arguments.of(ga, 1, 2)
-                )),
+                Arrays.asList(Arguments.of(alpha, 1, 2), Arguments.of(beta, 1, 2), Arguments.of(ga, 1, 2))),
 
             Arguments.of(Collections.singletonList(alpha), Arrays.asList(simpleArguments, complexArguments),
-                Arrays.asList(
-                    Arguments.of(alpha, 1, 2),
-                    Arguments.of(alpha, 1, "1", true)
-                )),
+                Arrays.asList(Arguments.of(alpha, 1, 2), Arguments.of(alpha, 1, "1", true))),
 
             Arguments.of(Arrays.asList(alpha, beta, ga), Arrays.asList(simpleArguments, complexArguments),
-                Arrays.asList(
-                    Arguments.of(alpha, 1, 2),
-                    Arguments.of(alpha, 1, "1", true),
+                Arrays.asList(Arguments.of(alpha, 1, 2), Arguments.of(alpha, 1, "1", true),
 
-                    Arguments.of(beta, 1, 2),
-                    Arguments.of(beta, 1, "1", true),
+                    Arguments.of(beta, 1, 2), Arguments.of(beta, 1, "1", true),
 
-                    Arguments.of(ga, 1, 2),
-                    Arguments.of(ga, 1, "1", true)
-                ))
-        );
+                    Arguments.of(ga, 1, 2), Arguments.of(ga, 1, "1", true))));
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}")
@@ -470,72 +430,52 @@ public class AzureMethodSourceArgumentsProviderTests {
 
             Arguments.of(Arrays.asList(noOpHttpClient, alwaysErrorHttpClient), Collections.singletonList(alpha),
                 Collections.singletonList(simpleArguments),
-                Arrays.asList(
-                    Arguments.of(noOpHttpClient, alpha, 1, 2),
-                    Arguments.of(alwaysErrorHttpClient, alpha, 1, 2)
-                )),
+                Arrays.asList(Arguments.of(noOpHttpClient, alpha, 1, 2),
+                    Arguments.of(alwaysErrorHttpClient, alpha, 1, 2))),
 
             Arguments.of(Arrays.asList(noOpHttpClient, alwaysErrorHttpClient), Arrays.asList(alpha, beta, ga),
                 Collections.singletonList(simpleArguments),
-                Arrays.asList(
-                    Arguments.of(noOpHttpClient, alpha, 1, 2),
-                    Arguments.of(noOpHttpClient, beta, 1, 2),
+                Arrays.asList(Arguments.of(noOpHttpClient, alpha, 1, 2), Arguments.of(noOpHttpClient, beta, 1, 2),
                     Arguments.of(noOpHttpClient, ga, 1, 2),
 
-                    Arguments.of(alwaysErrorHttpClient, alpha, 1, 2),
-                    Arguments.of(alwaysErrorHttpClient, beta, 1, 2),
-                    Arguments.of(alwaysErrorHttpClient, ga, 1, 2)
-                )),
+                    Arguments.of(alwaysErrorHttpClient, alpha, 1, 2), Arguments.of(alwaysErrorHttpClient, beta, 1, 2),
+                    Arguments.of(alwaysErrorHttpClient, ga, 1, 2))),
 
             Arguments.of(Arrays.asList(noOpHttpClient, alwaysErrorHttpClient), Collections.singletonList(alpha),
                 Arrays.asList(simpleArguments, complexArguments),
-                Arrays.asList(
-                    Arguments.of(noOpHttpClient, alpha, 1, 2),
+                Arrays.asList(Arguments.of(noOpHttpClient, alpha, 1, 2),
                     Arguments.of(noOpHttpClient, alpha, 1, "1", true),
 
                     Arguments.of(alwaysErrorHttpClient, alpha, 1, 2),
-                    Arguments.of(alwaysErrorHttpClient, alpha, 1, "1", true)
-                )),
+                    Arguments.of(alwaysErrorHttpClient, alpha, 1, "1", true))),
 
             Arguments.of(Collections.singletonList(noOpHttpClient), Arrays.asList(alpha, beta, ga),
                 Collections.singletonList(simpleArguments),
-                Arrays.asList(
-                    Arguments.of(noOpHttpClient, alpha, 1, 2),
-                    Arguments.of(noOpHttpClient, beta, 1, 2),
-                    Arguments.of(noOpHttpClient, ga, 1, 2)
-                )),
+                Arrays.asList(Arguments.of(noOpHttpClient, alpha, 1, 2), Arguments.of(noOpHttpClient, beta, 1, 2),
+                    Arguments.of(noOpHttpClient, ga, 1, 2))),
 
             Arguments.of(Collections.singletonList(noOpHttpClient), Arrays.asList(alpha, beta, ga),
                 Arrays.asList(simpleArguments, complexArguments),
-                Arrays.asList(
-                    Arguments.of(noOpHttpClient, alpha, 1, 2),
+                Arrays.asList(Arguments.of(noOpHttpClient, alpha, 1, 2),
                     Arguments.of(noOpHttpClient, alpha, 1, "1", true),
 
-                    Arguments.of(noOpHttpClient, beta, 1, 2),
-                    Arguments.of(noOpHttpClient, beta, 1, "1", true),
+                    Arguments.of(noOpHttpClient, beta, 1, 2), Arguments.of(noOpHttpClient, beta, 1, "1", true),
 
-                    Arguments.of(noOpHttpClient, ga, 1, 2),
-                    Arguments.of(noOpHttpClient, ga, 1, "1", true)
-                )),
+                    Arguments.of(noOpHttpClient, ga, 1, 2), Arguments.of(noOpHttpClient, ga, 1, "1", true))),
 
             Arguments.of(Collections.singletonList(noOpHttpClient), Collections.singletonList(alpha),
                 Arrays.asList(simpleArguments, complexArguments),
-                Arrays.asList(
-                    Arguments.of(noOpHttpClient, alpha, 1, 2),
-                    Arguments.of(noOpHttpClient, alpha, 1, "1", true)
-                )),
+                Arrays.asList(Arguments.of(noOpHttpClient, alpha, 1, 2),
+                    Arguments.of(noOpHttpClient, alpha, 1, "1", true))),
 
             Arguments.of(Arrays.asList(noOpHttpClient, alwaysErrorHttpClient), Arrays.asList(alpha, beta, ga),
                 Arrays.asList(simpleArguments, complexArguments),
-                Arrays.asList(
-                    Arguments.of(noOpHttpClient, alpha, 1, 2),
+                Arrays.asList(Arguments.of(noOpHttpClient, alpha, 1, 2),
                     Arguments.of(noOpHttpClient, alpha, 1, "1", true),
 
-                    Arguments.of(noOpHttpClient, beta, 1, 2),
-                    Arguments.of(noOpHttpClient, beta, 1, "1", true),
+                    Arguments.of(noOpHttpClient, beta, 1, 2), Arguments.of(noOpHttpClient, beta, 1, "1", true),
 
-                    Arguments.of(noOpHttpClient, ga, 1, 2),
-                    Arguments.of(noOpHttpClient, ga, 1, "1", true),
+                    Arguments.of(noOpHttpClient, ga, 1, 2), Arguments.of(noOpHttpClient, ga, 1, "1", true),
 
                     Arguments.of(alwaysErrorHttpClient, alpha, 1, 2),
                     Arguments.of(alwaysErrorHttpClient, alpha, 1, "1", true),
@@ -544,9 +484,7 @@ public class AzureMethodSourceArgumentsProviderTests {
                     Arguments.of(alwaysErrorHttpClient, beta, 1, "1", true),
 
                     Arguments.of(alwaysErrorHttpClient, ga, 1, 2),
-                    Arguments.of(alwaysErrorHttpClient, ga, 1, "1", true)
-                ))
-        );
+                    Arguments.of(alwaysErrorHttpClient, ga, 1, "1", true))));
     }
 
     /**

@@ -10,10 +10,10 @@ import com.azure.resourcemanager.frontdoor.fluent.models.CheckNameAvailabilityOu
 public final class CheckNameAvailabilityOutputInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameAvailabilityOutputInner model =
-            BinaryData
-                .fromString("{\"nameAvailability\":\"Available\",\"reason\":\"clwhijcoejctbz\",\"message\":\"s\"}")
-                .toObject(CheckNameAvailabilityOutputInner.class);
+        CheckNameAvailabilityOutputInner model = BinaryData
+            .fromString(
+                "{\"nameAvailability\":\"Available\",\"reason\":\"uwutttxfvjrbi\",\"message\":\"hxepcyvahfnlj\"}")
+            .toObject(CheckNameAvailabilityOutputInner.class);
     }
 
     @org.junit.jupiter.api.Test

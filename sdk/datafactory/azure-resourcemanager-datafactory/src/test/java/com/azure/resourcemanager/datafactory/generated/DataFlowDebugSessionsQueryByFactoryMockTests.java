@@ -6,60 +6,42 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugSessionInfo;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DataFlowDebugSessionsQueryByFactoryMockTests {
     @Test
     public void testQueryByFactory() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"dataFlowName\":\"d\",\"computeType\":\"wkjegu\",\"coreCount\":925368644,\"nodeCount\":773936710,\"integrationRuntimeName\":\"inwrhfrbwoylpme\",\"sessionId\":\"bblgwl\",\"startTime\":\"cxc\",\"timeToLiveInMinutes\":292501035,\"lastActivityTime\":\"orhrtihzwd\",\"\":{\"qvkuuyehmn\":\"datawlmhqavmfosfpgqu\"}}]}";
+            = "{\"value\":[{\"dataFlowName\":\"nub\",\"computeType\":\"ofihcgyrngbrfyt\",\"coreCount\":1863481234,\"nodeCount\":1781382045,\"integrationRuntimeName\":\"bsr\",\"sessionId\":\"woeuqqgxzhdl\",\"startTime\":\"amearg\",\"timeToLiveInMinutes\":1203253385,\"lastActivityTime\":\"n\",\"\":{\"ht\":\"datacvvyfrf\"}}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        PagedIterable<DataFlowDebugSessionInfo> response
+            = manager.dataFlowDebugSessions().queryByFactory("xv", "ybidesrzp", com.azure.core.util.Context.NONE);
 
-        PagedIterable<DataFlowDebugSessionInfo> response = manager.dataFlowDebugSessions()
-            .queryByFactory("kpmzkdisrgykrc", "voiv", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("d", response.iterator().next().dataFlowName());
-        Assertions.assertEquals("wkjegu", response.iterator().next().computeType());
-        Assertions.assertEquals(925368644, response.iterator().next().coreCount());
-        Assertions.assertEquals(773936710, response.iterator().next().nodeCount());
-        Assertions.assertEquals("inwrhfrbwoylpme", response.iterator().next().integrationRuntimeName());
-        Assertions.assertEquals("bblgwl", response.iterator().next().sessionId());
-        Assertions.assertEquals("cxc", response.iterator().next().startTime());
-        Assertions.assertEquals(292501035, response.iterator().next().timeToLiveInMinutes());
-        Assertions.assertEquals("orhrtihzwd", response.iterator().next().lastActivityTime());
+        Assertions.assertEquals("nub", response.iterator().next().dataFlowName());
+        Assertions.assertEquals("ofihcgyrngbrfyt", response.iterator().next().computeType());
+        Assertions.assertEquals(1863481234, response.iterator().next().coreCount());
+        Assertions.assertEquals(1781382045, response.iterator().next().nodeCount());
+        Assertions.assertEquals("bsr", response.iterator().next().integrationRuntimeName());
+        Assertions.assertEquals("woeuqqgxzhdl", response.iterator().next().sessionId());
+        Assertions.assertEquals("amearg", response.iterator().next().startTime());
+        Assertions.assertEquals(1203253385, response.iterator().next().timeToLiveInMinutes());
+        Assertions.assertEquals("n", response.iterator().next().lastActivityTime());
     }
 }

@@ -11,18 +11,15 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateProte
 public final class UpdateProtectionContainerMappingInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateProtectionContainerMappingInputProperties model =
-            BinaryData
-                .fromString(
-                    "{\"providerSpecificInput\":{\"instanceType\":\"ReplicationProviderSpecificUpdateContainerMappingInput\"}}")
-                .toObject(UpdateProtectionContainerMappingInputProperties.class);
+        UpdateProtectionContainerMappingInputProperties model = BinaryData.fromString(
+            "{\"providerSpecificInput\":{\"instanceType\":\"ReplicationProviderSpecificUpdateContainerMappingInput\"}}")
+            .toObject(UpdateProtectionContainerMappingInputProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateProtectionContainerMappingInputProperties model =
-            new UpdateProtectionContainerMappingInputProperties()
-                .withProviderSpecificInput(new ReplicationProviderSpecificUpdateContainerMappingInput());
+        UpdateProtectionContainerMappingInputProperties model = new UpdateProtectionContainerMappingInputProperties()
+            .withProviderSpecificInput(new ReplicationProviderSpecificUpdateContainerMappingInput());
         model = BinaryData.fromObject(model).toObject(UpdateProtectionContainerMappingInputProperties.class);
     }
 }

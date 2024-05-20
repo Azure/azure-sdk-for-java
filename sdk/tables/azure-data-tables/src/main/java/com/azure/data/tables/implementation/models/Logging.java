@@ -5,49 +5,53 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** Azure Analytics Logging settings. */
-@JacksonXmlRootElement(localName = "Logging")
+/**
+ * Azure Analytics Logging settings.
+ */
 @Fluent
-public final class Logging {
+public final class Logging implements XmlSerializable<Logging> {
     /*
      * The version of Analytics to configure.
      */
-    @JsonProperty(value = "Version", required = true)
     private String version;
 
     /*
      * Indicates whether all delete requests should be logged.
      */
-    @JsonProperty(value = "Delete", required = true)
     private boolean delete;
 
     /*
      * Indicates whether all read requests should be logged.
      */
-    @JsonProperty(value = "Read", required = true)
     private boolean read;
 
     /*
      * Indicates whether all write requests should be logged.
      */
-    @JsonProperty(value = "Write", required = true)
     private boolean write;
 
     /*
      * The retention policy.
      */
-    @JsonProperty(value = "RetentionPolicy", required = true)
     private RetentionPolicy retentionPolicy;
 
-    /** Creates an instance of Logging class. */
-    public Logging() {}
+    /**
+     * Creates an instance of Logging class.
+     */
+    public Logging() {
+    }
 
     /**
      * Get the version property: The version of Analytics to configure.
-     *
+     * 
      * @return the version value.
      */
     public String getVersion() {
@@ -56,7 +60,7 @@ public final class Logging {
 
     /**
      * Set the version property: The version of Analytics to configure.
-     *
+     * 
      * @param version the version value to set.
      * @return the Logging object itself.
      */
@@ -67,7 +71,7 @@ public final class Logging {
 
     /**
      * Get the delete property: Indicates whether all delete requests should be logged.
-     *
+     * 
      * @return the delete value.
      */
     public boolean isDelete() {
@@ -76,7 +80,7 @@ public final class Logging {
 
     /**
      * Set the delete property: Indicates whether all delete requests should be logged.
-     *
+     * 
      * @param delete the delete value to set.
      * @return the Logging object itself.
      */
@@ -87,7 +91,7 @@ public final class Logging {
 
     /**
      * Get the read property: Indicates whether all read requests should be logged.
-     *
+     * 
      * @return the read value.
      */
     public boolean isRead() {
@@ -96,7 +100,7 @@ public final class Logging {
 
     /**
      * Set the read property: Indicates whether all read requests should be logged.
-     *
+     * 
      * @param read the read value to set.
      * @return the Logging object itself.
      */
@@ -107,7 +111,7 @@ public final class Logging {
 
     /**
      * Get the write property: Indicates whether all write requests should be logged.
-     *
+     * 
      * @return the write value.
      */
     public boolean isWrite() {
@@ -116,7 +120,7 @@ public final class Logging {
 
     /**
      * Set the write property: Indicates whether all write requests should be logged.
-     *
+     * 
      * @param write the write value to set.
      * @return the Logging object itself.
      */
@@ -127,7 +131,7 @@ public final class Logging {
 
     /**
      * Get the retentionPolicy property: The retention policy.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicy getRetentionPolicy() {
@@ -136,12 +140,79 @@ public final class Logging {
 
     /**
      * Set the retentionPolicy property: The retention policy.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the Logging object itself.
      */
     public Logging setRetentionPolicy(RetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Logging" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("Version", this.version);
+        xmlWriter.writeBooleanElement("Delete", this.delete);
+        xmlWriter.writeBooleanElement("Read", this.read);
+        xmlWriter.writeBooleanElement("Write", this.write);
+        xmlWriter.writeXml(this.retentionPolicy, "RetentionPolicy");
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of Logging from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of Logging if the XmlReader was pointing to an instance of it, or null if it was pointing to
+     * XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the Logging.
+     */
+    public static Logging fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of Logging from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of Logging if the XmlReader was pointing to an instance of it, or null if it was pointing to
+     * XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the Logging.
+     */
+    public static Logging fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Logging" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            Logging deserializedLogging = new Logging();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Version".equals(elementName.getLocalPart())) {
+                    deserializedLogging.version = reader.getStringElement();
+                } else if ("Delete".equals(elementName.getLocalPart())) {
+                    deserializedLogging.delete = reader.getBooleanElement();
+                } else if ("Read".equals(elementName.getLocalPart())) {
+                    deserializedLogging.read = reader.getBooleanElement();
+                } else if ("Write".equals(elementName.getLocalPart())) {
+                    deserializedLogging.write = reader.getBooleanElement();
+                } else if ("RetentionPolicy".equals(elementName.getLocalPart())) {
+                    deserializedLogging.retentionPolicy = RetentionPolicy.fromXml(reader, "RetentionPolicy");
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedLogging;
+        });
     }
 }

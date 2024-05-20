@@ -8,12 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.MaintenanceWindow;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties used to update a cluster. */
+/**
+ * The properties used to update a cluster.
+ */
 @Fluent
 public final class ClusterPropertiesForUpdate {
     /*
      * The password of the administrator login. Each cluster is created with pre-defined administrative role called
-     * ‘citus’.
+     * ‘citus’. 
      */
     @JsonProperty(value = "administratorLoginPassword")
     private String administratorLoginPassword;
@@ -111,14 +113,16 @@ public final class ClusterPropertiesForUpdate {
     @JsonProperty(value = "maintenanceWindow")
     private MaintenanceWindow maintenanceWindow;
 
-    /** Creates an instance of ClusterPropertiesForUpdate class. */
+    /**
+     * Creates an instance of ClusterPropertiesForUpdate class.
+     */
     public ClusterPropertiesForUpdate() {
     }
 
     /**
      * Get the administratorLoginPassword property: The password of the administrator login. Each cluster is created
      * with pre-defined administrative role called ‘citus’. .
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -128,7 +132,7 @@ public final class ClusterPropertiesForUpdate {
     /**
      * Set the administratorLoginPassword property: The password of the administrator login. Each cluster is created
      * with pre-defined administrative role called ‘citus’. .
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -139,7 +143,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Get the postgresqlVersion property: The major PostgreSQL version on all cluster servers.
-     *
+     * 
      * @return the postgresqlVersion value.
      */
     public String postgresqlVersion() {
@@ -148,7 +152,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Set the postgresqlVersion property: The major PostgreSQL version on all cluster servers.
-     *
+     * 
      * @param postgresqlVersion the postgresqlVersion value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -159,7 +163,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Get the citusVersion property: The Citus extension version on all cluster servers.
-     *
+     * 
      * @return the citusVersion value.
      */
     public String citusVersion() {
@@ -168,7 +172,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Set the citusVersion property: The Citus extension version on all cluster servers.
-     *
+     * 
      * @param citusVersion the citusVersion value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -178,9 +182,9 @@ public final class ClusterPropertiesForUpdate {
     }
 
     /**
-     * Get the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
-     * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
-     *
+     * Get the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be
+     * set to 'true' on single node clusters. Requires shard rebalancing after value is changed.
+     * 
      * @return the enableShardsOnCoordinator value.
      */
     public Boolean enableShardsOnCoordinator() {
@@ -188,9 +192,9 @@ public final class ClusterPropertiesForUpdate {
     }
 
     /**
-     * Set the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
-     * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
-     *
+     * Set the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be
+     * set to 'true' on single node clusters. Requires shard rebalancing after value is changed.
+     * 
      * @param enableShardsOnCoordinator the enableShardsOnCoordinator value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -201,7 +205,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Get the enableHa property: If high availability (HA) is enabled or not for the cluster.
-     *
+     * 
      * @return the enableHa value.
      */
     public Boolean enableHa() {
@@ -210,7 +214,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Set the enableHa property: If high availability (HA) is enabled or not for the cluster.
-     *
+     * 
      * @param enableHa the enableHa value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -221,7 +225,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Get the preferredPrimaryZone property: Preferred primary availability zone (AZ) for all cluster servers.
-     *
+     * 
      * @return the preferredPrimaryZone value.
      */
     public String preferredPrimaryZone() {
@@ -230,7 +234,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Set the preferredPrimaryZone property: Preferred primary availability zone (AZ) for all cluster servers.
-     *
+     * 
      * @param preferredPrimaryZone the preferredPrimaryZone value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -241,7 +245,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Get the coordinatorServerEdition property: The edition of the coordinator (default: GeneralPurpose).
-     *
+     * 
      * @return the coordinatorServerEdition value.
      */
     public String coordinatorServerEdition() {
@@ -250,7 +254,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Set the coordinatorServerEdition property: The edition of the coordinator (default: GeneralPurpose).
-     *
+     * 
      * @param coordinatorServerEdition the coordinatorServerEdition value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -261,7 +265,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Get the coordinatorStorageQuotaInMb property: The storage of the coordinator in MB.
-     *
+     * 
      * @return the coordinatorStorageQuotaInMb value.
      */
     public Integer coordinatorStorageQuotaInMb() {
@@ -270,7 +274,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Set the coordinatorStorageQuotaInMb property: The storage of the coordinator in MB.
-     *
+     * 
      * @param coordinatorStorageQuotaInMb the coordinatorStorageQuotaInMb value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -281,7 +285,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Get the coordinatorVCores property: The vCores count of the coordinator (max: 96).
-     *
+     * 
      * @return the coordinatorVCores value.
      */
     public Integer coordinatorVCores() {
@@ -290,7 +294,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Set the coordinatorVCores property: The vCores count of the coordinator (max: 96).
-     *
+     * 
      * @param coordinatorVCores the coordinatorVCores value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -301,7 +305,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Get the coordinatorEnablePublicIpAccess property: If public access is enabled on coordinator.
-     *
+     * 
      * @return the coordinatorEnablePublicIpAccess value.
      */
     public Boolean coordinatorEnablePublicIpAccess() {
@@ -310,7 +314,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Set the coordinatorEnablePublicIpAccess property: If public access is enabled on coordinator.
-     *
+     * 
      * @param coordinatorEnablePublicIpAccess the coordinatorEnablePublicIpAccess value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -321,7 +325,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Get the nodeServerEdition property: The edition of a node (default: MemoryOptimized).
-     *
+     * 
      * @return the nodeServerEdition value.
      */
     public String nodeServerEdition() {
@@ -330,7 +334,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Set the nodeServerEdition property: The edition of a node (default: MemoryOptimized).
-     *
+     * 
      * @param nodeServerEdition the nodeServerEdition value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -343,7 +347,7 @@ public final class ClusterPropertiesForUpdate {
      * Get the nodeCount property: Worker node count of the cluster. When node count is 0, it represents a single node
      * configuration with the ability to create distributed tables on that node. 2 or more worker nodes represent
      * multi-node configuration. Node count value cannot be 1.
-     *
+     * 
      * @return the nodeCount value.
      */
     public Integer nodeCount() {
@@ -354,7 +358,7 @@ public final class ClusterPropertiesForUpdate {
      * Set the nodeCount property: Worker node count of the cluster. When node count is 0, it represents a single node
      * configuration with the ability to create distributed tables on that node. 2 or more worker nodes represent
      * multi-node configuration. Node count value cannot be 1.
-     *
+     * 
      * @param nodeCount the nodeCount value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -365,7 +369,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Get the nodeStorageQuotaInMb property: The storage in MB on each worker node.
-     *
+     * 
      * @return the nodeStorageQuotaInMb value.
      */
     public Integer nodeStorageQuotaInMb() {
@@ -374,7 +378,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Set the nodeStorageQuotaInMb property: The storage in MB on each worker node.
-     *
+     * 
      * @param nodeStorageQuotaInMb the nodeStorageQuotaInMb value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -385,7 +389,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Get the nodeVCores property: The compute in vCores on each worker node (max: 104).
-     *
+     * 
      * @return the nodeVCores value.
      */
     public Integer nodeVCores() {
@@ -394,7 +398,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Set the nodeVCores property: The compute in vCores on each worker node (max: 104).
-     *
+     * 
      * @param nodeVCores the nodeVCores value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -405,7 +409,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Get the nodeEnablePublicIpAccess property: If public access is enabled on worker nodes.
-     *
+     * 
      * @return the nodeEnablePublicIpAccess value.
      */
     public Boolean nodeEnablePublicIpAccess() {
@@ -414,7 +418,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Get the maintenanceWindow property: Maintenance window of a cluster.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     public MaintenanceWindow maintenanceWindow() {
@@ -423,7 +427,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Set the maintenanceWindow property: Maintenance window of a cluster.
-     *
+     * 
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the ClusterPropertiesForUpdate object itself.
      */
@@ -434,7 +438,7 @@ public final class ClusterPropertiesForUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

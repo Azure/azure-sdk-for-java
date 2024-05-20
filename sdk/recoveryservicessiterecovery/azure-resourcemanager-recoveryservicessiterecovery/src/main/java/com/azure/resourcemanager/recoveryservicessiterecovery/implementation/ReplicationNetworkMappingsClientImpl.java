@@ -41,24 +41,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ReplicationNetworkMappingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReplicationNetworkMappingsClient.
+ */
 public final class ReplicationNetworkMappingsClientImpl implements ReplicationNetworkMappingsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ReplicationNetworkMappingsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SiteRecoveryManagementClientImpl client;
 
     /**
      * Initializes an instance of ReplicationNetworkMappingsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ReplicationNetworkMappingsClientImpl(SiteRecoveryManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ReplicationNetworkMappingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ReplicationNetworkMappingsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,131 +73,93 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
     @Host("{$host}")
     @ServiceInterface(name = "SiteRecoveryManageme")
     public interface ReplicationNetworkMappingsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkMappingCollection>> listByReplicationNetworks(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<NetworkMappingCollection>> listByReplicationNetworks(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("networkName") String networkName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("networkName") String networkName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<NetworkMappingInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("networkName") String networkName, @PathParam("networkMappingName") String networkMappingName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("networkName") String networkName, @PathParam("networkMappingName") String networkMappingName,
+            @BodyParam("application/json") CreateNetworkMappingInput input, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}")
-        @ExpectedResponses({200})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkMappingInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("networkName") String networkName,
-            @PathParam("networkMappingName") String networkMappingName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("networkName") String networkName, @PathParam("networkMappingName") String networkMappingName,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("networkName") String networkName,
-            @PathParam("networkMappingName") String networkMappingName,
-            @BodyParam("application/json") CreateNetworkMappingInput input,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("networkName") String networkName, @PathParam("networkMappingName") String networkMappingName,
+            @BodyParam("application/json") UpdateNetworkMappingInput input, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationNetworkMappings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<NetworkMappingCollection>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("networkName") String networkName,
-            @PathParam("networkMappingName") String networkMappingName,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationNetworks/{networkName}/replicationNetworkMappings/{networkMappingName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("networkName") String networkName,
-            @PathParam("networkMappingName") String networkMappingName,
-            @BodyParam("application/json") UpdateNetworkMappingInput input,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationNetworkMappings")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkMappingCollection>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkMappingCollection>> listByReplicationNetworksNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkMappingCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets all the network mappings under a network.
-     *
-     * <p>Lists all ASR network mappings for the specified network.
-     *
+     * 
+     * Lists all ASR network mappings for the specified network.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -204,13 +170,11 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return list of network mappings along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkMappingInner>> listByReplicationNetworksSinglePageAsync(
-        String resourceName, String resourceGroupName, String fabricName, String networkName) {
+    private Mono<PagedResponse<NetworkMappingInner>> listByReplicationNetworksSinglePageAsync(String resourceName,
+        String resourceGroupName, String fabricName, String networkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -220,10 +184,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -233,36 +195,19 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByReplicationNetworks(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            networkName,
-                            accept,
-                            context))
-            .<PagedResponse<NetworkMappingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByReplicationNetworks(this.client.getEndpoint(),
+                this.client.getApiVersion(), resourceName, resourceGroupName, this.client.getSubscriptionId(),
+                fabricName, networkName, accept, context))
+            .<PagedResponse<NetworkMappingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the network mappings under a network.
-     *
-     * <p>Lists all ASR network mappings for the specified network.
-     *
+     * 
+     * Lists all ASR network mappings for the specified network.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -274,13 +219,11 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return list of network mappings along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkMappingInner>> listByReplicationNetworksSinglePageAsync(
-        String resourceName, String resourceGroupName, String fabricName, String networkName, Context context) {
+    private Mono<PagedResponse<NetworkMappingInner>> listByReplicationNetworksSinglePageAsync(String resourceName,
+        String resourceGroupName, String fabricName, String networkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -290,10 +233,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -304,32 +245,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByReplicationNetworks(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                networkName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByReplicationNetworks(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, networkName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all the network mappings under a network.
-     *
-     * <p>Lists all ASR network mappings for the specified network.
-     *
+     * 
+     * Lists all ASR network mappings for the specified network.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -340,8 +266,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return list of network mappings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkMappingInner> listByReplicationNetworksAsync(
-        String resourceName, String resourceGroupName, String fabricName, String networkName) {
+    private PagedFlux<NetworkMappingInner> listByReplicationNetworksAsync(String resourceName, String resourceGroupName,
+        String fabricName, String networkName) {
         return new PagedFlux<>(
             () -> listByReplicationNetworksSinglePageAsync(resourceName, resourceGroupName, fabricName, networkName),
             nextLink -> listByReplicationNetworksNextSinglePageAsync(nextLink));
@@ -349,9 +275,9 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
 
     /**
      * Gets all the network mappings under a network.
-     *
-     * <p>Lists all ASR network mappings for the specified network.
-     *
+     * 
+     * Lists all ASR network mappings for the specified network.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -363,20 +289,18 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return list of network mappings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkMappingInner> listByReplicationNetworksAsync(
-        String resourceName, String resourceGroupName, String fabricName, String networkName, Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByReplicationNetworksSinglePageAsync(
-                    resourceName, resourceGroupName, fabricName, networkName, context),
+    private PagedFlux<NetworkMappingInner> listByReplicationNetworksAsync(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, Context context) {
+        return new PagedFlux<>(() -> listByReplicationNetworksSinglePageAsync(resourceName, resourceGroupName,
+            fabricName, networkName, context),
             nextLink -> listByReplicationNetworksNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the network mappings under a network.
-     *
-     * <p>Lists all ASR network mappings for the specified network.
-     *
+     * 
+     * Lists all ASR network mappings for the specified network.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -387,17 +311,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return list of network mappings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkMappingInner> listByReplicationNetworks(
-        String resourceName, String resourceGroupName, String fabricName, String networkName) {
+    public PagedIterable<NetworkMappingInner> listByReplicationNetworks(String resourceName, String resourceGroupName,
+        String fabricName, String networkName) {
         return new PagedIterable<>(
             listByReplicationNetworksAsync(resourceName, resourceGroupName, fabricName, networkName));
     }
 
     /**
      * Gets all the network mappings under a network.
-     *
-     * <p>Lists all ASR network mappings for the specified network.
-     *
+     * 
+     * Lists all ASR network mappings for the specified network.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -409,17 +333,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return list of network mappings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkMappingInner> listByReplicationNetworks(
-        String resourceName, String resourceGroupName, String fabricName, String networkName, Context context) {
+    public PagedIterable<NetworkMappingInner> listByReplicationNetworks(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, Context context) {
         return new PagedIterable<>(
             listByReplicationNetworksAsync(resourceName, resourceGroupName, fabricName, networkName, context));
     }
 
     /**
      * Gets network mapping by name.
-     *
-     * <p>Gets the details of an ASR network mapping.
-     *
+     * 
+     * Gets the details of an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -428,21 +352,15 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an ASR network mapping along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the details of an ASR network mapping along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkMappingInner>> getWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName) {
+    private Mono<Response<NetworkMappingInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, String networkMappingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -452,10 +370,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -469,28 +385,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            networkName,
-                            networkMappingName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, networkName, networkMappingName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets network mapping by name.
-     *
-     * <p>Gets the details of an ASR network mapping.
-     *
+     * 
+     * Gets the details of an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -500,22 +405,15 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an ASR network mapping along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the details of an ASR network mapping along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkMappingInner>> getWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        Context context) {
+    private Mono<Response<NetworkMappingInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, String networkMappingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -525,10 +423,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -542,25 +438,15 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                networkName,
-                networkMappingName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, networkName, networkMappingName, accept, context);
     }
 
     /**
      * Gets network mapping by name.
-     *
-     * <p>Gets the details of an ASR network mapping.
-     *
+     * 
+     * Gets the details of an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -572,21 +458,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the details of an ASR network mapping on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkMappingInner> getAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName) {
+    private Mono<NetworkMappingInner> getAsync(String resourceName, String resourceGroupName, String fabricName,
+        String networkName, String networkMappingName) {
         return getWithResponseAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets network mapping by name.
-     *
-     * <p>Gets the details of an ASR network mapping.
-     *
+     * 
+     * Gets the details of an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -599,23 +481,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the details of an ASR network mapping along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkMappingInner> getWithResponse(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context)
-            .block();
+    public Response<NetworkMappingInner> getWithResponse(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, String networkMappingName, Context context) {
+        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName,
+            context).block();
     }
 
     /**
      * Gets network mapping by name.
-     *
-     * <p>Gets the details of an ASR network mapping.
-     *
+     * 
+     * Gets the details of an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -627,22 +503,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the details of an ASR network mapping.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkMappingInner get(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
+    public NetworkMappingInner get(String resourceName, String resourceGroupName, String fabricName, String networkName,
         String networkMappingName) {
-        return getWithResponse(
-                resourceName, resourceGroupName, fabricName, networkName, networkMappingName, Context.NONE)
-            .getValue();
+        return getWithResponse(resourceName, resourceGroupName, fabricName, networkName, networkMappingName,
+            Context.NONE).getValue();
     }
 
     /**
      * Creates network mapping.
-     *
-     * <p>The operation to create an ASR network mapping.
-     *
+     * 
+     * The operation to create an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -655,18 +526,11 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return network Mapping model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        CreateNetworkMappingInput input) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, String networkMappingName, CreateNetworkMappingInput input) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -676,10 +540,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -698,29 +560,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            networkName,
-                            networkMappingName,
-                            input,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, networkName, networkMappingName, input,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates network mapping.
-     *
-     * <p>The operation to create an ASR network mapping.
-     *
+     * 
+     * The operation to create an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -734,19 +584,12 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return network Mapping model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        CreateNetworkMappingInput input,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, String networkMappingName, CreateNetworkMappingInput input,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -756,10 +599,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -778,26 +619,15 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                networkName,
-                networkMappingName,
-                input,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, networkName, networkMappingName, input, accept, context);
     }
 
     /**
      * Creates network mapping.
-     *
-     * <p>The operation to create an ASR network mapping.
-     *
+     * 
+     * The operation to create an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -810,31 +640,20 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the {@link PollerFlux} for polling of network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreateAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
+    private PollerFlux<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreateAsync(String resourceName,
+        String resourceGroupName, String fabricName, String networkName, String networkMappingName,
         CreateNetworkMappingInput input) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input);
-        return this
-            .client
-            .<NetworkMappingInner, NetworkMappingInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkMappingInner.class,
-                NetworkMappingInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            networkName, networkMappingName, input);
+        return this.client.<NetworkMappingInner, NetworkMappingInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkMappingInner.class, NetworkMappingInner.class, this.client.getContext());
     }
 
     /**
      * Creates network mapping.
-     *
-     * <p>The operation to create an ASR network mapping.
-     *
+     * 
+     * The operation to create an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -848,29 +667,21 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the {@link PollerFlux} for polling of network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreateAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        CreateNetworkMappingInput input,
-        Context context) {
+    private PollerFlux<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreateAsync(String resourceName,
+        String resourceGroupName, String fabricName, String networkName, String networkMappingName,
+        CreateNetworkMappingInput input, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input, context);
-        return this
-            .client
-            .<NetworkMappingInner, NetworkMappingInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NetworkMappingInner.class, NetworkMappingInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            networkName, networkMappingName, input, context);
+        return this.client.<NetworkMappingInner, NetworkMappingInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkMappingInner.class, NetworkMappingInner.class, context);
     }
 
     /**
      * Creates network mapping.
-     *
-     * <p>The operation to create an ASR network mapping.
-     *
+     * 
+     * The operation to create an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -883,12 +694,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the {@link SyncPoller} for polling of network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
+    public SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreate(String resourceName,
+        String resourceGroupName, String fabricName, String networkName, String networkMappingName,
         CreateNetworkMappingInput input) {
         return this
             .beginCreateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input)
@@ -897,9 +704,9 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
 
     /**
      * Creates network mapping.
-     *
-     * <p>The operation to create an ASR network mapping.
-     *
+     * 
+     * The operation to create an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -913,25 +720,18 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the {@link SyncPoller} for polling of network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        CreateNetworkMappingInput input,
-        Context context) {
-        return this
-            .beginCreateAsync(
-                resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input, context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreate(String resourceName,
+        String resourceGroupName, String fabricName, String networkName, String networkMappingName,
+        CreateNetworkMappingInput input, Context context) {
+        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName,
+            input, context).getSyncPoller();
     }
 
     /**
      * Creates network mapping.
-     *
-     * <p>The operation to create an ASR network mapping.
-     *
+     * 
+     * The operation to create an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -944,23 +744,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return network Mapping model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkMappingInner> createAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        CreateNetworkMappingInput input) {
+    private Mono<NetworkMappingInner> createAsync(String resourceName, String resourceGroupName, String fabricName,
+        String networkName, String networkMappingName, CreateNetworkMappingInput input) {
         return beginCreateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates network mapping.
-     *
-     * <p>The operation to create an ASR network mapping.
-     *
+     * 
+     * The operation to create an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -974,25 +768,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return network Mapping model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkMappingInner> createAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        CreateNetworkMappingInput input,
-        Context context) {
-        return beginCreateAsync(
-                resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<NetworkMappingInner> createAsync(String resourceName, String resourceGroupName, String fabricName,
+        String networkName, String networkMappingName, CreateNetworkMappingInput input, Context context) {
+        return beginCreateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates network mapping.
-     *
-     * <p>The operation to create an ASR network mapping.
-     *
+     * 
+     * The operation to create an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1005,21 +791,16 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkMappingInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        CreateNetworkMappingInput input) {
+    public NetworkMappingInner create(String resourceName, String resourceGroupName, String fabricName,
+        String networkName, String networkMappingName, CreateNetworkMappingInput input) {
         return createAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input).block();
     }
 
     /**
      * Creates network mapping.
-     *
-     * <p>The operation to create an ASR network mapping.
-     *
+     * 
+     * The operation to create an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1033,23 +814,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkMappingInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        CreateNetworkMappingInput input,
-        Context context) {
+    public NetworkMappingInner create(String resourceName, String resourceGroupName, String fabricName,
+        String networkName, String networkMappingName, CreateNetworkMappingInput input, Context context) {
         return createAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input, context)
             .block();
     }
 
     /**
      * Delete network mapping.
-     *
-     * <p>The operation to delete a network mapping.
-     *
+     * 
+     * The operation to delete a network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1061,17 +836,11 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, String networkMappingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1081,10 +850,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -1097,27 +864,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
                 .error(new IllegalArgumentException("Parameter networkMappingName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            networkName,
-                            networkMappingName,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, networkName, networkMappingName,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete network mapping.
-     *
-     * <p>The operation to delete a network mapping.
-     *
+     * 
+     * The operation to delete a network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1130,18 +887,11 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, String networkMappingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1151,10 +901,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -1167,24 +915,15 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
                 .error(new IllegalArgumentException("Parameter networkMappingName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                networkName,
-                networkMappingName,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, networkName, networkMappingName, context);
     }
 
     /**
      * Delete network mapping.
-     *
-     * <p>The operation to delete a network mapping.
-     *
+     * 
+     * The operation to delete a network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1196,25 +935,19 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, String networkMappingName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete network mapping.
-     *
-     * <p>The operation to delete a network mapping.
-     *
+     * 
+     * The operation to delete a network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1227,27 +960,20 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, String networkMappingName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            networkName, networkMappingName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete network mapping.
-     *
-     * <p>The operation to delete a network mapping.
-     *
+     * 
+     * The operation to delete a network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1259,22 +985,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName) {
-        return this
-            .beginDeleteAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, String networkMappingName) {
+        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName)
             .getSyncPoller();
     }
 
     /**
      * Delete network mapping.
-     *
-     * <p>The operation to delete a network mapping.
-     *
+     * 
+     * The operation to delete a network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1287,13 +1008,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, String networkMappingName, Context context) {
         return this
             .beginDeleteAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context)
             .getSyncPoller();
@@ -1301,9 +1017,9 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
 
     /**
      * Delete network mapping.
-     *
-     * <p>The operation to delete a network mapping.
-     *
+     * 
+     * The operation to delete a network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1315,22 +1031,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
+    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName, String networkName,
         String networkMappingName) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName)
-            .last()
+        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete network mapping.
-     *
-     * <p>The operation to delete a network mapping.
-     *
+     * 
+     * The operation to delete a network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1343,23 +1054,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        Context context) {
+    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName, String networkName,
+        String networkMappingName, Context context) {
         return beginDeleteAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete network mapping.
-     *
-     * <p>The operation to delete a network mapping.
-     *
+     * 
+     * The operation to delete a network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1370,20 +1075,16 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
+    public void delete(String resourceName, String resourceGroupName, String fabricName, String networkName,
         String networkMappingName) {
         deleteAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName).block();
     }
 
     /**
      * Delete network mapping.
-     *
-     * <p>The operation to delete a network mapping.
-     *
+     * 
+     * The operation to delete a network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1395,21 +1096,16 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        Context context) {
+    public void delete(String resourceName, String resourceGroupName, String fabricName, String networkName,
+        String networkMappingName, Context context) {
         deleteAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context).block();
     }
 
     /**
      * Updates network mapping.
-     *
-     * <p>The operation to update an ASR network mapping.
-     *
+     * 
+     * The operation to update an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1422,18 +1118,11 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return network Mapping model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        UpdateNetworkMappingInput input) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, String networkMappingName, UpdateNetworkMappingInput input) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1443,10 +1132,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -1465,29 +1152,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            networkName,
-                            networkMappingName,
-                            input,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, networkName, networkMappingName, input,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates network mapping.
-     *
-     * <p>The operation to update an ASR network mapping.
-     *
+     * 
+     * The operation to update an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1501,19 +1176,12 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return network Mapping model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        UpdateNetworkMappingInput input,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, String networkMappingName, UpdateNetworkMappingInput input,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1523,10 +1191,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -1545,26 +1211,15 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                networkName,
-                networkMappingName,
-                input,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, networkName, networkMappingName, input, accept, context);
     }
 
     /**
      * Updates network mapping.
-     *
-     * <p>The operation to update an ASR network mapping.
-     *
+     * 
+     * The operation to update an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1577,31 +1232,20 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the {@link PollerFlux} for polling of network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdateAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
+    private PollerFlux<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdateAsync(String resourceName,
+        String resourceGroupName, String fabricName, String networkName, String networkMappingName,
         UpdateNetworkMappingInput input) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input);
-        return this
-            .client
-            .<NetworkMappingInner, NetworkMappingInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NetworkMappingInner.class,
-                NetworkMappingInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            networkName, networkMappingName, input);
+        return this.client.<NetworkMappingInner, NetworkMappingInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkMappingInner.class, NetworkMappingInner.class, this.client.getContext());
     }
 
     /**
      * Updates network mapping.
-     *
-     * <p>The operation to update an ASR network mapping.
-     *
+     * 
+     * The operation to update an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1615,29 +1259,21 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the {@link PollerFlux} for polling of network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdateAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        UpdateNetworkMappingInput input,
-        Context context) {
+    private PollerFlux<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdateAsync(String resourceName,
+        String resourceGroupName, String fabricName, String networkName, String networkMappingName,
+        UpdateNetworkMappingInput input, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input, context);
-        return this
-            .client
-            .<NetworkMappingInner, NetworkMappingInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NetworkMappingInner.class, NetworkMappingInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            networkName, networkMappingName, input, context);
+        return this.client.<NetworkMappingInner, NetworkMappingInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NetworkMappingInner.class, NetworkMappingInner.class, context);
     }
 
     /**
      * Updates network mapping.
-     *
-     * <p>The operation to update an ASR network mapping.
-     *
+     * 
+     * The operation to update an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1650,12 +1286,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the {@link SyncPoller} for polling of network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
+    public SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdate(String resourceName,
+        String resourceGroupName, String fabricName, String networkName, String networkMappingName,
         UpdateNetworkMappingInput input) {
         return this
             .beginUpdateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input)
@@ -1664,9 +1296,9 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
 
     /**
      * Updates network mapping.
-     *
-     * <p>The operation to update an ASR network mapping.
-     *
+     * 
+     * The operation to update an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1680,25 +1312,18 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return the {@link SyncPoller} for polling of network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        UpdateNetworkMappingInput input,
-        Context context) {
-        return this
-            .beginUpdateAsync(
-                resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input, context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdate(String resourceName,
+        String resourceGroupName, String fabricName, String networkName, String networkMappingName,
+        UpdateNetworkMappingInput input, Context context) {
+        return this.beginUpdateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName,
+            input, context).getSyncPoller();
     }
 
     /**
      * Updates network mapping.
-     *
-     * <p>The operation to update an ASR network mapping.
-     *
+     * 
+     * The operation to update an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1711,23 +1336,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return network Mapping model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkMappingInner> updateAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        UpdateNetworkMappingInput input) {
+    private Mono<NetworkMappingInner> updateAsync(String resourceName, String resourceGroupName, String fabricName,
+        String networkName, String networkMappingName, UpdateNetworkMappingInput input) {
         return beginUpdateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates network mapping.
-     *
-     * <p>The operation to update an ASR network mapping.
-     *
+     * 
+     * The operation to update an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1741,25 +1360,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return network Mapping model on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkMappingInner> updateAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        UpdateNetworkMappingInput input,
-        Context context) {
-        return beginUpdateAsync(
-                resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<NetworkMappingInner> updateAsync(String resourceName, String resourceGroupName, String fabricName,
+        String networkName, String networkMappingName, UpdateNetworkMappingInput input, Context context) {
+        return beginUpdateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates network mapping.
-     *
-     * <p>The operation to update an ASR network mapping.
-     *
+     * 
+     * The operation to update an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1772,21 +1383,16 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkMappingInner update(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        UpdateNetworkMappingInput input) {
+    public NetworkMappingInner update(String resourceName, String resourceGroupName, String fabricName,
+        String networkName, String networkMappingName, UpdateNetworkMappingInput input) {
         return updateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input).block();
     }
 
     /**
      * Updates network mapping.
-     *
-     * <p>The operation to update an ASR network mapping.
-     *
+     * 
+     * The operation to update an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -1800,23 +1406,17 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkMappingInner update(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        UpdateNetworkMappingInput input,
-        Context context) {
+    public NetworkMappingInner update(String resourceName, String resourceGroupName, String fabricName,
+        String networkName, String networkMappingName, UpdateNetworkMappingInput input, Context context) {
         return updateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input, context)
             .block();
     }
 
     /**
      * Gets all the network mappings under a vault.
-     *
-     * <p>Lists all ASR network mappings in the vault.
-     *
+     * 
+     * Lists all ASR network mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1825,13 +1425,11 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return list of network mappings along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkMappingInner>> listSinglePageAsync(
-        String resourceName, String resourceGroupName) {
+    private Mono<PagedResponse<NetworkMappingInner>> listSinglePageAsync(String resourceName,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1841,41 +1439,23 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<NetworkMappingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<NetworkMappingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the network mappings under a vault.
-     *
-     * <p>Lists all ASR network mappings in the vault.
-     *
+     * 
+     * Lists all ASR network mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -1885,13 +1465,11 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return list of network mappings along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkMappingInner>> listSinglePageAsync(
-        String resourceName, String resourceGroupName, Context context) {
+    private Mono<PagedResponse<NetworkMappingInner>> listSinglePageAsync(String resourceName, String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1901,38 +1479,23 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all the network mappings under a vault.
-     *
-     * <p>Lists all ASR network mappings in the vault.
-     *
+     * 
+     * Lists all ASR network mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1942,15 +1505,15 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkMappingInner> listAsync(String resourceName, String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceName, resourceGroupName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the network mappings under a vault.
-     *
-     * <p>Lists all ASR network mappings in the vault.
-     *
+     * 
+     * Lists all ASR network mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -1961,16 +1524,15 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkMappingInner> listAsync(String resourceName, String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceName, resourceGroupName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the network mappings under a vault.
-     *
-     * <p>Lists all ASR network mappings in the vault.
-     *
+     * 
+     * Lists all ASR network mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1985,9 +1547,9 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
 
     /**
      * Gets all the network mappings under a vault.
-     *
-     * <p>Lists all ASR network mappings in the vault.
-     *
+     * 
+     * Lists all ASR network mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -2003,9 +1565,10 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2017,32 +1580,24 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByReplicationNetworksNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkMappingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NetworkMappingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2050,37 +1605,28 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
      * @return list of network mappings along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkMappingInner>> listByReplicationNetworksNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkMappingInner>> listByReplicationNetworksNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByReplicationNetworksNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByReplicationNetworksNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2092,31 +1638,22 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkMappingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<NetworkMappingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2129,23 +1666,13 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

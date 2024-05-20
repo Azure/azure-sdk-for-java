@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Storage Target space allocation properties. */
+/**
+ * Storage Target space allocation properties.
+ */
 @Fluent
 public final class StorageTargetSpaceAllocation {
     /*
@@ -22,13 +24,15 @@ public final class StorageTargetSpaceAllocation {
     @JsonProperty(value = "allocationPercentage")
     private Integer allocationPercentage;
 
-    /** Creates an instance of StorageTargetSpaceAllocation class. */
+    /**
+     * Creates an instance of StorageTargetSpaceAllocation class.
+     */
     public StorageTargetSpaceAllocation() {
     }
 
     /**
      * Get the name property: Name of the storage target.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class StorageTargetSpaceAllocation {
 
     /**
      * Set the name property: Name of the storage target.
-     *
+     * 
      * @param name the name value to set.
      * @return the StorageTargetSpaceAllocation object itself.
      */
@@ -48,7 +52,7 @@ public final class StorageTargetSpaceAllocation {
 
     /**
      * Get the allocationPercentage property: The percentage of cache space allocated for this storage target.
-     *
+     * 
      * @return the allocationPercentage value.
      */
     public Integer allocationPercentage() {
@@ -57,7 +61,7 @@ public final class StorageTargetSpaceAllocation {
 
     /**
      * Set the allocationPercentage property: The percentage of cache space allocated for this storage target.
-     *
+     * 
      * @param allocationPercentage the allocationPercentage value to set.
      * @return the StorageTargetSpaceAllocation object itself.
      */
@@ -68,7 +72,7 @@ public final class StorageTargetSpaceAllocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

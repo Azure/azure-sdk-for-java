@@ -43,6 +43,12 @@ pr:
       - sdk/servicebus/azure-messaging-servicebus-track1-perf/pom.xml
       - sdk/servicebus/azure-messaging-servicebus-track2-perf/pom.xml
 
+parameters:
+- name: release_dependsonlivetests
+  displayName: 'Release depends on live tests'
+  type: boolean
+  default: true
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:

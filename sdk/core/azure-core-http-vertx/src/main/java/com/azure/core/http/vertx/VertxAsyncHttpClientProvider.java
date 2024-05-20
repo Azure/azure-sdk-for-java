@@ -12,8 +12,8 @@ import com.azure.core.util.HttpClientOptions;
  * {@link HttpClientProvider} backed by the Vert.x {@link io.vertx.core.http.HttpClient}
  */
 public class VertxAsyncHttpClientProvider implements HttpClientProvider {
-    private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING =
-        Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
+    private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING
+        = Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     private final boolean enableHttpClientSharing;
 
     // Enum Singleton Pattern
@@ -57,13 +57,12 @@ public class VertxAsyncHttpClientProvider implements HttpClientProvider {
             return createInstance();
         }
 
-        return new VertxAsyncHttpClientBuilder()
-            .proxy(clientOptions.getProxyOptions())
+        return new VertxAsyncHttpClientBuilder().proxy(clientOptions.getProxyOptions())
             .configuration(clientOptions.getConfiguration())
             .connectTimeout(clientOptions.getConnectTimeout())
-            .idleTimeout(clientOptions.getConnectionIdleTimeout())
-            .writeIdleTimeout(clientOptions.getWriteTimeout())
-            .readIdleTimeout(clientOptions.getReadTimeout())
+            .writeTimeout(clientOptions.getWriteTimeout())
+            .responseTimeout(clientOptions.getResponseTimeout())
+            .readTimeout(clientOptions.getReadTimeout())
             .build();
     }
 }

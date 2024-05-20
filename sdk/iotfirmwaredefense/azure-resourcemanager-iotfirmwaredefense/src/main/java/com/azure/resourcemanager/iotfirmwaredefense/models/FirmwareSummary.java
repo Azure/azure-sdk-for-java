@@ -4,63 +4,213 @@
 
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
-import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.FirmwareSummaryInner;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** An immutable client-side representation of FirmwareSummary. */
-public interface FirmwareSummary {
+/**
+ * Properties for high level summary of firmware analysis results.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "summaryType")
+@JsonTypeName("Firmware")
+@Fluent
+public final class FirmwareSummary extends SummaryResourceProperties {
+    /*
+     * Total extracted size of the firmware in bytes.
+     */
+    @JsonProperty(value = "extractedSize")
+    private Long extractedSize;
+
+    /*
+     * Firmware file size in bytes.
+     */
+    @JsonProperty(value = "fileSize")
+    private Long fileSize;
+
+    /*
+     * Extracted file count.
+     */
+    @JsonProperty(value = "extractedFileCount")
+    private Long extractedFileCount;
+
+    /*
+     * Components count.
+     */
+    @JsonProperty(value = "componentCount")
+    private Long componentCount;
+
+    /*
+     * Binary count
+     */
+    @JsonProperty(value = "binaryCount")
+    private Long binaryCount;
+
+    /*
+     * Time used for analysis
+     */
+    @JsonProperty(value = "analysisTimeSeconds")
+    private Long analysisTimeSeconds;
+
+    /*
+     * The number of root file systems found.
+     */
+    @JsonProperty(value = "rootFileSystems")
+    private Long rootFileSystems;
+
     /**
-     * Gets the extractedSize property: Total extracted size of the firmware in bytes.
-     *
+     * Creates an instance of FirmwareSummary class.
+     */
+    public FirmwareSummary() {
+    }
+
+    /**
+     * Get the extractedSize property: Total extracted size of the firmware in bytes.
+     * 
      * @return the extractedSize value.
      */
-    Long extractedSize();
+    public Long extractedSize() {
+        return this.extractedSize;
+    }
 
     /**
-     * Gets the fileSize property: Firmware file size in bytes.
-     *
+     * Set the extractedSize property: Total extracted size of the firmware in bytes.
+     * 
+     * @param extractedSize the extractedSize value to set.
+     * @return the FirmwareSummary object itself.
+     */
+    public FirmwareSummary withExtractedSize(Long extractedSize) {
+        this.extractedSize = extractedSize;
+        return this;
+    }
+
+    /**
+     * Get the fileSize property: Firmware file size in bytes.
+     * 
      * @return the fileSize value.
      */
-    Long fileSize();
+    public Long fileSize() {
+        return this.fileSize;
+    }
 
     /**
-     * Gets the extractedFileCount property: Extracted file count.
-     *
+     * Set the fileSize property: Firmware file size in bytes.
+     * 
+     * @param fileSize the fileSize value to set.
+     * @return the FirmwareSummary object itself.
+     */
+    public FirmwareSummary withFileSize(Long fileSize) {
+        this.fileSize = fileSize;
+        return this;
+    }
+
+    /**
+     * Get the extractedFileCount property: Extracted file count.
+     * 
      * @return the extractedFileCount value.
      */
-    Long extractedFileCount();
+    public Long extractedFileCount() {
+        return this.extractedFileCount;
+    }
 
     /**
-     * Gets the componentCount property: Components count.
-     *
+     * Set the extractedFileCount property: Extracted file count.
+     * 
+     * @param extractedFileCount the extractedFileCount value to set.
+     * @return the FirmwareSummary object itself.
+     */
+    public FirmwareSummary withExtractedFileCount(Long extractedFileCount) {
+        this.extractedFileCount = extractedFileCount;
+        return this;
+    }
+
+    /**
+     * Get the componentCount property: Components count.
+     * 
      * @return the componentCount value.
      */
-    Long componentCount();
+    public Long componentCount() {
+        return this.componentCount;
+    }
 
     /**
-     * Gets the binaryCount property: Binary count.
-     *
+     * Set the componentCount property: Components count.
+     * 
+     * @param componentCount the componentCount value to set.
+     * @return the FirmwareSummary object itself.
+     */
+    public FirmwareSummary withComponentCount(Long componentCount) {
+        this.componentCount = componentCount;
+        return this;
+    }
+
+    /**
+     * Get the binaryCount property: Binary count.
+     * 
      * @return the binaryCount value.
      */
-    Long binaryCount();
+    public Long binaryCount() {
+        return this.binaryCount;
+    }
 
     /**
-     * Gets the analysisTimeSeconds property: Time used for analysis.
-     *
+     * Set the binaryCount property: Binary count.
+     * 
+     * @param binaryCount the binaryCount value to set.
+     * @return the FirmwareSummary object itself.
+     */
+    public FirmwareSummary withBinaryCount(Long binaryCount) {
+        this.binaryCount = binaryCount;
+        return this;
+    }
+
+    /**
+     * Get the analysisTimeSeconds property: Time used for analysis.
+     * 
      * @return the analysisTimeSeconds value.
      */
-    Long analysisTimeSeconds();
+    public Long analysisTimeSeconds() {
+        return this.analysisTimeSeconds;
+    }
 
     /**
-     * Gets the rootFileSystems property: The number of root file systems found.
-     *
+     * Set the analysisTimeSeconds property: Time used for analysis.
+     * 
+     * @param analysisTimeSeconds the analysisTimeSeconds value to set.
+     * @return the FirmwareSummary object itself.
+     */
+    public FirmwareSummary withAnalysisTimeSeconds(Long analysisTimeSeconds) {
+        this.analysisTimeSeconds = analysisTimeSeconds;
+        return this;
+    }
+
+    /**
+     * Get the rootFileSystems property: The number of root file systems found.
+     * 
      * @return the rootFileSystems value.
      */
-    Long rootFileSystems();
+    public Long rootFileSystems() {
+        return this.rootFileSystems;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.iotfirmwaredefense.fluent.models.FirmwareSummaryInner object.
-     *
-     * @return the inner object.
+     * Set the rootFileSystems property: The number of root file systems found.
+     * 
+     * @param rootFileSystems the rootFileSystems value to set.
+     * @return the FirmwareSummary object itself.
      */
-    FirmwareSummaryInner innerModel();
+    public FirmwareSummary withRootFileSystems(Long rootFileSystems) {
+        this.rootFileSystems = rootFileSystems;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+    }
 }

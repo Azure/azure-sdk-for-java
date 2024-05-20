@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of the service principal. */
+/**
+ * Details of the service principal.
+ */
 @Fluent
 public final class ServicePrincipalProperties {
     /*
@@ -17,19 +19,20 @@ public final class ServicePrincipalProperties {
     private String applicationId;
 
     /*
-     * A secret string that the application uses to prove its identity, also can be referred to as application password
-     * (write only).
+     * A secret string that the application uses to prove its identity, also can be referred to as application password (write only).
      */
     @JsonProperty(value = "secret")
     private String secret;
 
-    /** Creates an instance of ServicePrincipalProperties class. */
+    /**
+     * Creates an instance of ServicePrincipalProperties class.
+     */
     public ServicePrincipalProperties() {
     }
 
     /**
      * Get the applicationId property: Application ID of service principal.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -38,7 +41,7 @@ public final class ServicePrincipalProperties {
 
     /**
      * Set the applicationId property: Application ID of service principal.
-     *
+     * 
      * @param applicationId the applicationId value to set.
      * @return the ServicePrincipalProperties object itself.
      */
@@ -50,7 +53,7 @@ public final class ServicePrincipalProperties {
     /**
      * Get the secret property: A secret string that the application uses to prove its identity, also can be referred to
      * as application password (write only).
-     *
+     * 
      * @return the secret value.
      */
     public String secret() {
@@ -60,7 +63,7 @@ public final class ServicePrincipalProperties {
     /**
      * Set the secret property: A secret string that the application uses to prove its identity, also can be referred to
      * as application password (write only).
-     *
+     * 
      * @param secret the secret value to set.
      * @return the ServicePrincipalProperties object itself.
      */
@@ -71,7 +74,7 @@ public final class ServicePrincipalProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

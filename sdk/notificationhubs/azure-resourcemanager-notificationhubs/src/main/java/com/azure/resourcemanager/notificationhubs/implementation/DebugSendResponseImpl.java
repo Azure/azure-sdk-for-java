@@ -4,10 +4,12 @@
 
 package com.azure.resourcemanager.notificationhubs.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.notificationhubs.fluent.models.DebugSendResponseInner;
 import com.azure.resourcemanager.notificationhubs.models.DebugSendResponse;
-import com.azure.resourcemanager.notificationhubs.models.Sku;
+import com.azure.resourcemanager.notificationhubs.models.RegistrationResult;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class DebugSendResponseImpl implements DebugSendResponse {
@@ -15,8 +17,7 @@ public final class DebugSendResponseImpl implements DebugSendResponse {
 
     private final com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager;
 
-    DebugSendResponseImpl(
-        DebugSendResponseInner innerObject,
+    DebugSendResponseImpl(DebugSendResponseInner innerObject,
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -47,20 +48,25 @@ public final class DebugSendResponseImpl implements DebugSendResponse {
         }
     }
 
-    public Sku sku() {
-        return this.innerModel().sku();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
-    public Float success() {
+    public Long success() {
         return this.innerModel().success();
     }
 
-    public Float failure() {
+    public Long failure() {
         return this.innerModel().failure();
     }
 
-    public Object results() {
-        return this.innerModel().results();
+    public List<RegistrationResult> results() {
+        List<RegistrationResult> inner = this.innerModel().results();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public DebugSendResponseInner innerModel() {

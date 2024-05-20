@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.AllowedConnectionsResour
 public final class AllowedConnectionsResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AllowedConnectionsResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"calculatedDateTime\":\"2021-07-31T17:06:26Z\",\"connectableResources\":[{\"id\":\"eekpndz\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]},{\"id\":\"qmeqwigpibudqwyx\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]},{\"id\":\"mzznrtffyaqitmhh\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]},{\"id\":\"hvseufuqyrx\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]}]}")
-                .toObject(AllowedConnectionsResourceProperties.class);
+        AllowedConnectionsResourceProperties model = BinaryData.fromString(
+            "{\"calculatedDateTime\":\"2021-06-17T03:18:36Z\",\"connectableResources\":[{\"id\":\"ptnuwjtkschgc\",\"inboundConnectedResources\":[{\"connectedResourceId\":\"leseyqrhvyeldo\",\"tcpPorts\":\"v\",\"udpPorts\":\"wiswskukjtasbvw\"}],\"outboundConnectedResources\":[{\"connectedResourceId\":\"xkdtxfkndlqvtwkn\",\"tcpPorts\":\"mmbugtywatmqaq\",\"udpPorts\":\"eatgroeshoy\"},{\"connectedResourceId\":\"cbyfqxkf\",\"tcpPorts\":\"ytehqpuvjmvqmt\",\"udpPorts\":\"ckygroejnndljdju\"},{\"connectedResourceId\":\"br\",\"tcpPorts\":\"qyn\",\"udpPorts\":\"eysfaqegplw\"}]},{\"id\":\"shwddkvbxgk\",\"inboundConnectedResources\":[{\"connectedResourceId\":\"bwptdacarvvlf\",\"tcpPorts\":\"ymtpo\",\"udpPorts\":\"enazerohzrsqals\"},{\"connectedResourceId\":\"dnwqapfg\",\"tcpPorts\":\"pcvessm\",\"udpPorts\":\"h\"},{\"connectedResourceId\":\"uipldqq\",\"tcpPorts\":\"ekvalblhtjq\",\"udpPorts\":\"yvwehtaemxh\"}],\"outboundConnectedResources\":[{\"connectedResourceId\":\"ev\",\"tcpPorts\":\"xivzrrry\",\"udpPorts\":\"imipskdyzatvfuz\"}]}]}")
+            .toObject(AllowedConnectionsResourceProperties.class);
     }
 
     @org.junit.jupiter.api.Test

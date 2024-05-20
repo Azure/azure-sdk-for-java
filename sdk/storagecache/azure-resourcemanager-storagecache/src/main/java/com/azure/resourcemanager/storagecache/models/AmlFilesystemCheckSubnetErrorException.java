@@ -7,11 +7,13 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/** Exception thrown for an invalid response with AmlFilesystemCheckSubnetError information. */
+/**
+ * Exception thrown for an invalid response with AmlFilesystemCheckSubnetError information.
+ */
 public final class AmlFilesystemCheckSubnetErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the AmlFilesystemCheckSubnetErrorException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
@@ -21,17 +23,19 @@ public final class AmlFilesystemCheckSubnetErrorException extends HttpResponseEx
 
     /**
      * Initializes a new instance of the AmlFilesystemCheckSubnetErrorException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
-    public AmlFilesystemCheckSubnetErrorException(
-        String message, HttpResponse response, AmlFilesystemCheckSubnetError value) {
+    public AmlFilesystemCheckSubnetErrorException(String message, HttpResponse response,
+        AmlFilesystemCheckSubnetError value) {
         super(message, response, value);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmlFilesystemCheckSubnetError getValue() {
         return (AmlFilesystemCheckSubnetError) super.getValue();

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceSkuCapabilitiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSkuCapabilities model =
-            BinaryData.fromString("{\"name\":\"iwwzjuqk\",\"value\":\"sa\"}").toObject(ResourceSkuCapabilities.class);
-        Assertions.assertEquals("iwwzjuqk", model.name());
-        Assertions.assertEquals("sa", model.value());
+        ResourceSkuCapabilities model = BinaryData.fromString("{\"name\":\"h\",\"value\":\"plvwiwubmwmbes\"}")
+            .toObject(ResourceSkuCapabilities.class);
+        Assertions.assertEquals("h", model.name());
+        Assertions.assertEquals("plvwiwubmwmbes", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceSkuCapabilities model = new ResourceSkuCapabilities().withName("iwwzjuqk").withValue("sa");
+        ResourceSkuCapabilities model = new ResourceSkuCapabilities().withName("h").withValue("plvwiwubmwmbes");
         model = BinaryData.fromObject(model).toObject(ResourceSkuCapabilities.class);
-        Assertions.assertEquals("iwwzjuqk", model.name());
-        Assertions.assertEquals("sa", model.value());
+        Assertions.assertEquals("h", model.name());
+        Assertions.assertEquals("plvwiwubmwmbes", model.value());
     }
 }

@@ -7,14 +7,16 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A status describing the success/failure of the extension's enablement/disablement operation. */
+/**
+ * A status describing the success/failure of the enablement/disablement operation.
+ */
 @Fluent
 public final class OperationStatus {
     /*
      * The operation status code.
      */
     @JsonProperty(value = "code")
-    private Code code;
+    private String code;
 
     /*
      * Additional information regarding the success/failure of the operation.
@@ -22,33 +24,35 @@ public final class OperationStatus {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of OperationStatus class. */
+    /**
+     * Creates an instance of OperationStatus class.
+     */
     public OperationStatus() {
     }
 
     /**
      * Get the code property: The operation status code.
-     *
+     * 
      * @return the code value.
      */
-    public Code code() {
+    public String code() {
         return this.code;
     }
 
     /**
      * Set the code property: The operation status code.
-     *
+     * 
      * @param code the code value to set.
      * @return the OperationStatus object itself.
      */
-    public OperationStatus withCode(Code code) {
+    public OperationStatus withCode(String code) {
         this.code = code;
         return this;
     }
 
     /**
      * Get the message property: Additional information regarding the success/failure of the operation.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -57,7 +61,7 @@ public final class OperationStatus {
 
     /**
      * Set the message property: Additional information regarding the success/failure of the operation.
-     *
+     * 
      * @param message the message value to set.
      * @return the OperationStatus object itself.
      */
@@ -68,7 +72,7 @@ public final class OperationStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

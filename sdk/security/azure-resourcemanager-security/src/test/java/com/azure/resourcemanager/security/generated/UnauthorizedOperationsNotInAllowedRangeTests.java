@@ -12,29 +12,26 @@ import org.junit.jupiter.api.Assertions;
 public final class UnauthorizedOperationsNotInAllowedRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UnauthorizedOperationsNotInAllowedRange model =
-            BinaryData
-                .fromString(
-                    "{\"ruleType\":\"UnauthorizedOperationsNotInAllowedRange\",\"timeWindowSize\":\"PT231H33M53S\",\"minThreshold\":1033707853,\"maxThreshold\":395818123,\"displayName\":\"u\",\"description\":\"sqxutr\",\"isEnabled\":true}")
-                .toObject(UnauthorizedOperationsNotInAllowedRange.class);
+        UnauthorizedOperationsNotInAllowedRange model = BinaryData.fromString(
+            "{\"ruleType\":\"UnauthorizedOperationsNotInAllowedRange\",\"timeWindowSize\":\"PT4H24M17S\",\"minThreshold\":364824427,\"maxThreshold\":763832979,\"displayName\":\"mdzxp\",\"description\":\"tpvdva\",\"isEnabled\":true}")
+            .toObject(UnauthorizedOperationsNotInAllowedRange.class);
         Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals(1033707853, model.minThreshold());
-        Assertions.assertEquals(395818123, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT231H33M53S"), model.timeWindowSize());
+        Assertions.assertEquals(364824427, model.minThreshold());
+        Assertions.assertEquals(763832979, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT4H24M17S"), model.timeWindowSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UnauthorizedOperationsNotInAllowedRange model =
-            new UnauthorizedOperationsNotInAllowedRange()
-                .withIsEnabled(true)
-                .withMinThreshold(1033707853)
-                .withMaxThreshold(395818123)
-                .withTimeWindowSize(Duration.parse("PT231H33M53S"));
+        UnauthorizedOperationsNotInAllowedRange model
+            = new UnauthorizedOperationsNotInAllowedRange().withIsEnabled(true)
+                .withMinThreshold(364824427)
+                .withMaxThreshold(763832979)
+                .withTimeWindowSize(Duration.parse("PT4H24M17S"));
         model = BinaryData.fromObject(model).toObject(UnauthorizedOperationsNotInAllowedRange.class);
         Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals(1033707853, model.minThreshold());
-        Assertions.assertEquals(395818123, model.maxThreshold());
-        Assertions.assertEquals(Duration.parse("PT231H33M53S"), model.timeWindowSize());
+        Assertions.assertEquals(364824427, model.minThreshold());
+        Assertions.assertEquals(763832979, model.maxThreshold());
+        Assertions.assertEquals(Duration.parse("PT4H24M17S"), model.timeWindowSize());
     }
 }

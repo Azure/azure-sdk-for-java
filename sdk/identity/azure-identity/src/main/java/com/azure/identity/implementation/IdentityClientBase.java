@@ -32,9 +32,12 @@ import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.TokenCachePersistenceOptions;
+import com.azure.identity.implementation.models.AzureCliToken;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.microsoft.aad.msal4j.AppTokenProviderParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
@@ -121,7 +124,6 @@ public abstract class IdentityClientBase {
     private static final String SDK_VERSION = "version";
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
-    private static final OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
     private final Map<String, String> properties;
 
@@ -640,41 +642,19 @@ public abstract class IdentityClientBase {
 
             LOGGER.verbose("Azure CLI Authentication => A token response was received from Azure CLI, deserializing the"
                 + " response into an Access Token.");
-            Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(processOutput, Map.class,
-                SerializerEncoding.JSON);
-            String accessToken = objectMap.get("accessToken");
-            OffsetDateTime tokenExpiry;
+            try (JsonReader reader = JsonProviders.createReader(processOutput)) {
+                AzureCliToken tokenHolder = AzureCliToken.fromJson(reader);
+                String accessToken = tokenHolder.getAccessToken();
+                OffsetDateTime tokenExpiration = tokenHolder.getTokenExpiration();
+                token = new AccessToken(accessToken, tokenExpiration);
+            }
 
-            tokenExpiry = getTokenExpiryOffsetDateTime(objectMap);
-            token = new AccessToken(accessToken, tokenExpiry);
         } catch (IOException | InterruptedException e) {
             IllegalStateException ex = new IllegalStateException(redactInfo(e.getMessage()));
             ex.setStackTrace(e.getStackTrace());
             throw LOGGER.logExceptionAsError(ex);
         }
         return token;
-    }
-
-    static OffsetDateTime getTokenExpiryOffsetDateTime(Map<String, String> objectMap) {
-        OffsetDateTime tokenExpiry;
-        if (objectMap.containsKey("expires_on")) {
-            Long seconds = Long.parseLong(objectMap.get("expires_on"));
-            tokenExpiry = EPOCH.plusSeconds(seconds);
-        } else {
-            String time = objectMap.get("expiresOn");
-            tokenExpiry = parseExpiresOnTime(time);
-        }
-        return tokenExpiry;
-    }
-
-    static OffsetDateTime parseExpiresOnTime(String time) {
-        OffsetDateTime tokenExpiry;
-        String timeToSecond = time.substring(0, time.indexOf("."));
-        String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
-        tokenExpiry = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-            .atZone(ZoneId.systemDefault())
-            .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
-        return tokenExpiry;
     }
 
     AccessToken getTokenFromAzureDeveloperCLIAuthentication(StringBuilder azdCommand) {

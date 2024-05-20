@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Supported operating system details. */
+/**
+ * Supported operating system details.
+ */
 @Fluent
 public final class SupportedOSDetails {
     /*
@@ -29,13 +31,15 @@ public final class SupportedOSDetails {
     @JsonProperty(value = "osVersions")
     private List<OSVersionWrapper> osVersions;
 
-    /** Creates an instance of SupportedOSDetails class. */
+    /**
+     * Creates an instance of SupportedOSDetails class.
+     */
     public SupportedOSDetails() {
     }
 
     /**
      * Get the osName property: The name.
-     *
+     * 
      * @return the osName value.
      */
     public String osName() {
@@ -44,7 +48,7 @@ public final class SupportedOSDetails {
 
     /**
      * Set the osName property: The name.
-     *
+     * 
      * @param osName the osName value to set.
      * @return the SupportedOSDetails object itself.
      */
@@ -55,7 +59,7 @@ public final class SupportedOSDetails {
 
     /**
      * Get the osType property: The type.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -64,7 +68,7 @@ public final class SupportedOSDetails {
 
     /**
      * Set the osType property: The type.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the SupportedOSDetails object itself.
      */
@@ -75,7 +79,7 @@ public final class SupportedOSDetails {
 
     /**
      * Get the osVersions property: The list of version for operating system.
-     *
+     * 
      * @return the osVersions value.
      */
     public List<OSVersionWrapper> osVersions() {
@@ -84,7 +88,7 @@ public final class SupportedOSDetails {
 
     /**
      * Set the osVersions property: The list of version for operating system.
-     *
+     * 
      * @param osVersions the osVersions value to set.
      * @return the SupportedOSDetails object itself.
      */
@@ -95,7 +99,7 @@ public final class SupportedOSDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

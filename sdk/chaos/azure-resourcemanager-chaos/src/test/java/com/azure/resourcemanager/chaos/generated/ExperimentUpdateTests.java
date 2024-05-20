@@ -16,33 +16,24 @@ import org.junit.jupiter.api.Assertions;
 public final class ExperimentUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExperimentUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"veual\":{\"principalId\":\"722f6d5d-a4be-49ef-859d-8e0961238354\",\"clientId\":\"a4541266-741f-439c-981a-c1cf2b17ae98\"},\"mkh\":{\"principalId\":\"54b509c6-afca-41df-a2ea-819d552cfcf1\",\"clientId\":\"9a36844d-8db6-4d0e-b5f9-c495c195c8a6\"},\"bbcswsrtjri\":{\"principalId\":\"804d3b9b-f5ae-4616-9331-d242e48040b4\",\"clientId\":\"63b3ce36-c7db-4e64-bd93-42681aab08ca\"},\"bpbewtghfgb\":{\"principalId\":\"a21c1186-61a2-47c5-b1c6-e74d4d4d9ccf\",\"clientId\":\"19babc93-1b64-4e6c-8513-919d7f32cae6\"}},\"principalId\":\"gw\",\"tenantId\":\"vlvqhjkbegi\"}}")
-                .toObject(ExperimentUpdate.class);
+        ExperimentUpdate model = BinaryData.fromString(
+            "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"veual\":{\"principalId\":\"2ab296ac-e81e-4690-b2e9-e8ca33e2c7f3\",\"clientId\":\"e2c93b86-0c6b-4a76-b205-8abd8405e73c\"},\"mkh\":{\"principalId\":\"a488b418-a1eb-433c-a43f-5fae44a0b576\",\"clientId\":\"6b698d05-0238-4471-9218-dbbad59580b9\"},\"bbcswsrtjri\":{\"principalId\":\"8116ceee-1e63-4d79-ad88-a3b1cf189c9d\",\"clientId\":\"7893fbc9-a3b8-4f3d-9909-b5051e6de38e\"},\"bpbewtghfgb\":{\"principalId\":\"d1b6d058-d12a-45b2-b1f0-0a6e04a0d8ff\",\"clientId\":\"2cb9b1c9-46cf-4f32-b1c0-888374c5f9e6\"}},\"principalId\":\"gw\",\"tenantId\":\"vlvqhjkbegi\"},\"tags\":{\"aloayqcgwrtzju\":\"mxiebw\",\"txon\":\"gwyzm\",\"rknftguvriuhprwm\":\"mtsavjcbpwxqp\",\"bexrmcq\":\"yvxqtayriwwroy\"}}")
+            .toObject(ExperimentUpdate.class);
         Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("mxiebw", model.tags().get("aloayqcgwrtzju"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExperimentUpdate model =
-            new ExperimentUpdate()
-                .withIdentity(
-                    new ResourceIdentity()
-                        .withType(ResourceIdentityType.NONE)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "veual",
-                                new UserAssignedIdentity(),
-                                "mkh",
-                                new UserAssignedIdentity(),
-                                "bbcswsrtjri",
-                                new UserAssignedIdentity(),
-                                "bpbewtghfgb",
-                                new UserAssignedIdentity())));
+        ExperimentUpdate model = new ExperimentUpdate()
+            .withIdentity(new ResourceIdentity().withType(ResourceIdentityType.NONE).withUserAssignedIdentities(
+                mapOf("veual", new UserAssignedIdentity(), "mkh", new UserAssignedIdentity(), "bbcswsrtjri",
+                    new UserAssignedIdentity(), "bpbewtghfgb", new UserAssignedIdentity())))
+            .withTags(mapOf("aloayqcgwrtzju", "mxiebw", "txon", "gwyzm", "rknftguvriuhprwm", "mtsavjcbpwxqp", "bexrmcq",
+                "yvxqtayriwwroy"));
         model = BinaryData.fromObject(model).toObject(ExperimentUpdate.class);
         Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals("mxiebw", model.tags().get("aloayqcgwrtzju"));
     }
 
     // Use "Map.of" if available

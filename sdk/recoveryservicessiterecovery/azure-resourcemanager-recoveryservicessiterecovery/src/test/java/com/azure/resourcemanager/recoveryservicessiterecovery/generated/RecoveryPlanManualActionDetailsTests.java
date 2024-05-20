@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPlanManualActionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPlanManualActionDetails model =
-            BinaryData
-                .fromString("{\"instanceType\":\"ManualActionDetails\",\"description\":\"imcwqxynqjgsa\"}")
+        RecoveryPlanManualActionDetails model
+            = BinaryData.fromString("{\"instanceType\":\"ManualActionDetails\",\"description\":\"imcwqxynqjgsa\"}")
                 .toObject(RecoveryPlanManualActionDetails.class);
         Assertions.assertEquals("imcwqxynqjgsa", model.description());
     }

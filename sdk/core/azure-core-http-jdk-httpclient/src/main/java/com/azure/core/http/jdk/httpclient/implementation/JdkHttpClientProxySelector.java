@@ -30,9 +30,8 @@ public final class JdkHttpClientProxySelector extends ProxySelector {
     public JdkHttpClientProxySelector(Proxy.Type proxyType, SocketAddress proxyAddress, String nonProxyHosts) {
         this.proxyType = proxyType;
         this.proxyAddress = proxyAddress;
-        this.nonProxyHostsPattern = (nonProxyHosts == null)
-            ? null
-            : Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
+        this.nonProxyHostsPattern
+            = (nonProxyHosts == null) ? null : Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
     }
 
     @Override

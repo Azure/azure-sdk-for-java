@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** DiskExclusionInput when doing enable protection of virtual machine in InMage provider. */
+/**
+ * DiskExclusionInput when doing enable protection of virtual machine in InMage provider.
+ */
 @Fluent
 public final class InMageDiskExclusionInput {
     /*
@@ -23,13 +25,15 @@ public final class InMageDiskExclusionInput {
     @JsonProperty(value = "diskSignatureOptions")
     private List<InMageDiskSignatureExclusionOptions> diskSignatureOptions;
 
-    /** Creates an instance of InMageDiskExclusionInput class. */
+    /**
+     * Creates an instance of InMageDiskExclusionInput class.
+     */
     public InMageDiskExclusionInput() {
     }
 
     /**
      * Get the volumeOptions property: The volume label based option for disk exclusion.
-     *
+     * 
      * @return the volumeOptions value.
      */
     public List<InMageVolumeExclusionOptions> volumeOptions() {
@@ -38,7 +42,7 @@ public final class InMageDiskExclusionInput {
 
     /**
      * Set the volumeOptions property: The volume label based option for disk exclusion.
-     *
+     * 
      * @param volumeOptions the volumeOptions value to set.
      * @return the InMageDiskExclusionInput object itself.
      */
@@ -49,7 +53,7 @@ public final class InMageDiskExclusionInput {
 
     /**
      * Get the diskSignatureOptions property: The guest disk signature based option for disk exclusion.
-     *
+     * 
      * @return the diskSignatureOptions value.
      */
     public List<InMageDiskSignatureExclusionOptions> diskSignatureOptions() {
@@ -58,19 +62,19 @@ public final class InMageDiskExclusionInput {
 
     /**
      * Set the diskSignatureOptions property: The guest disk signature based option for disk exclusion.
-     *
+     * 
      * @param diskSignatureOptions the diskSignatureOptions value to set.
      * @return the InMageDiskExclusionInput object itself.
      */
-    public InMageDiskExclusionInput withDiskSignatureOptions(
-        List<InMageDiskSignatureExclusionOptions> diskSignatureOptions) {
+    public InMageDiskExclusionInput
+        withDiskSignatureOptions(List<InMageDiskSignatureExclusionOptions> diskSignatureOptions) {
         this.diskSignatureOptions = diskSignatureOptions;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

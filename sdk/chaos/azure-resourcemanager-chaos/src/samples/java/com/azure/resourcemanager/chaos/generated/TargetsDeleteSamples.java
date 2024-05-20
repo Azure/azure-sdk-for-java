@@ -4,26 +4,22 @@
 
 package com.azure.resourcemanager.chaos.generated;
 
-/** Samples for Targets Delete. */
+/**
+ * Samples for Targets Delete.
+ */
 public final class TargetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/DeleteTarget.json
+     * x-ms-original-file:
+     * specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/DeleteTarget.json
      */
     /**
      * Sample code: Delete a Target that extends a virtual machine resource.
-     *
+     * 
      * @param manager Entry point to ChaosManager.
      */
-    public static void deleteATargetThatExtendsAVirtualMachineResource(
-        com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager
-            .targets()
-            .deleteWithResponse(
-                "exampleRG",
-                "Microsoft.Compute",
-                "virtualMachines",
-                "exampleVM",
-                "Microsoft-Agent",
-                com.azure.core.util.Context.NONE);
+    public static void
+        deleteATargetThatExtendsAVirtualMachineResource(com.azure.resourcemanager.chaos.ChaosManager manager) {
+        manager.targets().deleteWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
+            "Microsoft-Agent", com.azure.core.util.Context.NONE);
     }
 }

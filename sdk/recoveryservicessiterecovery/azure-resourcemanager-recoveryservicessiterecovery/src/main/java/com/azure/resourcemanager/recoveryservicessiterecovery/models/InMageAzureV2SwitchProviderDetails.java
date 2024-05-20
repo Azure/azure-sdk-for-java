@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** InMageAzureV2 switch provider details. */
+/**
+ * InMageAzureV2 switch provider details.
+ */
 @Immutable
 public final class InMageAzureV2SwitchProviderDetails {
     /*
@@ -34,13 +36,15 @@ public final class InMageAzureV2SwitchProviderDetails {
     @JsonProperty(value = "targetApplianceId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetApplianceId;
 
-    /** Creates an instance of InMageAzureV2SwitchProviderDetails class. */
+    /**
+     * Creates an instance of InMageAzureV2SwitchProviderDetails class.
+     */
     public InMageAzureV2SwitchProviderDetails() {
     }
 
     /**
      * Get the targetVaultId property: The target vault Id.
-     *
+     * 
      * @return the targetVaultId value.
      */
     public String targetVaultId() {
@@ -49,7 +53,7 @@ public final class InMageAzureV2SwitchProviderDetails {
 
     /**
      * Get the targetResourceId property: The target resource Id.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -58,7 +62,7 @@ public final class InMageAzureV2SwitchProviderDetails {
 
     /**
      * Get the targetFabricId property: The target fabric Id.
-     *
+     * 
      * @return the targetFabricId value.
      */
     public String targetFabricId() {
@@ -67,7 +71,7 @@ public final class InMageAzureV2SwitchProviderDetails {
 
     /**
      * Get the targetApplianceId property: The target appliance Id.
-     *
+     * 
      * @return the targetApplianceId value.
      */
     public String targetApplianceId() {
@@ -76,7 +80,7 @@ public final class InMageAzureV2SwitchProviderDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

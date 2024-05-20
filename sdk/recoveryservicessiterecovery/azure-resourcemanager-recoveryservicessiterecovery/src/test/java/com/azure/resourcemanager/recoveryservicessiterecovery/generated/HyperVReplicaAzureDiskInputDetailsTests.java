@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HyperVReplicaAzureDiskInputDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HyperVReplicaAzureDiskInputDetails model =
-            BinaryData
-                .fromString(
-                    "{\"diskId\":\"jlnsj\",\"logStorageAccountId\":\"ju\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"xqvmvuay\"}")
-                .toObject(HyperVReplicaAzureDiskInputDetails.class);
+        HyperVReplicaAzureDiskInputDetails model = BinaryData.fromString(
+            "{\"diskId\":\"jlnsj\",\"logStorageAccountId\":\"ju\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"xqvmvuay\"}")
+            .toObject(HyperVReplicaAzureDiskInputDetails.class);
         Assertions.assertEquals("jlnsj", model.diskId());
         Assertions.assertEquals("ju", model.logStorageAccountId());
         Assertions.assertEquals(DiskAccountType.STANDARD_SSD_LRS, model.diskType());
@@ -25,12 +23,9 @@ public final class HyperVReplicaAzureDiskInputDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaAzureDiskInputDetails model =
-            new HyperVReplicaAzureDiskInputDetails()
-                .withDiskId("jlnsj")
-                .withLogStorageAccountId("ju")
-                .withDiskType(DiskAccountType.STANDARD_SSD_LRS)
-                .withDiskEncryptionSetId("xqvmvuay");
+        HyperVReplicaAzureDiskInputDetails model
+            = new HyperVReplicaAzureDiskInputDetails().withDiskId("jlnsj").withLogStorageAccountId("ju")
+                .withDiskType(DiskAccountType.STANDARD_SSD_LRS).withDiskEncryptionSetId("xqvmvuay");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureDiskInputDetails.class);
         Assertions.assertEquals("jlnsj", model.diskId());
         Assertions.assertEquals("ju", model.logStorageAccountId());

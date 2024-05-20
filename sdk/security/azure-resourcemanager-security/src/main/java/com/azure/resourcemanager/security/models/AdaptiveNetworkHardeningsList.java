@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.AdaptiveNetworkHardening
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListAdaptiveNetworkHardenings API service call. */
+/**
+ * Response for ListAdaptiveNetworkHardenings API service call.
+ */
 @Fluent
 public final class AdaptiveNetworkHardeningsList {
     /*
@@ -24,13 +26,15 @@ public final class AdaptiveNetworkHardeningsList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AdaptiveNetworkHardeningsList class. */
+    /**
+     * Creates an instance of AdaptiveNetworkHardeningsList class.
+     */
     public AdaptiveNetworkHardeningsList() {
     }
 
     /**
      * Get the value property: A list of Adaptive Network Hardenings resources.
-     *
+     * 
      * @return the value value.
      */
     public List<AdaptiveNetworkHardeningInner> value() {
@@ -39,7 +43,7 @@ public final class AdaptiveNetworkHardeningsList {
 
     /**
      * Set the value property: A list of Adaptive Network Hardenings resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the AdaptiveNetworkHardeningsList object itself.
      */
@@ -50,7 +54,7 @@ public final class AdaptiveNetworkHardeningsList {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class AdaptiveNetworkHardeningsList {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AdaptiveNetworkHardeningsList object itself.
      */
@@ -70,7 +74,7 @@ public final class AdaptiveNetworkHardeningsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

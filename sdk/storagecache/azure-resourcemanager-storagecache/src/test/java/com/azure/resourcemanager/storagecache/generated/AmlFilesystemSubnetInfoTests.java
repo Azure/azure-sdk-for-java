@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class AmlFilesystemSubnetInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmlFilesystemSubnetInfo model =
-            BinaryData
-                .fromString(
-                    "{\"filesystemSubnet\":\"xtbzsgfyccsne\",\"storageCapacityTiB\":54.53775,\"sku\":{\"name\":\"jeiachboosfl\"},\"location\":\"osfqpteehzzv\"}")
-                .toObject(AmlFilesystemSubnetInfo.class);
-        Assertions.assertEquals("xtbzsgfyccsne", model.filesystemSubnet());
-        Assertions.assertEquals(54.53775F, model.storageCapacityTiB());
-        Assertions.assertEquals("jeiachboosfl", model.sku().name());
-        Assertions.assertEquals("osfqpteehzzv", model.location());
+        AmlFilesystemSubnetInfo model = BinaryData.fromString(
+            "{\"filesystemSubnet\":\"lcuiywgqywgndr\",\"storageCapacityTiB\":74.8914,\"sku\":{\"name\":\"gpphrcgyn\"},\"location\":\"cpecfvmmcoofs\"}")
+            .toObject(AmlFilesystemSubnetInfo.class);
+        Assertions.assertEquals("lcuiywgqywgndr", model.filesystemSubnet());
+        Assertions.assertEquals(74.8914F, model.storageCapacityTiB());
+        Assertions.assertEquals("gpphrcgyn", model.sku().name());
+        Assertions.assertEquals("cpecfvmmcoofs", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmlFilesystemSubnetInfo model =
-            new AmlFilesystemSubnetInfo()
-                .withFilesystemSubnet("xtbzsgfyccsne")
-                .withStorageCapacityTiB(54.53775F)
-                .withSku(new SkuName().withName("jeiachboosfl"))
-                .withLocation("osfqpteehzzv");
+        AmlFilesystemSubnetInfo model = new AmlFilesystemSubnetInfo().withFilesystemSubnet("lcuiywgqywgndr")
+            .withStorageCapacityTiB(74.8914F)
+            .withSku(new SkuName().withName("gpphrcgyn"))
+            .withLocation("cpecfvmmcoofs");
         model = BinaryData.fromObject(model).toObject(AmlFilesystemSubnetInfo.class);
-        Assertions.assertEquals("xtbzsgfyccsne", model.filesystemSubnet());
-        Assertions.assertEquals(54.53775F, model.storageCapacityTiB());
-        Assertions.assertEquals("jeiachboosfl", model.sku().name());
-        Assertions.assertEquals("osfqpteehzzv", model.location());
+        Assertions.assertEquals("lcuiywgqywgndr", model.filesystemSubnet());
+        Assertions.assertEquals(74.8914F, model.storageCapacityTiB());
+        Assertions.assertEquals("gpphrcgyn", model.sku().name());
+        Assertions.assertEquals("cpecfvmmcoofs", model.location());
     }
 }

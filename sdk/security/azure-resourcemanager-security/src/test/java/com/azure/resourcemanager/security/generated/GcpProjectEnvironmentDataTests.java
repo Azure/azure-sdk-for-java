@@ -13,23 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class GcpProjectEnvironmentDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GcpProjectEnvironmentData model =
-            BinaryData
-                .fromString(
-                    "{\"environmentType\":\"GcpProject\",\"organizationalData\":{\"organizationMembershipType\":\"GcpOrganizationalData\"},\"projectDetails\":{\"projectNumber\":\"dfpdqwtygevg\",\"projectId\":\"sehar\",\"workloadIdentityPoolId\":\"fv\",\"projectName\":\"rxtmbpjptnvw\"}}")
-                .toObject(GcpProjectEnvironmentData.class);
-        Assertions.assertEquals("dfpdqwtygevg", model.projectDetails().projectNumber());
-        Assertions.assertEquals("sehar", model.projectDetails().projectId());
+        GcpProjectEnvironmentData model = BinaryData.fromString(
+            "{\"environmentType\":\"GcpProject\",\"organizationalData\":{\"organizationMembershipType\":\"GcpOrganizationalData\"},\"projectDetails\":{\"projectNumber\":\"ccylhtrh\",\"projectId\":\"vazjpwexcd\",\"workloadIdentityPoolId\":\"probzzxezmnrkjgp\",\"projectName\":\"uxsphlokfpm\"},\"scanInterval\":1454098350128870795}")
+            .toObject(GcpProjectEnvironmentData.class);
+        Assertions.assertEquals("ccylhtrh", model.projectDetails().projectNumber());
+        Assertions.assertEquals("vazjpwexcd", model.projectDetails().projectId());
+        Assertions.assertEquals(1454098350128870795L, model.scanInterval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GcpProjectEnvironmentData model =
-            new GcpProjectEnvironmentData()
-                .withOrganizationalData(new GcpOrganizationalData())
-                .withProjectDetails(new GcpProjectDetails().withProjectNumber("dfpdqwtygevg").withProjectId("sehar"));
+        GcpProjectEnvironmentData model
+            = new GcpProjectEnvironmentData().withOrganizationalData(new GcpOrganizationalData())
+                .withProjectDetails(new GcpProjectDetails().withProjectNumber("ccylhtrh").withProjectId("vazjpwexcd"))
+                .withScanInterval(1454098350128870795L);
         model = BinaryData.fromObject(model).toObject(GcpProjectEnvironmentData.class);
-        Assertions.assertEquals("dfpdqwtygevg", model.projectDetails().projectNumber());
-        Assertions.assertEquals("sehar", model.projectDetails().projectId());
+        Assertions.assertEquals("ccylhtrh", model.projectDetails().projectNumber());
+        Assertions.assertEquals("vazjpwexcd", model.projectDetails().projectId());
+        Assertions.assertEquals(1454098350128870795L, model.scanInterval());
     }
 }

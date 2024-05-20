@@ -17,6 +17,7 @@ import com.azure.resourcemanager.newrelicobservability.models.SendAadLogsStatus;
 import com.azure.resourcemanager.newrelicobservability.models.SendActivityLogsStatus;
 import com.azure.resourcemanager.newrelicobservability.models.SendMetricsStatus;
 import com.azure.resourcemanager.newrelicobservability.models.SendSubscriptionLogsStatus;
+import com.azure.resourcemanager.newrelicobservability.models.TagAction;
 import com.azure.resourcemanager.newrelicobservability.models.TagRule;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -35,45 +36,42 @@ public final class TagRulesListByNewRelicMonitorResourceMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"logRules\":{\"sendAadLogs\":\"Enabled\",\"sendSubscriptionLogs\":\"Disabled\",\"sendActivityLogs\":\"Disabled\",\"filteringTags\":[]},\"metricRules\":{\"sendMetrics\":\"Enabled\",\"filteringTags\":[],\"userEmail\":\"brh\"}},\"id\":\"xsdqrhzoymibmrqy\",\"name\":\"bahwfl\",\"type\":\"szdtmhrkwof\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"logRules\":{\"sendAadLogs\":\"Disabled\",\"sendSubscriptionLogs\":\"Disabled\",\"sendActivityLogs\":\"Enabled\",\"filteringTags\":[{\"name\":\"lpichk\",\"value\":\"mkcdyhbpkkpwdre\",\"action\":\"Exclude\"}]},\"metricRules\":{\"sendMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"ljxywsu\",\"value\":\"yrs\",\"action\":\"Exclude\"},{\"name\":\"tgadgvraeaen\",\"value\":\"nzar\",\"action\":\"Exclude\"},{\"name\":\"uu\",\"value\":\"fqka\",\"action\":\"Include\"}],\"userEmail\":\"ipfpubji\"}},\"id\":\"wifto\",\"name\":\"qkvpuvksgplsakn\",\"type\":\"n\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NewRelicObservabilityManager manager =
-            NewRelicObservabilityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<TagRule> response =
-            manager.tagRules().listByNewRelicMonitorResource("helxprglya", "dd", com.azure.core.util.Context.NONE);
+        PagedIterable<TagRule> response = manager.tagRules().listByNewRelicMonitorResource("iuqgbdbutauv", "btkuwhh",
+            com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(SendAadLogsStatus.ENABLED, response.iterator().next().logRules().sendAadLogs());
-        Assertions
-            .assertEquals(
-                SendSubscriptionLogsStatus.DISABLED, response.iterator().next().logRules().sendSubscriptionLogs());
-        Assertions
-            .assertEquals(SendActivityLogsStatus.DISABLED, response.iterator().next().logRules().sendActivityLogs());
-        Assertions.assertEquals(SendMetricsStatus.ENABLED, response.iterator().next().metricRules().sendMetrics());
-        Assertions.assertEquals("brh", response.iterator().next().metricRules().userEmail());
+        Assertions.assertEquals(SendAadLogsStatus.DISABLED, response.iterator().next().logRules().sendAadLogs());
+        Assertions.assertEquals(SendSubscriptionLogsStatus.DISABLED,
+            response.iterator().next().logRules().sendSubscriptionLogs());
+        Assertions.assertEquals(SendActivityLogsStatus.ENABLED,
+            response.iterator().next().logRules().sendActivityLogs());
+        Assertions.assertEquals("lpichk", response.iterator().next().logRules().filteringTags().get(0).name());
+        Assertions.assertEquals("mkcdyhbpkkpwdre",
+            response.iterator().next().logRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.EXCLUDE,
+            response.iterator().next().logRules().filteringTags().get(0).action());
+        Assertions.assertEquals(SendMetricsStatus.DISABLED, response.iterator().next().metricRules().sendMetrics());
+        Assertions.assertEquals("ljxywsu", response.iterator().next().metricRules().filteringTags().get(0).name());
+        Assertions.assertEquals("yrs", response.iterator().next().metricRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.EXCLUDE,
+            response.iterator().next().metricRules().filteringTags().get(0).action());
+        Assertions.assertEquals("ipfpubji", response.iterator().next().metricRules().userEmail());
     }
 }

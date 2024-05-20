@@ -6,27 +6,53 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The CSPM monitoring for AWS offering. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
+/**
+ * The CSPM monitoring for AWS offering.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "offeringType",
+    defaultImpl = CspmMonitorAwsOffering.class,
+    visible = true)
 @JsonTypeName("CspmMonitorAws")
 @Fluent
 public final class CspmMonitorAwsOffering extends CloudOffering {
+    /*
+     * The type of the security offering.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "offeringType", required = true)
+    private OfferingType offeringType = OfferingType.CSPM_MONITOR_AWS;
+
     /*
      * The native cloud connection configuration
      */
     @JsonProperty(value = "nativeCloudConnection")
     private CspmMonitorAwsOfferingNativeCloudConnection nativeCloudConnection;
 
-    /** Creates an instance of CspmMonitorAwsOffering class. */
+    /**
+     * Creates an instance of CspmMonitorAwsOffering class.
+     */
     public CspmMonitorAwsOffering() {
     }
 
     /**
+     * Get the offeringType property: The type of the security offering.
+     * 
+     * @return the offeringType value.
+     */
+    @Override
+    public OfferingType offeringType() {
+        return this.offeringType;
+    }
+
+    /**
      * Get the nativeCloudConnection property: The native cloud connection configuration.
-     *
+     * 
      * @return the nativeCloudConnection value.
      */
     public CspmMonitorAwsOfferingNativeCloudConnection nativeCloudConnection() {
@@ -35,19 +61,19 @@ public final class CspmMonitorAwsOffering extends CloudOffering {
 
     /**
      * Set the nativeCloudConnection property: The native cloud connection configuration.
-     *
+     * 
      * @param nativeCloudConnection the nativeCloudConnection value to set.
      * @return the CspmMonitorAwsOffering object itself.
      */
-    public CspmMonitorAwsOffering withNativeCloudConnection(
-        CspmMonitorAwsOfferingNativeCloudConnection nativeCloudConnection) {
+    public CspmMonitorAwsOffering
+        withNativeCloudConnection(CspmMonitorAwsOfferingNativeCloudConnection nativeCloudConnection) {
         this.nativeCloudConnection = nativeCloudConnection;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

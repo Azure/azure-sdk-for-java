@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AlertSyncSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertSyncSettings model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"AlertSyncSettings\",\"properties\":{\"enabled\":false},\"id\":\"leexahvmywh\",\"name\":\"brcary\",\"type\":\"sjjzyvoaqajuveh\"}")
-                .toObject(AlertSyncSettings.class);
-        Assertions.assertEquals(false, model.enabled());
+        AlertSyncSettings model = BinaryData.fromString(
+            "{\"kind\":\"AlertSyncSettings\",\"properties\":{\"enabled\":true},\"id\":\"akglhpsesrfga\",\"name\":\"qiy\",\"type\":\"vxcgdhyhgoqgs\"}")
+            .toObject(AlertSyncSettings.class);
+        Assertions.assertEquals(true, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertSyncSettings model = new AlertSyncSettings().withEnabled(false);
+        AlertSyncSettings model = new AlertSyncSettings().withEnabled(true);
         model = BinaryData.fromObject(model).toObject(AlertSyncSettings.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
     }
 }

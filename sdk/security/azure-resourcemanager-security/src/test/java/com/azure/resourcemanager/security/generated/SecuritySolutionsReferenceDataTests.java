@@ -12,38 +12,35 @@ import org.junit.jupiter.api.Assertions;
 public final class SecuritySolutionsReferenceDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecuritySolutionsReferenceData model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"securityFamily\":\"Waf\",\"alertVendorName\":\"rqunjq\",\"packageInfoUrl\":\"denxau\",\"productName\":\"kpak\",\"publisher\":\"kifmjn\",\"publisherDisplayName\":\"awtqabpxuckpgg\",\"template\":\"oweyirdhlis\"},\"location\":\"wfl\",\"id\":\"qmp\",\"name\":\"zruwn\",\"type\":\"qxpxiwfcngjsaa\"}")
-                .toObject(SecuritySolutionsReferenceData.class);
-        Assertions.assertEquals(SecurityFamily.WAF, model.securityFamily());
-        Assertions.assertEquals("rqunjq", model.alertVendorName());
-        Assertions.assertEquals("denxau", model.packageInfoUrl());
-        Assertions.assertEquals("kpak", model.productName());
-        Assertions.assertEquals("kifmjn", model.publisher());
-        Assertions.assertEquals("awtqabpxuckpgg", model.publisherDisplayName());
-        Assertions.assertEquals("oweyirdhlis", model.template());
+        SecuritySolutionsReferenceData model = BinaryData.fromString(
+            "{\"properties\":{\"securityFamily\":\"Ngfw\",\"alertVendorName\":\"tb\",\"packageInfoUrl\":\"tqi\",\"productName\":\"d\",\"publisher\":\"zvsgeafgfosehxlz\",\"publisherDisplayName\":\"xezppk\",\"template\":\"waaeskyfjl\"},\"location\":\"eqtoyrpl\",\"id\":\"xlaj\",\"name\":\"llpquevhamfo\",\"type\":\"gwb\"}")
+            .toObject(SecuritySolutionsReferenceData.class);
+        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
+        Assertions.assertEquals("tb", model.alertVendorName());
+        Assertions.assertEquals("tqi", model.packageInfoUrl());
+        Assertions.assertEquals("d", model.productName());
+        Assertions.assertEquals("zvsgeafgfosehxlz", model.publisher());
+        Assertions.assertEquals("xezppk", model.publisherDisplayName());
+        Assertions.assertEquals("waaeskyfjl", model.template());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecuritySolutionsReferenceData model =
-            new SecuritySolutionsReferenceData()
-                .withSecurityFamily(SecurityFamily.WAF)
-                .withAlertVendorName("rqunjq")
-                .withPackageInfoUrl("denxau")
-                .withProductName("kpak")
-                .withPublisher("kifmjn")
-                .withPublisherDisplayName("awtqabpxuckpgg")
-                .withTemplate("oweyirdhlis");
+        SecuritySolutionsReferenceData model
+            = new SecuritySolutionsReferenceData().withSecurityFamily(SecurityFamily.NGFW)
+                .withAlertVendorName("tb")
+                .withPackageInfoUrl("tqi")
+                .withProductName("d")
+                .withPublisher("zvsgeafgfosehxlz")
+                .withPublisherDisplayName("xezppk")
+                .withTemplate("waaeskyfjl");
         model = BinaryData.fromObject(model).toObject(SecuritySolutionsReferenceData.class);
-        Assertions.assertEquals(SecurityFamily.WAF, model.securityFamily());
-        Assertions.assertEquals("rqunjq", model.alertVendorName());
-        Assertions.assertEquals("denxau", model.packageInfoUrl());
-        Assertions.assertEquals("kpak", model.productName());
-        Assertions.assertEquals("kifmjn", model.publisher());
-        Assertions.assertEquals("awtqabpxuckpgg", model.publisherDisplayName());
-        Assertions.assertEquals("oweyirdhlis", model.template());
+        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
+        Assertions.assertEquals("tb", model.alertVendorName());
+        Assertions.assertEquals("tqi", model.packageInfoUrl());
+        Assertions.assertEquals("d", model.productName());
+        Assertions.assertEquals("zvsgeafgfosehxlz", model.publisher());
+        Assertions.assertEquals("xezppk", model.publisherDisplayName());
+        Assertions.assertEquals("waaeskyfjl", model.template());
     }
 }

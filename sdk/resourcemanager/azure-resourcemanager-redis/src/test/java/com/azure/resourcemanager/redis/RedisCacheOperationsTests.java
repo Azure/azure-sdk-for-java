@@ -6,7 +6,9 @@ package com.azure.resourcemanager.redis;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.redis.models.DayOfWeek;
+import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redis.models.RebootType;
 import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
@@ -315,7 +317,9 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
     }
 
     @Test
+    @LiveOnly
     public void canCreateRedisWithRdbAof() {
+        // LiveOnly because "connectionString cannot be stored in recordings."
         StorageAccount storageAccount =
             storageManager
                 .storageAccounts()
@@ -367,6 +371,42 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         Assertions.assertNotNull(redisCache.innerModel().redisConfiguration().aofStorageConnectionString1());
 
         assertSameVersion(RedisCache.RedisVersion.V6, redisCache.redisVersion());
+    }
+
+    @Test
+    public void canCreateRedisCacheWithDisablePublicNetworkAccess() {
+        resourceManager.resourceGroups().define(rgNameSecond).withRegion(Region.US_CENTRAL);
+
+        RedisCache redisCache =
+            redisManager
+                .redisCaches()
+                .define(rrName)
+                .withRegion(Region.ASIA_EAST)
+                .withNewResourceGroup(rgName)
+                .withBasicSku()
+                .disablePublicNetworkAccess()
+                .create();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, redisCache.publicNetworkAccess());
+    }
+
+    @Test
+    public void canUpdatePublicNetworkAccess() {
+        resourceManager.resourceGroups().define(rgNameSecond).withRegion(Region.US_CENTRAL);
+
+        RedisCache redisCache =
+            redisManager
+                .redisCaches()
+                .define(rrName)
+                .withRegion(Region.ASIA_EAST)
+                .withNewResourceGroup(rgName)
+                .withBasicSku()
+                .create();
+
+        redisCache.update().disablePublicNetworkAccess().apply();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, redisCache.publicNetworkAccess());
+
+        redisCache.update().enablePublicNetworkAccess().apply();
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, redisCache.publicNetworkAccess());
     }
 
     // e.g 6.xxxx

@@ -19,20 +19,20 @@ public final class UsageModelsImpl implements UsageModels {
 
     private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    public UsageModelsImpl(
-        UsageModelsClient innerClient, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
+    public UsageModelsImpl(UsageModelsClient innerClient,
+        com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<UsageModel> list() {
         PagedIterable<UsageModelInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new UsageModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsageModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<UsageModel> list(Context context) {
         PagedIterable<UsageModelInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new UsageModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsageModelImpl(inner1, this.manager()));
     }
 
     private UsageModelsClient serviceClient() {

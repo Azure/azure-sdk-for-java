@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.hdinsight.containers.generated;
 
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-06-01-preview/examples/GetOperations.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * GetOperations.json
      */
     /**
      * Sample code: ListOperations.
-     *
+     * 
      * @param manager Entry point to HDInsightContainersManager.
      */
-    public static void listOperations(
-        com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
+    public static void
+        listOperations(com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

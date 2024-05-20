@@ -13,27 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"ydjfb\",\"description\":\"yv\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datalrtywikdmhlakuf\",\"datagbhgau\",\"datacdixmx\"]}")
-                .toObject(ApplicationProperties.class);
-        Assertions.assertEquals("ydjfb", model.displayName());
-        Assertions.assertEquals("yv", model.description());
+        ApplicationProperties model = BinaryData.fromString(
+            "{\"displayName\":\"efkifr\",\"description\":\"puqujmqlgkfbtn\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"dataongbjcnt\",\"datajitcjedftwwaez\"]}")
+            .toObject(ApplicationProperties.class);
+        Assertions.assertEquals("efkifr", model.displayName());
+        Assertions.assertEquals("puqujmqlgkfbtn", model.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, model.sourceResourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationProperties model =
-            new ApplicationProperties()
-                .withDisplayName("ydjfb")
-                .withDescription("yv")
-                .withSourceResourceType(ApplicationSourceResourceType.ASSESSMENTS)
-                .withConditionSets(Arrays.asList("datalrtywikdmhlakuf", "datagbhgau", "datacdixmx"));
+        ApplicationProperties model = new ApplicationProperties().withDisplayName("efkifr")
+            .withDescription("puqujmqlgkfbtn")
+            .withSourceResourceType(ApplicationSourceResourceType.ASSESSMENTS)
+            .withConditionSets(Arrays.asList("dataongbjcnt", "datajitcjedftwwaez"));
         model = BinaryData.fromObject(model).toObject(ApplicationProperties.class);
-        Assertions.assertEquals("ydjfb", model.displayName());
-        Assertions.assertEquals("yv", model.description());
+        Assertions.assertEquals("efkifr", model.displayName());
+        Assertions.assertEquals("puqujmqlgkfbtn", model.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, model.sourceResourceType());
     }
 }

@@ -17,33 +17,36 @@ public final class ChainingTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChainingTrigger model = BinaryData.fromString(
-            "{\"type\":\"ChainingTrigger\",\"pipeline\":{\"pipelineReference\":{\"referenceName\":\"uvuadpdj\",\"name\":\"wbheijmwaj\"},\"parameters\":{\"slmt\":\"dataaqiomdlpbk\",\"rn\":\"dataowm\"}},\"typeProperties\":{\"dependsOn\":[{\"referenceName\":\"wgrtv\",\"name\":\"bobgwvhdbie\"},{\"referenceName\":\"yyp\",\"name\":\"yc\"}],\"runDimension\":\"schhfmi\"},\"description\":\"dywpptessvmdo\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datagarykbyuukhss\"],\"\":{\"csevqtd\":\"dataugorcz\"}}")
+            "{\"type\":\"gr\",\"pipeline\":{\"pipelineReference\":{\"referenceName\":\"ngfcbldpeforx\",\"name\":\"pmzkdisrgykrcj\"},\"parameters\":{\"jeguviphxi\":\"datavnfdovw\",\"blgwlejcxcrxuy\":\"datanwrhfrbwoylpmecc\",\"hqav\":\"datarhrtihzwdoflwl\",\"eh\":\"datafosfpgquxqvkuu\"}},\"typeProperties\":{\"dependsOn\":[{\"referenceName\":\"vfhyi\",\"name\":\"ezpwhczqjoovy\"},{\"referenceName\":\"sgughwo\",\"name\":\"wzpxlx\"},{\"referenceName\":\"vhhkabeox\",\"name\":\"o\"}],\"runDimension\":\"tckmtqn\"},\"description\":\"xhwvzdvujmukadz\",\"runtimeState\":\"Started\",\"annotations\":[\"dataqdda\",\"dataez\"],\"\":{\"vxel\":\"dataecdcvhxwegdsmnyp\",\"bqpddypw\":\"dataps\",\"enahhpnbvzd\":\"datamyftvejxmy\",\"jbzwvnxwduu\":\"datay\"}}")
             .toObject(ChainingTrigger.class);
-        Assertions.assertEquals("dywpptessvmdo", model.description());
-        Assertions.assertEquals("uvuadpdj", model.pipeline().pipelineReference().referenceName());
-        Assertions.assertEquals("wbheijmwaj", model.pipeline().pipelineReference().name());
-        Assertions.assertEquals("wgrtv", model.dependsOn().get(0).referenceName());
-        Assertions.assertEquals("bobgwvhdbie", model.dependsOn().get(0).name());
-        Assertions.assertEquals("schhfmi", model.runDimension());
+        Assertions.assertEquals("xhwvzdvujmukadz", model.description());
+        Assertions.assertEquals("ngfcbldpeforx", model.pipeline().pipelineReference().referenceName());
+        Assertions.assertEquals("pmzkdisrgykrcj", model.pipeline().pipelineReference().name());
+        Assertions.assertEquals("vfhyi", model.dependsOn().get(0).referenceName());
+        Assertions.assertEquals("ezpwhczqjoovy", model.dependsOn().get(0).name());
+        Assertions.assertEquals("tckmtqn", model.runDimension());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChainingTrigger model
-            = new ChainingTrigger().withDescription("dywpptessvmdo").withAnnotations(Arrays.asList("datagarykbyuukhss"))
-                .withPipeline(new TriggerPipelineReference()
-                    .withPipelineReference(new PipelineReference().withReferenceName("uvuadpdj").withName("wbheijmwaj"))
-                    .withParameters(mapOf("slmt", "dataaqiomdlpbk", "rn", "dataowm")))
-                .withDependsOn(Arrays.asList(new PipelineReference().withReferenceName("wgrtv").withName("bobgwvhdbie"),
-                    new PipelineReference().withReferenceName("yyp").withName("yc")))
-                .withRunDimension("schhfmi");
+        ChainingTrigger model = new ChainingTrigger().withDescription("xhwvzdvujmukadz")
+            .withAnnotations(Arrays.asList("dataqdda", "dataez"))
+            .withPipeline(new TriggerPipelineReference()
+                .withPipelineReference(
+                    new PipelineReference().withReferenceName("ngfcbldpeforx").withName("pmzkdisrgykrcj"))
+                .withParameters(mapOf("jeguviphxi", "datavnfdovw", "blgwlejcxcrxuy", "datanwrhfrbwoylpmecc", "hqav",
+                    "datarhrtihzwdoflwl", "eh", "datafosfpgquxqvkuu")))
+            .withDependsOn(Arrays.asList(new PipelineReference().withReferenceName("vfhyi").withName("ezpwhczqjoovy"),
+                new PipelineReference().withReferenceName("sgughwo").withName("wzpxlx"),
+                new PipelineReference().withReferenceName("vhhkabeox").withName("o")))
+            .withRunDimension("tckmtqn");
         model = BinaryData.fromObject(model).toObject(ChainingTrigger.class);
-        Assertions.assertEquals("dywpptessvmdo", model.description());
-        Assertions.assertEquals("uvuadpdj", model.pipeline().pipelineReference().referenceName());
-        Assertions.assertEquals("wbheijmwaj", model.pipeline().pipelineReference().name());
-        Assertions.assertEquals("wgrtv", model.dependsOn().get(0).referenceName());
-        Assertions.assertEquals("bobgwvhdbie", model.dependsOn().get(0).name());
-        Assertions.assertEquals("schhfmi", model.runDimension());
+        Assertions.assertEquals("xhwvzdvujmukadz", model.description());
+        Assertions.assertEquals("ngfcbldpeforx", model.pipeline().pipelineReference().referenceName());
+        Assertions.assertEquals("pmzkdisrgykrcj", model.pipeline().pipelineReference().name());
+        Assertions.assertEquals("vfhyi", model.dependsOn().get(0).referenceName());
+        Assertions.assertEquals("ezpwhczqjoovy", model.dependsOn().get(0).name());
+        Assertions.assertEquals("tckmtqn", model.runDimension());
     }
 
     // Use "Map.of" if available

@@ -6,15 +6,17 @@ package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of StorageTargetOperations. */
+/**
+ * Resource collection API of StorageTargetOperations.
+ */
 public interface StorageTargetOperations {
     /**
      * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
      * target's namespace will return errors until the flush operation completes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -25,10 +27,10 @@ public interface StorageTargetOperations {
     /**
      * Tells the cache to write all dirty data to the Storage Target's backend storage. Client requests to this storage
      * target's namespace will return errors until the flush operation completes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -39,10 +41,10 @@ public interface StorageTargetOperations {
 
     /**
      * Suspends client access to a storage target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,10 +54,10 @@ public interface StorageTargetOperations {
 
     /**
      * Suspends client access to a storage target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,10 +68,10 @@ public interface StorageTargetOperations {
 
     /**
      * Resumes client access to a previously suspended storage target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -79,10 +81,10 @@ public interface StorageTargetOperations {
 
     /**
      * Resumes client access to a previously suspended storage target.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -94,10 +96,10 @@ public interface StorageTargetOperations {
     /**
      * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
      * next request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -108,10 +110,10 @@ public interface StorageTargetOperations {
     /**
      * Invalidate all cached data for a storage target. Cached files are discarded and fetched from the back end on the
      * next request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param storageTargetName Name of Storage Target.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

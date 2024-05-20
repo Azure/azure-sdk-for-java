@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Fabric specific details. */
+/**
+ * Fabric specific details.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -22,17 +24,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmFabricSpecificDetails.class),
     @JsonSubTypes.Type(name = "VMM", value = VmmDetails.class),
     @JsonSubTypes.Type(name = "VMware", value = VMwareDetails.class),
-    @JsonSubTypes.Type(name = "VMwareV2", value = VMwareV2FabricSpecificDetails.class)
-})
+    @JsonSubTypes.Type(name = "VMwareV2", value = VMwareV2FabricSpecificDetails.class) })
 @Immutable
 public class FabricSpecificDetails {
-    /** Creates an instance of FabricSpecificDetails class. */
+    /**
+     * Creates an instance of FabricSpecificDetails class.
+     */
     public FabricSpecificDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

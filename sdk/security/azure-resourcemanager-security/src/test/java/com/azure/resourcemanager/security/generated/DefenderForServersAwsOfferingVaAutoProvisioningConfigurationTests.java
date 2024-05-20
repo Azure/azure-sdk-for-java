@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForServersAwsOfferingVaAutoProvisioningConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForServersAwsOfferingVaAutoProvisioningConfiguration model =
-            BinaryData
-                .fromString("{\"type\":\"TVM\"}")
-                .toObject(DefenderForServersAwsOfferingVaAutoProvisioningConfiguration.class);
+        DefenderForServersAwsOfferingVaAutoProvisioningConfiguration model = BinaryData.fromString("{\"type\":\"TVM\"}")
+            .toObject(DefenderForServersAwsOfferingVaAutoProvisioningConfiguration.class);
         Assertions.assertEquals(Type.TVM, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForServersAwsOfferingVaAutoProvisioningConfiguration model =
-            new DefenderForServersAwsOfferingVaAutoProvisioningConfiguration().withType(Type.TVM);
-        model =
-            BinaryData.fromObject(model).toObject(DefenderForServersAwsOfferingVaAutoProvisioningConfiguration.class);
+        DefenderForServersAwsOfferingVaAutoProvisioningConfiguration model
+            = new DefenderForServersAwsOfferingVaAutoProvisioningConfiguration().withType(Type.TVM);
+        model
+            = BinaryData.fromObject(model).toObject(DefenderForServersAwsOfferingVaAutoProvisioningConfiguration.class);
         Assertions.assertEquals(Type.TVM, model.type());
     }
 }

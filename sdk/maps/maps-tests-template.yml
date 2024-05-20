@@ -10,24 +10,24 @@ parameters:
       Selection: sparse
       GenerateVMJobs: true
 
-stages:
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
-      CloudConfig:
-        Public:
-          SubscriptionConfigurations:
-            - $(sub-config-azure-cloud-test-resources)
-      Clouds: ${{ parameters.Clouds }}
-      TestMode: ${{ parameters.TestMode }}
-      Artifacts:
-        - name: ${{ parameters.PackageName }}
-          groupId: com.azure
-          safeName: ${{ parameters.SafeName }}
-      ServiceDirectory: maps
-      EnvVars:
-        #SKIP_LIVE_TEST: TRUE
-        ${{ each var in parameters.EnVars }}:
-          ${{ var.key }}: ${{ var.value }}
-      MatrixConfigs:
-        - ${{ each config in parameters.MatrixConfigs }}:
-          -  ${{ config }}
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    CloudConfig:
+      Public:
+        SubscriptionConfigurations:
+          - $(sub-config-azure-cloud-test-resources)
+    Clouds: ${{ parameters.Clouds }}
+    TestMode: ${{ parameters.TestMode }}
+    Artifacts:
+      - name: ${{ parameters.PackageName }}
+        groupId: com.azure
+        safeName: ${{ parameters.SafeName }}
+    ServiceDirectory: maps
+    EnvVars:
+      #SKIP_LIVE_TEST: TRUE
+      ${{ each var in parameters.EnVars }}:
+        ${{ var.key }}: ${{ var.value }}
+    MatrixConfigs:
+      - ${{ each config in parameters.MatrixConfigs }}:
+        -  ${{ config }}

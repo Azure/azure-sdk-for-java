@@ -44,7 +44,7 @@ public class DataDisk {
     /**
      * The storage Account type to be used for the data disk.
      * If omitted, the default is "standard_lrs". Possible values include:
-     * 'StandardLRS', 'PremiumLRS'.
+     * 'StandardLRS', 'PremiumLRS', 'StandardSSDLRS'.
      */
     @JsonProperty(value = "storageAccountType")
     private StorageAccountType storageAccountType;
@@ -110,7 +110,7 @@ public class DataDisk {
     }
 
     /**
-     * Get if omitted, the default is "standard_lrs". Possible values include: 'StandardLRS', 'PremiumLRS'.
+     * Get if omitted, the default is "standard_lrs". Possible values include: 'StandardLRS', 'PremiumLRS', 'StandardSSDLRS'.
      *
      * @return the storageAccountType value
      */
@@ -119,7 +119,7 @@ public class DataDisk {
     }
 
     /**
-     * Set if omitted, the default is "standard_lrs". Possible values include: 'StandardLRS', 'PremiumLRS'.
+     * Set if omitted, the default is "standard_lrs". Possible values include: 'StandardLRS', 'PremiumLRS', 'StandardSSDLRS'.
      *
      * @param storageAccountType the storageAccountType value to set
      * @return the DataDisk object itself.

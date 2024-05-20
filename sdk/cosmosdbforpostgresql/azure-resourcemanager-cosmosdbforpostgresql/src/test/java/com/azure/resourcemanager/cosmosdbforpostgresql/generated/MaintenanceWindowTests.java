@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MaintenanceWindowTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MaintenanceWindow model =
-            BinaryData
-                .fromString(
-                    "{\"customWindow\":\"dxbmtqioq\",\"startHour\":1116722151,\"startMinute\":1801213143,\"dayOfWeek\":538577990}")
-                .toObject(MaintenanceWindow.class);
+        MaintenanceWindow model = BinaryData.fromString(
+            "{\"customWindow\":\"dxbmtqioq\",\"startHour\":1116722151,\"startMinute\":1801213143,\"dayOfWeek\":538577990}")
+            .toObject(MaintenanceWindow.class);
         Assertions.assertEquals("dxbmtqioq", model.customWindow());
         Assertions.assertEquals(1116722151, model.startHour());
         Assertions.assertEquals(1801213143, model.startMinute());
@@ -24,12 +22,8 @@ public final class MaintenanceWindowTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MaintenanceWindow model =
-            new MaintenanceWindow()
-                .withCustomWindow("dxbmtqioq")
-                .withStartHour(1116722151)
-                .withStartMinute(1801213143)
-                .withDayOfWeek(538577990);
+        MaintenanceWindow model = new MaintenanceWindow().withCustomWindow("dxbmtqioq").withStartHour(1116722151)
+            .withStartMinute(1801213143).withDayOfWeek(538577990);
         model = BinaryData.fromObject(model).toObject(MaintenanceWindow.class);
         Assertions.assertEquals("dxbmtqioq", model.customWindow());
         Assertions.assertEquals(1116722151, model.startHour());

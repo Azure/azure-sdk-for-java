@@ -11,68 +11,70 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.TopologyResourceInner;
 
-/** An instance of this class provides access to all the operations defined in TopologiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TopologiesClient.
+ */
 public interface TopologiesClient {
     /**
      * Gets a list that allows to build a topology view of a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list that allows to build a topology view of a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TopologyResourceInner> list();
 
     /**
      * Gets a list that allows to build a topology view of a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list that allows to build a topology view of a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list that allows to build a topology view of a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TopologyResourceInner> list(Context context);
 
     /**
      * Gets a list that allows to build a topology view of a subscription and location.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list that allows to build a topology view of a subscription and location as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TopologyResourceInner> listByHomeRegion(String ascLocation);
 
     /**
      * Gets a list that allows to build a topology view of a subscription and location.
-     *
+     * 
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list that allows to build a topology view of a subscription and location as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TopologyResourceInner> listByHomeRegion(String ascLocation, Context context);
 
     /**
      * Gets a specific topology component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param topologyResourceName Name of a topology resources collection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,16 +83,16 @@ public interface TopologiesClient {
      * @return a specific topology component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TopologyResourceInner> getWithResponse(
-        String resourceGroupName, String ascLocation, String topologyResourceName, Context context);
+    Response<TopologyResourceInner> getWithResponse(String resourceGroupName, String ascLocation,
+        String topologyResourceName, Context context);
 
     /**
      * Gets a specific topology component.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
-     *     locations.
+     * locations.
      * @param topologyResourceName Name of a topology resources collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

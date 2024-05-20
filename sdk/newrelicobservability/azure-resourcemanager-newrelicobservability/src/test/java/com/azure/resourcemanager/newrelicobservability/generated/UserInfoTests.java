@@ -11,32 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class UserInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserInfo model =
-            BinaryData
-                .fromString(
-                    "{\"firstName\":\"fvzwdzuhty\",\"lastName\":\"isdkfthwxmnteiw\",\"emailAddress\":\"pvkmijcmmxdcuf\",\"phoneNumber\":\"srp\",\"country\":\"zidnsezcxtbzsgfy\"}")
-                .toObject(UserInfo.class);
-        Assertions.assertEquals("fvzwdzuhty", model.firstName());
-        Assertions.assertEquals("isdkfthwxmnteiw", model.lastName());
-        Assertions.assertEquals("pvkmijcmmxdcuf", model.emailAddress());
-        Assertions.assertEquals("srp", model.phoneNumber());
-        Assertions.assertEquals("zidnsezcxtbzsgfy", model.country());
+        UserInfo model = BinaryData.fromString(
+            "{\"firstName\":\"cciqihnhungbwjz\",\"lastName\":\"fygxgispemvtzfk\",\"emailAddress\":\"ubljofxqe\",\"phoneNumber\":\"jaeq\",\"country\":\"qjbasvms\"}")
+            .toObject(UserInfo.class);
+        Assertions.assertEquals("cciqihnhungbwjz", model.firstName());
+        Assertions.assertEquals("fygxgispemvtzfk", model.lastName());
+        Assertions.assertEquals("ubljofxqe", model.emailAddress());
+        Assertions.assertEquals("jaeq", model.phoneNumber());
+        Assertions.assertEquals("qjbasvms", model.country());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserInfo model =
-            new UserInfo()
-                .withFirstName("fvzwdzuhty")
-                .withLastName("isdkfthwxmnteiw")
-                .withEmailAddress("pvkmijcmmxdcuf")
-                .withPhoneNumber("srp")
-                .withCountry("zidnsezcxtbzsgfy");
+        UserInfo model = new UserInfo().withFirstName("cciqihnhungbwjz").withLastName("fygxgispemvtzfk")
+            .withEmailAddress("ubljofxqe").withPhoneNumber("jaeq").withCountry("qjbasvms");
         model = BinaryData.fromObject(model).toObject(UserInfo.class);
-        Assertions.assertEquals("fvzwdzuhty", model.firstName());
-        Assertions.assertEquals("isdkfthwxmnteiw", model.lastName());
-        Assertions.assertEquals("pvkmijcmmxdcuf", model.emailAddress());
-        Assertions.assertEquals("srp", model.phoneNumber());
-        Assertions.assertEquals("zidnsezcxtbzsgfy", model.country());
+        Assertions.assertEquals("cciqihnhungbwjz", model.firstName());
+        Assertions.assertEquals("fygxgispemvtzfk", model.lastName());
+        Assertions.assertEquals("ubljofxqe", model.emailAddress());
+        Assertions.assertEquals("jaeq", model.phoneNumber());
+        Assertions.assertEquals("qjbasvms", model.country());
     }
 }

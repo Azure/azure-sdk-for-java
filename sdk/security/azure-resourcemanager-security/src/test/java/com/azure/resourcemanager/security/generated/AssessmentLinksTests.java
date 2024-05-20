@@ -10,8 +10,8 @@ import com.azure.resourcemanager.security.models.AssessmentLinks;
 public final class AssessmentLinksTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssessmentLinks model =
-            BinaryData.fromString("{\"azurePortalUri\":\"ycavodggxdbees\"}").toObject(AssessmentLinks.class);
+        AssessmentLinks model
+            = BinaryData.fromString("{\"azurePortalUri\":\"krepdqhqyhwqwem\"}").toObject(AssessmentLinks.class);
     }
 
     @org.junit.jupiter.api.Test

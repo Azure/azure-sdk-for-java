@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MigrationItemOperation. */
+/**
+ * Defines values for MigrationItemOperation.
+ */
 public final class MigrationItemOperation extends ExpandableStringEnum<MigrationItemOperation> {
-    /** Static value DisableMigration for MigrationItemOperation. */
+    /**
+     * Static value DisableMigration for MigrationItemOperation.
+     */
     public static final MigrationItemOperation DISABLE_MIGRATION = fromString("DisableMigration");
 
-    /** Static value TestMigrate for MigrationItemOperation. */
+    /**
+     * Static value TestMigrate for MigrationItemOperation.
+     */
     public static final MigrationItemOperation TEST_MIGRATE = fromString("TestMigrate");
 
-    /** Static value TestMigrateCleanup for MigrationItemOperation. */
+    /**
+     * Static value TestMigrateCleanup for MigrationItemOperation.
+     */
     public static final MigrationItemOperation TEST_MIGRATE_CLEANUP = fromString("TestMigrateCleanup");
 
-    /** Static value Migrate for MigrationItemOperation. */
+    /**
+     * Static value Migrate for MigrationItemOperation.
+     */
     public static final MigrationItemOperation MIGRATE = fromString("Migrate");
 
-    /** Static value StartResync for MigrationItemOperation. */
+    /**
+     * Static value StartResync for MigrationItemOperation.
+     */
     public static final MigrationItemOperation START_RESYNC = fromString("StartResync");
 
-    /** Static value PauseReplication for MigrationItemOperation. */
+    /**
+     * Static value PauseReplication for MigrationItemOperation.
+     */
     public static final MigrationItemOperation PAUSE_REPLICATION = fromString("PauseReplication");
 
-    /** Static value ResumeReplication for MigrationItemOperation. */
+    /**
+     * Static value ResumeReplication for MigrationItemOperation.
+     */
     public static final MigrationItemOperation RESUME_REPLICATION = fromString("ResumeReplication");
 
     /**
      * Creates a new instance of MigrationItemOperation value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class MigrationItemOperation extends ExpandableStringEnum<Migration
 
     /**
      * Creates or finds a MigrationItemOperation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MigrationItemOperation.
      */
@@ -53,7 +69,7 @@ public final class MigrationItemOperation extends ExpandableStringEnum<Migration
 
     /**
      * Gets known MigrationItemOperation values.
-     *
+     * 
      * @return known MigrationItemOperation values.
      */
     public static Collection<MigrationItemOperation> values() {

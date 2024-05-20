@@ -7,40 +7,47 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** AML file system HSM settings. */
+/**
+ * AML file system HSM settings.
+ */
 @Fluent
 public final class AmlFilesystemHsmSettings {
     /*
-     * Resource ID of storage container used for hydrating the namespace and archiving from the namespace. The resource
-     * provider must have permission to create SAS tokens on the storage account.
+     * Resource ID of storage container used for hydrating the namespace and archiving from the namespace. The resource provider must have permission to create SAS tokens on the storage account.
      */
     @JsonProperty(value = "container", required = true)
     private String container;
 
     /*
-     * Resource ID of storage container used for logging events and errors.  Must be a separate container in the same
-     * storage account as the hydration and archive container. The resource provider must have permission to create SAS
-     * tokens on the storage account.
+     * Resource ID of storage container used for logging events and errors.  Must be a separate container in the same storage account as the hydration and archive container. The resource provider must have permission to create SAS tokens on the storage account.
      */
     @JsonProperty(value = "loggingContainer", required = true)
     private String loggingContainer;
 
     /*
-     * Only blobs in the non-logging container that start with this path/prefix get hydrated into the cluster
-     * namespace.
+     * Only blobs in the non-logging container that start with this path/prefix get imported into the cluster namespace. This is only used during initial creation of the AML file system. It automatically creates an import job resource that can be deleted.
      */
     @JsonProperty(value = "importPrefix")
     private String importPrefix;
 
-    /** Creates an instance of AmlFilesystemHsmSettings class. */
+    /*
+     * Only blobs in the non-logging container that start with one of the paths/prefixes in this array get imported into the cluster namespace. This is only used during initial creation of the AML file system and has '/' as the default value. It automatically creates an import job resource that can be deleted.
+     */
+    @JsonProperty(value = "importPrefixesInitial")
+    private List<String> importPrefixesInitial;
+
+    /**
+     * Creates an instance of AmlFilesystemHsmSettings class.
+     */
     public AmlFilesystemHsmSettings() {
     }
 
     /**
      * Get the container property: Resource ID of storage container used for hydrating the namespace and archiving from
      * the namespace. The resource provider must have permission to create SAS tokens on the storage account.
-     *
+     * 
      * @return the container value.
      */
     public String container() {
@@ -50,7 +57,7 @@ public final class AmlFilesystemHsmSettings {
     /**
      * Set the container property: Resource ID of storage container used for hydrating the namespace and archiving from
      * the namespace. The resource provider must have permission to create SAS tokens on the storage account.
-     *
+     * 
      * @param container the container value to set.
      * @return the AmlFilesystemHsmSettings object itself.
      */
@@ -63,7 +70,7 @@ public final class AmlFilesystemHsmSettings {
      * Get the loggingContainer property: Resource ID of storage container used for logging events and errors. Must be a
      * separate container in the same storage account as the hydration and archive container. The resource provider must
      * have permission to create SAS tokens on the storage account.
-     *
+     * 
      * @return the loggingContainer value.
      */
     public String loggingContainer() {
@@ -74,7 +81,7 @@ public final class AmlFilesystemHsmSettings {
      * Set the loggingContainer property: Resource ID of storage container used for logging events and errors. Must be a
      * separate container in the same storage account as the hydration and archive container. The resource provider must
      * have permission to create SAS tokens on the storage account.
-     *
+     * 
      * @param loggingContainer the loggingContainer value to set.
      * @return the AmlFilesystemHsmSettings object itself.
      */
@@ -85,8 +92,9 @@ public final class AmlFilesystemHsmSettings {
 
     /**
      * Get the importPrefix property: Only blobs in the non-logging container that start with this path/prefix get
-     * hydrated into the cluster namespace.
-     *
+     * imported into the cluster namespace. This is only used during initial creation of the AML file system. It
+     * automatically creates an import job resource that can be deleted.
+     * 
      * @return the importPrefix value.
      */
     public String importPrefix() {
@@ -95,8 +103,9 @@ public final class AmlFilesystemHsmSettings {
 
     /**
      * Set the importPrefix property: Only blobs in the non-logging container that start with this path/prefix get
-     * hydrated into the cluster namespace.
-     *
+     * imported into the cluster namespace. This is only used during initial creation of the AML file system. It
+     * automatically creates an import job resource that can be deleted.
+     * 
      * @param importPrefix the importPrefix value to set.
      * @return the AmlFilesystemHsmSettings object itself.
      */
@@ -106,22 +115,46 @@ public final class AmlFilesystemHsmSettings {
     }
 
     /**
+     * Get the importPrefixesInitial property: Only blobs in the non-logging container that start with one of the
+     * paths/prefixes in this array get imported into the cluster namespace. This is only used during initial creation
+     * of the AML file system and has '/' as the default value. It automatically creates an import job resource that can
+     * be deleted.
+     * 
+     * @return the importPrefixesInitial value.
+     */
+    public List<String> importPrefixesInitial() {
+        return this.importPrefixesInitial;
+    }
+
+    /**
+     * Set the importPrefixesInitial property: Only blobs in the non-logging container that start with one of the
+     * paths/prefixes in this array get imported into the cluster namespace. This is only used during initial creation
+     * of the AML file system and has '/' as the default value. It automatically creates an import job resource that can
+     * be deleted.
+     * 
+     * @param importPrefixesInitial the importPrefixesInitial value to set.
+     * @return the AmlFilesystemHsmSettings object itself.
+     */
+    public AmlFilesystemHsmSettings withImportPrefixesInitial(List<String> importPrefixesInitial) {
+        this.importPrefixesInitial = importPrefixesInitial;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (container() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property container in model AmlFilesystemHsmSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property container in model AmlFilesystemHsmSettings"));
         }
         if (loggingContainer() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property loggingContainer in model AmlFilesystemHsmSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property loggingContainer in model AmlFilesystemHsmSettings"));
         }
     }
 

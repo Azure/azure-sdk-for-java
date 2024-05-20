@@ -339,7 +339,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCloudServiceRoleInstanceNetworkInterfaces(this.client.getEndpoint(),
@@ -386,7 +386,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -508,7 +508,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCloudServiceNetworkInterfaces(this.client.getEndpoint(),
@@ -549,7 +549,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -672,7 +672,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCloudServiceNetworkInterface(this.client.getEndpoint(),
@@ -724,7 +724,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getCloudServiceNetworkInterface(this.client.getEndpoint(), resourceGroupName, cloudServiceName,
@@ -822,7 +822,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -860,7 +860,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, apiVersion,
@@ -1030,7 +1030,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1070,7 +1070,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -1164,7 +1164,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -1209,7 +1209,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, apiVersion,
@@ -1403,7 +1403,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -1448,7 +1448,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, apiVersion,
@@ -1526,7 +1526,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1556,7 +1556,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -1641,7 +1641,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1677,7 +1677,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1777,7 +1777,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getEffectiveRouteTable(this.client.getEndpoint(), resourceGroupName,
@@ -1816,7 +1816,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getEffectiveRouteTable(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -1995,7 +1995,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listEffectiveNetworkSecurityGroups(this.client.getEndpoint(),
@@ -2034,7 +2034,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-06-01";
+        final String apiVersion = "2023-09-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listEffectiveNetworkSecurityGroups(this.client.getEndpoint(), resourceGroupName,
@@ -3050,7 +3050,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         final String expand = null;
         return getVirtualMachineScaleSetIpConfigurationWithResponseAsync(resourceGroupName, virtualMachineScaleSetName,
             virtualmachineIndex, networkInterfaceName, ipConfigurationName, expand)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class IngressStickySessionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IngressStickySessions model =
-            BinaryData.fromString("{\"affinity\":\"sticky\"}").toObject(IngressStickySessions.class);
-        Assertions.assertEquals(Affinity.STICKY, model.affinity());
+        IngressStickySessions model
+            = BinaryData.fromString("{\"affinity\":\"none\"}").toObject(IngressStickySessions.class);
+        Assertions.assertEquals(Affinity.NONE, model.affinity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IngressStickySessions model = new IngressStickySessions().withAffinity(Affinity.STICKY);
+        IngressStickySessions model = new IngressStickySessions().withAffinity(Affinity.NONE);
         model = BinaryData.fromObject(model).toObject(IngressStickySessions.class);
-        Assertions.assertEquals(Affinity.STICKY, model.affinity());
+        Assertions.assertEquals(Affinity.NONE, model.affinity());
     }
 }

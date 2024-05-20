@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountsListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountsListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"organizationId\":\"ithxqhabifpi\",\"accountId\":\"wczbys\",\"accountName\":\"pqxu\",\"region\":\"vyq\"},\"id\":\"wby\",\"name\":\"rkxvdum\",\"type\":\"grtfwvu\"}],\"nextLink\":\"gaudcc\"}")
-                .toObject(AccountsListResponse.class);
+        AccountsListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"organizationId\":\"ithxqhabifpi\",\"accountId\":\"wczbys\",\"accountName\":\"pqxu\",\"region\":\"vyq\"},\"id\":\"wby\",\"name\":\"rkxvdum\",\"type\":\"grtfwvu\"}],\"nextLink\":\"gaudcc\"}")
+            .toObject(AccountsListResponse.class);
         Assertions.assertEquals("ithxqhabifpi", model.value().get(0).organizationId());
         Assertions.assertEquals("wczbys", model.value().get(0).accountId());
         Assertions.assertEquals("pqxu", model.value().get(0).accountName());
@@ -27,17 +25,9 @@ public final class AccountsListResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountsListResponse model =
-            new AccountsListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AccountResourceInner()
-                                .withOrganizationId("ithxqhabifpi")
-                                .withAccountId("wczbys")
-                                .withAccountName("pqxu")
-                                .withRegion("vyq")))
-                .withNextLink("gaudcc");
+        AccountsListResponse model = new AccountsListResponse().withValue(Arrays.asList(new AccountResourceInner()
+            .withOrganizationId("ithxqhabifpi").withAccountId("wczbys").withAccountName("pqxu").withRegion("vyq")))
+            .withNextLink("gaudcc");
         model = BinaryData.fromObject(model).toObject(AccountsListResponse.class);
         Assertions.assertEquals("ithxqhabifpi", model.value().get(0).organizationId());
         Assertions.assertEquals("wczbys", model.value().get(0).accountId());

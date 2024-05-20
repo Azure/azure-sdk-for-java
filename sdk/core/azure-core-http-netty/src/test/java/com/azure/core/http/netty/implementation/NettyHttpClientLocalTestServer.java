@@ -36,6 +36,7 @@ public final class NettyHttpClientLocalTestServer {
     public static final String EXPECTED_HEADER = "userAgent";
     public static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
     public static final String PROXY_TO_ADDRESS = "/proxyToAddress";
+    public static final String TIMEOUT = "/timeout";
 
     public static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     public static final byte[] LONG_BODY = createLongBody();
@@ -79,8 +80,9 @@ public final class NettyHttpClientLocalTestServer {
             } else if (get && DEFAULT_PATH.equals(path)) {
                 resp.setStatus(200);
             } else if (get && PREBUILT_CLIENT_PATH.equals(path)) {
-                boolean hasCookie = req.getCookies() != null && Arrays.stream(req.getCookies())
-                    .anyMatch(cookie -> "test".equals(cookie.getName()) && "success".equals(cookie.getValue()));
+                boolean hasCookie = req.getCookies() != null
+                    && Arrays.stream(req.getCookies())
+                        .anyMatch(cookie -> "test".equals(cookie.getName()) && "success".equals(cookie.getValue()));
 
                 // Mocked endpoint to test building a client with a set port.
                 if (!hasCookie) {
@@ -133,6 +135,16 @@ public final class NettyHttpClientLocalTestServer {
                 resp.getHttpOutput().write("I'm a teapot".getBytes(StandardCharsets.UTF_8));
                 resp.getHttpOutput().flush();
                 resp.getHttpOutput().complete(Callback.NOOP);
+            } else if (get && TIMEOUT.equals(path)) {
+                try {
+                    Thread.sleep(5000);
+                    resp.setStatus(200);
+                    resp.getHttpOutput().write(SHORT_BODY);
+                    resp.getHttpOutput().flush();
+                    resp.getHttpOutput().complete(Callback.NOOP);
+                } catch (InterruptedException e) {
+                    throw new ServletException(e);
+                }
             } else {
                 throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
             }
@@ -150,8 +162,7 @@ public final class NettyHttpClientLocalTestServer {
         byte[] longBody = new byte[duplicateBytes.length * 100000];
 
         for (int i = 0; i < 100000; i++) {
-            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length,
-                duplicateBytes.length);
+            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
         }
 
         return longBody;

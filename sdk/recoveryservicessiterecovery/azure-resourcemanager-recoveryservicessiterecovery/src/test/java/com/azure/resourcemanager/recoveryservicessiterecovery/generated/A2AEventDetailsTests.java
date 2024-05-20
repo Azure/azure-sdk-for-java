@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class A2AEventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2AEventDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"A2A\",\"protectedItemName\":\"skndnelqkaadlknw\",\"fabricObjectId\":\"anniyopetxivcnr\",\"fabricName\":\"xnucaephblkwqp\",\"fabricLocation\":\"vbqsdt\",\"remoteFabricName\":\"bctvivuzqym\",\"remoteFabricLocation\":\"owog\"}")
-                .toObject(A2AEventDetails.class);
+        A2AEventDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"A2A\",\"protectedItemName\":\"skndnelqkaadlknw\",\"fabricObjectId\":\"anniyopetxivcnr\",\"fabricName\":\"xnucaephblkwqp\",\"fabricLocation\":\"vbqsdt\",\"remoteFabricName\":\"bctvivuzqym\",\"remoteFabricLocation\":\"owog\"}")
+            .toObject(A2AEventDetails.class);
         Assertions.assertEquals("skndnelqkaadlknw", model.protectedItemName());
         Assertions.assertEquals("anniyopetxivcnr", model.fabricObjectId());
         Assertions.assertEquals("xnucaephblkwqp", model.fabricName());
@@ -26,14 +24,9 @@ public final class A2AEventDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2AEventDetails model =
-            new A2AEventDetails()
-                .withProtectedItemName("skndnelqkaadlknw")
-                .withFabricObjectId("anniyopetxivcnr")
-                .withFabricName("xnucaephblkwqp")
-                .withFabricLocation("vbqsdt")
-                .withRemoteFabricName("bctvivuzqym")
-                .withRemoteFabricLocation("owog");
+        A2AEventDetails model = new A2AEventDetails().withProtectedItemName("skndnelqkaadlknw")
+            .withFabricObjectId("anniyopetxivcnr").withFabricName("xnucaephblkwqp").withFabricLocation("vbqsdt")
+            .withRemoteFabricName("bctvivuzqym").withRemoteFabricLocation("owog");
         model = BinaryData.fromObject(model).toObject(A2AEventDetails.class);
         Assertions.assertEquals("skndnelqkaadlknw", model.protectedItemName());
         Assertions.assertEquals("anniyopetxivcnr", model.fabricObjectId());

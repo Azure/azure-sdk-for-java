@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The details about the project represented by the security connector. */
+/**
+ * The details about the project represented by the security connector.
+ */
 @Fluent
 public final class GcpProjectDetails {
     /*
@@ -34,13 +36,15 @@ public final class GcpProjectDetails {
     @JsonProperty(value = "projectName", access = JsonProperty.Access.WRITE_ONLY)
     private String projectName;
 
-    /** Creates an instance of GcpProjectDetails class. */
+    /**
+     * Creates an instance of GcpProjectDetails class.
+     */
     public GcpProjectDetails() {
     }
 
     /**
      * Get the projectNumber property: The unique GCP Project number.
-     *
+     * 
      * @return the projectNumber value.
      */
     public String projectNumber() {
@@ -49,7 +53,7 @@ public final class GcpProjectDetails {
 
     /**
      * Set the projectNumber property: The unique GCP Project number.
-     *
+     * 
      * @param projectNumber the projectNumber value to set.
      * @return the GcpProjectDetails object itself.
      */
@@ -60,7 +64,7 @@ public final class GcpProjectDetails {
 
     /**
      * Get the projectId property: The GCP Project id.
-     *
+     * 
      * @return the projectId value.
      */
     public String projectId() {
@@ -69,7 +73,7 @@ public final class GcpProjectDetails {
 
     /**
      * Set the projectId property: The GCP Project id.
-     *
+     * 
      * @param projectId the projectId value to set.
      * @return the GcpProjectDetails object itself.
      */
@@ -80,7 +84,7 @@ public final class GcpProjectDetails {
 
     /**
      * Get the workloadIdentityPoolId property: The GCP workload identity federation pool id.
-     *
+     * 
      * @return the workloadIdentityPoolId value.
      */
     public String workloadIdentityPoolId() {
@@ -89,7 +93,7 @@ public final class GcpProjectDetails {
 
     /**
      * Get the projectName property: GCP project name.
-     *
+     * 
      * @return the projectName value.
      */
     public String projectName() {
@@ -98,7 +102,7 @@ public final class GcpProjectDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

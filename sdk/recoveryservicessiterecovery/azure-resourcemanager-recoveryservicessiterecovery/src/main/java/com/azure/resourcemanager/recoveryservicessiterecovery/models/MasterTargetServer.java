@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Details of a Master Target Server. */
+/**
+ * Details of a Master Target Server.
+ */
 @Fluent
 public final class MasterTargetServer {
     /*
@@ -120,13 +122,15 @@ public final class MasterTargetServer {
     @JsonProperty(value = "marsAgentVersionDetails")
     private VersionDetails marsAgentVersionDetails;
 
-    /** Creates an instance of MasterTargetServer class. */
+    /**
+     * Creates an instance of MasterTargetServer class.
+     */
     public MasterTargetServer() {
     }
 
     /**
      * Get the id property: The server Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -135,7 +139,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the id property: The server Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -146,7 +150,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the ipAddress property: The IP address of the server.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -155,7 +159,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the ipAddress property: The IP address of the server.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -166,7 +170,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the name property: The server name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -175,7 +179,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the name property: The server name.
-     *
+     * 
      * @param name the name value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -186,7 +190,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the osType property: The OS type of the server.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -195,7 +199,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the osType property: The OS type of the server.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -206,7 +210,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the agentVersion property: The version of the scout component on the server.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -215,7 +219,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the agentVersion property: The version of the scout component on the server.
-     *
+     * 
      * @param agentVersion the agentVersion value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -226,7 +230,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the lastHeartbeat property: The last heartbeat received from the server.
-     *
+     * 
      * @return the lastHeartbeat value.
      */
     public OffsetDateTime lastHeartbeat() {
@@ -235,7 +239,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the lastHeartbeat property: The last heartbeat received from the server.
-     *
+     * 
      * @param lastHeartbeat the lastHeartbeat value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -246,7 +250,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the versionStatus property: Version status.
-     *
+     * 
      * @return the versionStatus value.
      */
     public String versionStatus() {
@@ -255,7 +259,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the versionStatus property: Version status.
-     *
+     * 
      * @param versionStatus the versionStatus value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -266,7 +270,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the retentionVolumes property: The retention volumes of Master target Server.
-     *
+     * 
      * @return the retentionVolumes value.
      */
     public List<RetentionVolume> retentionVolumes() {
@@ -275,7 +279,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the retentionVolumes property: The retention volumes of Master target Server.
-     *
+     * 
      * @param retentionVolumes the retentionVolumes value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -286,7 +290,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the dataStores property: The list of data stores in the fabric.
-     *
+     * 
      * @return the dataStores value.
      */
     public List<DataStore> dataStores() {
@@ -295,7 +299,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the dataStores property: The list of data stores in the fabric.
-     *
+     * 
      * @param dataStores the dataStores value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -306,7 +310,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the validationErrors property: Validation errors.
-     *
+     * 
      * @return the validationErrors value.
      */
     public List<HealthError> validationErrors() {
@@ -315,7 +319,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the validationErrors property: Validation errors.
-     *
+     * 
      * @param validationErrors the validationErrors value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -326,7 +330,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the healthErrors property: Health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -335,7 +339,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the healthErrors property: Health errors.
-     *
+     * 
      * @param healthErrors the healthErrors value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -346,7 +350,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the diskCount property: Disk count of the master target.
-     *
+     * 
      * @return the diskCount value.
      */
     public Integer diskCount() {
@@ -355,7 +359,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the diskCount property: Disk count of the master target.
-     *
+     * 
      * @param diskCount the diskCount value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -366,7 +370,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the osVersion property: OS Version of the master target.
-     *
+     * 
      * @return the osVersion value.
      */
     public String osVersion() {
@@ -375,7 +379,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the osVersion property: OS Version of the master target.
-     *
+     * 
      * @param osVersion the osVersion value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -386,7 +390,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the agentExpiryDate property: Agent expiry date.
-     *
+     * 
      * @return the agentExpiryDate value.
      */
     public OffsetDateTime agentExpiryDate() {
@@ -395,7 +399,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the agentExpiryDate property: Agent expiry date.
-     *
+     * 
      * @param agentExpiryDate the agentExpiryDate value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -406,7 +410,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the marsAgentVersion property: MARS agent version.
-     *
+     * 
      * @return the marsAgentVersion value.
      */
     public String marsAgentVersion() {
@@ -415,7 +419,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the marsAgentVersion property: MARS agent version.
-     *
+     * 
      * @param marsAgentVersion the marsAgentVersion value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -426,7 +430,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the marsAgentExpiryDate property: MARS agent expiry date.
-     *
+     * 
      * @return the marsAgentExpiryDate value.
      */
     public OffsetDateTime marsAgentExpiryDate() {
@@ -435,7 +439,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the marsAgentExpiryDate property: MARS agent expiry date.
-     *
+     * 
      * @param marsAgentExpiryDate the marsAgentExpiryDate value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -446,7 +450,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the agentVersionDetails property: Agent version details.
-     *
+     * 
      * @return the agentVersionDetails value.
      */
     public VersionDetails agentVersionDetails() {
@@ -455,7 +459,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the agentVersionDetails property: Agent version details.
-     *
+     * 
      * @param agentVersionDetails the agentVersionDetails value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -466,7 +470,7 @@ public final class MasterTargetServer {
 
     /**
      * Get the marsAgentVersionDetails property: Mars agent version details.
-     *
+     * 
      * @return the marsAgentVersionDetails value.
      */
     public VersionDetails marsAgentVersionDetails() {
@@ -475,7 +479,7 @@ public final class MasterTargetServer {
 
     /**
      * Set the marsAgentVersionDetails property: Mars agent version details.
-     *
+     * 
      * @param marsAgentVersionDetails the marsAgentVersionDetails value to set.
      * @return the MasterTargetServer object itself.
      */
@@ -486,7 +490,7 @@ public final class MasterTargetServer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -15,7 +15,7 @@ import java.util.Map;
 public final class IpGroupsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/IpGroupsCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/IpGroupsCreate.json
      */
     /**
      * Sample code: CreateOrUpdate_IpGroups.

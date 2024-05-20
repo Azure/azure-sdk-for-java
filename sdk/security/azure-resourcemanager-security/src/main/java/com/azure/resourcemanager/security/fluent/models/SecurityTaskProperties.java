@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.models.SecurityTaskParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Describes properties of a task. */
+/**
+ * Describes properties of a task.
+ */
 @Fluent
 public final class SecurityTaskProperties {
     /*
@@ -42,13 +44,15 @@ public final class SecurityTaskProperties {
     @JsonProperty(value = "subState", access = JsonProperty.Access.WRITE_ONLY)
     private String subState;
 
-    /** Creates an instance of SecurityTaskProperties class. */
+    /**
+     * Creates an instance of SecurityTaskProperties class.
+     */
     public SecurityTaskProperties() {
     }
 
     /**
      * Get the state property: State of the task (Active, Resolved etc.).
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -57,7 +61,7 @@ public final class SecurityTaskProperties {
 
     /**
      * Get the creationTimeUtc property: The time this task was discovered in UTC.
-     *
+     * 
      * @return the creationTimeUtc value.
      */
     public OffsetDateTime creationTimeUtc() {
@@ -67,7 +71,7 @@ public final class SecurityTaskProperties {
     /**
      * Get the securityTaskParameters property: Changing set of properties, depending on the task type that is derived
      * from the name field.
-     *
+     * 
      * @return the securityTaskParameters value.
      */
     public SecurityTaskParameters securityTaskParameters() {
@@ -77,7 +81,7 @@ public final class SecurityTaskProperties {
     /**
      * Set the securityTaskParameters property: Changing set of properties, depending on the task type that is derived
      * from the name field.
-     *
+     * 
      * @param securityTaskParameters the securityTaskParameters value to set.
      * @return the SecurityTaskProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class SecurityTaskProperties {
 
     /**
      * Get the lastStateChangeTimeUtc property: The time this task's details were last changed in UTC.
-     *
+     * 
      * @return the lastStateChangeTimeUtc value.
      */
     public OffsetDateTime lastStateChangeTimeUtc() {
@@ -97,7 +101,7 @@ public final class SecurityTaskProperties {
 
     /**
      * Get the subState property: Additional data on the state of the task.
-     *
+     * 
      * @return the subState value.
      */
     public String subState() {
@@ -106,7 +110,7 @@ public final class SecurityTaskProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

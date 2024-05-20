@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Various states of the SSO resource. */
+/**
+ * Various states of the SSO resource.
+ */
 public final class SingleSignOnStates extends ExpandableStringEnum<SingleSignOnStates> {
-    /** Static value Initial for SingleSignOnStates. */
+    /**
+     * Static value Initial for SingleSignOnStates.
+     */
     public static final SingleSignOnStates INITIAL = fromString("Initial");
 
-    /** Static value Enable for SingleSignOnStates. */
+    /**
+     * Static value Enable for SingleSignOnStates.
+     */
     public static final SingleSignOnStates ENABLE = fromString("Enable");
 
-    /** Static value Disable for SingleSignOnStates. */
+    /**
+     * Static value Disable for SingleSignOnStates.
+     */
     public static final SingleSignOnStates DISABLE = fromString("Disable");
 
-    /** Static value Existing for SingleSignOnStates. */
+    /**
+     * Static value Existing for SingleSignOnStates.
+     */
     public static final SingleSignOnStates EXISTING = fromString("Existing");
 
     /**
      * Creates a new instance of SingleSignOnStates value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class SingleSignOnStates extends ExpandableStringEnum<SingleSignOnS
 
     /**
      * Creates or finds a SingleSignOnStates from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SingleSignOnStates.
      */
@@ -44,7 +54,7 @@ public final class SingleSignOnStates extends ExpandableStringEnum<SingleSignOnS
 
     /**
      * Gets known SingleSignOnStates values.
-     *
+     * 
      * @return known SingleSignOnStates values.
      */
     public static Collection<SingleSignOnStates> values() {

@@ -21,8 +21,7 @@ public final class ReplicationEventsImpl implements ReplicationEvents {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    public ReplicationEventsImpl(
-        ReplicationEventsClient innerClient,
+    public ReplicationEventsImpl(ReplicationEventsClient innerClient,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,23 +29,20 @@ public final class ReplicationEventsImpl implements ReplicationEvents {
 
     public PagedIterable<Event> list(String resourceName, String resourceGroupName) {
         PagedIterable<EventInner> inner = this.serviceClient().list(resourceName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Event> list(String resourceName, String resourceGroupName, String filter, Context context) {
         PagedIterable<EventInner> inner = this.serviceClient().list(resourceName, resourceGroupName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventImpl(inner1, this.manager()));
     }
 
-    public Response<Event> getWithResponse(
-        String resourceName, String resourceGroupName, String eventName, Context context) {
-        Response<EventInner> inner =
-            this.serviceClient().getWithResponse(resourceName, resourceGroupName, eventName, context);
+    public Response<Event> getWithResponse(String resourceName, String resourceGroupName, String eventName,
+        Context context) {
+        Response<EventInner> inner
+            = this.serviceClient().getWithResponse(resourceName, resourceGroupName, eventName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EventImpl(inner.getValue(), this.manager()));
         } else {
             return null;

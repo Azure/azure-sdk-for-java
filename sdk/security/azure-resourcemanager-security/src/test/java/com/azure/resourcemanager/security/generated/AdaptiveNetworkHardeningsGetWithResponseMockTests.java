@@ -6,65 +6,46 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.AdaptiveNetworkHardening;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.security.models.Direction;
+import com.azure.resourcemanager.security.models.TransportProtocol;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AdaptiveNetworkHardeningsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"rules\":[{\"name\":\"mxz\",\"direction\":\"Inbound\",\"destinationPort\":1816251612,\"protocols\":[\"TCP\"],\"ipAddresses\":[\"q\"]},{\"name\":\"tgqrqkkvfygkuobp\",\"direction\":\"Outbound\",\"destinationPort\":1941543319,\"protocols\":[\"TCP\",\"UDP\"],\"ipAddresses\":[\"xiewhpnyjtuq\",\"zyvextchslro\"]},{\"name\":\"owuwhd\",\"direction\":\"Outbound\",\"destinationPort\":296850539,\"protocols\":[\"UDP\",\"TCP\",\"UDP\"],\"ipAddresses\":[\"ichgkudsozod\"]},{\"name\":\"cfqoyxryqycymz\",\"direction\":\"Outbound\",\"destinationPort\":1171206411,\"protocols\":[\"TCP\",\"TCP\",\"TCP\"],\"ipAddresses\":[\"dheadnyciwz\"]}],\"rulesCalculationTime\":\"2021-04-12T11:35:56Z\",\"effectiveNetworkSecurityGroups\":[{\"networkInterface\":\"adfgesvzohabbriz\",\"networkSecurityGroups\":[\"jrsbg\",\"iljqovqmx\"]},{\"networkInterface\":\"xo\",\"networkSecurityGroups\":[\"nkiu\",\"kgltsxooiobhieb\"]},{\"networkInterface\":\"ptlsrvqzgaqs\",\"networkSecurityGroups\":[\"njlvgrghnh\"]},{\"networkInterface\":\"xrqhj\",\"networkSecurityGroups\":[\"pesw\",\"nhqkgebzqz\"]}]},\"id\":\"csviu\",\"name\":\"ojzdvmsnao\",\"type\":\"xsxoxvimdvet\"}";
 
-        String responseStr =
-            "{\"properties\":{\"rules\":[],\"rulesCalculationTime\":\"2021-08-13T04:35:03Z\",\"effectiveNetworkSecurityGroups\":[]},\"id\":\"ybkekym\",\"name\":\"fztsi\",\"type\":\"sc\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AdaptiveNetworkHardening response = manager.adaptiveNetworkHardenings()
+            .getWithResponse("pdwzjggkwdep", "mz", "ayfiq", "idxcorjv", "dyhgtrttcuayiq",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AdaptiveNetworkHardening response =
-            manager
-                .adaptiveNetworkHardenings()
-                .getWithResponse("ktwtk", "ih", "pfliwo", "nguuzhwvla", "p", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-13T04:35:03Z"), response.rulesCalculationTime());
+        Assertions.assertEquals("mxz", response.rules().get(0).name());
+        Assertions.assertEquals(Direction.INBOUND, response.rules().get(0).direction());
+        Assertions.assertEquals(1816251612, response.rules().get(0).destinationPort());
+        Assertions.assertEquals(TransportProtocol.TCP, response.rules().get(0).protocols().get(0));
+        Assertions.assertEquals("q", response.rules().get(0).ipAddresses().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T11:35:56Z"), response.rulesCalculationTime());
+        Assertions.assertEquals("adfgesvzohabbriz",
+            response.effectiveNetworkSecurityGroups().get(0).networkInterface());
+        Assertions.assertEquals("jrsbg",
+            response.effectiveNetworkSecurityGroups().get(0).networkSecurityGroups().get(0));
     }
 }

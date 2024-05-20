@@ -16,7 +16,7 @@ import java.util.Arrays;
  */
 public final class NetworkSecurityGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
      * NetworkSecurityGroupCreateWithRule.json
      */
     /**
@@ -36,7 +36,7 @@ public final class NetworkSecurityGroupsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkSecurityGroupCreate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkSecurityGroupCreate.
      * json
      */
     /**

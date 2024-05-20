@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The data export setting properties. */
+/**
+ * The data export setting properties.
+ */
 @Fluent
 public final class DataExportSettingProperties {
     /*
@@ -16,13 +18,15 @@ public final class DataExportSettingProperties {
     @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
-    /** Creates an instance of DataExportSettingProperties class. */
+    /**
+     * Creates an instance of DataExportSettingProperties class.
+     */
     public DataExportSettingProperties() {
     }
 
     /**
      * Get the enabled property: Is the data export setting enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -31,7 +35,7 @@ public final class DataExportSettingProperties {
 
     /**
      * Set the enabled property: Is the data export setting enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the DataExportSettingProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class DataExportSettingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

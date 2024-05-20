@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery plan HVR Azure failover input. */
+/**
+ * Recovery plan HVR Azure failover input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVReplicaAzure")
 @Fluent
@@ -32,13 +34,15 @@ public final class RecoveryPlanHyperVReplicaAzureFailoverInput extends RecoveryP
     @JsonProperty(value = "recoveryPointType")
     private HyperVReplicaAzureRpRecoveryPointType recoveryPointType;
 
-    /** Creates an instance of RecoveryPlanHyperVReplicaAzureFailoverInput class. */
+    /**
+     * Creates an instance of RecoveryPlanHyperVReplicaAzureFailoverInput class.
+     */
     public RecoveryPlanHyperVReplicaAzureFailoverInput() {
     }
 
     /**
      * Get the primaryKekCertificatePfx property: The primary KEK certificate PFX.
-     *
+     * 
      * @return the primaryKekCertificatePfx value.
      */
     public String primaryKekCertificatePfx() {
@@ -47,7 +51,7 @@ public final class RecoveryPlanHyperVReplicaAzureFailoverInput extends RecoveryP
 
     /**
      * Set the primaryKekCertificatePfx property: The primary KEK certificate PFX.
-     *
+     * 
      * @param primaryKekCertificatePfx the primaryKekCertificatePfx value to set.
      * @return the RecoveryPlanHyperVReplicaAzureFailoverInput object itself.
      */
@@ -58,7 +62,7 @@ public final class RecoveryPlanHyperVReplicaAzureFailoverInput extends RecoveryP
 
     /**
      * Get the secondaryKekCertificatePfx property: The secondary KEK certificate PFX.
-     *
+     * 
      * @return the secondaryKekCertificatePfx value.
      */
     public String secondaryKekCertificatePfx() {
@@ -67,19 +71,19 @@ public final class RecoveryPlanHyperVReplicaAzureFailoverInput extends RecoveryP
 
     /**
      * Set the secondaryKekCertificatePfx property: The secondary KEK certificate PFX.
-     *
+     * 
      * @param secondaryKekCertificatePfx the secondaryKekCertificatePfx value to set.
      * @return the RecoveryPlanHyperVReplicaAzureFailoverInput object itself.
      */
-    public RecoveryPlanHyperVReplicaAzureFailoverInput withSecondaryKekCertificatePfx(
-        String secondaryKekCertificatePfx) {
+    public RecoveryPlanHyperVReplicaAzureFailoverInput
+        withSecondaryKekCertificatePfx(String secondaryKekCertificatePfx) {
         this.secondaryKekCertificatePfx = secondaryKekCertificatePfx;
         return this;
     }
 
     /**
      * Get the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @return the recoveryPointType value.
      */
     public HyperVReplicaAzureRpRecoveryPointType recoveryPointType() {
@@ -88,19 +92,19 @@ public final class RecoveryPlanHyperVReplicaAzureFailoverInput extends RecoveryP
 
     /**
      * Set the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @param recoveryPointType the recoveryPointType value to set.
      * @return the RecoveryPlanHyperVReplicaAzureFailoverInput object itself.
      */
-    public RecoveryPlanHyperVReplicaAzureFailoverInput withRecoveryPointType(
-        HyperVReplicaAzureRpRecoveryPointType recoveryPointType) {
+    public RecoveryPlanHyperVReplicaAzureFailoverInput
+        withRecoveryPointType(HyperVReplicaAzureRpRecoveryPointType recoveryPointType) {
         this.recoveryPointType = recoveryPointType;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

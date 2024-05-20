@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.newrelicobservability.models.LogRules;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The type used for update operations of the TagRule. */
+/**
+ * The type used for update operations of the TagRule.
+ */
 @Fluent
 public final class TagRuleUpdateInner {
     /*
@@ -17,13 +19,15 @@ public final class TagRuleUpdateInner {
     @JsonProperty(value = "properties")
     private TagRuleUpdatePropertiesInner innerProperties;
 
-    /** Creates an instance of TagRuleUpdateInner class. */
+    /**
+     * Creates an instance of TagRuleUpdateInner class.
+     */
     public TagRuleUpdateInner() {
     }
 
     /**
      * Get the innerProperties property: The updatable properties of the TagRule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TagRuleUpdatePropertiesInner innerProperties() {
@@ -32,7 +36,7 @@ public final class TagRuleUpdateInner {
 
     /**
      * Get the logRules property: Set of rules for sending logs for the Monitor resource.
-     *
+     * 
      * @return the logRules value.
      */
     public LogRules logRules() {
@@ -41,7 +45,7 @@ public final class TagRuleUpdateInner {
 
     /**
      * Set the logRules property: Set of rules for sending logs for the Monitor resource.
-     *
+     * 
      * @param logRules the logRules value to set.
      * @return the TagRuleUpdateInner object itself.
      */
@@ -55,7 +59,7 @@ public final class TagRuleUpdateInner {
 
     /**
      * Get the metricRules property: Set of rules for sending metrics for the Monitor resource.
-     *
+     * 
      * @return the metricRules value.
      */
     public MetricRulesInner metricRules() {
@@ -64,7 +68,7 @@ public final class TagRuleUpdateInner {
 
     /**
      * Set the metricRules property: Set of rules for sending metrics for the Monitor resource.
-     *
+     * 
      * @param metricRules the metricRules value to set.
      * @return the TagRuleUpdateInner object itself.
      */
@@ -78,7 +82,7 @@ public final class TagRuleUpdateInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

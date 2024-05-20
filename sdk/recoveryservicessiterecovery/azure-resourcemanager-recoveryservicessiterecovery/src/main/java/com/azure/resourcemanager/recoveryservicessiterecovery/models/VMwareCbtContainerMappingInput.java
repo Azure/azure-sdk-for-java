@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** VMwareCbt container mapping input. */
+/**
+ * VMwareCbt container mapping input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMwareCbt")
 @Fluent
@@ -51,13 +53,15 @@ public final class VMwareCbtContainerMappingInput extends ReplicationProviderSpe
     @JsonProperty(value = "targetLocation", required = true)
     private String targetLocation;
 
-    /** Creates an instance of VMwareCbtContainerMappingInput class. */
+    /**
+     * Creates an instance of VMwareCbtContainerMappingInput class.
+     */
     public VMwareCbtContainerMappingInput() {
     }
 
     /**
      * Get the keyVaultId property: The target key vault ARM Id.
-     *
+     * 
      * @return the keyVaultId value.
      */
     public String keyVaultId() {
@@ -66,7 +70,7 @@ public final class VMwareCbtContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Set the keyVaultId property: The target key vault ARM Id.
-     *
+     * 
      * @param keyVaultId the keyVaultId value to set.
      * @return the VMwareCbtContainerMappingInput object itself.
      */
@@ -77,7 +81,7 @@ public final class VMwareCbtContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Get the keyVaultUri property: The target key vault URL.
-     *
+     * 
      * @return the keyVaultUri value.
      */
     public String keyVaultUri() {
@@ -86,7 +90,7 @@ public final class VMwareCbtContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Set the keyVaultUri property: The target key vault URL.
-     *
+     * 
      * @param keyVaultUri the keyVaultUri value to set.
      * @return the VMwareCbtContainerMappingInput object itself.
      */
@@ -97,7 +101,7 @@ public final class VMwareCbtContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Get the storageAccountId property: The storage account ARM Id.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -106,7 +110,7 @@ public final class VMwareCbtContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Set the storageAccountId property: The storage account ARM Id.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the VMwareCbtContainerMappingInput object itself.
      */
@@ -117,7 +121,7 @@ public final class VMwareCbtContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Get the storageAccountSasSecretName property: The secret name of the storage account.
-     *
+     * 
      * @return the storageAccountSasSecretName value.
      */
     public String storageAccountSasSecretName() {
@@ -126,7 +130,7 @@ public final class VMwareCbtContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Set the storageAccountSasSecretName property: The secret name of the storage account.
-     *
+     * 
      * @param storageAccountSasSecretName the storageAccountSasSecretName value to set.
      * @return the VMwareCbtContainerMappingInput object itself.
      */
@@ -137,7 +141,7 @@ public final class VMwareCbtContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Get the serviceBusConnectionStringSecretName property: The secret name of the service bus connection string.
-     *
+     * 
      * @return the serviceBusConnectionStringSecretName value.
      */
     public String serviceBusConnectionStringSecretName() {
@@ -146,19 +150,19 @@ public final class VMwareCbtContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Set the serviceBusConnectionStringSecretName property: The secret name of the service bus connection string.
-     *
+     * 
      * @param serviceBusConnectionStringSecretName the serviceBusConnectionStringSecretName value to set.
      * @return the VMwareCbtContainerMappingInput object itself.
      */
-    public VMwareCbtContainerMappingInput withServiceBusConnectionStringSecretName(
-        String serviceBusConnectionStringSecretName) {
+    public VMwareCbtContainerMappingInput
+        withServiceBusConnectionStringSecretName(String serviceBusConnectionStringSecretName) {
         this.serviceBusConnectionStringSecretName = serviceBusConnectionStringSecretName;
         return this;
     }
 
     /**
      * Get the targetLocation property: The target location.
-     *
+     * 
      * @return the targetLocation value.
      */
     public String targetLocation() {
@@ -167,7 +171,7 @@ public final class VMwareCbtContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Set the targetLocation property: The target location.
-     *
+     * 
      * @param targetLocation the targetLocation value to set.
      * @return the VMwareCbtContainerMappingInput object itself.
      */
@@ -178,23 +182,19 @@ public final class VMwareCbtContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (storageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccountId in model VMwareCbtContainerMappingInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageAccountId in model VMwareCbtContainerMappingInput"));
         }
         if (targetLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetLocation in model VMwareCbtContainerMappingInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetLocation in model VMwareCbtContainerMappingInput"));
         }
     }
 

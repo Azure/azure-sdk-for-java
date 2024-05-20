@@ -6,35 +6,40 @@ package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of a NotificationHub MpnsCredential. */
+/**
+ * Description of a NotificationHub MpnsCredential.
+ */
 @Fluent
 public final class MpnsCredentialProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MpnsCredentialProperties.class);
-
     /*
-     * The MPNS certificate.
+     * Gets or sets the MPNS certificate.
      */
     @JsonProperty(value = "mpnsCertificate")
     private String mpnsCertificate;
 
     /*
-     * The certificate key for this credential.
+     * Gets or sets the certificate key for this credential.
      */
     @JsonProperty(value = "certificateKey")
     private String certificateKey;
 
     /*
-     * The MPNS certificate Thumbprint
+     * Gets or sets the MPNS certificate Thumbprint
      */
     @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /**
-     * Get the mpnsCertificate property: The MPNS certificate.
-     *
+     * Creates an instance of MpnsCredentialProperties class.
+     */
+    public MpnsCredentialProperties() {
+    }
+
+    /**
+     * Get the mpnsCertificate property: Gets or sets the MPNS certificate.
+     * 
      * @return the mpnsCertificate value.
      */
     public String mpnsCertificate() {
@@ -42,8 +47,8 @@ public final class MpnsCredentialProperties {
     }
 
     /**
-     * Set the mpnsCertificate property: The MPNS certificate.
-     *
+     * Set the mpnsCertificate property: Gets or sets the MPNS certificate.
+     * 
      * @param mpnsCertificate the mpnsCertificate value to set.
      * @return the MpnsCredentialProperties object itself.
      */
@@ -53,8 +58,8 @@ public final class MpnsCredentialProperties {
     }
 
     /**
-     * Get the certificateKey property: The certificate key for this credential.
-     *
+     * Get the certificateKey property: Gets or sets the certificate key for this credential.
+     * 
      * @return the certificateKey value.
      */
     public String certificateKey() {
@@ -62,8 +67,8 @@ public final class MpnsCredentialProperties {
     }
 
     /**
-     * Set the certificateKey property: The certificate key for this credential.
-     *
+     * Set the certificateKey property: Gets or sets the certificate key for this credential.
+     * 
      * @param certificateKey the certificateKey value to set.
      * @return the MpnsCredentialProperties object itself.
      */
@@ -73,8 +78,8 @@ public final class MpnsCredentialProperties {
     }
 
     /**
-     * Get the thumbprint property: The MPNS certificate Thumbprint.
-     *
+     * Get the thumbprint property: Gets or sets the MPNS certificate Thumbprint.
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -82,8 +87,8 @@ public final class MpnsCredentialProperties {
     }
 
     /**
-     * Set the thumbprint property: The MPNS certificate Thumbprint.
-     *
+     * Set the thumbprint property: Gets or sets the MPNS certificate Thumbprint.
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the MpnsCredentialProperties object itself.
      */
@@ -94,9 +99,23 @@ public final class MpnsCredentialProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (mpnsCertificate() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property mpnsCertificate in model MpnsCredentialProperties"));
+        }
+        if (certificateKey() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property certificateKey in model MpnsCredentialProperties"));
+        }
+        if (thumbprint() == null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property thumbprint in model MpnsCredentialProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MpnsCredentialProperties.class);
 }

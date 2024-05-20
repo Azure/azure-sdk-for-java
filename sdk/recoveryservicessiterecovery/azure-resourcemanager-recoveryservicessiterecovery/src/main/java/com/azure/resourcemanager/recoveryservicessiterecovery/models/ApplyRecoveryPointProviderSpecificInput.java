@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Provider specific input for apply recovery point. */
+/**
+ * Provider specific input for apply recovery point.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -23,17 +25,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = A2ACrossClusterMigrationApplyRecoveryPointInput.class),
     @JsonSubTypes.Type(name = "HyperVReplicaAzure", value = HyperVReplicaAzureApplyRecoveryPointInput.class),
     @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2ApplyRecoveryPointInput.class),
-    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmApplyRecoveryPointInput.class)
-})
+    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmApplyRecoveryPointInput.class) })
 @Immutable
 public class ApplyRecoveryPointProviderSpecificInput {
-    /** Creates an instance of ApplyRecoveryPointProviderSpecificInput class. */
+    /**
+     * Creates an instance of ApplyRecoveryPointProviderSpecificInput class.
+     */
     public ApplyRecoveryPointProviderSpecificInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

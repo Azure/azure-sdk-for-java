@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The node image upgrade to be applied to the target nodes in update run. */
+/**
+ * The node image upgrade to be applied to the target nodes in update run.
+ */
 @Fluent
 public final class NodeImageSelection {
     /*
@@ -17,13 +19,15 @@ public final class NodeImageSelection {
     @JsonProperty(value = "type", required = true)
     private NodeImageSelectionType type;
 
-    /** Creates an instance of NodeImageSelection class. */
+    /**
+     * Creates an instance of NodeImageSelection class.
+     */
     public NodeImageSelection() {
     }
 
     /**
      * Get the type property: The node image upgrade type.
-     *
+     * 
      * @return the type value.
      */
     public NodeImageSelectionType type() {
@@ -32,7 +36,7 @@ public final class NodeImageSelection {
 
     /**
      * Set the type property: The node image upgrade type.
-     *
+     * 
      * @param type the type value to set.
      * @return the NodeImageSelection object itself.
      */
@@ -43,14 +47,13 @@ public final class NodeImageSelection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model NodeImageSelection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model NodeImageSelection"));
         }
     }
 

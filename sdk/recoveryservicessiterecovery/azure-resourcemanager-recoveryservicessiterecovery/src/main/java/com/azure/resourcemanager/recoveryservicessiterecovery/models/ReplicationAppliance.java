@@ -6,11 +6,13 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.ReplicationApplianceInner;
 
-/** An immutable client-side representation of ReplicationAppliance. */
+/**
+ * An immutable client-side representation of ReplicationAppliance.
+ */
 public interface ReplicationAppliance {
     /**
      * Gets the properties property: Appliance related data.
-     *
+     * 
      * @return the properties value.
      */
     ReplicationApplianceProperties properties();
@@ -18,7 +20,7 @@ public interface ReplicationAppliance {
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.ReplicationApplianceInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     ReplicationApplianceInner innerModel();

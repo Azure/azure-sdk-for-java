@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A2A update protection container mapping. */
+/**
+ * A2A update protection container mapping.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -32,13 +34,15 @@ public final class A2AUpdateContainerMappingInput extends ReplicationProviderSpe
     @JsonProperty(value = "automationAccountAuthenticationType")
     private AutomationAccountAuthenticationType automationAccountAuthenticationType;
 
-    /** Creates an instance of A2AUpdateContainerMappingInput class. */
+    /**
+     * Creates an instance of A2AUpdateContainerMappingInput class.
+     */
     public A2AUpdateContainerMappingInput() {
     }
 
     /**
      * Get the agentAutoUpdateStatus property: A value indicating whether the auto update is enabled.
-     *
+     * 
      * @return the agentAutoUpdateStatus value.
      */
     public AgentAutoUpdateStatus agentAutoUpdateStatus() {
@@ -47,7 +51,7 @@ public final class A2AUpdateContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Set the agentAutoUpdateStatus property: A value indicating whether the auto update is enabled.
-     *
+     * 
      * @param agentAutoUpdateStatus the agentAutoUpdateStatus value to set.
      * @return the A2AUpdateContainerMappingInput object itself.
      */
@@ -58,7 +62,7 @@ public final class A2AUpdateContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Get the automationAccountArmId property: The automation account arm id.
-     *
+     * 
      * @return the automationAccountArmId value.
      */
     public String automationAccountArmId() {
@@ -67,7 +71,7 @@ public final class A2AUpdateContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Set the automationAccountArmId property: The automation account arm id.
-     *
+     * 
      * @param automationAccountArmId the automationAccountArmId value to set.
      * @return the A2AUpdateContainerMappingInput object itself.
      */
@@ -79,7 +83,7 @@ public final class A2AUpdateContainerMappingInput extends ReplicationProviderSpe
     /**
      * Get the automationAccountAuthenticationType property: A value indicating the type authentication to use for
      * automation Account.
-     *
+     * 
      * @return the automationAccountAuthenticationType value.
      */
     public AutomationAccountAuthenticationType automationAccountAuthenticationType() {
@@ -89,7 +93,7 @@ public final class A2AUpdateContainerMappingInput extends ReplicationProviderSpe
     /**
      * Set the automationAccountAuthenticationType property: A value indicating the type authentication to use for
      * automation Account.
-     *
+     * 
      * @param automationAccountAuthenticationType the automationAccountAuthenticationType value to set.
      * @return the A2AUpdateContainerMappingInput object itself.
      */
@@ -101,7 +105,7 @@ public final class A2AUpdateContainerMappingInput extends ReplicationProviderSpe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -34,6 +34,8 @@ import com.azure.spring.data.cosmos.domain.BasicItem;
 import com.azure.spring.data.cosmos.domain.GenIdEntity;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
+import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -48,6 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
+import org.springframework.data.auditing.IsNewAwareAuditingHandler;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -59,6 +62,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -106,6 +112,18 @@ public class CosmosTemplateIT {
     private static final Person TEST_PERSON_3 = new Person(ID_3, NEW_FIRST_NAME, NEW_LAST_NAME, HOBBIES,
         ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
+    private static final AuditableEntity TEST_AUDITABLE_ENTITY_1 = new AuditableEntity();
+
+    private static final String UUID_1 = UUID.randomUUID().toString();
+
+    private static final AuditableEntity TEST_AUDITABLE_ENTITY_2 = new AuditableEntity();
+
+    private static final String UUID_2 = UUID.randomUUID().toString();
+
+    private static final AuditableEntity TEST_AUDITABLE_ENTITY_3 = new AuditableEntity();
+
+    private static final String UUID_3 = UUID.randomUUID().toString();
+
     private static final BasicItem BASIC_ITEM = new BasicItem(ID_1);
 
     private static final String PRECONDITION_IS_NOT_MET = "is not met";
@@ -138,6 +156,7 @@ public class CosmosTemplateIT {
     private static CosmosAsyncClient client;
     private static CosmosTemplate cosmosTemplate;
     private static CosmosEntityInformation<Person, String> personInfo;
+    private static CosmosEntityInformation<AuditableEntity, String> auditableEntityInfo;
     private static String containerName;
 
     private MappingCosmosConverter cosmosConverter;
@@ -153,6 +172,12 @@ public class CosmosTemplateIT {
     private CosmosConfig cosmosConfig;
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
+    @Autowired
+    private IsNewAwareAuditingHandler inah;
+    @Autowired
+    private StubAuditorProvider stubAuditorProvider;
+    @Autowired
+    private StubDateTimeProvider stubDateTimeProvider;
 
     public CosmosTemplateIT() throws JsonProcessingException {
     }
@@ -162,6 +187,10 @@ public class CosmosTemplateIT {
         if (cosmosTemplate == null) {
             client = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
             personInfo = new CosmosEntityInformation<>(Person.class);
+            TEST_AUDITABLE_ENTITY_1.setId(UUID_1);
+            TEST_AUDITABLE_ENTITY_2.setId(UUID_2);
+            TEST_AUDITABLE_ENTITY_3.setId(UUID_3);
+            auditableEntityInfo = new CosmosEntityInformation<>(AuditableEntity.class);
             containerName = personInfo.getContainerName();
             cosmosTemplate = createCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
         }
@@ -179,7 +208,7 @@ public class CosmosTemplateIT {
         final CosmosMappingContext mappingContext = new CosmosMappingContext();
         mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
         cosmosConverter = new MappingCosmosConverter(mappingContext, null);
-        return new CosmosTemplate(cosmosFactory, config, cosmosConverter);
+        return new CosmosTemplate(cosmosFactory, config, cosmosConverter, inah);
     }
 
     private void insertPerson(Person person) {
@@ -293,6 +322,91 @@ public class CosmosTemplateIT {
         final List<Person> expected = Lists.newArrayList(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3);
         assertThat(result.size()).isEqualTo(expected.size());
         assertThat(result).containsAll(expected);
+    }
+
+    @Test
+    public void testSaveSetsAuditData() {
+        stubAuditorProvider.setCurrentAuditor("test-auditor");
+        final OffsetDateTime now = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+        stubDateTimeProvider.setNow(now);
+        cosmosTemplate.insert(auditableEntityInfo.getContainerName(), TEST_AUDITABLE_ENTITY_1);
+        cosmosTemplate.insert(auditableEntityInfo.getContainerName(), TEST_AUDITABLE_ENTITY_2);
+
+        final List<AuditableEntity> result = TestUtils.toList(cosmosTemplate.findAll(AuditableEntity.class));
+
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.get(0).getId()).isEqualTo(UUID_1);
+        assertThat(result.get(0).getCreatedBy()).isEqualTo("test-auditor");
+        assertThat(result.get(0).getLastModifiedBy()).isEqualTo("test-auditor");
+        assertThat(result.get(0).getCreatedDate()).isEqualTo(now);
+        assertThat(result.get(0).getLastModifiedByDate()).isEqualTo(now);
+        assertThat(result.get(1).getId()).isEqualTo(UUID_2);
+        assertThat(result.get(1).getCreatedBy()).isEqualTo("test-auditor");
+        assertThat(result.get(1).getLastModifiedBy()).isEqualTo("test-auditor");
+        assertThat(result.get(1).getCreatedDate()).isEqualTo(now);
+        assertThat(result.get(1).getLastModifiedByDate()).isEqualTo(now);
+    }
+
+    @Test
+    public void testSaveAllSetsAuditData() {
+        stubAuditorProvider.setCurrentAuditor("test-auditor-2");
+        final OffsetDateTime now = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+        stubDateTimeProvider.setNow(now);
+        cosmosTemplate.insertAll(auditableEntityInfo, Lists.newArrayList(TEST_AUDITABLE_ENTITY_1,
+            TEST_AUDITABLE_ENTITY_2));
+
+        final List<AuditableEntity> result = TestUtils.toList(cosmosTemplate.findAll(AuditableEntity.class));
+
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.get(0).getId()).isEqualTo(UUID_1);
+        assertThat(result.get(0).getCreatedBy()).isEqualTo("test-auditor-2");
+        assertThat(result.get(0).getLastModifiedBy()).isEqualTo("test-auditor-2");
+        assertThat(result.get(0).getCreatedDate()).isEqualTo(now);
+        assertThat(result.get(0).getLastModifiedByDate()).isEqualTo(now);
+        assertThat(result.get(1).getId()).isEqualTo(UUID_2);
+        assertThat(result.get(1).getCreatedBy()).isEqualTo("test-auditor-2");
+        assertThat(result.get(1).getLastModifiedBy()).isEqualTo("test-auditor-2");
+        assertThat(result.get(1).getCreatedDate()).isEqualTo(now);
+        assertThat(result.get(1).getLastModifiedByDate()).isEqualTo(now);
+    }
+
+    @Test
+    public void testSaveAllFailureAuditData() {
+        stubAuditorProvider.setCurrentAuditor("test-auditor-2");
+        final OffsetDateTime now = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+        stubDateTimeProvider.setNow(now);
+        cosmosTemplate.insertAll(auditableEntityInfo, Lists.newArrayList(TEST_AUDITABLE_ENTITY_1,
+            TEST_AUDITABLE_ENTITY_2, TEST_AUDITABLE_ENTITY_3));
+
+        final List<AuditableEntity> result = TestUtils.toList(cosmosTemplate.findAll(AuditableEntity.class));
+
+        result.get(1).set_etag("broken_etag");
+        stubAuditorProvider.setCurrentAuditor("test-auditor-3");
+        final OffsetDateTime now2 = OffsetDateTime.now(ZoneId.of("UTC")).truncatedTo(ChronoUnit.MICROS);
+        stubDateTimeProvider.setNow(now2);
+
+        List<AuditableEntity> upsertResult = TestUtils.toList(cosmosTemplate.insertAll(auditableEntityInfo, result));
+        assertThat(upsertResult.size()).isEqualTo(2);
+        assertThat(upsertResult.get(0).getId()).isEqualTo(UUID_1);
+        assertThat(upsertResult.get(1).getId()).isEqualTo(UUID_3);
+
+        final List<AuditableEntity> result2 = TestUtils.toList(cosmosTemplate.findAll(AuditableEntity.class));
+        assertThat(result2.size()).isEqualTo(3);
+        assertThat(result2.get(0).getId()).isEqualTo(UUID_1);
+        assertThat(result2.get(0).getCreatedBy()).isEqualTo("test-auditor-2");
+        assertThat(result2.get(0).getLastModifiedBy()).isEqualTo("test-auditor-3");
+        assertThat(result2.get(0).getCreatedDate()).isEqualTo(now);
+        assertThat(result2.get(0).getLastModifiedByDate()).isEqualTo(now2);
+        assertThat(result2.get(1).getId()).isEqualTo(UUID_2);
+        assertThat(result2.get(1).getCreatedBy()).isEqualTo("test-auditor-2");
+        assertThat(result2.get(1).getLastModifiedBy()).isEqualTo("test-auditor-2");
+        assertThat(result2.get(1).getCreatedDate()).isEqualTo(now);
+        assertThat(result2.get(1).getLastModifiedByDate()).isEqualTo(now);
+        assertThat(result2.get(2).getId()).isEqualTo(UUID_3);
+        assertThat(result2.get(2).getCreatedBy()).isEqualTo("test-auditor-2");
+        assertThat(result2.get(2).getLastModifiedBy()).isEqualTo("test-auditor-3");
+        assertThat(result2.get(2).getCreatedDate()).isEqualTo(now);
+        assertThat(result2.get(2).getLastModifiedByDate()).isEqualTo(now2);
     }
 
     @Test
@@ -1057,19 +1171,97 @@ public class CosmosTemplateIT {
     }
 
     @Test
-    public void queryDatabaseWithQueryMerticsEnabled() throws ClassNotFoundException {
+    public void queryDatabaseWithQueryMetricsEnabledFlag() throws ClassNotFoundException {
         final CosmosConfig config = CosmosConfig.builder()
             .enableQueryMetrics(true)
             .build();
         final CosmosTemplate queryMetricsEnabledCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
 
+        assertEquals((boolean) ReflectionTestUtils.getField(queryMetricsEnabledCosmosTemplate, "queryMetricsEnabled"), true);
+    }
+
+    @Test
+    public void queryDatabaseWithIndexMetricsEnabledFlag() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+                                                .enableIndexMetrics(true)
+                                                .build();
+        final CosmosTemplate indexMetricsEnabledCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
+
+        assertEquals((boolean) ReflectionTestUtils.getField(indexMetricsEnabledCosmosTemplate, "indexMetricsEnabled"), true);
+    }
+
+    @Test
+    public void queryDatabaseWithIndexMetricsEnabled() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
         final CosmosQuery query = new CosmosQuery(criteria);
+        cosmosTemplate.count(query, containerName);
 
-        final long count = queryMetricsEnabledCosmosTemplate.count(query, containerName);
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
 
-        assertEquals((boolean) ReflectionTestUtils.getField(queryMetricsEnabledCosmosTemplate, "queryMetricsEnabled"), true);
+        assertThat(queryDiagnostics).contains("\"indexUtilizationInfo\"");
+        assertThat(queryDiagnostics).contains("\"UtilizedSingleIndexes\"");
+        assertThat(queryDiagnostics).contains("\"PotentialSingleIndexes\"");
+        assertThat(queryDiagnostics).contains("\"UtilizedCompositeIndexes\"");
+        assertThat(queryDiagnostics).contains("\"PotentialCompositeIndexes\"");
+    }
+
+    @Test
+    public void queryDatabaseWithQueryMetricsEnabled() {
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        cosmosTemplate.count(query, containerName);
+
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+
+        assertThat(queryDiagnostics).contains("retrievedDocumentCount");
+        assertThat(queryDiagnostics).contains("queryPreparationTimes");
+        assertThat(queryDiagnostics).contains("runtimeExecutionTimes");
+        assertThat(queryDiagnostics).contains("fetchExecutionRanges");
+    }
+
+    @Test
+    public void queryDatabaseWithIndexMetricsDisabled() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .enableIndexMetrics(false)
+            .build();
+        final CosmosTemplate indexMetricsDisabledCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
+        assertEquals((boolean) ReflectionTestUtils.getField(indexMetricsDisabledCosmosTemplate, "indexMetricsEnabled"), false);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        indexMetricsDisabledCosmosTemplate.count(query, containerName);
+
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+
+        assertThat(queryDiagnostics).doesNotContain("\"indexUtilizationInfo\"");
+        assertThat(queryDiagnostics).doesNotContain("\"UtilizedSingleIndexes\"");
+        assertThat(queryDiagnostics).doesNotContain("\"PotentialSingleIndexes\"");
+        assertThat(queryDiagnostics).doesNotContain("\"UtilizedCompositeIndexes\"");
+        assertThat(queryDiagnostics).doesNotContain("\"PotentialCompositeIndexes\"");
+    }
+
+    @Test
+    public void queryDatabaseWithQueryMetricsDisabled() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .enableQueryMetrics(false)
+            .build();
+        final CosmosTemplate queryMetricsDisabledCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
+        assertEquals((boolean) ReflectionTestUtils.getField(queryMetricsDisabledCosmosTemplate, "queryMetricsEnabled"), false);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+        queryMetricsDisabledCosmosTemplate.count(query, containerName);
+
+        String queryDiagnostics = responseDiagnosticsTestUtils.getCosmosDiagnostics().toString();
+
+        assertThat(queryDiagnostics).doesNotContain("retrievedDocumentCount");
+        assertThat(queryDiagnostics).doesNotContain("queryPreparationTimes");
+        assertThat(queryDiagnostics).doesNotContain("runtimeExecutionTimes");
+        assertThat(queryDiagnostics).doesNotContain("fetchExecutionRanges");
     }
 
     @Test

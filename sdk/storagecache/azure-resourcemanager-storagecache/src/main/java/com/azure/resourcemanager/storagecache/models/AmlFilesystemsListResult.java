@@ -27,13 +27,15 @@ public final class AmlFilesystemsListResult {
     @JsonProperty(value = "value")
     private List<AmlFilesystemInner> value;
 
-    /** Creates an instance of AmlFilesystemsListResult class. */
+    /**
+     * Creates an instance of AmlFilesystemsListResult class.
+     */
     public AmlFilesystemsListResult() {
     }
 
     /**
      * Get the nextLink property: URL to get the next set of AML file system list results, if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -42,7 +44,7 @@ public final class AmlFilesystemsListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of AML file system list results, if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AmlFilesystemsListResult object itself.
      */
@@ -53,7 +55,7 @@ public final class AmlFilesystemsListResult {
 
     /**
      * Get the value property: List of AML file systems.
-     *
+     * 
      * @return the value value.
      */
     public List<AmlFilesystemInner> value() {
@@ -62,7 +64,7 @@ public final class AmlFilesystemsListResult {
 
     /**
      * Set the value property: List of AML file systems.
-     *
+     * 
      * @param value the value value to set.
      * @return the AmlFilesystemsListResult object itself.
      */
@@ -73,7 +75,7 @@ public final class AmlFilesystemsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.security.models.Roles;
 import com.azure.resourcemanager.security.models.SecurityContactPropertiesNotificationsByRole;
+import com.azure.resourcemanager.security.models.SecurityContactRole;
 import com.azure.resourcemanager.security.models.State;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -14,22 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityContactPropertiesNotificationsByRoleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityContactPropertiesNotificationsByRole model =
-            BinaryData
-                .fromString("{\"state\":\"Failed\",\"roles\":[\"Contributor\"]}")
-                .toObject(SecurityContactPropertiesNotificationsByRole.class);
-        Assertions.assertEquals(State.FAILED, model.state());
-        Assertions.assertEquals(Roles.CONTRIBUTOR, model.roles().get(0));
+        SecurityContactPropertiesNotificationsByRole model = BinaryData
+            .fromString(
+                "{\"state\":\"Skipped\",\"roles\":[\"AccountAdmin\",\"ServiceAdmin\",\"Contributor\",\"Owner\"]}")
+            .toObject(SecurityContactPropertiesNotificationsByRole.class);
+        Assertions.assertEquals(State.SKIPPED, model.state());
+        Assertions.assertEquals(SecurityContactRole.ACCOUNT_ADMIN, model.roles().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityContactPropertiesNotificationsByRole model =
-            new SecurityContactPropertiesNotificationsByRole()
-                .withState(State.FAILED)
-                .withRoles(Arrays.asList(Roles.CONTRIBUTOR));
+        SecurityContactPropertiesNotificationsByRole model
+            = new SecurityContactPropertiesNotificationsByRole().withState(State.SKIPPED)
+                .withRoles(Arrays.asList(SecurityContactRole.ACCOUNT_ADMIN, SecurityContactRole.SERVICE_ADMIN,
+                    SecurityContactRole.CONTRIBUTOR, SecurityContactRole.OWNER));
         model = BinaryData.fromObject(model).toObject(SecurityContactPropertiesNotificationsByRole.class);
-        Assertions.assertEquals(State.FAILED, model.state());
-        Assertions.assertEquals(Roles.CONTRIBUTOR, model.roles().get(0));
+        Assertions.assertEquals(State.SKIPPED, model.state());
+        Assertions.assertEquals(SecurityContactRole.ACCOUNT_ADMIN, model.roles().get(0));
     }
 }

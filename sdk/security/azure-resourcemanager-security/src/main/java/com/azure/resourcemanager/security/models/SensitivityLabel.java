@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The sensitivity label. */
+/**
+ * The sensitivity label.
+ */
 @Fluent
 public final class SensitivityLabel {
     /*
@@ -40,13 +42,15 @@ public final class SensitivityLabel {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of SensitivityLabel class. */
+    /**
+     * Creates an instance of SensitivityLabel class.
+     */
     public SensitivityLabel() {
     }
 
     /**
      * Get the displayName property: The name of the sensitivity label.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -55,7 +59,7 @@ public final class SensitivityLabel {
 
     /**
      * Set the displayName property: The name of the sensitivity label.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SensitivityLabel object itself.
      */
@@ -66,7 +70,7 @@ public final class SensitivityLabel {
 
     /**
      * Get the description property: The description of the sensitivity label.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -75,7 +79,7 @@ public final class SensitivityLabel {
 
     /**
      * Set the description property: The description of the sensitivity label.
-     *
+     * 
      * @param description the description value to set.
      * @return the SensitivityLabel object itself.
      */
@@ -86,7 +90,7 @@ public final class SensitivityLabel {
 
     /**
      * Get the rank property: The rank of the sensitivity label.
-     *
+     * 
      * @return the rank value.
      */
     public Rank rank() {
@@ -95,7 +99,7 @@ public final class SensitivityLabel {
 
     /**
      * Set the rank property: The rank of the sensitivity label.
-     *
+     * 
      * @param rank the rank value to set.
      * @return the SensitivityLabel object itself.
      */
@@ -106,7 +110,7 @@ public final class SensitivityLabel {
 
     /**
      * Get the order property: The order of the sensitivity label.
-     *
+     * 
      * @return the order value.
      */
     public Integer order() {
@@ -115,7 +119,7 @@ public final class SensitivityLabel {
 
     /**
      * Set the order property: The order of the sensitivity label.
-     *
+     * 
      * @param order the order value to set.
      * @return the SensitivityLabel object itself.
      */
@@ -126,7 +130,7 @@ public final class SensitivityLabel {
 
     /**
      * Get the enabled property: Indicates whether the label is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -135,7 +139,7 @@ public final class SensitivityLabel {
 
     /**
      * Set the enabled property: Indicates whether the label is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the SensitivityLabel object itself.
      */
@@ -146,7 +150,7 @@ public final class SensitivityLabel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

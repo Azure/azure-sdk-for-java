@@ -4,21 +4,35 @@
 
 package com.azure.resourcemanager.sphere.models;
 
-import com.azure.resourcemanager.sphere.fluent.models.CountDeviceResponseInner;
+import com.azure.core.annotation.Fluent;
 
-/** An immutable client-side representation of CountDeviceResponse. */
-public interface CountDeviceResponse {
+/**
+ * Response to the action call for count devices in a catalog (preview API).
+ */
+@Fluent
+public final class CountDeviceResponse extends CountElementsResponse {
     /**
-     * Gets the value property: Number of children resources in parent resource.
-     *
-     * @return the value value.
+     * Creates an instance of CountDeviceResponse class.
      */
-    int value();
+    public CountDeviceResponse() {
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.sphere.fluent.models.CountDeviceResponseInner object.
-     *
-     * @return the inner object.
+     * {@inheritDoc}
      */
-    CountDeviceResponseInner innerModel();
+    @Override
+    public CountDeviceResponse withValue(int value) {
+        super.withValue(value);
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+    }
 }

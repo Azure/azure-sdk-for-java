@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Migrate provider specific input. */
+/**
+ * Migrate provider specific input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "instanceType",
     defaultImpl = MigrateProviderSpecificInput.class)
 @JsonTypeName("MigrateProviderSpecificInput")
-@JsonSubTypes({@JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtMigrateInput.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtMigrateInput.class) })
 @Immutable
 public class MigrateProviderSpecificInput {
-    /** Creates an instance of MigrateProviderSpecificInput class. */
+    /**
+     * Creates an instance of MigrateProviderSpecificInput class.
+     */
     public MigrateProviderSpecificInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

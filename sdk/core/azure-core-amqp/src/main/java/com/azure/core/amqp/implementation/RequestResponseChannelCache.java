@@ -60,8 +60,10 @@ public final class RequestResponseChannelCache implements Disposable {
         Objects.requireNonNull(linksName, "'linksName' cannot be null.");
         Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
 
-        // for correlation purpose, the cache and any RequestResponseChannel it caches uses the same loggingContext. E.g,
-        // { "connectionId": "MF_0f4c2e_1680070221023" "linkName": 'cbs' or '{entityPath}-mgmt' (e.g. 'q0-mgmt', 'tx-mgmt') }
+        // for correlation purpose, the cache and any RequestResponseChannel it caches uses the same loggingContext.
+        // E.g,
+        // { "connectionId": "MF_0f4c2e_1680070221023" "linkName": 'cbs' or '{entityPath}-mgmt' (e.g. 'q0-mgmt',
+        // 'tx-mgmt') }
         final Map<String, Object> loggingContext = new HashMap<>(2);
         loggingContext.put(CONNECTION_ID_KEY, connection.getId());
         loggingContext.put(LINK_NAME_KEY, linksName);
@@ -78,60 +80,56 @@ public final class RequestResponseChannelCache implements Disposable {
             return connection.newRequestResponseChannel(sessionName, linksName, entityPath);
         });
 
-        this.createOrGetCachedChannel = newChannel
-            .flatMap(c -> {
-                logger.atInfo()
-                    .log("Waiting for channel to active.");
+        this.createOrGetCachedChannel = newChannel.flatMap(c -> {
+            logger.atInfo().log("Waiting for channel to active.");
 
-                final Mono<RequestResponseChannel> awaitToActive = c.getEndpointStates()
-                    .filter(s -> s == AmqpEndpointState.ACTIVE)
-                    .next()
-                    .switchIfEmpty(Mono.error(() -> new AmqpException(true, "Channel completed without being active.", null)))
-                    .then(Mono.just(c))
-                    .timeout(activationTimeout, Mono.defer(() -> {
-                        final String timeoutMessage = String.format("The channel activation wait timed-out (%s).", activationTimeout);
-                        logger.atInfo().log(timeoutMessage + " Closing channel.");
-                        return c.closeAsync().then(Mono.error(new AmqpException(true, timeoutMessage, null)));
-                    }));
+            final Mono<RequestResponseChannel> awaitToActive = c.getEndpointStates()
+                .filter(s -> s == AmqpEndpointState.ACTIVE)
+                .next()
+                .switchIfEmpty(
+                    Mono.error(() -> new AmqpException(true, "Channel completed without being active.", null)))
+                .then(Mono.just(c))
+                .timeout(activationTimeout, Mono.defer(() -> {
+                    final String timeoutMessage
+                        = String.format("The channel activation wait timed-out (%s).", activationTimeout);
+                    logger.atInfo().log(timeoutMessage + " Closing channel.");
+                    return c.closeAsync().then(Mono.error(new AmqpException(true, timeoutMessage, null)));
+                }));
 
-                return awaitToActive
-                    .doOnCancel(() -> {
-                        logger.atInfo()
-                            .log("The channel request was canceled while waiting to active.");
-                        if (!c.isDisposed()) {
-                            c.closeAsync().subscribe();
-                        }
-                    });
-            })
-            .retryWhen(retryWhenSpec(retryPolicy))
-            .<RequestResponseChannel>handle((c, sink) -> {
-                final RequestResponseChannel channel = c;
-                final RecoveryTerminatedException terminatedError;
-                synchronized (lock) {
-                    // Synchronize this {terminated-read, currentChannel-write} block in cache-refresh route with
-                    // {terminated-write, currentChannel-read} block in dispose() route, to guard against channel leak
-                    // (i.e. missing close) if the cache-refresh and dispose routes runs concurrently.
-                    terminatedError = checkRecoveryTerminated("cache-refresh");
-                    this.currentChannel = channel;
-                }
-                if (terminatedError != null) {
-                    if (!channel.isDisposed()) {
-                        channel.closeAsync().subscribe();
-                    }
-                    sink.error(terminatedError.propagate());
-                } else {
-                    logger.atInfo().log("Emitting the new active channel.");
-                    sink.next(channel);
-                }
-            }).cacheInvalidateIf(c -> {
-                if (c.isDisposedOrDisposalInInProgress()) {
-                    logger.atInfo().log("The channel is closed, requesting a new channel.");
-                    return true;
-                } else {
-                    // emit cached channel.
-                    return false;
+            return awaitToActive.doOnCancel(() -> {
+                logger.atInfo().log("The channel request was canceled while waiting to active.");
+                if (!c.isDisposed()) {
+                    c.closeAsync().subscribe();
                 }
             });
+        }).retryWhen(retryWhenSpec(retryPolicy)).<RequestResponseChannel>handle((c, sink) -> {
+            final RequestResponseChannel channel = c;
+            final RecoveryTerminatedException terminatedError;
+            synchronized (lock) {
+                // Synchronize this {terminated-read, currentChannel-write} block in cache-refresh route with
+                // {terminated-write, currentChannel-read} block in dispose() route, to guard against channel leak
+                // (i.e. missing close) if the cache-refresh and dispose routes runs concurrently.
+                terminatedError = checkRecoveryTerminated("cache-refresh");
+                this.currentChannel = channel;
+            }
+            if (terminatedError != null) {
+                if (!channel.isDisposed()) {
+                    channel.closeAsync().subscribe();
+                }
+                sink.error(terminatedError.propagate());
+            } else {
+                logger.atInfo().log("Emitting the new active channel.");
+                sink.next(channel);
+            }
+        }).cacheInvalidateIf(c -> {
+            if (c.isDisposedOrDisposalInInProgress()) {
+                logger.atInfo().log("The channel is closed, requesting a new channel.");
+                return true;
+            } else {
+                // emit cached channel.
+                return false;
+            }
+        });
     }
 
     /**
@@ -174,60 +172,59 @@ public final class RequestResponseChannelCache implements Disposable {
     }
 
     private Retry retryWhenSpec(AmqpRetryPolicy retryPolicy) {
-        return Retry.from(retrySignals -> retrySignals
-            .concatMap(retrySignal -> {
-                final Retry.RetrySignal signal = retrySignal.copy();
-                final Throwable error = signal.failure();
-                final long iteration = signal.totalRetriesInARow();
+        return Retry.from(retrySignals -> retrySignals.concatMap(retrySignal -> {
+            final Retry.RetrySignal signal = retrySignal.copy();
+            final Throwable error = signal.failure();
+            final long iteration = signal.totalRetriesInARow();
 
-                if (error == null) {
-                    return Mono.error(new IllegalStateException("RetrySignal::failure() not expected to be null."));
-                }
+            if (error == null) {
+                return Mono.error(new IllegalStateException("RetrySignal::failure() not expected to be null."));
+            }
 
-                // There are exceptions that will not be AmqpExceptions like IllegalStateException (ISE)
-                // or RejectedExecutionException when attempting an operation that is closed or if the IO
-                // signal is accidentally closed, retrying in these cases as well. This is inherited from
-                // v1 AmqpChannelProcessor that v2 RequestResponseChannelCache replaces.
-                final boolean shouldRetry = error instanceof TimeoutException
-                    || (error instanceof AmqpException && ((AmqpException) error).isTransient()
+            // There are exceptions that will not be AmqpExceptions like IllegalStateException (ISE)
+            // or RejectedExecutionException when attempting an operation that is closed or if the IO
+            // signal is accidentally closed, retrying in these cases as well. This is inherited from
+            // v1 AmqpChannelProcessor that v2 RequestResponseChannelCache replaces.
+            final boolean shouldRetry = error instanceof TimeoutException
+                || (error instanceof AmqpException && ((AmqpException) error).isTransient()
                     || (error instanceof IllegalStateException)
                     || (error instanceof RejectedExecutionException));
 
-                if (!shouldRetry) {
-                    logger.atWarning()
-                        .addKeyValue(TRY_COUNT_KEY, iteration)
-                        .log("Exception is non-retriable, not retrying for a new channel.", error);
-                    if (error instanceof RecoveryTerminatedException) {
-                        return Mono.error(((RecoveryTerminatedException) error).propagate());
-                    } else {
-                        return Mono.error(error);
-                    }
-                }
-
-                final Throwable errorToUse = error instanceof AmqpException
-                    ? error
-                    : new AmqpException(true, "Non-AmqpException occurred upstream.", error, null);
-                // Using the min of retry attempts and max-retries to compute the 'back-off'.
-                // The min is taken so that it never exhaust the retry attempts for transient errors.
-                // This will ensure a new channel will be created whenever the underlying transient error
-                // is resolved (as long as there is at least one subscriber).
-                final long attempts = Math.min(iteration, retryPolicy.getMaxRetries());
-                final Duration backoff = retryPolicy.calculateRetryDelay(errorToUse, (int) attempts);
-
-                if (backoff == null) {
-                    logger.atWarning()
-                        .addKeyValue(TRY_COUNT_KEY, iteration)
-                        .log("Retry is disabled, not retrying for a new channel.", error);
+            if (!shouldRetry) {
+                logger.atWarning()
+                    .addKeyValue(TRY_COUNT_KEY, iteration)
+                    .log("Exception is non-retriable, not retrying for a new channel.", error);
+                if (error instanceof RecoveryTerminatedException) {
+                    return Mono.error(((RecoveryTerminatedException) error).propagate());
+                } else {
                     return Mono.error(error);
                 }
+            }
 
-                logger.atInfo()
+            final Throwable errorToUse = error instanceof AmqpException
+                ? error
+                : new AmqpException(true, "Non-AmqpException occurred upstream.", error, null);
+            // Using the min of retry attempts and max-retries to compute the 'back-off'.
+            // The min is taken so that it never exhaust the retry attempts for transient errors.
+            // This will ensure a new channel will be created whenever the underlying transient error
+            // is resolved (as long as there is at least one subscriber).
+            final long attempts = Math.min(iteration, retryPolicy.getMaxRetries());
+            final Duration backoff = retryPolicy.calculateRetryDelay(errorToUse, (int) attempts);
+
+            if (backoff == null) {
+                logger.atWarning()
                     .addKeyValue(TRY_COUNT_KEY, iteration)
-                    .addKeyValue(INTERVAL_KEY, backoff.toMillis())
-                    .log("Transient error occurred. Retrying.", error);
+                    .log("Retry is disabled, not retrying for a new channel.", error);
+                return Mono.error(error);
+            }
 
-                return Mono.delay(backoff);
-            }));
+            logger.atInfo()
+                .addKeyValue(TRY_COUNT_KEY, iteration)
+                .addKeyValue(INTERVAL_KEY, backoff.toMillis())
+                .log("Transient error occurred. Retrying.", error);
+
+            return Mono.delay(backoff);
+        }));
     }
 
     /**
@@ -268,8 +265,8 @@ public final class RequestResponseChannelCache implements Disposable {
 
         RecoveryTerminatedException(String connectionId, boolean isCacheTerminated, boolean isConnectionTerminated) {
             this.connectionId = connectionId;
-            this.message = String.format("%s:%b %s:%b",
-                IS_CACHE_TERMINATED_KEY, isCacheTerminated, IS_CONNECTION_TERMINATED_KEY, isConnectionTerminated);
+            this.message = String.format("%s:%b %s:%b", IS_CACHE_TERMINATED_KEY, isCacheTerminated,
+                IS_CONNECTION_TERMINATED_KEY, isConnectionTerminated);
         }
 
         /**

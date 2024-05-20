@@ -12,38 +12,35 @@ import org.junit.jupiter.api.Assertions;
 public final class SecuritySolutionsReferenceDataPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecuritySolutionsReferenceDataProperties model =
-            BinaryData
-                .fromString(
-                    "{\"securityFamily\":\"Ngfw\",\"alertVendorName\":\"ixtmkzjvkviirhgf\",\"packageInfoUrl\":\"rwsdp\",\"productName\":\"ra\",\"publisher\":\"zvzbglbyv\",\"publisherDisplayName\":\"ctctbrxkjz\",\"template\":\"rgxffmshkw\"}")
-                .toObject(SecuritySolutionsReferenceDataProperties.class);
-        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
-        Assertions.assertEquals("ixtmkzjvkviirhgf", model.alertVendorName());
-        Assertions.assertEquals("rwsdp", model.packageInfoUrl());
-        Assertions.assertEquals("ra", model.productName());
-        Assertions.assertEquals("zvzbglbyv", model.publisher());
-        Assertions.assertEquals("ctctbrxkjz", model.publisherDisplayName());
-        Assertions.assertEquals("rgxffmshkw", model.template());
+        SecuritySolutionsReferenceDataProperties model = BinaryData.fromString(
+            "{\"securityFamily\":\"Va\",\"alertVendorName\":\"kek\",\"packageInfoUrl\":\"pkzwa\",\"productName\":\"xofqovchi\",\"publisher\":\"bplvfidu\",\"publisherDisplayName\":\"ztekxbyjgmsfep\",\"template\":\"yihpqadagrh\"}")
+            .toObject(SecuritySolutionsReferenceDataProperties.class);
+        Assertions.assertEquals(SecurityFamily.VA, model.securityFamily());
+        Assertions.assertEquals("kek", model.alertVendorName());
+        Assertions.assertEquals("pkzwa", model.packageInfoUrl());
+        Assertions.assertEquals("xofqovchi", model.productName());
+        Assertions.assertEquals("bplvfidu", model.publisher());
+        Assertions.assertEquals("ztekxbyjgmsfep", model.publisherDisplayName());
+        Assertions.assertEquals("yihpqadagrh", model.template());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecuritySolutionsReferenceDataProperties model =
-            new SecuritySolutionsReferenceDataProperties()
-                .withSecurityFamily(SecurityFamily.NGFW)
-                .withAlertVendorName("ixtmkzjvkviirhgf")
-                .withPackageInfoUrl("rwsdp")
-                .withProductName("ra")
-                .withPublisher("zvzbglbyv")
-                .withPublisherDisplayName("ctctbrxkjz")
-                .withTemplate("rgxffmshkw");
+        SecuritySolutionsReferenceDataProperties model
+            = new SecuritySolutionsReferenceDataProperties().withSecurityFamily(SecurityFamily.VA)
+                .withAlertVendorName("kek")
+                .withPackageInfoUrl("pkzwa")
+                .withProductName("xofqovchi")
+                .withPublisher("bplvfidu")
+                .withPublisherDisplayName("ztekxbyjgmsfep")
+                .withTemplate("yihpqadagrh");
         model = BinaryData.fromObject(model).toObject(SecuritySolutionsReferenceDataProperties.class);
-        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
-        Assertions.assertEquals("ixtmkzjvkviirhgf", model.alertVendorName());
-        Assertions.assertEquals("rwsdp", model.packageInfoUrl());
-        Assertions.assertEquals("ra", model.productName());
-        Assertions.assertEquals("zvzbglbyv", model.publisher());
-        Assertions.assertEquals("ctctbrxkjz", model.publisherDisplayName());
-        Assertions.assertEquals("rgxffmshkw", model.template());
+        Assertions.assertEquals(SecurityFamily.VA, model.securityFamily());
+        Assertions.assertEquals("kek", model.alertVendorName());
+        Assertions.assertEquals("pkzwa", model.packageInfoUrl());
+        Assertions.assertEquals("xofqovchi", model.productName());
+        Assertions.assertEquals("bplvfidu", model.publisher());
+        Assertions.assertEquals("ztekxbyjgmsfep", model.publisherDisplayName());
+        Assertions.assertEquals("yihpqadagrh", model.template());
     }
 }

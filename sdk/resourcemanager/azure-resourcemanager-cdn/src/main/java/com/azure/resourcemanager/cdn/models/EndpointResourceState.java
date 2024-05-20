@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Resource status of the endpoint. */
+/**
+ * Resource status of the endpoint.
+ */
 public final class EndpointResourceState extends ExpandableStringEnum<EndpointResourceState> {
-    /** Static value Creating for EndpointResourceState. */
+    /**
+     * Static value Creating for EndpointResourceState.
+     */
     public static final EndpointResourceState CREATING = fromString("Creating");
 
-    /** Static value Deleting for EndpointResourceState. */
+    /**
+     * Static value Deleting for EndpointResourceState.
+     */
     public static final EndpointResourceState DELETING = fromString("Deleting");
 
-    /** Static value Running for EndpointResourceState. */
+    /**
+     * Static value Running for EndpointResourceState.
+     */
     public static final EndpointResourceState RUNNING = fromString("Running");
 
-    /** Static value Starting for EndpointResourceState. */
+    /**
+     * Static value Starting for EndpointResourceState.
+     */
     public static final EndpointResourceState STARTING = fromString("Starting");
 
-    /** Static value Stopped for EndpointResourceState. */
+    /**
+     * Static value Stopped for EndpointResourceState.
+     */
     public static final EndpointResourceState STOPPED = fromString("Stopped");
 
-    /** Static value Stopping for EndpointResourceState. */
+    /**
+     * Static value Stopping for EndpointResourceState.
+     */
     public static final EndpointResourceState STOPPING = fromString("Stopping");
 
     /**
      * Creates a new instance of EndpointResourceState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class EndpointResourceState extends ExpandableStringEnum<EndpointRe
 
     /**
      * Creates or finds a EndpointResourceState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EndpointResourceState.
      */
@@ -50,7 +64,7 @@ public final class EndpointResourceState extends ExpandableStringEnum<EndpointRe
 
     /**
      * Gets known EndpointResourceState values.
-     *
+     * 
      * @return known EndpointResourceState values.
      */
     public static Collection<EndpointResourceState> values() {

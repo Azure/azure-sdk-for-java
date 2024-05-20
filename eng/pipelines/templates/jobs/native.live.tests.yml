@@ -1,27 +1,69 @@
 parameters:
-  ServiceDirectory: ''
-  TestResourceDirectories:
-  Artifacts: []
-  AdditionalModules: []
-  EnvVars: {}
-  MaxParallel: 0
-  PreSteps: []
-  PostSteps: []
-  TimeoutInMinutes: 60
-  TestMode: 'LIVE'
-  TestResultsFiles: ''
-  CloudConfig: {}
-  ArmTemplateParameters: '@{}'
-  Location: ''
-  Matrix: ''
-  DependsOn: ''
-  UsePlatformContainer: false
-  DisableAzureResourceCreation: false
-  BuildParallelization: '2C'
-  TestGoals: $(TestGoals)
-  TestOptions: $(TestOptions)
-  TestParallelization: '1'
-  TestVersionSupport: $(TestVersionSupport)
+  - name: ServiceDirectory
+    type: string
+    default: ''
+  - name: TestResourceDirectories
+    type: object
+    default: null
+  - name: EnvVars
+    type: object
+    default: {}
+  - name: MaxParallel
+    type: number
+    default: 0
+  - name: PreSteps
+    type: object
+    default: []
+  - name: PostSteps
+    type: object
+    default: []
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
+  - name: TestMode
+    type: string
+    default: 'LIVE'
+  - name: TestResultsFiles
+    type: string
+    default: ''
+  - name: CloudConfig
+    type: object
+    default: {}
+  - name: ArmTemplateParameters
+    type: string
+    default: '@{}'
+  - name: Location
+    type: string
+    default: ''
+  - name: Matrix
+    type: string
+    default: ''
+  - name: DependsOn
+    type: string
+    default: ''
+  - name: UsePlatformContainer
+    type: boolean
+    default: false
+  - name: DisableAzureResourceCreation
+    type: boolean
+    default: false
+  - name: BuildParallelization
+    type: string
+    default: '2C'
+  - name: TestGoals
+    type: string
+    default: $(TestGoals)
+  - name: TestOptions
+    type: string
+    default: $(TestOptions)
+  - name: TestParallelization
+    type: string
+    default: '1'
+  - name: TestVersionSupport
+    type: string
+    default: $(TestVersionSupport)
+  - name: OSName
+    type: string
 
 jobs:
   - job:
@@ -32,27 +74,41 @@ jobs:
       matrix: $[ ${{ parameters.Matrix }} ]
 
     variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
       - name: ArmTemplateParameters
         value: '@{}'
 
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
     pool:
+      # 1es pipeline templates converts `image` to demands: ImageOverride under the hood
+      # which is incompatible with image selection in the default non-1es hosted pools
+      ${{ if eq(parameters.OSName, 'macOS') }}:
+        vmImage: $(OSVmImage)
+      ${{ else }}:
+        image: $(OSVmImage)
       name: $(Pool)
-      vmImage: $(OSVmImage)
+      os: ${{ parameters.OSName }}
 
     ${{ if eq(parameters.UsePlatformContainer, 'true') }}:
       # Add a default so the job doesn't fail when the matrix is empty
       container: $[ variables['Container'] ]
 
+    templateContext:
+      outputs:
+        # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
+        # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
+        # during testing if tests failed, and linting reports.
+        - output: pipelineArtifact
+          artifactName: troubleshooting-$(System.StageName)-$(System.JobName)
+          targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
+          displayName: 'Capture troubleshooting artifacts'
+          condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
+          sbomEnabled: false
+
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          SDKType: ${{ parameters.SDKType }}
+          OS: ${{ parameters.OSName }}
 
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
@@ -91,8 +147,6 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/build-and-test-native.yml
         parameters:
-          SDKType: ${{ parameters.SDKType }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
           IsLiveTest: true

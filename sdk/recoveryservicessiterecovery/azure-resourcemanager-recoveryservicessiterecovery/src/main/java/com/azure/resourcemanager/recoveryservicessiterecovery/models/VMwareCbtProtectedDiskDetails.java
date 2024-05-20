@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VMwareCbt protected disk details. */
+/**
+ * VMwareCbt protected disk details.
+ */
 @Fluent
 public final class VMwareCbtProtectedDiskDetails {
     /*
@@ -100,13 +102,15 @@ public final class VMwareCbtProtectedDiskDetails {
     @JsonProperty(value = "gatewayOperationDetails", access = JsonProperty.Access.WRITE_ONLY)
     private GatewayOperationDetails gatewayOperationDetails;
 
-    /** Creates an instance of VMwareCbtProtectedDiskDetails class. */
+    /**
+     * Creates an instance of VMwareCbtProtectedDiskDetails class.
+     */
     public VMwareCbtProtectedDiskDetails() {
     }
 
     /**
      * Get the diskId property: The disk id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -115,7 +119,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Get the diskName property: The disk name.
-     *
+     * 
      * @return the diskName value.
      */
     public String diskName() {
@@ -124,7 +128,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Get the diskType property: The disk type.
-     *
+     * 
      * @return the diskType value.
      */
     public DiskAccountType diskType() {
@@ -133,7 +137,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Set the diskType property: The disk type.
-     *
+     * 
      * @param diskType the diskType value to set.
      * @return the VMwareCbtProtectedDiskDetails object itself.
      */
@@ -144,7 +148,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Get the diskPath property: The disk path.
-     *
+     * 
      * @return the diskPath value.
      */
     public String diskPath() {
@@ -153,7 +157,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Get the isOSDisk property: A value indicating whether the disk is the OS disk.
-     *
+     * 
      * @return the isOSDisk value.
      */
     public String isOSDisk() {
@@ -162,7 +166,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Get the capacityInBytes property: The disk capacity in bytes.
-     *
+     * 
      * @return the capacityInBytes value.
      */
     public Long capacityInBytes() {
@@ -171,7 +175,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Get the logStorageAccountId property: The log storage account ARM Id.
-     *
+     * 
      * @return the logStorageAccountId value.
      */
     public String logStorageAccountId() {
@@ -180,7 +184,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Get the logStorageAccountSasSecretName property: The key vault secret name of the log storage account.
-     *
+     * 
      * @return the logStorageAccountSasSecretName value.
      */
     public String logStorageAccountSasSecretName() {
@@ -189,7 +193,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Get the diskEncryptionSetId property: The DiskEncryptionSet ARM Id.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -198,7 +202,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Get the seedManagedDiskId property: The ARM Id of the seed managed disk.
-     *
+     * 
      * @return the seedManagedDiskId value.
      */
     public String seedManagedDiskId() {
@@ -207,7 +211,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Get the seedBlobUri property: The uri of the seed blob.
-     *
+     * 
      * @return the seedBlobUri value.
      */
     public String seedBlobUri() {
@@ -216,7 +220,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Get the targetManagedDiskId property: The ARM Id of the target managed disk.
-     *
+     * 
      * @return the targetManagedDiskId value.
      */
     public String targetManagedDiskId() {
@@ -225,7 +229,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Get the targetBlobUri property: The uri of the target blob.
-     *
+     * 
      * @return the targetBlobUri value.
      */
     public String targetBlobUri() {
@@ -234,7 +238,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Get the targetDiskName property: The name for the target managed disk.
-     *
+     * 
      * @return the targetDiskName value.
      */
     public String targetDiskName() {
@@ -243,7 +247,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Set the targetDiskName property: The name for the target managed disk.
-     *
+     * 
      * @param targetDiskName the targetDiskName value to set.
      * @return the VMwareCbtProtectedDiskDetails object itself.
      */
@@ -254,7 +258,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Get the gatewayOperationDetails property: A value indicating the gateway operation details.
-     *
+     * 
      * @return the gatewayOperationDetails value.
      */
     public GatewayOperationDetails gatewayOperationDetails() {
@@ -263,7 +267,7 @@ public final class VMwareCbtProtectedDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

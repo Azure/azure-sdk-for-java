@@ -15,12 +15,14 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.SiteInner;
 import com.azure.resourcemanager.mobilenetwork.models.SiteDeletePacketCore;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in SitesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SitesClient.
+ */
 public interface SitesClient {
     /**
      * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
      * site.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -35,7 +37,7 @@ public interface SitesClient {
     /**
      * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
      * site.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -46,13 +48,13 @@ public interface SitesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String siteName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName, String siteName,
+        Context context);
 
     /**
      * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
      * site.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -66,7 +68,7 @@ public interface SitesClient {
     /**
      * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
      * site.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -80,7 +82,7 @@ public interface SitesClient {
 
     /**
      * Gets information about the specified mobile network site.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -91,12 +93,12 @@ public interface SitesClient {
      * @return information about the specified mobile network site along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SiteInner> getWithResponse(
-        String resourceGroupName, String mobileNetworkName, String siteName, Context context);
+    Response<SiteInner> getWithResponse(String resourceGroupName, String mobileNetworkName, String siteName,
+        Context context);
 
     /**
      * Gets information about the specified mobile network site.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -110,7 +112,7 @@ public interface SitesClient {
 
     /**
      * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -121,12 +123,12 @@ public interface SitesClient {
      * @return the {@link SyncPoller} for polling of site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters);
+    SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(String resourceGroupName, String mobileNetworkName,
+        String siteName, SiteInner parameters);
 
     /**
      * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -138,12 +140,12 @@ public interface SitesClient {
      * @return the {@link SyncPoller} for polling of site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters, Context context);
+    SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(String resourceGroupName, String mobileNetworkName,
+        String siteName, SiteInner parameters, Context context);
 
     /**
      * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -158,7 +160,7 @@ public interface SitesClient {
 
     /**
      * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -170,12 +172,12 @@ public interface SitesClient {
      * @return site resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SiteInner createOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters, Context context);
+    SiteInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters,
+        Context context);
 
     /**
      * Updates site tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -187,12 +189,12 @@ public interface SitesClient {
      * @return site resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SiteInner> updateTagsWithResponse(
-        String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters, Context context);
+    Response<SiteInner> updateTagsWithResponse(String resourceGroupName, String mobileNetworkName, String siteName,
+        TagsObject parameters, Context context);
 
     /**
      * Updates site tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -207,7 +209,7 @@ public interface SitesClient {
 
     /**
      * Lists all sites in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -220,7 +222,7 @@ public interface SitesClient {
 
     /**
      * Lists all sites in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -234,7 +236,7 @@ public interface SitesClient {
 
     /**
      * Deletes a packet core under the specified mobile network site.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -245,12 +247,12 @@ public interface SitesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeletePacketCore(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteDeletePacketCore parameters);
+    SyncPoller<PollResult<Void>, Void> beginDeletePacketCore(String resourceGroupName, String mobileNetworkName,
+        String siteName, SiteDeletePacketCore parameters);
 
     /**
      * Deletes a packet core under the specified mobile network site.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -262,16 +264,12 @@ public interface SitesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeletePacketCore(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String siteName,
-        SiteDeletePacketCore parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeletePacketCore(String resourceGroupName, String mobileNetworkName,
+        String siteName, SiteDeletePacketCore parameters, Context context);
 
     /**
      * Deletes a packet core under the specified mobile network site.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -281,12 +279,12 @@ public interface SitesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deletePacketCore(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteDeletePacketCore parameters);
+    void deletePacketCore(String resourceGroupName, String mobileNetworkName, String siteName,
+        SiteDeletePacketCore parameters);
 
     /**
      * Deletes a packet core under the specified mobile network site.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -297,10 +295,6 @@ public interface SitesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deletePacketCore(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String siteName,
-        SiteDeletePacketCore parameters,
-        Context context);
+    void deletePacketCore(String resourceGroupName, String mobileNetworkName, String siteName,
+        SiteDeletePacketCore parameters, Context context);
 }

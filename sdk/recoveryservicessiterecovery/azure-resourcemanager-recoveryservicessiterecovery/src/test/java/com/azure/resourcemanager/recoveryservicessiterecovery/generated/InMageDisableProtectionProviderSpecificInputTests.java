@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageDisableProtectionProviderSpecificInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageDisableProtectionProviderSpecificInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"InMage\",\"replicaVmDeletionStatus\":\"q\"}")
+        InMageDisableProtectionProviderSpecificInput model
+            = BinaryData.fromString("{\"instanceType\":\"InMage\",\"replicaVmDeletionStatus\":\"q\"}")
                 .toObject(InMageDisableProtectionProviderSpecificInput.class);
         Assertions.assertEquals("q", model.replicaVmDeletionStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageDisableProtectionProviderSpecificInput model =
-            new InMageDisableProtectionProviderSpecificInput().withReplicaVmDeletionStatus("q");
+        InMageDisableProtectionProviderSpecificInput model
+            = new InMageDisableProtectionProviderSpecificInput().withReplicaVmDeletionStatus("q");
         model = BinaryData.fromObject(model).toObject(InMageDisableProtectionProviderSpecificInput.class);
         Assertions.assertEquals("q", model.replicaVmDeletionStatus());
     }

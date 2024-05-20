@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.RemoveDisks
 public final class RemoveDisksProviderSpecificInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RemoveDisksProviderSpecificInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"RemoveDisksProviderSpecificInput\"}")
+        RemoveDisksProviderSpecificInput model
+            = BinaryData.fromString("{\"instanceType\":\"RemoveDisksProviderSpecificInput\"}")
                 .toObject(RemoveDisksProviderSpecificInput.class);
     }
 

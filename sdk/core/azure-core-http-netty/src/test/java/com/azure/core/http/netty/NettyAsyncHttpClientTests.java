@@ -18,7 +18,7 @@ import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.utils.TestUtils;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
@@ -70,6 +70,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -89,9 +90,12 @@ import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestS
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.SHORT_POST_BODY_PATH;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.SHORT_POST_BODY_WITH_VALIDATION_PATH;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.TEST_HEADER;
+import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.TIMEOUT;
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -100,8 +104,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class NettyAsyncHttpClientTests {
-    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS = StepVerifierOptions.create()
-        .initialRequest(0);
+    private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS
+        = StepVerifierOptions.create().initialRequest(0);
 
     private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getHttpUri();
 
@@ -146,9 +150,7 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void testDispose() {
         NettyAsyncHttpResponse response = getResponse(LONG_BODY_PATH);
-        StepVerifier.create(response.getBody())
-            .thenCancel()
-            .verify();
+        StepVerifier.create(response.getBody()).thenCancel().verify();
         Assertions.assertTrue(response.internConnection().isDisposed());
     }
 
@@ -197,9 +199,7 @@ public class NettyAsyncHttpClientTests {
             .setHeader(HttpHeaderName.CONTENT_LENGTH, "132")
             .setBody(Flux.error(new RuntimeException("boo")));
 
-        StepVerifier.create(client.send(request))
-            .expectErrorMessage("boo")
-            .verify();
+        StepVerifier.create(client.send(request)).expectErrorMessage("boo").verify();
     }
 
     @Test
@@ -215,9 +215,7 @@ public class NettyAsyncHttpClientTests {
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                 .concatWith(Flux.error(new RuntimeException("boo"))));
 
-        StepVerifier.create(client.send(request))
-            .expectErrorMessage("boo")
-            .verify(Duration.ofSeconds(10));
+        StepVerifier.create(client.send(request)).expectErrorMessage("boo").verify(Duration.ofSeconds(10));
     }
 
     @Test
@@ -225,13 +223,10 @@ public class NettyAsyncHttpClientTests {
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(IO_EXCEPTION_PATH));
 
-        StepVerifier.create(client.send(request)
-                .flatMap(response -> {
-                    assertEquals(200, response.getStatusCode());
-                    return response.getBodyAsByteArray();
-                }))
-            .expectError(IOException.class)
-            .verify();
+        StepVerifier.create(client.send(request).flatMap(response -> {
+            assertEquals(200, response.getStatusCode());
+            return response.getBodyAsByteArray();
+        })).expectError(IOException.class).verify();
     }
 
     @Test
@@ -242,16 +237,13 @@ public class NettyAsyncHttpClientTests {
         ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
             .parallel()
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> doRequest(client, "/long")
-                .flatMap(HttpResponse::getBodyAsByteArray));
+            .flatMap(ignored -> doRequest(client, "/long"))
+            .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
-        StepVerifier.create(responses)
-            .thenConsumeWhile(response -> {
-                TestUtils.assertArraysEqual(LONG_BODY, response);
-                return true;
-            })
-            .expectComplete()
-            .verify(Duration.ofSeconds(60));
+        StepVerifier.create(responses).thenConsumeWhile(response -> {
+            assertArraysEqual(LONG_BODY, response);
+            return true;
+        }).expectComplete().verify(Duration.ofSeconds(60));
     }
 
     @Test
@@ -260,14 +252,13 @@ public class NettyAsyncHttpClientTests {
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
 
         ForkJoinPool pool = new ForkJoinPool();
-
         try {
             List<Callable<Void>> requests = new ArrayList<>(numRequests);
             for (int i = 0; i < numRequests; i++) {
                 requests.add(() -> {
                     try (HttpResponse response = doRequestSync(client, "/long")) {
                         byte[] body = response.getBodyAsBinaryData().toBytes();
-                        TestUtils.assertArraysEqual(LONG_BODY, body);
+                        assertArraysEqual(LONG_BODY, body);
                         return null;
                     }
                 });
@@ -356,8 +347,7 @@ public class NettyAsyncHttpClientTests {
         ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque<>();
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(SHORT_POST_BODY_PATH))
             .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(SHORT_BODY.length + LONG_BODY.length))
-            .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY))
-                .concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
+            .setBody(Flux.just(ByteBuffer.wrap(LONG_BODY)).concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY))));
 
         Contexts contexts = Contexts.with(Context.NONE)
             .setHttpRequestProgressReporter(ProgressReporter.withProgressListener(progress::add));
@@ -376,8 +366,7 @@ public class NettyAsyncHttpClientTests {
         BinaryData body = BinaryData.fromFile(tempFile, 1L, 42L);
 
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url(SHORT_POST_BODY_WITH_VALIDATION_PATH))
-            .setBody(body);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(SHORT_POST_BODY_WITH_VALIDATION_PATH)).setBody(body);
 
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
@@ -417,8 +406,7 @@ public class NettyAsyncHttpClientTests {
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                 .concatWith(Flux.error(new RuntimeException("boo"))));
 
-        RuntimeException thrown = assertThrows(RuntimeException.class,
-            () -> client.sendSync(request, Context.NONE));
+        RuntimeException thrown = assertThrows(RuntimeException.class, () -> client.sendSync(request, Context.NONE));
         assertEquals("boo", thrown.getMessage());
     }
 
@@ -457,7 +445,8 @@ public class NettyAsyncHttpClientTests {
     public void validateRequestHasOneUserAgentHeader() {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
 
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(NO_DOUBLE_UA_PATH),
+        StepVerifier
+            .create(httpClient.send(new HttpRequest(HttpMethod.GET, url(NO_DOUBLE_UA_PATH),
                 new HttpHeaders().set(HttpHeaderName.USER_AGENT, EXPECTED_HEADER), Flux.empty())))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
@@ -473,12 +462,11 @@ public class NettyAsyncHttpClientTests {
         HttpHeaderName multiValueHeaderName = HttpHeaderName.fromString("Multi-value");
         final List<String> multiValueHeaderValue = Arrays.asList("value1", "value2");
 
-        HttpHeaders headers = new HttpHeaders()
-            .set(singleValueHeaderName, singleValueHeaderValue)
+        HttpHeaders headers = new HttpHeaders().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        StepVerifier.create(client.send(new HttpRequest(HttpMethod.GET, url(RETURN_HEADERS_AS_IS_PATH), headers,
-                Flux.empty())))
+        StepVerifier
+            .create(client.send(new HttpRequest(HttpMethod.GET, url(RETURN_HEADERS_AS_IS_PATH), headers, Flux.empty())))
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());
 
@@ -503,7 +491,8 @@ public class NettyAsyncHttpClientTests {
     public void proxyAuthenticationErrorEagerlyRetries() {
         // Create a Netty HttpClient to share backing resources that are warmed up before making a time based call.
         reactor.netty.http.client.HttpClient warmedUpClient = reactor.netty.http.client.HttpClient.create();
-        StepVerifier.create(new NettyAsyncHttpClientBuilder(warmedUpClient).build()
+        StepVerifier
+            .create(new NettyAsyncHttpClientBuilder(warmedUpClient).build()
                 .send(new HttpRequest(HttpMethod.GET, url(SHORT_BODY_PATH))))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
@@ -511,17 +500,18 @@ public class NettyAsyncHttpClientTests {
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
             AtomicInteger responseHandleCount = new AtomicInteger();
             RetryPolicy retryPolicy = new RetryPolicy(new FixedDelay(3, Duration.ofSeconds(1)));
-            ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
-                .setCredentials("1", "1");
+            ProxyOptions proxyOptions
+                = new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()).setCredentials("1", "1");
 
             // Create an HttpPipeline where any exception has a retry delay of 10 seconds.
             HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .policies(retryPolicy, (context, next) -> next.process()
-                    .doOnNext(ignored -> responseHandleCount.incrementAndGet()))
+                .policies(retryPolicy,
+                    (context, next) -> next.process().doOnNext(ignored -> responseHandleCount.incrementAndGet()))
                 .httpClient(new NettyAsyncHttpClientBuilder(warmedUpClient).proxy(proxyOptions).build())
                 .build();
 
-            StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(PROXY_TO_ADDRESS)),
+            StepVerifier
+                .create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(PROXY_TO_ADDRESS)),
                     new Context("azure-eagerly-read-response", true)))
                 .assertNext(response -> assertEquals(418, response.getStatusCode()))
                 .expectComplete()
@@ -538,12 +528,10 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void failedProxyAuthenticationReturnsCorrectError() {
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
-            HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .httpClient(new NettyAsyncHttpClientBuilder()
-                    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
-                        .setCredentials("2", "2"))
-                    .build())
-                .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(new NettyAsyncHttpClientBuilder()
+                .proxy(
+                    new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()).setCredentials("2", "2"))
+                .build()).build();
 
             StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(PROXY_TO_ADDRESS))))
                 .verifyErrorMatches(exception -> exception instanceof ProxyConnectException
@@ -554,36 +542,31 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void sslExceptionWrappedProxyConnectExceptionDoesNotRetryInfinitely() {
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
-            HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .httpClient(new NettyAsyncHttpClientBuilder(reactor.netty.http.client.HttpClient.create()
-                    .doOnRequest((req, conn) -> {
-                        conn.addHandlerLast("sslException", new ChannelOutboundHandlerAdapter() {
-                            @Override
-                            public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
-                                promise.setFailure(new SSLException(
-                                    new ProxyConnectException("Simulated SSLException")));
-                            }
-                        });
-                    }))
-                    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
-                        .setCredentials("1", "1"))
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(new NettyAsyncHttpClientBuilder(
+                reactor.netty.http.client.HttpClient.create().doOnRequest((req, conn) -> {
+                    conn.addHandlerLast("sslException", new ChannelOutboundHandlerAdapter() {
+                        @Override
+                        public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
+                            promise.setFailure(new SSLException(new ProxyConnectException("Simulated SSLException")));
+                        }
+                    });
+                })).proxy(
+                    new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()).setCredentials("1", "1"))
                     .build())
                 .build();
 
             StepVerifier.create(httpPipeline.send(new HttpRequest(HttpMethod.GET, url(PROXY_TO_ADDRESS))))
-                .verifyErrorMatches(exception ->
-                    exception instanceof SSLException && exception.getCause() instanceof ProxyConnectException);
+                .verifyErrorMatches(exception -> exception instanceof SSLException
+                    && exception.getCause() instanceof ProxyConnectException);
         }
     }
 
     @Test
     public void httpClientWithDefaultResolverUsesNoopResolverWithProxy() {
         try (MockProxyServer mockProxyServer = new MockProxyServer()) {
-            NettyAsyncHttpClient httpClient =
-                (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
-                    .proxy(new ProxyOptions(
-                        ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
-                    .build();
+            NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+                .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
+                .build();
 
             assertEquals(NoopAddressResolverGroup.INSTANCE, httpClient.nettyClient.configuration().resolver());
         }
@@ -592,12 +575,10 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void httpClientWithConnectionProviderUsesNoopResolverWithProxy() {
         try (MockProxyServer mockProxyServer = new MockProxyServer()) {
-            NettyAsyncHttpClient httpClient =
-                (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
-                    .connectionProvider(ConnectionProvider.newConnection())
-                    .proxy(new ProxyOptions(
-                        ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
-                    .build();
+            NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder()
+                .connectionProvider(ConnectionProvider.newConnection())
+                .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
+                .build();
 
             assertEquals(NoopAddressResolverGroup.INSTANCE, httpClient.nettyClient.configuration().resolver());
         }
@@ -606,22 +587,56 @@ public class NettyAsyncHttpClientTests {
     @Test
     public void httpClientWithResolverUsesConfiguredResolverWithProxy() {
         try (MockProxyServer mockProxyServer = new MockProxyServer()) {
-            NettyAsyncHttpClient httpClient =
-                (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(
-                    reactor.netty.http.client.HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE))
-                    .proxy(new ProxyOptions(
-                        ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
+            NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientBuilder(
+                reactor.netty.http.client.HttpClient.create().resolver(DefaultAddressResolverGroup.INSTANCE))
+                    .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()))
                     .build();
             assertNotEquals(NoopAddressResolverGroup.INSTANCE, httpClient.nettyClient.configuration().resolver());
         }
     }
 
+    @Test
+    public void perCallTimeout() {
+        HttpClient client = new NettyAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
+
+        // Verify a smaller timeout sent through Context times out the request.
+        StepVerifier.create(client.send(request, new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofSeconds(1))))
+            .expectErrorMatches(e -> e instanceof TimeoutException)
+            .verify();
+
+        // Then verify not setting a timeout through Context does not time out the request.
+        StepVerifier.create(client.send(request)
+            .flatMap(response -> Mono.zip(FluxUtil.collectBytesInByteBufferStream(response.getBody()),
+                Mono.just(response.getStatusCode()))))
+            .assertNext(tuple -> {
+                assertArraysEqual(SHORT_BODY, tuple.getT1());
+                assertEquals(200, tuple.getT2());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void perCallTimeoutSync() {
+        HttpClient client = new NettyAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(10)).build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
+
+        // Verify a smaller timeout sent through Context times out the request.
+        RuntimeException ex = assertThrows(RuntimeException.class,
+            () -> client.sendSync(request, new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofSeconds(1))));
+        assertInstanceOf(TimeoutException.class, ex.getCause());
+
+        // Then verify not setting a timeout through Context does not time out the request.
+        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            assertEquals(200, response.getStatusCode());
+        }
+    }
+
     private static Stream<Arguments> requestHeaderSupplier() {
-        return Stream.of(
-            Arguments.of(null, NULL_REPLACEMENT),
-            Arguments.of("", ""),
-            Arguments.of("aValue", "aValue")
-        );
+        return Stream.of(Arguments.of(null, NULL_REPLACEMENT), Arguments.of("", ""), Arguments.of("aValue", "aValue"));
     }
 
     private static NettyAsyncHttpResponse getResponse(String path) {
@@ -644,8 +659,9 @@ public class NettyAsyncHttpClientTests {
 
     private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
-        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(path)))
-                .flatMap(HttpResponse::getBodyAsByteArray))
+        StepVerifier
+            .create(
+                httpClient.send(new HttpRequest(HttpMethod.GET, url(path))).flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(bytes -> assertArrayEquals(expectedBody, bytes))
             .verifyComplete();
     }

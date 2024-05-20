@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Azure PostgreSQL sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AzurePostgreSqlSink.class, visible = true)
 @JsonTypeName("AzurePostgreSqlSink")
 @Fluent
 public final class AzurePostgreSqlSink extends CopySink {
+    /*
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzurePostgreSqlSink";
+
     /*
      * A query to execute before starting the copy. Type: string (or Expression with resultType string).
      */
@@ -26,6 +34,16 @@ public final class AzurePostgreSqlSink extends CopySink {
      * Creates an instance of AzurePostgreSqlSink class.
      */
     public AzurePostgreSqlSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

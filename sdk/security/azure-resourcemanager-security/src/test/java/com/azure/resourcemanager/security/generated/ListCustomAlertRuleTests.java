@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ListCustomAlertRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListCustomAlertRule model =
-            BinaryData
-                .fromString(
-                    "{\"ruleType\":\"ListCustomAlertRule\",\"valueType\":\"String\",\"displayName\":\"xnj\",\"description\":\"seiphe\",\"isEnabled\":false}")
-                .toObject(ListCustomAlertRule.class);
+        ListCustomAlertRule model = BinaryData.fromString(
+            "{\"ruleType\":\"ListCustomAlertRule\",\"valueType\":\"String\",\"displayName\":\"czkcnyxrxmunjd\",\"description\":\"glnkvxlxpagl\",\"isEnabled\":false}")
+            .toObject(ListCustomAlertRule.class);
         Assertions.assertEquals(false, model.isEnabled());
     }
 

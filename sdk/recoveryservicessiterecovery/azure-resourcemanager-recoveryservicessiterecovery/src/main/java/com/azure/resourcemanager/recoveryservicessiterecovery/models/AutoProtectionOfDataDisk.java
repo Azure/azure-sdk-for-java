@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A value indicating whether the auto protection is enabled. */
+/**
+ * A value indicating whether the auto protection is enabled.
+ */
 public final class AutoProtectionOfDataDisk extends ExpandableStringEnum<AutoProtectionOfDataDisk> {
-    /** Static value Disabled for AutoProtectionOfDataDisk. */
+    /**
+     * Static value Disabled for AutoProtectionOfDataDisk.
+     */
     public static final AutoProtectionOfDataDisk DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for AutoProtectionOfDataDisk. */
+    /**
+     * Static value Enabled for AutoProtectionOfDataDisk.
+     */
     public static final AutoProtectionOfDataDisk ENABLED = fromString("Enabled");
 
     /**
      * Creates a new instance of AutoProtectionOfDataDisk value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class AutoProtectionOfDataDisk extends ExpandableStringEnum<AutoPro
 
     /**
      * Creates or finds a AutoProtectionOfDataDisk from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AutoProtectionOfDataDisk.
      */
@@ -38,7 +44,7 @@ public final class AutoProtectionOfDataDisk extends ExpandableStringEnum<AutoPro
 
     /**
      * Gets known AutoProtectionOfDataDisk values.
-     *
+     * 
      * @return known AutoProtectionOfDataDisk values.
      */
     public static Collection<AutoProtectionOfDataDisk> values() {

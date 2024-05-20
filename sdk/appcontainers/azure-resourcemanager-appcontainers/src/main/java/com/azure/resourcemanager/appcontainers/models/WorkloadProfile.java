@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Workload profile to scope container app execution. */
+/**
+ * Workload profile to scope container app execution.
+ */
 @Fluent
 public final class WorkloadProfile {
     /*
@@ -35,13 +37,15 @@ public final class WorkloadProfile {
     @JsonProperty(value = "maximumCount")
     private Integer maximumCount;
 
-    /** Creates an instance of WorkloadProfile class. */
+    /**
+     * Creates an instance of WorkloadProfile class.
+     */
     public WorkloadProfile() {
     }
 
     /**
      * Get the name property: Workload profile type for the workloads to run on.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class WorkloadProfile {
 
     /**
      * Set the name property: Workload profile type for the workloads to run on.
-     *
+     * 
      * @param name the name value to set.
      * @return the WorkloadProfile object itself.
      */
@@ -61,7 +65,7 @@ public final class WorkloadProfile {
 
     /**
      * Get the workloadProfileType property: Workload profile type for the workloads to run on.
-     *
+     * 
      * @return the workloadProfileType value.
      */
     public String workloadProfileType() {
@@ -70,7 +74,7 @@ public final class WorkloadProfile {
 
     /**
      * Set the workloadProfileType property: Workload profile type for the workloads to run on.
-     *
+     * 
      * @param workloadProfileType the workloadProfileType value to set.
      * @return the WorkloadProfile object itself.
      */
@@ -81,7 +85,7 @@ public final class WorkloadProfile {
 
     /**
      * Get the minimumCount property: The minimum capacity.
-     *
+     * 
      * @return the minimumCount value.
      */
     public Integer minimumCount() {
@@ -90,7 +94,7 @@ public final class WorkloadProfile {
 
     /**
      * Set the minimumCount property: The minimum capacity.
-     *
+     * 
      * @param minimumCount the minimumCount value to set.
      * @return the WorkloadProfile object itself.
      */
@@ -101,7 +105,7 @@ public final class WorkloadProfile {
 
     /**
      * Get the maximumCount property: The maximum capacity.
-     *
+     * 
      * @return the maximumCount value.
      */
     public Integer maximumCount() {
@@ -110,7 +114,7 @@ public final class WorkloadProfile {
 
     /**
      * Set the maximumCount property: The maximum capacity.
-     *
+     * 
      * @param maximumCount the maximumCount value to set.
      * @return the WorkloadProfile object itself.
      */
@@ -121,20 +125,17 @@ public final class WorkloadProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model WorkloadProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model WorkloadProfile"));
         }
         if (workloadProfileType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property workloadProfileType in model WorkloadProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property workloadProfileType in model WorkloadProfile"));
         }
     }
 

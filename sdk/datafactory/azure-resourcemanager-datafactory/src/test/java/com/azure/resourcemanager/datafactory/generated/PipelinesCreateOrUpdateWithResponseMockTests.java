@@ -6,11 +6,9 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.Activity;
 import com.azure.resourcemanager.datafactory.models.ActivityDependency;
@@ -25,7 +23,6 @@ import com.azure.resourcemanager.datafactory.models.PipelineResource;
 import com.azure.resourcemanager.datafactory.models.UserProperty;
 import com.azure.resourcemanager.datafactory.models.VariableSpecification;
 import com.azure.resourcemanager.datafactory.models.VariableType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -33,102 +30,105 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PipelinesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"description\":\"kem\",\"activities\":[{\"type\":\"Activity\",\"name\":\"gezy\",\"description\":\"hiplhwplyv\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"fhxkifjvila\",\"dependencyConditions\":[]},{\"activity\":\"opw\",\"dependencyConditions\":[]},{\"activity\":\"dbewbxaufowh\",\"dependencyConditions\":[]},{\"activity\":\"d\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"aktuge\",\"value\":\"datahqdoctgno\"},{\"name\":\"qw\",\"value\":\"datawtwjzzyi\"},{\"name\":\"bbkly\",\"value\":\"dataelvhxutctakkdjus\"},{\"name\":\"sfjwty\",\"value\":\"datavknbucjy\"}],\"\":{\"owusaddmji\":\"datagdlfgmuojnikwz\",\"yswvpavutiszwy\":\"dataftdfmzlgjcepx\"}},{\"type\":\"Activity\",\"name\":\"lehagbjmwe\",\"description\":\"mpzamq\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"phtdwhm\",\"dependencyConditions\":[]},{\"activity\":\"xhvspum\",\"dependencyConditions\":[]},{\"activity\":\"kmymspatpvebxes\",\"dependencyConditions\":[]},{\"activity\":\"cryn\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"yowwrbxejdwh\",\"value\":\"datashlks\"},{\"name\":\"fpqrusxyugid\",\"value\":\"datagsj\"}],\"\":{\"tkqqdqxslbrttlw\":\"datat\"}},{\"type\":\"Activity\",\"name\":\"sktzrdxxsbbdo\",\"description\":\"jnbcdnjexcyh\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"ubxfb\",\"dependencyConditions\":[]},{\"activity\":\"qgimwivqphddewfa\",\"dependencyConditions\":[]},{\"activity\":\"ajpojz\",\"dependencyConditions\":[]},{\"activity\":\"zzak\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"wnhpcfs\",\"value\":\"datadzivvyky\"},{\"name\":\"avevne\",\"value\":\"datapyzuuqvi\"},{\"name\":\"vryxwzxjxotp\",\"value\":\"dataiwm\"}],\"\":{\"kinsry\":\"dataxwokmdaihgig\"}}],\"parameters\":{\"pvadyxjcckhgstoh\":{\"type\":\"Float\",\"defaultValue\":\"datap\"}},\"variables\":{\"spocutpnyz\":{\"type\":\"Array\",\"defaultValue\":\"datazlmvwufhduniqum\"},\"vtmmvqliqzfjlp\":{\"type\":\"Array\",\"defaultValue\":\"datakd\"}},\"concurrency\":865632766,\"annotations\":[\"datapuavxidytjmk\",\"dataxzgopckm\",\"dataagfbreyvr\"],\"runDimensions\":{\"urlywxjvs\":\"dataikwqtlgfry\",\"qmikljczxotblx\":\"datazchysqypt\"},\"folder\":{\"name\":\"f\"},\"policy\":{\"elapsedTimeMetric\":{\"duration\":\"datasxrxvjvwkzaq\"}}},\"name\":\"qyijyzhmfuksqiqz\",\"type\":\"xunldbkuqcnjiw\",\"etag\":\"nbjk\",\"\":{\"yja\":\"databmfnjuzvwwowy\",\"xjwig\":\"dataehqg\",\"oxpay\":\"datacaim\",\"ger\":\"datazqgsaegaah\"},\"id\":\"hgrgiu\"}";
+            = "{\"properties\":{\"description\":\"tsgvtqvagklmgmld\",\"activities\":[{\"type\":\"rpxwpsmniixacyv\",\"name\":\"zlzdzgvfciptypm\",\"description\":\"ldghxwo\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"hem\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"ecwfnscehqkksjb\",\"value\":\"datatbvgfmrtxeij\"},{\"name\":\"qzcf\",\"value\":\"datakmwcwh\"},{\"name\":\"bacwbdxmb\",\"value\":\"dataecfjanfvrrd\"}],\"\":{\"ziadtzezravt\":\"datazyrwztra\",\"qewsyypy\":\"dataarqgakqbswyofx\",\"zxflrcbexxm\":\"datagzqlwbinzcr\"}},{\"type\":\"clapomzqbwh\",\"name\":\"qoh\",\"description\":\"izexzatrzpgld\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Succeeded\",\"dependsOn\":[{\"activity\":\"woawbbrvogpr\",\"dependencyConditions\":[]},{\"activity\":\"rwzlbcel\",\"dependencyConditions\":[]},{\"activity\":\"s\",\"dependencyConditions\":[]},{\"activity\":\"qvfcgsw\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"msneg\",\"value\":\"datawomj\"},{\"name\":\"ig\",\"value\":\"datagsozmjshnelmq\"}],\"\":{\"w\":\"datagtlpddfuaw\"}}],\"parameters\":{\"wltyirppsykbxiv\":{\"type\":\"Bool\",\"defaultValue\":\"datajzfwmxdyb\"},\"uaqxrgxmfowex\":{\"type\":\"Bool\",\"defaultValue\":\"databqgoeiaoepczxcc\"}},\"variables\":{\"iw\":{\"type\":\"Array\",\"defaultValue\":\"datadiohshofodorvqvd\"},\"zcsw\":{\"type\":\"Array\",\"defaultValue\":\"dataldnn\"}},\"concurrency\":294111660,\"annotations\":[\"dataecz\"],\"runDimensions\":{\"gntvtraaijyqt\":\"dataoepjqainmr\",\"xba\":\"dataksqbkjuanrwhq\",\"cymeq\":\"datadfzpawvbt\",\"bcrcuqvmmaghaq\":\"datamigo\"},\"folder\":{\"name\":\"iuzzxzgtoycht\"},\"policy\":{\"elapsedTimeMetric\":{\"duration\":\"dataxwdeurn\"}}},\"name\":\"txw\",\"type\":\"xoynkgeiisjzjj\",\"etag\":\"chkjxm\",\"\":{\"dqbb\":\"datav\",\"qsrwhievbxozmd\":\"datarndwa\",\"g\":\"datafcecikqrkbl\",\"axwuyeudzyxfttf\":\"databunwosyvexcqoufs\"},\"id\":\"xluqrzi\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PipelineResource response = manager.pipelines().define("ceghp").withExistingFactory("yysycey", "vmlxhy")
-            .withDescription("mroyygtetmpw")
+        PipelineResource response = manager.pipelines()
+            .define("tikkotjhf")
+            .withExistingFactory("h", "aakdhzgzwb")
+            .withDescription("dvxb")
             .withActivities(Arrays.asList(
-                new Activity().withName("qd").withDescription("xdfkdwkhmnoecfjw").withState(ActivityState.INACTIVE)
-                    .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
+                new Activity().withName("shugv")
+                    .withDescription("ulydeigungk")
+                    .withState(ActivityState.ACTIVE)
+                    .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
                     .withDependsOn(Arrays.asList(
-                        new ActivityDependency().withActivity("dszwrfdjxl").withDependencyConditions(Arrays.asList())
+                        new ActivityDependency().withActivity("gwccqgdejupuo")
+                            .withDependencyConditions(Arrays.asList())
                             .withAdditionalProperties(mapOf()),
-                        new ActivityDependency().withActivity("jsmdrecrrbkm").withDependencyConditions(Arrays.asList())
-                            .withAdditionalProperties(mapOf()),
-                        new ActivityDependency().withActivity("qfi").withDependencyConditions(Arrays.asList())
+                        new ActivityDependency().withActivity("pme")
+                            .withDependencyConditions(Arrays.asList())
                             .withAdditionalProperties(mapOf())))
-                    .withUserProperties(Arrays.asList(new UserProperty().withName("oapxdmxwet").withValue("dataji"),
-                        new UserProperty().withName("ekqlyctdx").withValue("datargq"),
-                        new UserProperty().withName("fzedf").withValue("datafqwllzbtqzjmi"),
-                        new UserProperty().withName("dcsdfbkiwumrf").withValue("datajrptsjecqwdosbs")))
-                    .withAdditionalProperties(mapOf("type", "Activity")),
-                new Activity().withName("blrqeqcdikcqc").withDescription("dtfthnjxid").withState(ActivityState.ACTIVE)
-                    .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
+                    .withUserProperties(Arrays.asList(new UserProperty().withName("if").withValue("datat"),
+                        new UserProperty().withName("yzfcybauwfr").withValue("dataznuljodv"),
+                        new UserProperty().withName("pttts").withValue("datacpdtgz")))
+                    .withAdditionalProperties(mapOf("type", "vmqyplpyyzaoqfs")),
+                new Activity().withName("gjsfxiiiqivslpoe")
+                    .withDescription("zahfswcbkjqlwfzl")
+                    .withState(ActivityState.INACTIVE)
+                    .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
                     .withDependsOn(Arrays.asList(
-                        new ActivityDependency().withActivity("xgxtccmq").withDependencyConditions(Arrays.asList())
+                        new ActivityDependency().withActivity("qihhos")
+                            .withDependencyConditions(Arrays.asList())
                             .withAdditionalProperties(mapOf()),
-                        new ActivityDependency().withActivity("kuqrrzuegin").withDependencyConditions(Arrays.asList())
+                        new ActivityDependency().withActivity("pebhv")
+                            .withDependencyConditions(Arrays.asList())
                             .withAdditionalProperties(mapOf()),
-                        new ActivityDependency().withActivity("lnteoapszxqnjxv")
-                            .withDependencyConditions(Arrays.asList()).withAdditionalProperties(mapOf())))
+                        new ActivityDependency().withActivity("rsihdtphtfo")
+                            .withDependencyConditions(Arrays.asList())
+                            .withAdditionalProperties(mapOf())))
+                    .withUserProperties(Arrays.asList(new UserProperty().withName("r").withValue("datapn"),
+                        new UserProperty().withName("mg").withValue("datajuvlffgurztd"),
+                        new UserProperty().withName("oykqorwyykmlpi").withValue("datas")))
+                    .withAdditionalProperties(mapOf("type", "svwrcbmxmbutxtt")),
+                new Activity().withName("qmvezcdepikul")
+                    .withDescription("mygpcobhvbxai")
+                    .withState(ActivityState.ACTIVE)
+                    .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
+                    .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("i")
+                        .withDependencyConditions(Arrays.asList())
+                        .withAdditionalProperties(mapOf())))
                     .withUserProperties(
-                        Arrays.asList(new UserProperty().withName("cqm").withValue("datajihmcgzwoijtlhx"),
-                            new UserProperty().withName("sxxra").withValue("datagaicgqgafkrtsa"),
-                            new UserProperty().withName("agvq").withValue("datatcr"),
-                            new UserProperty().withName("fxqhnw").withValue("dataujrnfdqlzggvo")))
-                    .withAdditionalProperties(mapOf("type", "Activity"))))
-            .withParameters(mapOf("cpbtvgiokz",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("databfryortbresx"),
-                "ubggjdluwbmwu",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datavswdwawomkzussgj"),
-                "amym",
-                new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                    .withDefaultValue("datakzcmfibbozkptw"),
-                "h",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datawckucsopffhqxhtc")))
-            .withVariables(mapOf("krfvl",
-                new VariableSpecification().withType(VariableType.BOOL).withDefaultValue("datavomcjpjrxvsggaub"),
-                "gpvirozlfcc",
-                new VariableSpecification().withType(VariableType.ARRAY).withDefaultValue("datajeoenpihtgigaee"), "p",
-                new VariableSpecification().withType(VariableType.STRING).withDefaultValue("dataqixxxgltqldlhhqp")))
-            .withConcurrency(1217739571)
-            .withAnnotations(Arrays.asList("datacajhnnbp", "datanogyvpfyjlfnjmwb", "dataoqhy", "datarpwkvz"))
-            .withRunDimensions(mapOf("o", "datadlhc", "jqz", "datakmpxtfcrugitjnw", "eaqnbkcqoyqmbu", "datagq"))
-            .withFolder(new PipelineFolder().withName("bzhczyhtjqtzl"))
+                        Arrays.asList(new UserProperty().withName("dpsfihggkixhz").withValue("datagwxvobhjgexenji"),
+                            new UserProperty().withName("kruem").withValue("datahegshyzifn"),
+                            new UserProperty().withName("qgwfulqfvzegxd").withValue("datakxxdymc"),
+                            new UserProperty().withName("cuze").withValue("dataaq")))
+                    .withAdditionalProperties(mapOf("type", "opksetkfc"))))
+            .withParameters(mapOf("trinajirigjfaqz",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataxv"),
+                "mkdqmfwzkullgkxw",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datalkpp"),
+                "zbgwhwxlrlsdq",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataqhzqzr"), "trp",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataxsbyoogn")))
+            .withVariables(mapOf("yboldmpzwcf",
+                new VariableSpecification().withType(VariableType.BOOL).withDefaultValue("datai"), "mfggiryrzjatfvq",
+                new VariableSpecification().withType(VariableType.BOOL).withDefaultValue("datartbuzlgkevp"), "utqy",
+                new VariableSpecification().withType(VariableType.BOOL).withDefaultValue("databpcsgfswgfdq"), "zsvpfj",
+                new VariableSpecification().withType(VariableType.BOOL).withDefaultValue("dataepogosktphc")))
+            .withConcurrency(1513478816)
+            .withAnnotations(Arrays.asList("dataifrpj", "datakzvwdtylu", "datatvwwhufdoomhxl"))
+            .withRunDimensions(mapOf("xzw", "datajtpwdec"))
+            .withFolder(new PipelineFolder().withName("caq"))
             .withPolicy(new PipelinePolicy()
-                .withElapsedTimeMetric(new PipelineElapsedTimeMetricPolicy().withDuration("dataanceowvqqzx")))
-            .withIfMatch("crcxamgvipzvvrf").create();
+                .withElapsedTimeMetric(new PipelineElapsedTimeMetricPolicy().withDuration("datazdzackskuec")))
+            .withIfMatch("jzs")
+            .create();
 
-        Assertions.assertEquals("hgrgiu", response.id());
-        Assertions.assertEquals("kem", response.description());
-        Assertions.assertEquals("gezy", response.activities().get(0).name());
-        Assertions.assertEquals("hiplhwplyv", response.activities().get(0).description());
+        Assertions.assertEquals("xluqrzi", response.id());
+        Assertions.assertEquals("tsgvtqvagklmgmld", response.description());
+        Assertions.assertEquals("zlzdzgvfciptypm", response.activities().get(0).name());
+        Assertions.assertEquals("ldghxwo", response.activities().get(0).description());
         Assertions.assertEquals(ActivityState.INACTIVE, response.activities().get(0).state());
         Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, response.activities().get(0).onInactiveMarkAs());
-        Assertions.assertEquals("fhxkifjvila", response.activities().get(0).dependsOn().get(0).activity());
-        Assertions.assertEquals("aktuge", response.activities().get(0).userProperties().get(0).name());
-        Assertions.assertEquals(ParameterType.FLOAT, response.parameters().get("pvadyxjcckhgstoh").type());
-        Assertions.assertEquals(VariableType.ARRAY, response.variables().get("spocutpnyz").type());
-        Assertions.assertEquals(865632766, response.concurrency());
-        Assertions.assertEquals("f", response.folder().name());
+        Assertions.assertEquals("hem", response.activities().get(0).dependsOn().get(0).activity());
+        Assertions.assertEquals("ecwfnscehqkksjb", response.activities().get(0).userProperties().get(0).name());
+        Assertions.assertEquals(ParameterType.BOOL, response.parameters().get("wltyirppsykbxiv").type());
+        Assertions.assertEquals(VariableType.ARRAY, response.variables().get("iw").type());
+        Assertions.assertEquals(294111660, response.concurrency());
+        Assertions.assertEquals("iuzzxzgtoycht", response.folder().name());
     }
 
     // Use "Map.of" if available

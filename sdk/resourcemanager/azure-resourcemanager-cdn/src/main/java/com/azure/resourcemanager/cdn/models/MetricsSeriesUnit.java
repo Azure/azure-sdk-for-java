@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MetricsSeriesUnit. */
+/**
+ * Defines values for MetricsSeriesUnit.
+ */
 public final class MetricsSeriesUnit extends ExpandableStringEnum<MetricsSeriesUnit> {
-    /** Static value count for MetricsSeriesUnit. */
+    /**
+     * Static value count for MetricsSeriesUnit.
+     */
     public static final MetricsSeriesUnit COUNT = fromString("count");
 
-    /** Static value bytes for MetricsSeriesUnit. */
+    /**
+     * Static value bytes for MetricsSeriesUnit.
+     */
     public static final MetricsSeriesUnit BYTES = fromString("bytes");
 
-    /** Static value bitsPerSecond for MetricsSeriesUnit. */
+    /**
+     * Static value bitsPerSecond for MetricsSeriesUnit.
+     */
     public static final MetricsSeriesUnit BITS_PER_SECOND = fromString("bitsPerSecond");
 
-    /** Static value milliSeconds for MetricsSeriesUnit. */
+    /**
+     * Static value milliSeconds for MetricsSeriesUnit.
+     */
     public static final MetricsSeriesUnit MILLI_SECONDS = fromString("milliSeconds");
 
     /**
      * Creates a new instance of MetricsSeriesUnit value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class MetricsSeriesUnit extends ExpandableStringEnum<MetricsSeriesU
 
     /**
      * Creates or finds a MetricsSeriesUnit from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MetricsSeriesUnit.
      */
@@ -44,7 +54,7 @@ public final class MetricsSeriesUnit extends ExpandableStringEnum<MetricsSeriesU
 
     /**
      * Gets known MetricsSeriesUnit values.
-     *
+     * 
      * @return known MetricsSeriesUnit values.
      */
     public static Collection<MetricsSeriesUnit> values() {

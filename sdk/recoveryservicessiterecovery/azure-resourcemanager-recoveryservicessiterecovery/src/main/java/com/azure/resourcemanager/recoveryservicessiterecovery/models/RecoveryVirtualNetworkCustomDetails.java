@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery Virtual network custom input. */
+/**
+ * Recovery Virtual network custom input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -18,17 +20,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("RecoveryVirtualNetworkCustomDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Existing", value = ExistingRecoveryVirtualNetwork.class),
-    @JsonSubTypes.Type(name = "New", value = NewRecoveryVirtualNetwork.class)
-})
+    @JsonSubTypes.Type(name = "New", value = NewRecoveryVirtualNetwork.class) })
 @Immutable
 public class RecoveryVirtualNetworkCustomDetails {
-    /** Creates an instance of RecoveryVirtualNetworkCustomDetails class. */
+    /**
+     * Creates an instance of RecoveryVirtualNetworkCustomDetails class.
+     */
     public RecoveryVirtualNetworkCustomDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

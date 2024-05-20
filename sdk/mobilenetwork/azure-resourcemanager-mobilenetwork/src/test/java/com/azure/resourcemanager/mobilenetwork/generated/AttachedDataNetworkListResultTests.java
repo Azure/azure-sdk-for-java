@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AttachedDataNetworkListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AttachedDataNetworkListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"userPlaneDataInterface\":{\"name\":\"t\",\"ipv4Address\":\"mdvpjhulsu\",\"ipv4Subnet\":\"mkjozkrwf\",\"ipv4Gateway\":\"iodjp\"},\"dnsAddresses\":[\"w\",\"jdpvwryo\"],\"naptConfiguration\":{\"enabled\":\"Enabled\",\"portRange\":{\"minPort\":2018987029,\"maxPort\":1285377118},\"portReuseHoldTime\":{\"tcp\":1137960460,\"udp\":124042122},\"pinholeLimits\":1063449943,\"pinholeTimeouts\":{\"tcp\":276706615,\"udp\":2140975130,\"icmp\":1060950423}},\"userEquipmentAddressPoolPrefix\":[\"dosyg\",\"xpaojakhmsbz\"],\"userEquipmentStaticAddressPoolPrefix\":[\"rzevdphlxaol\",\"hqtrgqjbpf\",\"fsinzgvfcjrwzoxx\"]},\"location\":\"felluwfzitonpe\",\"tags\":{\"ypininm\":\"jkjlxofpdvhpfx\",\"po\":\"yhuybbkpod\",\"ognarxzxtheotus\":\"ginuvamih\"},\"id\":\"vyevcciqi\",\"name\":\"nhungbw\",\"type\":\"zrnf\"},{\"properties\":{\"provisioningState\":\"Failed\",\"userPlaneDataInterface\":{\"name\":\"ispe\",\"ipv4Address\":\"tzfkufubl\",\"ipv4Subnet\":\"fxqeof\",\"ipv4Gateway\":\"e\"},\"dnsAddresses\":[\"hqjbasvmsmj\",\"ulngsntn\",\"ybkzgcwr\",\"clxxwrljdo\"],\"naptConfiguration\":{\"enabled\":\"Disabled\",\"portRange\":{\"minPort\":1132832602,\"maxPort\":422670277},\"portReuseHoldTime\":{\"tcp\":1066142513,\"udp\":747491790},\"pinholeLimits\":1343054120,\"pinholeTimeouts\":{\"tcp\":24386691,\"udp\":1728330738,\"icmp\":1272736991}},\"userEquipmentAddressPoolPrefix\":[\"sqrglssainq\",\"jwnzlljfmp\",\"eebvmgxsab\"],\"userEquipmentStaticAddressPoolPrefix\":[\"duuji\",\"c\",\"czdzev\",\"dhkrwpdappdsbdk\"]},\"location\":\"rwjfe\",\"tags\":{\"tmrldhugjzzdatq\":\"hutje\",\"gphuticndvka\":\"hocdgeab\",\"k\":\"zwyiftyhxhur\",\"kjfkg\":\"tyxolniwpwc\"},\"id\":\"awxklr\",\"name\":\"plwckbas\",\"type\":\"ypnddhsgcb\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"userPlaneDataInterface\":{\"name\":\"ejk\",\"ipv4Address\":\"ynqgoulzndlikwyq\",\"ipv4Subnet\":\"fgibmadgakeq\",\"ipv4Gateway\":\"xybz\"},\"dnsAddresses\":[\"e\",\"qytbciq\",\"ouf\",\"mmnkzsmodmgl\"],\"naptConfiguration\":{\"enabled\":\"Enabled\",\"portRange\":{\"minPort\":1951665736,\"maxPort\":542784283},\"portReuseHoldTime\":{\"tcp\":1183608022,\"udp\":1581209984},\"pinholeLimits\":289494577,\"pinholeTimeouts\":{\"tcp\":1911925190,\"udp\":1035420183,\"icmp\":1593608704}},\"userEquipmentAddressPoolPrefix\":[\"rtumkdosvq\",\"hbmdgbbjfdd\"],\"userEquipmentStaticAddressPoolPrefix\":[\"mbe\",\"ppbhtqqrolfp\",\"psalgbqux\",\"gjyjgzjaoyfhrtxi\"]},\"location\":\"erkujys\",\"tags\":{\"awrlyx\":\"juvf\"},\"id\":\"jkcpr\",\"name\":\"nwbxgjvtbvpyssz\",\"type\":\"nruj\"}],\"nextLink\":\"uhmuouqfprwzwbn\"}")
-                .toObject(AttachedDataNetworkListResult.class);
+        AttachedDataNetworkListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Unknown\",\"userPlaneDataInterface\":{\"name\":\"t\",\"ipv4Address\":\"mdvpjhulsu\",\"ipv4Subnet\":\"mkjozkrwf\",\"ipv4Gateway\":\"iodjp\"},\"dnsAddresses\":[\"w\",\"jdpvwryo\"],\"naptConfiguration\":{\"enabled\":\"Enabled\",\"portRange\":{\"minPort\":2018987029,\"maxPort\":1285377118},\"portReuseHoldTime\":{\"tcp\":1137960460,\"udp\":124042122},\"pinholeLimits\":1063449943,\"pinholeTimeouts\":{\"tcp\":276706615,\"udp\":2140975130,\"icmp\":1060950423}},\"userEquipmentAddressPoolPrefix\":[\"dosyg\",\"xpaojakhmsbz\"],\"userEquipmentStaticAddressPoolPrefix\":[\"rzevdphlxaol\",\"hqtrgqjbpf\",\"fsinzgvfcjrwzoxx\"]},\"location\":\"felluwfzitonpe\",\"tags\":{\"ypininm\":\"jkjlxofpdvhpfx\",\"po\":\"yhuybbkpod\",\"ognarxzxtheotus\":\"ginuvamih\"},\"id\":\"vyevcciqi\",\"name\":\"nhungbw\",\"type\":\"zrnf\"},{\"properties\":{\"provisioningState\":\"Failed\",\"userPlaneDataInterface\":{\"name\":\"ispe\",\"ipv4Address\":\"tzfkufubl\",\"ipv4Subnet\":\"fxqeof\",\"ipv4Gateway\":\"e\"},\"dnsAddresses\":[\"hqjbasvmsmj\",\"ulngsntn\",\"ybkzgcwr\",\"clxxwrljdo\"],\"naptConfiguration\":{\"enabled\":\"Disabled\",\"portRange\":{\"minPort\":1132832602,\"maxPort\":422670277},\"portReuseHoldTime\":{\"tcp\":1066142513,\"udp\":747491790},\"pinholeLimits\":1343054120,\"pinholeTimeouts\":{\"tcp\":24386691,\"udp\":1728330738,\"icmp\":1272736991}},\"userEquipmentAddressPoolPrefix\":[\"sqrglssainq\",\"jwnzlljfmp\",\"eebvmgxsab\"],\"userEquipmentStaticAddressPoolPrefix\":[\"duuji\",\"c\",\"czdzev\",\"dhkrwpdappdsbdk\"]},\"location\":\"rwjfe\",\"tags\":{\"tmrldhugjzzdatq\":\"hutje\",\"gphuticndvka\":\"hocdgeab\",\"k\":\"zwyiftyhxhur\",\"kjfkg\":\"tyxolniwpwc\"},\"id\":\"awxklr\",\"name\":\"plwckbas\",\"type\":\"ypnddhsgcb\"},{\"properties\":{\"provisioningState\":\"Unknown\",\"userPlaneDataInterface\":{\"name\":\"ejk\",\"ipv4Address\":\"ynqgoulzndlikwyq\",\"ipv4Subnet\":\"fgibmadgakeq\",\"ipv4Gateway\":\"xybz\"},\"dnsAddresses\":[\"e\",\"qytbciq\",\"ouf\",\"mmnkzsmodmgl\"],\"naptConfiguration\":{\"enabled\":\"Enabled\",\"portRange\":{\"minPort\":1951665736,\"maxPort\":542784283},\"portReuseHoldTime\":{\"tcp\":1183608022,\"udp\":1581209984},\"pinholeLimits\":289494577,\"pinholeTimeouts\":{\"tcp\":1911925190,\"udp\":1035420183,\"icmp\":1593608704}},\"userEquipmentAddressPoolPrefix\":[\"rtumkdosvq\",\"hbmdgbbjfdd\"],\"userEquipmentStaticAddressPoolPrefix\":[\"mbe\",\"ppbhtqqrolfp\",\"psalgbqux\",\"gjyjgzjaoyfhrtxi\"]},\"location\":\"erkujys\",\"tags\":{\"awrlyx\":\"juvf\"},\"id\":\"jkcpr\",\"name\":\"nwbxgjvtbvpyssz\",\"type\":\"nruj\"}],\"nextLink\":\"uhmuouqfprwzwbn\"}")
+            .toObject(AttachedDataNetworkListResult.class);
         Assertions.assertEquals("felluwfzitonpe", model.value().get(0).location());
         Assertions.assertEquals("jkjlxofpdvhpfx", model.value().get(0).tags().get("ypininm"));
         Assertions.assertEquals("t", model.value().get(0).userPlaneDataInterface().name());
@@ -48,100 +46,58 @@ public final class AttachedDataNetworkListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AttachedDataNetworkListResult model =
-            new AttachedDataNetworkListResult()
+        AttachedDataNetworkListResult model
+            = new AttachedDataNetworkListResult()
                 .withValue(
                     Arrays
                         .asList(
-                            new AttachedDataNetworkInner()
-                                .withLocation("felluwfzitonpe")
-                                .withTags(
-                                    mapOf(
-                                        "ypininm",
-                                        "jkjlxofpdvhpfx",
-                                        "po",
-                                        "yhuybbkpod",
-                                        "ognarxzxtheotus",
-                                        "ginuvamih"))
-                                .withUserPlaneDataInterface(
-                                    new InterfaceProperties()
-                                        .withName("t")
-                                        .withIpv4Address("mdvpjhulsu")
-                                        .withIpv4Subnet("mkjozkrwf")
-                                        .withIpv4Gateway("iodjp"))
+                            new AttachedDataNetworkInner().withLocation("felluwfzitonpe")
+                                .withTags(mapOf("ypininm", "jkjlxofpdvhpfx", "po", "yhuybbkpod", "ognarxzxtheotus",
+                                    "ginuvamih"))
+                                .withUserPlaneDataInterface(new InterfaceProperties().withName("t")
+                                    .withIpv4Address("mdvpjhulsu").withIpv4Subnet("mkjozkrwf").withIpv4Gateway("iodjp"))
                                 .withDnsAddresses(Arrays.asList("w", "jdpvwryo"))
-                                .withNaptConfiguration(
-                                    new NaptConfiguration()
-                                        .withEnabled(NaptEnabled.ENABLED)
-                                        .withPortRange(new PortRange().withMinPort(2018987029).withMaxPort(1285377118))
-                                        .withPortReuseHoldTime(
-                                            new PortReuseHoldTimes().withTcp(1137960460).withUdp(124042122))
-                                        .withPinholeLimits(1063449943)
-                                        .withPinholeTimeouts(
-                                            new PinholeTimeouts()
-                                                .withTcp(276706615)
-                                                .withUdp(2140975130)
-                                                .withIcmp(1060950423)))
-                                .withUserEquipmentAddressPoolPrefix(Arrays.asList("dosyg", "xpaojakhmsbz"))
+                                .withNaptConfiguration(new NaptConfiguration().withEnabled(NaptEnabled.ENABLED)
+                                    .withPortRange(new PortRange().withMinPort(2018987029).withMaxPort(1285377118))
+                                    .withPortReuseHoldTime(
+                                        new PortReuseHoldTimes().withTcp(1137960460).withUdp(124042122))
+                                    .withPinholeLimits(1063449943)
+                                    .withPinholeTimeouts(new PinholeTimeouts().withTcp(276706615).withUdp(2140975130)
+                                        .withIcmp(1060950423)))
+                                .withUserEquipmentAddressPoolPrefix(
+                                    Arrays.asList("dosyg", "xpaojakhmsbz"))
                                 .withUserEquipmentStaticAddressPoolPrefix(
                                     Arrays.asList("rzevdphlxaol", "hqtrgqjbpf", "fsinzgvfcjrwzoxx")),
                             new AttachedDataNetworkInner()
                                 .withLocation("rwjfe")
-                                .withTags(
-                                    mapOf(
-                                        "tmrldhugjzzdatq",
-                                        "hutje",
-                                        "gphuticndvka",
-                                        "hocdgeab",
-                                        "k",
-                                        "zwyiftyhxhur",
-                                        "kjfkg",
-                                        "tyxolniwpwc"))
-                                .withUserPlaneDataInterface(
-                                    new InterfaceProperties()
-                                        .withName("ispe")
-                                        .withIpv4Address("tzfkufubl")
-                                        .withIpv4Subnet("fxqeof")
-                                        .withIpv4Gateway("e"))
+                                .withTags(mapOf("tmrldhugjzzdatq", "hutje", "gphuticndvka", "hocdgeab", "k",
+                                    "zwyiftyhxhur", "kjfkg", "tyxolniwpwc"))
+                                .withUserPlaneDataInterface(new InterfaceProperties().withName("ispe")
+                                    .withIpv4Address("tzfkufubl").withIpv4Subnet("fxqeof").withIpv4Gateway("e"))
                                 .withDnsAddresses(Arrays.asList("hqjbasvmsmj", "ulngsntn", "ybkzgcwr", "clxxwrljdo"))
-                                .withNaptConfiguration(
-                                    new NaptConfiguration()
-                                        .withEnabled(NaptEnabled.DISABLED)
-                                        .withPortRange(new PortRange().withMinPort(1132832602).withMaxPort(422670277))
-                                        .withPortReuseHoldTime(
-                                            new PortReuseHoldTimes().withTcp(1066142513).withUdp(747491790))
-                                        .withPinholeLimits(1343054120)
-                                        .withPinholeTimeouts(
-                                            new PinholeTimeouts()
-                                                .withTcp(24386691)
-                                                .withUdp(1728330738)
-                                                .withIcmp(1272736991)))
+                                .withNaptConfiguration(new NaptConfiguration().withEnabled(NaptEnabled.DISABLED)
+                                    .withPortRange(new PortRange().withMinPort(1132832602).withMaxPort(422670277))
+                                    .withPortReuseHoldTime(
+                                        new PortReuseHoldTimes().withTcp(1066142513).withUdp(747491790))
+                                    .withPinholeLimits(1343054120)
+                                    .withPinholeTimeouts(new PinholeTimeouts().withTcp(24386691).withUdp(1728330738)
+                                        .withIcmp(1272736991)))
                                 .withUserEquipmentAddressPoolPrefix(
                                     Arrays.asList("sqrglssainq", "jwnzlljfmp", "eebvmgxsab"))
                                 .withUserEquipmentStaticAddressPoolPrefix(
                                     Arrays.asList("duuji", "c", "czdzev", "dhkrwpdappdsbdk")),
-                            new AttachedDataNetworkInner()
-                                .withLocation("erkujys")
-                                .withTags(mapOf("awrlyx", "juvf"))
+                            new AttachedDataNetworkInner().withLocation("erkujys").withTags(mapOf("awrlyx", "juvf"))
                                 .withUserPlaneDataInterface(
-                                    new InterfaceProperties()
-                                        .withName("ejk")
-                                        .withIpv4Address("ynqgoulzndlikwyq")
-                                        .withIpv4Subnet("fgibmadgakeq")
-                                        .withIpv4Gateway("xybz"))
+                                    new InterfaceProperties().withName("ejk").withIpv4Address("ynqgoulzndlikwyq")
+                                        .withIpv4Subnet("fgibmadgakeq").withIpv4Gateway("xybz"))
                                 .withDnsAddresses(Arrays.asList("e", "qytbciq", "ouf", "mmnkzsmodmgl"))
-                                .withNaptConfiguration(
-                                    new NaptConfiguration()
-                                        .withEnabled(NaptEnabled.ENABLED)
-                                        .withPortRange(new PortRange().withMinPort(1951665736).withMaxPort(542784283))
-                                        .withPortReuseHoldTime(
-                                            new PortReuseHoldTimes().withTcp(1183608022).withUdp(1581209984))
-                                        .withPinholeLimits(289494577)
-                                        .withPinholeTimeouts(
-                                            new PinholeTimeouts()
-                                                .withTcp(1911925190)
-                                                .withUdp(1035420183)
-                                                .withIcmp(1593608704)))
+                                .withNaptConfiguration(new NaptConfiguration().withEnabled(NaptEnabled.ENABLED)
+                                    .withPortRange(new PortRange().withMinPort(1951665736).withMaxPort(542784283))
+                                    .withPortReuseHoldTime(
+                                        new PortReuseHoldTimes().withTcp(1183608022).withUdp(1581209984))
+                                    .withPinholeLimits(289494577)
+                                    .withPinholeTimeouts(new PinholeTimeouts().withTcp(1911925190).withUdp(1035420183)
+                                        .withIcmp(1593608704)))
                                 .withUserEquipmentAddressPoolPrefix(Arrays.asList("rtumkdosvq", "hbmdgbbjfdd"))
                                 .withUserEquipmentStaticAddressPoolPrefix(
                                     Arrays.asList("mbe", "ppbhtqqrolfp", "psalgbqux", "gjyjgzjaoyfhrtxi"))));

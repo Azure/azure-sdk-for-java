@@ -10,10 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.ScoreDetails;
 public final class ScoreDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScoreDetails model =
-            BinaryData
-                .fromString("{\"max\":2043134547,\"current\":65.28047122812333,\"percentage\":41.58485561285469}")
-                .toObject(ScoreDetails.class);
+        ScoreDetails model = BinaryData
+            .fromString("{\"max\":1100283852,\"current\":71.7647477002083,\"percentage\":80.18024171032928}")
+            .toObject(ScoreDetails.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -7,60 +7,62 @@ package com.azure.resourcemanager.sphere.models;
 import com.azure.resourcemanager.sphere.fluent.models.ProofOfPossessionNonceResponseInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of ProofOfPossessionNonceResponse. */
+/**
+ * An immutable client-side representation of ProofOfPossessionNonceResponse.
+ */
 public interface ProofOfPossessionNonceResponse {
     /**
      * Gets the certificate property: The certificate as a UTF-8 encoded base 64 string.
-     *
+     * 
      * @return the certificate value.
      */
     String certificate();
 
     /**
      * Gets the status property: The certificate status.
-     *
+     * 
      * @return the status value.
      */
     CertificateStatus status();
 
     /**
      * Gets the subject property: The certificate subject.
-     *
+     * 
      * @return the subject value.
      */
     String subject();
 
     /**
      * Gets the thumbprint property: The certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     String thumbprint();
 
     /**
      * Gets the expiryUtc property: The certificate expiry date.
-     *
+     * 
      * @return the expiryUtc value.
      */
     OffsetDateTime expiryUtc();
 
     /**
      * Gets the notBeforeUtc property: The certificate not before date.
-     *
+     * 
      * @return the notBeforeUtc value.
      */
     OffsetDateTime notBeforeUtc();
 
     /**
      * Gets the provisioningState property: The status of the last operation.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
 
     /**
      * Gets the inner com.azure.resourcemanager.sphere.fluent.models.ProofOfPossessionNonceResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     ProofOfPossessionNonceResponseInner innerModel();

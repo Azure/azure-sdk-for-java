@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** RCM proxy details. */
+/**
+ * RCM proxy details.
+ */
 @Immutable
 public final class RcmProxyDetails {
     /*
@@ -72,13 +74,15 @@ public final class RcmProxyDetails {
     @JsonProperty(value = "healthErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthError> healthErrors;
 
-    /** Creates an instance of RcmProxyDetails class. */
+    /**
+     * Creates an instance of RcmProxyDetails class.
+     */
     public RcmProxyDetails() {
     }
 
     /**
      * Get the id property: The RCM proxy Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -87,7 +91,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the name property: The RCM proxy name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -96,7 +100,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the biosId property: The RCM proxy Bios Id.
-     *
+     * 
      * @return the biosId value.
      */
     public String biosId() {
@@ -105,7 +109,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the fabricObjectId property: The fabric object Id.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -114,7 +118,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the fqdn property: The RCM proxy Fqdn.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -123,7 +127,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the clientAuthenticationType property: The client authentication type.
-     *
+     * 
      * @return the clientAuthenticationType value.
      */
     public String clientAuthenticationType() {
@@ -132,7 +136,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the version property: The version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -141,7 +145,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the lastHeartbeatUtc property: The last heartbeat received from the RCM proxy.
-     *
+     * 
      * @return the lastHeartbeatUtc value.
      */
     public OffsetDateTime lastHeartbeatUtc() {
@@ -150,7 +154,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the health property: The health of the RCM proxy.
-     *
+     * 
      * @return the health value.
      */
     public ProtectionHealth health() {
@@ -159,7 +163,7 @@ public final class RcmProxyDetails {
 
     /**
      * Get the healthErrors property: The health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -168,7 +172,7 @@ public final class RcmProxyDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

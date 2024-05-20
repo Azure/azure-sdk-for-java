@@ -5,16 +5,14 @@
 package com.azure.resourcemanager.sphere.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.sphere.fluent.models.CertificateProperties;
+import com.azure.resourcemanager.sphere.models.CertificateProperties;
 
 public final class CertificatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"certificate\":\"e\",\"status\":\"Expired\",\"subject\":\"jbasvmsmjqulngs\",\"thumbprint\":\"nbybkzgcwrwcl\",\"expiryUtc\":\"2021-06-21T13:48:53Z\",\"notBeforeUtc\":\"2021-01-30T10:40:21Z\",\"provisioningState\":\"Canceled\"}")
-                .toObject(CertificateProperties.class);
+        CertificateProperties model = BinaryData.fromString(
+            "{\"certificate\":\"w\",\"status\":\"Revoked\",\"subject\":\"ypl\",\"thumbprint\":\"kbasyypn\",\"expiryUtc\":\"2021-11-02T07:55:59Z\",\"notBeforeUtc\":\"2021-11-25T20:26:44Z\",\"provisioningState\":\"Accepted\"}")
+            .toObject(CertificateProperties.class);
     }
 
     @org.junit.jupiter.api.Test

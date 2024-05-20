@@ -35,6 +35,12 @@ public class Paginator {
 
     private final static Logger logger = LoggerFactory.getLogger(Paginator.class);
 
+    private static final ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsHelper
+        .CosmosQueryRequestOptionsAccessor qryOptAccessor = ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsHelper
+        .getCosmosQueryRequestOptionsAccessor();
+
     public static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc,
@@ -51,16 +57,8 @@ public class Paginator {
             top,
             maxPageSize,
             getPreFetchCount(cosmosQueryRequestOptions, top, maxPageSize),
-            ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .getOperationContext(cosmosQueryRequestOptions),
-            ImplementationBridgeHelpers
-                .CosmosQueryRequestOptionsHelper
-                .getCosmosQueryRequestOptionsAccessor()
-                .getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
-            globalEndpointManager,
-            globalPartitionEndpointManagerForCircuitBreaker);
+            qryOptAccessor.getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
+            qryOptAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions));
     }
 
     public static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(

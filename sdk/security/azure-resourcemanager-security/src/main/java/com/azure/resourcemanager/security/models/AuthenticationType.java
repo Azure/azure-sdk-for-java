@@ -13,18 +13,24 @@ import java.util.Collection;
  * account organization credentials.
  */
 public final class AuthenticationType extends ExpandableStringEnum<AuthenticationType> {
-    /** Static value awsCreds for AuthenticationType. */
+    /**
+     * Static value awsCreds for AuthenticationType.
+     */
     public static final AuthenticationType AWS_CREDS = fromString("awsCreds");
 
-    /** Static value awsAssumeRole for AuthenticationType. */
+    /**
+     * Static value awsAssumeRole for AuthenticationType.
+     */
     public static final AuthenticationType AWS_ASSUME_ROLE = fromString("awsAssumeRole");
 
-    /** Static value gcpCredentials for AuthenticationType. */
+    /**
+     * Static value gcpCredentials for AuthenticationType.
+     */
     public static final AuthenticationType GCP_CREDENTIALS = fromString("gcpCredentials");
 
     /**
      * Creates a new instance of AuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +39,7 @@ public final class AuthenticationType extends ExpandableStringEnum<Authenticatio
 
     /**
      * Creates or finds a AuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AuthenticationType.
      */
@@ -44,7 +50,7 @@ public final class AuthenticationType extends ExpandableStringEnum<Authenticatio
 
     /**
      * Gets known AuthenticationType values.
-     *
+     * 
      * @return known AuthenticationType values.
      */
     public static Collection<AuthenticationType> values() {

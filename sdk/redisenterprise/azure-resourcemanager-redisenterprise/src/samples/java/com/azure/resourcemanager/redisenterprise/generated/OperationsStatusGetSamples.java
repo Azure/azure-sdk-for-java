@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
-/** Samples for OperationsStatus Get. */
+/**
+ * Samples for OperationsStatus Get.
+ */
 public final class OperationsStatusGetSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/OperationsStatusGet.json
+     * x-ms-original-file:
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/OperationsStatusGet.
+     * json
      */
     /**
      * Sample code: OperationsStatusGet.
-     *
+     * 
      * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void operationsStatusGet(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {

@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class JitNetworkAccessPolicyInitiatePortTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JitNetworkAccessPolicyInitiatePort model =
-            BinaryData
-                .fromString(
-                    "{\"number\":30912450,\"allowedSourceAddressPrefix\":\"wwp\",\"endTimeUtc\":\"2021-06-18T17:27:40Z\"}")
-                .toObject(JitNetworkAccessPolicyInitiatePort.class);
-        Assertions.assertEquals(30912450, model.number());
-        Assertions.assertEquals("wwp", model.allowedSourceAddressPrefix());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T17:27:40Z"), model.endTimeUtc());
+        JitNetworkAccessPolicyInitiatePort model = BinaryData.fromString(
+            "{\"number\":679289886,\"allowedSourceAddressPrefix\":\"sfgtdmbvxekra\",\"endTimeUtc\":\"2021-05-06T22:39:44Z\"}")
+            .toObject(JitNetworkAccessPolicyInitiatePort.class);
+        Assertions.assertEquals(679289886, model.number());
+        Assertions.assertEquals("sfgtdmbvxekra", model.allowedSourceAddressPrefix());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T22:39:44Z"), model.endTimeUtc());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JitNetworkAccessPolicyInitiatePort model =
-            new JitNetworkAccessPolicyInitiatePort()
-                .withNumber(30912450)
-                .withAllowedSourceAddressPrefix("wwp")
-                .withEndTimeUtc(OffsetDateTime.parse("2021-06-18T17:27:40Z"));
+        JitNetworkAccessPolicyInitiatePort model = new JitNetworkAccessPolicyInitiatePort().withNumber(679289886)
+            .withAllowedSourceAddressPrefix("sfgtdmbvxekra")
+            .withEndTimeUtc(OffsetDateTime.parse("2021-05-06T22:39:44Z"));
         model = BinaryData.fromObject(model).toObject(JitNetworkAccessPolicyInitiatePort.class);
-        Assertions.assertEquals(30912450, model.number());
-        Assertions.assertEquals("wwp", model.allowedSourceAddressPrefix());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T17:27:40Z"), model.endTimeUtc());
+        Assertions.assertEquals(679289886, model.number());
+        Assertions.assertEquals("sfgtdmbvxekra", model.allowedSourceAddressPrefix());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-06T22:39:44Z"), model.endTimeUtc());
     }
 }

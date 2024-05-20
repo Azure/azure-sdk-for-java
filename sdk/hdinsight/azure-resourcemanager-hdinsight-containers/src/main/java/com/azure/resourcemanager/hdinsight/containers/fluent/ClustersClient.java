@@ -16,12 +16,15 @@ import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterInsta
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ServiceConfigResultInner;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterPatch;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterResizeData;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterUpgrade;
 
-/** An instance of this class provides access to all the operations defined in ClustersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ClustersClient.
+ */
 public interface ClustersClient {
     /**
      * Lists the HDInsight cluster pools under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -34,7 +37,7 @@ public interface ClustersClient {
 
     /**
      * Lists the HDInsight cluster pools under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param context The context to associate with this operation.
@@ -44,12 +47,78 @@ public interface ClustersClient {
      * @return the list cluster operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClusterInner> listByClusterPoolName(
-        String resourceGroupName, String clusterPoolName, Context context);
+    PagedIterable<ClusterInner> listByClusterPoolName(String resourceGroupName, String clusterPoolName,
+        Context context);
+
+    /**
+     * Upgrade a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterUpgradeRequest Upgrade a cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the cluster.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpgrade(String resourceGroupName, String clusterPoolName,
+        String clusterName, ClusterUpgrade clusterUpgradeRequest);
+
+    /**
+     * Upgrade a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterUpgradeRequest Upgrade a cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the cluster.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpgrade(String resourceGroupName, String clusterPoolName,
+        String clusterName, ClusterUpgrade clusterUpgradeRequest, Context context);
+
+    /**
+     * Upgrade a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterUpgradeRequest Upgrade a cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterInner upgrade(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterUpgrade clusterUpgradeRequest);
+
+    /**
+     * Upgrade a cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterPoolName The name of the cluster pool.
+     * @param clusterName The name of the HDInsight cluster.
+     * @param clusterUpgradeRequest Upgrade a cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClusterInner upgrade(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterUpgrade clusterUpgradeRequest, Context context);
 
     /**
      * Resize an existing Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -60,12 +129,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginResize(
-        String resourceGroupName, String clusterPoolName, String clusterName, ClusterResizeData clusterResizeRequest);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginResize(String resourceGroupName, String clusterPoolName,
+        String clusterName, ClusterResizeData clusterResizeRequest);
 
     /**
      * Resize an existing Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -77,16 +146,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginResize(
-        String resourceGroupName,
-        String clusterPoolName,
-        String clusterName,
-        ClusterResizeData clusterResizeRequest,
-        Context context);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginResize(String resourceGroupName, String clusterPoolName,
+        String clusterName, ClusterResizeData clusterResizeRequest, Context context);
 
     /**
      * Resize an existing Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -97,12 +162,12 @@ public interface ClustersClient {
      * @return the cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner resize(
-        String resourceGroupName, String clusterPoolName, String clusterName, ClusterResizeData clusterResizeRequest);
+    ClusterInner resize(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterResizeData clusterResizeRequest);
 
     /**
      * Resize an existing Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -114,16 +179,12 @@ public interface ClustersClient {
      * @return the cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner resize(
-        String resourceGroupName,
-        String clusterPoolName,
-        String clusterName,
-        ClusterResizeData clusterResizeRequest,
-        Context context);
+    ClusterInner resize(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterResizeData clusterResizeRequest, Context context);
 
     /**
      * Gets a HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -134,12 +195,12 @@ public interface ClustersClient {
      * @return a HDInsight cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> getWithResponse(
-        String resourceGroupName, String clusterPoolName, String clusterName, Context context);
+    Response<ClusterInner> getWithResponse(String resourceGroupName, String clusterPoolName, String clusterName,
+        Context context);
 
     /**
      * Gets a HDInsight cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -153,7 +214,7 @@ public interface ClustersClient {
 
     /**
      * Creates a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -164,12 +225,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
-        String resourceGroupName, String clusterPoolName, String clusterName, ClusterInner hDInsightCluster);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(String resourceGroupName, String clusterPoolName,
+        String clusterName, ClusterInner hDInsightCluster);
 
     /**
      * Creates a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -181,16 +242,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
-        String resourceGroupName,
-        String clusterPoolName,
-        String clusterName,
-        ClusterInner hDInsightCluster,
-        Context context);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(String resourceGroupName, String clusterPoolName,
+        String clusterName, ClusterInner hDInsightCluster, Context context);
 
     /**
      * Creates a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -201,12 +258,12 @@ public interface ClustersClient {
      * @return the cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner create(
-        String resourceGroupName, String clusterPoolName, String clusterName, ClusterInner hDInsightCluster);
+    ClusterInner create(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterInner hDInsightCluster);
 
     /**
      * Creates a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -218,16 +275,12 @@ public interface ClustersClient {
      * @return the cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner create(
-        String resourceGroupName,
-        String clusterPoolName,
-        String clusterName,
-        ClusterInner hDInsightCluster,
-        Context context);
+    ClusterInner create(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterInner hDInsightCluster, Context context);
 
     /**
      * Updates an existing Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -238,12 +291,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
-        String resourceGroupName, String clusterPoolName, String clusterName, ClusterPatch clusterPatchRequest);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterPoolName,
+        String clusterName, ClusterPatch clusterPatchRequest);
 
     /**
      * Updates an existing Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -255,16 +308,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
-        String resourceGroupName,
-        String clusterPoolName,
-        String clusterName,
-        ClusterPatch clusterPatchRequest,
-        Context context);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterPoolName,
+        String clusterName, ClusterPatch clusterPatchRequest, Context context);
 
     /**
      * Updates an existing Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -275,12 +324,12 @@ public interface ClustersClient {
      * @return the cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner update(
-        String resourceGroupName, String clusterPoolName, String clusterName, ClusterPatch clusterPatchRequest);
+    ClusterInner update(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterPatch clusterPatchRequest);
 
     /**
      * Updates an existing Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -292,16 +341,12 @@ public interface ClustersClient {
      * @return the cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInner update(
-        String resourceGroupName,
-        String clusterPoolName,
-        String clusterName,
-        ClusterPatch clusterPatchRequest,
-        Context context);
+    ClusterInner update(String resourceGroupName, String clusterPoolName, String clusterName,
+        ClusterPatch clusterPatchRequest, Context context);
 
     /**
      * Deletes a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -311,12 +356,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterPoolName, String clusterName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterPoolName,
+        String clusterName);
 
     /**
      * Deletes a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -327,12 +372,12 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterPoolName, String clusterName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterPoolName, String clusterName,
+        Context context);
 
     /**
      * Deletes a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -345,7 +390,7 @@ public interface ClustersClient {
 
     /**
      * Deletes a cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -359,7 +404,7 @@ public interface ClustersClient {
 
     /**
      * Lists the config dump of all services running in cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -369,12 +414,12 @@ public interface ClustersClient {
      * @return cluster instance service configs api response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServiceConfigResultInner> listServiceConfigs(
-        String resourceGroupName, String clusterPoolName, String clusterName);
+    PagedIterable<ServiceConfigResultInner> listServiceConfigs(String resourceGroupName, String clusterPoolName,
+        String clusterName);
 
     /**
      * Lists the config dump of all services running in cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -385,12 +430,12 @@ public interface ClustersClient {
      * @return cluster instance service configs api response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServiceConfigResultInner> listServiceConfigs(
-        String resourceGroupName, String clusterPoolName, String clusterName, Context context);
+    PagedIterable<ServiceConfigResultInner> listServiceConfigs(String resourceGroupName, String clusterPoolName,
+        String clusterName, Context context);
 
     /**
      * Lists the lists of instance views.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -400,12 +445,12 @@ public interface ClustersClient {
      * @return the instance view of a HDInsight Cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClusterInstanceViewResultInner> listInstanceViews(
-        String resourceGroupName, String clusterPoolName, String clusterName);
+    PagedIterable<ClusterInstanceViewResultInner> listInstanceViews(String resourceGroupName, String clusterPoolName,
+        String clusterName);
 
     /**
      * Lists the lists of instance views.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -416,12 +461,12 @@ public interface ClustersClient {
      * @return the instance view of a HDInsight Cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClusterInstanceViewResultInner> listInstanceViews(
-        String resourceGroupName, String clusterPoolName, String clusterName, Context context);
+    PagedIterable<ClusterInstanceViewResultInner> listInstanceViews(String resourceGroupName, String clusterPoolName,
+        String clusterName, Context context);
 
     /**
      * Gets the status of a cluster instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -432,12 +477,12 @@ public interface ClustersClient {
      * @return the status of a cluster instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInstanceViewResultInner> getInstanceViewWithResponse(
-        String resourceGroupName, String clusterPoolName, String clusterName, Context context);
+    Response<ClusterInstanceViewResultInner> getInstanceViewWithResponse(String resourceGroupName,
+        String clusterPoolName, String clusterName, Context context);
 
     /**
      * Gets the status of a cluster instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterPoolName The name of the cluster pool.
      * @param clusterName The name of the HDInsight cluster.
@@ -447,6 +492,6 @@ public interface ClustersClient {
      * @return the status of a cluster instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterInstanceViewResultInner getInstanceView(
-        String resourceGroupName, String clusterPoolName, String clusterName);
+    ClusterInstanceViewResultInner getInstanceView(String resourceGroupName, String clusterPoolName,
+        String clusterName);
 }

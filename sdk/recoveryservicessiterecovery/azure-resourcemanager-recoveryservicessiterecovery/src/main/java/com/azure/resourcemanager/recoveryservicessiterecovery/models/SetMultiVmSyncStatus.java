@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A value indicating whether multi-VM sync has to be enabled. Value should be 'Enabled' or 'Disabled'. */
+/**
+ * A value indicating whether multi-VM sync has to be enabled. Value should be 'Enabled' or 'Disabled'.
+ */
 public final class SetMultiVmSyncStatus extends ExpandableStringEnum<SetMultiVmSyncStatus> {
-    /** Static value Enable for SetMultiVmSyncStatus. */
+    /**
+     * Static value Enable for SetMultiVmSyncStatus.
+     */
     public static final SetMultiVmSyncStatus ENABLE = fromString("Enable");
 
-    /** Static value Disable for SetMultiVmSyncStatus. */
+    /**
+     * Static value Disable for SetMultiVmSyncStatus.
+     */
     public static final SetMultiVmSyncStatus DISABLE = fromString("Disable");
 
     /**
      * Creates a new instance of SetMultiVmSyncStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class SetMultiVmSyncStatus extends ExpandableStringEnum<SetMultiVmS
 
     /**
      * Creates or finds a SetMultiVmSyncStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SetMultiVmSyncStatus.
      */
@@ -38,7 +44,7 @@ public final class SetMultiVmSyncStatus extends ExpandableStringEnum<SetMultiVmS
 
     /**
      * Gets known SetMultiVmSyncStatus values.
-     *
+     * 
      * @return known SetMultiVmSyncStatus values.
      */
     public static Collection<SetMultiVmSyncStatus> values() {

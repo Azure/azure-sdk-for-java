@@ -6,8 +6,10 @@ package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.support.models.Consent;
 import com.azure.resourcemanager.support.models.ContactProfile;
+import com.azure.resourcemanager.support.models.IsTemporaryTicket;
 import com.azure.resourcemanager.support.models.QuotaTicketDetails;
 import com.azure.resourcemanager.support.models.SecondaryConsent;
 import com.azure.resourcemanager.support.models.ServiceLevelAgreement;
@@ -18,22 +20,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Object that represents SupportTicketDetails resource. */
+/**
+ * Object that represents SupportTicketDetails resource.
+ */
 @Fluent
 public final class SupportTicketDetailsInner extends ProxyResource {
     /*
      * Properties of the resource.
      */
-    @JsonProperty(value = "properties")
-    private SupportTicketDetailsProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private SupportTicketDetailsProperties innerProperties = new SupportTicketDetailsProperties();
 
-    /** Creates an instance of SupportTicketDetailsInner class. */
+    /**
+     * Creates an instance of SupportTicketDetailsInner class.
+     */
     public SupportTicketDetailsInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SupportTicketDetailsProperties innerProperties() {
@@ -42,7 +48,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the supportTicketId property: System generated support ticket Id that is unique.
-     *
+     * 
      * @return the supportTicketId value.
      */
     public String supportTicketId() {
@@ -51,7 +57,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Set the supportTicketId property: System generated support ticket Id that is unique.
-     *
+     * 
      * @param supportTicketId the supportTicketId value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -65,7 +71,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the description property: Detailed description of the question or issue.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -74,7 +80,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Set the description property: Detailed description of the question or issue.
-     *
+     * 
      * @param description the description value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -89,7 +95,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
     /**
      * Get the problemClassificationId property: Each Azure service has its own set of issue categories, also known as
      * problem classification. This parameter is the unique Id for the type of problem you are experiencing.
-     *
+     * 
      * @return the problemClassificationId value.
      */
     public String problemClassificationId() {
@@ -99,7 +105,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
     /**
      * Set the problemClassificationId property: Each Azure service has its own set of issue categories, also known as
      * problem classification. This parameter is the unique Id for the type of problem you are experiencing.
-     *
+     * 
      * @param problemClassificationId the problemClassificationId value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -113,7 +119,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the problemClassificationDisplayName property: Localized name of problem classification.
-     *
+     * 
      * @return the problemClassificationDisplayName value.
      */
     public String problemClassificationDisplayName() {
@@ -125,7 +131,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
      * time according to the service level agreement of the technical support plan you have with Azure. Note: 'Highest
      * critical impact', also known as the 'Emergency - Severe impact' level in the Azure portal is reserved only for
      * our Premium customers.
-     *
+     * 
      * @return the severity value.
      */
     public SeverityLevel severity() {
@@ -137,7 +143,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
      * time according to the service level agreement of the technical support plan you have with Azure. Note: 'Highest
      * critical impact', also known as the 'Emergency - Severe impact' level in the Azure portal is reserved only for
      * our Premium customers.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -151,7 +157,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the enrollmentId property: Enrollment Id associated with the support ticket.
-     *
+     * 
      * @return the enrollmentId value.
      */
     public String enrollmentId() {
@@ -159,8 +165,22 @@ public final class SupportTicketDetailsInner extends ProxyResource {
     }
 
     /**
+     * Set the enrollmentId property: Enrollment Id associated with the support ticket.
+     * 
+     * @param enrollmentId the enrollmentId value to set.
+     * @return the SupportTicketDetailsInner object itself.
+     */
+    public SupportTicketDetailsInner withEnrollmentId(String enrollmentId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SupportTicketDetailsProperties();
+        }
+        this.innerProperties().withEnrollmentId(enrollmentId);
+        return this;
+    }
+
+    /**
      * Get the require24X7Response property: Indicates if this requires a 24x7 response from Azure.
-     *
+     * 
      * @return the require24X7Response value.
      */
     public Boolean require24X7Response() {
@@ -169,7 +189,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Set the require24X7Response property: Indicates if this requires a 24x7 response from Azure.
-     *
+     * 
      * @param require24X7Response the require24X7Response value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -183,7 +203,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the advancedDiagnosticConsent property: Advanced diagnostic consent to be updated on the support ticket.
-     *
+     * 
      * @return the advancedDiagnosticConsent value.
      */
     public Consent advancedDiagnosticConsent() {
@@ -192,7 +212,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Set the advancedDiagnosticConsent property: Advanced diagnostic consent to be updated on the support ticket.
-     *
+     * 
      * @param advancedDiagnosticConsent the advancedDiagnosticConsent value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -206,7 +226,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the problemScopingQuestions property: Problem scoping questions associated with the support ticket.
-     *
+     * 
      * @return the problemScopingQuestions value.
      */
     public String problemScopingQuestions() {
@@ -215,7 +235,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Set the problemScopingQuestions property: Problem scoping questions associated with the support ticket.
-     *
+     * 
      * @param problemScopingQuestions the problemScopingQuestions value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -229,7 +249,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the supportPlanId property: Support plan id associated with the support ticket.
-     *
+     * 
      * @return the supportPlanId value.
      */
     public String supportPlanId() {
@@ -238,7 +258,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Set the supportPlanId property: Support plan id associated with the support ticket.
-     *
+     * 
      * @param supportPlanId the supportPlanId value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -252,7 +272,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the contactDetails property: Contact information of the user requesting to create a support ticket.
-     *
+     * 
      * @return the contactDetails value.
      */
     public ContactProfile contactDetails() {
@@ -261,7 +281,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Set the contactDetails property: Contact information of the user requesting to create a support ticket.
-     *
+     * 
      * @param contactDetails the contactDetails value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -275,7 +295,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the serviceLevelAgreement property: Service Level Agreement information for this support ticket.
-     *
+     * 
      * @return the serviceLevelAgreement value.
      */
     public ServiceLevelAgreement serviceLevelAgreement() {
@@ -284,7 +304,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Set the serviceLevelAgreement property: Service Level Agreement information for this support ticket.
-     *
+     * 
      * @param serviceLevelAgreement the serviceLevelAgreement value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -298,7 +318,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the supportEngineer property: Information about the support engineer working on this support ticket.
-     *
+     * 
      * @return the supportEngineer value.
      */
     public SupportEngineer supportEngineer() {
@@ -307,7 +327,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Set the supportEngineer property: Information about the support engineer working on this support ticket.
-     *
+     * 
      * @param supportEngineer the supportEngineer value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -321,7 +341,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the supportPlanType property: Support plan type associated with the support ticket.
-     *
+     * 
      * @return the supportPlanType value.
      */
     public String supportPlanType() {
@@ -330,7 +350,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the supportPlanDisplayName property: Support plan type associated with the support ticket.
-     *
+     * 
      * @return the supportPlanDisplayName value.
      */
     public String supportPlanDisplayName() {
@@ -339,7 +359,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the title property: Title of the support ticket.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -348,7 +368,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Set the title property: Title of the support ticket.
-     *
+     * 
      * @param title the title value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -362,7 +382,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the problemStartTime property: Time in UTC (ISO 8601 format) when the problem started.
-     *
+     * 
      * @return the problemStartTime value.
      */
     public OffsetDateTime problemStartTime() {
@@ -371,7 +391,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Set the problemStartTime property: Time in UTC (ISO 8601 format) when the problem started.
-     *
+     * 
      * @param problemStartTime the problemStartTime value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -386,7 +406,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
     /**
      * Get the serviceId property: This is the resource Id of the Azure service resource associated with the support
      * ticket.
-     *
+     * 
      * @return the serviceId value.
      */
     public String serviceId() {
@@ -396,7 +416,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
     /**
      * Set the serviceId property: This is the resource Id of the Azure service resource associated with the support
      * ticket.
-     *
+     * 
      * @param serviceId the serviceId value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -410,7 +430,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the serviceDisplayName property: Localized name of the Azure service.
-     *
+     * 
      * @return the serviceDisplayName value.
      */
     public String serviceDisplayName() {
@@ -419,7 +439,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the status property: Status of the support ticket.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -428,7 +448,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the createdDate property: Time in UTC (ISO 8601 format) when the support ticket was created.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -437,7 +457,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the modifiedDate property: Time in UTC (ISO 8601 format) when the support ticket was last modified.
-     *
+     * 
      * @return the modifiedDate value.
      */
     public OffsetDateTime modifiedDate() {
@@ -446,7 +466,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the fileWorkspaceName property: File workspace name.
-     *
+     * 
      * @return the fileWorkspaceName value.
      */
     public String fileWorkspaceName() {
@@ -455,7 +475,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Set the fileWorkspaceName property: File workspace name.
-     *
+     * 
      * @param fileWorkspaceName the fileWorkspaceName value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -468,9 +488,18 @@ public final class SupportTicketDetailsInner extends ProxyResource {
     }
 
     /**
+     * Get the isTemporaryTicket property: This property indicates if support ticket is a temporary ticket.
+     * 
+     * @return the isTemporaryTicket value.
+     */
+    public IsTemporaryTicket isTemporaryTicket() {
+        return this.innerProperties() == null ? null : this.innerProperties().isTemporaryTicket();
+    }
+
+    /**
      * Get the technicalTicketDetails property: Additional ticket details associated with a technical support ticket
      * request.
-     *
+     * 
      * @return the technicalTicketDetails value.
      */
     public TechnicalTicketDetails technicalTicketDetails() {
@@ -480,7 +509,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
     /**
      * Set the technicalTicketDetails property: Additional ticket details associated with a technical support ticket
      * request.
-     *
+     * 
      * @param technicalTicketDetails the technicalTicketDetails value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -494,7 +523,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the quotaTicketDetails property: Additional ticket details associated with a quota support ticket request.
-     *
+     * 
      * @return the quotaTicketDetails value.
      */
     public QuotaTicketDetails quotaTicketDetails() {
@@ -503,7 +532,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Set the quotaTicketDetails property: Additional ticket details associated with a quota support ticket request.
-     *
+     * 
      * @param quotaTicketDetails the quotaTicketDetails value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -517,7 +546,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Get the secondaryConsent property: This property indicates secondary consents for the support ticket.
-     *
+     * 
      * @return the secondaryConsent value.
      */
     public List<SecondaryConsent> secondaryConsent() {
@@ -526,7 +555,7 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Set the secondaryConsent property: This property indicates secondary consents for the support ticket.
-     *
+     * 
      * @param secondaryConsent the secondaryConsent value to set.
      * @return the SupportTicketDetailsInner object itself.
      */
@@ -540,12 +569,18 @@ public final class SupportTicketDetailsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model SupportTicketDetailsInner"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SupportTicketDetailsInner.class);
 }

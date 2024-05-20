@@ -16,46 +16,31 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateIoTSecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateIoTSecuritySolutionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"userDefinedResources\":{\"query\":\"xdbabphlwr\",\"querySubscriptions\":[\"fkts\",\"hsucoc\"]},\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_PrivilegedDockerOptions\",\"name\":\"zt\",\"status\":\"Disabled\"},{\"recommendationType\":\"IoT_InconsistentModuleSettings\",\"name\":\"wrqpue\",\"status\":\"Enabled\"}]}")
-                .toObject(UpdateIoTSecuritySolutionProperties.class);
-        Assertions.assertEquals("xdbabphlwr", model.userDefinedResources().query());
-        Assertions.assertEquals("fkts", model.userDefinedResources().querySubscriptions().get(0));
-        Assertions
-            .assertEquals(
-                RecommendationType.IO_T_PRIVILEGED_DOCKER_OPTIONS,
-                model.recommendationsConfiguration().get(0).recommendationType());
-        Assertions
-            .assertEquals(RecommendationConfigStatus.DISABLED, model.recommendationsConfiguration().get(0).status());
+        UpdateIoTSecuritySolutionProperties model = BinaryData.fromString(
+            "{\"userDefinedResources\":{\"query\":\"qqagwwr\",\"querySubscriptions\":[\"omzisglrrcz\"]},\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_PermissiveFirewallPolicy\",\"name\":\"ltn\",\"status\":\"Disabled\"}]}")
+            .toObject(UpdateIoTSecuritySolutionProperties.class);
+        Assertions.assertEquals("qqagwwr", model.userDefinedResources().query());
+        Assertions.assertEquals("omzisglrrcz", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY,
+            model.recommendationsConfiguration().get(0).recommendationType());
+        Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
+            model.recommendationsConfiguration().get(0).status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateIoTSecuritySolutionProperties model =
-            new UpdateIoTSecuritySolutionProperties()
-                .withUserDefinedResources(
-                    new UserDefinedResourcesProperties()
-                        .withQuery("xdbabphlwr")
-                        .withQuerySubscriptions(Arrays.asList("fkts", "hsucoc")))
-                .withRecommendationsConfiguration(
-                    Arrays
-                        .asList(
-                            new RecommendationConfigurationProperties()
-                                .withRecommendationType(RecommendationType.IO_T_PRIVILEGED_DOCKER_OPTIONS)
-                                .withStatus(RecommendationConfigStatus.DISABLED),
-                            new RecommendationConfigurationProperties()
-                                .withRecommendationType(RecommendationType.IO_T_INCONSISTENT_MODULE_SETTINGS)
-                                .withStatus(RecommendationConfigStatus.ENABLED)));
+        UpdateIoTSecuritySolutionProperties model = new UpdateIoTSecuritySolutionProperties()
+            .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("qqagwwr")
+                .withQuerySubscriptions(Arrays.asList("omzisglrrcz")))
+            .withRecommendationsConfiguration(Arrays.asList(new RecommendationConfigurationProperties()
+                .withRecommendationType(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY)
+                .withStatus(RecommendationConfigStatus.DISABLED)));
         model = BinaryData.fromObject(model).toObject(UpdateIoTSecuritySolutionProperties.class);
-        Assertions.assertEquals("xdbabphlwr", model.userDefinedResources().query());
-        Assertions.assertEquals("fkts", model.userDefinedResources().querySubscriptions().get(0));
-        Assertions
-            .assertEquals(
-                RecommendationType.IO_T_PRIVILEGED_DOCKER_OPTIONS,
-                model.recommendationsConfiguration().get(0).recommendationType());
-        Assertions
-            .assertEquals(RecommendationConfigStatus.DISABLED, model.recommendationsConfiguration().get(0).status());
+        Assertions.assertEquals("qqagwwr", model.userDefinedResources().query());
+        Assertions.assertEquals("omzisglrrcz", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY,
+            model.recommendationsConfiguration().get(0).recommendationType());
+        Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
+            model.recommendationsConfiguration().get(0).status());
     }
 }

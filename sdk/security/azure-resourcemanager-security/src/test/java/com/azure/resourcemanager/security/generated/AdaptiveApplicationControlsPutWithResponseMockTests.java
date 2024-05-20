@@ -6,82 +6,137 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.AdaptiveApplicationControlGroup;
+import com.azure.resourcemanager.security.models.ConfigurationStatus;
 import com.azure.resourcemanager.security.models.EnforcementMode;
+import com.azure.resourcemanager.security.models.EnforcementSupport;
+import com.azure.resourcemanager.security.models.FileType;
+import com.azure.resourcemanager.security.models.PathRecommendation;
 import com.azure.resourcemanager.security.models.ProtectionMode;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.security.models.PublisherInfo;
+import com.azure.resourcemanager.security.models.RecommendationAction;
+import com.azure.resourcemanager.security.models.RecommendationType;
+import com.azure.resourcemanager.security.models.UserRecommendation;
+import com.azure.resourcemanager.security.models.VmRecommendation;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AdaptiveApplicationControlsPutWithResponseMockTests {
     @Test
     public void testPutWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"enforcementMode\":\"Audit\",\"protectionMode\":{\"exe\":\"Audit\",\"msi\":\"None\",\"script\":\"None\",\"executable\":\"Audit\"},\"configurationStatus\":\"Failed\",\"recommendationStatus\":\"NotRecommended\",\"issues\":[{\"issue\":\"MsiAndScriptViolationsBlocked\",\"numberOfVms\":88.7452},{\"issue\":\"ViolationsBlocked\",\"numberOfVms\":12.49578},{\"issue\":\"RulesViolatedManually\",\"numberOfVms\":21.913612}],\"sourceSystem\":\"NonAzure_AppLocker\",\"vmRecommendations\":[{\"configurationStatus\":\"NoStatus\",\"recommendationAction\":\"Add\",\"resourceId\":\"plvhmhurosdjl\",\"enforcementSupport\":\"Unknown\"}],\"pathRecommendations\":[{\"path\":\"ghqeuyaorservpv\",\"action\":\"Remove\",\"type\":\"IoT_PermissiveOutputFirewallRules\",\"publisherInfo\":{\"publisherName\":\"gclme\",\"productName\":\"fjqzyhzydyvtuq\",\"binaryName\":\"r\",\"version\":\"nsskydigt\"},\"common\":false,\"userSids\":[\"csvjekejch\",\"zjdcwuzscyf\",\"ixecmasjnfgn\",\"xaojeeyvfxbfckmo\"],\"usernames\":[{},{},{}],\"fileType\":\"Executable\",\"configurationStatus\":\"Configured\"}]},\"location\":\"txuzhvojy\",\"id\":\"fwflbkjc\",\"name\":\"z\",\"type\":\"iyg\"}";
 
-        String responseStr =
-            "{\"properties\":{\"enforcementMode\":\"Enforce\",\"protectionMode\":{\"exe\":\"None\",\"msi\":\"Audit\",\"script\":\"None\",\"executable\":\"Enforce\"},\"configurationStatus\":\"InProgress\",\"recommendationStatus\":\"NoStatus\",\"issues\":[],\"sourceSystem\":\"Azure_AuditD\",\"vmRecommendations\":[],\"pathRecommendations\":[]},\"location\":\"zusitoqcahfs\",\"id\":\"bjmlreesrfwssz\",\"name\":\"lc\",\"type\":\"lisolntfxxc\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AdaptiveApplicationControlGroup response = manager.adaptiveApplicationControls()
+            .define("couhwivkdfvjskn")
+            .withExistingLocation("lbuaz")
+            .withEnforcementMode(EnforcementMode.AUDIT)
+            .withProtectionMode(new ProtectionMode().withExe(EnforcementMode.NONE)
+                .withMsi(EnforcementMode.AUDIT)
+                .withScript(EnforcementMode.NONE)
+                .withExecutable(EnforcementMode.NONE))
+            .withVmRecommendations(Arrays.asList(
+                new VmRecommendation().withConfigurationStatus(ConfigurationStatus.IN_PROGRESS)
+                    .withRecommendationAction(RecommendationAction.REMOVE)
+                    .withResourceId("prjxcon")
+                    .withEnforcementSupport(EnforcementSupport.UNKNOWN),
+                new VmRecommendation().withConfigurationStatus(ConfigurationStatus.NO_STATUS)
+                    .withRecommendationAction(RecommendationAction.RECOMMENDED)
+                    .withResourceId("h")
+                    .withEnforcementSupport(EnforcementSupport.SUPPORTED),
+                new VmRecommendation().withConfigurationStatus(ConfigurationStatus.NO_STATUS)
+                    .withRecommendationAction(RecommendationAction.RECOMMENDED)
+                    .withResourceId("qzgbjw")
+                    .withEnforcementSupport(EnforcementSupport.UNKNOWN)))
+            .withPathRecommendations(Arrays.asList(
+                new PathRecommendation().withPath("wewpmioleajabe")
+                    .withAction(RecommendationAction.REMOVE)
+                    .withType(RecommendationType.IO_T_INSTALL_AGENT)
+                    .withPublisherInfo(new PublisherInfo().withPublisherName("bjkscecmbaajdfwr")
+                        .withProductName("qlvzk")
+                        .withBinaryName("kdesb")
+                        .withVersion("qtllbhjjpduibs"))
+                    .withCommon(true)
+                    .withUserSids(Arrays.asList("neqrypyur", "shhovtuer", "pzhbw", "xybtdzycxhao"))
+                    .withUsernames(Arrays.asList(new UserRecommendation()))
+                    .withFileType(FileType.UNKNOWN)
+                    .withConfigurationStatus(ConfigurationStatus.NO_STATUS),
+                new PathRecommendation().withPath("bnwc")
+                    .withAction(RecommendationAction.ADD)
+                    .withType(RecommendationType.IO_T_EDGE_HUB_MEM_OPTIMIZE)
+                    .withPublisherInfo(new PublisherInfo().withPublisherName("ybicqhxhjpuapas")
+                        .withProductName("z")
+                        .withBinaryName("ugykwuycu")
+                        .withVersion("enndzgthdzit"))
+                    .withCommon(true)
+                    .withUserSids(Arrays.asList("herwjqvswt", "onadez", "z"))
+                    .withUsernames(
+                        Arrays.asList(new UserRecommendation(), new UserRecommendation(), new UserRecommendation()))
+                    .withFileType(FileType.EXECUTABLE)
+                    .withConfigurationStatus(ConfigurationStatus.FAILED),
+                new PathRecommendation().withPath("rvnuvq")
+                    .withAction(RecommendationAction.ADD)
+                    .withType(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY)
+                    .withPublisherInfo(new PublisherInfo().withPublisherName("gkcbrotpyab")
+                        .withProductName("s")
+                        .withBinaryName("lwpftvvqtmv")
+                        .withVersion("gcvsimalbm"))
+                    .withCommon(false)
+                    .withUserSids(Arrays.asList("osnx", "jptcd", "mzxaoxlhmvj", "nn"))
+                    .withUsernames(Arrays.asList(new UserRecommendation(), new UserRecommendation()))
+                    .withFileType(FileType.UNKNOWN)
+                    .withConfigurationStatus(ConfigurationStatus.NO_STATUS),
+                new PathRecommendation().withPath("hpaq")
+                    .withAction(RecommendationAction.ADD)
+                    .withType(RecommendationType.IO_T_PERMISSIVE_OUTPUT_FIREWALL_RULES)
+                    .withPublisherInfo(new PublisherInfo().withPublisherName("ysoxov")
+                        .withProductName("nkleldk")
+                        .withBinaryName("lq")
+                        .withVersion("ntqryk"))
+                    .withCommon(false)
+                    .withUserSids(Arrays.asList("uuptii"))
+                    .withUsernames(Arrays.asList(new UserRecommendation(), new UserRecommendation()))
+                    .withFileType(FileType.SCRIPT)
+                    .withConfigurationStatus(ConfigurationStatus.FAILED)))
+            .create();
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AdaptiveApplicationControlGroup response =
-            manager
-                .adaptiveApplicationControls()
-                .define("uzfwo")
-                .withExistingLocation("c")
-                .withEnforcementMode(EnforcementMode.AUDIT)
-                .withProtectionMode(
-                    new ProtectionMode()
-                        .withExe(EnforcementMode.ENFORCE)
-                        .withMsi(EnforcementMode.ENFORCE)
-                        .withScript(EnforcementMode.ENFORCE)
-                        .withExecutable(EnforcementMode.ENFORCE))
-                .withVmRecommendations(Arrays.asList())
-                .withPathRecommendations(Arrays.asList())
-                .create();
-
-        Assertions.assertEquals(EnforcementMode.ENFORCE, response.enforcementMode());
-        Assertions.assertEquals(EnforcementMode.NONE, response.protectionMode().exe());
-        Assertions.assertEquals(EnforcementMode.AUDIT, response.protectionMode().msi());
+        Assertions.assertEquals(EnforcementMode.AUDIT, response.enforcementMode());
+        Assertions.assertEquals(EnforcementMode.AUDIT, response.protectionMode().exe());
+        Assertions.assertEquals(EnforcementMode.NONE, response.protectionMode().msi());
         Assertions.assertEquals(EnforcementMode.NONE, response.protectionMode().script());
-        Assertions.assertEquals(EnforcementMode.ENFORCE, response.protectionMode().executable());
+        Assertions.assertEquals(EnforcementMode.AUDIT, response.protectionMode().executable());
+        Assertions.assertEquals(ConfigurationStatus.NO_STATUS,
+            response.vmRecommendations().get(0).configurationStatus());
+        Assertions.assertEquals(RecommendationAction.ADD, response.vmRecommendations().get(0).recommendationAction());
+        Assertions.assertEquals("plvhmhurosdjl", response.vmRecommendations().get(0).resourceId());
+        Assertions.assertEquals(EnforcementSupport.UNKNOWN, response.vmRecommendations().get(0).enforcementSupport());
+        Assertions.assertEquals("ghqeuyaorservpv", response.pathRecommendations().get(0).path());
+        Assertions.assertEquals(RecommendationAction.REMOVE, response.pathRecommendations().get(0).action());
+        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_OUTPUT_FIREWALL_RULES,
+            response.pathRecommendations().get(0).type());
+        Assertions.assertEquals("gclme", response.pathRecommendations().get(0).publisherInfo().publisherName());
+        Assertions.assertEquals("fjqzyhzydyvtuq", response.pathRecommendations().get(0).publisherInfo().productName());
+        Assertions.assertEquals("r", response.pathRecommendations().get(0).publisherInfo().binaryName());
+        Assertions.assertEquals("nsskydigt", response.pathRecommendations().get(0).publisherInfo().version());
+        Assertions.assertEquals(false, response.pathRecommendations().get(0).common());
+        Assertions.assertEquals("csvjekejch", response.pathRecommendations().get(0).userSids().get(0));
+        Assertions.assertEquals(FileType.EXECUTABLE, response.pathRecommendations().get(0).fileType());
+        Assertions.assertEquals(ConfigurationStatus.CONFIGURED,
+            response.pathRecommendations().get(0).configurationStatus());
     }
 }

@@ -31,39 +31,28 @@ public final class WorkspacesListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\"},\"location\":\"havhqlkthumaqolb\",\"tags\":{\"mvaolps\":\"duiertgcc\"},\"id\":\"lqlfm\",\"name\":\"dnbbglzps\",\"type\":\"iydmcwyhzdxs\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"tmnubexkpzksmon\",\"tags\":{\"whojvp\":\"quxvypomgkop\",\"ysmocmbqfqvmkcxo\":\"jqg\"},\"id\":\"apvhelxprgly\",\"name\":\"tddckcb\",\"type\":\"uejrjxgc\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        IoTFirmwareDefenseManager manager =
-            IoTFirmwareDefenseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Workspace> response =
-            manager.workspaces().listByResourceGroup("nayqi", com.azure.core.util.Context.NONE);
+        PagedIterable<Workspace> response
+            = manager.workspaces().listByResourceGroup("yhrfouyftaakcpw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("havhqlkthumaqolb", response.iterator().next().location());
-        Assertions.assertEquals("duiertgcc", response.iterator().next().tags().get("mvaolps"));
+        Assertions.assertEquals("tmnubexkpzksmon", response.iterator().next().location());
+        Assertions.assertEquals("quxvypomgkop", response.iterator().next().tags().get("whojvp"));
     }
 }

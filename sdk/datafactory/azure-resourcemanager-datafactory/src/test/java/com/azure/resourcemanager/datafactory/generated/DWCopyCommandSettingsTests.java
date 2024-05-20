@@ -16,20 +16,22 @@ public final class DWCopyCommandSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DWCopyCommandSettings model = BinaryData.fromString(
-            "{\"defaultValues\":[{\"columnName\":\"databwsftytpjmufd\",\"defaultValue\":\"datahqlzantahuykxsjy\"}],\"additionalOptions\":{\"mpfeyjvlzqs\":\"xmoadwiqn\"}}")
+            "{\"defaultValues\":[{\"columnName\":\"datahozkmi\",\"defaultValue\":\"dataxdnugbisfnbtqd\"},{\"columnName\":\"dataw\",\"defaultValue\":\"datadroi\"},{\"columnName\":\"databulvk\",\"defaultValue\":\"datayhnfqnekpxd\"},{\"columnName\":\"datae\",\"defaultValue\":\"dataf\"}],\"additionalOptions\":{\"xjdolobtzr\":\"ahnsmktkhlq\",\"lpbzo\":\"xnlaurviyntc\",\"fkte\":\"tfbjk\"}}")
             .toObject(DWCopyCommandSettings.class);
-        Assertions.assertEquals("xmoadwiqn", model.additionalOptions().get("mpfeyjvlzqs"));
+        Assertions.assertEquals("ahnsmktkhlq", model.additionalOptions().get("xjdolobtzr"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DWCopyCommandSettings model
-            = new DWCopyCommandSettings()
-                .withDefaultValues(Arrays.asList(new DWCopyCommandDefaultValue().withColumnName("databwsftytpjmufd")
-                    .withDefaultValue("datahqlzantahuykxsjy")))
-                .withAdditionalOptions(mapOf("mpfeyjvlzqs", "xmoadwiqn"));
+        DWCopyCommandSettings model = new DWCopyCommandSettings()
+            .withDefaultValues(Arrays.asList(
+                new DWCopyCommandDefaultValue().withColumnName("datahozkmi").withDefaultValue("dataxdnugbisfnbtqd"),
+                new DWCopyCommandDefaultValue().withColumnName("dataw").withDefaultValue("datadroi"),
+                new DWCopyCommandDefaultValue().withColumnName("databulvk").withDefaultValue("datayhnfqnekpxd"),
+                new DWCopyCommandDefaultValue().withColumnName("datae").withDefaultValue("dataf")))
+            .withAdditionalOptions(mapOf("xjdolobtzr", "ahnsmktkhlq", "lpbzo", "xnlaurviyntc", "fkte", "tfbjk"));
         model = BinaryData.fromObject(model).toObject(DWCopyCommandSettings.class);
-        Assertions.assertEquals("xmoadwiqn", model.additionalOptions().get("mpfeyjvlzqs"));
+        Assertions.assertEquals("ahnsmktkhlq", model.additionalOptions().get("xjdolobtzr"));
     }
 
     // Use "Map.of" if available

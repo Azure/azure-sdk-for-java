@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Supported operating systems property. */
+/**
+ * Supported operating systems property.
+ */
 @Fluent
 public final class SupportedOSProperty {
     /*
@@ -23,13 +25,15 @@ public final class SupportedOSProperty {
     @JsonProperty(value = "supportedOs")
     private List<SupportedOSDetails> supportedOs;
 
-    /** Creates an instance of SupportedOSProperty class. */
+    /**
+     * Creates an instance of SupportedOSProperty class.
+     */
     public SupportedOSProperty() {
     }
 
     /**
      * Get the instanceType property: The replication provider type.
-     *
+     * 
      * @return the instanceType value.
      */
     public String instanceType() {
@@ -38,7 +42,7 @@ public final class SupportedOSProperty {
 
     /**
      * Set the instanceType property: The replication provider type.
-     *
+     * 
      * @param instanceType the instanceType value to set.
      * @return the SupportedOSProperty object itself.
      */
@@ -49,7 +53,7 @@ public final class SupportedOSProperty {
 
     /**
      * Get the supportedOs property: The list of supported operating systems.
-     *
+     * 
      * @return the supportedOs value.
      */
     public List<SupportedOSDetails> supportedOs() {
@@ -58,7 +62,7 @@ public final class SupportedOSProperty {
 
     /**
      * Set the supportedOs property: The list of supported operating systems.
-     *
+     * 
      * @param supportedOs the supportedOs value to set.
      * @return the SupportedOSProperty object itself.
      */
@@ -69,7 +73,7 @@ public final class SupportedOSProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,41 +5,76 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
 
-/** Number of direct method invokes is not in allowed range. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
+/**
+ * Number of direct method invokes is not in allowed range.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "ruleType",
+    defaultImpl = DirectMethodInvokesNotInAllowedRange.class,
+    visible = true)
 @JsonTypeName("DirectMethodInvokesNotInAllowedRange")
 @Fluent
 public final class DirectMethodInvokesNotInAllowedRange extends TimeWindowCustomAlertRule {
-    /** Creates an instance of DirectMethodInvokesNotInAllowedRange class. */
+    /*
+     * The type of the custom alert rule.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ruleType", required = true)
+    private String ruleType = "DirectMethodInvokesNotInAllowedRange";
+
+    /**
+     * Creates an instance of DirectMethodInvokesNotInAllowedRange class.
+     */
     public DirectMethodInvokesNotInAllowedRange() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DirectMethodInvokesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {
         super.withTimeWindowSize(timeWindowSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DirectMethodInvokesNotInAllowedRange withMinThreshold(int minThreshold) {
         super.withMinThreshold(minThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DirectMethodInvokesNotInAllowedRange withMaxThreshold(int maxThreshold) {
         super.withMaxThreshold(maxThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DirectMethodInvokesNotInAllowedRange withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -48,7 +83,7 @@ public final class DirectMethodInvokesNotInAllowedRange extends TimeWindowCustom
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

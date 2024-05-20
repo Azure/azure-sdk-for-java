@@ -7,7 +7,9 @@ package com.azure.resourcemanager.newrelicobservability.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response of payload to be passed while installing VM agent. */
+/**
+ * Response of payload to be passed while installing VM agent.
+ */
 @Fluent
 public final class VMExtensionPayloadInner {
     /*
@@ -16,13 +18,15 @@ public final class VMExtensionPayloadInner {
     @JsonProperty(value = "ingestionKey")
     private String ingestionKey;
 
-    /** Creates an instance of VMExtensionPayloadInner class. */
+    /**
+     * Creates an instance of VMExtensionPayloadInner class.
+     */
     public VMExtensionPayloadInner() {
     }
 
     /**
      * Get the ingestionKey property: Ingestion key of the account.
-     *
+     * 
      * @return the ingestionKey value.
      */
     public String ingestionKey() {
@@ -31,7 +35,7 @@ public final class VMExtensionPayloadInner {
 
     /**
      * Set the ingestionKey property: Ingestion key of the account.
-     *
+     * 
      * @param ingestionKey the ingestionKey value to set.
      * @return the VMExtensionPayloadInner object itself.
      */
@@ -42,7 +46,7 @@ public final class VMExtensionPayloadInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

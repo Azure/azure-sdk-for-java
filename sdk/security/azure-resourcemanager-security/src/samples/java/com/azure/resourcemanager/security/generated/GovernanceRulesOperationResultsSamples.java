@@ -4,24 +4,23 @@
 
 package com.azure.resourcemanager.security.generated;
 
-/** Samples for GovernanceRules OperationResults. */
+/**
+ * Samples for GovernanceRules OperationResults.
+ */
 public final class GovernanceRulesOperationResultsSamples {
     /*
      * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/GetManagementGroupGovernanceRuleExecuteStatus_example.json
      */
     /**
      * Sample code: Get governance rules long run operation result over management group.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void getGovernanceRulesLongRunOperationResultOverManagementGroup(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager
-            .governanceRules()
-            .operationResultsWithResponse(
-                "providers/Microsoft.Management/managementGroups/contoso",
-                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8",
-                "58b33f4f-c8c7-4b01-99cc-d437db4d40dd",
+        manager.governanceRules()
+            .operationResultsWithResponse("providers/Microsoft.Management/managementGroups/contoso",
+                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", "58b33f4f-c8c7-4b01-99cc-d437db4d40dd",
                 com.azure.core.util.Context.NONE);
     }
 
@@ -30,17 +29,15 @@ public final class GovernanceRulesOperationResultsSamples {
      */
     /**
      * Sample code: Get governance rules long run operation result over security connector.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void getGovernanceRulesLongRunOperationResultOverSecurityConnector(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager
-            .governanceRules()
+        manager.governanceRules()
             .operationResultsWithResponse(
                 "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector",
-                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8",
-                "58b33f4f-c8c7-4b01-99cc-d437db4d40dd",
+                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", "58b33f4f-c8c7-4b01-99cc-d437db4d40dd",
                 com.azure.core.util.Context.NONE);
     }
 
@@ -49,17 +46,14 @@ public final class GovernanceRulesOperationResultsSamples {
      */
     /**
      * Sample code: Get governance rules long run operation result over subscription.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void getGovernanceRulesLongRunOperationResultOverSubscription(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager
-            .governanceRules()
-            .operationResultsWithResponse(
-                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23",
-                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8",
-                "58b33f4f-c8c7-4b01-99cc-d437db4d40dd",
+        manager.governanceRules()
+            .operationResultsWithResponse("subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23",
+                "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", "58b33f4f-c8c7-4b01-99cc-d437db4d40dd",
                 com.azure.core.util.Context.NONE);
     }
 }

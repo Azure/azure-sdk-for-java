@@ -7,29 +7,24 @@ package com.azure.resourcemanager.sphere.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sphere.fluent.models.ProductInner;
 import com.azure.resourcemanager.sphere.models.ProductListResult;
+import com.azure.resourcemanager.sphere.models.ProductProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ProductListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"yydhibnuqqk\",\"provisioningState\":\"Accepted\"},\"id\":\"a\",\"name\":\"rgvtqag\",\"type\":\"buynhijggm\"}],\"nextLink\":\"fsiarbutr\"}")
-                .toObject(ProductListResult.class);
-        Assertions.assertEquals("yydhibnuqqk", model.value().get(0).description());
-        Assertions.assertEquals("fsiarbutr", model.nextLink());
+        ProductListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"qpuedckzywbiex\",\"provisioningState\":\"Provisioning\"},\"id\":\"ue\",\"name\":\"xibxujwbhqwalm\",\"type\":\"zyoxaepdkzjan\"}],\"nextLink\":\"xrhdwbavxbniwdjs\"}")
+            .toObject(ProductListResult.class);
+        Assertions.assertEquals("qpuedckzywbiex", model.value().get(0).properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductListResult model =
-            new ProductListResult()
-                .withValue(Arrays.asList(new ProductInner().withDescription("yydhibnuqqk")))
-                .withNextLink("fsiarbutr");
+        ProductListResult model = new ProductListResult().withValue(Arrays
+            .asList(new ProductInner().withProperties(new ProductProperties().withDescription("qpuedckzywbiex"))));
         model = BinaryData.fromObject(model).toObject(ProductListResult.class);
-        Assertions.assertEquals("yydhibnuqqk", model.value().get(0).description());
-        Assertions.assertEquals("fsiarbutr", model.nextLink());
+        Assertions.assertEquals("qpuedckzywbiex", model.value().get(0).properties().description());
     }
 }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Migration item properties. */
+/**
+ * Migration item properties.
+ */
 @Fluent
 public final class MigrationItemProperties {
     /*
@@ -132,13 +134,15 @@ public final class MigrationItemProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private MigrationProviderSpecificSettings providerSpecificDetails;
 
-    /** Creates an instance of MigrationItemProperties class. */
+    /**
+     * Creates an instance of MigrationItemProperties class.
+     */
     public MigrationItemProperties() {
     }
 
     /**
      * Get the machineName property: The on-premise virtual machine name.
-     *
+     * 
      * @return the machineName value.
      */
     public String machineName() {
@@ -147,7 +151,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the policyId property: The ARM Id of policy governing this item.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -156,7 +160,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the policyFriendlyName property: The name of policy governing this item.
-     *
+     * 
      * @return the policyFriendlyName value.
      */
     public String policyFriendlyName() {
@@ -165,7 +169,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the recoveryServicesProviderId property: The recovery services provider ARM Id.
-     *
+     * 
      * @return the recoveryServicesProviderId value.
      */
     public String recoveryServicesProviderId() {
@@ -174,7 +178,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the replicationStatus property: The replication status.
-     *
+     * 
      * @return the replicationStatus value.
      */
     public String replicationStatus() {
@@ -183,7 +187,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the migrationState property: The migration status.
-     *
+     * 
      * @return the migrationState value.
      */
     public MigrationState migrationState() {
@@ -192,7 +196,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the migrationStateDescription property: The migration state description.
-     *
+     * 
      * @return the migrationStateDescription value.
      */
     public String migrationStateDescription() {
@@ -201,7 +205,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the lastTestMigrationTime property: The last test migration time.
-     *
+     * 
      * @return the lastTestMigrationTime value.
      */
     public OffsetDateTime lastTestMigrationTime() {
@@ -210,7 +214,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the lastTestMigrationStatus property: The status of the last test migration.
-     *
+     * 
      * @return the lastTestMigrationStatus value.
      */
     public String lastTestMigrationStatus() {
@@ -219,7 +223,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the lastMigrationTime property: The last migration time.
-     *
+     * 
      * @return the lastMigrationTime value.
      */
     public OffsetDateTime lastMigrationTime() {
@@ -228,7 +232,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the lastMigrationStatus property: The status of the last migration.
-     *
+     * 
      * @return the lastMigrationStatus value.
      */
     public String lastMigrationStatus() {
@@ -237,7 +241,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the testMigrateState property: The test migrate state.
-     *
+     * 
      * @return the testMigrateState value.
      */
     public TestMigrationState testMigrateState() {
@@ -246,7 +250,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the testMigrateStateDescription property: The test migrate state description.
-     *
+     * 
      * @return the testMigrateStateDescription value.
      */
     public String testMigrateStateDescription() {
@@ -255,7 +259,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the health property: The consolidated health.
-     *
+     * 
      * @return the health value.
      */
     public ProtectionHealth health() {
@@ -264,7 +268,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the healthErrors property: The list of health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -274,7 +278,7 @@ public final class MigrationItemProperties {
     /**
      * Get the allowedOperations property: The allowed operations on the migration item based on the current migration
      * state of the item.
-     *
+     * 
      * @return the allowedOperations value.
      */
     public List<MigrationItemOperation> allowedOperations() {
@@ -283,7 +287,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the currentJob property: The current job details.
-     *
+     * 
      * @return the currentJob value.
      */
     public CurrentJobDetails currentJob() {
@@ -292,7 +296,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the criticalJobHistory property: The critical past job details.
-     *
+     * 
      * @return the criticalJobHistory value.
      */
     public List<CriticalJobHistoryDetails> criticalJobHistory() {
@@ -301,7 +305,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the eventCorrelationId property: The correlation Id for events associated with this migration item.
-     *
+     * 
      * @return the eventCorrelationId value.
      */
     public String eventCorrelationId() {
@@ -310,7 +314,7 @@ public final class MigrationItemProperties {
 
     /**
      * Get the providerSpecificDetails property: The migration provider custom settings.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public MigrationProviderSpecificSettings providerSpecificDetails() {
@@ -319,19 +323,19 @@ public final class MigrationItemProperties {
 
     /**
      * Set the providerSpecificDetails property: The migration provider custom settings.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the MigrationItemProperties object itself.
      */
-    public MigrationItemProperties withProviderSpecificDetails(
-        MigrationProviderSpecificSettings providerSpecificDetails) {
+    public MigrationItemProperties
+        withProviderSpecificDetails(MigrationProviderSpecificSettings providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

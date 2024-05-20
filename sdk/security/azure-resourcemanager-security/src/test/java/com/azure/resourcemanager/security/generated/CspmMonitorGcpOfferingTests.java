@@ -12,25 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class CspmMonitorGcpOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CspmMonitorGcpOffering model =
-            BinaryData
-                .fromString(
-                    "{\"offeringType\":\"CspmMonitorGcp\",\"nativeCloudConnection\":{\"workloadIdentityProviderId\":\"nqimwbzxpdcldp\",\"serviceAccountEmailAddress\":\"wnsnlaimouxwks\"},\"description\":\"udmfcoibiczius\"}")
-                .toObject(CspmMonitorGcpOffering.class);
-        Assertions.assertEquals("nqimwbzxpdcldp", model.nativeCloudConnection().workloadIdentityProviderId());
-        Assertions.assertEquals("wnsnlaimouxwks", model.nativeCloudConnection().serviceAccountEmailAddress());
+        CspmMonitorGcpOffering model = BinaryData.fromString(
+            "{\"offeringType\":\"CspmMonitorGcp\",\"nativeCloudConnection\":{\"workloadIdentityProviderId\":\"sudyh\",\"serviceAccountEmailAddress\":\"jjtalxrdsj\"},\"description\":\"oluqwgusxxhdo\"}")
+            .toObject(CspmMonitorGcpOffering.class);
+        Assertions.assertEquals("sudyh", model.nativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals("jjtalxrdsj", model.nativeCloudConnection().serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CspmMonitorGcpOffering model =
-            new CspmMonitorGcpOffering()
-                .withNativeCloudConnection(
-                    new CspmMonitorGcpOfferingNativeCloudConnection()
-                        .withWorkloadIdentityProviderId("nqimwbzxpdcldp")
-                        .withServiceAccountEmailAddress("wnsnlaimouxwks"));
+        CspmMonitorGcpOffering model = new CspmMonitorGcpOffering().withNativeCloudConnection(
+            new CspmMonitorGcpOfferingNativeCloudConnection().withWorkloadIdentityProviderId("sudyh")
+                .withServiceAccountEmailAddress("jjtalxrdsj"));
         model = BinaryData.fromObject(model).toObject(CspmMonitorGcpOffering.class);
-        Assertions.assertEquals("nqimwbzxpdcldp", model.nativeCloudConnection().workloadIdentityProviderId());
-        Assertions.assertEquals("wnsnlaimouxwks", model.nativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("sudyh", model.nativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals("jjtalxrdsj", model.nativeCloudConnection().serviceAccountEmailAddress());
     }
 }

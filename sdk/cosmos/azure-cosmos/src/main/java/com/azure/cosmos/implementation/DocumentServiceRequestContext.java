@@ -49,6 +49,8 @@ public class DocumentServiceRequestContext implements Cloneable {
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
     private AtomicBoolean isRequestCancelledOnTimeout = null;
     private volatile List<String> excludeRegions;
+    private volatile long approximateBloomFilterInsertionCount;
+    private final Set<String> sessionTokenEvaluationResults = ConcurrentHashMap.newKeySet();
     private volatile List<String> unavailableRegionsForPartition;
     private volatile boolean isRequestHedged = false;
     public volatile boolean isRequestSendingStarted = false;
@@ -199,6 +201,18 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     public void setFeedOperationContext(FeedOperationContext feedOperationContext) {
         this.feedOperationContext = feedOperationContext;
+    }
+
+    public long getApproximateBloomFilterInsertionCount() {
+        return approximateBloomFilterInsertionCount;
+    }
+
+    public void setApproximateBloomFilterInsertionCount(long approximateBloomFilterInsertionCount) {
+        this.approximateBloomFilterInsertionCount = approximateBloomFilterInsertionCount;
+    }
+
+    public Set<String> getSessionTokenEvaluationResults() {
+        return sessionTokenEvaluationResults;
     }
 }
 

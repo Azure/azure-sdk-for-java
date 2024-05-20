@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AdvancedThreatProtectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdvancedThreatProtectionProperties model =
-            BinaryData.fromString("{\"isEnabled\":false}").toObject(AdvancedThreatProtectionProperties.class);
+        AdvancedThreatProtectionProperties model
+            = BinaryData.fromString("{\"isEnabled\":false}").toObject(AdvancedThreatProtectionProperties.class);
         Assertions.assertEquals(false, model.isEnabled());
     }
 

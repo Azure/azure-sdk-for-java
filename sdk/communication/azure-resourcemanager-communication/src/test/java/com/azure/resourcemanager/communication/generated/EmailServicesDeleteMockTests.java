@@ -45,7 +45,7 @@ public final class EmailServicesDeleteMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.emailServices().delete("ohdneuel", "phsdyhto", com.azure.core.util.Context.NONE);
+        manager.emailServices().delete("j", "n", com.azure.core.util.Context.NONE);
 
     }
 }

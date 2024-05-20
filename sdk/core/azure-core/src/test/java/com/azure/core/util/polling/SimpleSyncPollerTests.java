@@ -50,23 +50,25 @@ public class SimpleSyncPollerTests {
 
     @Test
     public void syncPollerConstructorPollIntervalZero() {
-        assertThrows(IllegalArgumentException.class, () -> new SimpleSyncPoller<>(Duration.ZERO,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null,
-            (ignored1, ignored2) -> null, ignored -> null));
+        assertThrows(IllegalArgumentException.class,
+            () -> new SimpleSyncPoller<>(Duration.ZERO,
+                cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null,
+                (ignored1, ignored2) -> null, ignored -> null));
     }
 
     @Test
     public void syncPollerConstructorPollIntervalNegative() {
-        assertThrows(IllegalArgumentException.class, () -> new SimpleSyncPoller<>(Duration.ofSeconds(-1),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null,
-            (ignored1, ignored2) -> null, ignored -> null));
+        assertThrows(IllegalArgumentException.class,
+            () -> new SimpleSyncPoller<>(Duration.ofSeconds(-1),
+                cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null,
+                (ignored1, ignored2) -> null, ignored -> null));
     }
 
     @Test
     public void syncPollerConstructorPollIntervalNull() {
-        assertThrows(NullPointerException.class, () -> new SimpleSyncPoller<>(null,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null,
-            (ignored1, ignored2) -> null, ignored -> null));
+        assertThrows(NullPointerException.class,
+            () -> new SimpleSyncPoller<>(null, cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null),
+                ignored -> null, (ignored1, ignored2) -> null, ignored -> null));
     }
 
     @Test
@@ -77,23 +79,26 @@ public class SimpleSyncPollerTests {
 
     @Test
     public void syncPollerConstructorPollOperationNull() {
-        assertThrows(NullPointerException.class, () -> new SimpleSyncPoller<>(Duration.ofSeconds(1),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), null, (ignored1, ignored2) -> null,
-            ignored -> null));
+        assertThrows(NullPointerException.class,
+            () -> new SimpleSyncPoller<>(Duration.ofSeconds(1),
+                cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), null,
+                (ignored1, ignored2) -> null, ignored -> null));
     }
 
     @Test
     public void syncPollerConstructorCancelOperationNull() {
-        assertThrows(NullPointerException.class, () -> new SimpleSyncPoller<>(Duration.ofSeconds(1),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null, null,
-            ignored -> null));
+        assertThrows(NullPointerException.class,
+            () -> new SimpleSyncPoller<>(Duration.ofSeconds(1),
+                cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null, null,
+                ignored -> null));
     }
 
     @Test
     public void syncPollerConstructorFetchResultOperationNull() {
-        assertThrows(NullPointerException.class, () -> new SimpleSyncPoller<>(Duration.ofSeconds(1),
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null,
-            (ignored1, ignored2) -> null, null));
+        assertThrows(NullPointerException.class,
+            () -> new SimpleSyncPoller<>(Duration.ofSeconds(1),
+                cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null), ignored -> null,
+                (ignored1, ignored2) -> null, null));
     }
 
     @Test
@@ -123,35 +128,30 @@ public class SimpleSyncPollerTests {
         };
 
         SyncPoller<TestResponse, CertificateOutput> poller = new SimpleSyncPoller<>(TEN_MILLIS,
-            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new TestResponse("A")),
-            pollOperation, (ignored1, ignored2) -> null, ignored -> null);
+            cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new TestResponse("A")), pollOperation,
+            (ignored1, ignored2) -> null, ignored -> null);
 
         PollResponse<TestResponse> pollResponse = poller.poll();
         Assertions.assertNotNull(pollResponse);
         Assertions.assertNotNull(pollResponse.getValue().getResponse());
-        Assertions.assertTrue(pollResponse.getValue()
-            .getResponse()
-            .equalsIgnoreCase("Response: AA"));
+        Assertions.assertTrue(pollResponse.getValue().getResponse().equalsIgnoreCase("Response: AA"));
         //
         pollResponse = poller.poll();
         Assertions.assertNotNull(pollResponse);
         Assertions.assertNotNull(pollResponse.getValue().getResponse());
-        Assertions.assertTrue(pollResponse.getValue()
-            .getResponse()
-            .equalsIgnoreCase("Response: Response: AAA"));
+        Assertions.assertTrue(pollResponse.getValue().getResponse().equalsIgnoreCase("Response: Response: AAA"));
         //
         pollResponse = poller.poll();
         Assertions.assertNotNull(pollResponse);
         Assertions.assertNotNull(pollResponse.getValue().getResponse());
-        Assertions.assertTrue(pollResponse.getValue()
-            .getResponse()
-            .equalsIgnoreCase("Response: Response: Response: AAAA"));
+        Assertions
+            .assertTrue(pollResponse.getValue().getResponse().equalsIgnoreCase("Response: Response: Response: AAAA"));
     }
 
     @Test
     public void waitForCompletionShouldReturnTerminalPollResponse() {
-        PollResponse<TestResponse> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-            new TestResponse("2"), TEN_MILLIS);
+        PollResponse<TestResponse> response2
+            = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, new TestResponse("2"), TEN_MILLIS);
 
         final TestResponse activationResponse = new TestResponse("Activated");
 
@@ -160,10 +160,17 @@ public class SimpleSyncPollerTests {
         Function<PollingContext<TestResponse>, PollResponse<TestResponse>> pollOperation = ignored -> {
             invocationCount[0]++;
             switch (invocationCount[0]) {
-                case 0: return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), TEN_MILLIS);
-                case 1: return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), TEN_MILLIS);
-                case 2: return response2;
-                default: throw new RuntimeException("Poll should not be called after terminal response");
+                case 0:
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), TEN_MILLIS);
+
+                case 1:
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), TEN_MILLIS);
+
+                case 2:
+                    return response2;
+
+                default:
+                    throw new RuntimeException("Poll should not be called after terminal response");
             }
         };
 
@@ -187,11 +194,18 @@ public class SimpleSyncPollerTests {
         Function<PollingContext<TestResponse>, PollResponse<TestResponse>> pollOperation = ignored -> {
             invocationCount[0]++;
             switch (invocationCount[0]) {
-                case 0: return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), TEN_MILLIS);
-                case 1: return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), TEN_MILLIS);
-                case 2: return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    new TestResponse("2"), TEN_MILLIS);
-                default: throw new RuntimeException("Poll should not be called after terminal response");
+                case 0:
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), TEN_MILLIS);
+
+                case 1:
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), TEN_MILLIS);
+
+                case 2:
+                    return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, new TestResponse("2"),
+                        TEN_MILLIS);
+
+                default:
+                    throw new RuntimeException("Poll should not be called after terminal response");
             }
         };
 
@@ -210,8 +224,8 @@ public class SimpleSyncPollerTests {
 
     @Test
     public void getResultShouldNotPollOnCompletedPoller() {
-        PollResponse<TestResponse> response2 = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-            new TestResponse("2"), TEN_MILLIS);
+        PollResponse<TestResponse> response2
+            = new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, new TestResponse("2"), TEN_MILLIS);
 
         final TestResponse activationResponse = new TestResponse("Activated");
 
@@ -222,10 +236,17 @@ public class SimpleSyncPollerTests {
         Function<PollingContext<TestResponse>, PollResponse<TestResponse>> pollOperation = ignored -> {
             invocationCount[0]++;
             switch (invocationCount[0]) {
-                case 0: return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), TEN_MILLIS);
-                case 1: return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), TEN_MILLIS);
-                case 2: return response2;
-                default: throw new RuntimeException("Poll should not be called after terminal response");
+                case 0:
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), TEN_MILLIS);
+
+                case 1:
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), TEN_MILLIS);
+
+                case 2:
+                    return response2;
+
+                default:
+                    throw new RuntimeException("Poll should not be called after terminal response");
             }
         };
 
@@ -247,18 +268,24 @@ public class SimpleSyncPollerTests {
     public void waitUntilShouldPollAfterMatchingStatus() {
         final TestResponse activationResponse = new TestResponse("Activated");
 
-        LongRunningOperationStatus matchStatus
-            = LongRunningOperationStatus.fromString("OTHER_1", false);
+        LongRunningOperationStatus matchStatus = LongRunningOperationStatus.fromString("OTHER_1", false);
 
         int[] invocationCount = new int[1];
         invocationCount[0] = -1;
         Function<PollingContext<TestResponse>, PollResponse<TestResponse>> pollOperation = ignored -> {
             invocationCount[0]++;
             switch (invocationCount[0]) {
-                case 0: return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), TEN_MILLIS);
-                case 1: return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), TEN_MILLIS);
-                case 2: return new PollResponse<>(matchStatus, new TestResponse("1"), TEN_MILLIS);
-                default: throw new RuntimeException("Poll should not be called after terminal response");
+                case 0:
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), TEN_MILLIS);
+
+                case 1:
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), TEN_MILLIS);
+
+                case 2:
+                    return new PollResponse<>(matchStatus, new TestResponse("1"), TEN_MILLIS);
+
+                default:
+                    throw new RuntimeException("Poll should not be called after terminal response");
             }
         };
 
@@ -302,14 +329,10 @@ public class SimpleSyncPollerTests {
         IllegalArgumentException expectedException = new IllegalArgumentException();
         PollerFlux<String, String> pollerFlux = error(expectedException);
         CountDownLatch countDownLatch = new CountDownLatch(1);
-        pollerFlux.subscribe(
-            response -> Assertions.fail("Did not expect a response"),
-            ex -> {
-                countDownLatch.countDown();
-                Assertions.assertSame(expectedException, ex);
-            },
-            () -> Assertions.fail("Did not expect the flux to complete")
-        );
+        pollerFlux.subscribe(response -> Assertions.fail("Did not expect a response"), ex -> {
+            countDownLatch.countDown();
+            Assertions.assertSame(expectedException, ex);
+        }, () -> Assertions.fail("Did not expect the flux to complete"));
         boolean completed = countDownLatch.await(1, TimeUnit.SECONDS);
         Assertions.assertTrue(completed);
     }
@@ -324,10 +347,17 @@ public class SimpleSyncPollerTests {
         Function<PollingContext<TestResponse>, PollResponse<TestResponse>> pollOperation = ignored -> {
             invocationCount[0]++;
             switch (invocationCount[0]) {
-                case 0: return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), TEN_MILLIS);
-                case 1: return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), TEN_MILLIS);
-                case 2: return new PollResponse<>(SUCCESSFULLY_COMPLETED, new TestResponse("2"), TEN_MILLIS);
-                default: throw new RuntimeException("Poll should not be called after matching response");
+                case 0:
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("0"), TEN_MILLIS);
+
+                case 1:
+                    return new PollResponse<>(IN_PROGRESS, new TestResponse("1"), TEN_MILLIS);
+
+                case 2:
+                    return new PollResponse<>(SUCCESSFULLY_COMPLETED, new TestResponse("2"), TEN_MILLIS);
+
+                default:
+                    throw new RuntimeException("Poll should not be called after matching response");
             }
         };
 

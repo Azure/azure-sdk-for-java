@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VMware/Physical specific Disk Details. */
+/**
+ * VMware/Physical specific Disk Details.
+ */
 @Fluent
 public final class InMageDiskDetails {
     /*
@@ -47,13 +49,15 @@ public final class InMageDiskDetails {
     @JsonProperty(value = "volumeList")
     private List<DiskVolumeDetails> volumeList;
 
-    /** Creates an instance of InMageDiskDetails class. */
+    /**
+     * Creates an instance of InMageDiskDetails class.
+     */
     public InMageDiskDetails() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -62,7 +66,7 @@ public final class InMageDiskDetails {
 
     /**
      * Set the diskId property: The disk Id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the InMageDiskDetails object itself.
      */
@@ -73,7 +77,7 @@ public final class InMageDiskDetails {
 
     /**
      * Get the diskName property: The disk name.
-     *
+     * 
      * @return the diskName value.
      */
     public String diskName() {
@@ -82,7 +86,7 @@ public final class InMageDiskDetails {
 
     /**
      * Set the diskName property: The disk name.
-     *
+     * 
      * @param diskName the diskName value to set.
      * @return the InMageDiskDetails object itself.
      */
@@ -93,7 +97,7 @@ public final class InMageDiskDetails {
 
     /**
      * Get the diskSizeInMB property: The disk size in MB.
-     *
+     * 
      * @return the diskSizeInMB value.
      */
     public String diskSizeInMB() {
@@ -102,7 +106,7 @@ public final class InMageDiskDetails {
 
     /**
      * Set the diskSizeInMB property: The disk size in MB.
-     *
+     * 
      * @param diskSizeInMB the diskSizeInMB value to set.
      * @return the InMageDiskDetails object itself.
      */
@@ -113,7 +117,7 @@ public final class InMageDiskDetails {
 
     /**
      * Get the diskType property: Whether disk is system disk or data disk.
-     *
+     * 
      * @return the diskType value.
      */
     public String diskType() {
@@ -122,7 +126,7 @@ public final class InMageDiskDetails {
 
     /**
      * Set the diskType property: Whether disk is system disk or data disk.
-     *
+     * 
      * @param diskType the diskType value to set.
      * @return the InMageDiskDetails object itself.
      */
@@ -133,7 +137,7 @@ public final class InMageDiskDetails {
 
     /**
      * Get the diskConfiguration property: Whether disk is dynamic disk or basic disk.
-     *
+     * 
      * @return the diskConfiguration value.
      */
     public String diskConfiguration() {
@@ -142,7 +146,7 @@ public final class InMageDiskDetails {
 
     /**
      * Set the diskConfiguration property: Whether disk is dynamic disk or basic disk.
-     *
+     * 
      * @param diskConfiguration the diskConfiguration value to set.
      * @return the InMageDiskDetails object itself.
      */
@@ -153,7 +157,7 @@ public final class InMageDiskDetails {
 
     /**
      * Get the volumeList property: Volumes of the disk.
-     *
+     * 
      * @return the volumeList value.
      */
     public List<DiskVolumeDetails> volumeList() {
@@ -162,7 +166,7 @@ public final class InMageDiskDetails {
 
     /**
      * Set the volumeList property: Volumes of the disk.
-     *
+     * 
      * @param volumeList the volumeList value to set.
      * @return the InMageDiskDetails object itself.
      */
@@ -173,7 +177,7 @@ public final class InMageDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

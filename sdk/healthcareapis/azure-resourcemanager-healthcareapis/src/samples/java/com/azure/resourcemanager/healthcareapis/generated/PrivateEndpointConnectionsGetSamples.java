@@ -9,9 +9,7 @@ package com.azure.resourcemanager.healthcareapis.generated;
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/legacy/
-     * ServiceGetPrivateEndpointConnection.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/legacy/ServiceGetPrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnection_GetConnection.
@@ -20,7 +18,7 @@ public final class PrivateEndpointConnectionsGetSamples {
      */
     public static void
         privateEndpointConnectionGetConnection(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager.privateEndpointConnections().getWithResponse("rgname", "service1", "myConnection",
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .getWithResponse("rgname", "service1", "myConnection", com.azure.core.util.Context.NONE);
     }
 }

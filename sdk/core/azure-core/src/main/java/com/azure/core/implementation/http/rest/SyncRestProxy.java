@@ -19,6 +19,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.json.JsonSerializable;
+import com.azure.xml.XmlSerializable;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -30,6 +31,9 @@ import java.util.EnumSet;
 import java.util.function.Consumer;
 
 import static com.azure.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
+import static com.azure.core.implementation.ReflectionSerializable.serializeXmlSerializableToBytes;
+import static com.azure.core.implementation.ReflectionSerializable.supportsJsonSerializable;
+import static com.azure.core.implementation.ReflectionSerializable.supportsXmlSerializable;
 
 /**
  * A synchronous REST proxy implementation.
@@ -58,7 +62,7 @@ public class SyncRestProxy extends RestProxyBase {
         return httpPipeline.sendSync(request, contextData);
     }
 
-    @SuppressWarnings({"try", "unused"})
+    @SuppressWarnings({ "try", "unused" })
     @Override
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request, Context context) {
@@ -79,8 +83,8 @@ public class SyncRestProxy extends RestProxyBase {
             final HttpResponse response = send(request, context);
             decodedResponse = this.decoder.decodeSync(response, methodParser);
 
-            Object result = handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context, options,
-                errorOptions);
+            Object result = handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), context,
+                options, errorOptions);
 
             int statusCode = decodedResponse.getSourceResponse().getStatusCode();
             tracer.end(statusCode >= 400 ? String.valueOf(statusCode) : null, null, context);
@@ -120,7 +124,7 @@ public class SyncRestProxy extends RestProxyBase {
         BinaryData responseData = decodedResponse.getSourceResponse().getBodyAsBinaryData();
         byte[] responseBytes = responseData == null ? null : responseData.toBytes();
         if (responseBytes == null || responseBytes.length == 0) {
-            //  No body, create exception empty content string no exception body object.
+            // No body, create exception empty content string no exception body object.
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 decodedResponse.getSourceResponse(), null, null);
         } else {
@@ -163,7 +167,7 @@ public class SyncRestProxy extends RestProxyBase {
         final Object result;
         if (httpMethod == HttpMethod.HEAD
             && (TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.TYPE)
-            || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
+                || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
             result = (responseStatusCode / 100) == 2;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // byte[]
@@ -202,12 +206,11 @@ public class SyncRestProxy extends RestProxyBase {
     private Object handleRestReturnType(HttpResponseDecoder.HttpDecodedResponse httpDecodedResponse,
         SwaggerMethodParser methodParser, Type returnType, Context context, RequestOptions options,
         EnumSet<ErrorOptions> errorOptions) {
-        final HttpResponseDecoder.HttpDecodedResponse expectedResponse =
-            ensureExpectedStatus(httpDecodedResponse, methodParser, options, errorOptions);
+        final HttpResponseDecoder.HttpDecodedResponse expectedResponse
+            = ensureExpectedStatus(httpDecodedResponse, methodParser, options, errorOptions);
         final Object result;
 
-        if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType,
-            Void.class)) {
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
             // ProxyMethod ReturnType: Void
             expectedResponse.close();
             result = null;
@@ -220,8 +223,8 @@ public class SyncRestProxy extends RestProxyBase {
     }
 
     @Override
-    public void updateRequest(RequestDataConfiguration requestDataConfiguration,
-        SerializerAdapter serializerAdapter) throws IOException {
+    public void updateRequest(RequestDataConfiguration requestDataConfiguration, SerializerAdapter serializerAdapter)
+        throws IOException {
         boolean isJson = requestDataConfiguration.isJson();
         HttpRequest request = requestDataConfiguration.getHttpRequest();
         Object bodyContentObject = requestDataConfiguration.getBodyContent();
@@ -237,7 +240,7 @@ public class SyncRestProxy extends RestProxyBase {
         }
 
         if (supportsXmlSerializable(bodyContentObject.getClass())) {
-            request.setBody(BinaryData.fromByteBuffer(serializeAsXmlSerializable(bodyContentObject)));
+            request.setBody(serializeXmlSerializableToBytes((XmlSerializable<?>) bodyContentObject));
             return;
         }
 

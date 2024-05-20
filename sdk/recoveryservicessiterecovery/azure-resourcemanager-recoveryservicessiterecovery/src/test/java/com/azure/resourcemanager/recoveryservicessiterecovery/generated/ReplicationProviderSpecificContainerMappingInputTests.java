@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.Replication
 public final class ReplicationProviderSpecificContainerMappingInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationProviderSpecificContainerMappingInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"ReplicationProviderSpecificContainerMappingInput\"}")
+        ReplicationProviderSpecificContainerMappingInput model
+            = BinaryData.fromString("{\"instanceType\":\"ReplicationProviderSpecificContainerMappingInput\"}")
                 .toObject(ReplicationProviderSpecificContainerMappingInput.class);
     }
 

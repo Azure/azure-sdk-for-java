@@ -6,15 +6,29 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The AWS organization data for the master account. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "organizationMembershipType")
+/**
+ * The AWS organization data for the master account.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "organizationMembershipType",
+    defaultImpl = AwsOrganizationalDataMaster.class,
+    visible = true)
 @JsonTypeName("Organization")
 @Fluent
 public final class AwsOrganizationalDataMaster extends AwsOrganizationalData {
+    /*
+     * The multi cloud account's membership type in the organization
+     */
+    @JsonTypeId
+    @JsonProperty(value = "organizationMembershipType", required = true)
+    private OrganizationMembershipType organizationMembershipType = OrganizationMembershipType.ORGANIZATION;
+
     /*
      * If the multi cloud account is of membership type organization, this will be the name of the onboarding stackset
      */
@@ -27,14 +41,26 @@ public final class AwsOrganizationalDataMaster extends AwsOrganizationalData {
     @JsonProperty(value = "excludedAccountIds")
     private List<String> excludedAccountIds;
 
-    /** Creates an instance of AwsOrganizationalDataMaster class. */
+    /**
+     * Creates an instance of AwsOrganizationalDataMaster class.
+     */
     public AwsOrganizationalDataMaster() {
+    }
+
+    /**
+     * Get the organizationMembershipType property: The multi cloud account's membership type in the organization.
+     * 
+     * @return the organizationMembershipType value.
+     */
+    @Override
+    public OrganizationMembershipType organizationMembershipType() {
+        return this.organizationMembershipType;
     }
 
     /**
      * Get the stacksetName property: If the multi cloud account is of membership type organization, this will be the
      * name of the onboarding stackset.
-     *
+     * 
      * @return the stacksetName value.
      */
     public String stacksetName() {
@@ -44,7 +70,7 @@ public final class AwsOrganizationalDataMaster extends AwsOrganizationalData {
     /**
      * Set the stacksetName property: If the multi cloud account is of membership type organization, this will be the
      * name of the onboarding stackset.
-     *
+     * 
      * @param stacksetName the stacksetName value to set.
      * @return the AwsOrganizationalDataMaster object itself.
      */
@@ -56,7 +82,7 @@ public final class AwsOrganizationalDataMaster extends AwsOrganizationalData {
     /**
      * Get the excludedAccountIds property: If the multi cloud account is of membership type organization, list of
      * accounts excluded from offering.
-     *
+     * 
      * @return the excludedAccountIds value.
      */
     public List<String> excludedAccountIds() {
@@ -66,7 +92,7 @@ public final class AwsOrganizationalDataMaster extends AwsOrganizationalData {
     /**
      * Set the excludedAccountIds property: If the multi cloud account is of membership type organization, list of
      * accounts excluded from offering.
-     *
+     * 
      * @param excludedAccountIds the excludedAccountIds value to set.
      * @return the AwsOrganizationalDataMaster object itself.
      */
@@ -77,7 +103,7 @@ public final class AwsOrganizationalDataMaster extends AwsOrganizationalData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -6,31 +6,26 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.models.HealthDataClassification;
-import com.azure.resourcemanager.security.models.ScopeName;
 import org.junit.jupiter.api.Assertions;
 
 public final class HealthDataClassificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HealthDataClassification model =
-            BinaryData
-                .fromString("{\"component\":\"fxjelg\",\"scenario\":\"pzqjhhhq\",\"scope\":\"Connectors\"}")
+        HealthDataClassification model
+            = BinaryData.fromString("{\"component\":\"wgdsl\",\"scenario\":\"ihhrmo\",\"scope\":\"z\"}")
                 .toObject(HealthDataClassification.class);
-        Assertions.assertEquals("fxjelg", model.component());
-        Assertions.assertEquals("pzqjhhhq", model.scenario());
-        Assertions.assertEquals(ScopeName.CONNECTORS, model.scope());
+        Assertions.assertEquals("wgdsl", model.component());
+        Assertions.assertEquals("ihhrmo", model.scenario());
+        Assertions.assertEquals("z", model.scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HealthDataClassification model =
-            new HealthDataClassification()
-                .withComponent("fxjelg")
-                .withScenario("pzqjhhhq")
-                .withScope(ScopeName.CONNECTORS);
+        HealthDataClassification model
+            = new HealthDataClassification().withComponent("wgdsl").withScenario("ihhrmo").withScope("z");
         model = BinaryData.fromObject(model).toObject(HealthDataClassification.class);
-        Assertions.assertEquals("fxjelg", model.component());
-        Assertions.assertEquals("pzqjhhhq", model.scenario());
-        Assertions.assertEquals(ScopeName.CONNECTORS, model.scope());
+        Assertions.assertEquals("wgdsl", model.component());
+        Assertions.assertEquals("ihhrmo", model.scenario());
+        Assertions.assertEquals("z", model.scope());
     }
 }

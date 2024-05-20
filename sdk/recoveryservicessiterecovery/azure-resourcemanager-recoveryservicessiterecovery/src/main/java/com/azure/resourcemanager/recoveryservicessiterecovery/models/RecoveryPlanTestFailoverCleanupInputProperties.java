@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Recovery plan test failover cleanup input properties. */
+/**
+ * Recovery plan test failover cleanup input properties.
+ */
 @Fluent
 public final class RecoveryPlanTestFailoverCleanupInputProperties {
     /*
@@ -16,13 +18,15 @@ public final class RecoveryPlanTestFailoverCleanupInputProperties {
     @JsonProperty(value = "comments")
     private String comments;
 
-    /** Creates an instance of RecoveryPlanTestFailoverCleanupInputProperties class. */
+    /**
+     * Creates an instance of RecoveryPlanTestFailoverCleanupInputProperties class.
+     */
     public RecoveryPlanTestFailoverCleanupInputProperties() {
     }
 
     /**
      * Get the comments property: The test failover cleanup comments.
-     *
+     * 
      * @return the comments value.
      */
     public String comments() {
@@ -31,7 +35,7 @@ public final class RecoveryPlanTestFailoverCleanupInputProperties {
 
     /**
      * Set the comments property: The test failover cleanup comments.
-     *
+     * 
      * @param comments the comments value to set.
      * @return the RecoveryPlanTestFailoverCleanupInputProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class RecoveryPlanTestFailoverCleanupInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

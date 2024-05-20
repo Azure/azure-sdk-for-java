@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.SecureScoresList;
 public final class SecureScoresListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecureScoresList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"xylrjvmtygjbmz\",\"weight\":1881344816801364450},\"id\":\"p\",\"name\":\"hckfkyjpmspbps\",\"type\":\"df\"},{\"properties\":{\"displayName\":\"ogtieyujtvczkcny\",\"weight\":5566612740154232869},\"id\":\"njdxvglnkvxl\",\"name\":\"paglqivbgk\",\"type\":\"vkhpzvuqdflvo\"},{\"properties\":{\"displayName\":\"pfpubcpzgpx\",\"weight\":206022069404310786},\"id\":\"knidib\",\"name\":\"qjxgpnrhgovfgp\",\"type\":\"kqmhhaowjr\"},{\"properties\":{\"displayName\":\"uporqzdfu\",\"weight\":9046409945705320802},\"id\":\"fvxcnqmxqpswo\",\"name\":\"mvkhlggd\",\"type\":\"bemzqkzszuwi\"}],\"nextLink\":\"glxxhljfpgpic\"}")
-                .toObject(SecureScoresList.class);
+        SecureScoresList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"displayName\":\"dbtwaokbavly\",\"score\":{\"max\":855760544,\"current\":73.16586860835145,\"percentage\":24.81826261193766},\"weight\":3522624703615262866},\"id\":\"mhpdu\",\"name\":\"dig\",\"type\":\"toleksc\"},{\"properties\":{\"displayName\":\"nanqimwbzxpdcldp\",\"score\":{\"max\":194146881,\"current\":97.94202822020992,\"percentage\":95.2167271363368},\"weight\":1699021666974127581},\"id\":\"w\",\"name\":\"sqmu\",\"type\":\"mfcoibic\"},{\"properties\":{\"displayName\":\"swswjrkbq\",\"score\":{\"max\":2057062034,\"current\":63.98392322096389,\"percentage\":82.68913345269965},\"weight\":4369661679840165597},\"id\":\"rfwb\",\"name\":\"vqvogf\",\"type\":\"yzwvbhlimbyqec\"}],\"nextLink\":\"odlikcdrdaasax\"}")
+            .toObject(SecureScoresList.class);
     }
 
     @org.junit.jupiter.api.Test

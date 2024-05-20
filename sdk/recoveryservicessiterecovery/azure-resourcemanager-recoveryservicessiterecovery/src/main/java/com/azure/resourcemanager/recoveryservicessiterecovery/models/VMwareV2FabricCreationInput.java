@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** VMwareV2 fabric provider specific settings. */
+/**
+ * VMwareV2 fabric provider specific settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMwareV2")
 @Fluent
@@ -33,13 +35,15 @@ public final class VMwareV2FabricCreationInput extends FabricSpecificCreationInp
     @JsonProperty(value = "migrationSolutionId", required = true)
     private String migrationSolutionId;
 
-    /** Creates an instance of VMwareV2FabricCreationInput class. */
+    /**
+     * Creates an instance of VMwareV2FabricCreationInput class.
+     */
     public VMwareV2FabricCreationInput() {
     }
 
     /**
      * Get the vmwareSiteId property: The ARM Id of the VMware site.
-     *
+     * 
      * @return the vmwareSiteId value.
      */
     public String vmwareSiteId() {
@@ -48,7 +52,7 @@ public final class VMwareV2FabricCreationInput extends FabricSpecificCreationInp
 
     /**
      * Set the vmwareSiteId property: The ARM Id of the VMware site.
-     *
+     * 
      * @param vmwareSiteId the vmwareSiteId value to set.
      * @return the VMwareV2FabricCreationInput object itself.
      */
@@ -59,7 +63,7 @@ public final class VMwareV2FabricCreationInput extends FabricSpecificCreationInp
 
     /**
      * Get the physicalSiteId property: The ARM Id of the physical site.
-     *
+     * 
      * @return the physicalSiteId value.
      */
     public String physicalSiteId() {
@@ -68,7 +72,7 @@ public final class VMwareV2FabricCreationInput extends FabricSpecificCreationInp
 
     /**
      * Set the physicalSiteId property: The ARM Id of the physical site.
-     *
+     * 
      * @param physicalSiteId the physicalSiteId value to set.
      * @return the VMwareV2FabricCreationInput object itself.
      */
@@ -79,7 +83,7 @@ public final class VMwareV2FabricCreationInput extends FabricSpecificCreationInp
 
     /**
      * Get the migrationSolutionId property: The ARM Id of the migration solution.
-     *
+     * 
      * @return the migrationSolutionId value.
      */
     public String migrationSolutionId() {
@@ -88,7 +92,7 @@ public final class VMwareV2FabricCreationInput extends FabricSpecificCreationInp
 
     /**
      * Set the migrationSolutionId property: The ARM Id of the migration solution.
-     *
+     * 
      * @param migrationSolutionId the migrationSolutionId value to set.
      * @return the VMwareV2FabricCreationInput object itself.
      */
@@ -99,17 +103,15 @@ public final class VMwareV2FabricCreationInput extends FabricSpecificCreationInp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (migrationSolutionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property migrationSolutionId in model VMwareV2FabricCreationInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property migrationSolutionId in model VMwareV2FabricCreationInput"));
         }
     }
 

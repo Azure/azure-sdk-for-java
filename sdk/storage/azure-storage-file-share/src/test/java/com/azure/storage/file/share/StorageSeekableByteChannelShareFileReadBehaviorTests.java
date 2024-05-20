@@ -4,7 +4,9 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.Context;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
@@ -17,25 +19,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentMatcher;
-import org.mockito.Mockito;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileShareTestBase {
     private ShareFileClient primaryFileClient;
@@ -75,43 +73,30 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
     @MethodSource("readCallsToClientCorrectlySupplier")
     public void readCallsToClientCorrectly(int offset, ShareRequestConditions conditions) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(Constants.KB);
-        ShareFileClient client = Mockito.mock(ShareFileClient.class);
+        AtomicInteger downloadCallCount = new AtomicInteger(0);
+        ShareFileClient client = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false,
+            false), "testshare", "testpath", null, null, null, null) {
+            @Override
+            public ShareFileDownloadResponse downloadWithResponse(OutputStream stream, ShareFileDownloadOptions options,
+                Duration timeout, Context context) {
+                assertNull(timeout);
+                assertNull(context);
+                downloadCallCount.incrementAndGet();
+                assertEquals(offset, options.getRange().getStart());
+                assertEquals(offset + buffer.remaining() - 1, options.getRange().getEnd());
+                if (conditions != null) {
+                    assertEquals(conditions, options.getRequestConditions());
+                }
+                return createMockDownloadResponse("bytes " + offset + "-" + (offset + buffer.limit() - 1) + "/4096");
+            }
+        };
+
         StorageSeekableByteChannelShareFileReadBehavior behavior =
             new StorageSeekableByteChannelShareFileReadBehavior(client, conditions);
-        when(client.downloadWithResponse(
-            any(),
-            argThat(new ShareFileDownloadOptionsMatcher(offset, buffer.remaining(), conditions)),
-            isNull(),
-            isNull()))
-            .thenReturn(createMockDownloadResponse("bytes " + offset + "-" + (offset + buffer.limit() - 1) + "/4096"));
 
         behavior.read(buffer, offset);
 
-        verify(client, times(1)).downloadWithResponse(
-            any(),
-            any(),
-            isNull(),
-            isNull());
-    }
-
-    private static class ShareFileDownloadOptionsMatcher implements ArgumentMatcher<ShareFileDownloadOptions> {
-        private final int offset;
-        private final int remaining;
-        private final ShareRequestConditions conditions;
-
-        ShareFileDownloadOptionsMatcher(int offset, int remaining, ShareRequestConditions conditions) {
-            this.offset = offset;
-            this.remaining = remaining;
-            this.conditions = conditions;
-        }
-
-        @Override
-        public boolean matches(ShareFileDownloadOptions options) {
-            return options.getRange().getStart() == offset
-                && options.getRange().getEnd() == offset + remaining - 1
-                && (conditions == null ? options.getRequestConditions() == null : conditions.equals(
-                    options.getRequestConditions()));
-        }
+        assertEquals(1, downloadCallCount.get());
     }
 
     @ParameterizedTest

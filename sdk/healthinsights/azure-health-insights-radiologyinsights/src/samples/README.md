@@ -22,5 +22,9 @@ All of these samples need the endpoint to your Health Insights resource, and you
 
 |**File Name**|**Description**|
 |----------------|-------------|
-|SampleCriticalResultInferenceSync.java|Infer critical results from a radiology report (sync)|
-|SampleCriticalResultInferenceAsync.java|Infer critical results from a radiology report (async)|
+|[SampleCriticalResultInferenceSync.java][crit_result_sync]|Infer critical results from a radiology report (sync)|
+|[SampleCriticalResultInferenceAsync.java][crit_result_async]|Infer critical results from a radiology report (async)|
+
+<!-- LINKS -->
+[crit_result_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleCriticalResultInferenceSync.java
+[crit_result_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleCriticalResultInferenceAsync.java

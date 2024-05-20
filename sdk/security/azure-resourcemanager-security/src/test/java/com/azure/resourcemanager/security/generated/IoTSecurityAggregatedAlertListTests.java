@@ -15,27 +15,23 @@ import org.junit.jupiter.api.Assertions;
 public final class IoTSecurityAggregatedAlertListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IoTSecurityAggregatedAlertList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"alertType\":\"b\",\"alertDisplayName\":\"ldawkzbaliourqha\",\"vendorName\":\"hashsfwxosow\",\"reportedSeverity\":\"Medium\",\"remediationSteps\":\"gicjooxdjeb\",\"description\":\"ucww\",\"count\":2907518339137583712,\"effectedResourceType\":\"vmeueci\",\"systemSource\":\"hzceuojgjrwjue\",\"actionTaken\":\"twm\",\"logAnalyticsQuery\":\"ytdxwit\",\"topDevicesList\":[]},\"tags\":{\"kxfbkpycgklwndn\":\"awgqwgxhni\",\"wzbtdhxu\":\"jdauwhvy\"},\"id\":\"znbmpowuwprzq\",\"name\":\"veual\",\"type\":\"pjmkhfxobbc\"}],\"nextLink\":\"s\"}")
-                .toObject(IoTSecurityAggregatedAlertList.class);
-        Assertions.assertEquals("awgqwgxhni", model.value().get(0).tags().get("kxfbkpycgklwndn"));
+        IoTSecurityAggregatedAlertList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"alertType\":\"quflqbctq\",\"alertDisplayName\":\"mzjr\",\"vendorName\":\"qzeqyjleziunjxdf\",\"reportedSeverity\":\"Low\",\"remediationSteps\":\"kwcegyamlbn\",\"description\":\"qa\",\"count\":4156947054190686278,\"effectedResourceType\":\"ilguooqjagmditg\",\"systemSource\":\"iookjbsah\",\"actionTaken\":\"dt\",\"logAnalyticsQuery\":\"elqacslmot\",\"topDevicesList\":[{\"deviceId\":\"fxof\",\"alertsCount\":4362718949331625843,\"lastOccurrence\":\"dirazf\"},{\"deviceId\":\"ejwabmdujtmvco\",\"alertsCount\":9128838673004505379,\"lastOccurrence\":\"jurbuhhlkyqltqsr\"}]},\"tags\":{\"vclglxnfuij\":\"uwkffdjktsysid\",\"sfikayiansharuj\":\"kbusqo\"},\"id\":\"ji\",\"name\":\"xfz\",\"type\":\"j\"},{\"properties\":{\"alertType\":\"vwkpqh\",\"alertDisplayName\":\"enuygbq\",\"vendorName\":\"ekewvnqvcdlguauc\",\"reportedSeverity\":\"High\",\"remediationSteps\":\"wnlaxpu\",\"description\":\"qikczvvita\",\"count\":3568966968483564118,\"effectedResourceType\":\"csserxht\",\"systemSource\":\"oxhlw\",\"actionTaken\":\"sjgqrsxyp\",\"logAnalyticsQuery\":\"uuybnchrsz\",\"topDevicesList\":[{\"deviceId\":\"uelyetndn\",\"alertsCount\":8501901054042456156,\"lastOccurrence\":\"gagflnlgmtrwah\"},{\"deviceId\":\"mu\",\"alertsCount\":1604192815314271002,\"lastOccurrence\":\"r\"},{\"deviceId\":\"rohkpigqfusu\",\"alertsCount\":3928336746922164114,\"lastOccurrence\":\"wklsnoxaxmqe\"}]},\"tags\":{\"jnhgwydyyn\":\"h\",\"ta\":\"svkhgbv\"},\"id\":\"arfdlpukhpyrnei\",\"name\":\"jcpeogkhnmg\",\"type\":\"ro\"}],\"nextLink\":\"ddbhf\"}")
+            .toObject(IoTSecurityAggregatedAlertList.class);
+        Assertions.assertEquals("uwkffdjktsysid", model.value().get(0).tags().get("vclglxnfuij"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IoTSecurityAggregatedAlertList model =
-            new IoTSecurityAggregatedAlertList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new IoTSecurityAggregatedAlertInner()
-                                .withTags(mapOf("kxfbkpycgklwndn", "awgqwgxhni", "wzbtdhxu", "jdauwhvy"))));
+        IoTSecurityAggregatedAlertList model = new IoTSecurityAggregatedAlertList().withValue(Arrays.asList(
+            new IoTSecurityAggregatedAlertInner()
+                .withTags(mapOf("vclglxnfuij", "uwkffdjktsysid", "sfikayiansharuj", "kbusqo")),
+            new IoTSecurityAggregatedAlertInner().withTags(mapOf("jnhgwydyyn", "h", "ta", "svkhgbv"))));
         model = BinaryData.fromObject(model).toObject(IoTSecurityAggregatedAlertList.class);
-        Assertions.assertEquals("awgqwgxhni", model.value().get(0).tags().get("kxfbkpycgklwndn"));
+        Assertions.assertEquals("uwkffdjktsysid", model.value().get(0).tags().get("vclglxnfuij"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Dapr Components ARM resource. */
+/**
+ * Dapr Components ARM resource.
+ */
 @Fluent
 public final class DaprComponentsCollection {
     /*
@@ -25,13 +27,15 @@ public final class DaprComponentsCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DaprComponentsCollection class. */
+    /**
+     * Creates an instance of DaprComponentsCollection class.
+     */
     public DaprComponentsCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<DaprComponentInner> value() {
@@ -40,7 +44,7 @@ public final class DaprComponentsCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the DaprComponentsCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class DaprComponentsCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class DaprComponentsCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model DaprComponentsCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model DaprComponentsCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

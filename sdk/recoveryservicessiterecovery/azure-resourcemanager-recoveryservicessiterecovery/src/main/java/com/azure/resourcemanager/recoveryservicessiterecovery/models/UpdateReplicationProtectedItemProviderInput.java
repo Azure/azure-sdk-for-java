@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Update replication protected item provider specific input. */
+/**
+ * Update replication protected item provider specific input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -22,17 +24,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         name = "HyperVReplicaAzure",
         value = HyperVReplicaAzureUpdateReplicationProtectedItemInput.class),
     @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2UpdateReplicationProtectedItemInput.class),
-    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmUpdateReplicationProtectedItemInput.class)
-})
+    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmUpdateReplicationProtectedItemInput.class) })
 @Immutable
 public class UpdateReplicationProtectedItemProviderInput {
-    /** Creates an instance of UpdateReplicationProtectedItemProviderInput class. */
+    /**
+     * Creates an instance of UpdateReplicationProtectedItemProviderInput class.
+     */
     public UpdateReplicationProtectedItemProviderInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

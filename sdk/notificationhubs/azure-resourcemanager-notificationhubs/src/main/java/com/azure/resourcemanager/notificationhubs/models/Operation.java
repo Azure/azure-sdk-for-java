@@ -6,25 +6,42 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.resourcemanager.notificationhubs.fluent.models.OperationInner;
 
-/** An immutable client-side representation of Operation. */
+/**
+ * An immutable client-side representation of Operation.
+ */
 public interface Operation {
     /**
-     * Gets the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * Gets the name property: Gets operation name: {provider}/{resource}/{operation}.
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the display property: The object that represents the operation.
-     *
+     * 
      * @return the display value.
      */
     OperationDisplay display();
 
     /**
+     * Gets the properties property: Optional operation properties.
+     * 
+     * @return the properties value.
+     */
+    OperationProperties properties();
+
+    /**
+     * Gets the isDataAction property: Gets or sets IsDataAction property. It is used to differentiate management and
+     * data plane operations.
+     * 
+     * @return the isDataAction value.
+     */
+    Boolean isDataAction();
+
+    /**
      * Gets the inner com.azure.resourcemanager.notificationhubs.fluent.models.OperationInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationInner innerModel();

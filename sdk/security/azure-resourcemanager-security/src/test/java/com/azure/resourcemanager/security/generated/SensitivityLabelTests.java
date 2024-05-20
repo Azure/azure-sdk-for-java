@@ -12,32 +12,28 @@ import org.junit.jupiter.api.Assertions;
 public final class SensitivityLabelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SensitivityLabel model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"ncormrlxqtvcof\",\"description\":\"f\",\"rank\":\"Low\",\"order\":585875953,\"enabled\":false}")
-                .toObject(SensitivityLabel.class);
-        Assertions.assertEquals("ncormrlxqtvcof", model.displayName());
-        Assertions.assertEquals("f", model.description());
-        Assertions.assertEquals(Rank.LOW, model.rank());
-        Assertions.assertEquals(585875953, model.order());
+        SensitivityLabel model = BinaryData.fromString(
+            "{\"displayName\":\"bjnpg\",\"description\":\"ftadehxnltyfs\",\"rank\":\"High\",\"order\":1752385169,\"enabled\":false}")
+            .toObject(SensitivityLabel.class);
+        Assertions.assertEquals("bjnpg", model.displayName());
+        Assertions.assertEquals("ftadehxnltyfs", model.description());
+        Assertions.assertEquals(Rank.HIGH, model.rank());
+        Assertions.assertEquals(1752385169, model.order());
         Assertions.assertEquals(false, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SensitivityLabel model =
-            new SensitivityLabel()
-                .withDisplayName("ncormrlxqtvcof")
-                .withDescription("f")
-                .withRank(Rank.LOW)
-                .withOrder(585875953)
-                .withEnabled(false);
+        SensitivityLabel model = new SensitivityLabel().withDisplayName("bjnpg")
+            .withDescription("ftadehxnltyfs")
+            .withRank(Rank.HIGH)
+            .withOrder(1752385169)
+            .withEnabled(false);
         model = BinaryData.fromObject(model).toObject(SensitivityLabel.class);
-        Assertions.assertEquals("ncormrlxqtvcof", model.displayName());
-        Assertions.assertEquals("f", model.description());
-        Assertions.assertEquals(Rank.LOW, model.rank());
-        Assertions.assertEquals(585875953, model.order());
+        Assertions.assertEquals("bjnpg", model.displayName());
+        Assertions.assertEquals("ftadehxnltyfs", model.description());
+        Assertions.assertEquals(Rank.HIGH, model.rank());
+        Assertions.assertEquals(1752385169, model.order());
         Assertions.assertEquals(false, model.enabled());
     }
 }

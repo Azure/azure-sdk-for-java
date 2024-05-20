@@ -32,45 +32,31 @@ public final class PrivateEndpointConnectionsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"sub\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"irx\",\"actionsRequired\":\"ybsrfbjfdtwss\"},\"provisioningState\":\"Deleting\"},\"id\":\"pvjzbe\",\"name\":\"ilzznfqqnvwp\",\"type\":\"qtaruoujmkcjhwq\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"uoujmkcjhwqy\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"bnw\",\"actionsRequired\":\"wgdrjervnaenqp\"},\"provisioningState\":\"Failed\"},\"id\":\"ndoygmifthnzdnd\",\"name\":\"l\",\"type\":\"nayqi\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        RedisEnterpriseManager manager =
-            RedisEnterpriseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        RedisEnterpriseManager manager = RedisEnterpriseManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PrivateEndpointConnection> response =
-            manager.privateEndpointConnections().list("shqjohxcrsbf", "vasrruvwb", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateEndpointConnection> response
+            = manager.privateEndpointConnections().list("tpvjzbexilzznfqq", "vwpm", com.azure.core.util.Context.NONE);
 
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.PENDING,
-                response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("irx", response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals(
-                "ybsrfbjfdtwss", response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+            response.iterator().next().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("bnw", response.iterator().next().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("wgdrjervnaenqp",
+            response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -11,17 +11,15 @@ import com.azure.resourcemanager.security.fluent.models.SecureScoreControlDetail
 public final class SecureScoreControlDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecureScoreControlDetailsInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"yefchnm\",\"score\":{\"max\":1660290051,\"current\":18.26434123034213,\"percentage\":71.62987207064346},\"healthyResourceCount\":1375223336,\"unhealthyResourceCount\":1523309198,\"notApplicableResourceCount\":1600818034,\"weight\":4542043090812531924,\"definition\":{\"id\":\"fifhxwrsnew\",\"name\":\"ozqvbubqmam\",\"type\":\"sycxhxzgaz\"}},\"id\":\"taboidvmf\",\"name\":\"hppubowsepdfgkmt\",\"type\":\"herngb\"}")
-                .toObject(SecureScoreControlDetailsInner.class);
+        SecureScoreControlDetailsInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"jpeuqlsdxeqztvxw\",\"score\":{\"max\":1828893529,\"current\":47.66084176433939,\"percentage\":6.469283873890586},\"healthyResourceCount\":1288324640,\"unhealthyResourceCount\":535686320,\"notApplicableResourceCount\":1358634456,\"weight\":1800415892008741044,\"definition\":{\"properties\":{\"displayName\":\"lndh\",\"description\":\"oeojhto\",\"maxScore\":97704799,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[{\"id\":\"tzlnglxpn\"},{\"id\":\"yoan\"}]},\"id\":\"bcswqagyw\",\"name\":\"t\",\"type\":\"igvjrktp\"}},\"id\":\"aeukyawohpm\",\"name\":\"hqnucs\",\"type\":\"lhsidsjtdl\"}")
+            .toObject(SecureScoreControlDetailsInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecureScoreControlDetailsInner model =
-            new SecureScoreControlDetailsInner().withDefinition(new SecureScoreControlDefinitionItemInner());
+        SecureScoreControlDetailsInner model
+            = new SecureScoreControlDetailsInner().withDefinition(new SecureScoreControlDefinitionItemInner());
         model = BinaryData.fromObject(model).toObject(SecureScoreControlDetailsInner.class);
     }
 }

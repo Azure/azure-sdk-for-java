@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** A2A provider specific recovery point details. */
+/**
+ * A2A provider specific recovery point details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -27,13 +29,15 @@ public final class A2ARecoveryPointDetails extends ProviderSpecificRecoveryPoint
     @JsonProperty(value = "disks")
     private List<String> disks;
 
-    /** Creates an instance of A2ARecoveryPointDetails class. */
+    /**
+     * Creates an instance of A2ARecoveryPointDetails class.
+     */
     public A2ARecoveryPointDetails() {
     }
 
     /**
      * Get the recoveryPointSyncType property: A value indicating whether the recovery point is multi VM consistent.
-     *
+     * 
      * @return the recoveryPointSyncType value.
      */
     public RecoveryPointSyncType recoveryPointSyncType() {
@@ -42,7 +46,7 @@ public final class A2ARecoveryPointDetails extends ProviderSpecificRecoveryPoint
 
     /**
      * Set the recoveryPointSyncType property: A value indicating whether the recovery point is multi VM consistent.
-     *
+     * 
      * @param recoveryPointSyncType the recoveryPointSyncType value to set.
      * @return the A2ARecoveryPointDetails object itself.
      */
@@ -53,7 +57,7 @@ public final class A2ARecoveryPointDetails extends ProviderSpecificRecoveryPoint
 
     /**
      * Get the disks property: List of disk ids representing a recovery point.
-     *
+     * 
      * @return the disks value.
      */
     public List<String> disks() {
@@ -62,7 +66,7 @@ public final class A2ARecoveryPointDetails extends ProviderSpecificRecoveryPoint
 
     /**
      * Set the disks property: List of disk ids representing a recovery point.
-     *
+     * 
      * @param disks the disks value to set.
      * @return the A2ARecoveryPointDetails object itself.
      */
@@ -73,7 +77,7 @@ public final class A2ARecoveryPointDetails extends ProviderSpecificRecoveryPoint
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

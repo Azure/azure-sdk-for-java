@@ -13,10 +13,14 @@ import java.lang.annotation.Target;
  * HTTP PUT method annotation describing the parameterized relative path to a REST endpoint for resource creation or
  * update.
  *
- * <p>The required value can be either a relative path or an absolute path. When it's an absolute path, it must start
- * with a protocol or a parameterized segment (Otherwise the parse cannot tell if it's absolute or relative).</p>
+ * <p>
+ * The required value can be either a relative path or an absolute path. When it's an absolute path, it must start
+ * with a protocol or a parameterized segment (Otherwise the parse cannot tell if it's absolute or relative).
+ * </p>
  *
- * <p><strong>Example 1: Relative path segments</strong></p>
+ * <p>
+ * <strong>Example 1: Relative path segments</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.Put.class1 -->
  * <pre>
@@ -29,7 +33,9 @@ import java.lang.annotation.Target;
  * </pre>
  * <!-- end com.azure.core.annotation.Put.class1 -->
  *
- * <p><strong>Example 2: Absolute path segment</strong></p>
+ * <p>
+ * <strong>Example 2: Absolute path segment</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.Put.class2 -->
  * <pre>

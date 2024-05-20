@@ -17,6 +17,30 @@ const deprecatedArtifacts = [
     "azure-resourcemanager-loadtestservice",
     "azure-resourcemanager-machinelearningservices",
 ];
+// exclude premium packages
+const excludeArtifacts = [
+    "azure-resourcemanager",
+    "azure-resourcemanager-appplatform",
+    "azure-resourcemanager-appservice",
+    "azure-resourcemanager-authorization",
+    "azure-resourcemanager-cdn",
+    "azure-resourcemanager-compute",
+    "azure-resourcemanager-containerinstance",
+    "azure-resourcemanager-containerregistry",
+    "azure-resourcemanager-cosmos",
+    "azure-resourcemanager-dns",
+    "azure-resourcemanager-eventhubs",
+    "azure-resourcemanager-keyvault",
+    "azure-resourcemanager-monitor",
+    "azure-resourcemanager-msi",
+    "azure-resourcemanager-network",
+    "azure-resourcemanager-privatedns",
+    "azure-resourcemanager-redis",
+    "azure-resourcemanager-search",
+    "azure-resourcemanager-servicebus",
+    "azure-resourcemanager-sql",
+    "azure-resourcemanager-storage"
+]
 
 async function autocent() {
     console.log("[INFO] Automation task to update the mapping of services and API version tags.");
@@ -37,7 +61,7 @@ async function getArtifacts() {
     }
     var promises = [];
     for (var i in artifacts) {
-        if (!deprecatedArtifacts.includes(artifacts[i])) {
+        if (!deprecatedArtifacts.includes(artifacts[i]) && !excludeArtifacts.includes(artifacts[i])) {
             promises.push(readMetadata(artifacts[i]));
         }
     }

@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForServersGcpOfferingSubPlanTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForServersGcpOfferingSubPlan model =
-            BinaryData.fromString("{\"type\":\"P1\"}").toObject(DefenderForServersGcpOfferingSubPlan.class);
+        DefenderForServersGcpOfferingSubPlan model
+            = BinaryData.fromString("{\"type\":\"P1\"}").toObject(DefenderForServersGcpOfferingSubPlan.class);
         Assertions.assertEquals(SubPlan.P1, model.type());
     }
 

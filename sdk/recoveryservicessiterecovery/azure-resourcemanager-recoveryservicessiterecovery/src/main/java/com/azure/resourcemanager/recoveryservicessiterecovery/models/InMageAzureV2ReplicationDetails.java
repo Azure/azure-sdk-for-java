@@ -13,7 +13,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** InMageAzureV2 provider specific settings. */
+/**
+ * InMageAzureV2 provider specific settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageAzureV2")
 @Fluent
@@ -445,13 +447,15 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     @JsonProperty(value = "osName", access = JsonProperty.Access.WRITE_ONLY)
     private String osName;
 
-    /** Creates an instance of InMageAzureV2ReplicationDetails class. */
+    /**
+     * Creates an instance of InMageAzureV2ReplicationDetails class.
+     */
     public InMageAzureV2ReplicationDetails() {
     }
 
     /**
      * Get the infrastructureVmId property: The infrastructure VM Id.
-     *
+     * 
      * @return the infrastructureVmId value.
      */
     public String infrastructureVmId() {
@@ -460,7 +464,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the infrastructureVmId property: The infrastructure VM Id.
-     *
+     * 
      * @param infrastructureVmId the infrastructureVmId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -471,7 +475,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the vCenterInfrastructureId property: The vCenter infrastructure Id.
-     *
+     * 
      * @return the vCenterInfrastructureId value.
      */
     public String vCenterInfrastructureId() {
@@ -480,7 +484,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the vCenterInfrastructureId property: The vCenter infrastructure Id.
-     *
+     * 
      * @param vCenterInfrastructureId the vCenterInfrastructureId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -491,7 +495,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the protectionStage property: The protection stage.
-     *
+     * 
      * @return the protectionStage value.
      */
     public String protectionStage() {
@@ -500,7 +504,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the protectionStage property: The protection stage.
-     *
+     * 
      * @param protectionStage the protectionStage value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -511,7 +515,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the vmId property: The virtual machine Id.
-     *
+     * 
      * @return the vmId value.
      */
     public String vmId() {
@@ -520,7 +524,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the vmId property: The virtual machine Id.
-     *
+     * 
      * @param vmId the vmId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -531,7 +535,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the vmProtectionState property: The protection state for the vm.
-     *
+     * 
      * @return the vmProtectionState value.
      */
     public String vmProtectionState() {
@@ -540,7 +544,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the vmProtectionState property: The protection state for the vm.
-     *
+     * 
      * @param vmProtectionState the vmProtectionState value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -551,7 +555,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the vmProtectionStateDescription property: The protection state description for the vm.
-     *
+     * 
      * @return the vmProtectionStateDescription value.
      */
     public String vmProtectionStateDescription() {
@@ -560,7 +564,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the vmProtectionStateDescription property: The protection state description for the vm.
-     *
+     * 
      * @param vmProtectionStateDescription the vmProtectionStateDescription value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -571,7 +575,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the resyncProgressPercentage property: The resync progress percentage.
-     *
+     * 
      * @return the resyncProgressPercentage value.
      */
     public Integer resyncProgressPercentage() {
@@ -580,7 +584,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the resyncProgressPercentage property: The resync progress percentage.
-     *
+     * 
      * @param resyncProgressPercentage the resyncProgressPercentage value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -591,7 +595,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the rpoInSeconds property: The RPO in seconds.
-     *
+     * 
      * @return the rpoInSeconds value.
      */
     public Long rpoInSeconds() {
@@ -600,7 +604,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the rpoInSeconds property: The RPO in seconds.
-     *
+     * 
      * @param rpoInSeconds the rpoInSeconds value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -611,7 +615,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the compressedDataRateInMB property: The compressed data change rate in MB.
-     *
+     * 
      * @return the compressedDataRateInMB value.
      */
     public Double compressedDataRateInMB() {
@@ -620,7 +624,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the compressedDataRateInMB property: The compressed data change rate in MB.
-     *
+     * 
      * @param compressedDataRateInMB the compressedDataRateInMB value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -631,7 +635,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the uncompressedDataRateInMB property: The uncompressed data change rate in MB.
-     *
+     * 
      * @return the uncompressedDataRateInMB value.
      */
     public Double uncompressedDataRateInMB() {
@@ -640,7 +644,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the uncompressedDataRateInMB property: The uncompressed data change rate in MB.
-     *
+     * 
      * @param uncompressedDataRateInMB the uncompressedDataRateInMB value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -651,7 +655,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the ipAddress property: The source IP address.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -660,7 +664,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the ipAddress property: The source IP address.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -671,7 +675,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the agentVersion property: The agent version.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -680,7 +684,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the agentVersion property: The agent version.
-     *
+     * 
      * @param agentVersion the agentVersion value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -691,7 +695,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the agentExpiryDate property: Agent expiry date.
-     *
+     * 
      * @return the agentExpiryDate value.
      */
     public OffsetDateTime agentExpiryDate() {
@@ -700,7 +704,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the agentExpiryDate property: Agent expiry date.
-     *
+     * 
      * @param agentExpiryDate the agentExpiryDate value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -711,7 +715,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the isAgentUpdateRequired property: A value indicating whether installed agent needs to be updated.
-     *
+     * 
      * @return the isAgentUpdateRequired value.
      */
     public String isAgentUpdateRequired() {
@@ -720,7 +724,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the isAgentUpdateRequired property: A value indicating whether installed agent needs to be updated.
-     *
+     * 
      * @param isAgentUpdateRequired the isAgentUpdateRequired value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -732,7 +736,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Get the isRebootAfterUpdateRequired property: A value indicating whether the source server requires a restart
      * after update.
-     *
+     * 
      * @return the isRebootAfterUpdateRequired value.
      */
     public String isRebootAfterUpdateRequired() {
@@ -742,7 +746,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Set the isRebootAfterUpdateRequired property: A value indicating whether the source server requires a restart
      * after update.
-     *
+     * 
      * @param isRebootAfterUpdateRequired the isRebootAfterUpdateRequired value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -753,7 +757,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the lastHeartbeat property: The last heartbeat received from the source server.
-     *
+     * 
      * @return the lastHeartbeat value.
      */
     public OffsetDateTime lastHeartbeat() {
@@ -762,7 +766,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the lastHeartbeat property: The last heartbeat received from the source server.
-     *
+     * 
      * @param lastHeartbeat the lastHeartbeat value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -773,7 +777,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the processServerId property: The process server Id.
-     *
+     * 
      * @return the processServerId value.
      */
     public String processServerId() {
@@ -782,7 +786,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the processServerId property: The process server Id.
-     *
+     * 
      * @param processServerId the processServerId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -793,7 +797,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the processServerName property: The process server name.
-     *
+     * 
      * @return the processServerName value.
      */
     public String processServerName() {
@@ -802,7 +806,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the processServerName property: The process server name.
-     *
+     * 
      * @param processServerName the processServerName value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -813,7 +817,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the multiVmGroupId property: The multi vm group Id.
-     *
+     * 
      * @return the multiVmGroupId value.
      */
     public String multiVmGroupId() {
@@ -822,7 +826,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the multiVmGroupId property: The multi vm group Id.
-     *
+     * 
      * @param multiVmGroupId the multiVmGroupId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -833,7 +837,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the multiVmGroupName property: The multi vm group name.
-     *
+     * 
      * @return the multiVmGroupName value.
      */
     public String multiVmGroupName() {
@@ -842,7 +846,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the multiVmGroupName property: The multi vm group name.
-     *
+     * 
      * @param multiVmGroupName the multiVmGroupName value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -853,7 +857,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the multiVmSyncStatus property: A value indicating whether multi vm sync is enabled or disabled.
-     *
+     * 
      * @return the multiVmSyncStatus value.
      */
     public String multiVmSyncStatus() {
@@ -862,7 +866,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the multiVmSyncStatus property: A value indicating whether multi vm sync is enabled or disabled.
-     *
+     * 
      * @param multiVmSyncStatus the multiVmSyncStatus value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -873,7 +877,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the protectedDisks property: The list of protected disks.
-     *
+     * 
      * @return the protectedDisks value.
      */
     public List<InMageAzureV2ProtectedDiskDetails> protectedDisks() {
@@ -882,7 +886,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the protectedDisks property: The list of protected disks.
-     *
+     * 
      * @param protectedDisks the protectedDisks value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -893,7 +897,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the diskResized property: A value indicating whether any disk is resized for this VM.
-     *
+     * 
      * @return the diskResized value.
      */
     public String diskResized() {
@@ -902,7 +906,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the diskResized property: A value indicating whether any disk is resized for this VM.
-     *
+     * 
      * @param diskResized the diskResized value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -913,7 +917,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the masterTargetId property: The master target Id.
-     *
+     * 
      * @return the masterTargetId value.
      */
     public String masterTargetId() {
@@ -922,7 +926,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the masterTargetId property: The master target Id.
-     *
+     * 
      * @param masterTargetId the masterTargetId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -933,7 +937,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the sourceVmCpuCount property: The CPU count of the VM on the primary side.
-     *
+     * 
      * @return the sourceVmCpuCount value.
      */
     public Integer sourceVmCpuCount() {
@@ -942,7 +946,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the sourceVmCpuCount property: The CPU count of the VM on the primary side.
-     *
+     * 
      * @param sourceVmCpuCount the sourceVmCpuCount value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -953,7 +957,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the sourceVmRamSizeInMB property: The RAM size of the VM on the primary side.
-     *
+     * 
      * @return the sourceVmRamSizeInMB value.
      */
     public Integer sourceVmRamSizeInMB() {
@@ -962,7 +966,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the sourceVmRamSizeInMB property: The RAM size of the VM on the primary side.
-     *
+     * 
      * @param sourceVmRamSizeInMB the sourceVmRamSizeInMB value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -973,7 +977,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the osType property: The type of the OS on the VM.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -982,7 +986,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the osType property: The type of the OS on the VM.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -993,7 +997,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the vhdName property: The OS disk VHD name.
-     *
+     * 
      * @return the vhdName value.
      */
     public String vhdName() {
@@ -1002,7 +1006,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the vhdName property: The OS disk VHD name.
-     *
+     * 
      * @param vhdName the vhdName value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1013,7 +1017,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the osDiskId property: The id of the disk containing the OS.
-     *
+     * 
      * @return the osDiskId value.
      */
     public String osDiskId() {
@@ -1022,7 +1026,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the osDiskId property: The id of the disk containing the OS.
-     *
+     * 
      * @param osDiskId the osDiskId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1033,7 +1037,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the azureVMDiskDetails property: Azure VM Disk details.
-     *
+     * 
      * @return the azureVMDiskDetails value.
      */
     public List<AzureVmDiskDetails> azureVMDiskDetails() {
@@ -1042,7 +1046,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the azureVMDiskDetails property: Azure VM Disk details.
-     *
+     * 
      * @param azureVMDiskDetails the azureVMDiskDetails value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1053,7 +1057,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the recoveryAzureVMName property: Recovery Azure given name.
-     *
+     * 
      * @return the recoveryAzureVMName value.
      */
     public String recoveryAzureVMName() {
@@ -1062,7 +1066,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the recoveryAzureVMName property: Recovery Azure given name.
-     *
+     * 
      * @param recoveryAzureVMName the recoveryAzureVMName value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1073,7 +1077,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the recoveryAzureVMSize property: The Recovery Azure VM size.
-     *
+     * 
      * @return the recoveryAzureVMSize value.
      */
     public String recoveryAzureVMSize() {
@@ -1082,7 +1086,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the recoveryAzureVMSize property: The Recovery Azure VM size.
-     *
+     * 
      * @param recoveryAzureVMSize the recoveryAzureVMSize value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1093,7 +1097,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the recoveryAzureStorageAccount property: The recovery Azure storage account.
-     *
+     * 
      * @return the recoveryAzureStorageAccount value.
      */
     public String recoveryAzureStorageAccount() {
@@ -1102,7 +1106,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the recoveryAzureStorageAccount property: The recovery Azure storage account.
-     *
+     * 
      * @param recoveryAzureStorageAccount the recoveryAzureStorageAccount value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1114,7 +1118,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Get the recoveryAzureLogStorageAccountId property: The ARM id of the log storage account used for replication.
      * This will be set to null if no log storage account was provided during enable protection.
-     *
+     * 
      * @return the recoveryAzureLogStorageAccountId value.
      */
     public String recoveryAzureLogStorageAccountId() {
@@ -1124,19 +1128,19 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Set the recoveryAzureLogStorageAccountId property: The ARM id of the log storage account used for replication.
      * This will be set to null if no log storage account was provided during enable protection.
-     *
+     * 
      * @param recoveryAzureLogStorageAccountId the recoveryAzureLogStorageAccountId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
-    public InMageAzureV2ReplicationDetails withRecoveryAzureLogStorageAccountId(
-        String recoveryAzureLogStorageAccountId) {
+    public InMageAzureV2ReplicationDetails
+        withRecoveryAzureLogStorageAccountId(String recoveryAzureLogStorageAccountId) {
         this.recoveryAzureLogStorageAccountId = recoveryAzureLogStorageAccountId;
         return this;
     }
 
     /**
      * Get the vmNics property: The PE Network details.
-     *
+     * 
      * @return the vmNics value.
      */
     public List<VMNicDetails> vmNics() {
@@ -1145,7 +1149,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the vmNics property: The PE Network details.
-     *
+     * 
      * @param vmNics the vmNics value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1156,7 +1160,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the selectedRecoveryAzureNetworkId property: The selected recovery azure network Id.
-     *
+     * 
      * @return the selectedRecoveryAzureNetworkId value.
      */
     public String selectedRecoveryAzureNetworkId() {
@@ -1165,7 +1169,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the selectedRecoveryAzureNetworkId property: The selected recovery azure network Id.
-     *
+     * 
      * @param selectedRecoveryAzureNetworkId the selectedRecoveryAzureNetworkId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1176,7 +1180,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the selectedTfoAzureNetworkId property: The test failover virtual network.
-     *
+     * 
      * @return the selectedTfoAzureNetworkId value.
      */
     public String selectedTfoAzureNetworkId() {
@@ -1185,7 +1189,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the selectedTfoAzureNetworkId property: The test failover virtual network.
-     *
+     * 
      * @param selectedTfoAzureNetworkId the selectedTfoAzureNetworkId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1197,7 +1201,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Get the selectedSourceNicId property: The selected source nic Id which will be used as the primary nic during
      * failover.
-     *
+     * 
      * @return the selectedSourceNicId value.
      */
     public String selectedSourceNicId() {
@@ -1207,7 +1211,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Set the selectedSourceNicId property: The selected source nic Id which will be used as the primary nic during
      * failover.
-     *
+     * 
      * @param selectedSourceNicId the selectedSourceNicId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1219,7 +1223,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Get the discoveryType property: A value indicating the discovery type of the machine. Value can be vCenter or
      * physical.
-     *
+     * 
      * @return the discoveryType value.
      */
     public String discoveryType() {
@@ -1229,7 +1233,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Set the discoveryType property: A value indicating the discovery type of the machine. Value can be vCenter or
      * physical.
-     *
+     * 
      * @param discoveryType the discoveryType value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1241,7 +1245,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Get the enableRdpOnTargetOption property: The selected option to enable RDP\SSH on target vm after failover.
      * String value of SrsDataContract.EnableRDPOnTargetOption enum.
-     *
+     * 
      * @return the enableRdpOnTargetOption value.
      */
     public String enableRdpOnTargetOption() {
@@ -1251,7 +1255,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Set the enableRdpOnTargetOption property: The selected option to enable RDP\SSH on target vm after failover.
      * String value of SrsDataContract.EnableRDPOnTargetOption enum.
-     *
+     * 
      * @param enableRdpOnTargetOption the enableRdpOnTargetOption value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1263,7 +1267,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Get the datastores property: The datastores of the on-premise machine. Value can be list of strings that contain
      * datastore names.
-     *
+     * 
      * @return the datastores value.
      */
     public List<String> datastores() {
@@ -1273,7 +1277,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Set the datastores property: The datastores of the on-premise machine. Value can be list of strings that contain
      * datastore names.
-     *
+     * 
      * @param datastores the datastores value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1285,7 +1289,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Get the targetVmId property: The ARM Id of the target Azure VM. This value will be null until the VM is failed
      * over. Only after failure it will be populated with the ARM Id of the Azure VM.
-     *
+     * 
      * @return the targetVmId value.
      */
     public String targetVmId() {
@@ -1295,7 +1299,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Set the targetVmId property: The ARM Id of the target Azure VM. This value will be null until the VM is failed
      * over. Only after failure it will be populated with the ARM Id of the Azure VM.
-     *
+     * 
      * @param targetVmId the targetVmId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1306,7 +1310,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the recoveryAzureResourceGroupId property: The target resource group Id.
-     *
+     * 
      * @return the recoveryAzureResourceGroupId value.
      */
     public String recoveryAzureResourceGroupId() {
@@ -1315,7 +1319,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the recoveryAzureResourceGroupId property: The target resource group Id.
-     *
+     * 
      * @param recoveryAzureResourceGroupId the recoveryAzureResourceGroupId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1326,7 +1330,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the recoveryAvailabilitySetId property: The recovery availability set Id.
-     *
+     * 
      * @return the recoveryAvailabilitySetId value.
      */
     public String recoveryAvailabilitySetId() {
@@ -1335,7 +1339,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the recoveryAvailabilitySetId property: The recovery availability set Id.
-     *
+     * 
      * @param recoveryAvailabilitySetId the recoveryAvailabilitySetId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1346,7 +1350,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @return the targetAvailabilityZone value.
      */
     public String targetAvailabilityZone() {
@@ -1355,7 +1359,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @param targetAvailabilityZone the targetAvailabilityZone value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1366,7 +1370,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the targetProximityPlacementGroupId property: The target proximity placement group Id.
-     *
+     * 
      * @return the targetProximityPlacementGroupId value.
      */
     public String targetProximityPlacementGroupId() {
@@ -1375,7 +1379,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the targetProximityPlacementGroupId property: The target proximity placement group Id.
-     *
+     * 
      * @param targetProximityPlacementGroupId the targetProximityPlacementGroupId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1386,7 +1390,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the useManagedDisks property: A value indicating whether managed disks should be used during failover.
-     *
+     * 
      * @return the useManagedDisks value.
      */
     public String useManagedDisks() {
@@ -1395,7 +1399,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the useManagedDisks property: A value indicating whether managed disks should be used during failover.
-     *
+     * 
      * @param useManagedDisks the useManagedDisks value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1406,7 +1410,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the licenseType property: License Type of the VM to be used.
-     *
+     * 
      * @return the licenseType value.
      */
     public String licenseType() {
@@ -1415,7 +1419,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the licenseType property: License Type of the VM to be used.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1426,7 +1430,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @return the sqlServerLicenseType value.
      */
     public String sqlServerLicenseType() {
@@ -1435,7 +1439,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @param sqlServerLicenseType the sqlServerLicenseType value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1447,7 +1451,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Get the validationErrors property: The validation errors of the on-premise machine Value can be list of
      * validation errors.
-     *
+     * 
      * @return the validationErrors value.
      */
     public List<HealthError> validationErrors() {
@@ -1457,7 +1461,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Set the validationErrors property: The validation errors of the on-premise machine Value can be list of
      * validation errors.
-     *
+     * 
      * @param validationErrors the validationErrors value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1468,7 +1472,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the lastRpoCalculatedTime property: The last RPO calculated time.
-     *
+     * 
      * @return the lastRpoCalculatedTime value.
      */
     public OffsetDateTime lastRpoCalculatedTime() {
@@ -1477,7 +1481,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the lastRpoCalculatedTime property: The last RPO calculated time.
-     *
+     * 
      * @param lastRpoCalculatedTime the lastRpoCalculatedTime value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1488,7 +1492,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the lastUpdateReceivedTime property: The last update time received from on-prem components.
-     *
+     * 
      * @return the lastUpdateReceivedTime value.
      */
     public OffsetDateTime lastUpdateReceivedTime() {
@@ -1497,7 +1501,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the lastUpdateReceivedTime property: The last update time received from on-prem components.
-     *
+     * 
      * @param lastUpdateReceivedTime the lastUpdateReceivedTime value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1508,7 +1512,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the replicaId property: The replica id of the protected item.
-     *
+     * 
      * @return the replicaId value.
      */
     public String replicaId() {
@@ -1517,7 +1521,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the replicaId property: The replica id of the protected item.
-     *
+     * 
      * @param replicaId the replicaId value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1528,7 +1532,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the osVersion property: The OS Version of the protected item.
-     *
+     * 
      * @return the osVersion value.
      */
     public String osVersion() {
@@ -1537,7 +1541,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the osVersion property: The OS Version of the protected item.
-     *
+     * 
      * @param osVersion the osVersion value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1548,7 +1552,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the protectedManagedDisks property: The list of protected managed disks.
-     *
+     * 
      * @return the protectedManagedDisks value.
      */
     public List<InMageAzureV2ManagedDiskDetails> protectedManagedDisks() {
@@ -1557,19 +1561,19 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the protectedManagedDisks property: The list of protected managed disks.
-     *
+     * 
      * @param protectedManagedDisks the protectedManagedDisks value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
-    public InMageAzureV2ReplicationDetails withProtectedManagedDisks(
-        List<InMageAzureV2ManagedDiskDetails> protectedManagedDisks) {
+    public InMageAzureV2ReplicationDetails
+        withProtectedManagedDisks(List<InMageAzureV2ManagedDiskDetails> protectedManagedDisks) {
         this.protectedManagedDisks = protectedManagedDisks;
         return this;
     }
 
     /**
      * Get the lastRecoveryPointReceived property: The last recovery point received time.
-     *
+     * 
      * @return the lastRecoveryPointReceived value.
      */
     public OffsetDateTime lastRecoveryPointReceived() {
@@ -1578,7 +1582,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the firmwareType property: The firmware type of this protected item.
-     *
+     * 
      * @return the firmwareType value.
      */
     public String firmwareType() {
@@ -1587,7 +1591,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the firmwareType property: The firmware type of this protected item.
-     *
+     * 
      * @param firmwareType the firmwareType value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1598,7 +1602,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the azureVmGeneration property: The target generation for this protected item.
-     *
+     * 
      * @return the azureVmGeneration value.
      */
     public String azureVmGeneration() {
@@ -1607,7 +1611,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the azureVmGeneration property: The target generation for this protected item.
-     *
+     * 
      * @param azureVmGeneration the azureVmGeneration value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1617,8 +1621,9 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     }
 
     /**
-     * Get the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or not.
-     *
+     * Get the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or
+     * not.
+     * 
      * @return the isAdditionalStatsAvailable value.
      */
     public Boolean isAdditionalStatsAvailable() {
@@ -1626,8 +1631,9 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     }
 
     /**
-     * Set the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or not.
-     *
+     * Set the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or
+     * not.
+     * 
      * @param isAdditionalStatsAvailable the isAdditionalStatsAvailable value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1638,7 +1644,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the totalDataTransferred property: The total transferred data in bytes.
-     *
+     * 
      * @return the totalDataTransferred value.
      */
     public Long totalDataTransferred() {
@@ -1647,7 +1653,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the totalDataTransferred property: The total transferred data in bytes.
-     *
+     * 
      * @param totalDataTransferred the totalDataTransferred value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1658,7 +1664,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the totalProgressHealth property: The progress health.
-     *
+     * 
      * @return the totalProgressHealth value.
      */
     public String totalProgressHealth() {
@@ -1667,7 +1673,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the totalProgressHealth property: The progress health.
-     *
+     * 
      * @param totalProgressHealth the totalProgressHealth value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1678,7 +1684,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the targetVmTags property: The target VM tags.
-     *
+     * 
      * @return the targetVmTags value.
      */
     public Map<String, String> targetVmTags() {
@@ -1687,7 +1693,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the targetVmTags property: The target VM tags.
-     *
+     * 
      * @param targetVmTags the targetVmTags value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1698,7 +1704,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the seedManagedDiskTags property: The tags for the seed managed disks.
-     *
+     * 
      * @return the seedManagedDiskTags value.
      */
     public Map<String, String> seedManagedDiskTags() {
@@ -1707,7 +1713,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the seedManagedDiskTags property: The tags for the seed managed disks.
-     *
+     * 
      * @param seedManagedDiskTags the seedManagedDiskTags value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1718,7 +1724,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the targetManagedDiskTags property: The tags for the target managed disks.
-     *
+     * 
      * @return the targetManagedDiskTags value.
      */
     public Map<String, String> targetManagedDiskTags() {
@@ -1727,7 +1733,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the targetManagedDiskTags property: The tags for the target managed disks.
-     *
+     * 
      * @param targetManagedDiskTags the targetManagedDiskTags value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1738,7 +1744,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @return the targetNicTags value.
      */
     public Map<String, String> targetNicTags() {
@@ -1747,7 +1753,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @param targetNicTags the targetNicTags value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1758,7 +1764,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the switchProviderBlockingErrorDetails property: The switch provider blocking error information.
-     *
+     * 
      * @return the switchProviderBlockingErrorDetails value.
      */
     public List<InMageAzureV2SwitchProviderBlockingErrorDetails> switchProviderBlockingErrorDetails() {
@@ -1767,7 +1773,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the switchProviderBlockingErrorDetails property: The switch provider blocking error information.
-     *
+     * 
      * @param switchProviderBlockingErrorDetails the switchProviderBlockingErrorDetails value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1779,7 +1785,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the switchProviderDetails property: The switch provider blocking error information.
-     *
+     * 
      * @return the switchProviderDetails value.
      */
     public InMageAzureV2SwitchProviderDetails switchProviderDetails() {
@@ -1788,19 +1794,19 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the switchProviderDetails property: The switch provider blocking error information.
-     *
+     * 
      * @param switchProviderDetails the switchProviderDetails value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
-    public InMageAzureV2ReplicationDetails withSwitchProviderDetails(
-        InMageAzureV2SwitchProviderDetails switchProviderDetails) {
+    public InMageAzureV2ReplicationDetails
+        withSwitchProviderDetails(InMageAzureV2SwitchProviderDetails switchProviderDetails) {
         this.switchProviderDetails = switchProviderDetails;
         return this;
     }
 
     /**
      * Get the supportedOSVersions property: A value indicating the inplace OS Upgrade version.
-     *
+     * 
      * @return the supportedOSVersions value.
      */
     public List<String> supportedOSVersions() {
@@ -1809,7 +1815,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the supportedOSVersions property: A value indicating the inplace OS Upgrade version.
-     *
+     * 
      * @param supportedOSVersions the supportedOSVersions value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
@@ -1821,7 +1827,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Get the allAvailableOSUpgradeConfigurations property: A value indicating all available inplace OS Upgrade
      * configurations.
-     *
+     * 
      * @return the allAvailableOSUpgradeConfigurations value.
      */
     public List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations() {
@@ -1831,19 +1837,19 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     /**
      * Set the allAvailableOSUpgradeConfigurations property: A value indicating all available inplace OS Upgrade
      * configurations.
-     *
+     * 
      * @param allAvailableOSUpgradeConfigurations the allAvailableOSUpgradeConfigurations value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
      */
-    public InMageAzureV2ReplicationDetails withAllAvailableOSUpgradeConfigurations(
-        List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations) {
+    public InMageAzureV2ReplicationDetails
+        withAllAvailableOSUpgradeConfigurations(List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations) {
         this.allAvailableOSUpgradeConfigurations = allAvailableOSUpgradeConfigurations;
         return this;
     }
 
     /**
      * Get the osName property: The name of the OS on the VM.
-     *
+     * 
      * @return the osName value.
      */
     public String osName() {
@@ -1852,7 +1858,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

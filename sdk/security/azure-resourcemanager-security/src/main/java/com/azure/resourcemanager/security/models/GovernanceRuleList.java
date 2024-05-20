@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.GovernanceRuleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Page of a governance rules list. */
+/**
+ * Page of a governance rules list.
+ */
 @Immutable
 public final class GovernanceRuleList {
     /*
@@ -24,13 +26,15 @@ public final class GovernanceRuleList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of GovernanceRuleList class. */
+    /**
+     * Creates an instance of GovernanceRuleList class.
+     */
     public GovernanceRuleList() {
     }
 
     /**
      * Get the value property: Collection of governance rules in this page.
-     *
+     * 
      * @return the value value.
      */
     public List<GovernanceRuleInner> value() {
@@ -39,7 +43,7 @@ public final class GovernanceRuleList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class GovernanceRuleList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

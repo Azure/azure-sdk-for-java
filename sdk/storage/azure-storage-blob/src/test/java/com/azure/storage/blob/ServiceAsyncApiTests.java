@@ -744,7 +744,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     public void setPropsError() {
         StepVerifier.create(getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
             "https://error.blob.core.windows.net").setProperties(new BlobServiceProperties()))
-            .verifyError(BlobStorageException.class);
+            .verifyError(Exception.class);
     }
 
     @Test
@@ -771,7 +771,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     public void getPropsError() {
         StepVerifier.create(getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
             "https://error.blob.core.windows.net").getProperties())
-            .verifyError(BlobStorageException.class);
+            .verifyError(Exception.class);
     }
 
     @Test

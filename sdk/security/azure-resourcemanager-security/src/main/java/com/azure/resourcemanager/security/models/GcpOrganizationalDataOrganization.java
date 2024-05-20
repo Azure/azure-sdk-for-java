@@ -6,15 +6,29 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The gcpOrganization data for the parent account. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "organizationMembershipType")
+/**
+ * The gcpOrganization data for the parent account.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "organizationMembershipType",
+    defaultImpl = GcpOrganizationalDataOrganization.class,
+    visible = true)
 @JsonTypeName("Organization")
 @Fluent
 public final class GcpOrganizationalDataOrganization extends GcpOrganizationalData {
+    /*
+     * The multi cloud account's membership type in the organization
+     */
+    @JsonTypeId
+    @JsonProperty(value = "organizationMembershipType", required = true)
+    private OrganizationMembershipType organizationMembershipType = OrganizationMembershipType.ORGANIZATION;
+
     /*
      * If the multi cloud account is of membership type organization, list of accounts excluded from offering
      */
@@ -28,8 +42,7 @@ public final class GcpOrganizationalDataOrganization extends GcpOrganizationalDa
     private String serviceAccountEmailAddress;
 
     /*
-     * The GCP workload identity provider id which represents the permissions required to auto provision security
-     * connectors
+     * The GCP workload identity provider id which represents the permissions required to auto provision security connectors
      */
     @JsonProperty(value = "workloadIdentityProviderId")
     private String workloadIdentityProviderId;
@@ -40,14 +53,26 @@ public final class GcpOrganizationalDataOrganization extends GcpOrganizationalDa
     @JsonProperty(value = "organizationName", access = JsonProperty.Access.WRITE_ONLY)
     private String organizationName;
 
-    /** Creates an instance of GcpOrganizationalDataOrganization class. */
+    /**
+     * Creates an instance of GcpOrganizationalDataOrganization class.
+     */
     public GcpOrganizationalDataOrganization() {
+    }
+
+    /**
+     * Get the organizationMembershipType property: The multi cloud account's membership type in the organization.
+     * 
+     * @return the organizationMembershipType value.
+     */
+    @Override
+    public OrganizationMembershipType organizationMembershipType() {
+        return this.organizationMembershipType;
     }
 
     /**
      * Get the excludedProjectNumbers property: If the multi cloud account is of membership type organization, list of
      * accounts excluded from offering.
-     *
+     * 
      * @return the excludedProjectNumbers value.
      */
     public List<String> excludedProjectNumbers() {
@@ -57,7 +82,7 @@ public final class GcpOrganizationalDataOrganization extends GcpOrganizationalDa
     /**
      * Set the excludedProjectNumbers property: If the multi cloud account is of membership type organization, list of
      * accounts excluded from offering.
-     *
+     * 
      * @param excludedProjectNumbers the excludedProjectNumbers value to set.
      * @return the GcpOrganizationalDataOrganization object itself.
      */
@@ -69,7 +94,7 @@ public final class GcpOrganizationalDataOrganization extends GcpOrganizationalDa
     /**
      * Get the serviceAccountEmailAddress property: The service account email address which represents the organization
      * level permissions container.
-     *
+     * 
      * @return the serviceAccountEmailAddress value.
      */
     public String serviceAccountEmailAddress() {
@@ -79,7 +104,7 @@ public final class GcpOrganizationalDataOrganization extends GcpOrganizationalDa
     /**
      * Set the serviceAccountEmailAddress property: The service account email address which represents the organization
      * level permissions container.
-     *
+     * 
      * @param serviceAccountEmailAddress the serviceAccountEmailAddress value to set.
      * @return the GcpOrganizationalDataOrganization object itself.
      */
@@ -91,7 +116,7 @@ public final class GcpOrganizationalDataOrganization extends GcpOrganizationalDa
     /**
      * Get the workloadIdentityProviderId property: The GCP workload identity provider id which represents the
      * permissions required to auto provision security connectors.
-     *
+     * 
      * @return the workloadIdentityProviderId value.
      */
     public String workloadIdentityProviderId() {
@@ -101,7 +126,7 @@ public final class GcpOrganizationalDataOrganization extends GcpOrganizationalDa
     /**
      * Set the workloadIdentityProviderId property: The GCP workload identity provider id which represents the
      * permissions required to auto provision security connectors.
-     *
+     * 
      * @param workloadIdentityProviderId the workloadIdentityProviderId value to set.
      * @return the GcpOrganizationalDataOrganization object itself.
      */
@@ -112,7 +137,7 @@ public final class GcpOrganizationalDataOrganization extends GcpOrganizationalDa
 
     /**
      * Get the organizationName property: GCP organization name.
-     *
+     * 
      * @return the organizationName value.
      */
     public String organizationName() {
@@ -121,7 +146,7 @@ public final class GcpOrganizationalDataOrganization extends GcpOrganizationalDa
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

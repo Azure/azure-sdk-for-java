@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cdn.models.ManagedRuleGroupDefinition;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties for a managed rule set definition. */
+/**
+ * Properties for a managed rule set definition.
+ */
 @Immutable
 public final class ManagedRuleSetDefinitionProperties {
     /*
@@ -36,13 +38,15 @@ public final class ManagedRuleSetDefinitionProperties {
     @JsonProperty(value = "ruleGroups", access = JsonProperty.Access.WRITE_ONLY)
     private List<ManagedRuleGroupDefinition> ruleGroups;
 
-    /** Creates an instance of ManagedRuleSetDefinitionProperties class. */
+    /**
+     * Creates an instance of ManagedRuleSetDefinitionProperties class.
+     */
     public ManagedRuleSetDefinitionProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the managed rule set.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -51,7 +55,7 @@ public final class ManagedRuleSetDefinitionProperties {
 
     /**
      * Get the ruleSetType property: Type of the managed rule set.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -60,7 +64,7 @@ public final class ManagedRuleSetDefinitionProperties {
 
     /**
      * Get the ruleSetVersion property: Version of the managed rule set type.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -69,7 +73,7 @@ public final class ManagedRuleSetDefinitionProperties {
 
     /**
      * Get the ruleGroups property: Rule groups of the managed rule set.
-     *
+     * 
      * @return the ruleGroups value.
      */
     public List<ManagedRuleGroupDefinition> ruleGroups() {
@@ -78,7 +82,7 @@ public final class ManagedRuleSetDefinitionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

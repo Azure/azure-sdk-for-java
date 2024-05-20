@@ -30,8 +30,7 @@ public final class AutomationProperties {
     private Boolean isEnabled;
 
     /*
-     * A collection of scopes on which the security automations logic is applied. Supported scopes are the subscription
-     * itself or a resource group under that subscription. The automation will only apply on defined scopes.
+     * A collection of scopes on which the security automations logic is applied. Supported scopes are the subscription itself or a resource group under that subscription. The automation will only apply on defined scopes.
      */
     @JsonProperty(value = "scopes")
     private List<AutomationScope> scopes;
@@ -43,19 +42,20 @@ public final class AutomationProperties {
     private List<AutomationSource> sources;
 
     /*
-     * A collection of the actions which are triggered if all the configured rules evaluations, within at least one
-     * rule set, are true.
+     * A collection of the actions which are triggered if all the configured rules evaluations, within at least one rule set, are true.
      */
     @JsonProperty(value = "actions")
     private List<AutomationAction> actions;
 
-    /** Creates an instance of AutomationProperties class. */
+    /**
+     * Creates an instance of AutomationProperties class.
+     */
     public AutomationProperties() {
     }
 
     /**
      * Get the description property: The security automation description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -64,7 +64,7 @@ public final class AutomationProperties {
 
     /**
      * Set the description property: The security automation description.
-     *
+     * 
      * @param description the description value to set.
      * @return the AutomationProperties object itself.
      */
@@ -75,7 +75,7 @@ public final class AutomationProperties {
 
     /**
      * Get the isEnabled property: Indicates whether the security automation is enabled.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -84,7 +84,7 @@ public final class AutomationProperties {
 
     /**
      * Set the isEnabled property: Indicates whether the security automation is enabled.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the AutomationProperties object itself.
      */
@@ -97,7 +97,7 @@ public final class AutomationProperties {
      * Get the scopes property: A collection of scopes on which the security automations logic is applied. Supported
      * scopes are the subscription itself or a resource group under that subscription. The automation will only apply on
      * defined scopes.
-     *
+     * 
      * @return the scopes value.
      */
     public List<AutomationScope> scopes() {
@@ -108,7 +108,7 @@ public final class AutomationProperties {
      * Set the scopes property: A collection of scopes on which the security automations logic is applied. Supported
      * scopes are the subscription itself or a resource group under that subscription. The automation will only apply on
      * defined scopes.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the AutomationProperties object itself.
      */
@@ -120,7 +120,7 @@ public final class AutomationProperties {
     /**
      * Get the sources property: A collection of the source event types which evaluate the security automation set of
      * rules.
-     *
+     * 
      * @return the sources value.
      */
     public List<AutomationSource> sources() {
@@ -130,7 +130,7 @@ public final class AutomationProperties {
     /**
      * Set the sources property: A collection of the source event types which evaluate the security automation set of
      * rules.
-     *
+     * 
      * @param sources the sources value to set.
      * @return the AutomationProperties object itself.
      */
@@ -142,7 +142,7 @@ public final class AutomationProperties {
     /**
      * Get the actions property: A collection of the actions which are triggered if all the configured rules
      * evaluations, within at least one rule set, are true.
-     *
+     * 
      * @return the actions value.
      */
     public List<AutomationAction> actions() {
@@ -152,7 +152,7 @@ public final class AutomationProperties {
     /**
      * Set the actions property: A collection of the actions which are triggered if all the configured rules
      * evaluations, within at least one rule set, are true.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the AutomationProperties object itself.
      */
@@ -163,7 +163,7 @@ public final class AutomationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

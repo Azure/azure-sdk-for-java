@@ -10,7 +10,9 @@ import com.azure.resourcemanager.newrelicobservability.fluent.models.AccountReso
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response of get all accounts Operation. */
+/**
+ * Response of get all accounts Operation.
+ */
 @Fluent
 public final class AccountsListResponse {
     /*
@@ -25,13 +27,15 @@ public final class AccountsListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AccountsListResponse class. */
+    /**
+     * Creates an instance of AccountsListResponse class.
+     */
     public AccountsListResponse() {
     }
 
     /**
      * Get the value property: The AccountResource items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<AccountResourceInner> value() {
@@ -40,7 +44,7 @@ public final class AccountsListResponse {
 
     /**
      * Set the value property: The AccountResource items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the AccountsListResponse object itself.
      */
@@ -51,7 +55,7 @@ public final class AccountsListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class AccountsListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AccountsListResponse object itself.
      */
@@ -71,14 +75,13 @@ public final class AccountsListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model AccountsListResponse"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model AccountsListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

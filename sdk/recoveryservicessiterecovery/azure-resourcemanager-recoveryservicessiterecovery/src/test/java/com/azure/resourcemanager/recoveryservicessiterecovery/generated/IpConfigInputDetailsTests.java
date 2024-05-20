@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IpConfigInputDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpConfigInputDetails model =
-            BinaryData
-                .fromString(
-                    "{\"ipConfigName\":\"pelmcuvhixbjxyf\",\"isPrimary\":false,\"isSeletedForFailover\":false,\"recoverySubnetName\":\"ool\",\"recoveryStaticIPAddress\":\"tpkiwkkbnujry\",\"recoveryPublicIPAddressId\":\"tylbfpncurdoiw\",\"recoveryLBBackendAddressPoolIds\":[\"htywubxcbihwq\",\"nfdn\"],\"tfoSubnetName\":\"jchrdgoihxumw\",\"tfoStaticIPAddress\":\"ond\",\"tfoPublicIPAddressId\":\"luudfdlwggytsb\",\"tfoLBBackendAddressPoolIds\":[\"vvt\",\"seinqfiuf\",\"qknp\",\"rgnepttwqmsniffc\"]}")
-                .toObject(IpConfigInputDetails.class);
+        IpConfigInputDetails model = BinaryData.fromString(
+            "{\"ipConfigName\":\"pelmcuvhixbjxyf\",\"isPrimary\":false,\"isSeletedForFailover\":false,\"recoverySubnetName\":\"ool\",\"recoveryStaticIPAddress\":\"tpkiwkkbnujry\",\"recoveryPublicIPAddressId\":\"tylbfpncurdoiw\",\"recoveryLBBackendAddressPoolIds\":[\"htywubxcbihwq\",\"nfdn\"],\"tfoSubnetName\":\"jchrdgoihxumw\",\"tfoStaticIPAddress\":\"ond\",\"tfoPublicIPAddressId\":\"luudfdlwggytsb\",\"tfoLBBackendAddressPoolIds\":[\"vvt\",\"seinqfiuf\",\"qknp\",\"rgnepttwqmsniffc\"]}")
+            .toObject(IpConfigInputDetails.class);
         Assertions.assertEquals("pelmcuvhixbjxyf", model.ipConfigName());
         Assertions.assertEquals(false, model.isPrimary());
         Assertions.assertEquals(false, model.isSeletedForFailover());
@@ -32,19 +30,12 @@ public final class IpConfigInputDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpConfigInputDetails model =
-            new IpConfigInputDetails()
-                .withIpConfigName("pelmcuvhixbjxyf")
-                .withIsPrimary(false)
-                .withIsSeletedForFailover(false)
-                .withRecoverySubnetName("ool")
-                .withRecoveryStaticIpAddress("tpkiwkkbnujry")
-                .withRecoveryPublicIpAddressId("tylbfpncurdoiw")
-                .withRecoveryLBBackendAddressPoolIds(Arrays.asList("htywubxcbihwq", "nfdn"))
-                .withTfoSubnetName("jchrdgoihxumw")
-                .withTfoStaticIpAddress("ond")
-                .withTfoPublicIpAddressId("luudfdlwggytsb")
-                .withTfoLBBackendAddressPoolIds(Arrays.asList("vvt", "seinqfiuf", "qknp", "rgnepttwqmsniffc"));
+        IpConfigInputDetails model = new IpConfigInputDetails().withIpConfigName("pelmcuvhixbjxyf").withIsPrimary(false)
+            .withIsSeletedForFailover(false).withRecoverySubnetName("ool").withRecoveryStaticIpAddress("tpkiwkkbnujry")
+            .withRecoveryPublicIpAddressId("tylbfpncurdoiw")
+            .withRecoveryLBBackendAddressPoolIds(Arrays.asList("htywubxcbihwq", "nfdn"))
+            .withTfoSubnetName("jchrdgoihxumw").withTfoStaticIpAddress("ond").withTfoPublicIpAddressId("luudfdlwggytsb")
+            .withTfoLBBackendAddressPoolIds(Arrays.asList("vvt", "seinqfiuf", "qknp", "rgnepttwqmsniffc"));
         model = BinaryData.fromObject(model).toObject(IpConfigInputDetails.class);
         Assertions.assertEquals("pelmcuvhixbjxyf", model.ipConfigName());
         Assertions.assertEquals(false, model.isPrimary());

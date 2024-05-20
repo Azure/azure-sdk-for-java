@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Naming information for this resource type. */
+/**
+ * Naming information for this resource type.
+ */
 @Fluent
 public final class ResourceUsageName {
     /*
@@ -22,13 +24,15 @@ public final class ResourceUsageName {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
-    /** Creates an instance of ResourceUsageName class. */
+    /**
+     * Creates an instance of ResourceUsageName class.
+     */
     public ResourceUsageName() {
     }
 
     /**
      * Get the value property: Canonical name for this resource type.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -37,7 +41,7 @@ public final class ResourceUsageName {
 
     /**
      * Set the value property: Canonical name for this resource type.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourceUsageName object itself.
      */
@@ -48,7 +52,7 @@ public final class ResourceUsageName {
 
     /**
      * Get the localizedValue property: Localized name for this resource type.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -57,7 +61,7 @@ public final class ResourceUsageName {
 
     /**
      * Set the localizedValue property: Localized name for this resource type.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the ResourceUsageName object itself.
      */
@@ -68,7 +72,7 @@ public final class ResourceUsageName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class OkHttpFileRequestBodyTest {
     @ParameterizedTest
-    @ValueSource(ints = {1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113})
+    @ValueSource(ints = { 1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113 })
     public void transferContentTransferAll(int size) throws Exception {
         Path file = Files.createTempFile("OkHttpFileRequestBodyTest", null);
         file.toFile().deleteOnExit();
@@ -34,8 +34,8 @@ public class OkHttpFileRequestBodyTest {
         ThreadLocalRandom.current().nextBytes(bytes);
         Files.write(file, bytes);
 
-        RequestBody fileRequestBody = new BinaryDataRequestBody(BinaryData.fromFile(file, 0L, null, 1024), null,
-            bytes.length);
+        RequestBody fileRequestBody
+            = new BinaryDataRequestBody(BinaryData.fromFile(file, 0L, null, 1024), null, bytes.length);
 
         TestSink sink = new TestSink(false);
 
@@ -45,7 +45,7 @@ public class OkHttpFileRequestBodyTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113})
+    @ValueSource(ints = { 1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113 })
     public void transferContentWithIncompleteTransferTo(int size) throws Exception {
         Path file = Files.createTempFile("OkHttpFileRequestBodyTest", null);
         file.toFile().deleteOnExit();
@@ -53,8 +53,8 @@ public class OkHttpFileRequestBodyTest {
         ThreadLocalRandom.current().nextBytes(bytes);
         Files.write(file, bytes);
 
-        RequestBody fileRequestBody = new BinaryDataRequestBody(BinaryData.fromFile(file, 0L, null, 1024), null,
-            bytes.length);
+        RequestBody fileRequestBody
+            = new BinaryDataRequestBody(BinaryData.fromFile(file, 0L, null, 1024), null, bytes.length);
 
         TestSink sink = new TestSink(true);
 
@@ -64,7 +64,7 @@ public class OkHttpFileRequestBodyTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113})
+    @ValueSource(ints = { 1, 10, 127, 1024, 1024 + 113, 10 * 1024 * 1024, 10 * 1024 * 1024 + 113 })
     public void transferContentWithIncompleteTransferToWithOversizeContent(int size) throws Exception {
         Path file = Files.createTempFile("OkHttpFileRequestBodyTest", null);
         file.toFile().deleteOnExit();
@@ -72,8 +72,8 @@ public class OkHttpFileRequestBodyTest {
         ThreadLocalRandom.current().nextBytes(bytes);
         Files.write(file, bytes);
 
-        RequestBody fileRequestBody = new BinaryDataRequestBody(BinaryData.fromFile(file, 0L, size + 112L, 1024), null,
-            bytes.length);
+        RequestBody fileRequestBody
+            = new BinaryDataRequestBody(BinaryData.fromFile(file, 0L, size + 112L, 1024), null, bytes.length);
 
         TestSink sink = new TestSink(true);
 
@@ -238,7 +238,7 @@ public class OkHttpFileRequestBodyTest {
 
             if (simulateIncompleteRead && src.remaining() > 1) {
                 buf = new byte[src.remaining() - 1];
-            } else  {
+            } else {
                 buf = new byte[src.remaining()];
             }
             src.get(buf);

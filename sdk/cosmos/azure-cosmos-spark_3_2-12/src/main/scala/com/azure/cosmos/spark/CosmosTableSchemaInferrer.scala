@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosAsyncContainer
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers
+import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
+import com.azure.cosmos.implementation.{ImplementationBridgeHelpers}
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedRange, PartitionKeyDefinition}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
@@ -118,11 +118,15 @@ private object CosmosTableSchemaInferrer
         throughputControlClientCacheItemOpt)
 
     if (cosmosInferenceConfig.inferSchemaEnabled) {
-      SparkUtils.safeOpenConnectionInitCaches(sourceContainer, (msg, e) => logWarning(msg, e))
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
       queryOptions.setDedicatedGatewayRequestOptions(cosmosReadConfig.dedicatedGatewayRequestOptions)
-      ThroughputControlHelper.populateThroughputControlGroupName(queryOptions, cosmosReadConfig.throughputControlConfig)
+      ThroughputControlHelper.populateThroughputControlGroupName(
+        ImplementationBridgeHelpers
+          .CosmosQueryRequestOptionsHelper
+          .getCosmosQueryRequestOptionsAccessor
+          .getImpl(queryOptions),
+        cosmosReadConfig.throughputControlConfig)
 
       val queryText = cosmosInferenceConfig.inferSchemaQuery match {
         case None =>
@@ -184,7 +188,8 @@ private object CosmosTableSchemaInferrer
                                                      readManyFilteringConfig: CosmosReadManyFilteringConfig): String = {
     val partitionKeyDefinition =
       TransientErrorsRetryPolicy.executeWithRetry[PartitionKeyDefinition](() => {
-        cosmosContainer.read().block().getProperties.getPartitionKeyDefinition
+        SparkBridgeInternal
+          .getContainerPropertiesFromCollectionCache(cosmosContainer).getPartitionKeyDefinition
       })
 
     CosmosReadManyFilteringConfig

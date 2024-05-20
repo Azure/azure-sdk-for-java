@@ -5,43 +5,41 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The related metadata items for the Log Analytics solution.
  */
 @Fluent
-public final class MetadataSolutionRelated {
+public final class MetadataSolutionRelated implements JsonSerializable<MetadataSolutionRelated> {
     /*
      * The tables related to the Log Analytics solution
      */
-    @JsonProperty(value = "tables", required = true)
-    private List<String> tables;
+    private final List<String> tables;
 
     /*
      * The functions related to the Log Analytics solution
      */
-    @JsonProperty(value = "functions")
     private List<String> functions;
 
     /*
      * The categories related to the Log Analytics solution
      */
-    @JsonProperty(value = "categories")
     private List<String> categories;
 
     /*
      * The saved queries related to the Log Analytics solution
      */
-    @JsonProperty(value = "queries")
     private List<String> queries;
 
     /*
      * The Workspaces referenced in the metadata request that are related to the Log Analytics solution
      */
-    @JsonProperty(value = "workspaces")
     private List<String> workspaces;
 
     /**
@@ -49,8 +47,7 @@ public final class MetadataSolutionRelated {
      * 
      * @param tables the tables value to set.
      */
-    @JsonCreator
-    public MetadataSolutionRelated(@JsonProperty(value = "tables", required = true) List<String> tables) {
+    public MetadataSolutionRelated(List<String> tables) {
         this.tables = tables;
     }
 
@@ -143,5 +140,65 @@ public final class MetadataSolutionRelated {
     public MetadataSolutionRelated setWorkspaces(List<String> workspaces) {
         this.workspaces = workspaces;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("tables", this.tables, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("categories", this.categories, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("queries", this.queries, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("workspaces", this.workspaces, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetadataSolutionRelated from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataSolutionRelated if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetadataSolutionRelated.
+     */
+    public static MetadataSolutionRelated fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean tablesFound = false;
+            List<String> tables = null;
+            List<String> functions = null;
+            List<String> categories = null;
+            List<String> queries = null;
+            List<String> workspaces = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tables".equals(fieldName)) {
+                    tables = reader.readArray(reader1 -> reader1.getString());
+                    tablesFound = true;
+                } else if ("functions".equals(fieldName)) {
+                    functions = reader.readArray(reader1 -> reader1.getString());
+                } else if ("categories".equals(fieldName)) {
+                    categories = reader.readArray(reader1 -> reader1.getString());
+                } else if ("queries".equals(fieldName)) {
+                    queries = reader.readArray(reader1 -> reader1.getString());
+                } else if ("workspaces".equals(fieldName)) {
+                    workspaces = reader.readArray(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (tablesFound) {
+                MetadataSolutionRelated deserializedMetadataSolutionRelated = new MetadataSolutionRelated(tables);
+                deserializedMetadataSolutionRelated.functions = functions;
+                deserializedMetadataSolutionRelated.categories = categories;
+                deserializedMetadataSolutionRelated.queries = queries;
+                deserializedMetadataSolutionRelated.workspaces = workspaces;
+
+                return deserializedMetadataSolutionRelated;
+            }
+            throw new IllegalStateException("Missing required property: tables");
+        });
     }
 }

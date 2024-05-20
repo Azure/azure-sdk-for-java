@@ -45,13 +45,15 @@ public final class ApiOperationInner {
     @JsonProperty(value = "properties")
     private ApiOperationProperties innerProperties;
 
-    /** Creates an instance of ApiOperationInner class. */
+    /**
+     * Creates an instance of ApiOperationInner class.
+     */
     public ApiOperationInner() {
     }
 
     /**
      * Get the display property: The object that represents the operation.
-     *
+     * 
      * @return the display value.
      */
     public ApiOperationDisplay display() {
@@ -60,7 +62,7 @@ public final class ApiOperationInner {
 
     /**
      * Set the display property: The object that represents the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the ApiOperationInner object itself.
      */
@@ -71,7 +73,7 @@ public final class ApiOperationInner {
 
     /**
      * Get the origin property: Origin of the operation.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -80,7 +82,7 @@ public final class ApiOperationInner {
 
     /**
      * Set the origin property: Origin of the operation.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the ApiOperationInner object itself.
      */
@@ -91,7 +93,7 @@ public final class ApiOperationInner {
 
     /**
      * Get the isDataAction property: The flag that indicates whether the operation applies to data plane.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -100,7 +102,7 @@ public final class ApiOperationInner {
 
     /**
      * Set the isDataAction property: The flag that indicates whether the operation applies to data plane.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the ApiOperationInner object itself.
      */
@@ -111,7 +113,7 @@ public final class ApiOperationInner {
 
     /**
      * Get the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -120,7 +122,7 @@ public final class ApiOperationInner {
 
     /**
      * Set the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApiOperationInner object itself.
      */
@@ -131,7 +133,7 @@ public final class ApiOperationInner {
 
     /**
      * Get the innerProperties property: Additional details about an operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApiOperationProperties innerProperties() {
@@ -140,7 +142,7 @@ public final class ApiOperationInner {
 
     /**
      * Get the serviceSpecification property: Specification of the all the metrics provided for a resource type.
-     *
+     * 
      * @return the serviceSpecification value.
      */
     public ApiOperationPropertiesServiceSpecification serviceSpecification() {
@@ -149,7 +151,7 @@ public final class ApiOperationInner {
 
     /**
      * Set the serviceSpecification property: Specification of the all the metrics provided for a resource type.
-     *
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the ApiOperationInner object itself.
      */
@@ -163,7 +165,7 @@ public final class ApiOperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

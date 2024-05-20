@@ -7,4 +7,5 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 
 public interface BulkExecutorDiagnosticsTracker {
     void trackDiagnostics(CosmosDiagnosticsContext ctx);
+    boolean verboseLoggingAfterReEnqueueingRetriesEnabled();
 }

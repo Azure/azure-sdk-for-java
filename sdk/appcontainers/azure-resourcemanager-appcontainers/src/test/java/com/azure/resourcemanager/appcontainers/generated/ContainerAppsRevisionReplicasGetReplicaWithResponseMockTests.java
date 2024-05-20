@@ -30,50 +30,36 @@ public final class ContainerAppsRevisionReplicasGetReplicaWithResponseMockTests 
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"createdTime\":\"2021-04-22T19:07:29Z\",\"runningState\":\"Running\",\"runningStateDetails\":\"nsq\",\"containers\":[{\"name\":\"comlikytwvczc\",\"containerId\":\"k\",\"ready\":false,\"started\":false,\"restartCount\":789888473,\"runningState\":\"Terminated\",\"runningStateDetails\":\"vhb\",\"logStreamEndpoint\":\"nfxtgdd\",\"execEndpoint\":\"th\"}],\"initContainers\":[{\"name\":\"naoyank\",\"containerId\":\"eqswanklty\",\"ready\":false,\"started\":true,\"restartCount\":1174469585,\"runningState\":\"Terminated\",\"runningStateDetails\":\"drlktg\",\"logStreamEndpoint\":\"sggux\",\"execEndpoint\":\"mlwywaeeczg\"}]},\"id\":\"bukklels\",\"name\":\"xblycsxzuj\",\"type\":\"srlsmd\"}";
+        String responseStr
+            = "{\"properties\":{\"createdTime\":\"2021-11-27T21:15:44Z\",\"runningState\":\"NotRunning\",\"runningStateDetails\":\"epdjxqeskoyn\",\"containers\":[{\"name\":\"pckaewse\",\"containerId\":\"eskwxeg\",\"ready\":false,\"started\":false,\"restartCount\":665890978,\"runningState\":\"Terminated\",\"runningStateDetails\":\"tmjtsghp\",\"logStreamEndpoint\":\"bcpzarpzeqacdldt\",\"execEndpoint\":\"pypefcpczshnuq\"},{\"name\":\"aizu\",\"containerId\":\"kh\",\"ready\":false,\"started\":true,\"restartCount\":1048467054,\"runningState\":\"Running\",\"runningStateDetails\":\"vtvegwqiukvzw\",\"logStreamEndpoint\":\"wtthaokgksk\",\"execEndpoint\":\"vb\"},{\"name\":\"hajqfuk\",\"containerId\":\"expgeumilhwu\",\"ready\":false,\"started\":true,\"restartCount\":1014412406,\"runningState\":\"Terminated\",\"runningStateDetails\":\"ofninbdbz\",\"logStreamEndpoint\":\"cw\",\"execEndpoint\":\"rsmpcbbprtuga\"}],\"initContainers\":[{\"name\":\"cyksivmfo\",\"containerId\":\"rt\",\"ready\":true,\"started\":true,\"restartCount\":1811675094,\"runningState\":\"Running\",\"runningStateDetails\":\"cwjjxsgmbawvif\",\"logStreamEndpoint\":\"kecifhocjxwklo\",\"execEndpoint\":\"rvtxvcmufunlc\"},{\"name\":\"xvi\",\"containerId\":\"eyngjg\",\"ready\":false,\"started\":false,\"restartCount\":563018487,\"runningState\":\"Running\",\"runningStateDetails\":\"pmcrdcuelj\",\"logStreamEndpoint\":\"ahxm\",\"execEndpoint\":\"ryarvsxzqb\"}]},\"id\":\"cjkay\",\"name\":\"pth\",\"type\":\"odubtlmjt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ContainerAppsApiManager manager =
-            ContainerAppsApiManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ContainerAppsApiManager manager = ContainerAppsApiManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Replica response =
-            manager
-                .containerAppsRevisionReplicas()
-                .getReplicaWithResponse("rhpw", "gddeimaw", "o", "gkkumuikjcj", com.azure.core.util.Context.NONE)
-                .getValue();
+        Replica response = manager.containerAppsRevisionReplicas().getReplicaWithResponse("cvumepjpbi", "nzpphepife",
+            "leqirccjclykcgxv", "pjlvczuoda", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("comlikytwvczc", response.containers().get(0).name());
-        Assertions.assertEquals("k", response.containers().get(0).containerId());
+        Assertions.assertEquals("pckaewse", response.containers().get(0).name());
+        Assertions.assertEquals("eskwxeg", response.containers().get(0).containerId());
         Assertions.assertEquals(false, response.containers().get(0).ready());
         Assertions.assertEquals(false, response.containers().get(0).started());
-        Assertions.assertEquals(789888473, response.containers().get(0).restartCount());
-        Assertions.assertEquals("naoyank", response.initContainers().get(0).name());
-        Assertions.assertEquals("eqswanklty", response.initContainers().get(0).containerId());
-        Assertions.assertEquals(false, response.initContainers().get(0).ready());
+        Assertions.assertEquals(665890978, response.containers().get(0).restartCount());
+        Assertions.assertEquals("cyksivmfo", response.initContainers().get(0).name());
+        Assertions.assertEquals("rt", response.initContainers().get(0).containerId());
+        Assertions.assertEquals(true, response.initContainers().get(0).ready());
         Assertions.assertEquals(true, response.initContainers().get(0).started());
-        Assertions.assertEquals(1174469585, response.initContainers().get(0).restartCount());
+        Assertions.assertEquals(1811675094, response.initContainers().get(0).restartCount());
     }
 }

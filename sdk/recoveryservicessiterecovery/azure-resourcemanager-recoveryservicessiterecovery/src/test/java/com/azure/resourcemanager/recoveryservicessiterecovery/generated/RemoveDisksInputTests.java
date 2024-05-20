@@ -12,20 +12,15 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.RemoveDisks
 public final class RemoveDisksInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RemoveDisksInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"RemoveDisksProviderSpecificInput\"}}}")
-                .toObject(RemoveDisksInput.class);
+        RemoveDisksInput model = BinaryData.fromString(
+            "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"RemoveDisksProviderSpecificInput\"}}}")
+            .toObject(RemoveDisksInput.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RemoveDisksInput model =
-            new RemoveDisksInput()
-                .withProperties(
-                    new RemoveDisksInputProperties()
-                        .withProviderSpecificDetails(new RemoveDisksProviderSpecificInput()));
+        RemoveDisksInput model = new RemoveDisksInput().withProperties(
+            new RemoveDisksInputProperties().withProviderSpecificDetails(new RemoveDisksProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(RemoveDisksInput.class);
     }
 }

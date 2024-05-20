@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageAzure
 public final class InMageAzureV2SwitchProviderDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageAzureV2SwitchProviderDetails model =
-            BinaryData
-                .fromString(
-                    "{\"targetVaultId\":\"asmcolmugpyvaos\",\"targetResourceId\":\"l\",\"targetFabricId\":\"zxeygzvtye\",\"targetApplianceId\":\"hubnobgu\"}")
-                .toObject(InMageAzureV2SwitchProviderDetails.class);
+        InMageAzureV2SwitchProviderDetails model = BinaryData.fromString(
+            "{\"targetVaultId\":\"asmcolmugpyvaos\",\"targetResourceId\":\"l\",\"targetFabricId\":\"zxeygzvtye\",\"targetApplianceId\":\"hubnobgu\"}")
+            .toObject(InMageAzureV2SwitchProviderDetails.class);
     }
 
     @org.junit.jupiter.api.Test

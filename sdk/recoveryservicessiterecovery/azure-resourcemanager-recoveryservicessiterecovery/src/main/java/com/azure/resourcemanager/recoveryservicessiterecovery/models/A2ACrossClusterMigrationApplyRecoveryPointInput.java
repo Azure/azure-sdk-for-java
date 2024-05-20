@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** ApplyRecoveryPoint input specific to A2ACrossClusterMigration provider. */
+/**
+ * ApplyRecoveryPoint input specific to A2ACrossClusterMigration provider.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2ACrossClusterMigration")
 @Immutable
 public final class A2ACrossClusterMigrationApplyRecoveryPointInput extends ApplyRecoveryPointProviderSpecificInput {
-    /** Creates an instance of A2ACrossClusterMigrationApplyRecoveryPointInput class. */
+    /**
+     * Creates an instance of A2ACrossClusterMigrationApplyRecoveryPointInput class.
+     */
     public A2ACrossClusterMigrationApplyRecoveryPointInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

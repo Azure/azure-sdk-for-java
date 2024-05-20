@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Recovery plan test failover cleanup input. */
+/**
+ * Recovery plan test failover cleanup input.
+ */
 @Fluent
 public final class RecoveryPlanTestFailoverCleanupInput {
     /*
@@ -17,13 +19,15 @@ public final class RecoveryPlanTestFailoverCleanupInput {
     @JsonProperty(value = "properties", required = true)
     private RecoveryPlanTestFailoverCleanupInputProperties properties;
 
-    /** Creates an instance of RecoveryPlanTestFailoverCleanupInput class. */
+    /**
+     * Creates an instance of RecoveryPlanTestFailoverCleanupInput class.
+     */
     public RecoveryPlanTestFailoverCleanupInput() {
     }
 
     /**
      * Get the properties property: The recovery plan test failover cleanup input properties.
-     *
+     * 
      * @return the properties value.
      */
     public RecoveryPlanTestFailoverCleanupInputProperties properties() {
@@ -32,27 +36,25 @@ public final class RecoveryPlanTestFailoverCleanupInput {
 
     /**
      * Set the properties property: The recovery plan test failover cleanup input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RecoveryPlanTestFailoverCleanupInput object itself.
      */
-    public RecoveryPlanTestFailoverCleanupInput withProperties(
-        RecoveryPlanTestFailoverCleanupInputProperties properties) {
+    public RecoveryPlanTestFailoverCleanupInput
+        withProperties(RecoveryPlanTestFailoverCleanupInputProperties properties) {
         this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model RecoveryPlanTestFailoverCleanupInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model RecoveryPlanTestFailoverCleanupInput"));
         } else {
             properties().validate();
         }

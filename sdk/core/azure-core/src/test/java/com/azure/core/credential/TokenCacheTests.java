@@ -36,14 +36,13 @@ public class TokenCacheTests {
             return incrementalRemoteGetTokenAsync(new AtomicInteger(1));
         });
 
-        StepVerifier.create(Flux.range(1, 10).flatMap(ignored -> Mono.just(OffsetDateTime.now()))
+        StepVerifier.create(Flux.range(1, 10)
+            .flatMap(ignored -> Mono.just(OffsetDateTime.now()))
             .parallel(10)
-                // Runs cache.getToken() on 10 different threads
-                .runOn(Schedulers.boundedElastic())
-                .flatMap(start -> cache.getToken())
-                .then())
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+            // Runs cache.getToken() on 10 different threads
+            .runOn(Schedulers.boundedElastic())
+            .flatMap(start -> cache.getToken())
+            .then()).expectComplete().verify(DEFAULT_TIMEOUT);
 
         // Ensure that only one refresh attempt is made.
         assertEquals(1, refreshes.get());
@@ -61,14 +60,13 @@ public class TokenCacheTests {
         // Token acquisition time grows in 1 sec, 2 sec... To make sure only one token acquisition is run
         AccessTokenCache cache = new AccessTokenCache(dummyCred);
 
-        StepVerifier.create(Flux.range(1, 10).flatMap(ignored -> Mono.just(OffsetDateTime.now()))
-                .parallel(10)
-                // Runs cache.getToken() on 10 different threads
-                .runOn(Schedulers.boundedElastic())
-                .flatMap(start -> cache.getToken(new TokenRequestContext(), false))
-                .then())
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(Flux.range(1, 10)
+            .flatMap(ignored -> Mono.just(OffsetDateTime.now()))
+            .parallel(10)
+            // Runs cache.getToken() on 10 different threads
+            .runOn(Schedulers.boundedElastic())
+            .flatMap(start -> cache.getToken(new TokenRequestContext(), false))
+            .then()).expectComplete().verify(DEFAULT_TIMEOUT);
 
         // Ensure that only one refresh attempt is made.
         assertEquals(1, refreshes.get());
@@ -87,15 +85,14 @@ public class TokenCacheTests {
 
         AccessTokenCache cache = new AccessTokenCache(dummyCred);
 
-        StepVerifier.create(Flux.range(1, 5).flatMap(ignored -> Mono.just(OffsetDateTime.now()))
-                .parallel(5)
-                // Runs cache.getToken() on 5 different threads
-                .runOn(Schedulers.boundedElastic())
-                .flatMap(start -> cache.getToken(new TokenRequestContext()
-                    .addScopes("test" + atomicInteger.incrementAndGet() + "/.default"), true))
-                .then())
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(Flux.range(1, 5)
+            .flatMap(ignored -> Mono.just(OffsetDateTime.now()))
+            .parallel(5)
+            // Runs cache.getToken() on 5 different threads
+            .runOn(Schedulers.boundedElastic())
+            .flatMap(start -> cache.getToken(
+                new TokenRequestContext().addScopes("test" + atomicInteger.incrementAndGet() + "/.default"), true))
+            .then()).expectComplete().verify(DEFAULT_TIMEOUT);
 
         // Ensure that refresh attempts are made.
         assertEquals(5, refreshes.get());
@@ -113,17 +110,15 @@ public class TokenCacheTests {
 
         AccessTokenCache cache = new AccessTokenCache(dummyCred);
 
-        IntStream.range(0, 5)
-            .parallel()
-            .flatMap(integer -> {
-                cache.getTokenSync(new TokenRequestContext().addScopes("test" + integer + "/.default"), true);
-                return IntStream.of(integer);
-            }).forEach(ignored -> { });
+        IntStream.range(0, 5).parallel().flatMap(integer -> {
+            cache.getTokenSync(new TokenRequestContext().addScopes("test" + integer + "/.default"), true);
+            return IntStream.of(integer);
+        }).forEach(ignored -> {
+        });
 
         // Ensure that refresh attempts are made.
         assertEquals(5, refreshes.get());
     }
-
 
     @Test
     public void testOnlyOneSyncThreadRefreshesToken() {
@@ -137,12 +132,11 @@ public class TokenCacheTests {
         // Token acquisition time grows in 1 sec, 2 sec... To make sure only one token acquisition is run
         AccessTokenCache cache = new AccessTokenCache(dummyCred);
 
-        IntStream.range(1, 10)
-            .parallel()
-            .flatMap(integer -> {
-                cache.getTokenSync(new TokenRequestContext(), false);
-                return IntStream.of(integer);
-            }).forEach(ignored -> { });
+        IntStream.range(1, 10).parallel().flatMap(integer -> {
+            cache.getTokenSync(new TokenRequestContext(), false);
+            return IntStream.of(integer);
+        }).forEach(ignored -> {
+        });
 
         // Ensure that only one refresh attempt is made.
         assertEquals(1, refreshes.get());

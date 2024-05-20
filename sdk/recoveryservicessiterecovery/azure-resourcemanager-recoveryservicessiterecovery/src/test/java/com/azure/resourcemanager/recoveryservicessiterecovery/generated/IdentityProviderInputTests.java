@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityProviderInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdentityProviderInput model =
-            BinaryData
-                .fromString(
-                    "{\"tenantId\":\"lqxihhrmooiz\",\"applicationId\":\"seypxiutcxapz\",\"objectId\":\"y\",\"audience\":\"petogebjox\",\"aadAuthority\":\"lhvnhlab\"}")
-                .toObject(IdentityProviderInput.class);
+        IdentityProviderInput model = BinaryData.fromString(
+            "{\"tenantId\":\"lqxihhrmooiz\",\"applicationId\":\"seypxiutcxapz\",\"objectId\":\"y\",\"audience\":\"petogebjox\",\"aadAuthority\":\"lhvnhlab\"}")
+            .toObject(IdentityProviderInput.class);
         Assertions.assertEquals("lqxihhrmooiz", model.tenantId());
         Assertions.assertEquals("seypxiutcxapz", model.applicationId());
         Assertions.assertEquals("y", model.objectId());
@@ -25,13 +23,9 @@ public final class IdentityProviderInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityProviderInput model =
-            new IdentityProviderInput()
-                .withTenantId("lqxihhrmooiz")
-                .withApplicationId("seypxiutcxapz")
-                .withObjectId("y")
-                .withAudience("petogebjox")
-                .withAadAuthority("lhvnhlab");
+        IdentityProviderInput model
+            = new IdentityProviderInput().withTenantId("lqxihhrmooiz").withApplicationId("seypxiutcxapz")
+                .withObjectId("y").withAudience("petogebjox").withAadAuthority("lhvnhlab");
         model = BinaryData.fromObject(model).toObject(IdentityProviderInput.class);
         Assertions.assertEquals("lqxihhrmooiz", model.tenantId());
         Assertions.assertEquals("seypxiutcxapz", model.applicationId());

@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Scope for this rule. The scope and filter determine which clients match the rule. */
+/**
+ * Scope for this rule. The scope and filter determine which clients match the rule.
+ */
 public final class NfsAccessRuleScope extends ExpandableStringEnum<NfsAccessRuleScope> {
-    /** Static value default for NfsAccessRuleScope. */
+    /**
+     * Static value default for NfsAccessRuleScope.
+     */
     public static final NfsAccessRuleScope DEFAULT = fromString("default");
 
-    /** Static value network for NfsAccessRuleScope. */
+    /**
+     * Static value network for NfsAccessRuleScope.
+     */
     public static final NfsAccessRuleScope NETWORK = fromString("network");
 
-    /** Static value host for NfsAccessRuleScope. */
+    /**
+     * Static value host for NfsAccessRuleScope.
+     */
     public static final NfsAccessRuleScope HOST = fromString("host");
 
     /**
      * Creates a new instance of NfsAccessRuleScope value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class NfsAccessRuleScope extends ExpandableStringEnum<NfsAccessRule
 
     /**
      * Creates or finds a NfsAccessRuleScope from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NfsAccessRuleScope.
      */
@@ -41,7 +49,7 @@ public final class NfsAccessRuleScope extends ExpandableStringEnum<NfsAccessRule
 
     /**
      * Gets known NfsAccessRuleScope values.
-     *
+     * 
      * @return known NfsAccessRuleScope values.
      */
     public static Collection<NfsAccessRuleScope> values() {

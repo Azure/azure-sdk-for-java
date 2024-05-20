@@ -14,25 +14,25 @@ public final class ReplicationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationStatusInner model = BinaryData.fromString(
-            "{\"healthy\":true,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Broken\",\"totalProgress\":\"dreqnovvqf\",\"errorMessage\":\"ljxywsu\"}")
+            "{\"healthy\":true,\"relationshipStatus\":\"Failed\",\"mirrorState\":\"Broken\",\"totalProgress\":\"plvwiwubmwmbes\",\"errorMessage\":\"nkww\"}")
             .toObject(ReplicationStatusInner.class);
         Assertions.assertEquals(true, model.healthy());
-        Assertions.assertEquals(RelationshipStatus.TRANSFERRING, model.relationshipStatus());
+        Assertions.assertEquals(RelationshipStatus.FAILED, model.relationshipStatus());
         Assertions.assertEquals(MirrorState.BROKEN, model.mirrorState());
-        Assertions.assertEquals("dreqnovvqf", model.totalProgress());
-        Assertions.assertEquals("ljxywsu", model.errorMessage());
+        Assertions.assertEquals("plvwiwubmwmbes", model.totalProgress());
+        Assertions.assertEquals("nkww", model.errorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationStatusInner model
-            = new ReplicationStatusInner().withHealthy(true).withRelationshipStatus(RelationshipStatus.TRANSFERRING)
-                .withMirrorState(MirrorState.BROKEN).withTotalProgress("dreqnovvqf").withErrorMessage("ljxywsu");
+            = new ReplicationStatusInner().withHealthy(true).withRelationshipStatus(RelationshipStatus.FAILED)
+                .withMirrorState(MirrorState.BROKEN).withTotalProgress("plvwiwubmwmbes").withErrorMessage("nkww");
         model = BinaryData.fromObject(model).toObject(ReplicationStatusInner.class);
         Assertions.assertEquals(true, model.healthy());
-        Assertions.assertEquals(RelationshipStatus.TRANSFERRING, model.relationshipStatus());
+        Assertions.assertEquals(RelationshipStatus.FAILED, model.relationshipStatus());
         Assertions.assertEquals(MirrorState.BROKEN, model.mirrorState());
-        Assertions.assertEquals("dreqnovvqf", model.totalProgress());
-        Assertions.assertEquals("ljxywsu", model.errorMessage());
+        Assertions.assertEquals("plvwiwubmwmbes", model.totalProgress());
+        Assertions.assertEquals("nkww", model.errorMessage());
     }
 }

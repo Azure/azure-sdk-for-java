@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ChaosExperimentActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChaosExperimentAction model =
-            BinaryData
-                .fromString("{\"type\":\"ChaosExperimentAction\",\"name\":\"nrjawgqwg\"}")
+        ChaosExperimentAction model
+            = BinaryData.fromString("{\"type\":\"ChaosExperimentAction\",\"name\":\"nrjawgqwg\"}")
                 .toObject(ChaosExperimentAction.class);
         Assertions.assertEquals("nrjawgqwg", model.name());
     }

@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VmwareCbtPolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VmwareCbtPolicyDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"VMwareCbt\",\"recoveryPointHistoryInMinutes\":565605624,\"appConsistentFrequencyInMinutes\":1535089718,\"crashConsistentFrequencyInMinutes\":1544555304}")
-                .toObject(VmwareCbtPolicyDetails.class);
+        VmwareCbtPolicyDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"VMwareCbt\",\"recoveryPointHistoryInMinutes\":565605624,\"appConsistentFrequencyInMinutes\":1535089718,\"crashConsistentFrequencyInMinutes\":1544555304}")
+            .toObject(VmwareCbtPolicyDetails.class);
         Assertions.assertEquals(565605624, model.recoveryPointHistoryInMinutes());
         Assertions.assertEquals(1535089718, model.appConsistentFrequencyInMinutes());
         Assertions.assertEquals(1544555304, model.crashConsistentFrequencyInMinutes());
@@ -23,11 +21,8 @@ public final class VmwareCbtPolicyDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmwareCbtPolicyDetails model =
-            new VmwareCbtPolicyDetails()
-                .withRecoveryPointHistoryInMinutes(565605624)
-                .withAppConsistentFrequencyInMinutes(1535089718)
-                .withCrashConsistentFrequencyInMinutes(1544555304);
+        VmwareCbtPolicyDetails model = new VmwareCbtPolicyDetails().withRecoveryPointHistoryInMinutes(565605624)
+            .withAppConsistentFrequencyInMinutes(1535089718).withCrashConsistentFrequencyInMinutes(1544555304);
         model = BinaryData.fromObject(model).toObject(VmwareCbtPolicyDetails.class);
         Assertions.assertEquals(565605624, model.recoveryPointHistoryInMinutes());
         Assertions.assertEquals(1535089718, model.appConsistentFrequencyInMinutes());

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** This class represents the details for a test failover job. */
+/**
+ * This class represents the details for a test failover job.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("TestFailoverJobDetails")
 @Fluent
@@ -52,13 +54,15 @@ public final class TestFailoverJobDetails extends JobDetails {
     @JsonProperty(value = "protectedItemDetails")
     private List<FailoverReplicationProtectedItemDetails> protectedItemDetails;
 
-    /** Creates an instance of TestFailoverJobDetails class. */
+    /**
+     * Creates an instance of TestFailoverJobDetails class.
+     */
     public TestFailoverJobDetails() {
     }
 
     /**
      * Get the testFailoverStatus property: The test failover status.
-     *
+     * 
      * @return the testFailoverStatus value.
      */
     public String testFailoverStatus() {
@@ -67,7 +71,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Set the testFailoverStatus property: The test failover status.
-     *
+     * 
      * @param testFailoverStatus the testFailoverStatus value to set.
      * @return the TestFailoverJobDetails object itself.
      */
@@ -78,7 +82,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Get the comments property: The test failover comments.
-     *
+     * 
      * @return the comments value.
      */
     public String comments() {
@@ -87,7 +91,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Set the comments property: The test failover comments.
-     *
+     * 
      * @param comments the comments value to set.
      * @return the TestFailoverJobDetails object itself.
      */
@@ -98,7 +102,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Get the networkName property: The test network name.
-     *
+     * 
      * @return the networkName value.
      */
     public String networkName() {
@@ -107,7 +111,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Set the networkName property: The test network name.
-     *
+     * 
      * @param networkName the networkName value to set.
      * @return the TestFailoverJobDetails object itself.
      */
@@ -118,7 +122,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Get the networkFriendlyName property: The test network friendly name.
-     *
+     * 
      * @return the networkFriendlyName value.
      */
     public String networkFriendlyName() {
@@ -127,7 +131,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Set the networkFriendlyName property: The test network friendly name.
-     *
+     * 
      * @param networkFriendlyName the networkFriendlyName value to set.
      * @return the TestFailoverJobDetails object itself.
      */
@@ -138,7 +142,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Get the networkType property: The test network type (see TestFailoverInput enum for possible values).
-     *
+     * 
      * @return the networkType value.
      */
     public String networkType() {
@@ -147,7 +151,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Set the networkType property: The test network type (see TestFailoverInput enum for possible values).
-     *
+     * 
      * @param networkType the networkType value to set.
      * @return the TestFailoverJobDetails object itself.
      */
@@ -158,7 +162,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Get the protectedItemDetails property: The test VM details.
-     *
+     * 
      * @return the protectedItemDetails value.
      */
     public List<FailoverReplicationProtectedItemDetails> protectedItemDetails() {
@@ -167,17 +171,19 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Set the protectedItemDetails property: The test VM details.
-     *
+     * 
      * @param protectedItemDetails the protectedItemDetails value to set.
      * @return the TestFailoverJobDetails object itself.
      */
-    public TestFailoverJobDetails withProtectedItemDetails(
-        List<FailoverReplicationProtectedItemDetails> protectedItemDetails) {
+    public TestFailoverJobDetails
+        withProtectedItemDetails(List<FailoverReplicationProtectedItemDetails> protectedItemDetails) {
         this.protectedItemDetails = protectedItemDetails;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TestFailoverJobDetails withAffectedObjectDetails(Map<String, String> affectedObjectDetails) {
         super.withAffectedObjectDetails(affectedObjectDetails);
@@ -186,7 +192,7 @@ public final class TestFailoverJobDetails extends JobDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

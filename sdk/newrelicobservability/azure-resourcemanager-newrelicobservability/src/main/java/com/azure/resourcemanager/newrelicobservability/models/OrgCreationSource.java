@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Source of Org creation. */
+/**
+ * Source of Org creation.
+ */
 public final class OrgCreationSource extends ExpandableStringEnum<OrgCreationSource> {
-    /** Static value LIFTR for OrgCreationSource. */
+    /**
+     * Static value LIFTR for OrgCreationSource.
+     */
     public static final OrgCreationSource LIFTR = fromString("LIFTR");
 
-    /** Static value NEWRELIC for OrgCreationSource. */
+    /**
+     * Static value NEWRELIC for OrgCreationSource.
+     */
     public static final OrgCreationSource NEWRELIC = fromString("NEWRELIC");
 
     /**
      * Creates a new instance of OrgCreationSource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class OrgCreationSource extends ExpandableStringEnum<OrgCreationSou
 
     /**
      * Creates or finds a OrgCreationSource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OrgCreationSource.
      */
@@ -38,7 +44,7 @@ public final class OrgCreationSource extends ExpandableStringEnum<OrgCreationSou
 
     /**
      * Gets known OrgCreationSource values.
-     *
+     * 
      * @return known OrgCreationSource values.
      */
     public static Collection<OrgCreationSource> values() {

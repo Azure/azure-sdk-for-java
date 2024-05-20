@@ -11,16 +11,19 @@ public final class OracleServiceCloudSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OracleServiceCloudSource model = BinaryData.fromString(
-            "{\"type\":\"OracleServiceCloudSource\",\"query\":\"datadaeiepvjrmk\",\"queryTimeout\":\"dataxymkb\",\"additionalColumns\":\"datauawokrhhj\",\"sourceRetryCount\":\"datahrmuwvs\",\"sourceRetryWait\":\"dataru\",\"maxConcurrentConnections\":\"dataidtxmbnmjimggz\",\"disableMetricsCollection\":\"datagpldrnbjh\",\"\":{\"kvxerbddrtngdct\":\"datafbmsbetzu\",\"gvheqzlqevas\":\"datajzgzaeuu\"}}")
+            "{\"type\":\"bnbluutmfimlozlf\",\"query\":\"datak\",\"queryTimeout\":\"dataxzukhvioccszd\",\"additionalColumns\":\"dataafuhccnqf\",\"sourceRetryCount\":\"datajirfyetljrdcg\",\"sourceRetryWait\":\"datarmx\",\"maxConcurrentConnections\":\"datawcqhaonmfnf\",\"disableMetricsCollection\":\"datawiocuhas\",\"\":{\"dpqkfxdqm\":\"datalhtukheimwhotjc\"}}")
             .toObject(OracleServiceCloudSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OracleServiceCloudSource model
-            = new OracleServiceCloudSource().withSourceRetryCount("datahrmuwvs").withSourceRetryWait("dataru")
-                .withMaxConcurrentConnections("dataidtxmbnmjimggz").withDisableMetricsCollection("datagpldrnbjh")
-                .withQueryTimeout("dataxymkb").withAdditionalColumns("datauawokrhhj").withQuery("datadaeiepvjrmk");
+        OracleServiceCloudSource model = new OracleServiceCloudSource().withSourceRetryCount("datajirfyetljrdcg")
+            .withSourceRetryWait("datarmx")
+            .withMaxConcurrentConnections("datawcqhaonmfnf")
+            .withDisableMetricsCollection("datawiocuhas")
+            .withQueryTimeout("dataxzukhvioccszd")
+            .withAdditionalColumns("dataafuhccnqf")
+            .withQuery("datak");
         model = BinaryData.fromObject(model).toObject(OracleServiceCloudSource.class);
     }
 }

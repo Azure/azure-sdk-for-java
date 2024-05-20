@@ -32,42 +32,31 @@ public final class AccountsListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"dashboardUri\":\"bciqfouflm\",\"regionalAffinity\":\"Enabled\",\"scalableExecution\":\"Disabled\",\"reporting\":\"Enabled\",\"provisioningState\":\"Canceled\"},\"location\":\"lougpbkw\",\"tags\":{\"umkdosvqwhbmd\":\"tduqktapspwgcuer\",\"bhtqqrolfpfpsa\":\"bbjfddgmbmbexp\",\"jgzjaoyfhrtx\":\"gbquxigj\",\"fqawrlyxw\":\"lnerkujysvleju\"},\"id\":\"kcprbnw\",\"name\":\"xgjvtbv\",\"type\":\"ysszdnrujqguh\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"dashboardUri\":\"bciqfouflm\",\"regionalAffinity\":\"Enabled\",\"scalableExecution\":\"Disabled\",\"reporting\":\"Enabled\",\"provisioningState\":\"Canceled\"},\"location\":\"lougpbkw\",\"tags\":{\"umkdosvqwhbmd\":\"tduqktapspwgcuer\",\"bhtqqrolfpfpsa\":\"bbjfddgmbmbexp\",\"jgzjaoyfhrtx\":\"gbquxigj\",\"fqawrlyxw\":\"lnerkujysvleju\"},\"id\":\"kcprbnw\",\"name\":\"xgjvtbv\",\"type\":\"ysszdnrujqguh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PlaywrightTestingManager manager =
-            PlaywrightTestingManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PlaywrightTestingManager manager = PlaywrightTestingManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Account> response =
-            manager.accounts().listByResourceGroup("qsrxybzqqed", com.azure.core.util.Context.NONE);
+        PagedIterable<Account> response
+            = manager.accounts().listByResourceGroup("qsrxybzqqed", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("lougpbkw", response.iterator().next().location());
         Assertions.assertEquals("tduqktapspwgcuer", response.iterator().next().tags().get("umkdosvqwhbmd"));
-        Assertions.assertEquals(EnablementStatus.ENABLED, response.iterator().next().regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.DISABLED, response.iterator().next().scalableExecution());
-        Assertions.assertEquals(EnablementStatus.ENABLED, response.iterator().next().reporting());
+        Assertions.assertEquals(EnablementStatus.ENABLED, response.iterator().next().properties().regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.DISABLED, response.iterator().next().properties().scalableExecution());
+        Assertions.assertEquals(EnablementStatus.ENABLED, response.iterator().next().properties().reporting());
     }
 }

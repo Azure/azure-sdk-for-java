@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Alert Simulator request body. */
+/**
+ * Alert Simulator request body.
+ */
 @Fluent
 public final class AlertSimulatorRequestBody {
     /*
@@ -16,13 +18,15 @@ public final class AlertSimulatorRequestBody {
     @JsonProperty(value = "properties")
     private AlertSimulatorRequestProperties properties;
 
-    /** Creates an instance of AlertSimulatorRequestBody class. */
+    /**
+     * Creates an instance of AlertSimulatorRequestBody class.
+     */
     public AlertSimulatorRequestBody() {
     }
 
     /**
      * Get the properties property: Alert Simulator request body data.
-     *
+     * 
      * @return the properties value.
      */
     public AlertSimulatorRequestProperties properties() {
@@ -31,7 +35,7 @@ public final class AlertSimulatorRequestBody {
 
     /**
      * Set the properties property: Alert Simulator request body data.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AlertSimulatorRequestBody object itself.
      */
@@ -42,7 +46,7 @@ public final class AlertSimulatorRequestBody {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

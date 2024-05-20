@@ -11,7 +11,9 @@ import com.azure.resourcemanager.storagecache.models.Restriction;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A resource SKU. */
+/**
+ * A resource SKU.
+ */
 @Fluent
 public final class ResourceSkuInner {
     /*
@@ -27,8 +29,7 @@ public final class ResourceSkuInner {
     private List<ResourceSkuCapabilities> capabilities;
 
     /*
-     * The set of locations where the SKU is available. This is the supported and registered Azure Geo Regions (e.g.,
-     * West US, East US, Southeast Asia, etc.).
+     * The set of locations where the SKU is available. This is the supported and registered Azure Geo Regions (e.g., West US, East US, Southeast Asia, etc.).
      */
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> locations;
@@ -51,13 +52,15 @@ public final class ResourceSkuInner {
     @JsonProperty(value = "restrictions")
     private List<Restriction> restrictions;
 
-    /** Creates an instance of ResourceSkuInner class. */
+    /**
+     * Creates an instance of ResourceSkuInner class.
+     */
     public ResourceSkuInner() {
     }
 
     /**
      * Get the resourceType property: The type of resource the SKU applies to.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -66,7 +69,7 @@ public final class ResourceSkuInner {
 
     /**
      * Get the capabilities property: A list of capabilities of this SKU, such as throughput or ops/sec.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<ResourceSkuCapabilities> capabilities() {
@@ -75,7 +78,7 @@ public final class ResourceSkuInner {
 
     /**
      * Set the capabilities property: A list of capabilities of this SKU, such as throughput or ops/sec.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the ResourceSkuInner object itself.
      */
@@ -87,7 +90,7 @@ public final class ResourceSkuInner {
     /**
      * Get the locations property: The set of locations where the SKU is available. This is the supported and registered
      * Azure Geo Regions (e.g., West US, East US, Southeast Asia, etc.).
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -96,7 +99,7 @@ public final class ResourceSkuInner {
 
     /**
      * Get the locationInfo property: The set of locations where the SKU is available.
-     *
+     * 
      * @return the locationInfo value.
      */
     public List<ResourceSkuLocationInfo> locationInfo() {
@@ -105,7 +108,7 @@ public final class ResourceSkuInner {
 
     /**
      * Set the locationInfo property: The set of locations where the SKU is available.
-     *
+     * 
      * @param locationInfo the locationInfo value to set.
      * @return the ResourceSkuInner object itself.
      */
@@ -116,7 +119,7 @@ public final class ResourceSkuInner {
 
     /**
      * Get the name property: The name of this SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -125,7 +128,7 @@ public final class ResourceSkuInner {
 
     /**
      * Set the name property: The name of this SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceSkuInner object itself.
      */
@@ -137,7 +140,7 @@ public final class ResourceSkuInner {
     /**
      * Get the restrictions property: The restrictions preventing this SKU from being used. This is empty if there are
      * no restrictions.
-     *
+     * 
      * @return the restrictions value.
      */
     public List<Restriction> restrictions() {
@@ -147,7 +150,7 @@ public final class ResourceSkuInner {
     /**
      * Set the restrictions property: The restrictions preventing this SKU from being used. This is empty if there are
      * no restrictions.
-     *
+     * 
      * @param restrictions the restrictions value to set.
      * @return the ResourceSkuInner object itself.
      */
@@ -158,7 +161,7 @@ public final class ResourceSkuInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

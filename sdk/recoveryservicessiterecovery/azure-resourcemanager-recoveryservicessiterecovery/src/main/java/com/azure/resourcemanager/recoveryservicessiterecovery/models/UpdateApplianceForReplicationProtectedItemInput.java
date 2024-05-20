@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Update appliance for replication protected item input. */
+/**
+ * Update appliance for replication protected item input.
+ */
 @Fluent
 public final class UpdateApplianceForReplicationProtectedItemInput {
     /*
@@ -17,13 +19,15 @@ public final class UpdateApplianceForReplicationProtectedItemInput {
     @JsonProperty(value = "properties", required = true)
     private UpdateApplianceForReplicationProtectedItemInputProperties properties;
 
-    /** Creates an instance of UpdateApplianceForReplicationProtectedItemInput class. */
+    /**
+     * Creates an instance of UpdateApplianceForReplicationProtectedItemInput class.
+     */
     public UpdateApplianceForReplicationProtectedItemInput() {
     }
 
     /**
      * Get the properties property: Update appliance replication protected item properties.
-     *
+     * 
      * @return the properties value.
      */
     public UpdateApplianceForReplicationProtectedItemInputProperties properties() {
@@ -32,28 +36,25 @@ public final class UpdateApplianceForReplicationProtectedItemInput {
 
     /**
      * Set the properties property: Update appliance replication protected item properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UpdateApplianceForReplicationProtectedItemInput object itself.
      */
-    public UpdateApplianceForReplicationProtectedItemInput withProperties(
-        UpdateApplianceForReplicationProtectedItemInputProperties properties) {
+    public UpdateApplianceForReplicationProtectedItemInput
+        withProperties(UpdateApplianceForReplicationProtectedItemInputProperties properties) {
         this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model"
-                            + " UpdateApplianceForReplicationProtectedItemInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model UpdateApplianceForReplicationProtectedItemInput"));
         } else {
             properties().validate();
         }

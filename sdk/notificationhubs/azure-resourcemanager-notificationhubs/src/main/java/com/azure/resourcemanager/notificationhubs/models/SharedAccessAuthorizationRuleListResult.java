@@ -4,34 +4,37 @@
 
 package com.azure.resourcemanager.notificationhubs.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of the List Namespace operation. */
-@Fluent
+/**
+ * The response of the List Namespace operation.
+ */
+@Immutable
 public final class SharedAccessAuthorizationRuleListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedAccessAuthorizationRuleListResult.class);
-
     /*
-     * Result of the List AuthorizationRules operation.
+     * Gets or sets result of the List AuthorizationRules operation.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SharedAccessAuthorizationRuleResourceInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of AuthorizationRules
+     * Gets or sets link to the next set of results.
      */
-    @JsonProperty(value = "nextLink")
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
-     * Get the value property: Result of the List AuthorizationRules operation.
-     *
+     * Creates an instance of SharedAccessAuthorizationRuleListResult class.
+     */
+    public SharedAccessAuthorizationRuleListResult() {
+    }
+
+    /**
+     * Get the value property: Gets or sets result of the List AuthorizationRules operation.
+     * 
      * @return the value value.
      */
     public List<SharedAccessAuthorizationRuleResourceInner> value() {
@@ -39,20 +42,8 @@ public final class SharedAccessAuthorizationRuleListResult {
     }
 
     /**
-     * Set the value property: Result of the List AuthorizationRules operation.
-     *
-     * @param value the value value to set.
-     * @return the SharedAccessAuthorizationRuleListResult object itself.
-     */
-    public SharedAccessAuthorizationRuleListResult withValue(List<SharedAccessAuthorizationRuleResourceInner> value) {
-        this.value = value;
-        return this;
-    }
-
-    /**
-     * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
-     * AuthorizationRules.
-     *
+     * Get the nextLink property: Gets or sets link to the next set of results.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,20 +51,8 @@ public final class SharedAccessAuthorizationRuleListResult {
     }
 
     /**
-     * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
-     * AuthorizationRules.
-     *
-     * @param nextLink the nextLink value to set.
-     * @return the SharedAccessAuthorizationRuleListResult object itself.
-     */
-    public SharedAccessAuthorizationRuleListResult withNextLink(String nextLink) {
-        this.nextLink = nextLink;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

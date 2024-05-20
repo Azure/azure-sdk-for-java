@@ -6,14 +6,28 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The Defender for Databases AWS offering. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
+/**
+ * The Defender for Databases AWS offering.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "offeringType",
+    defaultImpl = DefenderFoDatabasesAwsOffering.class,
+    visible = true)
 @JsonTypeName("DefenderForDatabasesAws")
 @Fluent
 public final class DefenderFoDatabasesAwsOffering extends CloudOffering {
+    /*
+     * The type of the security offering.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "offeringType", required = true)
+    private OfferingType offeringType = OfferingType.DEFENDER_FOR_DATABASES_AWS;
+
     /*
      * The ARC autoprovisioning configuration
      */
@@ -32,13 +46,25 @@ public final class DefenderFoDatabasesAwsOffering extends CloudOffering {
     @JsonProperty(value = "databasesDspm")
     private DefenderFoDatabasesAwsOfferingDatabasesDspm databasesDspm;
 
-    /** Creates an instance of DefenderFoDatabasesAwsOffering class. */
+    /**
+     * Creates an instance of DefenderFoDatabasesAwsOffering class.
+     */
     public DefenderFoDatabasesAwsOffering() {
     }
 
     /**
+     * Get the offeringType property: The type of the security offering.
+     * 
+     * @return the offeringType value.
+     */
+    @Override
+    public OfferingType offeringType() {
+        return this.offeringType;
+    }
+
+    /**
      * Get the arcAutoProvisioning property: The ARC autoprovisioning configuration.
-     *
+     * 
      * @return the arcAutoProvisioning value.
      */
     public DefenderFoDatabasesAwsOfferingArcAutoProvisioning arcAutoProvisioning() {
@@ -47,19 +73,19 @@ public final class DefenderFoDatabasesAwsOffering extends CloudOffering {
 
     /**
      * Set the arcAutoProvisioning property: The ARC autoprovisioning configuration.
-     *
+     * 
      * @param arcAutoProvisioning the arcAutoProvisioning value to set.
      * @return the DefenderFoDatabasesAwsOffering object itself.
      */
-    public DefenderFoDatabasesAwsOffering withArcAutoProvisioning(
-        DefenderFoDatabasesAwsOfferingArcAutoProvisioning arcAutoProvisioning) {
+    public DefenderFoDatabasesAwsOffering
+        withArcAutoProvisioning(DefenderFoDatabasesAwsOfferingArcAutoProvisioning arcAutoProvisioning) {
         this.arcAutoProvisioning = arcAutoProvisioning;
         return this;
     }
 
     /**
      * Get the rds property: The RDS configuration.
-     *
+     * 
      * @return the rds value.
      */
     public DefenderFoDatabasesAwsOfferingRds rds() {
@@ -68,7 +94,7 @@ public final class DefenderFoDatabasesAwsOffering extends CloudOffering {
 
     /**
      * Set the rds property: The RDS configuration.
-     *
+     * 
      * @param rds the rds value to set.
      * @return the DefenderFoDatabasesAwsOffering object itself.
      */
@@ -79,7 +105,7 @@ public final class DefenderFoDatabasesAwsOffering extends CloudOffering {
 
     /**
      * Get the databasesDspm property: The databases data security posture management (DSPM) configuration.
-     *
+     * 
      * @return the databasesDspm value.
      */
     public DefenderFoDatabasesAwsOfferingDatabasesDspm databasesDspm() {
@@ -88,7 +114,7 @@ public final class DefenderFoDatabasesAwsOffering extends CloudOffering {
 
     /**
      * Set the databasesDspm property: The databases data security posture management (DSPM) configuration.
-     *
+     * 
      * @param databasesDspm the databasesDspm value to set.
      * @return the DefenderFoDatabasesAwsOffering object itself.
      */
@@ -99,7 +125,7 @@ public final class DefenderFoDatabasesAwsOffering extends CloudOffering {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -95,7 +95,7 @@ public class SearchServiceCustomizations extends Customization {
         customizeSearchIndexerDataSourceConnection(publicCustomization.getClass("SearchIndexerDataSourceConnection"));
         customizeSemanticPrioritizedFields(publicCustomization.getClass("SemanticPrioritizedFields"));
         customizeVectorSearch(publicCustomization.getClass("VectorSearch"));
-        customizeSearchError(implCustomization.getClass("SearchError"));
+        // customizeSearchError(implCustomization.getClass("SearchError"));
 
         bulkRemoveFromJsonMethods(publicCustomization.getClass("SearchIndexerKnowledgeStoreProjectionSelector"),
             publicCustomization.getClass("SearchIndexerKnowledgeStoreBlobProjectionSelector"));
@@ -364,49 +364,62 @@ public class SearchServiceCustomizations extends Customization {
     private void customizeSearchResourceEncryptionKey(ClassCustomization keyCustomization,
         ClassCustomization credentialCustomization) {
         keyCustomization.removeMethod("getAccessCredentials");
+        customizeAst(keyCustomization, clazz -> {
+            clazz.getMethodsByName("setAccessCredentials").get(0).remove();
 
-        String setterReturnJavadoc = keyCustomization.getMethod("setAccessCredentials").getJavadoc().getReturn();
-        keyCustomization.removeMethod("setAccessCredentials");
+            clazz.addMethod("getApplicationId", Modifier.Keyword.PUBLIC)
+                .setType(String.class)
+                .setBody(StaticJavaParser.parseBlock("{\n" +
+                    "        return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationId();\n" +
+                    "    }"))
+                .setJavadocComment(StaticJavaParser.parseJavadoc("* Get the applicationId property: An AAD Application ID that was granted the required access permissions to the\n" +
+                    "     * Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused\n" +
+                    "     * with the Object ID for your AAD Application.\n" +
+                    "     * \n" +
+                    "     * @return the applicationId value."));
 
-        keyCustomization.addMethod(joinWithNewline(
-                "public String getApplicationId() {",
-                "    return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationId();",
-                "}"))
-            .getJavadoc()
-            .replace(credentialCustomization.getMethod("getApplicationId").getJavadoc());
+            clazz.addMethod("setApplicationId", Modifier.Keyword.PUBLIC)
+                .setType(keyCustomization.getClassName())
+                .addParameter(String.class, "applicationId")
+                .setBody(StaticJavaParser.parseBlock("{\n" +
+                    "        if (this.accessCredentials == null) {\n" +
+                    "            this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();\n" +
+                    "        }\n" +
+                    "        this.accessCredentials.setApplicationId(applicationId);\n" +
+                    "        return this;\n" +
+                    "    }"))
+                .setJavadocComment(StaticJavaParser.parseJavadoc("* Set the applicationId property: An AAD Application ID that was granted the required access permissions to the\n" +
+                    "     * Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused\n" +
+                    "     * with the Object ID for your AAD Application.\n" +
+                    "     * \n" +
+                    "     * @param applicationId the applicationId value to set.\n" +
+                    "     * @return the SearchResourceEncryptionKey object itself."));
 
-        keyCustomization.addMethod(joinWithNewline(
-                "public SearchResourceEncryptionKey setApplicationId(String applicationId) {",
-                "    if (this.accessCredentials == null) {",
-                "        this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();",
-                "    }",
-                "",
-                "    this.accessCredentials.setApplicationId(applicationId);",
-                "    return this;",
-                "}"))
-            .getJavadoc()
-            .replace(credentialCustomization.getMethod("setApplicationId").getJavadoc())
-            .setReturn(setterReturnJavadoc);
+            clazz.addMethod("getApplicationSecret", Modifier.Keyword.PUBLIC)
+                .setType(String.class)
+                .setBody(StaticJavaParser.parseBlock("{\n" +
+                    "        return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationSecret();\n" +
+                    "    }"))
+                .setJavadocComment(StaticJavaParser.parseJavadoc("* Get the applicationSecret property: The authentication key of the specified AAD application.\n" +
+                    "     * \n" +
+                    "     * @return the applicationSecret value."));
 
-        keyCustomization.addMethod(joinWithNewline(
-                "public String getApplicationSecret() {",
-                "    return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationSecret();",
-                "}"))
-            .getJavadoc()
-            .replace(credentialCustomization.getMethod("getApplicationSecret").getJavadoc());
 
-        keyCustomization.addMethod(joinWithNewline(
-                "public SearchResourceEncryptionKey setApplicationSecret(String applicationSecret) {",
-                "    if (this.accessCredentials == null) {",
-                "        this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();",
-                "    }",
-                "",
-                "    this.accessCredentials.setApplicationSecret(applicationSecret);",
-                "    return this;",
-                "}"))
-            .getJavadoc()
-            .replace(credentialCustomization.getMethod("setApplicationSecret").getJavadoc())
-            .setReturn(setterReturnJavadoc);
+            clazz.addMethod("setApplicationSecret", Modifier.Keyword.PUBLIC)
+                .setType(keyCustomization.getClassName())
+                .addParameter(String.class, "applicationSecret")
+                .setBody(StaticJavaParser.parseBlock("{\n" +
+                    "        if (this.accessCredentials == null) {\n" +
+                    "            this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();\n" +
+                    "        }\n" +
+                    "        this.accessCredentials.setApplicationSecret(applicationSecret);\n" +
+                    "        return this;\n" +
+                    "    }"))
+                .setJavadocComment(StaticJavaParser.parseJavadoc("* Set the applicationSecret property: The authentication key of the specified AAD application.\n" +
+                    "     * \n" +
+                    "     * @param applicationSecret the applicationSecret value to set.\n" +
+                    "     * @return the SearchResourceEncryptionKey object itself."));
+        });
     }
 
     private void customizeSearchSuggester(ClassCustomization classCustomization) {

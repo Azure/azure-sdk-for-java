@@ -5,15 +5,18 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of HealthReports. */
+/**
+ * Resource collection API of HealthReports.
+ */
 public interface HealthReports {
     /**
      * Get a list of all health reports inside a scope. Valid scopes are: subscription (format:
      * 'subscriptions/{subscriptionId}'), or security connector (format:
      * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
-     *
+     * 
      * @param scope The scope at which the operation is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -26,7 +29,7 @@ public interface HealthReports {
      * Get a list of all health reports inside a scope. Valid scopes are: subscription (format:
      * 'subscriptions/{subscriptionId}'), or security connector (format:
      * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
-     *
+     * 
      * @param scope The scope at which the operation is performed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,4 +38,29 @@ public interface HealthReports {
      * @return a list of all health reports inside a scope as paginated response with {@link PagedIterable}.
      */
     PagedIterable<HealthReport> list(String scope, Context context);
+
+    /**
+     * Get health report of resource.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param healthReportName The health report Key - Unique key for the health report type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health report of resource along with {@link Response}.
+     */
+    Response<HealthReport> getWithResponse(String resourceId, String healthReportName, Context context);
+
+    /**
+     * Get health report of resource.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param healthReportName The health report Key - Unique key for the health report type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health report of resource.
+     */
+    HealthReport get(String resourceId, String healthReportName);
 }

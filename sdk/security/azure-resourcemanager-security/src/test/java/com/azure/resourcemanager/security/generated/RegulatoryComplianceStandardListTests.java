@@ -14,25 +14,20 @@ import org.junit.jupiter.api.Assertions;
 public final class RegulatoryComplianceStandardListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegulatoryComplianceStandardList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"state\":\"Skipped\",\"passedControls\":1997907611,\"failedControls\":2111279751,\"skippedControls\":1073194543,\"unsupportedControls\":387671304},\"id\":\"p\",\"name\":\"jxbkzbzkdvn\",\"type\":\"jabudurgkakmo\"},{\"properties\":{\"state\":\"Failed\",\"passedControls\":893447379,\"failedControls\":873562090,\"skippedControls\":1182691834,\"unsupportedControls\":783879068},\"id\":\"uwqlgzrfzeey\",\"name\":\"bizikayuhq\",\"type\":\"bjbsybb\"},{\"properties\":{\"state\":\"Unsupported\",\"passedControls\":948234782,\"failedControls\":1918019278,\"skippedControls\":348550148,\"unsupportedControls\":1644492935},\"id\":\"vm\",\"name\":\"ipaslthaqfxssmwu\",\"type\":\"wbdsr\"}],\"nextLink\":\"pdrhne\"}")
-                .toObject(RegulatoryComplianceStandardList.class);
-        Assertions.assertEquals(State.SKIPPED, model.value().get(0).state());
+        RegulatoryComplianceStandardList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"state\":\"Passed\",\"passedControls\":1971435113,\"failedControls\":435215346,\"skippedControls\":746279797,\"unsupportedControls\":996509936},\"id\":\"hsmtxpsiebtfhvp\",\"name\":\"sapskr\",\"type\":\"qmhjjdhtld\"},{\"properties\":{\"state\":\"Unsupported\",\"passedControls\":1711095303,\"failedControls\":1677238877,\"skippedControls\":1210562441,\"unsupportedControls\":276161293},\"id\":\"scwsv\",\"name\":\"xotogtwrupqsxv\",\"type\":\"micykvceoveilo\"},{\"properties\":{\"state\":\"Unsupported\",\"passedControls\":297433861,\"failedControls\":914615331,\"skippedControls\":1745104172,\"unsupportedControls\":625040434},\"id\":\"k\",\"name\":\"nxdhbt\",\"type\":\"kphywpnvjto\"},{\"properties\":{\"state\":\"Skipped\",\"passedControls\":927719856,\"failedControls\":661305446,\"skippedControls\":1227353846,\"unsupportedControls\":1314028538},\"id\":\"oxuscrpabgyepsbj\",\"name\":\"azqugxywpmueefj\",\"type\":\"wfqkquj\"}],\"nextLink\":\"suyonobglaocq\"}")
+            .toObject(RegulatoryComplianceStandardList.class);
+        Assertions.assertEquals(State.PASSED, model.value().get(0).state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegulatoryComplianceStandardList model =
-            new RegulatoryComplianceStandardList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new RegulatoryComplianceStandardInner().withState(State.SKIPPED),
-                            new RegulatoryComplianceStandardInner().withState(State.FAILED),
-                            new RegulatoryComplianceStandardInner().withState(State.UNSUPPORTED)));
+        RegulatoryComplianceStandardList model = new RegulatoryComplianceStandardList()
+            .withValue(Arrays.asList(new RegulatoryComplianceStandardInner().withState(State.PASSED),
+                new RegulatoryComplianceStandardInner().withState(State.UNSUPPORTED),
+                new RegulatoryComplianceStandardInner().withState(State.UNSUPPORTED),
+                new RegulatoryComplianceStandardInner().withState(State.SKIPPED)));
         model = BinaryData.fromObject(model).toObject(RegulatoryComplianceStandardList.class);
-        Assertions.assertEquals(State.SKIPPED, model.value().get(0).state());
+        Assertions.assertEquals(State.PASSED, model.value().get(0).state());
     }
 }

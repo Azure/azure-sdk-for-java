@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure VM managed disk input details. */
+/**
+ * Azure VM managed disk input details.
+ */
 @Fluent
 public final class A2AProtectionIntentManagedDiskInputDetails {
     /*
@@ -54,13 +56,15 @@ public final class A2AProtectionIntentManagedDiskInputDetails {
     @JsonProperty(value = "diskEncryptionInfo")
     private DiskEncryptionInfo diskEncryptionInfo;
 
-    /** Creates an instance of A2AProtectionIntentManagedDiskInputDetails class. */
+    /**
+     * Creates an instance of A2AProtectionIntentManagedDiskInputDetails class.
+     */
     public A2AProtectionIntentManagedDiskInputDetails() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -69,7 +73,7 @@ public final class A2AProtectionIntentManagedDiskInputDetails {
 
     /**
      * Set the diskId property: The disk Id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the A2AProtectionIntentManagedDiskInputDetails object itself.
      */
@@ -80,7 +84,7 @@ public final class A2AProtectionIntentManagedDiskInputDetails {
 
     /**
      * Get the primaryStagingStorageAccountCustomInput property: The primary staging storage account input.
-     *
+     * 
      * @return the primaryStagingStorageAccountCustomInput value.
      */
     public StorageAccountCustomDetails primaryStagingStorageAccountCustomInput() {
@@ -89,7 +93,7 @@ public final class A2AProtectionIntentManagedDiskInputDetails {
 
     /**
      * Set the primaryStagingStorageAccountCustomInput property: The primary staging storage account input.
-     *
+     * 
      * @param primaryStagingStorageAccountCustomInput the primaryStagingStorageAccountCustomInput value to set.
      * @return the A2AProtectionIntentManagedDiskInputDetails object itself.
      */
@@ -101,7 +105,7 @@ public final class A2AProtectionIntentManagedDiskInputDetails {
 
     /**
      * Get the recoveryResourceGroupCustomInput property: The recovery resource group input.
-     *
+     * 
      * @return the recoveryResourceGroupCustomInput value.
      */
     public RecoveryResourceGroupCustomDetails recoveryResourceGroupCustomInput() {
@@ -110,20 +114,20 @@ public final class A2AProtectionIntentManagedDiskInputDetails {
 
     /**
      * Set the recoveryResourceGroupCustomInput property: The recovery resource group input.
-     *
+     * 
      * @param recoveryResourceGroupCustomInput the recoveryResourceGroupCustomInput value to set.
      * @return the A2AProtectionIntentManagedDiskInputDetails object itself.
      */
-    public A2AProtectionIntentManagedDiskInputDetails withRecoveryResourceGroupCustomInput(
-        RecoveryResourceGroupCustomDetails recoveryResourceGroupCustomInput) {
+    public A2AProtectionIntentManagedDiskInputDetails
+        withRecoveryResourceGroupCustomInput(RecoveryResourceGroupCustomDetails recoveryResourceGroupCustomInput) {
         this.recoveryResourceGroupCustomInput = recoveryResourceGroupCustomInput;
         return this;
     }
 
     /**
-     * Get the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same as
-     * source disk type if not user provided.
-     *
+     * Get the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same
+     * as source disk type if not user provided.
+     * 
      * @return the recoveryReplicaDiskAccountType value.
      */
     public String recoveryReplicaDiskAccountType() {
@@ -131,14 +135,14 @@ public final class A2AProtectionIntentManagedDiskInputDetails {
     }
 
     /**
-     * Set the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same as
-     * source disk type if not user provided.
-     *
+     * Set the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same
+     * as source disk type if not user provided.
+     * 
      * @param recoveryReplicaDiskAccountType the recoveryReplicaDiskAccountType value to set.
      * @return the A2AProtectionIntentManagedDiskInputDetails object itself.
      */
-    public A2AProtectionIntentManagedDiskInputDetails withRecoveryReplicaDiskAccountType(
-        String recoveryReplicaDiskAccountType) {
+    public A2AProtectionIntentManagedDiskInputDetails
+        withRecoveryReplicaDiskAccountType(String recoveryReplicaDiskAccountType) {
         this.recoveryReplicaDiskAccountType = recoveryReplicaDiskAccountType;
         return this;
     }
@@ -146,7 +150,7 @@ public final class A2AProtectionIntentManagedDiskInputDetails {
     /**
      * Get the recoveryTargetDiskAccountType property: The target disk type after failover. Its an optional value and
      * will be same as source disk type if not user provided.
-     *
+     * 
      * @return the recoveryTargetDiskAccountType value.
      */
     public String recoveryTargetDiskAccountType() {
@@ -156,19 +160,19 @@ public final class A2AProtectionIntentManagedDiskInputDetails {
     /**
      * Set the recoveryTargetDiskAccountType property: The target disk type after failover. Its an optional value and
      * will be same as source disk type if not user provided.
-     *
+     * 
      * @param recoveryTargetDiskAccountType the recoveryTargetDiskAccountType value to set.
      * @return the A2AProtectionIntentManagedDiskInputDetails object itself.
      */
-    public A2AProtectionIntentManagedDiskInputDetails withRecoveryTargetDiskAccountType(
-        String recoveryTargetDiskAccountType) {
+    public A2AProtectionIntentManagedDiskInputDetails
+        withRecoveryTargetDiskAccountType(String recoveryTargetDiskAccountType) {
         this.recoveryTargetDiskAccountType = recoveryTargetDiskAccountType;
         return this;
     }
 
     /**
      * Get the recoveryDiskEncryptionSetId property: The recovery disk encryption set Id.
-     *
+     * 
      * @return the recoveryDiskEncryptionSetId value.
      */
     public String recoveryDiskEncryptionSetId() {
@@ -177,19 +181,19 @@ public final class A2AProtectionIntentManagedDiskInputDetails {
 
     /**
      * Set the recoveryDiskEncryptionSetId property: The recovery disk encryption set Id.
-     *
+     * 
      * @param recoveryDiskEncryptionSetId the recoveryDiskEncryptionSetId value to set.
      * @return the A2AProtectionIntentManagedDiskInputDetails object itself.
      */
-    public A2AProtectionIntentManagedDiskInputDetails withRecoveryDiskEncryptionSetId(
-        String recoveryDiskEncryptionSetId) {
+    public A2AProtectionIntentManagedDiskInputDetails
+        withRecoveryDiskEncryptionSetId(String recoveryDiskEncryptionSetId) {
         this.recoveryDiskEncryptionSetId = recoveryDiskEncryptionSetId;
         return this;
     }
 
     /**
      * Get the diskEncryptionInfo property: The recovery disk encryption information (for one / single pass flows).
-     *
+     * 
      * @return the diskEncryptionInfo value.
      */
     public DiskEncryptionInfo diskEncryptionInfo() {
@@ -198,7 +202,7 @@ public final class A2AProtectionIntentManagedDiskInputDetails {
 
     /**
      * Set the diskEncryptionInfo property: The recovery disk encryption information (for one / single pass flows).
-     *
+     * 
      * @param diskEncryptionInfo the diskEncryptionInfo value to set.
      * @return the A2AProtectionIntentManagedDiskInputDetails object itself.
      */
@@ -209,15 +213,13 @@ public final class A2AProtectionIntentManagedDiskInputDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property diskId in model A2AProtectionIntentManagedDiskInputDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property diskId in model A2AProtectionIntentManagedDiskInputDetails"));
         }
         if (primaryStagingStorageAccountCustomInput() != null) {
             primaryStagingStorageAccountCustomInput().validate();

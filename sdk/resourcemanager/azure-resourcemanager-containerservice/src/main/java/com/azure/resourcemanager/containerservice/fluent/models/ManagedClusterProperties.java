@@ -16,6 +16,8 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServer
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterMetricsProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
@@ -280,6 +282,12 @@ public final class ManagedClusterProperties {
     private ManagedClusterStorageProfile storageProfile;
 
     /*
+     * Ingress profile for the managed cluster.
+     */
+    @JsonProperty(value = "ingressProfile")
+    private ManagedClusterIngressProfile ingressProfile;
+
+    /*
      * PublicNetworkAccess of the managedCluster
      * 
      * Allow or deny public network access for AKS
@@ -311,6 +319,12 @@ public final class ManagedClusterProperties {
      */
     @JsonProperty(value = "resourceUID", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceUid;
+
+    /*
+     * Optional cluster metrics configuration.
+     */
+    @JsonProperty(value = "metricsProfile")
+    private ManagedClusterMetricsProfile metricsProfile;
 
     /**
      * Creates an instance of ManagedClusterProperties class.
@@ -993,6 +1007,26 @@ public final class ManagedClusterProperties {
     }
 
     /**
+     * Get the ingressProfile property: Ingress profile for the managed cluster.
+     * 
+     * @return the ingressProfile value.
+     */
+    public ManagedClusterIngressProfile ingressProfile() {
+        return this.ingressProfile;
+    }
+
+    /**
+     * Set the ingressProfile property: Ingress profile for the managed cluster.
+     * 
+     * @param ingressProfile the ingressProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withIngressProfile(ManagedClusterIngressProfile ingressProfile) {
+        this.ingressProfile = ingressProfile;
+        return this;
+    }
+
+    /**
      * Get the publicNetworkAccess property: PublicNetworkAccess of the managedCluster
      * 
      * Allow or deny public network access for AKS.
@@ -1088,6 +1122,26 @@ public final class ManagedClusterProperties {
     }
 
     /**
+     * Get the metricsProfile property: Optional cluster metrics configuration.
+     * 
+     * @return the metricsProfile value.
+     */
+    public ManagedClusterMetricsProfile metricsProfile() {
+        return this.metricsProfile;
+    }
+
+    /**
+     * Set the metricsProfile property: Optional cluster metrics configuration.
+     * 
+     * @param metricsProfile the metricsProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withMetricsProfile(ManagedClusterMetricsProfile metricsProfile) {
+        this.metricsProfile = metricsProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1158,6 +1212,9 @@ public final class ManagedClusterProperties {
         if (storageProfile() != null) {
             storageProfile().validate();
         }
+        if (ingressProfile() != null) {
+            ingressProfile().validate();
+        }
         if (workloadAutoScalerProfile() != null) {
             workloadAutoScalerProfile().validate();
         }
@@ -1166,6 +1223,9 @@ public final class ManagedClusterProperties {
         }
         if (serviceMeshProfile() != null) {
             serviceMeshProfile().validate();
+        }
+        if (metricsProfile() != null) {
+            metricsProfile().validate();
         }
     }
 }

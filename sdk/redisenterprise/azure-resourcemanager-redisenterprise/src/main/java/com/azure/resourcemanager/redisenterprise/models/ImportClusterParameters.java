@@ -11,24 +11,26 @@ import java.util.List;
 
 /**
  * Import RDB files into a target database
- *
- * <p>Parameters for a Redis Enterprise import operation.
+ * 
+ * Parameters for a Redis Enterprise import operation.
  */
 @Fluent
 public final class ImportClusterParameters {
     /*
      * SAS URIs for the target blobs to import from
      */
-    @JsonProperty(value = "sasUris", required = true)
+    @JsonProperty(value = "sasUris")
     private List<String> sasUris;
 
-    /** Creates an instance of ImportClusterParameters class. */
+    /**
+     * Creates an instance of ImportClusterParameters class.
+     */
     public ImportClusterParameters() {
     }
 
     /**
      * Get the sasUris property: SAS URIs for the target blobs to import from.
-     *
+     * 
      * @return the sasUris value.
      */
     public List<String> sasUris() {
@@ -37,7 +39,7 @@ public final class ImportClusterParameters {
 
     /**
      * Set the sasUris property: SAS URIs for the target blobs to import from.
-     *
+     * 
      * @param sasUris the sasUris value to set.
      * @return the ImportClusterParameters object itself.
      */
@@ -48,14 +50,13 @@ public final class ImportClusterParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sasUris() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sasUris in model ImportClusterParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sasUris in model ImportClusterParameters"));
         }
     }
 

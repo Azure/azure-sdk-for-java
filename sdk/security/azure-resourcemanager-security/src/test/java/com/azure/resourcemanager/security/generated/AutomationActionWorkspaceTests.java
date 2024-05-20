@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AutomationActionWorkspaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomationActionWorkspace model =
-            BinaryData
-                .fromString("{\"actionType\":\"Workspace\",\"workspaceResourceId\":\"l\"}")
+        AutomationActionWorkspace model
+            = BinaryData.fromString("{\"actionType\":\"Workspace\",\"workspaceResourceId\":\"hctsbbibti\"}")
                 .toObject(AutomationActionWorkspace.class);
-        Assertions.assertEquals("l", model.workspaceResourceId());
+        Assertions.assertEquals("hctsbbibti", model.workspaceResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationActionWorkspace model = new AutomationActionWorkspace().withWorkspaceResourceId("l");
+        AutomationActionWorkspace model = new AutomationActionWorkspace().withWorkspaceResourceId("hctsbbibti");
         model = BinaryData.fromObject(model).toObject(AutomationActionWorkspace.class);
-        Assertions.assertEquals("l", model.workspaceResourceId());
+        Assertions.assertEquals("hctsbbibti", model.workspaceResourceId());
     }
 }

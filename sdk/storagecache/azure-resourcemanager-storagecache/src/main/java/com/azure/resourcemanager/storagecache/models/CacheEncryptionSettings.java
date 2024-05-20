@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cache encryption settings. */
+/**
+ * Cache encryption settings.
+ */
 @Fluent
 public final class CacheEncryptionSettings {
     /*
@@ -22,13 +24,15 @@ public final class CacheEncryptionSettings {
     @JsonProperty(value = "rotationToLatestKeyVersionEnabled")
     private Boolean rotationToLatestKeyVersionEnabled;
 
-    /** Creates an instance of CacheEncryptionSettings class. */
+    /**
+     * Creates an instance of CacheEncryptionSettings class.
+     */
     public CacheEncryptionSettings() {
     }
 
     /**
      * Get the keyEncryptionKey property: Specifies the location of the key encryption key in key vault.
-     *
+     * 
      * @return the keyEncryptionKey value.
      */
     public KeyVaultKeyReference keyEncryptionKey() {
@@ -37,7 +41,7 @@ public final class CacheEncryptionSettings {
 
     /**
      * Set the keyEncryptionKey property: Specifies the location of the key encryption key in key vault.
-     *
+     * 
      * @param keyEncryptionKey the keyEncryptionKey value to set.
      * @return the CacheEncryptionSettings object itself.
      */
@@ -49,7 +53,7 @@ public final class CacheEncryptionSettings {
     /**
      * Get the rotationToLatestKeyVersionEnabled property: Specifies whether the service will automatically rotate to
      * the newest version of the key in the key vault.
-     *
+     * 
      * @return the rotationToLatestKeyVersionEnabled value.
      */
     public Boolean rotationToLatestKeyVersionEnabled() {
@@ -59,7 +63,7 @@ public final class CacheEncryptionSettings {
     /**
      * Set the rotationToLatestKeyVersionEnabled property: Specifies whether the service will automatically rotate to
      * the newest version of the key in the key vault.
-     *
+     * 
      * @param rotationToLatestKeyVersionEnabled the rotationToLatestKeyVersionEnabled value to set.
      * @return the CacheEncryptionSettings object itself.
      */
@@ -70,7 +74,7 @@ public final class CacheEncryptionSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

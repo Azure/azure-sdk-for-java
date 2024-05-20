@@ -1,8 +1,57 @@
 # Release History
 
-## 12.19.0-beta.1 (Unreleased)
+## 12.20.0-beta.1 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.19.0 (2024-05-15)
+
+### Features Added
+- Added support for service versions 2024-02-04 and 2024-05-04.
+- Added support for owner, group and acl/permission via put APIs for object replication.
+
+### Breaking Changes
+- When creating a `DataLakeFileClient` or `DataLakeDirectoryClient` via `DataLakeFileSystemClient.getDirectoryClient(String directoryName)`,
+  `DataLakeFileSystemClient.getDirectoryClient(String fileName)`, `DataLakeDirectoryClient.getSubDirectoryClient(String blobName)`
+  and `DataLakeDirectoryClient.getSubDirectoryClient(String blobName)`, the path name will be stored exactly as passed in
+  and will not be URL-encoded. For example, if the path name is "test%25test" and is created by calling `DataLakeFileSystemClient.getDirectoryClient("test%25test")`,
+  `DataLakeDirectoryClient.getDirectoryPath()` will return "test%25test" and the path's url will result in
+  “https://account.dfs.core.windows.net/filesystemname/test%25%25test”.
+
+### Bugs Fixed
+- Fixed a bug that did not allow uploading an empty 0 byte file with `DataLakeFileClient.uploadFromFile()`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.25.4` to version `12.26.0`.
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+
+
+## 12.18.4 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.25.3` to version `12.25.4`.
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+
+## 12.19.0-beta.1 (2024-04-15)
+
+### Features Added
+- Added support for service versions 2024-02-04 and 2024-05-04.
+- Added support for owner, group and acl/permission via put APIs for object replication.
 
 ### Breaking Changes
 - When creating a `DataLakeFileClient` or `DataLakeDirectoryClient` via `DataLakeFileSystemClient.getDirectoryClient(String directoryName)`,
@@ -15,7 +64,28 @@ and will not be URL-encoded. For example, if the path name is "test%25test" and 
 ### Bugs Fixed
 - Fixed a bug that did not allow uploading an empty 0 byte file with `DataLakeFileClient.uploadFromFile()`.
 
+## 12.18.3 (2024-03-20)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+- Upgraded `azure-storage-blob` from `12.25.2` to version `12.25.3`.
+
+
+## 12.18.2 (2024-02-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-storage-blob` from `12.25.1` to version `12.25.2`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+
+
 
 ## 12.18.1 (2023-12-04)
 

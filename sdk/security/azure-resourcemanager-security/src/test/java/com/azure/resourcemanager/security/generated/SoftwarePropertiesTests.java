@@ -12,44 +12,40 @@ import org.junit.jupiter.api.Assertions;
 public final class SoftwarePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SoftwareProperties model =
-            BinaryData
-                .fromString(
-                    "{\"deviceId\":\"taoypnyghshxc\",\"osPlatform\":\"hkgmnsg\",\"vendor\":\"xycphdrwjjkh\",\"softwareName\":\"omacluzvxnqmhr\",\"version\":\"pd\",\"endOfSupportStatus\":\"upcomingVersionNoLongerSupported\",\"endOfSupportDate\":\"oi\",\"numberOfKnownVulnerabilities\":785692524,\"firstSeenAt\":\"sffxui\"}")
-                .toObject(SoftwareProperties.class);
-        Assertions.assertEquals("taoypnyghshxc", model.deviceId());
-        Assertions.assertEquals("hkgmnsg", model.osPlatform());
-        Assertions.assertEquals("xycphdrwjjkh", model.vendor());
-        Assertions.assertEquals("omacluzvxnqmhr", model.softwareName());
-        Assertions.assertEquals("pd", model.version());
-        Assertions.assertEquals(EndOfSupportStatus.UPCOMING_VERSION_NO_LONGER_SUPPORTED, model.endOfSupportStatus());
-        Assertions.assertEquals("oi", model.endOfSupportDate());
-        Assertions.assertEquals(785692524, model.numberOfKnownVulnerabilities());
-        Assertions.assertEquals("sffxui", model.firstSeenAt());
+        SoftwareProperties model = BinaryData.fromString(
+            "{\"deviceId\":\"eh\",\"osPlatform\":\"doy\",\"vendor\":\"ifthnz\",\"softwareName\":\"dslgnayqigynduh\",\"version\":\"hqlkthumaqo\",\"endOfSupportStatus\":\"upcomingNoLongerSupported\",\"endOfSupportDate\":\"cdui\",\"numberOfKnownVulnerabilities\":1108910411,\"firstSeenAt\":\"ccymvaolpsslql\"}")
+            .toObject(SoftwareProperties.class);
+        Assertions.assertEquals("eh", model.deviceId());
+        Assertions.assertEquals("doy", model.osPlatform());
+        Assertions.assertEquals("ifthnz", model.vendor());
+        Assertions.assertEquals("dslgnayqigynduh", model.softwareName());
+        Assertions.assertEquals("hqlkthumaqo", model.version());
+        Assertions.assertEquals(EndOfSupportStatus.UPCOMING_NO_LONGER_SUPPORTED, model.endOfSupportStatus());
+        Assertions.assertEquals("cdui", model.endOfSupportDate());
+        Assertions.assertEquals(1108910411, model.numberOfKnownVulnerabilities());
+        Assertions.assertEquals("ccymvaolpsslql", model.firstSeenAt());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SoftwareProperties model =
-            new SoftwareProperties()
-                .withDeviceId("taoypnyghshxc")
-                .withOsPlatform("hkgmnsg")
-                .withVendor("xycphdrwjjkh")
-                .withSoftwareName("omacluzvxnqmhr")
-                .withVersion("pd")
-                .withEndOfSupportStatus(EndOfSupportStatus.UPCOMING_VERSION_NO_LONGER_SUPPORTED)
-                .withEndOfSupportDate("oi")
-                .withNumberOfKnownVulnerabilities(785692524)
-                .withFirstSeenAt("sffxui");
+        SoftwareProperties model = new SoftwareProperties().withDeviceId("eh")
+            .withOsPlatform("doy")
+            .withVendor("ifthnz")
+            .withSoftwareName("dslgnayqigynduh")
+            .withVersion("hqlkthumaqo")
+            .withEndOfSupportStatus(EndOfSupportStatus.UPCOMING_NO_LONGER_SUPPORTED)
+            .withEndOfSupportDate("cdui")
+            .withNumberOfKnownVulnerabilities(1108910411)
+            .withFirstSeenAt("ccymvaolpsslql");
         model = BinaryData.fromObject(model).toObject(SoftwareProperties.class);
-        Assertions.assertEquals("taoypnyghshxc", model.deviceId());
-        Assertions.assertEquals("hkgmnsg", model.osPlatform());
-        Assertions.assertEquals("xycphdrwjjkh", model.vendor());
-        Assertions.assertEquals("omacluzvxnqmhr", model.softwareName());
-        Assertions.assertEquals("pd", model.version());
-        Assertions.assertEquals(EndOfSupportStatus.UPCOMING_VERSION_NO_LONGER_SUPPORTED, model.endOfSupportStatus());
-        Assertions.assertEquals("oi", model.endOfSupportDate());
-        Assertions.assertEquals(785692524, model.numberOfKnownVulnerabilities());
-        Assertions.assertEquals("sffxui", model.firstSeenAt());
+        Assertions.assertEquals("eh", model.deviceId());
+        Assertions.assertEquals("doy", model.osPlatform());
+        Assertions.assertEquals("ifthnz", model.vendor());
+        Assertions.assertEquals("dslgnayqigynduh", model.softwareName());
+        Assertions.assertEquals("hqlkthumaqo", model.version());
+        Assertions.assertEquals(EndOfSupportStatus.UPCOMING_NO_LONGER_SUPPORTED, model.endOfSupportStatus());
+        Assertions.assertEquals("cdui", model.endOfSupportDate());
+        Assertions.assertEquals(1108910411, model.numberOfKnownVulnerabilities());
+        Assertions.assertEquals("ccymvaolpsslql", model.firstSeenAt());
     }
 }

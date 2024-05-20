@@ -1,24 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-//
-// DESCRIPTION:
-//     This sample demonstrates how to generate a human-readable sentence that describes the content
-//     of the image file sample.jpg, using a synchronous client.
-//
-//     By default the caption may contain gender terms such as "man", "woman", or "boy", "girl".
-//     You have the option to request gender-neutral terms such as "person" or "child" by setting
-//     `genderNeutralCaption` to `true` when calling `analyze`, as shown in this example.
-//
-//     The synchronous (blocking) `analyze` method call returns an `ImageAnalysisResult` object.
-//     A call to `getCaption()` on this result will return a `CaptionResult` object. It contains:
-//     - The text of the caption. Captions are only supported in English at the moment. 
-//     - A confidence score in the range [0, 1], with higher values indicating greater confidences in
-//       the caption.
-//
-//     Set these two environment variables before running the sample:
-//     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
-//                          where `your-resource-name` is your unique Azure Computer Vision resource name.
-//     2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
 
 // BEGIN: imports-for-create-client-snippet
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
@@ -35,6 +16,25 @@ import java.io.File;
 import java.util.Arrays;
 // END: imports-caption-file-snippet
 
+/**
+ *  This sample demonstrates how to generate a human-readable sentence that describes the content
+ *  of the image file sample.jpg, using a synchronous client.
+ *
+ *  By default the caption may contain gender terms such as "man", "woman", or "boy", "girl".
+ *  You have the option to request gender-neutral terms such as "person" or "child" by setting
+ *  `genderNeutralCaption` to `true` when calling `analyze`, as shown in this example.
+ *
+ *  The synchronous (blocking) `analyze` method call returns an `ImageAnalysisResult` object.
+ *  A call to `getCaption()` on this result will return a `CaptionResult` object. It contains:
+ *  - The text of the caption. Captions are only supported in English at the moment. 
+ *  - A confidence score in the range [0, 1], with higher values indicating greater confidences in
+ *    the caption.
+ *
+ *  Set these two environment variables before running the sample:
+ *  1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
+ *                       where `your-resource-name` is your unique Azure Computer Vision resource name.
+ *  2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
+ */
 public class SampleCaptionImageFile {
 
     public static void main(String[] args) {

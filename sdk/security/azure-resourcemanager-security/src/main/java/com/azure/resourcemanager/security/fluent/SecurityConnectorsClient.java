@@ -11,12 +11,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.SecurityConnectorInner;
 
-/** An instance of this class provides access to all the operations defined in SecurityConnectorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SecurityConnectorsClient.
+ */
 public interface SecurityConnectorsClient {
     /**
      * Lists all the security connectors in the specified subscription. Use the 'nextLink' property in the response to
      * get the next page of security connectors for the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of security connectors response as paginated response with {@link PagedIterable}.
@@ -27,7 +29,7 @@ public interface SecurityConnectorsClient {
     /**
      * Lists all the security connectors in the specified subscription. Use the 'nextLink' property in the response to
      * get the next page of security connectors for the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,9 +42,9 @@ public interface SecurityConnectorsClient {
     /**
      * Lists all the security connectors in the specified resource group. Use the 'nextLink' property in the response to
      * get the next page of security connectors for the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -54,9 +56,9 @@ public interface SecurityConnectorsClient {
     /**
      * Lists all the security connectors in the specified resource group. Use the 'nextLink' property in the response to
      * get the next page of security connectors for the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -68,9 +70,9 @@ public interface SecurityConnectorsClient {
 
     /**
      * Retrieves details of a specific security connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,14 +81,14 @@ public interface SecurityConnectorsClient {
      * @return the security connector resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityConnectorInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String securityConnectorName, Context context);
+    Response<SecurityConnectorInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String securityConnectorName, Context context);
 
     /**
      * Retrieves details of a specific security connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -99,9 +101,9 @@ public interface SecurityConnectorsClient {
     /**
      * Creates or updates a security connector. If a security connector is already created and a subsequent request is
      * issued for the same security connector id, then it will be updated.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param securityConnector The security connector resource.
      * @param context The context to associate with this operation.
@@ -111,18 +113,15 @@ public interface SecurityConnectorsClient {
      * @return the security connector resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityConnectorInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String securityConnectorName,
-        SecurityConnectorInner securityConnector,
-        Context context);
+    Response<SecurityConnectorInner> createOrUpdateWithResponse(String resourceGroupName, String securityConnectorName,
+        SecurityConnectorInner securityConnector, Context context);
 
     /**
      * Creates or updates a security connector. If a security connector is already created and a subsequent request is
      * issued for the same security connector id, then it will be updated.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param securityConnector The security connector resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,14 +130,14 @@ public interface SecurityConnectorsClient {
      * @return the security connector resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityConnectorInner createOrUpdate(
-        String resourceGroupName, String securityConnectorName, SecurityConnectorInner securityConnector);
+    SecurityConnectorInner createOrUpdate(String resourceGroupName, String securityConnectorName,
+        SecurityConnectorInner securityConnector);
 
     /**
      * Updates a security connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param securityConnector The security connector resource.
      * @param context The context to associate with this operation.
@@ -148,17 +147,14 @@ public interface SecurityConnectorsClient {
      * @return the security connector resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityConnectorInner> updateWithResponse(
-        String resourceGroupName,
-        String securityConnectorName,
-        SecurityConnectorInner securityConnector,
-        Context context);
+    Response<SecurityConnectorInner> updateWithResponse(String resourceGroupName, String securityConnectorName,
+        SecurityConnectorInner securityConnector, Context context);
 
     /**
      * Updates a security connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param securityConnector The security connector resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,14 +163,14 @@ public interface SecurityConnectorsClient {
      * @return the security connector resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityConnectorInner update(
-        String resourceGroupName, String securityConnectorName, SecurityConnectorInner securityConnector);
+    SecurityConnectorInner update(String resourceGroupName, String securityConnectorName,
+        SecurityConnectorInner securityConnector);
 
     /**
      * Deletes a security connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,9 +183,9 @@ public interface SecurityConnectorsClient {
 
     /**
      * Deletes a security connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

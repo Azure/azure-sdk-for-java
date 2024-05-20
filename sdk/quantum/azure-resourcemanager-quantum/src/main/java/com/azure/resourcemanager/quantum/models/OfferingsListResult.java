@@ -9,7 +9,9 @@ import com.azure.resourcemanager.quantum.fluent.models.ProviderDescriptionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a list Providers operation. */
+/**
+ * The response of a list Providers operation.
+ */
 @Fluent
 public final class OfferingsListResult {
     /*
@@ -24,13 +26,15 @@ public final class OfferingsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of OfferingsListResult class. */
+    /**
+     * Creates an instance of OfferingsListResult class.
+     */
     public OfferingsListResult() {
     }
 
     /**
      * Get the value property: Result of a list Providers operation.
-     *
+     * 
      * @return the value value.
      */
     public List<ProviderDescriptionInner> value() {
@@ -39,7 +43,7 @@ public final class OfferingsListResult {
 
     /**
      * Set the value property: Result of a list Providers operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the OfferingsListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class OfferingsListResult {
     /**
      * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * Providers.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,7 +65,7 @@ public final class OfferingsListResult {
     /**
      * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * Providers.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OfferingsListResult object itself.
      */
@@ -72,7 +76,7 @@ public final class OfferingsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

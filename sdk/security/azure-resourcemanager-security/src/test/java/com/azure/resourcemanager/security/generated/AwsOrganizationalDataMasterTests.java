@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AwsOrganizationalDataMasterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AwsOrganizationalDataMaster model =
-            BinaryData
-                .fromString(
-                    "{\"organizationMembershipType\":\"Organization\",\"stacksetName\":\"rvfyifkdsch\",\"excludedAccountIds\":[\"fict\",\"kjjwgcwn\",\"hbkgfyrt\",\"gm\"]}")
-                .toObject(AwsOrganizationalDataMaster.class);
-        Assertions.assertEquals("rvfyifkdsch", model.stacksetName());
-        Assertions.assertEquals("fict", model.excludedAccountIds().get(0));
+        AwsOrganizationalDataMaster model = BinaryData.fromString(
+            "{\"organizationMembershipType\":\"Organization\",\"stacksetName\":\"vlrxikjmoywlun\",\"excludedAccountIds\":[\"cwybszfncnpatpft\",\"aebwfwhxorpwa\"]}")
+            .toObject(AwsOrganizationalDataMaster.class);
+        Assertions.assertEquals("vlrxikjmoywlun", model.stacksetName());
+        Assertions.assertEquals("cwybszfncnpatpft", model.excludedAccountIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AwsOrganizationalDataMaster model =
-            new AwsOrganizationalDataMaster()
-                .withStacksetName("rvfyifkdsch")
-                .withExcludedAccountIds(Arrays.asList("fict", "kjjwgcwn", "hbkgfyrt", "gm"));
+        AwsOrganizationalDataMaster model = new AwsOrganizationalDataMaster().withStacksetName("vlrxikjmoywlun")
+            .withExcludedAccountIds(Arrays.asList("cwybszfncnpatpft", "aebwfwhxorpwa"));
         model = BinaryData.fromObject(model).toObject(AwsOrganizationalDataMaster.class);
-        Assertions.assertEquals("rvfyifkdsch", model.stacksetName());
-        Assertions.assertEquals("fict", model.excludedAccountIds().get(0));
+        Assertions.assertEquals("vlrxikjmoywlun", model.stacksetName());
+        Assertions.assertEquals("cwybszfncnpatpft", model.excludedAccountIds().get(0));
     }
 }

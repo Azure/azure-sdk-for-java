@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMage specific protection profile details. */
+/**
+ * InMage specific protection profile details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMage")
 @Fluent
@@ -38,13 +40,15 @@ public final class InMagePolicyDetails extends PolicyProviderSpecificDetails {
     @JsonProperty(value = "multiVmSyncStatus")
     private String multiVmSyncStatus;
 
-    /** Creates an instance of InMagePolicyDetails class. */
+    /**
+     * Creates an instance of InMagePolicyDetails class.
+     */
     public InMagePolicyDetails() {
     }
 
     /**
      * Get the recoveryPointThresholdInMinutes property: The recovery point threshold in minutes.
-     *
+     * 
      * @return the recoveryPointThresholdInMinutes value.
      */
     public Integer recoveryPointThresholdInMinutes() {
@@ -53,7 +57,7 @@ public final class InMagePolicyDetails extends PolicyProviderSpecificDetails {
 
     /**
      * Set the recoveryPointThresholdInMinutes property: The recovery point threshold in minutes.
-     *
+     * 
      * @param recoveryPointThresholdInMinutes the recoveryPointThresholdInMinutes value to set.
      * @return the InMagePolicyDetails object itself.
      */
@@ -63,8 +67,9 @@ public final class InMagePolicyDetails extends PolicyProviderSpecificDetails {
     }
 
     /**
-     * Get the recoveryPointHistory property: The duration in minutes until which the recovery points need to be stored.
-     *
+     * Get the recoveryPointHistory property: The duration in minutes until which the recovery points need to be
+     * stored.
+     * 
      * @return the recoveryPointHistory value.
      */
     public Integer recoveryPointHistory() {
@@ -72,8 +77,9 @@ public final class InMagePolicyDetails extends PolicyProviderSpecificDetails {
     }
 
     /**
-     * Set the recoveryPointHistory property: The duration in minutes until which the recovery points need to be stored.
-     *
+     * Set the recoveryPointHistory property: The duration in minutes until which the recovery points need to be
+     * stored.
+     * 
      * @param recoveryPointHistory the recoveryPointHistory value to set.
      * @return the InMagePolicyDetails object itself.
      */
@@ -84,7 +90,7 @@ public final class InMagePolicyDetails extends PolicyProviderSpecificDetails {
 
     /**
      * Get the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency in minutes.
-     *
+     * 
      * @return the appConsistentFrequencyInMinutes value.
      */
     public Integer appConsistentFrequencyInMinutes() {
@@ -93,7 +99,7 @@ public final class InMagePolicyDetails extends PolicyProviderSpecificDetails {
 
     /**
      * Set the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency in minutes.
-     *
+     * 
      * @param appConsistentFrequencyInMinutes the appConsistentFrequencyInMinutes value to set.
      * @return the InMagePolicyDetails object itself.
      */
@@ -104,7 +110,7 @@ public final class InMagePolicyDetails extends PolicyProviderSpecificDetails {
 
     /**
      * Get the multiVmSyncStatus property: A value indicating whether multi-VM sync has to be enabled.
-     *
+     * 
      * @return the multiVmSyncStatus value.
      */
     public String multiVmSyncStatus() {
@@ -113,7 +119,7 @@ public final class InMagePolicyDetails extends PolicyProviderSpecificDetails {
 
     /**
      * Set the multiVmSyncStatus property: A value indicating whether multi-VM sync has to be enabled.
-     *
+     * 
      * @param multiVmSyncStatus the multiVmSyncStatus value to set.
      * @return the InMagePolicyDetails object itself.
      */
@@ -124,7 +130,7 @@ public final class InMagePolicyDetails extends PolicyProviderSpecificDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

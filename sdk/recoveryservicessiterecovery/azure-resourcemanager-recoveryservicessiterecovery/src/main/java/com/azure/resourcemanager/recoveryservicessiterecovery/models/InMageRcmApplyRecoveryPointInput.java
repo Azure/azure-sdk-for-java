@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** ApplyRecoveryPoint input specific to InMageRcm provider. */
+/**
+ * ApplyRecoveryPoint input specific to InMageRcm provider.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcm")
 @Fluent
@@ -21,13 +23,15 @@ public final class InMageRcmApplyRecoveryPointInput extends ApplyRecoveryPointPr
     @JsonProperty(value = "recoveryPointId", required = true)
     private String recoveryPointId;
 
-    /** Creates an instance of InMageRcmApplyRecoveryPointInput class. */
+    /**
+     * Creates an instance of InMageRcmApplyRecoveryPointInput class.
+     */
     public InMageRcmApplyRecoveryPointInput() {
     }
 
     /**
      * Get the recoveryPointId property: The recovery point Id.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -36,7 +40,7 @@ public final class InMageRcmApplyRecoveryPointInput extends ApplyRecoveryPointPr
 
     /**
      * Set the recoveryPointId property: The recovery point Id.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the InMageRcmApplyRecoveryPointInput object itself.
      */
@@ -47,17 +51,15 @@ public final class InMageRcmApplyRecoveryPointInput extends ApplyRecoveryPointPr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (recoveryPointId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryPointId in model InMageRcmApplyRecoveryPointInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryPointId in model InMageRcmApplyRecoveryPointInput"));
         }
     }
 

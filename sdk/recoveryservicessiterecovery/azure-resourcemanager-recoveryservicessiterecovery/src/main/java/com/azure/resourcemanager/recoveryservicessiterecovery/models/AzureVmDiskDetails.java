@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Disk details for E2A provider. */
+/**
+ * Disk details for E2A provider.
+ */
 @Fluent
 public final class AzureVmDiskDetails {
     /*
@@ -70,13 +72,15 @@ public final class AzureVmDiskDetails {
     @JsonProperty(value = "customTargetDiskName")
     private String customTargetDiskName;
 
-    /** Creates an instance of AzureVmDiskDetails class. */
+    /**
+     * Creates an instance of AzureVmDiskDetails class.
+     */
     public AzureVmDiskDetails() {
     }
 
     /**
      * Get the vhdType property: VHD type.
-     *
+     * 
      * @return the vhdType value.
      */
     public String vhdType() {
@@ -85,7 +89,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the vhdType property: VHD type.
-     *
+     * 
      * @param vhdType the vhdType value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -96,7 +100,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the vhdId property: The VHD id.
-     *
+     * 
      * @return the vhdId value.
      */
     public String vhdId() {
@@ -105,7 +109,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the vhdId property: The VHD id.
-     *
+     * 
      * @param vhdId the vhdId value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -116,7 +120,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the diskId property: The disk resource id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -125,7 +129,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the diskId property: The disk resource id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -136,7 +140,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the vhdName property: VHD name.
-     *
+     * 
      * @return the vhdName value.
      */
     public String vhdName() {
@@ -145,7 +149,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the vhdName property: VHD name.
-     *
+     * 
      * @param vhdName the vhdName value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -156,7 +160,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the maxSizeMB property: Max side in MB.
-     *
+     * 
      * @return the maxSizeMB value.
      */
     public String maxSizeMB() {
@@ -165,7 +169,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the maxSizeMB property: Max side in MB.
-     *
+     * 
      * @param maxSizeMB the maxSizeMB value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -176,7 +180,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the targetDiskLocation property: Blob uri of the Azure disk.
-     *
+     * 
      * @return the targetDiskLocation value.
      */
     public String targetDiskLocation() {
@@ -185,7 +189,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the targetDiskLocation property: Blob uri of the Azure disk.
-     *
+     * 
      * @param targetDiskLocation the targetDiskLocation value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -196,7 +200,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the targetDiskName property: The target Azure disk name.
-     *
+     * 
      * @return the targetDiskName value.
      */
     public String targetDiskName() {
@@ -205,7 +209,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the targetDiskName property: The target Azure disk name.
-     *
+     * 
      * @param targetDiskName the targetDiskName value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -216,7 +220,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the lunId property: Ordinal\LunId of the disk for the Azure VM.
-     *
+     * 
      * @return the lunId value.
      */
     public String lunId() {
@@ -225,7 +229,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the lunId property: Ordinal\LunId of the disk for the Azure VM.
-     *
+     * 
      * @param lunId the lunId value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -236,7 +240,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the diskEncryptionSetId property: The DiskEncryptionSet ARM ID.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -245,7 +249,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the diskEncryptionSetId property: The DiskEncryptionSet ARM ID.
-     *
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -256,7 +260,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Get the customTargetDiskName property: The custom target Azure disk name.
-     *
+     * 
      * @return the customTargetDiskName value.
      */
     public String customTargetDiskName() {
@@ -265,7 +269,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Set the customTargetDiskName property: The custom target Azure disk name.
-     *
+     * 
      * @param customTargetDiskName the customTargetDiskName value to set.
      * @return the AzureVmDiskDetails object itself.
      */
@@ -276,7 +280,7 @@ public final class AzureVmDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

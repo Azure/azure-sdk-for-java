@@ -16,10 +16,12 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  * generation tool only to identify methods that are generated. The purpose of this annotation is to find and replace
  * all methods in a class that are generated. Methods not annotated with this annotation will not be updated when code
  * is regenerated.
- * <p>This annotation is expected to be used in classes that are annotated with {@link ServiceClient} only.</p>
+ * <p>
+ * This annotation is expected to be used in classes that are annotated with {@link ServiceClient} only.
+ * </p>
  */
 @Retention(SOURCE)
-@Target({METHOD, CONSTRUCTOR, FIELD})
+@Target({ METHOD, CONSTRUCTOR, FIELD })
 public @interface Generated {
 
 }

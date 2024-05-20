@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Trigger type of the job. */
+/**
+ * Trigger type of the job.
+ */
 public final class TriggerType extends ExpandableStringEnum<TriggerType> {
-    /** Static value Schedule for TriggerType. */
+    /**
+     * Static value Schedule for TriggerType.
+     */
     public static final TriggerType SCHEDULE = fromString("Schedule");
 
-    /** Static value Event for TriggerType. */
+    /**
+     * Static value Event for TriggerType.
+     */
     public static final TriggerType EVENT = fromString("Event");
 
-    /** Static value Manual for TriggerType. */
+    /**
+     * Static value Manual for TriggerType.
+     */
     public static final TriggerType MANUAL = fromString("Manual");
 
     /**
      * Creates a new instance of TriggerType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class TriggerType extends ExpandableStringEnum<TriggerType> {
 
     /**
      * Creates or finds a TriggerType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TriggerType.
      */
@@ -41,7 +49,7 @@ public final class TriggerType extends ExpandableStringEnum<TriggerType> {
 
     /**
      * Gets known TriggerType values.
-     *
+     * 
      * @return known TriggerType values.
      */
     public static Collection<TriggerType> values() {

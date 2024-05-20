@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.DataStoreUt
 public final class DataStoreUtilizationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataStoreUtilizationDetails model =
-            BinaryData
-                .fromString(
-                    "{\"totalSnapshotsSupported\":3097932904552377371,\"totalSnapshotsCreated\":4245389434648384828,\"dataStoreName\":\"kdschlzvfictnkjj\"}")
-                .toObject(DataStoreUtilizationDetails.class);
+        DataStoreUtilizationDetails model = BinaryData.fromString(
+            "{\"totalSnapshotsSupported\":3097932904552377371,\"totalSnapshotsCreated\":4245389434648384828,\"dataStoreName\":\"kdschlzvfictnkjj\"}")
+            .toObject(DataStoreUtilizationDetails.class);
     }
 
     @org.junit.jupiter.api.Test

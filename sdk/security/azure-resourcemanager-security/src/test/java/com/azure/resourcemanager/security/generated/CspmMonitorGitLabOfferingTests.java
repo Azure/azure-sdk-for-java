@@ -10,9 +10,8 @@ import com.azure.resourcemanager.security.models.CspmMonitorGitLabOffering;
 public final class CspmMonitorGitLabOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CspmMonitorGitLabOffering model =
-            BinaryData
-                .fromString("{\"offeringType\":\"CspmMonitorGitLab\",\"description\":\"vnmdyfoeboj\"}")
+        CspmMonitorGitLabOffering model
+            = BinaryData.fromString("{\"offeringType\":\"CspmMonitorGitLab\",\"description\":\"dnajuopjyyqmkwlh\"}")
                 .toObject(CspmMonitorGitLabOffering.class);
     }
 

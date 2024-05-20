@@ -7,7 +7,16 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.util.Context;
 
 /**
- * Options class containing information available during HTTP request logging.
+ * The {@code HttpRequestLoggingContext} class provides contextual information available during HTTP request logging.
+ *
+ * <p>This class is useful when you need to access information about an HTTP request during logging. It provides
+ * access to the HTTP request being sent, the contextual information about the request, and the try count for the
+ * request.</p>
+ *
+ *
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.util.Context
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
  */
 public final class HttpRequestLoggingContext {
     private final HttpRequest httpRequest;

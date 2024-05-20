@@ -9,7 +9,9 @@ import com.azure.resourcemanager.support.fluent.models.FileDetailsInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object that represents a collection of File resources. */
+/**
+ * Object that represents a collection of File resources.
+ */
 @Fluent
 public final class FilesListResult {
     /*
@@ -24,13 +26,15 @@ public final class FilesListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of FilesListResult class. */
+    /**
+     * Creates an instance of FilesListResult class.
+     */
     public FilesListResult() {
     }
 
     /**
      * Get the value property: List of File resources.
-     *
+     * 
      * @return the value value.
      */
     public List<FileDetailsInner> value() {
@@ -39,7 +43,7 @@ public final class FilesListResult {
 
     /**
      * Set the value property: List of File resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the FilesListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class FilesListResult {
 
     /**
      * Get the nextLink property: The URI to fetch the next page of File resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class FilesListResult {
 
     /**
      * Set the nextLink property: The URI to fetch the next page of File resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the FilesListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class FilesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

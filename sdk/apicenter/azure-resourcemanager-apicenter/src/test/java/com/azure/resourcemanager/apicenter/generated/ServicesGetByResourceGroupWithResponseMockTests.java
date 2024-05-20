@@ -31,43 +31,29 @@ public final class ServicesGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"6f731a29-0be4-47ba-9e85-1ba721e4cb58\",\"tenantId\":\"a2be8a43-20f4-4f59-a7ef-42b25de975e5\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"pspwgcuertu\":{\"principalId\":\"16471a44-edb6-4247-a41a-7e80af6f4d86\",\"clientId\":\"54ec2277-3814-43c8-aa38-6a10cc1dd69f\"},\"o\":{\"principalId\":\"b5b2e62e-9887-47f1-b472-bc52fa99c0a4\",\"clientId\":\"88d6aec6-ef30-4c8b-b022-9bd241658394\"},\"whbmd\":{\"principalId\":\"bd1ee07d-b3f0-430c-8224-c57821fca4ad\",\"clientId\":\"468e7d9a-d6ea-4296-93c3-20165b3da059\"},\"jfddgmbmbe\":{\"principalId\":\"6ddfe660-9092-41f9-b6bc-5afd4f636e7e\",\"clientId\":\"8a0eea8d-485f-414b-9640-cd5b168da89f\"}}},\"location\":\"pbhtqqrolfpfpsa\",\"tags\":{\"gjyjgzjaoyfhrtxi\":\"qux\",\"rkujy\":\"n\"},\"id\":\"vlejuvfqa\",\"name\":\"rlyxwjkcprbnw\",\"type\":\"xgjvtbv\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Canceled\"},\"identity\":{\"principalId\":\"a06d8e00-7cc0-4198-b8a3-ea2d32d2bb23\",\"tenantId\":\"396571b9-27f3-45b5-90da-f624a94ca3fc\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"uhavhql\":{\"principalId\":\"2c0055c5-f042-46a1-a2fc-e95f8b336f69\",\"clientId\":\"0affbc61-9d30-4a8a-b349-cfad9c10fc1c\"},\"umaq\":{\"principalId\":\"8406e33a-85b5-47db-b0aa-8415d4638704\",\"clientId\":\"0bcb29b0-0fe0-4452-9130-40c7e4c90c69\"}}},\"location\":\"bgycduiertgccym\",\"tags\":{\"ssl\":\"l\",\"d\":\"lfmmdnbbglzpswi\",\"bzmnvdfznud\":\"cwyhzdxssa\"},\"id\":\"od\",\"name\":\"xzb\",\"type\":\"cblylpstdbhhxsr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiCenterManager manager =
-            ApiCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Service response =
-            manager
-                .services()
-                .getByResourceGroupWithResponse("iqfouflmmnkz", "modmglougpb", com.azure.core.util.Context.NONE)
-                .getValue();
+        Service response = manager.services()
+            .getByResourceGroupWithResponse("doy", "mifthnzdnd", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("pbhtqqrolfpfpsa", response.location());
-        Assertions.assertEquals("qux", response.tags().get("gjyjgzjaoyfhrtxi"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("bgycduiertgccym", response.location());
+        Assertions.assertEquals("l", response.tags().get("ssl"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 }

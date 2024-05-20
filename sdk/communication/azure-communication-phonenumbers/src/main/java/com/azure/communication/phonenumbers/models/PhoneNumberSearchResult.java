@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The PhoneNumberSearchResult model. */
+/** The result of a phone number search operation. */
 @Immutable
 public final class PhoneNumberSearchResult {
     /*
@@ -56,6 +56,18 @@ public final class PhoneNumberSearchResult {
      */
     @JsonProperty(value = "searchExpiresBy", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime searchExpiresBy;
+
+    /*
+     * The error code of the search.
+     */
+    @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer errorCode;
+
+    /*
+     * Mapping Error Messages to Codes
+     */
+    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
+    private PhoneNumberSearchResultError error;
 
     /**
      * Get the searchId property: The search id.
@@ -120,5 +132,23 @@ public final class PhoneNumberSearchResult {
      */
     public OffsetDateTime getSearchExpiresBy() {
         return this.searchExpiresBy;
+    }
+
+    /**
+     * Get the errorCode property: The error code of the search.
+     *
+     * @return the errorCode value.
+     */
+    public Integer getErrorCode() {
+        return this.errorCode;
+    }
+
+    /**
+     * Get the error property: Mapping Error Messages to Codes.
+     *
+     * @return the error value.
+     */
+    public PhoneNumberSearchResultError getError() {
+        return this.error;
     }
 }

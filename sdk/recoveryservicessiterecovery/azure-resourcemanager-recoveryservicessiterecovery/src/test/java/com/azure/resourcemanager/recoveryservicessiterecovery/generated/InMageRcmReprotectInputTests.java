@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageRcmReprotectInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmReprotectInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMageRcm\",\"reprotectAgentId\":\"cwwtzqzclo\",\"datastoreName\":\"hy\",\"logStorageAccountId\":\"pgidhzgyresgzsdt\",\"policyId\":\"byorjplb\"}")
-                .toObject(InMageRcmReprotectInput.class);
+        InMageRcmReprotectInput model = BinaryData.fromString(
+            "{\"instanceType\":\"InMageRcm\",\"reprotectAgentId\":\"cwwtzqzclo\",\"datastoreName\":\"hy\",\"logStorageAccountId\":\"pgidhzgyresgzsdt\",\"policyId\":\"byorjplb\"}")
+            .toObject(InMageRcmReprotectInput.class);
         Assertions.assertEquals("cwwtzqzclo", model.reprotectAgentId());
         Assertions.assertEquals("hy", model.datastoreName());
         Assertions.assertEquals("pgidhzgyresgzsdt", model.logStorageAccountId());
@@ -24,12 +22,8 @@ public final class InMageRcmReprotectInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmReprotectInput model =
-            new InMageRcmReprotectInput()
-                .withReprotectAgentId("cwwtzqzclo")
-                .withDatastoreName("hy")
-                .withLogStorageAccountId("pgidhzgyresgzsdt")
-                .withPolicyId("byorjplb");
+        InMageRcmReprotectInput model = new InMageRcmReprotectInput().withReprotectAgentId("cwwtzqzclo")
+            .withDatastoreName("hy").withLogStorageAccountId("pgidhzgyresgzsdt").withPolicyId("byorjplb");
         model = BinaryData.fromObject(model).toObject(InMageRcmReprotectInput.class);
         Assertions.assertEquals("cwwtzqzclo", model.reprotectAgentId());
         Assertions.assertEquals("hy", model.datastoreName());

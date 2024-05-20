@@ -31,42 +31,29 @@ public final class ManagedEnvironmentsListWorkloadProfileStatesMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"minimumCount\":1521065056,\"maximumCount\":1869442572,\"currentCount\":1373287799},\"id\":\"ycnlbvgjcodk\",\"name\":\"gjiiytssiki\",\"type\":\"bcufqbvntn\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"minimumCount\":1874096637,\"maximumCount\":1667611376,\"currentCount\":883857471},\"id\":\"eumexmjbxc\",\"name\":\"ccwkqmtx\",\"type\":\"p\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ContainerAppsApiManager manager =
-            ContainerAppsApiManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ContainerAppsApiManager manager = ContainerAppsApiManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<WorkloadProfileStates> response =
-            manager
-                .managedEnvironments()
-                .listWorkloadProfileStates("cgqtag", "rclsso", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadProfileStates> response = manager.managedEnvironments()
+            .listWorkloadProfileStates("dekotjgxieqfkyf", "iwvjaqupbyyn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(1521065056, response.iterator().next().properties().minimumCount());
-        Assertions.assertEquals(1869442572, response.iterator().next().properties().maximumCount());
-        Assertions.assertEquals(1373287799, response.iterator().next().properties().currentCount());
+        Assertions.assertEquals(1874096637, response.iterator().next().properties().minimumCount());
+        Assertions.assertEquals(1667611376, response.iterator().next().properties().maximumCount());
+        Assertions.assertEquals(883857471, response.iterator().next().properties().currentCount());
     }
 }

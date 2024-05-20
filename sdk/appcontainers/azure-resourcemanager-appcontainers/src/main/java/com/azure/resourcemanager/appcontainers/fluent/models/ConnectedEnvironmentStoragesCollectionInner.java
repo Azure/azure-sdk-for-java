@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Storage for Environments. */
+/**
+ * Collection of Storage for Environments.
+ */
 @Fluent
 public final class ConnectedEnvironmentStoragesCollectionInner {
     /*
@@ -18,13 +20,15 @@ public final class ConnectedEnvironmentStoragesCollectionInner {
     @JsonProperty(value = "value", required = true)
     private List<ConnectedEnvironmentStorageInner> value;
 
-    /** Creates an instance of ConnectedEnvironmentStoragesCollectionInner class. */
+    /**
+     * Creates an instance of ConnectedEnvironmentStoragesCollectionInner class.
+     */
     public ConnectedEnvironmentStoragesCollectionInner() {
     }
 
     /**
      * Get the value property: Collection of storage resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ConnectedEnvironmentStorageInner> value() {
@@ -33,7 +37,7 @@ public final class ConnectedEnvironmentStoragesCollectionInner {
 
     /**
      * Set the value property: Collection of storage resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConnectedEnvironmentStoragesCollectionInner object itself.
      */
@@ -44,15 +48,13 @@ public final class ConnectedEnvironmentStoragesCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ConnectedEnvironmentStoragesCollectionInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model ConnectedEnvironmentStoragesCollectionInner"));
         } else {
             value().forEach(e -> e.validate());
         }

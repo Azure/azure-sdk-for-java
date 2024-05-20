@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TestFailoverJobDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TestFailoverJobDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"TestFailoverJobDetails\",\"testFailoverStatus\":\"cant\",\"comments\":\"yxzxjmkanbclazof\",\"networkName\":\"xvtemaspm\",\"networkFriendlyName\":\"ydscdkxwd\",\"networkType\":\"jcbhaahnt\",\"protectedItemDetails\":[{\"name\":\"fh\",\"friendlyName\":\"ixo\",\"testVmName\":\"kzdfiv\",\"testVmFriendlyName\":\"jybsrwz\",\"networkConnectionStatus\":\"rgt\",\"networkFriendlyName\":\"hmfppinmgi\",\"subnet\":\"smkw\",\"recoveryPointId\":\"gfragjhxerxlobkd\",\"recoveryPointTime\":\"2021-10-17T16:42:23Z\"},{\"name\":\"vmmnii\",\"friendlyName\":\"ho\",\"testVmName\":\"jn\",\"testVmFriendlyName\":\"bggicnqwlctmw\",\"networkConnectionStatus\":\"lxkrk\",\"networkFriendlyName\":\"vxrktjcjigcwtsp\",\"subnet\":\"bqxasevchefpgee\",\"recoveryPointId\":\"ybruhola\",\"recoveryPointTime\":\"2021-05-29T12:11:44Z\"}],\"affectedObjectDetails\":{\"aowcahdkm\":\"immrimaabsqqlonb\",\"zglkvbgu\":\"jsmihrijezbfsjwf\",\"gnbknhj\":\"bsvbwyot\",\"ffaspsdzkucsz\":\"clxaxw\"}}")
-                .toObject(TestFailoverJobDetails.class);
+        TestFailoverJobDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"TestFailoverJobDetails\",\"testFailoverStatus\":\"cant\",\"comments\":\"yxzxjmkanbclazof\",\"networkName\":\"xvtemaspm\",\"networkFriendlyName\":\"ydscdkxwd\",\"networkType\":\"jcbhaahnt\",\"protectedItemDetails\":[{\"name\":\"fh\",\"friendlyName\":\"ixo\",\"testVmName\":\"kzdfiv\",\"testVmFriendlyName\":\"jybsrwz\",\"networkConnectionStatus\":\"rgt\",\"networkFriendlyName\":\"hmfppinmgi\",\"subnet\":\"smkw\",\"recoveryPointId\":\"gfragjhxerxlobkd\",\"recoveryPointTime\":\"2021-10-17T16:42:23Z\"},{\"name\":\"vmmnii\",\"friendlyName\":\"ho\",\"testVmName\":\"jn\",\"testVmFriendlyName\":\"bggicnqwlctmw\",\"networkConnectionStatus\":\"lxkrk\",\"networkFriendlyName\":\"vxrktjcjigcwtsp\",\"subnet\":\"bqxasevchefpgee\",\"recoveryPointId\":\"ybruhola\",\"recoveryPointTime\":\"2021-05-29T12:11:44Z\"}],\"affectedObjectDetails\":{\"aowcahdkm\":\"immrimaabsqqlonb\",\"zglkvbgu\":\"jsmihrijezbfsjwf\",\"gnbknhj\":\"bsvbwyot\",\"ffaspsdzkucsz\":\"clxaxw\"}}")
+            .toObject(TestFailoverJobDetails.class);
         Assertions.assertEquals("immrimaabsqqlonb", model.affectedObjectDetails().get("aowcahdkm"));
         Assertions.assertEquals("cant", model.testFailoverStatus());
         Assertions.assertEquals("yxzxjmkanbclazof", model.comments());
@@ -35,53 +33,27 @@ public final class TestFailoverJobDetailsTests {
         Assertions.assertEquals("hmfppinmgi", model.protectedItemDetails().get(0).networkFriendlyName());
         Assertions.assertEquals("smkw", model.protectedItemDetails().get(0).subnet());
         Assertions.assertEquals("gfragjhxerxlobkd", model.protectedItemDetails().get(0).recoveryPointId());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-10-17T16:42:23Z"), model.protectedItemDetails().get(0).recoveryPointTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T16:42:23Z"),
+            model.protectedItemDetails().get(0).recoveryPointTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestFailoverJobDetails model =
-            new TestFailoverJobDetails()
-                .withAffectedObjectDetails(
-                    mapOf(
-                        "aowcahdkm",
-                        "immrimaabsqqlonb",
-                        "zglkvbgu",
-                        "jsmihrijezbfsjwf",
-                        "gnbknhj",
-                        "bsvbwyot",
-                        "ffaspsdzkucsz",
-                        "clxaxw"))
-                .withTestFailoverStatus("cant")
-                .withComments("yxzxjmkanbclazof")
-                .withNetworkName("xvtemaspm")
-                .withNetworkFriendlyName("ydscdkxwd")
-                .withNetworkType("jcbhaahnt")
-                .withProtectedItemDetails(
-                    Arrays
-                        .asList(
-                            new FailoverReplicationProtectedItemDetails()
-                                .withName("fh")
-                                .withFriendlyName("ixo")
-                                .withTestVmName("kzdfiv")
-                                .withTestVmFriendlyName("jybsrwz")
-                                .withNetworkConnectionStatus("rgt")
-                                .withNetworkFriendlyName("hmfppinmgi")
-                                .withSubnet("smkw")
-                                .withRecoveryPointId("gfragjhxerxlobkd")
-                                .withRecoveryPointTime(OffsetDateTime.parse("2021-10-17T16:42:23Z")),
-                            new FailoverReplicationProtectedItemDetails()
-                                .withName("vmmnii")
-                                .withFriendlyName("ho")
-                                .withTestVmName("jn")
-                                .withTestVmFriendlyName("bggicnqwlctmw")
-                                .withNetworkConnectionStatus("lxkrk")
-                                .withNetworkFriendlyName("vxrktjcjigcwtsp")
-                                .withSubnet("bqxasevchefpgee")
-                                .withRecoveryPointId("ybruhola")
-                                .withRecoveryPointTime(OffsetDateTime.parse("2021-05-29T12:11:44Z"))));
+        TestFailoverJobDetails model = new TestFailoverJobDetails()
+            .withAffectedObjectDetails(mapOf("aowcahdkm", "immrimaabsqqlonb", "zglkvbgu", "jsmihrijezbfsjwf", "gnbknhj",
+                "bsvbwyot", "ffaspsdzkucsz", "clxaxw"))
+            .withTestFailoverStatus("cant").withComments("yxzxjmkanbclazof").withNetworkName("xvtemaspm")
+            .withNetworkFriendlyName("ydscdkxwd").withNetworkType("jcbhaahnt")
+            .withProtectedItemDetails(Arrays.asList(
+                new FailoverReplicationProtectedItemDetails().withName("fh").withFriendlyName("ixo")
+                    .withTestVmName("kzdfiv").withTestVmFriendlyName("jybsrwz").withNetworkConnectionStatus("rgt")
+                    .withNetworkFriendlyName("hmfppinmgi").withSubnet("smkw").withRecoveryPointId("gfragjhxerxlobkd")
+                    .withRecoveryPointTime(OffsetDateTime.parse("2021-10-17T16:42:23Z")),
+                new FailoverReplicationProtectedItemDetails().withName("vmmnii").withFriendlyName("ho")
+                    .withTestVmName("jn").withTestVmFriendlyName("bggicnqwlctmw").withNetworkConnectionStatus("lxkrk")
+                    .withNetworkFriendlyName("vxrktjcjigcwtsp").withSubnet("bqxasevchefpgee")
+                    .withRecoveryPointId("ybruhola")
+                    .withRecoveryPointTime(OffsetDateTime.parse("2021-05-29T12:11:44Z"))));
         model = BinaryData.fromObject(model).toObject(TestFailoverJobDetails.class);
         Assertions.assertEquals("immrimaabsqqlonb", model.affectedObjectDetails().get("aowcahdkm"));
         Assertions.assertEquals("cant", model.testFailoverStatus());
@@ -97,9 +69,8 @@ public final class TestFailoverJobDetailsTests {
         Assertions.assertEquals("hmfppinmgi", model.protectedItemDetails().get(0).networkFriendlyName());
         Assertions.assertEquals("smkw", model.protectedItemDetails().get(0).subnet());
         Assertions.assertEquals("gfragjhxerxlobkd", model.protectedItemDetails().get(0).recoveryPointId());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-10-17T16:42:23Z"), model.protectedItemDetails().get(0).recoveryPointTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T16:42:23Z"),
+            model.protectedItemDetails().get(0).recoveryPointTime());
     }
 
     // Use "Map.of" if available

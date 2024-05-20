@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.GovernanceAssignmentsList;
 public final class GovernanceAssignmentsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GovernanceAssignmentsList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"owner\":\"ny\",\"remediationDueDate\":\"2021-07-02T15:24:24Z\",\"isGracePeriod\":true},\"id\":\"nsrpmeyy\",\"name\":\"pkpatlbijpzgsks\",\"type\":\"fhfv\"}],\"nextLink\":\"mknbnxwcdommpv\"}")
-                .toObject(GovernanceAssignmentsList.class);
+        GovernanceAssignmentsList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"owner\":\"ibahwflus\",\"remediationDueDate\":\"2021-01-14T17:23:07Z\",\"remediationEta\":{\"eta\":\"2021-01-31T16:25:21Z\",\"justification\":\"hrkwo\"},\"isGracePeriod\":false,\"governanceEmailNotification\":{\"disableManagerEmailNotification\":false,\"disableOwnerEmailNotification\":false},\"additionalData\":{\"ticketNumber\":1486476697,\"ticketLink\":\"pbtg\",\"ticketStatus\":\"bwoenwashrt\"}},\"id\":\"tkcnqxwb\",\"name\":\"okulpiujwa\",\"type\":\"sipqii\"}],\"nextLink\":\"yuq\"}")
+            .toObject(GovernanceAssignmentsList.class);
     }
 
     @org.junit.jupiter.api.Test

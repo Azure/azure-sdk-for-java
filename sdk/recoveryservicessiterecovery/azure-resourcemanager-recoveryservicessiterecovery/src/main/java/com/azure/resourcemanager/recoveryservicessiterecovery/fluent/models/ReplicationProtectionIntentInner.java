@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationProtectionIntentProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Replication protection intent. */
+/**
+ * Replication protection intent.
+ */
 @Fluent
 public final class ReplicationProtectionIntentInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class ReplicationProtectionIntentInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of ReplicationProtectionIntentInner class. */
+    /**
+     * Creates an instance of ReplicationProtectionIntentInner class.
+     */
     public ReplicationProtectionIntentInner() {
     }
 
     /**
      * Get the properties property: The custom data.
-     *
+     * 
      * @return the properties value.
      */
     public ReplicationProtectionIntentProperties properties() {
@@ -39,7 +43,7 @@ public final class ReplicationProtectionIntentInner extends ProxyResource {
 
     /**
      * Set the properties property: The custom data.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ReplicationProtectionIntentInner object itself.
      */
@@ -50,7 +54,7 @@ public final class ReplicationProtectionIntentInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class ReplicationProtectionIntentInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the ReplicationProtectionIntentInner object itself.
      */
@@ -70,7 +74,7 @@ public final class ReplicationProtectionIntentInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

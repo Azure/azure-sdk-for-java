@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class IntegrationRuntimesListAuthKeysSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * IntegrationRuntimes_ListAuthKeys.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/IntegrationRuntimes_ListAuthKeys.json
      */
     /**
      * Sample code: IntegrationRuntimes_ListAuthKeys.
@@ -19,7 +18,8 @@ public final class IntegrationRuntimesListAuthKeysSamples {
      */
     public static void
         integrationRuntimesListAuthKeys(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.integrationRuntimes().listAuthKeysWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleIntegrationRuntime", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes()
+            .listAuthKeysWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -15,7 +15,10 @@ import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
 /**
- * A read-only list of geometry coordinates.
+ * <p>Represents a read-only list of geometry coordinates.</p>
+ *
+ * <p>This class encapsulates a list of geometry coordinates and provides methods to access these coordinates.
+ * The coordinates can be of any type {@code T}.</p>
  *
  * @param <T> The type of geometry coordinates.
  */

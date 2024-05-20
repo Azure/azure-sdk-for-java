@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.callautomation.models.events.AnswerFailed;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.core.annotation.Immutable;
 
@@ -13,6 +14,7 @@ import com.azure.core.annotation.Immutable;
 public final class AnswerCallEventResult {
     private final boolean isSuccess;
     private final CallConnected successResult;
+    private final AnswerFailed failureResult;
 
     /**
      * Initializes a new instance of AnswerCallEventResult.
@@ -20,9 +22,10 @@ public final class AnswerCallEventResult {
      * @param isSuccess the success status of the answer call operation.
      * @param successResult the call connected success event.
      */
-    AnswerCallEventResult(boolean isSuccess, CallConnected successResult) {
+    AnswerCallEventResult(boolean isSuccess, CallConnected successResult, AnswerFailed failureResult) {
         this.isSuccess = isSuccess;
         this.successResult = successResult;
+        this.failureResult = failureResult;
     }
 
     /**
@@ -43,4 +46,11 @@ public final class AnswerCallEventResult {
         return successResult;
     }
 
+    /**
+     * 
+     * @return the answer failed failure event.
+     */
+    public AnswerFailed getFailureResult() {
+        return failureResult;
+    }
 }

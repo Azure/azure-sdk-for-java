@@ -21,8 +21,7 @@ public class JsonReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     private static Function<HttpRequest, HttpResponse> createMockResponseSupplier(CorePerfStressOptions options) {
         byte[] bodyBytes = generateBodyBytes(options.getSize());
-        return httpRequest -> createMockResponse(httpRequest,
-            "application/json",  bodyBytes);
+        return httpRequest -> createMockResponse(httpRequest, "application/json", bodyBytes);
     }
 
     @Override
@@ -37,13 +36,12 @@ public class JsonReceiveTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return service.getUserDatabaseJsonAsync(endpoint, id)
-            .map(userdatabase -> {
-                userdatabase.getValue().getUserList().forEach(sampleUserData -> {
-                    sampleUserData.getId();
-                });
-                return 1;
-            }).then();
+        return service.getUserDatabaseJsonAsync(endpoint, id).map(userdatabase -> {
+            userdatabase.getValue().getUserList().forEach(sampleUserData -> {
+                sampleUserData.getId();
+            });
+            return 1;
+        }).then();
     }
 
     private static byte[] generateBodyBytes(long size) {

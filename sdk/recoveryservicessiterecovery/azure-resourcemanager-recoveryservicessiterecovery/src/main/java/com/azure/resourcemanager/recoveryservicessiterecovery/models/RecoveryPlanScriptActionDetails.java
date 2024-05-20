@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery plan script action details. */
+/**
+ * Recovery plan script action details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("ScriptActionDetails")
 @Fluent
@@ -33,13 +35,15 @@ public final class RecoveryPlanScriptActionDetails extends RecoveryPlanActionDet
     @JsonProperty(value = "fabricLocation", required = true)
     private RecoveryPlanActionLocation fabricLocation;
 
-    /** Creates an instance of RecoveryPlanScriptActionDetails class. */
+    /**
+     * Creates an instance of RecoveryPlanScriptActionDetails class.
+     */
     public RecoveryPlanScriptActionDetails() {
     }
 
     /**
      * Get the path property: The script path.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -48,7 +52,7 @@ public final class RecoveryPlanScriptActionDetails extends RecoveryPlanActionDet
 
     /**
      * Set the path property: The script path.
-     *
+     * 
      * @param path the path value to set.
      * @return the RecoveryPlanScriptActionDetails object itself.
      */
@@ -59,7 +63,7 @@ public final class RecoveryPlanScriptActionDetails extends RecoveryPlanActionDet
 
     /**
      * Get the timeout property: The script timeout.
-     *
+     * 
      * @return the timeout value.
      */
     public String timeout() {
@@ -68,7 +72,7 @@ public final class RecoveryPlanScriptActionDetails extends RecoveryPlanActionDet
 
     /**
      * Set the timeout property: The script timeout.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the RecoveryPlanScriptActionDetails object itself.
      */
@@ -79,7 +83,7 @@ public final class RecoveryPlanScriptActionDetails extends RecoveryPlanActionDet
 
     /**
      * Get the fabricLocation property: The fabric location.
-     *
+     * 
      * @return the fabricLocation value.
      */
     public RecoveryPlanActionLocation fabricLocation() {
@@ -88,7 +92,7 @@ public final class RecoveryPlanScriptActionDetails extends RecoveryPlanActionDet
 
     /**
      * Set the fabricLocation property: The fabric location.
-     *
+     * 
      * @param fabricLocation the fabricLocation value to set.
      * @return the RecoveryPlanScriptActionDetails object itself.
      */
@@ -99,23 +103,19 @@ public final class RecoveryPlanScriptActionDetails extends RecoveryPlanActionDet
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (path() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property path in model RecoveryPlanScriptActionDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property path in model RecoveryPlanScriptActionDetails"));
         }
         if (fabricLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fabricLocation in model RecoveryPlanScriptActionDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property fabricLocation in model RecoveryPlanScriptActionDetails"));
         }
     }
 

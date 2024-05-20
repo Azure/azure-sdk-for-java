@@ -14,75 +14,56 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricSpecification model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"gtzxdpn\",\"displayName\":\"qqwx\",\"displayDescription\":\"feallnwsu\",\"unit\":\"snjampmng\",\"aggregationType\":\"scxaq\",\"supportedAggregationTypes\":[\"Average\",\"Maximum\",\"None\",\"Maximum\"],\"metricClass\":\"nqvpkvlrxnje\",\"dimensions\":[{\"name\":\"pheoflokeyy\",\"displayName\":\"nj\",\"internalName\":\"lwtgrhpdj\",\"toBeExportedForShoebox\":true},{\"name\":\"asxazjpqyegualhb\",\"displayName\":\"hejjz\",\"internalName\":\"dudgwdslfhot\",\"toBeExportedForShoebox\":true},{\"name\":\"npwlbjnpg\",\"displayName\":\"ftadehxnltyfs\",\"internalName\":\"pusuesn\",\"toBeExportedForShoebox\":false},{\"name\":\"jbavorxzdm\",\"displayName\":\"ctbqvudwx\",\"internalName\":\"dnvowg\",\"toBeExportedForShoebox\":true}]}")
-                .toObject(MetricSpecification.class);
-        Assertions.assertEquals("gtzxdpn", model.name());
-        Assertions.assertEquals("qqwx", model.displayName());
-        Assertions.assertEquals("feallnwsu", model.displayDescription());
-        Assertions.assertEquals("snjampmng", model.unit());
-        Assertions.assertEquals("scxaq", model.aggregationType());
+        MetricSpecification model = BinaryData.fromString(
+            "{\"name\":\"obbc\",\"displayName\":\"s\",\"displayDescription\":\"jriplrbpbewtghf\",\"unit\":\"lcgwxzvlvqh\",\"aggregationType\":\"begibtnmxiebwwa\",\"supportedAggregationTypes\":[\"Average\",\"NotSpecified\"],\"metricClass\":\"gwrtzju\",\"dimensions\":[{\"name\":\"zmh\",\"displayName\":\"ongmtsa\",\"internalName\":\"cbpwxqpsrknft\",\"toBeExportedForShoebox\":true},{\"name\":\"iuhprwmdyvxqta\",\"displayName\":\"iwwroyqbexrmc\",\"internalName\":\"bycnojvkn\",\"toBeExportedForShoebox\":true},{\"name\":\"sgzvahapjyzhpv\",\"displayName\":\"zcjrvxdjzlmwlx\",\"internalName\":\"ug\",\"toBeExportedForShoebox\":false}]}")
+            .toObject(MetricSpecification.class);
+        Assertions.assertEquals("obbc", model.name());
+        Assertions.assertEquals("s", model.displayName());
+        Assertions.assertEquals("jriplrbpbewtghf", model.displayDescription());
+        Assertions.assertEquals("lcgwxzvlvqh", model.unit());
+        Assertions.assertEquals("begibtnmxiebwwa", model.aggregationType());
         Assertions.assertEquals(MetricAggregationType.AVERAGE, model.supportedAggregationTypes().get(0));
-        Assertions.assertEquals("nqvpkvlrxnje", model.metricClass());
-        Assertions.assertEquals("pheoflokeyy", model.dimensions().get(0).name());
-        Assertions.assertEquals("nj", model.dimensions().get(0).displayName());
-        Assertions.assertEquals("lwtgrhpdj", model.dimensions().get(0).internalName());
+        Assertions.assertEquals("gwrtzju", model.metricClass());
+        Assertions.assertEquals("zmh", model.dimensions().get(0).name());
+        Assertions.assertEquals("ongmtsa", model.dimensions().get(0).displayName());
+        Assertions.assertEquals("cbpwxqpsrknft", model.dimensions().get(0).internalName());
         Assertions.assertEquals(true, model.dimensions().get(0).toBeExportedForShoebox());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricSpecification model =
-            new MetricSpecification()
-                .withName("gtzxdpn")
-                .withDisplayName("qqwx")
-                .withDisplayDescription("feallnwsu")
-                .withUnit("snjampmng")
-                .withAggregationType("scxaq")
-                .withSupportedAggregationTypes(
-                    Arrays
-                        .asList(
-                            MetricAggregationType.AVERAGE,
-                            MetricAggregationType.MAXIMUM,
-                            MetricAggregationType.NONE,
-                            MetricAggregationType.MAXIMUM))
-                .withMetricClass("nqvpkvlrxnje")
-                .withDimensions(
-                    Arrays
-                        .asList(
-                            new MetricDimension()
-                                .withName("pheoflokeyy")
-                                .withDisplayName("nj")
-                                .withInternalName("lwtgrhpdj")
-                                .withToBeExportedForShoebox(true),
-                            new MetricDimension()
-                                .withName("asxazjpqyegualhb")
-                                .withDisplayName("hejjz")
-                                .withInternalName("dudgwdslfhot")
-                                .withToBeExportedForShoebox(true),
-                            new MetricDimension()
-                                .withName("npwlbjnpg")
-                                .withDisplayName("ftadehxnltyfs")
-                                .withInternalName("pusuesn")
-                                .withToBeExportedForShoebox(false),
-                            new MetricDimension()
-                                .withName("jbavorxzdm")
-                                .withDisplayName("ctbqvudwx")
-                                .withInternalName("dnvowg")
-                                .withToBeExportedForShoebox(true)));
+        MetricSpecification model = new MetricSpecification().withName("obbc")
+            .withDisplayName("s")
+            .withDisplayDescription("jriplrbpbewtghf")
+            .withUnit("lcgwxzvlvqh")
+            .withAggregationType("begibtnmxiebwwa")
+            .withSupportedAggregationTypes(
+                Arrays.asList(MetricAggregationType.AVERAGE, MetricAggregationType.NOT_SPECIFIED))
+            .withMetricClass("gwrtzju")
+            .withDimensions(Arrays.asList(
+                new MetricDimension().withName("zmh")
+                    .withDisplayName("ongmtsa")
+                    .withInternalName("cbpwxqpsrknft")
+                    .withToBeExportedForShoebox(true),
+                new MetricDimension().withName("iuhprwmdyvxqta")
+                    .withDisplayName("iwwroyqbexrmc")
+                    .withInternalName("bycnojvkn")
+                    .withToBeExportedForShoebox(true),
+                new MetricDimension().withName("sgzvahapjyzhpv")
+                    .withDisplayName("zcjrvxdjzlmwlx")
+                    .withInternalName("ug")
+                    .withToBeExportedForShoebox(false)));
         model = BinaryData.fromObject(model).toObject(MetricSpecification.class);
-        Assertions.assertEquals("gtzxdpn", model.name());
-        Assertions.assertEquals("qqwx", model.displayName());
-        Assertions.assertEquals("feallnwsu", model.displayDescription());
-        Assertions.assertEquals("snjampmng", model.unit());
-        Assertions.assertEquals("scxaq", model.aggregationType());
+        Assertions.assertEquals("obbc", model.name());
+        Assertions.assertEquals("s", model.displayName());
+        Assertions.assertEquals("jriplrbpbewtghf", model.displayDescription());
+        Assertions.assertEquals("lcgwxzvlvqh", model.unit());
+        Assertions.assertEquals("begibtnmxiebwwa", model.aggregationType());
         Assertions.assertEquals(MetricAggregationType.AVERAGE, model.supportedAggregationTypes().get(0));
-        Assertions.assertEquals("nqvpkvlrxnje", model.metricClass());
-        Assertions.assertEquals("pheoflokeyy", model.dimensions().get(0).name());
-        Assertions.assertEquals("nj", model.dimensions().get(0).displayName());
-        Assertions.assertEquals("lwtgrhpdj", model.dimensions().get(0).internalName());
+        Assertions.assertEquals("gwrtzju", model.metricClass());
+        Assertions.assertEquals("zmh", model.dimensions().get(0).name());
+        Assertions.assertEquals("ongmtsa", model.dimensions().get(0).displayName());
+        Assertions.assertEquals("cbpwxqpsrknft", model.dimensions().get(0).internalName());
         Assertions.assertEquals(true, model.dimensions().get(0).toBeExportedForShoebox());
     }
 }

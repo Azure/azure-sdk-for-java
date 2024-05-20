@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ExtendedLocation details data. */
+/**
+ * ExtendedLocation details data.
+ */
 @Fluent
 public final class A2AExtendedLocationDetails {
     /*
@@ -22,13 +24,15 @@ public final class A2AExtendedLocationDetails {
     @JsonProperty(value = "recoveryExtendedLocation")
     private ExtendedLocation recoveryExtendedLocation;
 
-    /** Creates an instance of A2AExtendedLocationDetails class. */
+    /**
+     * Creates an instance of A2AExtendedLocationDetails class.
+     */
     public A2AExtendedLocationDetails() {
     }
 
     /**
      * Get the primaryExtendedLocation property: The primary ExtendedLocation.
-     *
+     * 
      * @return the primaryExtendedLocation value.
      */
     public ExtendedLocation primaryExtendedLocation() {
@@ -37,7 +41,7 @@ public final class A2AExtendedLocationDetails {
 
     /**
      * Set the primaryExtendedLocation property: The primary ExtendedLocation.
-     *
+     * 
      * @param primaryExtendedLocation the primaryExtendedLocation value to set.
      * @return the A2AExtendedLocationDetails object itself.
      */
@@ -48,7 +52,7 @@ public final class A2AExtendedLocationDetails {
 
     /**
      * Get the recoveryExtendedLocation property: The recovery ExtendedLocation.
-     *
+     * 
      * @return the recoveryExtendedLocation value.
      */
     public ExtendedLocation recoveryExtendedLocation() {
@@ -57,7 +61,7 @@ public final class A2AExtendedLocationDetails {
 
     /**
      * Set the recoveryExtendedLocation property: The recovery ExtendedLocation.
-     *
+     * 
      * @param recoveryExtendedLocation the recoveryExtendedLocation value to set.
      * @return the A2AExtendedLocationDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class A2AExtendedLocationDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -27,80 +27,67 @@ public final class ReplicationMigrationItemsImpl implements ReplicationMigration
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    public ReplicationMigrationItemsImpl(
-        ReplicationMigrationItemsClient innerClient,
+    public ReplicationMigrationItemsImpl(ReplicationMigrationItemsClient innerClient,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<MigrationItem> listByReplicationProtectionContainers(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName) {
-        PagedIterable<MigrationItemInner> inner =
-            this
-                .serviceClient()
-                .listByReplicationProtectionContainers(
-                    resourceName, resourceGroupName, fabricName, protectionContainerName);
-        return Utils.mapPage(inner, inner1 -> new MigrationItemImpl(inner1, this.manager()));
+    public PagedIterable<MigrationItem> listByReplicationProtectionContainers(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName) {
+        PagedIterable<MigrationItemInner> inner = this.serviceClient().listByReplicationProtectionContainers(
+            resourceName, resourceGroupName, fabricName, protectionContainerName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationItemImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<MigrationItem> listByReplicationProtectionContainers(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String skipToken,
-        String takeToken,
-        String filter,
-        Context context) {
-        PagedIterable<MigrationItemInner> inner =
-            this
-                .serviceClient()
-                .listByReplicationProtectionContainers(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    protectionContainerName,
-                    skipToken,
-                    takeToken,
-                    filter,
-                    context);
-        return Utils.mapPage(inner, inner1 -> new MigrationItemImpl(inner1, this.manager()));
+    public PagedIterable<MigrationItem> listByReplicationProtectionContainers(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName, String skipToken, String takeToken,
+        String filter, Context context) {
+        PagedIterable<MigrationItemInner> inner
+            = this.serviceClient().listByReplicationProtectionContainers(resourceName, resourceGroupName, fabricName,
+                protectionContainerName, skipToken, takeToken, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationItemImpl(inner1, this.manager()));
     }
 
-    public Response<MigrationItem> getWithResponse(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName,
-        Context context) {
-        Response<MigrationItemInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName, context);
+    public Response<MigrationItem> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String migrationItemName, Context context) {
+        Response<MigrationItemInner> inner = this.serviceClient().getWithResponse(resourceName, resourceGroupName,
+            fabricName, protectionContainerName, migrationItemName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MigrationItemImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public MigrationItem get(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
+    public MigrationItem get(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String migrationItemName) {
+        MigrationItemInner inner = this.serviceClient().get(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, migrationItemName);
+        if (inner != null) {
+            return new MigrationItemImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String migrationItemName) {
-        MigrationItemInner inner =
-            this
-                .serviceClient()
-                .get(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName);
+        this.serviceClient().delete(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            migrationItemName);
+    }
+
+    public void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String migrationItemName, String deleteOption, Context context) {
+        this.serviceClient().delete(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            migrationItemName, deleteOption, context);
+    }
+
+    public MigrationItem migrate(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String migrationItemName, MigrateInput migrateInput) {
+        MigrationItemInner inner = this.serviceClient().migrate(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, migrationItemName, migrateInput);
         if (inner != null) {
             return new MigrationItemImpl(inner, this.manager());
         } else {
@@ -108,54 +95,33 @@ public final class ReplicationMigrationItemsImpl implements ReplicationMigration
         }
     }
 
-    public void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName) {
-        this
-            .serviceClient()
-            .delete(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName);
+    public MigrationItem migrate(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String migrationItemName, MigrateInput migrateInput, Context context) {
+        MigrationItemInner inner = this.serviceClient().migrate(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, migrationItemName, migrateInput, context);
+        if (inner != null) {
+            return new MigrationItemImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName,
-        String deleteOption,
+    public MigrationItem pauseReplication(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String migrationItemName, PauseReplicationInput pauseReplicationInput) {
+        MigrationItemInner inner = this.serviceClient().pauseReplication(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, migrationItemName, pauseReplicationInput);
+        if (inner != null) {
+            return new MigrationItemImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public MigrationItem pauseReplication(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String migrationItemName, PauseReplicationInput pauseReplicationInput,
         Context context) {
-        this
-            .serviceClient()
-            .delete(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                protectionContainerName,
-                migrationItemName,
-                deleteOption,
-                context);
-    }
-
-    public MigrationItem migrate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName,
-        MigrateInput migrateInput) {
-        MigrationItemInner inner =
-            this
-                .serviceClient()
-                .migrate(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    protectionContainerName,
-                    migrationItemName,
-                    migrateInput);
+        MigrationItemInner inner = this.serviceClient().pauseReplication(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, migrationItemName, pauseReplicationInput, context);
         if (inner != null) {
             return new MigrationItemImpl(inner, this.manager());
         } else {
@@ -163,25 +129,22 @@ public final class ReplicationMigrationItemsImpl implements ReplicationMigration
         }
     }
 
-    public MigrationItem migrate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName,
-        MigrateInput migrateInput,
+    public MigrationItem resumeReplication(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String migrationItemName, ResumeReplicationInput resumeReplicationInput) {
+        MigrationItemInner inner = this.serviceClient().resumeReplication(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, migrationItemName, resumeReplicationInput);
+        if (inner != null) {
+            return new MigrationItemImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public MigrationItem resumeReplication(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String migrationItemName, ResumeReplicationInput resumeReplicationInput,
         Context context) {
-        MigrationItemInner inner =
-            this
-                .serviceClient()
-                .migrate(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    protectionContainerName,
-                    migrationItemName,
-                    migrateInput,
-                    context);
+        MigrationItemInner inner = this.serviceClient().resumeReplication(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, migrationItemName, resumeReplicationInput, context);
         if (inner != null) {
             return new MigrationItemImpl(inner, this.manager());
         } else {
@@ -189,23 +152,10 @@ public final class ReplicationMigrationItemsImpl implements ReplicationMigration
         }
     }
 
-    public MigrationItem pauseReplication(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName,
-        PauseReplicationInput pauseReplicationInput) {
-        MigrationItemInner inner =
-            this
-                .serviceClient()
-                .pauseReplication(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    protectionContainerName,
-                    migrationItemName,
-                    pauseReplicationInput);
+    public MigrationItem resync(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String migrationItemName, ResyncInput input) {
+        MigrationItemInner inner = this.serviceClient().resync(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, migrationItemName, input);
         if (inner != null) {
             return new MigrationItemImpl(inner, this.manager());
         } else {
@@ -213,219 +163,55 @@ public final class ReplicationMigrationItemsImpl implements ReplicationMigration
         }
     }
 
-    public MigrationItem pauseReplication(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName,
-        PauseReplicationInput pauseReplicationInput,
+    public MigrationItem resync(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String migrationItemName, ResyncInput input, Context context) {
+        MigrationItemInner inner = this.serviceClient().resync(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, migrationItemName, input, context);
+        if (inner != null) {
+            return new MigrationItemImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public MigrationItem testMigrate(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String migrationItemName, TestMigrateInput testMigrateInput) {
+        MigrationItemInner inner = this.serviceClient().testMigrate(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, migrationItemName, testMigrateInput);
+        if (inner != null) {
+            return new MigrationItemImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public MigrationItem testMigrate(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String migrationItemName, TestMigrateInput testMigrateInput, Context context) {
+        MigrationItemInner inner = this.serviceClient().testMigrate(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, migrationItemName, testMigrateInput, context);
+        if (inner != null) {
+            return new MigrationItemImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public MigrationItem testMigrateCleanup(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String migrationItemName, TestMigrateCleanupInput testMigrateCleanupInput) {
+        MigrationItemInner inner = this.serviceClient().testMigrateCleanup(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, migrationItemName, testMigrateCleanupInput);
+        if (inner != null) {
+            return new MigrationItemImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public MigrationItem testMigrateCleanup(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String migrationItemName, TestMigrateCleanupInput testMigrateCleanupInput,
         Context context) {
-        MigrationItemInner inner =
-            this
-                .serviceClient()
-                .pauseReplication(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    protectionContainerName,
-                    migrationItemName,
-                    pauseReplicationInput,
-                    context);
-        if (inner != null) {
-            return new MigrationItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public MigrationItem resumeReplication(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName,
-        ResumeReplicationInput resumeReplicationInput) {
-        MigrationItemInner inner =
-            this
-                .serviceClient()
-                .resumeReplication(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    protectionContainerName,
-                    migrationItemName,
-                    resumeReplicationInput);
-        if (inner != null) {
-            return new MigrationItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public MigrationItem resumeReplication(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName,
-        ResumeReplicationInput resumeReplicationInput,
-        Context context) {
-        MigrationItemInner inner =
-            this
-                .serviceClient()
-                .resumeReplication(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    protectionContainerName,
-                    migrationItemName,
-                    resumeReplicationInput,
-                    context);
-        if (inner != null) {
-            return new MigrationItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public MigrationItem resync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName,
-        ResyncInput input) {
-        MigrationItemInner inner =
-            this
-                .serviceClient()
-                .resync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName, input);
-        if (inner != null) {
-            return new MigrationItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public MigrationItem resync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName,
-        ResyncInput input,
-        Context context) {
-        MigrationItemInner inner =
-            this
-                .serviceClient()
-                .resync(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    protectionContainerName,
-                    migrationItemName,
-                    input,
-                    context);
-        if (inner != null) {
-            return new MigrationItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public MigrationItem testMigrate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName,
-        TestMigrateInput testMigrateInput) {
-        MigrationItemInner inner =
-            this
-                .serviceClient()
-                .testMigrate(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    protectionContainerName,
-                    migrationItemName,
-                    testMigrateInput);
-        if (inner != null) {
-            return new MigrationItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public MigrationItem testMigrate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName,
-        TestMigrateInput testMigrateInput,
-        Context context) {
-        MigrationItemInner inner =
-            this
-                .serviceClient()
-                .testMigrate(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    protectionContainerName,
-                    migrationItemName,
-                    testMigrateInput,
-                    context);
-        if (inner != null) {
-            return new MigrationItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public MigrationItem testMigrateCleanup(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName,
-        TestMigrateCleanupInput testMigrateCleanupInput) {
-        MigrationItemInner inner =
-            this
-                .serviceClient()
-                .testMigrateCleanup(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    protectionContainerName,
-                    migrationItemName,
-                    testMigrateCleanupInput);
-        if (inner != null) {
-            return new MigrationItemImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public MigrationItem testMigrateCleanup(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String migrationItemName,
-        TestMigrateCleanupInput testMigrateCleanupInput,
-        Context context) {
-        MigrationItemInner inner =
-            this
-                .serviceClient()
-                .testMigrateCleanup(
-                    resourceName,
-                    resourceGroupName,
-                    fabricName,
-                    protectionContainerName,
-                    migrationItemName,
-                    testMigrateCleanupInput,
-                    context);
+        MigrationItemInner inner = this.serviceClient().testMigrateCleanup(resourceName, resourceGroupName, fabricName,
+            protectionContainerName, migrationItemName, testMigrateCleanupInput, context);
         if (inner != null) {
             return new MigrationItemImpl(inner, this.manager());
         } else {
@@ -435,237 +221,139 @@ public final class ReplicationMigrationItemsImpl implements ReplicationMigration
 
     public PagedIterable<MigrationItem> list(String resourceName, String resourceGroupName) {
         PagedIterable<MigrationItemInner> inner = this.serviceClient().list(resourceName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new MigrationItemImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationItemImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<MigrationItem> list(
-        String resourceName,
-        String resourceGroupName,
-        String skipToken,
-        String takeToken,
-        String filter,
-        Context context) {
-        PagedIterable<MigrationItemInner> inner =
-            this.serviceClient().list(resourceName, resourceGroupName, skipToken, takeToken, filter, context);
-        return Utils.mapPage(inner, inner1 -> new MigrationItemImpl(inner1, this.manager()));
+    public PagedIterable<MigrationItem> list(String resourceName, String resourceGroupName, String skipToken,
+        String takeToken, String filter, Context context) {
+        PagedIterable<MigrationItemInner> inner
+            = this.serviceClient().list(resourceName, resourceGroupName, skipToken, takeToken, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationItemImpl(inner1, this.manager()));
     }
 
     public MigrationItem getById(String id) {
-        String resourceName = Utils.getValueFromIdByName(id, "vaults");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fabricName = Utils.getValueFromIdByName(id, "replicationFabrics");
+        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
         }
-        String protectionContainerName = Utils.getValueFromIdByName(id, "replicationProtectionContainers");
+        String protectionContainerName
+            = ResourceManagerUtils.getValueFromIdByName(id, "replicationProtectionContainers");
         if (protectionContainerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'replicationProtectionContainers'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'replicationProtectionContainers'.", id)));
         }
-        String migrationItemName = Utils.getValueFromIdByName(id, "replicationMigrationItems");
+        String migrationItemName = ResourceManagerUtils.getValueFromIdByName(id, "replicationMigrationItems");
         if (migrationItemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationMigrationItems'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'replicationMigrationItems'.", id)));
         }
-        return this
-            .getWithResponse(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName, Context.NONE)
-            .getValue();
+        return this.getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            migrationItemName, Context.NONE).getValue();
     }
 
     public Response<MigrationItem> getByIdWithResponse(String id, Context context) {
-        String resourceName = Utils.getValueFromIdByName(id, "vaults");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fabricName = Utils.getValueFromIdByName(id, "replicationFabrics");
+        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
         }
-        String protectionContainerName = Utils.getValueFromIdByName(id, "replicationProtectionContainers");
+        String protectionContainerName
+            = ResourceManagerUtils.getValueFromIdByName(id, "replicationProtectionContainers");
         if (protectionContainerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'replicationProtectionContainers'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'replicationProtectionContainers'.", id)));
         }
-        String migrationItemName = Utils.getValueFromIdByName(id, "replicationMigrationItems");
+        String migrationItemName = ResourceManagerUtils.getValueFromIdByName(id, "replicationMigrationItems");
         if (migrationItemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationMigrationItems'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'replicationMigrationItems'.", id)));
         }
-        return this
-            .getWithResponse(
-                resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName, context);
+        return this.getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            migrationItemName, context);
     }
 
     public void deleteById(String id) {
-        String resourceName = Utils.getValueFromIdByName(id, "vaults");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fabricName = Utils.getValueFromIdByName(id, "replicationFabrics");
+        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
         }
-        String protectionContainerName = Utils.getValueFromIdByName(id, "replicationProtectionContainers");
+        String protectionContainerName
+            = ResourceManagerUtils.getValueFromIdByName(id, "replicationProtectionContainers");
         if (protectionContainerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'replicationProtectionContainers'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'replicationProtectionContainers'.", id)));
         }
-        String migrationItemName = Utils.getValueFromIdByName(id, "replicationMigrationItems");
+        String migrationItemName = ResourceManagerUtils.getValueFromIdByName(id, "replicationMigrationItems");
         if (migrationItemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationMigrationItems'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'replicationMigrationItems'.", id)));
         }
         String localDeleteOption = null;
-        this
-            .delete(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                protectionContainerName,
-                migrationItemName,
-                localDeleteOption,
-                Context.NONE);
+        this.delete(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            localDeleteOption, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String deleteOption, Context context) {
-        String resourceName = Utils.getValueFromIdByName(id, "vaults");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fabricName = Utils.getValueFromIdByName(id, "replicationFabrics");
+        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
         }
-        String protectionContainerName = Utils.getValueFromIdByName(id, "replicationProtectionContainers");
+        String protectionContainerName
+            = ResourceManagerUtils.getValueFromIdByName(id, "replicationProtectionContainers");
         if (protectionContainerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'replicationProtectionContainers'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'replicationProtectionContainers'.", id)));
         }
-        String migrationItemName = Utils.getValueFromIdByName(id, "replicationMigrationItems");
+        String migrationItemName = ResourceManagerUtils.getValueFromIdByName(id, "replicationMigrationItems");
         if (migrationItemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationMigrationItems'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'replicationMigrationItems'.", id)));
         }
-        this
-            .delete(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                protectionContainerName,
-                migrationItemName,
-                deleteOption,
-                context);
+        this.delete(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            deleteOption, context);
     }
 
     private ReplicationMigrationItemsClient serviceClient() {

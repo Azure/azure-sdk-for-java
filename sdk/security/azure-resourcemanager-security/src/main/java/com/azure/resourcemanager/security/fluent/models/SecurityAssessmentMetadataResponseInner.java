@@ -19,7 +19,9 @@ import com.azure.resourcemanager.security.models.UserImpact;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Security assessment metadata response. */
+/**
+ * Security assessment metadata response.
+ */
 @Fluent
 public final class SecurityAssessmentMetadataResponseInner extends ProxyResource {
     /*
@@ -28,13 +30,15 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
     @JsonProperty(value = "properties")
     private SecurityAssessmentMetadataPropertiesResponse innerProperties;
 
-    /** Creates an instance of SecurityAssessmentMetadataResponseInner class. */
+    /**
+     * Creates an instance of SecurityAssessmentMetadataResponseInner class.
+     */
     public SecurityAssessmentMetadataResponseInner() {
     }
 
     /**
      * Get the innerProperties property: Describes properties of an assessment metadata response.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecurityAssessmentMetadataPropertiesResponse innerProperties() {
@@ -43,7 +47,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Get the publishDates property: The publishDates property.
-     *
+     * 
      * @return the publishDates value.
      */
     public SecurityAssessmentMetadataPropertiesResponsePublishDates publishDates() {
@@ -52,12 +56,12 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Set the publishDates property: The publishDates property.
-     *
+     * 
      * @param publishDates the publishDates value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
-    public SecurityAssessmentMetadataResponseInner withPublishDates(
-        SecurityAssessmentMetadataPropertiesResponsePublishDates publishDates) {
+    public SecurityAssessmentMetadataResponseInner
+        withPublishDates(SecurityAssessmentMetadataPropertiesResponsePublishDates publishDates) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SecurityAssessmentMetadataPropertiesResponse();
         }
@@ -67,7 +71,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Get the plannedDeprecationDate property: The plannedDeprecationDate property.
-     *
+     * 
      * @return the plannedDeprecationDate value.
      */
     public String plannedDeprecationDate() {
@@ -76,7 +80,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Set the plannedDeprecationDate property: The plannedDeprecationDate property.
-     *
+     * 
      * @param plannedDeprecationDate the plannedDeprecationDate value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
@@ -90,7 +94,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Get the tactics property: The tactics property.
-     *
+     * 
      * @return the tactics value.
      */
     public List<Tactics> tactics() {
@@ -99,7 +103,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Set the tactics property: The tactics property.
-     *
+     * 
      * @param tactics the tactics value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
@@ -113,7 +117,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Get the techniques property: The techniques property.
-     *
+     * 
      * @return the techniques value.
      */
     public List<Techniques> techniques() {
@@ -122,7 +126,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Set the techniques property: The techniques property.
-     *
+     * 
      * @param techniques the techniques value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
@@ -136,7 +140,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Get the displayName property: User friendly display name of the assessment.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -145,7 +149,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Set the displayName property: User friendly display name of the assessment.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
@@ -160,7 +164,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
     /**
      * Get the policyDefinitionId property: Azure resource ID of the policy definition that turns this assessment
      * calculation on.
-     *
+     * 
      * @return the policyDefinitionId value.
      */
     public String policyDefinitionId() {
@@ -169,7 +173,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Get the description property: Human readable description of the assessment.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -178,7 +182,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Set the description property: Human readable description of the assessment.
-     *
+     * 
      * @param description the description value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
@@ -193,7 +197,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
     /**
      * Get the remediationDescription property: Human readable description of what you should do to mitigate this
      * security issue.
-     *
+     * 
      * @return the remediationDescription value.
      */
     public String remediationDescription() {
@@ -203,7 +207,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
     /**
      * Set the remediationDescription property: Human readable description of what you should do to mitigate this
      * security issue.
-     *
+     * 
      * @param remediationDescription the remediationDescription value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
@@ -217,7 +221,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Get the categories property: The categories property.
-     *
+     * 
      * @return the categories value.
      */
     public List<Categories> categories() {
@@ -226,7 +230,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Set the categories property: The categories property.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
@@ -240,7 +244,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Get the severity property: The severity level of the assessment.
-     *
+     * 
      * @return the severity value.
      */
     public Severity severity() {
@@ -249,7 +253,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Set the severity property: The severity level of the assessment.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
@@ -263,7 +267,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Get the userImpact property: The user impact of the assessment.
-     *
+     * 
      * @return the userImpact value.
      */
     public UserImpact userImpact() {
@@ -272,7 +276,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Set the userImpact property: The user impact of the assessment.
-     *
+     * 
      * @param userImpact the userImpact value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
@@ -286,7 +290,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Get the implementationEffort property: The implementation effort required to remediate this assessment.
-     *
+     * 
      * @return the implementationEffort value.
      */
     public ImplementationEffort implementationEffort() {
@@ -295,7 +299,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Set the implementationEffort property: The implementation effort required to remediate this assessment.
-     *
+     * 
      * @param implementationEffort the implementationEffort value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
@@ -309,7 +313,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Get the threats property: The threats property.
-     *
+     * 
      * @return the threats value.
      */
     public List<Threats> threats() {
@@ -318,7 +322,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Set the threats property: The threats property.
-     *
+     * 
      * @param threats the threats value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
@@ -332,7 +336,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Get the preview property: True if this assessment is in preview release status.
-     *
+     * 
      * @return the preview value.
      */
     public Boolean preview() {
@@ -341,7 +345,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Set the preview property: True if this assessment is in preview release status.
-     *
+     * 
      * @param preview the preview value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
@@ -356,7 +360,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
     /**
      * Get the assessmentType property: BuiltIn if the assessment based on built-in Azure Policy definition, Custom if
      * the assessment based on custom Azure Policy definition.
-     *
+     * 
      * @return the assessmentType value.
      */
     public AssessmentType assessmentType() {
@@ -366,7 +370,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
     /**
      * Set the assessmentType property: BuiltIn if the assessment based on built-in Azure Policy definition, Custom if
      * the assessment based on custom Azure Policy definition.
-     *
+     * 
      * @param assessmentType the assessmentType value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
@@ -380,7 +384,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Get the partnerData property: Describes the partner that created the assessment.
-     *
+     * 
      * @return the partnerData value.
      */
     public SecurityAssessmentMetadataPartnerData partnerData() {
@@ -389,7 +393,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Set the partnerData property: Describes the partner that created the assessment.
-     *
+     * 
      * @param partnerData the partnerData value to set.
      * @return the SecurityAssessmentMetadataResponseInner object itself.
      */
@@ -403,7 +407,7 @@ public final class SecurityAssessmentMetadataResponseInner extends ProxyResource
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

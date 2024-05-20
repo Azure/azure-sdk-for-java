@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataSource. */
+/**
+ * Defines values for DataSource.
+ */
 public final class DataSource extends ExpandableStringEnum<DataSource> {
-    /** Static value TwinData for DataSource. */
+    /**
+     * Static value TwinData for DataSource.
+     */
     public static final DataSource TWIN_DATA = fromString("TwinData");
 
     /**
      * Creates a new instance of DataSource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class DataSource extends ExpandableStringEnum<DataSource> {
 
     /**
      * Creates or finds a DataSource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataSource.
      */
@@ -35,7 +39,7 @@ public final class DataSource extends ExpandableStringEnum<DataSource> {
 
     /**
      * Gets known DataSource values.
-     *
+     * 
      * @return known DataSource values.
      */
     public static Collection<DataSource> values() {

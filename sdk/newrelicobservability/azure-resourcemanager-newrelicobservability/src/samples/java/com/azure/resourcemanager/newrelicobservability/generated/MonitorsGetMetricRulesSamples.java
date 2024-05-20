@@ -6,43 +6,37 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 
 import com.azure.resourcemanager.newrelicobservability.models.MetricsRequest;
 
-/** Samples for Monitors GetMetricRules. */
+/**
+ * Samples for Monitors GetMetricRules.
+ */
 public final class MonitorsGetMetricRulesSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_GetMetricRules_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_GetMetricRules_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricRules_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsGetMetricRulesMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .getMetricRulesWithResponse(
-                "rgNewRelic",
-                "fhcjxnxumkdlgpwanewtkdnyuz",
-                new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-                com.azure.core.util.Context.NONE);
+        manager.monitors().getMetricRulesWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+            new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_GetMetricRules_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_GetMetricRules_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricRules_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsGetMetricRulesMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .getMetricRulesWithResponse(
-                "rgNewRelic",
-                "fhcjxnxumkdlgpwanewtkdnyuz",
-                new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-                com.azure.core.util.Context.NONE);
+        manager.monitors().getMetricRulesWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+            new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
     }
 }

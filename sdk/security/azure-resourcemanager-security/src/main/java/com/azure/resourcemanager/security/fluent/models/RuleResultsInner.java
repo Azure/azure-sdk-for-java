@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.security.models.RuleResultsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Rule results. */
+/**
+ * Rule results.
+ */
 @Fluent
 public final class RuleResultsInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class RuleResultsInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RuleResultsProperties properties;
 
-    /** Creates an instance of RuleResultsInner class. */
+    /**
+     * Creates an instance of RuleResultsInner class.
+     */
     public RuleResultsInner() {
     }
 
     /**
      * Get the properties property: Rule results properties.
-     *
+     * 
      * @return the properties value.
      */
     public RuleResultsProperties properties() {
@@ -33,7 +37,7 @@ public final class RuleResultsInner extends ProxyResource {
 
     /**
      * Set the properties property: Rule results properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RuleResultsInner object itself.
      */
@@ -44,7 +48,7 @@ public final class RuleResultsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

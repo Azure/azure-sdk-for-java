@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Test migrate input properties. */
+/**
+ * Test migrate input properties.
+ */
 @Fluent
 public final class TestMigrateInputProperties {
     /*
@@ -17,13 +19,15 @@ public final class TestMigrateInputProperties {
     @JsonProperty(value = "providerSpecificDetails", required = true)
     private TestMigrateProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of TestMigrateInputProperties class. */
+    /**
+     * Creates an instance of TestMigrateInputProperties class.
+     */
     public TestMigrateInputProperties() {
     }
 
     /**
      * Get the providerSpecificDetails property: The provider specific details.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public TestMigrateProviderSpecificInput providerSpecificDetails() {
@@ -32,27 +36,25 @@ public final class TestMigrateInputProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific details.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the TestMigrateInputProperties object itself.
      */
-    public TestMigrateInputProperties withProviderSpecificDetails(
-        TestMigrateProviderSpecificInput providerSpecificDetails) {
+    public TestMigrateInputProperties
+        withProviderSpecificDetails(TestMigrateProviderSpecificInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (providerSpecificDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property providerSpecificDetails in model TestMigrateInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property providerSpecificDetails in model TestMigrateInputProperties"));
         } else {
             providerSpecificDetails().validate();
         }

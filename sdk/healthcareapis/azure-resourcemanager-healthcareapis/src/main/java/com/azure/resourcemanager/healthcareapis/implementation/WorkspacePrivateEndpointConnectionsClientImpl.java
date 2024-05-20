@@ -39,8 +39,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * WorkspacePrivateEndpointConnectionsClient.
+ * An instance of this class provides access to all the operations defined in WorkspacePrivateEndpointConnectionsClient.
  */
 public final class WorkspacePrivateEndpointConnectionsClientImpl implements WorkspacePrivateEndpointConnectionsClient {
     /**
@@ -595,8 +594,10 @@ public final class WorkspacePrivateEndpointConnectionsClientImpl implements Work
     public SyncPoller<PollResult<PrivateEndpointConnectionDescriptionInner>, PrivateEndpointConnectionDescriptionInner>
         beginCreateOrUpdate(String resourceGroupName, String workspaceName, String privateEndpointConnectionName,
             PrivateEndpointConnectionDescriptionInner properties, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, privateEndpointConnectionName,
-            properties, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, properties,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -617,7 +618,8 @@ public final class WorkspacePrivateEndpointConnectionsClientImpl implements Work
         String workspaceName, String privateEndpointConnectionName,
         PrivateEndpointConnectionDescriptionInner properties) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, privateEndpointConnectionName, properties)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.security.models.Identity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Security operator under a given subscription and pricing. */
+/**
+ * Security operator under a given subscription and pricing.
+ */
 @Fluent
 public final class SecurityOperatorInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class SecurityOperatorInner extends ProxyResource {
     @JsonProperty(value = "identity")
     private Identity identity;
 
-    /** Creates an instance of SecurityOperatorInner class. */
+    /**
+     * Creates an instance of SecurityOperatorInner class.
+     */
     public SecurityOperatorInner() {
     }
 
     /**
      * Get the identity property: Identity for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -33,7 +37,7 @@ public final class SecurityOperatorInner extends ProxyResource {
 
     /**
      * Set the identity property: Identity for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the SecurityOperatorInner object itself.
      */
@@ -44,7 +48,7 @@ public final class SecurityOperatorInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

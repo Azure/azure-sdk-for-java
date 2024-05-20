@@ -21,30 +21,27 @@ public final class AlertsSuppressionRulesImpl implements AlertsSuppressionRules 
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public AlertsSuppressionRulesImpl(
-        AlertsSuppressionRulesClient innerClient, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    public AlertsSuppressionRulesImpl(AlertsSuppressionRulesClient innerClient,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<AlertsSuppressionRule> list() {
         PagedIterable<AlertsSuppressionRuleInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AlertsSuppressionRuleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertsSuppressionRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AlertsSuppressionRule> list(String alertType, Context context) {
         PagedIterable<AlertsSuppressionRuleInner> inner = this.serviceClient().list(alertType, context);
-        return Utils.mapPage(inner, inner1 -> new AlertsSuppressionRuleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertsSuppressionRuleImpl(inner1, this.manager()));
     }
 
     public Response<AlertsSuppressionRule> getWithResponse(String alertsSuppressionRuleName, Context context) {
-        Response<AlertsSuppressionRuleInner> inner =
-            this.serviceClient().getWithResponse(alertsSuppressionRuleName, context);
+        Response<AlertsSuppressionRuleInner> inner
+            = this.serviceClient().getWithResponse(alertsSuppressionRuleName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AlertsSuppressionRuleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -60,25 +57,22 @@ public final class AlertsSuppressionRulesImpl implements AlertsSuppressionRules 
         }
     }
 
-    public Response<AlertsSuppressionRule> updateWithResponse(
-        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule, Context context) {
-        Response<AlertsSuppressionRuleInner> inner =
-            this.serviceClient().updateWithResponse(alertsSuppressionRuleName, alertsSuppressionRule, context);
+    public Response<AlertsSuppressionRule> updateWithResponse(String alertsSuppressionRuleName,
+        AlertsSuppressionRuleInner alertsSuppressionRule, Context context) {
+        Response<AlertsSuppressionRuleInner> inner
+            = this.serviceClient().updateWithResponse(alertsSuppressionRuleName, alertsSuppressionRule, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AlertsSuppressionRuleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AlertsSuppressionRule update(
-        String alertsSuppressionRuleName, AlertsSuppressionRuleInner alertsSuppressionRule) {
-        AlertsSuppressionRuleInner inner =
-            this.serviceClient().update(alertsSuppressionRuleName, alertsSuppressionRule);
+    public AlertsSuppressionRule update(String alertsSuppressionRuleName,
+        AlertsSuppressionRuleInner alertsSuppressionRule) {
+        AlertsSuppressionRuleInner inner
+            = this.serviceClient().update(alertsSuppressionRuleName, alertsSuppressionRule);
         if (inner != null) {
             return new AlertsSuppressionRuleImpl(inner, this.manager());
         } else {

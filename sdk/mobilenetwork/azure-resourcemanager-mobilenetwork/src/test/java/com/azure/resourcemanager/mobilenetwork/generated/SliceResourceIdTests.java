@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class SliceResourceIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SliceResourceId model = BinaryData.fromString("{\"id\":\"vydfceacvlhvygdy\"}").toObject(SliceResourceId.class);
-        Assertions.assertEquals("vydfceacvlhvygdy", model.id());
+        SliceResourceId model = BinaryData.fromString("{\"id\":\"hvxndzwmkrefajpj\"}").toObject(SliceResourceId.class);
+        Assertions.assertEquals("hvxndzwmkrefajpj", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SliceResourceId model = new SliceResourceId().withId("vydfceacvlhvygdy");
+        SliceResourceId model = new SliceResourceId().withId("hvxndzwmkrefajpj");
         model = BinaryData.fromObject(model).toObject(SliceResourceId.class);
-        Assertions.assertEquals("vydfceacvlhvygdy", model.id());
+        Assertions.assertEquals("hvxndzwmkrefajpj", model.id());
     }
 }

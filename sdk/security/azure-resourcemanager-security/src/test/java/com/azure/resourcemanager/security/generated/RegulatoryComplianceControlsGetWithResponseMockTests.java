@@ -6,66 +6,35 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.RegulatoryComplianceControl;
 import com.azure.resourcemanager.security.models.State;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class RegulatoryComplianceControlsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"description\":\"fzhhezvhjudxdyyr\",\"state\":\"Unsupported\",\"passedAssessments\":1832432500,\"failedAssessments\":1860749004,\"skippedAssessments\":1725220315},\"id\":\"dkxbq\",\"name\":\"sgfenffdxb\",\"type\":\"wfqjch\"}";
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"fokyks\",\"state\":\"Passed\",\"passedAssessments\":944337652,\"failedAssessments\":1143447896,\"skippedAssessments\":1950190822},\"id\":\"kcxzz\",\"name\":\"nuif\",\"type\":\"rsejegprkj\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        RegulatoryComplianceControl response = manager.regulatoryComplianceControls()
+            .getWithResponse("crtfodqhuauzm", "iv", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        RegulatoryComplianceControl response =
-            manager
-                .regulatoryComplianceControls()
-                .getWithResponse("lrrskap", "xwieexuyade", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals(State.PASSED, response.state());
+        Assertions.assertEquals(State.UNSUPPORTED, response.state());
     }
 }

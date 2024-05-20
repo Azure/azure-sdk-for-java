@@ -7,28 +7,54 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** A custom alert rule that checks if a value (depends on the custom alert type) is denied. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
+/**
+ * A custom alert rule that checks if a value (depends on the custom alert type) is denied.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "ruleType",
+    defaultImpl = DenylistCustomAlertRule.class,
+    visible = true)
 @JsonTypeName("DenylistCustomAlertRule")
 @Fluent
 public final class DenylistCustomAlertRule extends ListCustomAlertRule {
+    /*
+     * The type of the custom alert rule.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ruleType", required = true)
+    private String ruleType = "DenylistCustomAlertRule";
+
     /*
      * The values to deny. The format of the values depends on the rule type.
      */
     @JsonProperty(value = "denylistValues", required = true)
     private List<String> denylistValues;
 
-    /** Creates an instance of DenylistCustomAlertRule class. */
+    /**
+     * Creates an instance of DenylistCustomAlertRule class.
+     */
     public DenylistCustomAlertRule() {
     }
 
     /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
+    }
+
+    /**
      * Get the denylistValues property: The values to deny. The format of the values depends on the rule type.
-     *
+     * 
      * @return the denylistValues value.
      */
     public List<String> denylistValues() {
@@ -37,7 +63,7 @@ public final class DenylistCustomAlertRule extends ListCustomAlertRule {
 
     /**
      * Set the denylistValues property: The values to deny. The format of the values depends on the rule type.
-     *
+     * 
      * @param denylistValues the denylistValues value to set.
      * @return the DenylistCustomAlertRule object itself.
      */
@@ -46,7 +72,9 @@ public final class DenylistCustomAlertRule extends ListCustomAlertRule {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DenylistCustomAlertRule withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -55,17 +83,16 @@ public final class DenylistCustomAlertRule extends ListCustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (denylistValues() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property denylistValues in model DenylistCustomAlertRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property denylistValues in model DenylistCustomAlertRule"));
         }
     }
 

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmSy
 public final class InMageRcmSyncDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmSyncDetails model =
-            BinaryData
-                .fromString(
-                    "{\"progressHealth\":\"SlowProgress\",\"transferredBytes\":8514603100054710213,\"last15MinutesTransferredBytes\":468712523679187650,\"lastDataTransferTimeUtc\":\"t\",\"processedBytes\":7769561351472935025,\"startTime\":\"scdx\",\"lastRefreshTime\":\"rnjr\",\"progressPercentage\":1625515673}")
-                .toObject(InMageRcmSyncDetails.class);
+        InMageRcmSyncDetails model = BinaryData.fromString(
+            "{\"progressHealth\":\"SlowProgress\",\"transferredBytes\":8514603100054710213,\"last15MinutesTransferredBytes\":468712523679187650,\"lastDataTransferTimeUtc\":\"t\",\"processedBytes\":7769561351472935025,\"startTime\":\"scdx\",\"lastRefreshTime\":\"rnjr\",\"progressPercentage\":1625515673}")
+            .toObject(InMageRcmSyncDetails.class);
     }
 
     @org.junit.jupiter.api.Test

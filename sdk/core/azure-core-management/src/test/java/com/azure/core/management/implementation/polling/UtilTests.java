@@ -21,8 +21,10 @@ public class UtilTests {
 
     @Test
     public void testGetURL() throws MalformedURLException, URISyntaxException {
-        String asyncOpUrl = "https://management.azure.com/subscriptions/000/providers/Microsoft.Network/locations/eastus/operations/123";
-        String locationUrl = "https://management.azure.com/subscriptions/000/resourceGroups/rg86829b7a87d74/providers/Microsoft.Search/searchServices/ss3edfb54d";
+        String asyncOpUrl
+            = "https://management.azure.com/subscriptions/000/providers/Microsoft.Network/locations/eastus/operations/123";
+        String locationUrl
+            = "https://management.azure.com/subscriptions/000/resourceGroups/rg86829b7a87d74/providers/Microsoft.Search/searchServices/ss3edfb54d";
 
         HttpHeaders headers = new HttpHeaders();
         headers.set(AZURE_ASYNC_OPERATION, asyncOpUrl);
@@ -36,10 +38,13 @@ public class UtilTests {
     public void testGetMalformedURL() {
         HttpHeaders asyncOpHeaders = new HttpHeaders();
         asyncOpHeaders.set(AZURE_ASYNC_OPERATION, "invalidUrl");
-        Assertions.assertThrows(Util.MalformedUrlException.class, () -> Util.getAzureAsyncOperationUrl(asyncOpHeaders, logger));
+        Assertions.assertThrows(Util.MalformedUrlException.class,
+            () -> Util.getAzureAsyncOperationUrl(asyncOpHeaders, logger));
 
-        asyncOpHeaders.set(AZURE_ASYNC_OPERATION, "https://management.azure.com/subscriptions/000/providers/Microsoft.Network/locations/east us/operations/123");
-        Assertions.assertThrows(Util.MalformedUrlException.class, () -> Util.getAzureAsyncOperationUrl(asyncOpHeaders, logger));
+        asyncOpHeaders.set(AZURE_ASYNC_OPERATION,
+            "https://management.azure.com/subscriptions/000/providers/Microsoft.Network/locations/east us/operations/123");
+        Assertions.assertThrows(Util.MalformedUrlException.class,
+            () -> Util.getAzureAsyncOperationUrl(asyncOpHeaders, logger));
 
         // malformed URL in location will be ignored
         HttpHeaders locationHeaders = new HttpHeaders();

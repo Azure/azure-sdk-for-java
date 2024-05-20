@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.hdinsight.containers.generated;
 
-/** Samples for Clusters ListInstanceViews. */
+/**
+ * Samples for Clusters ListInstanceViews.
+ */
 public final class ClustersListInstanceViewsSamples {
     /*
-     * x-ms-original-file: specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-06-01-preview/examples/ListClusterInstanceViews.json
+     * x-ms-original-file:
+     * specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks/preview/2023-11-01-preview/examples/
+     * ListClusterInstanceViews.json
      */
     /**
      * Sample code: HDInsightClusterGetInstanceViews.
-     *
+     * 
      * @param manager Entry point to HDInsightContainersManager.
      */
     public static void hDInsightClusterGetInstanceViews(

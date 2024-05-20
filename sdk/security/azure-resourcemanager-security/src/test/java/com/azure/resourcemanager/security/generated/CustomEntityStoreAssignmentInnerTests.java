@@ -11,23 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomEntityStoreAssignmentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomEntityStoreAssignmentInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"principal\":\"ipjoxzjnchgejs\",\"entityStoreDatabaseLink\":\"dmailzydehojw\"},\"id\":\"ahuxinpm\",\"name\":\"njaqwixjspro\",\"type\":\"vcputegj\"}")
-                .toObject(CustomEntityStoreAssignmentInner.class);
-        Assertions.assertEquals("ipjoxzjnchgejs", model.principal());
-        Assertions.assertEquals("dmailzydehojw", model.entityStoreDatabaseLink());
+        CustomEntityStoreAssignmentInner model = BinaryData.fromString(
+            "{\"properties\":{\"principal\":\"dneu\",\"entityStoreDatabaseLink\":\"fphsdyhtozfikdow\"},\"id\":\"quuvxzxcl\",\"name\":\"ithhqzon\",\"type\":\"sg\"}")
+            .toObject(CustomEntityStoreAssignmentInner.class);
+        Assertions.assertEquals("dneu", model.principal());
+        Assertions.assertEquals("fphsdyhtozfikdow", model.entityStoreDatabaseLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomEntityStoreAssignmentInner model =
-            new CustomEntityStoreAssignmentInner()
-                .withPrincipal("ipjoxzjnchgejs")
-                .withEntityStoreDatabaseLink("dmailzydehojw");
+        CustomEntityStoreAssignmentInner model = new CustomEntityStoreAssignmentInner().withPrincipal("dneu")
+            .withEntityStoreDatabaseLink("fphsdyhtozfikdow");
         model = BinaryData.fromObject(model).toObject(CustomEntityStoreAssignmentInner.class);
-        Assertions.assertEquals("ipjoxzjnchgejs", model.principal());
-        Assertions.assertEquals("dmailzydehojw", model.entityStoreDatabaseLink());
+        Assertions.assertEquals("dneu", model.principal());
+        Assertions.assertEquals("fphsdyhtozfikdow", model.entityStoreDatabaseLink());
     }
 }

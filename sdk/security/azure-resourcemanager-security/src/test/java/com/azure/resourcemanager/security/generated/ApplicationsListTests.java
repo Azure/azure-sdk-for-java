@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.ApplicationsList;
 public final class ApplicationsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationsList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"fbwqrooht\",\"description\":\"vmaonurjt\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[]},\"id\":\"ghihpvecms\",\"name\":\"clbl\",\"type\":\"jxl\"},{\"properties\":{\"displayName\":\"juscvsfx\",\"description\":\"ctmgxuupbezqccy\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[]},\"id\":\"tce\",\"name\":\"kdqkkyihzt\",\"type\":\"eq\"}],\"nextLink\":\"qzgwldoychil\"}")
-                .toObject(ApplicationsList.class);
+        ApplicationsList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"displayName\":\"altol\",\"description\":\"cwsobqwcs\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datawdcfhucqdpfuv\",\"datalsbjjcanvxbv\"]},\"id\":\"vudutncor\",\"name\":\"r\",\"type\":\"xqtvcofu\"}],\"nextLink\":\"lvkgju\"}")
+            .toObject(ApplicationsList.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -31,53 +31,40 @@ public class CorePerfIntegrationTest {
     @ParameterizedTest
     @MethodSource("providePerfTests")
     public void testSync(PerfStressTest<? extends CorePerfStressOptions> perfTest) {
-        perfTest.globalSetupAsync()
-            .then(Mono.defer(perfTest::setupAsync))
-            .block();
+        perfTest.globalSetupAsync().then(Mono.defer(perfTest::setupAsync)).block();
 
         perfTest.run();
 
-        perfTest.cleanupAsync()
-            .then(Mono.defer(perfTest::globalCleanupAsync))
-            .block();
+        perfTest.cleanupAsync().then(Mono.defer(perfTest::globalCleanupAsync)).block();
     }
 
     @ParameterizedTest
     @MethodSource("providePerfTests")
     public void testAsync(PerfStressTest<? extends CorePerfStressOptions> perfTest) {
-        StepVerifier.create(
-            Mono.defer(perfTest::globalSetupAsync)
-                .then(Mono.defer(perfTest::setupAsync))
-                .then(Mono.defer(perfTest::runAsync))
-                .then(Mono.defer(perfTest::cleanupAsync))
-                .then(Mono.defer(perfTest::globalCleanupAsync))
-        ).verifyComplete();
+        StepVerifier.create(Mono.defer(perfTest::globalSetupAsync)
+            .then(Mono.defer(perfTest::setupAsync))
+            .then(Mono.defer(perfTest::runAsync))
+            .then(Mono.defer(perfTest::cleanupAsync))
+            .then(Mono.defer(perfTest::globalCleanupAsync))).verifyComplete();
     }
 
     private static Stream<Arguments> providePerfTests() {
-        return generateArgsCombination()
-            .map(args -> {
-                CorePerfStressOptions options = new CorePerfStressOptions();
-                JCommander jc = new JCommander();
-                jc.addCommand("unused", options);
-                jc.parse(args);
-                String parsedCommand = jc.getParsedCommand();
-                assertNotNull(parsedCommand);
-                assertFalse(parsedCommand.isEmpty());
-                return options;
-            })
+        return generateArgsCombination().map(args -> {
+            CorePerfStressOptions options = new CorePerfStressOptions();
+            JCommander jc = new JCommander();
+            jc.addCommand("unused", options);
+            jc.parse(args);
+            String parsedCommand = jc.getParsedCommand();
+            assertNotNull(parsedCommand);
+            assertFalse(parsedCommand.isEmpty());
+            return options;
+        })
             .flatMap(options -> Stream.<Supplier<PerfStressTest<? extends CorePerfStressOptions>>>of(
-                () -> new BinaryDataReceiveTest(options),
-                () -> new BinaryDataSendTest(options),
-                () -> new ByteBufferReceiveTest(options),
-                () -> new ByteBufferSendTest(options),
-                () -> new JsonReceiveTest(options),
-                () -> new JsonSendTest(options),
-                () -> new PipelineSendTest(options),
-                () -> new XmlReceiveTest(options),
-                () -> new XmlSendTest(options),
-                () -> new TracingTest(options)
-            ))
+                () -> new BinaryDataReceiveTest(options), () -> new BinaryDataSendTest(options),
+                () -> new ByteBufferReceiveTest(options), () -> new ByteBufferSendTest(options),
+                () -> new JsonReceiveTest(options), () -> new JsonSendTest(options),
+                () -> new PipelineSendTest(options), () -> new XmlReceiveTest(options), () -> new XmlSendTest(options),
+                () -> new TracingTest(options)))
             .map(Supplier::get)
             .map(Arguments::of);
     }
@@ -89,12 +76,9 @@ public class CorePerfIntegrationTest {
             for (HttpClientType httpClientType : Arrays.asList(NETTY, OKHTTP)) {
                 for (BinaryDataSource binaryDataSource : BinaryDataSource.values()) {
                     for (Boolean includePipelinePolicies : Arrays.asList(true, false)) {
-                        List<String> argLine = new ArrayList<>(Arrays.asList(
-                            "unused",
-                            "--backend-type", backendType.name(),
-                            "--http-client", httpClientType.toString(),
-                            "--binary-data-source", binaryDataSource.name()
-                        ));
+                        List<String> argLine = new ArrayList<>(
+                            Arrays.asList("unused", "--backend-type", backendType.name(), "--http-client",
+                                httpClientType.toString(), "--binary-data-source", binaryDataSource.name()));
                         if (includePipelinePolicies) {
                             argLine.add("--include-pipeline-policies");
                         }

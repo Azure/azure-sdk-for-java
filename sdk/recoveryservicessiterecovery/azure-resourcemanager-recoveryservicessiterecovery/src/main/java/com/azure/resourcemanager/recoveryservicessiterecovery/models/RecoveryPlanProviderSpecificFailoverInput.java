@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery plan provider specific failover input. */
+/**
+ * Recovery plan provider specific failover input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -23,17 +25,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "InMageAzureV2", value = RecoveryPlanInMageAzureV2FailoverInput.class),
     @JsonSubTypes.Type(name = "InMage", value = RecoveryPlanInMageFailoverInput.class),
     @JsonSubTypes.Type(name = "InMageRcmFailback", value = RecoveryPlanInMageRcmFailbackFailoverInput.class),
-    @JsonSubTypes.Type(name = "InMageRcm", value = RecoveryPlanInMageRcmFailoverInput.class)
-})
+    @JsonSubTypes.Type(name = "InMageRcm", value = RecoveryPlanInMageRcmFailoverInput.class) })
 @Immutable
 public class RecoveryPlanProviderSpecificFailoverInput {
-    /** Creates an instance of RecoveryPlanProviderSpecificFailoverInput class. */
+    /**
+     * Creates an instance of RecoveryPlanProviderSpecificFailoverInput class.
+     */
     public RecoveryPlanProviderSpecificFailoverInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

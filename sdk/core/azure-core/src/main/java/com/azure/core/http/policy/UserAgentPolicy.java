@@ -16,10 +16,31 @@ import com.azure.core.util.UserAgentUtil;
 import reactor.core.publisher.Mono;
 
 /**
- * Pipeline policy that adds "User-Agent" header to a request.
- * <p>
- * The format for the "User-Agent" string is outlined in
- * <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>.
+ * The {@code UserAgentPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
+ * used to add a "User-Agent" header to each {@code HttpRequest}.
+ *
+ * <p>This class is useful when you need to add a specific "User-Agent" header for all requests in a pipeline.
+ * It ensures that the "User-Agent" header is set correctly for each request. The "User-Agent" header is used to
+ * provide the server with information about the software used by the client.</p>
+ *
+ * <p><strong>Code sample:</strong></p>
+ *
+ * <p>In this example, a {@code UserAgentPolicy} is created with a "User-Agent" header value of "MyApp/1.0".
+ * Once added to the pipeline, requests will have their "User-Agent" header set to "MyApp/1.0" by the
+ * {@code UserAgentPolicy}.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.UserAgentPolicy.constructor -->
+ * <pre>
+ * UserAgentPolicy userAgentPolicy = new UserAgentPolicy&#40;&quot;MyApp&#47;1.0&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.UserAgentPolicy.constructor -->
+ *
+ * @see com.azure.core.http.policy
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
+ * @see com.azure.core.http.HttpHeaderName
  */
 public class UserAgentPolicy implements HttpPipelinePolicy {
     /**

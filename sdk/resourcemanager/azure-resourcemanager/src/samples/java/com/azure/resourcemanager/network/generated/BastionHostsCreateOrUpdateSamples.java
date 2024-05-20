@@ -17,7 +17,7 @@ import java.util.Arrays;
 public final class BastionHostsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/BastionHostDeveloperPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/BastionHostDeveloperPut.json
      */
     /**
      * Sample code: Create Developer Bastion Host.
@@ -36,7 +36,7 @@ public final class BastionHostsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/BastionHostPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/BastionHostPut.json
      */
     /**
      * Sample code: Create Bastion Host.
@@ -44,6 +44,26 @@ public final class BastionHostsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createBastionHost(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks().manager().serviceClient().getBastionHosts().createOrUpdate("rg1", "bastionhosttenant",
+            new BastionHostInner().withIpConfigurations(Arrays.asList(new BastionHostIpConfiguration()
+                .withName("bastionHostIpConfiguration")
+                .withSubnet(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet2/subnets/BastionHostSubnet"))
+                .withPublicIpAddress(new SubResource().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/pipName")))),
+            com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/BastionHostPutWithZones.json
+     */
+    /**
+     * Sample code: Create Bastion Host With Zones.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createBastionHostWithZones(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.networks().manager().serviceClient().getBastionHosts().createOrUpdate("rg1", "bastionhosttenant",
             new BastionHostInner().withIpConfigurations(Arrays.asList(new BastionHostIpConfiguration()
                 .withName("bastionHostIpConfiguration")

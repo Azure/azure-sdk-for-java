@@ -139,6 +139,10 @@ public class RxGatewayStoreModel implements RxStoreModel {
         this.useMultipleWriteLocations = useMultipleWriteLocations;
     }
 
+    public void setSessionContainer(ISessionContainer sessionContainer) {
+        this.sessionContainer = sessionContainer;
+    }
+
     boolean isUseMultipleWriteLocations() {
         return useMultipleWriteLocations;
     }
@@ -434,7 +438,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
             CosmosException dce;
             if (!(exception instanceof CosmosException)) {
                 // wrap in CosmosException
-                logger.error("Network failure", exception);
+                logger.warn("Network failure", exception);
 
                 int statusCode = 0;
                 if (WebExceptionUtility.isNetworkFailure(exception)) {
@@ -607,7 +611,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
     @Override
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider, Configs configs) {
         if (this.gatewayServerErrorInjector == null) {
-            this.gatewayServerErrorInjector = new GatewayServerErrorInjector(configs);
+            this.gatewayServerErrorInjector = new GatewayServerErrorInjector(configs, collectionCache, partitionKeyRangeCache);
         }
 
         this.gatewayServerErrorInjector.registerServerErrorInjector(injectorProvider.getServerErrorInjector());
@@ -746,6 +750,9 @@ public class RxGatewayStoreModel implements RxStoreModel {
                                 .getEffectivePartitionKeyString(
                                     partitionKeyInternal,
                                     collectionValueHolder.v.getPartitionKey());
+
+                            request.setEffectivePartitionKey(effectivePartitionKeyString);
+
                             PartitionKeyRange range =
                                 collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
                             request.requestContext.resolvedPartitionKeyRange = range;

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A2A managed disk input details. */
+/**
+ * A2A managed disk input details.
+ */
 @Fluent
 public final class A2AVmManagedDiskInputDetails {
     /*
@@ -54,13 +56,15 @@ public final class A2AVmManagedDiskInputDetails {
     @JsonProperty(value = "diskEncryptionInfo")
     private DiskEncryptionInfo diskEncryptionInfo;
 
-    /** Creates an instance of A2AVmManagedDiskInputDetails class. */
+    /**
+     * Creates an instance of A2AVmManagedDiskInputDetails class.
+     */
     public A2AVmManagedDiskInputDetails() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -69,7 +73,7 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Set the diskId property: The disk Id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the A2AVmManagedDiskInputDetails object itself.
      */
@@ -80,7 +84,7 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Get the primaryStagingAzureStorageAccountId property: The primary staging storage account Arm Id.
-     *
+     * 
      * @return the primaryStagingAzureStorageAccountId value.
      */
     public String primaryStagingAzureStorageAccountId() {
@@ -89,19 +93,19 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Set the primaryStagingAzureStorageAccountId property: The primary staging storage account Arm Id.
-     *
+     * 
      * @param primaryStagingAzureStorageAccountId the primaryStagingAzureStorageAccountId value to set.
      * @return the A2AVmManagedDiskInputDetails object itself.
      */
-    public A2AVmManagedDiskInputDetails withPrimaryStagingAzureStorageAccountId(
-        String primaryStagingAzureStorageAccountId) {
+    public A2AVmManagedDiskInputDetails
+        withPrimaryStagingAzureStorageAccountId(String primaryStagingAzureStorageAccountId) {
         this.primaryStagingAzureStorageAccountId = primaryStagingAzureStorageAccountId;
         return this;
     }
 
     /**
      * Get the recoveryResourceGroupId property: The target resource group Arm Id.
-     *
+     * 
      * @return the recoveryResourceGroupId value.
      */
     public String recoveryResourceGroupId() {
@@ -110,7 +114,7 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Set the recoveryResourceGroupId property: The target resource group Arm Id.
-     *
+     * 
      * @param recoveryResourceGroupId the recoveryResourceGroupId value to set.
      * @return the A2AVmManagedDiskInputDetails object itself.
      */
@@ -120,9 +124,9 @@ public final class A2AVmManagedDiskInputDetails {
     }
 
     /**
-     * Get the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same as
-     * source disk type if not user provided.
-     *
+     * Get the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same
+     * as source disk type if not user provided.
+     * 
      * @return the recoveryReplicaDiskAccountType value.
      */
     public String recoveryReplicaDiskAccountType() {
@@ -130,9 +134,9 @@ public final class A2AVmManagedDiskInputDetails {
     }
 
     /**
-     * Set the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same as
-     * source disk type if not user provided.
-     *
+     * Set the recoveryReplicaDiskAccountType property: The replica disk type. Its an optional value and will be same
+     * as source disk type if not user provided.
+     * 
      * @param recoveryReplicaDiskAccountType the recoveryReplicaDiskAccountType value to set.
      * @return the A2AVmManagedDiskInputDetails object itself.
      */
@@ -144,7 +148,7 @@ public final class A2AVmManagedDiskInputDetails {
     /**
      * Get the recoveryTargetDiskAccountType property: The target disk type after failover. Its an optional value and
      * will be same as source disk type if not user provided.
-     *
+     * 
      * @return the recoveryTargetDiskAccountType value.
      */
     public String recoveryTargetDiskAccountType() {
@@ -154,7 +158,7 @@ public final class A2AVmManagedDiskInputDetails {
     /**
      * Set the recoveryTargetDiskAccountType property: The target disk type after failover. Its an optional value and
      * will be same as source disk type if not user provided.
-     *
+     * 
      * @param recoveryTargetDiskAccountType the recoveryTargetDiskAccountType value to set.
      * @return the A2AVmManagedDiskInputDetails object itself.
      */
@@ -165,7 +169,7 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Get the recoveryDiskEncryptionSetId property: The recovery disk encryption set Id.
-     *
+     * 
      * @return the recoveryDiskEncryptionSetId value.
      */
     public String recoveryDiskEncryptionSetId() {
@@ -174,7 +178,7 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Set the recoveryDiskEncryptionSetId property: The recovery disk encryption set Id.
-     *
+     * 
      * @param recoveryDiskEncryptionSetId the recoveryDiskEncryptionSetId value to set.
      * @return the A2AVmManagedDiskInputDetails object itself.
      */
@@ -185,7 +189,7 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Get the diskEncryptionInfo property: The recovery disk encryption information (for one / single pass flows).
-     *
+     * 
      * @return the diskEncryptionInfo value.
      */
     public DiskEncryptionInfo diskEncryptionInfo() {
@@ -194,7 +198,7 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Set the diskEncryptionInfo property: The recovery disk encryption information (for one / single pass flows).
-     *
+     * 
      * @param diskEncryptionInfo the diskEncryptionInfo value to set.
      * @return the A2AVmManagedDiskInputDetails object itself.
      */
@@ -205,28 +209,21 @@ public final class A2AVmManagedDiskInputDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property diskId in model A2AVmManagedDiskInputDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property diskId in model A2AVmManagedDiskInputDetails"));
         }
         if (primaryStagingAzureStorageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property primaryStagingAzureStorageAccountId in model"
-                            + " A2AVmManagedDiskInputDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property primaryStagingAzureStorageAccountId in model A2AVmManagedDiskInputDetails"));
         }
         if (recoveryResourceGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryResourceGroupId in model A2AVmManagedDiskInputDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryResourceGroupId in model A2AVmManagedDiskInputDetails"));
         }
         if (diskEncryptionInfo() != null) {
             diskEncryptionInfo().validate();

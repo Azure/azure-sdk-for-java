@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** InMageRcm fabric specific details. */
+/**
+ * InMageRcm fabric specific details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcm")
 @Fluent
@@ -111,13 +113,15 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
     @JsonProperty(value = "agentDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<AgentDetails> agentDetails;
 
-    /** Creates an instance of InMageRcmFabricSpecificDetails class. */
+    /**
+     * Creates an instance of InMageRcmFabricSpecificDetails class.
+     */
     public InMageRcmFabricSpecificDetails() {
     }
 
     /**
      * Get the vmwareSiteId property: The ARM Id of the VMware site.
-     *
+     * 
      * @return the vmwareSiteId value.
      */
     public String vmwareSiteId() {
@@ -126,7 +130,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Get the physicalSiteId property: The ARM Id of the physical site.
-     *
+     * 
      * @return the physicalSiteId value.
      */
     public String physicalSiteId() {
@@ -135,7 +139,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Get the serviceEndpoint property: The service endpoint.
-     *
+     * 
      * @return the serviceEndpoint value.
      */
     public String serviceEndpoint() {
@@ -144,7 +148,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Get the serviceResourceId property: The service resource Id.
-     *
+     * 
      * @return the serviceResourceId value.
      */
     public String serviceResourceId() {
@@ -153,7 +157,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Get the serviceContainerId property: The service container Id.
-     *
+     * 
      * @return the serviceContainerId value.
      */
     public String serviceContainerId() {
@@ -162,7 +166,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Get the dataPlaneUri property: The data plane Uri.
-     *
+     * 
      * @return the dataPlaneUri value.
      */
     public String dataPlaneUri() {
@@ -171,7 +175,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Get the controlPlaneUri property: The control plane Uri.
-     *
+     * 
      * @return the controlPlaneUri value.
      */
     public String controlPlaneUri() {
@@ -180,7 +184,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Get the sourceAgentIdentityDetails property: The source agent identity details.
-     *
+     * 
      * @return the sourceAgentIdentityDetails value.
      */
     public IdentityProviderDetails sourceAgentIdentityDetails() {
@@ -189,19 +193,19 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Set the sourceAgentIdentityDetails property: The source agent identity details.
-     *
+     * 
      * @param sourceAgentIdentityDetails the sourceAgentIdentityDetails value to set.
      * @return the InMageRcmFabricSpecificDetails object itself.
      */
-    public InMageRcmFabricSpecificDetails withSourceAgentIdentityDetails(
-        IdentityProviderDetails sourceAgentIdentityDetails) {
+    public InMageRcmFabricSpecificDetails
+        withSourceAgentIdentityDetails(IdentityProviderDetails sourceAgentIdentityDetails) {
         this.sourceAgentIdentityDetails = sourceAgentIdentityDetails;
         return this;
     }
 
     /**
      * Get the processServers property: The list of process servers.
-     *
+     * 
      * @return the processServers value.
      */
     public List<ProcessServerDetails> processServers() {
@@ -210,7 +214,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Get the rcmProxies property: The list of RCM proxies.
-     *
+     * 
      * @return the rcmProxies value.
      */
     public List<RcmProxyDetails> rcmProxies() {
@@ -219,7 +223,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Get the pushInstallers property: The list of push installers.
-     *
+     * 
      * @return the pushInstallers value.
      */
     public List<PushInstallerDetails> pushInstallers() {
@@ -228,7 +232,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Get the replicationAgents property: The list of replication agents.
-     *
+     * 
      * @return the replicationAgents value.
      */
     public List<ReplicationAgentDetails> replicationAgents() {
@@ -237,7 +241,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Get the reprotectAgents property: The list of reprotect agents.
-     *
+     * 
      * @return the reprotectAgents value.
      */
     public List<ReprotectAgentDetails> reprotectAgents() {
@@ -246,7 +250,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Get the marsAgents property: The list of Mars agents.
-     *
+     * 
      * @return the marsAgents value.
      */
     public List<MarsAgentDetails> marsAgents() {
@@ -255,7 +259,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Get the dras property: The list of DRAs.
-     *
+     * 
      * @return the dras value.
      */
     public List<DraDetails> dras() {
@@ -264,7 +268,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Get the agentDetails property: The list of agent details.
-     *
+     * 
      * @return the agentDetails value.
      */
     public List<AgentDetails> agentDetails() {
@@ -273,7 +277,7 @@ public final class InMageRcmFabricSpecificDetails extends FabricSpecificDetails 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

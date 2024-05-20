@@ -13,8 +13,7 @@ public final class ProtectableItemImpl implements ProtectableItem {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    ProtectableItemImpl(
-        ProtectableItemInner innerObject,
+    ProtectableItemImpl(ProtectableItemInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

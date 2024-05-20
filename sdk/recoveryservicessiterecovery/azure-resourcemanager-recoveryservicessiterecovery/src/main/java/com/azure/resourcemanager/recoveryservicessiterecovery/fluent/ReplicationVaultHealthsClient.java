@@ -12,13 +12,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.VaultHealthDetailsInner;
 
-/** An instance of this class provides access to all the operations defined in ReplicationVaultHealthsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReplicationVaultHealthsClient.
+ */
 public interface ReplicationVaultHealthsClient {
     /**
      * Gets the health summary for the vault.
-     *
-     * <p>Gets the health details of the vault.
-     *
+     * 
+     * Gets the health details of the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -32,9 +34,9 @@ public interface ReplicationVaultHealthsClient {
 
     /**
      * Gets the health summary for the vault.
-     *
-     * <p>Gets the health details of the vault.
-     *
+     * 
+     * Gets the health details of the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,7 +49,7 @@ public interface ReplicationVaultHealthsClient {
 
     /**
      * Refreshes health summary of the vault.
-     *
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,12 +58,12 @@ public interface ReplicationVaultHealthsClient {
      * @return the {@link SyncPoller} for polling of vault health details definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VaultHealthDetailsInner>, VaultHealthDetailsInner> beginRefresh(
-        String resourceName, String resourceGroupName);
+    SyncPoller<PollResult<VaultHealthDetailsInner>, VaultHealthDetailsInner> beginRefresh(String resourceName,
+        String resourceGroupName);
 
     /**
      * Refreshes health summary of the vault.
-     *
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -71,12 +73,12 @@ public interface ReplicationVaultHealthsClient {
      * @return the {@link SyncPoller} for polling of vault health details definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VaultHealthDetailsInner>, VaultHealthDetailsInner> beginRefresh(
-        String resourceName, String resourceGroupName, Context context);
+    SyncPoller<PollResult<VaultHealthDetailsInner>, VaultHealthDetailsInner> beginRefresh(String resourceName,
+        String resourceGroupName, Context context);
 
     /**
      * Refreshes health summary of the vault.
-     *
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,7 +91,7 @@ public interface ReplicationVaultHealthsClient {
 
     /**
      * Refreshes health summary of the vault.
-     *
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.

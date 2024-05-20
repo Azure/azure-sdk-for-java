@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The initial recommendation status of the machine group or machine. */
+/**
+ * The initial recommendation status of the machine group or machine.
+ */
 public final class RecommendationStatus extends ExpandableStringEnum<RecommendationStatus> {
-    /** Static value Recommended for RecommendationStatus. */
+    /**
+     * Static value Recommended for RecommendationStatus.
+     */
     public static final RecommendationStatus RECOMMENDED = fromString("Recommended");
 
-    /** Static value NotRecommended for RecommendationStatus. */
+    /**
+     * Static value NotRecommended for RecommendationStatus.
+     */
     public static final RecommendationStatus NOT_RECOMMENDED = fromString("NotRecommended");
 
-    /** Static value NotAvailable for RecommendationStatus. */
+    /**
+     * Static value NotAvailable for RecommendationStatus.
+     */
     public static final RecommendationStatus NOT_AVAILABLE = fromString("NotAvailable");
 
-    /** Static value NoStatus for RecommendationStatus. */
+    /**
+     * Static value NoStatus for RecommendationStatus.
+     */
     public static final RecommendationStatus NO_STATUS = fromString("NoStatus");
 
     /**
      * Creates a new instance of RecommendationStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class RecommendationStatus extends ExpandableStringEnum<Recommendat
 
     /**
      * Creates or finds a RecommendationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecommendationStatus.
      */
@@ -44,7 +54,7 @@ public final class RecommendationStatus extends ExpandableStringEnum<Recommendat
 
     /**
      * Gets known RecommendationStatus values.
-     *
+     * 
      * @return known RecommendationStatus values.
      */
     public static Collection<RecommendationStatus> values() {

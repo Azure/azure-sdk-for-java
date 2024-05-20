@@ -6,33 +6,57 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The Log Analytics Workspace to which event data will be exported. Security alerts data will reside in the
+ * The Log Analytics Workspace to which event data will be exported. Security alerts data will reside in the
  * 'SecurityAlert' table and the assessments data will reside in the 'SecurityRecommendation' table (under the
  * 'Security'/'SecurityCenterFree' solutions). Note that in order to view the data in the workspace, the Security Center
  * Log Analytics free/standard solution needs to be enabled on that workspace. To learn more about Microsoft Defender
  * for Cloud continuous export capabilities, visit https://aka.ms/ASCExportLearnMore.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "actionType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "actionType",
+    defaultImpl = AutomationActionWorkspace.class,
+    visible = true)
 @JsonTypeName("Workspace")
 @Fluent
 public final class AutomationActionWorkspace extends AutomationAction {
+    /*
+     * The type of the action that will be triggered by the Automation
+     */
+    @JsonTypeId
+    @JsonProperty(value = "actionType", required = true)
+    private ActionType actionType = ActionType.WORKSPACE;
+
     /*
      * The fully qualified Log Analytics Workspace Azure Resource ID.
      */
     @JsonProperty(value = "workspaceResourceId")
     private String workspaceResourceId;
 
-    /** Creates an instance of AutomationActionWorkspace class. */
+    /**
+     * Creates an instance of AutomationActionWorkspace class.
+     */
     public AutomationActionWorkspace() {
     }
 
     /**
+     * Get the actionType property: The type of the action that will be triggered by the Automation.
+     * 
+     * @return the actionType value.
+     */
+    @Override
+    public ActionType actionType() {
+        return this.actionType;
+    }
+
+    /**
      * Get the workspaceResourceId property: The fully qualified Log Analytics Workspace Azure Resource ID.
-     *
+     * 
      * @return the workspaceResourceId value.
      */
     public String workspaceResourceId() {
@@ -41,7 +65,7 @@ public final class AutomationActionWorkspace extends AutomationAction {
 
     /**
      * Set the workspaceResourceId property: The fully qualified Log Analytics Workspace Azure Resource ID.
-     *
+     * 
      * @param workspaceResourceId the workspaceResourceId value to set.
      * @return the AutomationActionWorkspace object itself.
      */
@@ -52,7 +76,7 @@ public final class AutomationActionWorkspace extends AutomationAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

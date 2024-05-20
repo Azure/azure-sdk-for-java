@@ -17,27 +17,30 @@ public final class HDInsightSparkActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HDInsightSparkActivityTypeProperties model = BinaryData.fromString(
-            "{\"rootPath\":\"dataeimwhot\",\"entryFilePath\":\"datacgdpqkfxdqmdvrgl\",\"arguments\":[\"datamke\",\"dataeyqotmj\",\"dataqqahmzleta\"],\"getDebugInfo\":\"Always\",\"sparkJobLinkedService\":{\"referenceName\":\"wkkvarffjuefjbmo\",\"parameters\":{\"qwa\":\"dataodmdrdtywa\",\"jrpcpgcltf\":\"dataciapvcsw\",\"ptf\":\"dataaqmrimletjv\",\"blhzfglpswg\":\"dataab\"}},\"className\":\"xup\",\"proxyUser\":\"dataizkqnbiiand\",\"sparkConfig\":{\"ku\":\"datapqha\"}}")
+            "{\"rootPath\":\"datadboesxpc\",\"entryFilePath\":\"datagl\",\"arguments\":[\"datah\",\"datacyggflosxtbdgpy\"],\"getDebugInfo\":\"Failure\",\"sparkJobLinkedService\":{\"referenceName\":\"dcglima\",\"parameters\":{\"pxdyyohbbtwpkg\":\"datakypyvztdhoyarcu\",\"ybvxumtxuv\":\"datavuemjcjeja\",\"egqmlv\":\"dataoteidcwrmdqqgt\",\"yfszluzmzgat\":\"dataym\"}},\"className\":\"groejsaerzckmcuk\",\"proxyUser\":\"dataz\",\"sparkConfig\":{\"wbvyraazscxi\":\"datazzrxgqxddvuiur\",\"kmybohax\":\"datajyjcshmtpdvuix\"}}")
             .toObject(HDInsightSparkActivityTypeProperties.class);
-        Assertions.assertEquals(HDInsightActivityDebugInfoOption.ALWAYS, model.getDebugInfo());
-        Assertions.assertEquals("wkkvarffjuefjbmo", model.sparkJobLinkedService().referenceName());
-        Assertions.assertEquals("xup", model.className());
+        Assertions.assertEquals(HDInsightActivityDebugInfoOption.FAILURE, model.getDebugInfo());
+        Assertions.assertEquals("dcglima", model.sparkJobLinkedService().referenceName());
+        Assertions.assertEquals("groejsaerzckmcuk", model.className());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HDInsightSparkActivityTypeProperties model = new HDInsightSparkActivityTypeProperties()
-            .withRootPath("dataeimwhot").withEntryFilePath("datacgdpqkfxdqmdvrgl")
-            .withArguments(Arrays.asList("datamke", "dataeyqotmj", "dataqqahmzleta"))
-            .withGetDebugInfo(HDInsightActivityDebugInfoOption.ALWAYS)
-            .withSparkJobLinkedService(new LinkedServiceReference().withReferenceName("wkkvarffjuefjbmo")
-                .withParameters(mapOf("qwa", "dataodmdrdtywa", "jrpcpgcltf", "dataciapvcsw", "ptf", "dataaqmrimletjv",
-                    "blhzfglpswg", "dataab")))
-            .withClassName("xup").withProxyUser("dataizkqnbiiand").withSparkConfig(mapOf("ku", "datapqha"));
+        HDInsightSparkActivityTypeProperties model
+            = new HDInsightSparkActivityTypeProperties().withRootPath("datadboesxpc")
+                .withEntryFilePath("datagl")
+                .withArguments(Arrays.asList("datah", "datacyggflosxtbdgpy"))
+                .withGetDebugInfo(HDInsightActivityDebugInfoOption.FAILURE)
+                .withSparkJobLinkedService(new LinkedServiceReference().withReferenceName("dcglima")
+                    .withParameters(mapOf("pxdyyohbbtwpkg", "datakypyvztdhoyarcu", "ybvxumtxuv", "datavuemjcjeja",
+                        "egqmlv", "dataoteidcwrmdqqgt", "yfszluzmzgat", "dataym")))
+                .withClassName("groejsaerzckmcuk")
+                .withProxyUser("dataz")
+                .withSparkConfig(mapOf("wbvyraazscxi", "datazzrxgqxddvuiur", "kmybohax", "datajyjcshmtpdvuix"));
         model = BinaryData.fromObject(model).toObject(HDInsightSparkActivityTypeProperties.class);
-        Assertions.assertEquals(HDInsightActivityDebugInfoOption.ALWAYS, model.getDebugInfo());
-        Assertions.assertEquals("wkkvarffjuefjbmo", model.sparkJobLinkedService().referenceName());
-        Assertions.assertEquals("xup", model.className());
+        Assertions.assertEquals(HDInsightActivityDebugInfoOption.FAILURE, model.getDebugInfo());
+        Assertions.assertEquals("dcglima", model.sparkJobLinkedService().referenceName());
+        Assertions.assertEquals("groejsaerzckmcuk", model.className());
     }
 
     // Use "Map.of" if available

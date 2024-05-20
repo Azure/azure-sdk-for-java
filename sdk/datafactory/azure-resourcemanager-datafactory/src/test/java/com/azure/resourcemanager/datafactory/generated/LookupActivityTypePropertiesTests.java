@@ -16,22 +16,24 @@ public final class LookupActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LookupActivityTypeProperties model = BinaryData.fromString(
-            "{\"source\":{\"type\":\"CopySource\",\"sourceRetryCount\":\"databljlrfwq\",\"sourceRetryWait\":\"datasxi\",\"maxConcurrentConnections\":\"datarfvbicd\",\"disableMetricsCollection\":\"dataypfobzxbf\",\"\":{\"qfachfmvqn\":\"datanqllmqeauizkm\",\"pwpqvg\":\"datagstqeuujvsc\",\"efhburxnagvcsm\":\"datapwm\",\"d\":\"datavwpxvptqnq\"}},\"dataset\":{\"referenceName\":\"w\",\"parameters\":{\"juuwmcugveiiegoo\":\"datazlfhn\",\"dfqthohfqbeai\":\"datablvcalb\",\"gdascmf\":\"datavnnhxgiydk\",\"xgy\":\"datakabwpdvedmxckb\"}},\"firstRowOnly\":\"datasz\"}")
+            "{\"source\":{\"type\":\"qcqinvkmkbtpbw\",\"sourceRetryCount\":\"datazmqabvwbg\",\"sourceRetryWait\":\"datanvdrrm\",\"maxConcurrentConnections\":\"datashraepcl\",\"disableMetricsCollection\":\"datame\",\"\":{\"jeqdmolmcyba\":\"datazhrzeibkuuolul\",\"qamvdnexqvt\":\"datakeuraylygclwbu\",\"lkny\":\"datafnhzgtydllauno\",\"hhcqjahhcbzoary\":\"datapglgkeaz\"}},\"dataset\":{\"referenceName\":\"cxmftgmqlco\",\"parameters\":{\"yhjfmycgucccbsyy\":\"datafrrdb\"}},\"firstRowOnly\":\"dataxlt\"}")
             .toObject(LookupActivityTypeProperties.class);
-        Assertions.assertEquals("w", model.dataset().referenceName());
+        Assertions.assertEquals("cxmftgmqlco", model.dataset().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LookupActivityTypeProperties model = new LookupActivityTypeProperties()
-            .withSource(new CopySource().withSourceRetryCount("databljlrfwq").withSourceRetryWait("datasxi")
-                .withMaxConcurrentConnections("datarfvbicd").withDisableMetricsCollection("dataypfobzxbf")
-                .withAdditionalProperties(mapOf("type", "CopySource")))
-            .withDataset(new DatasetReference().withReferenceName("w").withParameters(mapOf("juuwmcugveiiegoo",
-                "datazlfhn", "dfqthohfqbeai", "datablvcalb", "gdascmf", "datavnnhxgiydk", "xgy", "datakabwpdvedmxckb")))
-            .withFirstRowOnly("datasz");
+            .withSource(new CopySource().withSourceRetryCount("datazmqabvwbg")
+                .withSourceRetryWait("datanvdrrm")
+                .withMaxConcurrentConnections("datashraepcl")
+                .withDisableMetricsCollection("datame")
+                .withAdditionalProperties(mapOf("type", "qcqinvkmkbtpbw")))
+            .withDataset(new DatasetReference().withReferenceName("cxmftgmqlco")
+                .withParameters(mapOf("yhjfmycgucccbsyy", "datafrrdb")))
+            .withFirstRowOnly("dataxlt");
         model = BinaryData.fromObject(model).toObject(LookupActivityTypeProperties.class);
-        Assertions.assertEquals("w", model.dataset().referenceName());
+        Assertions.assertEquals("cxmftgmqlco", model.dataset().referenceName());
     }
 
     // Use "Map.of" if available

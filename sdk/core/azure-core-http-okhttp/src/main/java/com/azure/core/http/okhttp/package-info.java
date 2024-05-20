@@ -2,32 +2,46 @@
 // Licensed under the MIT License.
 
 /**
- * <p><a href="https://learn.microsoft.com/en-us/java/api/overview/azure/core-http-okhttp-readme?view=azure-java-stable">
+ * <p>
+ * <a href="https://learn.microsoft.com/en-us/java/api/overview/azure/core-http-okhttp-readme?view=azure-java-stable">
  * Azure Core Http OkHttp</a> client library is a plugin for the azure-core HTTP client API. It allows you to use OkHttp
  * as the underlying HTTP client for communicating with Azure services. OkHttp is a popular and efficient HTTP client
- * that supports features such as HTTP/2, connection pooling, compression, and caching. To use the OkHttp client library,
+ * that supports features such as HTTP/2, connection pooling, compression, and caching. To use the OkHttp client
+ * library,
  * you need to include the dependency in your project and configure it when creating a service client.
- * For more details refer to our <a href="https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients">conceptual documentation</a>.</p>
+ * For more details refer to our
+ * <a href="https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients">conceptual
+ * documentation</a>.
+ * </p>
  *
- * <p><strong>Sample: Construct OkHttpAsyncHttpClient with Default Configuration</strong></p>
+ * <p>
+ * <strong>Sample: Construct OkHttpAsyncHttpClient with Default Configuration</strong>
+ * </p>
  *
- * <p>The following code sample demonstrates the creation of a OkHttp HttpClient that uses port 80 and has no proxy.</p>
+ * <p>
+ * The following code sample demonstrates the creation of a OkHttp HttpClient that uses port 80 and has no proxy.
+ * </p>
  *
  * <!-- src_embed readme-sample-createBasicClient -->
  * <pre>
  * HttpClient client = new OkHttpAsyncHttpClientBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
- * <!-- end readme-sample-createBasicClient  -->
+ * <!-- end readme-sample-createBasicClient -->
  *
  * <hr>
  *
  * <h2><strong>Using OkHttpAsyncHttpClient with Http Proxy</strong></h2>
  *
- * <p>Configuring the OkHttp client with a proxy in the context of Azure Java SDK is relevant when your application needs
+ * <p>
+ * Configuring the OkHttp client with a proxy in the context of Azure Java SDK is relevant when your application needs
  * to communicate with Azure services through a proxy server. For more details refer to our
- * <a href="https://learn.microsoft.com/azure/developer/java/sdk/proxying#http-proxy-configuration">conceptual documentation</a>.</p>
+ * <a href="https://learn.microsoft.com/azure/developer/java/sdk/proxying#http-proxy-configuration">conceptual
+ * documentation</a>.
+ * </p>
  *
- * <p>The following code sample demonstrates the creation of a OkHttp HttpClient that is using a proxy.</p>
+ * <p>
+ * The following code sample demonstrates the creation of a OkHttp HttpClient that is using a proxy.
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions -->
  * <pre>
@@ -39,14 +53,16 @@
  *         .proxy&#40;proxyOptions&#41;
  *         .build&#40;&#41;;
  * </pre>
- * <!-- end com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions  -->
+ * <!-- end com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder.proxy#ProxyOptions -->
  *
  * <hr>
  *
  * <h2><strong>Using OkHttpAsyncHttpClient with HTTP/2 Support</strong></h2>
  *
- * <p>The following code sample demonstrates the creation of a OkHttp HttpClient that supports both the HTTP/1.1 and
- * HTTP/2 protocols, with HTTP/2 being the preferred protocol.</p>
+ * <p>
+ * The following code sample demonstrates the creation of a OkHttp HttpClient that supports both the HTTP/1.1 and
+ * HTTP/2 protocols, with HTTP/2 being the preferred protocol.
+ * </p>
  *
  * <!-- src_embed readme-sample-useHttp2WithConfiguredOkHttpClient -->
  * <pre>
@@ -57,9 +73,11 @@
  *     .build&#40;&#41;&#41;
  *     .build&#40;&#41;;
  * </pre>
- * <!-- end readme-sample-useHttp2WithConfiguredOkHttpClient  -->
+ * <!-- end readme-sample-useHttp2WithConfiguredOkHttpClient -->
  *
- * <p>It is also possible to create a OkHttp HttpClient that only supports HTTP/2.</p>
+ * <p>
+ * It is also possible to create a OkHttp HttpClient that only supports HTTP/2.
+ * </p>
  *
  * <!-- src_embed readme-sample-useHttp2OnlyWithConfiguredOkHttpClient -->
  * <pre>
@@ -69,7 +87,7 @@
  *     .build&#40;&#41;&#41;
  *     .build&#40;&#41;;
  * </pre>
- * <!-- end readme-sample-useHttp2OnlyWithConfiguredOkHttpClient  -->
+ * <!-- end readme-sample-useHttp2OnlyWithConfiguredOkHttpClient -->
  *
  * @see com.azure.core.http.okhttp.OkHttpAsyncHttpClient
  * @see com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder

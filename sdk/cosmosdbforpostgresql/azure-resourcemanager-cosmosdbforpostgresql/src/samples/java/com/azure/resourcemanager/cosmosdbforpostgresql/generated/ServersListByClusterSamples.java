@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.cosmosdbforpostgresql.generated;
 
-/** Samples for Servers ListByCluster. */
+/**
+ * Samples for Servers ListByCluster.
+ */
 public final class ServersListByClusterSamples {
     /*
-     * x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/ServerListByCluster.json
+     * x-ms-original-file:
+     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
+     * ServerListByCluster.json
      */
     /**
      * Sample code: List servers of the cluster.
-     *
+     * 
      * @param manager Entry point to CosmosDBForPostgreSqlManager.
      */
-    public static void listServersOfTheCluster(
-        com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
+    public static void
+        listServersOfTheCluster(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
         manager.servers().listByCluster("TestGroup", "testcluster1", com.azure.core.util.Context.NONE);
     }
 }

@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Container App executions collection ARM resource. */
+/**
+ * Container App executions collection ARM resource.
+ */
 @Fluent
 public final class ContainerAppJobExecutionsInner {
     /*
@@ -24,13 +26,15 @@ public final class ContainerAppJobExecutionsInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ContainerAppJobExecutionsInner class. */
+    /**
+     * Creates an instance of ContainerAppJobExecutionsInner class.
+     */
     public ContainerAppJobExecutionsInner() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<JobExecutionInner> value() {
@@ -39,7 +43,7 @@ public final class ContainerAppJobExecutionsInner {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ContainerAppJobExecutionsInner object itself.
      */
@@ -50,7 +54,7 @@ public final class ContainerAppJobExecutionsInner {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,15 +63,13 @@ public final class ContainerAppJobExecutionsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ContainerAppJobExecutionsInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model ContainerAppJobExecutionsInner"));
         } else {
             value().forEach(e -> e.validate());
         }

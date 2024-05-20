@@ -86,6 +86,13 @@ public final class CallConnectionPropertiesInternal {
     @JsonProperty(value = "answeredBy")
     private CommunicationUserIdentifierModel answeredBy;
 
+    /*
+     * Identity of the original Pstn target of an incoming Call. Only populated
+     * when the original target is a Pstn number.
+     */
+    @JsonProperty(value = "answeredFor")
+    private PhoneNumberIdentifierModel answeredFor;
+
     /**
      * Get the callConnectionId property: The call connection id.
      *
@@ -328,6 +335,28 @@ public final class CallConnectionPropertiesInternal {
      */
     public CallConnectionPropertiesInternal setAnsweredBy(CommunicationUserIdentifierModel answeredBy) {
         this.answeredBy = answeredBy;
+        return this;
+    }
+
+    /**
+     * Get the answeredFor property: Identity of the original Pstn target of an incoming Call. Only populated when the
+     * original target is a Pstn number.
+     *
+     * @return the answeredFor value.
+     */
+    public PhoneNumberIdentifierModel getAnsweredFor() {
+        return this.answeredFor;
+    }
+
+    /**
+     * Set the answeredFor property: Identity of the original Pstn target of an incoming Call. Only populated when the
+     * original target is a Pstn number.
+     *
+     * @param answeredFor the answeredFor value to set.
+     * @return the CallConnectionPropertiesInternal object itself.
+     */
+    public CallConnectionPropertiesInternal setAnsweredFor(PhoneNumberIdentifierModel answeredFor) {
+        this.answeredFor = answeredFor;
         return this;
     }
 }

@@ -75,7 +75,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.6.0</version>
+    <version>11.7.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -279,10 +279,9 @@ Semantic ranking enhances the quality of search results for text-based queries. 
 
 To learn more about semantic ranking, you can refer to the [documentation](https://learn.microsoft.com/azure/search/vector-search-overview).
 
-
 ### Vector Search
 
-Vector search is an information retrieval technique that overcomes the limitations of traditional keyword-based search. Instead of relying solely on lexical analysis and matching individual query terms, vector search uses algorithms for similarity and concept search. It represents documents and queries as vectors in a high-dimensional space called an embedding. By searching on vector representations of content, a vector query can find relevant matches, even if the exact terms of the query are not present in the index. Moreover, vector search can be applied to various types of content, including images and videos and translated text, not just same-language text.
+**Vector search** is an information retrieval technique that uses numeric representations of searchable documents and query strings. By searching for numeric representations of content that are most similar to the numeric query, vector search can find relevant matches, even if the exact terms of the query are not present in the index. Moreover, vector search can be applied to various types of content, including images and videos and translated text, not just same-language text.
 
 To learn how to index vector fields and perform vector search, you can refer to the [sample](https://github.com/Azure/azure-sdk-for-python/blob/main/sdk/search/azure-search-documents/samples/sample_vector_search.py). This sample provides detailed guidance on indexing vector fields and demonstrates how to perform vector search.
 
@@ -329,8 +328,10 @@ for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
 Define a `Hotel` class.
 
 ```java readme-sample-hotelclass
-public class Hotel {
+public static class Hotel {
+    @SimpleField(isKey = true, isFilterable = true, isSortable = true)
     private String id;
+    @SearchableField(isFilterable = true, isSortable = true)
     private String name;
 
     public String getId() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure VM unmanaged disk input details. */
+/**
+ * Azure VM unmanaged disk input details.
+ */
 @Fluent
 public final class A2AProtectionIntentDiskInputDetails {
     /*
@@ -29,13 +31,15 @@ public final class A2AProtectionIntentDiskInputDetails {
     @JsonProperty(value = "primaryStagingStorageAccountCustomInput")
     private StorageAccountCustomDetails primaryStagingStorageAccountCustomInput;
 
-    /** Creates an instance of A2AProtectionIntentDiskInputDetails class. */
+    /**
+     * Creates an instance of A2AProtectionIntentDiskInputDetails class.
+     */
     public A2AProtectionIntentDiskInputDetails() {
     }
 
     /**
      * Get the diskUri property: The disk Uri.
-     *
+     * 
      * @return the diskUri value.
      */
     public String diskUri() {
@@ -44,7 +48,7 @@ public final class A2AProtectionIntentDiskInputDetails {
 
     /**
      * Set the diskUri property: The disk Uri.
-     *
+     * 
      * @param diskUri the diskUri value to set.
      * @return the A2AProtectionIntentDiskInputDetails object itself.
      */
@@ -55,7 +59,7 @@ public final class A2AProtectionIntentDiskInputDetails {
 
     /**
      * Get the recoveryAzureStorageAccountCustomInput property: The recovery VHD storage account input.
-     *
+     * 
      * @return the recoveryAzureStorageAccountCustomInput value.
      */
     public StorageAccountCustomDetails recoveryAzureStorageAccountCustomInput() {
@@ -64,19 +68,19 @@ public final class A2AProtectionIntentDiskInputDetails {
 
     /**
      * Set the recoveryAzureStorageAccountCustomInput property: The recovery VHD storage account input.
-     *
+     * 
      * @param recoveryAzureStorageAccountCustomInput the recoveryAzureStorageAccountCustomInput value to set.
      * @return the A2AProtectionIntentDiskInputDetails object itself.
      */
-    public A2AProtectionIntentDiskInputDetails withRecoveryAzureStorageAccountCustomInput(
-        StorageAccountCustomDetails recoveryAzureStorageAccountCustomInput) {
+    public A2AProtectionIntentDiskInputDetails
+        withRecoveryAzureStorageAccountCustomInput(StorageAccountCustomDetails recoveryAzureStorageAccountCustomInput) {
         this.recoveryAzureStorageAccountCustomInput = recoveryAzureStorageAccountCustomInput;
         return this;
     }
 
     /**
      * Get the primaryStagingStorageAccountCustomInput property: The primary staging storage account input.
-     *
+     * 
      * @return the primaryStagingStorageAccountCustomInput value.
      */
     public StorageAccountCustomDetails primaryStagingStorageAccountCustomInput() {
@@ -85,7 +89,7 @@ public final class A2AProtectionIntentDiskInputDetails {
 
     /**
      * Set the primaryStagingStorageAccountCustomInput property: The primary staging storage account input.
-     *
+     * 
      * @param primaryStagingStorageAccountCustomInput the primaryStagingStorageAccountCustomInput value to set.
      * @return the A2AProtectionIntentDiskInputDetails object itself.
      */
@@ -97,15 +101,13 @@ public final class A2AProtectionIntentDiskInputDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (diskUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property diskUri in model A2AProtectionIntentDiskInputDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property diskUri in model A2AProtectionIntentDiskInputDetails"));
         }
         if (recoveryAzureStorageAccountCustomInput() != null) {
             recoveryAzureStorageAccountCustomInput().validate();

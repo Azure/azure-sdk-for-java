@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualEndpointResourceInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointType;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointsListResult;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,22 +15,26 @@ public final class VirtualEndpointsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualEndpointsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"xmaehvbbxu\",\"name\":\"pltfnhtba\",\"type\":\"gx\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"kl\",\"hpluodpvruudlg\",\"ibthostgktstvd\",\"eclze\"],\"virtualEndpoints\":[\"cvhzlhp\",\"odqkdlwwqfb\",\"mlkxtrqjfs\"]}}],\"nextLink\":\"mbtxhwgf\"}")
+            "{\"value\":[{\"id\":\"ftul\",\"name\":\"tduceamt\",\"type\":\"zuo\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"qioknssxmojm\",\"vpkjpr\"],\"virtualEndpoints\":[\"cfzq\",\"jyxgtczh\",\"ydbsd\"]}},{\"id\":\"m\",\"name\":\"maehvbbxurip\",\"type\":\"fnhtbaxkgxyw\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"yhpluodpvruudlgz\",\"bth\",\"stgktst\",\"dxeclzedqbcvh\"],\"virtualEndpoints\":[\"plodqkdlwwqfbu\"]}},{\"id\":\"kxtrq\",\"name\":\"smlmbtxhwgfwsrta\",\"type\":\"oezbrhubsk\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"okkqfqjbvleo\"],\"virtualEndpoints\":[\"luiqtqzfavyvnqq\"]}}],\"nextLink\":\"aryeu\"}")
             .toObject(VirtualEndpointsListResult.class);
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, model.value().get(0).endpointType());
-        Assertions.assertEquals("kl", model.value().get(0).members().get(0));
-        Assertions.assertEquals("mbtxhwgf", model.nextLink());
+        Assertions.assertEquals("qioknssxmojm", model.value().get(0).members().get(0));
+        Assertions.assertEquals("aryeu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualEndpointsListResult model = new VirtualEndpointsListResult()
-            .withValue(Arrays.asList(new VirtualEndpointResourceInner().withEndpointType(VirtualEndpointType.READ_WRITE)
-                .withMembers(Arrays.asList("kl", "hpluodpvruudlg", "ibthostgktstvd", "eclze"))))
-            .withNextLink("mbtxhwgf");
+        VirtualEndpointsListResult model = new VirtualEndpointsListResult().withValue(Arrays.asList(
+            new VirtualEndpointResourceInner().withEndpointType(VirtualEndpointType.READ_WRITE)
+                .withMembers(Arrays.asList("qioknssxmojm", "vpkjpr")),
+            new VirtualEndpointResourceInner().withEndpointType(VirtualEndpointType.READ_WRITE)
+                .withMembers(Arrays.asList("yhpluodpvruudlgz", "bth", "stgktst", "dxeclzedqbcvh")),
+            new VirtualEndpointResourceInner().withEndpointType(VirtualEndpointType.READ_WRITE)
+                .withMembers(Arrays.asList("okkqfqjbvleo"))))
+            .withNextLink("aryeu");
         model = BinaryData.fromObject(model).toObject(VirtualEndpointsListResult.class);
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, model.value().get(0).endpointType());
-        Assertions.assertEquals("kl", model.value().get(0).members().get(0));
-        Assertions.assertEquals("mbtxhwgf", model.nextLink());
+        Assertions.assertEquals("qioknssxmojm", model.value().get(0).members().get(0));
+        Assertions.assertEquals("aryeu", model.nextLink());
     }
 }

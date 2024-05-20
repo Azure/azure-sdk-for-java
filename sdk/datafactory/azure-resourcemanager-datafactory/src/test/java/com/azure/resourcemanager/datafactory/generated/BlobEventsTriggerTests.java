@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.datafactory.models.BlobEventTypes;
 import com.azure.resourcemanager.datafactory.models.BlobEventsTrigger;
+import com.azure.resourcemanager.datafactory.models.BlobEventTypes;
 import com.azure.resourcemanager.datafactory.models.PipelineReference;
 import com.azure.resourcemanager.datafactory.models.TriggerPipelineReference;
 import java.util.Arrays;
@@ -18,48 +18,53 @@ public final class BlobEventsTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BlobEventsTrigger model = BinaryData.fromString(
-            "{\"type\":\"BlobEventsTrigger\",\"typeProperties\":{\"blobPathBeginsWith\":\"kjrtcifxl\",\"blobPathEndsWith\":\"jpu\",\"ignoreEmptyBlobs\":true,\"events\":[\"Microsoft.Storage.BlobDeleted\",\"Microsoft.Storage.BlobCreated\"],\"scope\":\"sjcdmnvtpboh\"},\"pipelines\":[{\"pipelineReference\":{\"referenceName\":\"qvsdaqfvplfywcbn\",\"name\":\"shmqn\"},\"parameters\":{\"lqs\":\"datavqsqwuwxtqdtvej\",\"fyddrsairxnw\":\"datajxpro\",\"ahe\":\"dataiytkeqjviawspvbc\",\"rmhewdfua\":\"datalmiuprfqyrwtdnr\"}},{\"pipelineReference\":{\"referenceName\":\"kfojn\",\"name\":\"dtuyimdoprkpd\"},\"parameters\":{\"b\":\"datasa\",\"jedyyengnh\":\"datab\"}},{\"pipelineReference\":{\"referenceName\":\"bpqzqaavxxvlss\",\"name\":\"txdr\"},\"parameters\":{\"x\":\"datahqwfrtbvqtog\"}},{\"pipelineReference\":{\"referenceName\":\"vkntygu\",\"name\":\"qobr\"},\"parameters\":{\"gq\":\"datajyami\",\"ibwkiwyt\":\"dataizvvwyhszewhzaiu\"}}],\"description\":\"pbrejvwwb\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datadind\"],\"\":{\"cn\":\"dataiq\",\"gkxrevwvjwtf\":\"datacjli\"}}")
+            "{\"type\":\"ifv\",\"typeProperties\":{\"blobPathBeginsWith\":\"pswasveym\",\"blobPathEndsWith\":\"bmffcryyykwwhscu\",\"ignoreEmptyBlobs\":false,\"events\":[\"Microsoft.Storage.BlobDeleted\",\"Microsoft.Storage.BlobDeleted\",\"Microsoft.Storage.BlobCreated\",\"Microsoft.Storage.BlobDeleted\"],\"scope\":\"lzbzcgzhdrvkz\"},\"pipelines\":[{\"pipelineReference\":{\"referenceName\":\"qrvz\",\"name\":\"beiqopjzzglgxvqd\"},\"parameters\":{\"wbpbi\":\"datazkzkhbiee\",\"t\":\"datateprq\"}},{\"pipelineReference\":{\"referenceName\":\"wapmtyfgswp\",\"name\":\"nvxtvmbwydqo\"},\"parameters\":{\"i\":\"datayjebgveuazwkze\"}},{\"pipelineReference\":{\"referenceName\":\"drrgzguupw\",\"name\":\"ohz\"},\"parameters\":{\"dlxqjshyyrcr\":\"databsncorini\"}},{\"pipelineReference\":{\"referenceName\":\"z\",\"name\":\"faurmqpk\"},\"parameters\":{\"dnpeamslvpxsy\":\"databltfxhmrhhxli\"}}],\"description\":\"dyaauls\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datac\"],\"\":{\"h\":\"databxgxgr\",\"ndvaf\":\"dataabhkyaspccwiev\",\"yxlcgycvcspcfx\":\"datacvn\",\"ioqtafmbxtn\":\"dataal\"}}")
             .toObject(BlobEventsTrigger.class);
-        Assertions.assertEquals("pbrejvwwb", model.description());
-        Assertions.assertEquals("qvsdaqfvplfywcbn", model.pipelines().get(0).pipelineReference().referenceName());
-        Assertions.assertEquals("shmqn", model.pipelines().get(0).pipelineReference().name());
-        Assertions.assertEquals("kjrtcifxl", model.blobPathBeginsWith());
-        Assertions.assertEquals("jpu", model.blobPathEndsWith());
-        Assertions.assertEquals(true, model.ignoreEmptyBlobs());
+        Assertions.assertEquals("dyaauls", model.description());
+        Assertions.assertEquals("qrvz", model.pipelines().get(0).pipelineReference().referenceName());
+        Assertions.assertEquals("beiqopjzzglgxvqd", model.pipelines().get(0).pipelineReference().name());
+        Assertions.assertEquals("pswasveym", model.blobPathBeginsWith());
+        Assertions.assertEquals("bmffcryyykwwhscu", model.blobPathEndsWith());
+        Assertions.assertEquals(false, model.ignoreEmptyBlobs());
         Assertions.assertEquals(BlobEventTypes.MICROSOFT_STORAGE_BLOB_DELETED, model.events().get(0));
-        Assertions.assertEquals("sjcdmnvtpboh", model.scope());
+        Assertions.assertEquals("lzbzcgzhdrvkz", model.scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobEventsTrigger model = new BlobEventsTrigger().withDescription("pbrejvwwb")
-            .withAnnotations(Arrays.asList("datadind"))
-            .withPipelines(Arrays.asList(new TriggerPipelineReference()
-                .withPipelineReference(new PipelineReference().withReferenceName("qvsdaqfvplfywcbn").withName("shmqn"))
-                .withParameters(mapOf("lqs", "datavqsqwuwxtqdtvej", "fyddrsairxnw", "datajxpro", "ahe",
-                    "dataiytkeqjviawspvbc", "rmhewdfua", "datalmiuprfqyrwtdnr")),
+        BlobEventsTrigger model = new BlobEventsTrigger().withDescription("dyaauls")
+            .withAnnotations(Arrays.asList("datac"))
+            .withPipelines(Arrays.asList(
                 new TriggerPipelineReference()
-                    .withPipelineReference(new PipelineReference().withReferenceName("kfojn").withName("dtuyimdoprkpd"))
-                    .withParameters(mapOf("b", "datasa", "jedyyengnh", "datab")),
+                    .withPipelineReference(
+                        new PipelineReference().withReferenceName("qrvz").withName("beiqopjzzglgxvqd"))
+                    .withParameters(mapOf("wbpbi", "datazkzkhbiee", "t", "datateprq")),
                 new TriggerPipelineReference()
-                    .withPipelineReference(new PipelineReference().withReferenceName("bpqzqaavxxvlss").withName("txdr"))
-                    .withParameters(mapOf("x", "datahqwfrtbvqtog")),
+                    .withPipelineReference(
+                        new PipelineReference().withReferenceName("wapmtyfgswp").withName("nvxtvmbwydqo"))
+                    .withParameters(mapOf("i", "datayjebgveuazwkze")),
                 new TriggerPipelineReference()
-                    .withPipelineReference(new PipelineReference().withReferenceName("vkntygu").withName("qobr"))
-                    .withParameters(mapOf("gq", "datajyami", "ibwkiwyt", "dataizvvwyhszewhzaiu"))))
-            .withBlobPathBeginsWith("kjrtcifxl").withBlobPathEndsWith("jpu").withIgnoreEmptyBlobs(true)
+                    .withPipelineReference(new PipelineReference().withReferenceName("drrgzguupw").withName("ohz"))
+                    .withParameters(mapOf("dlxqjshyyrcr", "databsncorini")),
+                new TriggerPipelineReference()
+                    .withPipelineReference(new PipelineReference().withReferenceName("z").withName("faurmqpk"))
+                    .withParameters(mapOf("dnpeamslvpxsy", "databltfxhmrhhxli"))))
+            .withBlobPathBeginsWith("pswasveym")
+            .withBlobPathEndsWith("bmffcryyykwwhscu")
+            .withIgnoreEmptyBlobs(false)
             .withEvents(Arrays.asList(BlobEventTypes.MICROSOFT_STORAGE_BLOB_DELETED,
-                BlobEventTypes.MICROSOFT_STORAGE_BLOB_CREATED))
-            .withScope("sjcdmnvtpboh");
+                BlobEventTypes.MICROSOFT_STORAGE_BLOB_DELETED, BlobEventTypes.MICROSOFT_STORAGE_BLOB_CREATED,
+                BlobEventTypes.MICROSOFT_STORAGE_BLOB_DELETED))
+            .withScope("lzbzcgzhdrvkz");
         model = BinaryData.fromObject(model).toObject(BlobEventsTrigger.class);
-        Assertions.assertEquals("pbrejvwwb", model.description());
-        Assertions.assertEquals("qvsdaqfvplfywcbn", model.pipelines().get(0).pipelineReference().referenceName());
-        Assertions.assertEquals("shmqn", model.pipelines().get(0).pipelineReference().name());
-        Assertions.assertEquals("kjrtcifxl", model.blobPathBeginsWith());
-        Assertions.assertEquals("jpu", model.blobPathEndsWith());
-        Assertions.assertEquals(true, model.ignoreEmptyBlobs());
+        Assertions.assertEquals("dyaauls", model.description());
+        Assertions.assertEquals("qrvz", model.pipelines().get(0).pipelineReference().referenceName());
+        Assertions.assertEquals("beiqopjzzglgxvqd", model.pipelines().get(0).pipelineReference().name());
+        Assertions.assertEquals("pswasveym", model.blobPathBeginsWith());
+        Assertions.assertEquals("bmffcryyykwwhscu", model.blobPathEndsWith());
+        Assertions.assertEquals(false, model.ignoreEmptyBlobs());
         Assertions.assertEquals(BlobEventTypes.MICROSOFT_STORAGE_BLOB_DELETED, model.events().get(0));
-        Assertions.assertEquals("sjcdmnvtpboh", model.scope());
+        Assertions.assertEquals("lzbzcgzhdrvkz", model.scope());
     }
 
     // Use "Map.of" if available

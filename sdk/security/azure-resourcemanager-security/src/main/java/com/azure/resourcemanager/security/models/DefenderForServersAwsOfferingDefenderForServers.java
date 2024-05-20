@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Defender for servers connection configuration. */
+/**
+ * The Defender for servers connection configuration.
+ */
 @Fluent
 public final class DefenderForServersAwsOfferingDefenderForServers {
     /*
@@ -16,13 +18,15 @@ public final class DefenderForServersAwsOfferingDefenderForServers {
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
 
-    /** Creates an instance of DefenderForServersAwsOfferingDefenderForServers class. */
+    /**
+     * Creates an instance of DefenderForServersAwsOfferingDefenderForServers class.
+     */
     public DefenderForServersAwsOfferingDefenderForServers() {
     }
 
     /**
      * Get the cloudRoleArn property: The cloud role ARN in AWS for this feature.
-     *
+     * 
      * @return the cloudRoleArn value.
      */
     public String cloudRoleArn() {
@@ -31,7 +35,7 @@ public final class DefenderForServersAwsOfferingDefenderForServers {
 
     /**
      * Set the cloudRoleArn property: The cloud role ARN in AWS for this feature.
-     *
+     * 
      * @param cloudRoleArn the cloudRoleArn value to set.
      * @return the DefenderForServersAwsOfferingDefenderForServers object itself.
      */
@@ -42,7 +46,7 @@ public final class DefenderForServersAwsOfferingDefenderForServers {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

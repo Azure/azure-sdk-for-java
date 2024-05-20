@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomEntityStoreAssignmentsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomEntityStoreAssignmentsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"principal\":\"j\",\"entityStoreDatabaseLink\":\"hbcryffdfdosyge\"},\"id\":\"paojakhmsbzjh\",\"name\":\"rzevdphlxaol\",\"type\":\"hqtrgqjbpf\"},{\"properties\":{\"principal\":\"n\",\"entityStoreDatabaseLink\":\"v\"},\"id\":\"cjrwzoxxjtfellu\",\"name\":\"fziton\",\"type\":\"eqfpj\"},{\"properties\":{\"principal\":\"ofpdvh\",\"entityStoreDatabaseLink\":\"xxypininmay\"},\"id\":\"uybbkpodep\",\"name\":\"oginuvamiheognar\",\"type\":\"zxtheotusivyevcc\"}],\"nextLink\":\"ihnhun\"}")
-                .toObject(CustomEntityStoreAssignmentsListResult.class);
-        Assertions.assertEquals("ihnhun", model.nextLink());
+        CustomEntityStoreAssignmentsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"principal\":\"dlxyjrxs\",\"entityStoreDatabaseLink\":\"afcnih\"},\"id\":\"wqapnedgfbcvk\",\"name\":\"vq\",\"type\":\"pkeqdcvdrhvoo\"},{\"properties\":{\"principal\":\"bobzdopcjwvnhd\",\"entityStoreDatabaseLink\":\"wmgxcxrsl\"},\"id\":\"mutwuoe\",\"name\":\"rpkhjwn\",\"type\":\"yqsluic\"},{\"properties\":{\"principal\":\"kzzlvmbmpaxmodf\",\"entityStoreDatabaseLink\":\"efyw\"},\"id\":\"bpfvm\",\"name\":\"yhrfouyftaakcpw\",\"type\":\"yzvqt\"}],\"nextLink\":\"ubex\"}")
+            .toObject(CustomEntityStoreAssignmentsListResult.class);
+        Assertions.assertEquals("ubex", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomEntityStoreAssignmentsListResult model =
-            new CustomEntityStoreAssignmentsListResult().withNextLink("ihnhun");
+        CustomEntityStoreAssignmentsListResult model
+            = new CustomEntityStoreAssignmentsListResult().withNextLink("ubex");
         model = BinaryData.fromObject(model).toObject(CustomEntityStoreAssignmentsListResult.class);
-        Assertions.assertEquals("ihnhun", model.nextLink());
+        Assertions.assertEquals("ubex", model.nextLink());
     }
 }

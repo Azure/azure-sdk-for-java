@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.security.models.State;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Regulatory compliance standard details and state. */
+/**
+ * Regulatory compliance standard details and state.
+ */
 @Fluent
 public final class RegulatoryComplianceStandardInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class RegulatoryComplianceStandardInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private RegulatoryComplianceStandardProperties innerProperties;
 
-    /** Creates an instance of RegulatoryComplianceStandardInner class. */
+    /**
+     * Creates an instance of RegulatoryComplianceStandardInner class.
+     */
     public RegulatoryComplianceStandardInner() {
     }
 
     /**
      * Get the innerProperties property: Regulatory compliance standard data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RegulatoryComplianceStandardProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class RegulatoryComplianceStandardInner extends ProxyResource {
 
     /**
      * Get the state property: Aggregative state based on the standard's supported controls states.
-     *
+     * 
      * @return the state value.
      */
     public State state() {
@@ -42,7 +46,7 @@ public final class RegulatoryComplianceStandardInner extends ProxyResource {
 
     /**
      * Set the state property: Aggregative state based on the standard's supported controls states.
-     *
+     * 
      * @param state the state value to set.
      * @return the RegulatoryComplianceStandardInner object itself.
      */
@@ -57,7 +61,7 @@ public final class RegulatoryComplianceStandardInner extends ProxyResource {
     /**
      * Get the passedControls property: The number of supported regulatory compliance controls of the given standard
      * with a passed state.
-     *
+     * 
      * @return the passedControls value.
      */
     public Integer passedControls() {
@@ -67,7 +71,7 @@ public final class RegulatoryComplianceStandardInner extends ProxyResource {
     /**
      * Get the failedControls property: The number of supported regulatory compliance controls of the given standard
      * with a failed state.
-     *
+     * 
      * @return the failedControls value.
      */
     public Integer failedControls() {
@@ -77,7 +81,7 @@ public final class RegulatoryComplianceStandardInner extends ProxyResource {
     /**
      * Get the skippedControls property: The number of supported regulatory compliance controls of the given standard
      * with a skipped state.
-     *
+     * 
      * @return the skippedControls value.
      */
     public Integer skippedControls() {
@@ -87,7 +91,7 @@ public final class RegulatoryComplianceStandardInner extends ProxyResource {
     /**
      * Get the unsupportedControls property: The number of regulatory compliance controls of the given standard which
      * are unsupported by automated assessments.
-     *
+     * 
      * @return the unsupportedControls value.
      */
     public Integer unsupportedControls() {
@@ -96,7 +100,7 @@ public final class RegulatoryComplianceStandardInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,53 +8,83 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReplicationProtectedItemOperation. */
+/**
+ * Defines values for ReplicationProtectedItemOperation.
+ */
 public final class ReplicationProtectedItemOperation extends ExpandableStringEnum<ReplicationProtectedItemOperation> {
-    /** Static value ReverseReplicate for ReplicationProtectedItemOperation. */
+    /**
+     * Static value ReverseReplicate for ReplicationProtectedItemOperation.
+     */
     public static final ReplicationProtectedItemOperation REVERSE_REPLICATE = fromString("ReverseReplicate");
 
-    /** Static value Commit for ReplicationProtectedItemOperation. */
+    /**
+     * Static value Commit for ReplicationProtectedItemOperation.
+     */
     public static final ReplicationProtectedItemOperation COMMIT = fromString("Commit");
 
-    /** Static value PlannedFailover for ReplicationProtectedItemOperation. */
+    /**
+     * Static value PlannedFailover for ReplicationProtectedItemOperation.
+     */
     public static final ReplicationProtectedItemOperation PLANNED_FAILOVER = fromString("PlannedFailover");
 
-    /** Static value UnplannedFailover for ReplicationProtectedItemOperation. */
+    /**
+     * Static value UnplannedFailover for ReplicationProtectedItemOperation.
+     */
     public static final ReplicationProtectedItemOperation UNPLANNED_FAILOVER = fromString("UnplannedFailover");
 
-    /** Static value DisableProtection for ReplicationProtectedItemOperation. */
+    /**
+     * Static value DisableProtection for ReplicationProtectedItemOperation.
+     */
     public static final ReplicationProtectedItemOperation DISABLE_PROTECTION = fromString("DisableProtection");
 
-    /** Static value TestFailover for ReplicationProtectedItemOperation. */
+    /**
+     * Static value TestFailover for ReplicationProtectedItemOperation.
+     */
     public static final ReplicationProtectedItemOperation TEST_FAILOVER = fromString("TestFailover");
 
-    /** Static value TestFailoverCleanup for ReplicationProtectedItemOperation. */
+    /**
+     * Static value TestFailoverCleanup for ReplicationProtectedItemOperation.
+     */
     public static final ReplicationProtectedItemOperation TEST_FAILOVER_CLEANUP = fromString("TestFailoverCleanup");
 
-    /** Static value Failback for ReplicationProtectedItemOperation. */
+    /**
+     * Static value Failback for ReplicationProtectedItemOperation.
+     */
     public static final ReplicationProtectedItemOperation FAILBACK = fromString("Failback");
 
-    /** Static value FinalizeFailback for ReplicationProtectedItemOperation. */
+    /**
+     * Static value FinalizeFailback for ReplicationProtectedItemOperation.
+     */
     public static final ReplicationProtectedItemOperation FINALIZE_FAILBACK = fromString("FinalizeFailback");
 
-    /** Static value CancelFailover for ReplicationProtectedItemOperation. */
+    /**
+     * Static value CancelFailover for ReplicationProtectedItemOperation.
+     */
     public static final ReplicationProtectedItemOperation CANCEL_FAILOVER = fromString("CancelFailover");
 
-    /** Static value ChangePit for ReplicationProtectedItemOperation. */
+    /**
+     * Static value ChangePit for ReplicationProtectedItemOperation.
+     */
     public static final ReplicationProtectedItemOperation CHANGE_PIT = fromString("ChangePit");
 
-    /** Static value RepairReplication for ReplicationProtectedItemOperation. */
+    /**
+     * Static value RepairReplication for ReplicationProtectedItemOperation.
+     */
     public static final ReplicationProtectedItemOperation REPAIR_REPLICATION = fromString("RepairReplication");
 
-    /** Static value SwitchProtection for ReplicationProtectedItemOperation. */
+    /**
+     * Static value SwitchProtection for ReplicationProtectedItemOperation.
+     */
     public static final ReplicationProtectedItemOperation SWITCH_PROTECTION = fromString("SwitchProtection");
 
-    /** Static value CompleteMigration for ReplicationProtectedItemOperation. */
+    /**
+     * Static value CompleteMigration for ReplicationProtectedItemOperation.
+     */
     public static final ReplicationProtectedItemOperation COMPLETE_MIGRATION = fromString("CompleteMigration");
 
     /**
      * Creates a new instance of ReplicationProtectedItemOperation value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -63,7 +93,7 @@ public final class ReplicationProtectedItemOperation extends ExpandableStringEnu
 
     /**
      * Creates or finds a ReplicationProtectedItemOperation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReplicationProtectedItemOperation.
      */
@@ -74,7 +104,7 @@ public final class ReplicationProtectedItemOperation extends ExpandableStringEnu
 
     /**
      * Gets known ReplicationProtectedItemOperation values.
-     *
+     * 
      * @return known ReplicationProtectedItemOperation values.
      */
     public static Collection<ReplicationProtectedItemOperation> values() {

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
@@ -14,6 +15,7 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.PriorityLevel;
 import io.netty.buffer.ByteBuf;
@@ -60,7 +62,8 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     // has the non serialized value of the partition-key
     private PartitionKeyInternal partitionKeyInternal;
-
+    private PartitionKeyDefinition partitionKeyDefinition;
+    private String effectivePartitionKey;
     private FeedRangeInternal feedRange;
     private Range<String> effectiveRange;
     private int numberOfItemsInBatchRequest;
@@ -386,7 +389,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   Object options) {
 
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath,
-            ModelBridgeInternal.serializeJsonToByteBuffer(resource), headers, AuthorizationTokenType.PrimaryMasterKey);
+            resource.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null), headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         request.throughputControlGroupName = getThroughputControlGroupName(options);
         return request;
@@ -571,7 +574,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   ResourceType resourceType,
                                                   String relativePath,
                                                   Map<String, String> headers) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
         return new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath, resourceContent, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -592,7 +595,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   String relativePath,
                                                   Map<String, String> headers,
                                                   AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
         return new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath, resourceContent, headers, authorizationTokenType);
     }
 
@@ -647,7 +650,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   ResourceType resourceType,
                                                   Resource resource,
                                                   Map<String, String> headers) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
         return new RxDocumentServiceRequest(clientContext, operation, resourceId, resourceType, resourceContent, headers, false, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -668,7 +671,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   Resource resource,
                                                   Map<String, String> headers,
                                                   AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
         return new RxDocumentServiceRequest(clientContext, operation, resourceId, resourceType, resourceContent, headers, false, authorizationTokenType);
     }
 
@@ -722,7 +725,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             Resource resource,
             String resourceFullName,
             ResourceType resourceType) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
         return new RxDocumentServiceRequest(clientContext,
                 operationType,
                 resourceFullName,
@@ -741,7 +744,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             String resourceFullName,
             ResourceType resourceType,
             AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
         return new RxDocumentServiceRequest(clientContext,
                 operationType,
                 resourceFullName,
@@ -920,6 +923,14 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public PartitionKeyInternal getPartitionKeyInternal() {
         return this.partitionKeyInternal;
+    }
+
+    public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.partitionKeyDefinition = partitionKeyDefinition;
+    }
+
+    public PartitionKeyDefinition getPartitionKeyDefinition() {
+        return this.partitionKeyDefinition;
     }
 
     public boolean isChangeFeedRequest() {
@@ -1178,5 +1189,13 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public void setResponseTimeout(Duration responseTimeout) {
         this.responseTimeout = responseTimeout;
+    }
+
+    public String getEffectivePartitionKey() {
+        return effectivePartitionKey;
+    }
+
+    public void setEffectivePartitionKey(String effectivePartitionKey) {
+        this.effectivePartitionKey = effectivePartitionKey;
     }
 }

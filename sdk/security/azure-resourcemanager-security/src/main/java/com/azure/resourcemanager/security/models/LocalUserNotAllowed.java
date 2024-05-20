@@ -5,27 +5,58 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Login by a local user that isn't allowed. Allow list consists of login names to allow. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
+/**
+ * Login by a local user that isn't allowed. Allow list consists of login names to allow.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "ruleType",
+    defaultImpl = LocalUserNotAllowed.class,
+    visible = true)
 @JsonTypeName("LocalUserNotAllowed")
 @Fluent
 public final class LocalUserNotAllowed extends AllowlistCustomAlertRule {
-    /** Creates an instance of LocalUserNotAllowed class. */
+    /*
+     * The type of the custom alert rule.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ruleType", required = true)
+    private String ruleType = "LocalUserNotAllowed";
+
+    /**
+     * Creates an instance of LocalUserNotAllowed class.
+     */
     public LocalUserNotAllowed() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LocalUserNotAllowed withAllowlistValues(List<String> allowlistValues) {
         super.withAllowlistValues(allowlistValues);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LocalUserNotAllowed withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -34,7 +65,7 @@ public final class LocalUserNotAllowed extends AllowlistCustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

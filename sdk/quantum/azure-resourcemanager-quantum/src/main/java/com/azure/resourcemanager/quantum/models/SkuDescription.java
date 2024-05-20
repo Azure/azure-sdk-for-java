@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Information about a specific sku. */
+/**
+ * Information about a specific sku.
+ */
 @Fluent
 public final class SkuDescription {
     /*
@@ -65,13 +67,15 @@ public final class SkuDescription {
     @JsonProperty(value = "pricingDetails")
     private List<PricingDetail> pricingDetails;
 
-    /** Creates an instance of SkuDescription class. */
+    /**
+     * Creates an instance of SkuDescription class.
+     */
     public SkuDescription() {
     }
 
     /**
      * Get the id property: Unique sku id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -80,7 +84,7 @@ public final class SkuDescription {
 
     /**
      * Set the id property: Unique sku id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SkuDescription object itself.
      */
@@ -91,7 +95,7 @@ public final class SkuDescription {
 
     /**
      * Get the name property: Display name of this sku.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -100,7 +104,7 @@ public final class SkuDescription {
 
     /**
      * Set the name property: Display name of this sku.
-     *
+     * 
      * @param name the name value to set.
      * @return the SkuDescription object itself.
      */
@@ -111,7 +115,7 @@ public final class SkuDescription {
 
     /**
      * Get the version property: Display name of this sku.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -120,7 +124,7 @@ public final class SkuDescription {
 
     /**
      * Set the version property: Display name of this sku.
-     *
+     * 
      * @param version the version value to set.
      * @return the SkuDescription object itself.
      */
@@ -131,7 +135,7 @@ public final class SkuDescription {
 
     /**
      * Get the description property: Description about this sku.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -140,7 +144,7 @@ public final class SkuDescription {
 
     /**
      * Set the description property: Description about this sku.
-     *
+     * 
      * @param description the description value to set.
      * @return the SkuDescription object itself.
      */
@@ -151,7 +155,7 @@ public final class SkuDescription {
 
     /**
      * Get the restrictedAccessUri property: Uri to subscribe to the restricted access sku.
-     *
+     * 
      * @return the restrictedAccessUri value.
      */
     public String restrictedAccessUri() {
@@ -160,7 +164,7 @@ public final class SkuDescription {
 
     /**
      * Set the restrictedAccessUri property: Uri to subscribe to the restricted access sku.
-     *
+     * 
      * @param restrictedAccessUri the restrictedAccessUri value to set.
      * @return the SkuDescription object itself.
      */
@@ -172,7 +176,7 @@ public final class SkuDescription {
     /**
      * Get the autoAdd property: Flag to indicate whether the sku should be automatically added during workspace
      * creation.
-     *
+     * 
      * @return the autoAdd value.
      */
     public Boolean autoAdd() {
@@ -182,7 +186,7 @@ public final class SkuDescription {
     /**
      * Set the autoAdd property: Flag to indicate whether the sku should be automatically added during workspace
      * creation.
-     *
+     * 
      * @param autoAdd the autoAdd value to set.
      * @return the SkuDescription object itself.
      */
@@ -193,7 +197,7 @@ public final class SkuDescription {
 
     /**
      * Get the targets property: The list of targets available for this sku.
-     *
+     * 
      * @return the targets value.
      */
     public List<String> targets() {
@@ -202,7 +206,7 @@ public final class SkuDescription {
 
     /**
      * Set the targets property: The list of targets available for this sku.
-     *
+     * 
      * @param targets the targets value to set.
      * @return the SkuDescription object itself.
      */
@@ -213,7 +217,7 @@ public final class SkuDescription {
 
     /**
      * Get the quotaDimensions property: The list of quota dimensions for this sku.
-     *
+     * 
      * @return the quotaDimensions value.
      */
     public List<QuotaDimension> quotaDimensions() {
@@ -222,7 +226,7 @@ public final class SkuDescription {
 
     /**
      * Set the quotaDimensions property: The list of quota dimensions for this sku.
-     *
+     * 
      * @param quotaDimensions the quotaDimensions value to set.
      * @return the SkuDescription object itself.
      */
@@ -233,7 +237,7 @@ public final class SkuDescription {
 
     /**
      * Get the pricingDetails property: The list of pricing details for the sku.
-     *
+     * 
      * @return the pricingDetails value.
      */
     public List<PricingDetail> pricingDetails() {
@@ -242,7 +246,7 @@ public final class SkuDescription {
 
     /**
      * Set the pricingDetails property: The list of pricing details for the sku.
-     *
+     * 
      * @param pricingDetails the pricingDetails value to set.
      * @return the SkuDescription object itself.
      */
@@ -253,7 +257,7 @@ public final class SkuDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

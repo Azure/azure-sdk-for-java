@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Statistical information about the number of recommendations per device, per recommendation type. */
+/**
+ * Statistical information about the number of recommendations per device, per recommendation type.
+ */
 @Immutable
 public final class IoTSecurityDeviceRecommendation {
     /*
@@ -28,13 +30,15 @@ public final class IoTSecurityDeviceRecommendation {
     @JsonProperty(value = "devicesCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long devicesCount;
 
-    /** Creates an instance of IoTSecurityDeviceRecommendation class. */
+    /**
+     * Creates an instance of IoTSecurityDeviceRecommendation class.
+     */
     public IoTSecurityDeviceRecommendation() {
     }
 
     /**
      * Get the recommendationDisplayName property: Display name of the recommendation.
-     *
+     * 
      * @return the recommendationDisplayName value.
      */
     public String recommendationDisplayName() {
@@ -43,7 +47,7 @@ public final class IoTSecurityDeviceRecommendation {
 
     /**
      * Get the reportedSeverity property: Assessed recommendation severity.
-     *
+     * 
      * @return the reportedSeverity value.
      */
     public ReportedSeverity reportedSeverity() {
@@ -52,7 +56,7 @@ public final class IoTSecurityDeviceRecommendation {
 
     /**
      * Get the devicesCount property: Number of devices with this recommendation.
-     *
+     * 
      * @return the devicesCount value.
      */
     public Long devicesCount() {
@@ -61,7 +65,7 @@ public final class IoTSecurityDeviceRecommendation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

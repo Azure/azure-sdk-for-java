@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.implementation.batching;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.options.OnActionAddedOptions;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,9 +14,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -26,13 +26,10 @@ import java.util.function.Function;
  * @param <T> The type of document that is being indexed.
  */
 final class IndexingDocumentManager<T> {
-    private final ClientLogger logger;
-
     private final LinkedList<TryTrackingIndexAction<T>> actions = new LinkedList<>();
-    private final Semaphore semaphore = new Semaphore(1);
+    private final ReentrantLock lock = new ReentrantLock();
 
-    IndexingDocumentManager(ClientLogger logger) {
-        this.logger = Objects.requireNonNull(logger, "'logger' cannot be null.");
+    IndexingDocumentManager() {
     }
 
     /*
@@ -43,7 +40,7 @@ final class IndexingDocumentManager<T> {
     private final Deque<TryTrackingIndexAction<T>> inFlightActions = new LinkedList<>();
 
     Collection<IndexAction<T>> getActions() {
-        acquireSemaphore();
+        lock.lock();
         try {
             List<IndexAction<T>> actions = new ArrayList<>(inFlightActions.size() + this.actions.size());
 
@@ -57,18 +54,26 @@ final class IndexingDocumentManager<T> {
 
             return actions;
         } finally {
-            semaphore.release();
+            lock.unlock();
         }
     }
 
     /**
-     * Adds a document to the queue of documents to be indexed.
+     * Adds documents to the batch and checks if there is a batch available for processing.
+     * <p>
+     * Adding documents and checking for a batch is done at the same time as these generally happen together and reduces
+     * the number of times the lock needs to be acquired.
      *
      * @param actions The documents to be indexed.
+     * @param documentKeyRetriever The function to retrieve the key from the document.
+     * @param onActionAddedConsumer The consumer to be called when an action is added.
+     * @param batchSize The size required to create a batch
+     * @return A tuple of the number of actions in the batch and if a batch is available for processing.
      */
-    int add(Collection<IndexAction<T>> actions, Function<T, String> documentKeyRetriever,
-        Consumer<OnActionAddedOptions<T>> onActionAddedConsumer) {
-        acquireSemaphore();
+    Tuple2<Integer, Boolean> addAndCheckForBatch(Collection<IndexAction<T>> actions,
+        Function<T, String> documentKeyRetriever, Consumer<OnActionAddedOptions<T>> onActionAddedConsumer,
+        int batchSize) {
+        lock.lock();
 
         try {
             for (IndexAction<T> action : actions) {
@@ -80,29 +85,37 @@ final class IndexingDocumentManager<T> {
                 }
             }
 
-            return this.actions.size();
+            int numberOfActions = this.actions.size();
+            boolean hasBatch = numberOfActions + inFlightActions.size() >= batchSize;
+
+            return Tuples.of(numberOfActions, hasBatch);
         } finally {
-            semaphore.release();
+            lock.unlock();
         }
     }
 
-    boolean batchAvailableForProcessing(int batchActionCount) {
-        acquireSemaphore();
-
-        try {
-            return (this.actions.size() + this.inFlightActions.size()) >= batchActionCount;
-        } finally {
-            semaphore.release();
-        }
-    }
-
-    List<TryTrackingIndexAction<T>> createBatch(int batchActionCount) {
-        acquireSemaphore();
+    /**
+     * Attempts to create a batch of documents to be sent to the service for indexing.
+     * <p>
+     * If a batch fails to be created null will be returned. A batch can fail to be created if there aren't enough
+     * documents to create a batch.
+     *
+     * @param batchSize The number of actions to include in the batch.
+     * @param ignoreBatchSize If true, the batch size won't be checked and the batch will be created with the number of
+     * actions available.
+     * @return A list of documents to be sent to the service for indexing.
+     */
+    List<TryTrackingIndexAction<T>> tryCreateBatch(int batchSize, boolean ignoreBatchSize) {
+        lock.lock();
 
         try {
             int actionSize = this.actions.size();
             int inFlightActionSize = this.inFlightActions.size();
-            int size = Math.min(batchActionCount, actionSize + inFlightActionSize);
+            if (!ignoreBatchSize && actionSize + inFlightActionSize < batchSize) {
+                return null;
+            }
+
+            int size = Math.min(batchSize, actionSize + inFlightActionSize);
             final List<TryTrackingIndexAction<T>> batchActions = new ArrayList<>(size);
 
             // Make the set size larger than the expected batch size to prevent a resizing scenario. Don't use a load
@@ -125,7 +138,7 @@ final class IndexingDocumentManager<T> {
 
             return batchActions;
         } finally {
-            semaphore.release();
+            lock.unlock();
         }
     }
 
@@ -151,16 +164,16 @@ final class IndexingDocumentManager<T> {
     }
 
     void reinsertCancelledActions(List<TryTrackingIndexAction<T>> actionsInFlight) {
-        acquireSemaphore();
+        lock.lock();
         try {
             inFlightActions.addAll(actionsInFlight);
         } finally {
-            semaphore.release();
+            lock.unlock();
         }
     }
 
     void reinsertFailedActions(List<TryTrackingIndexAction<T>> actionsToRetry) {
-        acquireSemaphore();
+        lock.lock();
 
         try {
             // Push all actions that need to be retried back into the queue.
@@ -168,15 +181,7 @@ final class IndexingDocumentManager<T> {
                 this.actions.push(actionsToRetry.get(i));
             }
         } finally {
-            semaphore.release();
-        }
-    }
-
-    private void acquireSemaphore() {
-        try {
-            semaphore.acquire();
-        } catch (InterruptedException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            lock.unlock();
         }
     }
 }

@@ -13,7 +13,9 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerRoleGroupCon
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents configuration details for coordinator and node. */
+/**
+ * Represents configuration details for coordinator and node.
+ */
 @Fluent
 public final class ConfigurationInner extends ProxyResource {
     /*
@@ -28,13 +30,15 @@ public final class ConfigurationInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ConfigurationInner class. */
+    /**
+     * Creates an instance of ConfigurationInner class.
+     */
     public ConfigurationInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConfigurationProperties innerProperties() {
@@ -43,7 +47,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,7 +56,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Get the description property: Description of the configuration.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -61,7 +65,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Get the dataType property: Data type of the configuration.
-     *
+     * 
      * @return the dataType value.
      */
     public ConfigurationDataType dataType() {
@@ -70,7 +74,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Get the allowedValues property: Allowed values of the configuration.
-     *
+     * 
      * @return the allowedValues value.
      */
     public String allowedValues() {
@@ -79,7 +83,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Get the requiresRestart property: If configuration change requires restart.
-     *
+     * 
      * @return the requiresRestart value.
      */
     public Boolean requiresRestart() {
@@ -88,7 +92,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Set the requiresRestart property: If configuration change requires restart.
-     *
+     * 
      * @param requiresRestart the requiresRestart value to set.
      * @return the ConfigurationInner object itself.
      */
@@ -102,7 +106,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Get the serverRoleGroupConfigurations property: The list of server role group configuration values.
-     *
+     * 
      * @return the serverRoleGroupConfigurations value.
      */
     public List<ServerRoleGroupConfiguration> serverRoleGroupConfigurations() {
@@ -111,12 +115,12 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Set the serverRoleGroupConfigurations property: The list of server role group configuration values.
-     *
+     * 
      * @param serverRoleGroupConfigurations the serverRoleGroupConfigurations value to set.
      * @return the ConfigurationInner object itself.
      */
-    public ConfigurationInner withServerRoleGroupConfigurations(
-        List<ServerRoleGroupConfiguration> serverRoleGroupConfigurations) {
+    public ConfigurationInner
+        withServerRoleGroupConfigurations(List<ServerRoleGroupConfiguration> serverRoleGroupConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ConfigurationProperties();
         }
@@ -126,7 +130,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -135,7 +139,7 @@ public final class ConfigurationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

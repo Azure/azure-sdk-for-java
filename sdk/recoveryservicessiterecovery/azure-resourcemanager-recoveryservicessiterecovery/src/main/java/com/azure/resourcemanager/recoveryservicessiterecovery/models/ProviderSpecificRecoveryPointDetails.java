@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Replication provider specific recovery point details. */
+/**
+ * Replication provider specific recovery point details.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,17 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2ARecoveryPointDetails.class),
     @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2RecoveryPointDetails.class),
-    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmRecoveryPointDetails.class)
-})
+    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmRecoveryPointDetails.class) })
 @Immutable
 public class ProviderSpecificRecoveryPointDetails {
-    /** Creates an instance of ProviderSpecificRecoveryPointDetails class. */
+    /**
+     * Creates an instance of ProviderSpecificRecoveryPointDetails class.
+     */
     public ProviderSpecificRecoveryPointDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

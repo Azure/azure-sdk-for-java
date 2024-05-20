@@ -25,17 +25,23 @@ import com.azure.core.util.FluxUtil;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Entities. */
+/**
+ * An instance of this class provides access to all the operations defined in Entities.
+ */
 public final class EntitiesImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EntitiesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ServiceBusManagementClientImpl client;
 
     /**
      * Initializes an instance of EntitiesImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EntitiesImpl(ServiceBusManagementClientImpl client) {
@@ -51,104 +57,74 @@ public final class EntitiesImpl {
     @ServiceInterface(name = "ServiceBusManagement")
     public interface EntitiesService {
         @Get("/{entityName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<Object>> get(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("entityName") String entityName,
-                @QueryParam("enrich") Boolean enrich,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Object>> get(@HostParam("endpoint") String endpoint, @PathParam("entityName") String entityName,
+            @QueryParam("enrich") Boolean enrich, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{entityName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<Object> getSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("entityName") String entityName,
-                @QueryParam("enrich") Boolean enrich,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<Object> getSync(@HostParam("endpoint") String endpoint, @PathParam("entityName") String entityName,
+            @QueryParam("enrich") Boolean enrich, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{entityName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<Object>> put(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("entityName") String entityName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("If-Match") String ifMatch,
-                @BodyParam("application/atom+xml") Object requestBody,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Object>> put(@HostParam("endpoint") String endpoint, @PathParam("entityName") String entityName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/atom+xml") Object requestBody, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Put("/{entityName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<Object> putSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("entityName") String entityName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("If-Match") String ifMatch,
-                @BodyParam("application/atom+xml") Object requestBody,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<Object> putSync(@HostParam("endpoint") String endpoint, @PathParam("entityName") String entityName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
+            @BodyParam("application/atom+xml") Object requestBody, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Delete("/{entityName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<Object>> delete(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("entityName") String entityName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Object>> delete(@HostParam("endpoint") String endpoint,
+            @PathParam("entityName") String entityName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/{entityName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<Object> deleteSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("entityName") String entityName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<Object> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("entityName") String entityName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get Queue or Topic
-     *
-     * <p>Get the details about the Queue or Topic with the given entityName.
-     *
+     * 
+     * Get the details about the Queue or Topic with the given entityName.
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param enrich A query parameter that sets enrich to true or false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details about the Queue or Topic with the given entityName along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> getWithResponseAsync(String entityName, Boolean enrich) {
         final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(),
-                                entityName,
-                                enrich,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), entityName, enrich,
+            this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Get Queue or Topic
-     *
-     * <p>Get the details about the Queue or Topic with the given entityName.
-     *
+     * 
+     * Get the details about the Queue or Topic with the given entityName.
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param enrich A query parameter that sets enrich to true or false.
      * @param context The context to associate with this operation.
@@ -156,7 +132,7 @@ public final class EntitiesImpl {
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details about the Queue or Topic with the given entityName along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> getWithResponseAsync(String entityName, Boolean enrich, Context context) {
@@ -166,9 +142,9 @@ public final class EntitiesImpl {
 
     /**
      * Get Queue or Topic
-     *
-     * <p>Get the details about the Queue or Topic with the given entityName.
-     *
+     * 
+     * Get the details about the Queue or Topic with the given entityName.
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param enrich A query parameter that sets enrich to true or false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,9 +159,9 @@ public final class EntitiesImpl {
 
     /**
      * Get Queue or Topic
-     *
-     * <p>Get the details about the Queue or Topic with the given entityName.
-     *
+     * 
+     * Get the details about the Queue or Topic with the given entityName.
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param enrich A query parameter that sets enrich to true or false.
      * @param context The context to associate with this operation.
@@ -201,9 +177,9 @@ public final class EntitiesImpl {
 
     /**
      * Get Queue or Topic
-     *
-     * <p>Get the details about the Queue or Topic with the given entityName.
-     *
+     * 
+     * Get the details about the Queue or Topic with the given entityName.
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param enrich A query parameter that sets enrich to true or false.
      * @param context The context to associate with this operation.
@@ -215,15 +191,15 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> getWithResponse(String entityName, Boolean enrich, Context context) {
         final String accept = "application/xml, application/atom+xml";
-        return service.getSync(
-                this.client.getEndpoint(), entityName, enrich, this.client.getApiVersion(), accept, context);
+        return service.getSync(this.client.getEndpoint(), entityName, enrich, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
      * Get Queue or Topic
-     *
-     * <p>Get the details about the Queue or Topic with the given entityName.
-     *
+     * 
+     * Get the details about the Queue or Topic with the given entityName.
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param enrich A query parameter that sets enrich to true or false.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,13 +214,13 @@ public final class EntitiesImpl {
 
     /**
      * Create or update a queue or topic at the provided entityName.
-     *
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param requestBody Parameters required to make or edit a queue or topic.
      * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -253,27 +229,19 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> putWithResponseAsync(String entityName, Object requestBody, String ifMatch) {
         final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(
-                context ->
-                        service.put(
-                                this.client.getEndpoint(),
-                                entityName,
-                                this.client.getApiVersion(),
-                                ifMatch,
-                                requestBody,
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.put(this.client.getEndpoint(), entityName,
+            this.client.getApiVersion(), ifMatch, requestBody, accept, context));
     }
 
     /**
      * Create or update a queue or topic at the provided entityName.
-     *
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param requestBody Parameters required to make or edit a queue or topic.
      * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
@@ -281,28 +249,22 @@ public final class EntitiesImpl {
      * @return any object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> putWithResponseAsync(
-            String entityName, Object requestBody, String ifMatch, Context context) {
+    public Mono<Response<Object>> putWithResponseAsync(String entityName, Object requestBody, String ifMatch,
+        Context context) {
         final String accept = "application/xml, application/atom+xml";
-        return service.put(
-                this.client.getEndpoint(),
-                entityName,
-                this.client.getApiVersion(),
-                ifMatch,
-                requestBody,
-                accept,
-                context);
+        return service.put(this.client.getEndpoint(), entityName, this.client.getApiVersion(), ifMatch, requestBody,
+            accept, context);
     }
 
     /**
      * Create or update a queue or topic at the provided entityName.
-     *
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param requestBody Parameters required to make or edit a queue or topic.
      * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -315,13 +277,13 @@ public final class EntitiesImpl {
 
     /**
      * Create or update a queue or topic at the provided entityName.
-     *
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param requestBody Parameters required to make or edit a queue or topic.
      * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
@@ -331,18 +293,18 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> putAsync(String entityName, Object requestBody, String ifMatch, Context context) {
         return putWithResponseAsync(entityName, requestBody, ifMatch, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update a queue or topic at the provided entityName.
-     *
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param requestBody Parameters required to make or edit a queue or topic.
      * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
@@ -352,25 +314,19 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> putWithResponse(String entityName, Object requestBody, String ifMatch, Context context) {
         final String accept = "application/xml, application/atom+xml";
-        return service.putSync(
-                this.client.getEndpoint(),
-                entityName,
-                this.client.getApiVersion(),
-                ifMatch,
-                requestBody,
-                accept,
-                context);
+        return service.putSync(this.client.getEndpoint(), entityName, this.client.getApiVersion(), ifMatch, requestBody,
+            accept, context);
     }
 
     /**
      * Create or update a queue or topic at the provided entityName.
-     *
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param requestBody Parameters required to make or edit a queue or topic.
      * @param ifMatch Match condition for an entity to be updated. If specified and a matching entity is not found, an
-     *     error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified,
-     *     an insert will be performed when no existing entity is found to update and a replace will be performed if an
-     *     existing entity is found.
+     * error will be raised. To force an unconditional update, set to the wildcard character (*). If not specified, an
+     * insert will be performed when no existing entity is found to update and a replace will be performed if an
+     * existing entity is found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -383,9 +339,9 @@ public final class EntitiesImpl {
 
     /**
      * Delete Queue or Topic
-     *
-     * <p>Delete the Queue or Topic with the given entityName.
-     *
+     * 
+     * Delete the Queue or Topic with the given entityName.
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
@@ -395,17 +351,15 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> deleteWithResponseAsync(String entityName) {
         final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(
-                context ->
-                        service.delete(
-                                this.client.getEndpoint(), entityName, this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), entityName,
+            this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Delete Queue or Topic
-     *
-     * <p>Delete the Queue or Topic with the given entityName.
-     *
+     * 
+     * Delete the Queue or Topic with the given entityName.
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -421,9 +375,9 @@ public final class EntitiesImpl {
 
     /**
      * Delete Queue or Topic
-     *
-     * <p>Delete the Queue or Topic with the given entityName.
-     *
+     * 
+     * Delete the Queue or Topic with the given entityName.
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
@@ -437,9 +391,9 @@ public final class EntitiesImpl {
 
     /**
      * Delete Queue or Topic
-     *
-     * <p>Delete the Queue or Topic with the given entityName.
-     *
+     * 
+     * Delete the Queue or Topic with the given entityName.
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -454,9 +408,9 @@ public final class EntitiesImpl {
 
     /**
      * Delete Queue or Topic
-     *
-     * <p>Delete the Queue or Topic with the given entityName.
-     *
+     * 
+     * Delete the Queue or Topic with the given entityName.
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -472,9 +426,9 @@ public final class EntitiesImpl {
 
     /**
      * Delete Queue or Topic
-     *
-     * <p>Delete the Queue or Topic with the given entityName.
-     *
+     * 
+     * Delete the Queue or Topic with the given entityName.
+     * 
      * @param entityName The name of the queue or topic relative to the Service Bus namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.

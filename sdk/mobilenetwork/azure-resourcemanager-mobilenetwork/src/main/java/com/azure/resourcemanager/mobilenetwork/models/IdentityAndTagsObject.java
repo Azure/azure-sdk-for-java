@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Identity and Tags object for patch operations. */
+/**
+ * Identity and Tags object for patch operations.
+ */
 @Fluent
 public final class IdentityAndTagsObject {
     /*
@@ -25,13 +27,15 @@ public final class IdentityAndTagsObject {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of IdentityAndTagsObject class. */
+    /**
+     * Creates an instance of IdentityAndTagsObject class.
+     */
     public IdentityAndTagsObject() {
     }
 
     /**
      * Get the identity property: The managed service identity associated with this resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -40,7 +44,7 @@ public final class IdentityAndTagsObject {
 
     /**
      * Set the identity property: The managed service identity associated with this resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the IdentityAndTagsObject object itself.
      */
@@ -51,7 +55,7 @@ public final class IdentityAndTagsObject {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -60,7 +64,7 @@ public final class IdentityAndTagsObject {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the IdentityAndTagsObject object itself.
      */
@@ -71,7 +75,7 @@ public final class IdentityAndTagsObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

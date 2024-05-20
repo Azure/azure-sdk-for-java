@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.playwrighttesting.fluent.models.QuotaInner;
 import com.azure.resourcemanager.playwrighttesting.models.QuotaNames;
 
-/** An instance of this class provides access to all the operations defined in QuotasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in QuotasClient.
+ */
 public interface QuotasClient {
     /**
      * List quotas for a given subscription Id.
-     *
+     * 
      * @param location The location of quota in ARM Normalized format like eastus, southeastasia etc.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -28,7 +30,7 @@ public interface QuotasClient {
 
     /**
      * List quotas for a given subscription Id.
-     *
+     * 
      * @param location The location of quota in ARM Normalized format like eastus, southeastasia etc.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,7 +43,7 @@ public interface QuotasClient {
 
     /**
      * Get quota by name.
-     *
+     * 
      * @param location The location of quota in ARM Normalized format like eastus, southeastasia etc.
      * @param name The quota name.
      * @param context The context to associate with this operation.
@@ -55,7 +57,7 @@ public interface QuotasClient {
 
     /**
      * Get quota by name.
-     *
+     * 
      * @param location The location of quota in ARM Normalized format like eastus, southeastasia etc.
      * @param name The quota name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

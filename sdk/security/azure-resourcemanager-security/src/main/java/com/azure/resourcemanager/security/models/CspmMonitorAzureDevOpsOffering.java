@@ -5,21 +5,48 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The CSPM monitoring for AzureDevOps offering. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
+/**
+ * The CSPM monitoring for AzureDevOps offering.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "offeringType",
+    defaultImpl = CspmMonitorAzureDevOpsOffering.class,
+    visible = true)
 @JsonTypeName("CspmMonitorAzureDevOps")
 @Immutable
 public final class CspmMonitorAzureDevOpsOffering extends CloudOffering {
-    /** Creates an instance of CspmMonitorAzureDevOpsOffering class. */
+    /*
+     * The type of the security offering.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "offeringType", required = true)
+    private OfferingType offeringType = OfferingType.CSPM_MONITOR_AZURE_DEV_OPS;
+
+    /**
+     * Creates an instance of CspmMonitorAzureDevOpsOffering class.
+     */
     public CspmMonitorAzureDevOpsOffering() {
     }
 
     /**
+     * Get the offeringType property: The type of the security offering.
+     * 
+     * @return the offeringType value.
+     */
+    @Override
+    public OfferingType offeringType() {
+        return this.offeringType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

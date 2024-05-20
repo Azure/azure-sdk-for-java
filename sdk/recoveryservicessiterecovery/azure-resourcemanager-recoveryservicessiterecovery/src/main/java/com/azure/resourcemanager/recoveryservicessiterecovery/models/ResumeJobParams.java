@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resume job params. */
+/**
+ * Resume job params.
+ */
 @Fluent
 public final class ResumeJobParams {
     /*
@@ -16,13 +18,15 @@ public final class ResumeJobParams {
     @JsonProperty(value = "properties")
     private ResumeJobParamsProperties properties;
 
-    /** Creates an instance of ResumeJobParams class. */
+    /**
+     * Creates an instance of ResumeJobParams class.
+     */
     public ResumeJobParams() {
     }
 
     /**
      * Get the properties property: Resume job properties.
-     *
+     * 
      * @return the properties value.
      */
     public ResumeJobParamsProperties properties() {
@@ -31,7 +35,7 @@ public final class ResumeJobParams {
 
     /**
      * Set the properties property: Resume job properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ResumeJobParams object itself.
      */
@@ -42,7 +46,7 @@ public final class ResumeJobParams {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -30,7 +30,7 @@ import java.util.Arrays;
 public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VirtualNetworkGatewayUpdate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkGatewayUpdate.
      * json
      */
     /**
@@ -79,7 +79,7 @@ public final class VirtualNetworkGatewaysCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
      * VirtualNetworkScalableGatewayUpdate.json
      */
     /**

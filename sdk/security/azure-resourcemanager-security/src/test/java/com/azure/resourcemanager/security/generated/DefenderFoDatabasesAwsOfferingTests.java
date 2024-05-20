@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.security.models.ArcAutoProvisioningConfiguration;
 import com.azure.resourcemanager.security.models.DefenderFoDatabasesAwsOffering;
 import com.azure.resourcemanager.security.models.DefenderFoDatabasesAwsOfferingArcAutoProvisioning;
-import com.azure.resourcemanager.security.models.DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration;
 import com.azure.resourcemanager.security.models.DefenderFoDatabasesAwsOfferingDatabasesDspm;
 import com.azure.resourcemanager.security.models.DefenderFoDatabasesAwsOfferingRds;
 import org.junit.jupiter.api.Assertions;
@@ -15,46 +15,37 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderFoDatabasesAwsOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderFoDatabasesAwsOffering model =
-            BinaryData
-                .fromString(
-                    "{\"offeringType\":\"DefenderForDatabasesAws\",\"arcAutoProvisioning\":{\"enabled\":true,\"cloudRoleArn\":\"mbqdabzfivfo\",\"configuration\":{\"proxy\":\"sthhzagjfwy\",\"privateLinkScope\":\"lhgenuzejgvkv\"}},\"rds\":{\"enabled\":false,\"cloudRoleArn\":\"zllrz\"},\"databasesDspm\":{\"enabled\":true,\"cloudRoleArn\":\"qgmihzpimcqrhnxt\"},\"description\":\"nklogxsvtzarhzv\"}")
-                .toObject(DefenderFoDatabasesAwsOffering.class);
-        Assertions.assertEquals(true, model.arcAutoProvisioning().enabled());
-        Assertions.assertEquals("mbqdabzfivfo", model.arcAutoProvisioning().cloudRoleArn());
-        Assertions.assertEquals("sthhzagjfwy", model.arcAutoProvisioning().configuration().proxy());
-        Assertions.assertEquals("lhgenuzejgvkv", model.arcAutoProvisioning().configuration().privateLinkScope());
+        DefenderFoDatabasesAwsOffering model = BinaryData.fromString(
+            "{\"offeringType\":\"DefenderForDatabasesAws\",\"arcAutoProvisioning\":{\"cloudRoleArn\":\"cpszpmcvqdvrdmv\",\"enabled\":false,\"configuration\":{\"proxy\":\"hgvqojbxaotcgbz\",\"privateLinkScope\":\"btplefoi\"}},\"rds\":{\"enabled\":false,\"cloudRoleArn\":\"xznvgvdt\"},\"databasesDspm\":{\"enabled\":true,\"cloudRoleArn\":\"awsxmrszbknimxlp\"},\"description\":\"rxrzutylcur\"}")
+            .toObject(DefenderFoDatabasesAwsOffering.class);
+        Assertions.assertEquals(false, model.arcAutoProvisioning().enabled());
+        Assertions.assertEquals("hgvqojbxaotcgbz", model.arcAutoProvisioning().configuration().proxy());
+        Assertions.assertEquals("btplefoi", model.arcAutoProvisioning().configuration().privateLinkScope());
+        Assertions.assertEquals("cpszpmcvqdvrdmv", model.arcAutoProvisioning().cloudRoleArn());
         Assertions.assertEquals(false, model.rds().enabled());
-        Assertions.assertEquals("zllrz", model.rds().cloudRoleArn());
+        Assertions.assertEquals("xznvgvdt", model.rds().cloudRoleArn());
         Assertions.assertEquals(true, model.databasesDspm().enabled());
-        Assertions.assertEquals("qgmihzpimcqrhnxt", model.databasesDspm().cloudRoleArn());
+        Assertions.assertEquals("awsxmrszbknimxlp", model.databasesDspm().cloudRoleArn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderFoDatabasesAwsOffering model =
-            new DefenderFoDatabasesAwsOffering()
-                .withArcAutoProvisioning(
-                    new DefenderFoDatabasesAwsOfferingArcAutoProvisioning()
-                        .withEnabled(true)
-                        .withCloudRoleArn("mbqdabzfivfo")
-                        .withConfiguration(
-                            new DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration()
-                                .withProxy("sthhzagjfwy")
-                                .withPrivateLinkScope("lhgenuzejgvkv")))
-                .withRds(new DefenderFoDatabasesAwsOfferingRds().withEnabled(false).withCloudRoleArn("zllrz"))
-                .withDatabasesDspm(
-                    new DefenderFoDatabasesAwsOfferingDatabasesDspm()
-                        .withEnabled(true)
-                        .withCloudRoleArn("qgmihzpimcqrhnxt"));
+        DefenderFoDatabasesAwsOffering model = new DefenderFoDatabasesAwsOffering()
+            .withArcAutoProvisioning(new DefenderFoDatabasesAwsOfferingArcAutoProvisioning().withEnabled(false)
+                .withConfiguration(new ArcAutoProvisioningConfiguration().withProxy("hgvqojbxaotcgbz")
+                    .withPrivateLinkScope("btplefoi"))
+                .withCloudRoleArn("cpszpmcvqdvrdmv"))
+            .withRds(new DefenderFoDatabasesAwsOfferingRds().withEnabled(false).withCloudRoleArn("xznvgvdt"))
+            .withDatabasesDspm(new DefenderFoDatabasesAwsOfferingDatabasesDspm().withEnabled(true)
+                .withCloudRoleArn("awsxmrszbknimxlp"));
         model = BinaryData.fromObject(model).toObject(DefenderFoDatabasesAwsOffering.class);
-        Assertions.assertEquals(true, model.arcAutoProvisioning().enabled());
-        Assertions.assertEquals("mbqdabzfivfo", model.arcAutoProvisioning().cloudRoleArn());
-        Assertions.assertEquals("sthhzagjfwy", model.arcAutoProvisioning().configuration().proxy());
-        Assertions.assertEquals("lhgenuzejgvkv", model.arcAutoProvisioning().configuration().privateLinkScope());
+        Assertions.assertEquals(false, model.arcAutoProvisioning().enabled());
+        Assertions.assertEquals("hgvqojbxaotcgbz", model.arcAutoProvisioning().configuration().proxy());
+        Assertions.assertEquals("btplefoi", model.arcAutoProvisioning().configuration().privateLinkScope());
+        Assertions.assertEquals("cpszpmcvqdvrdmv", model.arcAutoProvisioning().cloudRoleArn());
         Assertions.assertEquals(false, model.rds().enabled());
-        Assertions.assertEquals("zllrz", model.rds().cloudRoleArn());
+        Assertions.assertEquals("xznvgvdt", model.rds().cloudRoleArn());
         Assertions.assertEquals(true, model.databasesDspm().enabled());
-        Assertions.assertEquals("qgmihzpimcqrhnxt", model.databasesDspm().cloudRoleArn());
+        Assertions.assertEquals("awsxmrszbknimxlp", model.databasesDspm().cloudRoleArn());
     }
 }

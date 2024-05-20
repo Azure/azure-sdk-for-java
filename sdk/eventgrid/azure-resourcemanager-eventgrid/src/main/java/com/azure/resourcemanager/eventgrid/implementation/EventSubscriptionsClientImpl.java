@@ -37,8 +37,8 @@ import com.azure.resourcemanager.eventgrid.fluent.EventSubscriptionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.DeliveryAttributeListResultInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionFullUrlInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
-import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionsListResult;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -487,7 +487,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -526,7 +526,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -566,7 +566,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -590,7 +590,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -616,7 +616,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -641,8 +641,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     * characters in length and should use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -690,8 +690,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     * characters in length and should use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -739,8 +739,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     * characters in length and should use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -771,8 +771,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     * characters in length and should use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -804,8 +804,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     * characters in length and should use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -832,8 +832,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     * characters in length and should use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -862,8 +862,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     * characters in length and should use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -891,8 +891,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     * characters in length and should use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -921,8 +921,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     * characters in length and should use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -949,8 +949,8 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription. Event subscription names must be between 3 and 64
-     * characters in length and should use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and should use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -977,7 +977,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1015,7 +1015,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1054,7 +1054,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1080,7 +1080,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1109,7 +1109,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1133,7 +1133,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1158,7 +1158,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1182,7 +1182,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1208,7 +1208,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1231,7 +1231,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * for a resource, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
      * for an EventGrid topic.
-     * @param eventSubscriptionName Name of the event subscription.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

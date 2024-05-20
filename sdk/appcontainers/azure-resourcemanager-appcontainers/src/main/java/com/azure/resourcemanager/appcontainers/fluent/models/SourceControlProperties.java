@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appcontainers.models.GithubActionConfiguration;
 import com.azure.resourcemanager.appcontainers.models.SourceControlOperationState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SourceControl resource specific properties. */
+/**
+ * SourceControl resource specific properties.
+ */
 @Fluent
 public final class SourceControlProperties {
     /*
@@ -38,13 +40,15 @@ public final class SourceControlProperties {
     @JsonProperty(value = "githubActionConfiguration")
     private GithubActionConfiguration githubActionConfiguration;
 
-    /** Creates an instance of SourceControlProperties class. */
+    /**
+     * Creates an instance of SourceControlProperties class.
+     */
     public SourceControlProperties() {
     }
 
     /**
      * Get the operationState property: Current provisioning State of the operation.
-     *
+     * 
      * @return the operationState value.
      */
     public SourceControlOperationState operationState() {
@@ -53,7 +57,7 @@ public final class SourceControlProperties {
 
     /**
      * Get the repoUrl property: The repo url which will be integrated to ContainerApp.
-     *
+     * 
      * @return the repoUrl value.
      */
     public String repoUrl() {
@@ -62,7 +66,7 @@ public final class SourceControlProperties {
 
     /**
      * Set the repoUrl property: The repo url which will be integrated to ContainerApp.
-     *
+     * 
      * @param repoUrl the repoUrl value to set.
      * @return the SourceControlProperties object itself.
      */
@@ -73,7 +77,7 @@ public final class SourceControlProperties {
 
     /**
      * Get the branch property: The branch which will trigger the auto deployment.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -82,7 +86,7 @@ public final class SourceControlProperties {
 
     /**
      * Set the branch property: The branch which will trigger the auto deployment.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the SourceControlProperties object itself.
      */
@@ -93,8 +97,9 @@ public final class SourceControlProperties {
 
     /**
      * Get the githubActionConfiguration property: Container App Revision Template with all possible settings and the
-     * defaults if user did not provide them. The defaults are populated as they were at the creation time.
-     *
+     * defaults if user did not provide them. The defaults are populated
+     * as they were at the creation time.
+     * 
      * @return the githubActionConfiguration value.
      */
     public GithubActionConfiguration githubActionConfiguration() {
@@ -103,8 +108,9 @@ public final class SourceControlProperties {
 
     /**
      * Set the githubActionConfiguration property: Container App Revision Template with all possible settings and the
-     * defaults if user did not provide them. The defaults are populated as they were at the creation time.
-     *
+     * defaults if user did not provide them. The defaults are populated
+     * as they were at the creation time.
+     * 
      * @param githubActionConfiguration the githubActionConfiguration value to set.
      * @return the SourceControlProperties object itself.
      */
@@ -115,7 +121,7 @@ public final class SourceControlProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

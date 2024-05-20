@@ -12,21 +12,19 @@ import java.util.Map;
 public final class AscOperationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AscOperationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"output\":{\"lsicohoqqnwv\":\"datalwh\",\"yxzk\":\"dataryavwhheunmmqh\",\"koklya\":\"datanoc\"}}")
-                .toObject(AscOperationProperties.class);
+        AscOperationProperties model = BinaryData
+            .fromString("{\"output\":{\"xsaga\":\"datalrwdmhdlxyj\",\"kcvqvpke\":\"datacnihgwqapnedgfbc\"}}")
+            .toObject(AscOperationProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AscOperationProperties model =
-            new AscOperationProperties()
-                .withOutput(mapOf("lsicohoqqnwv", "datalwh", "yxzk", "dataryavwhheunmmqh", "koklya", "datanoc"));
+        AscOperationProperties model = new AscOperationProperties()
+            .withOutput(mapOf("xsaga", "datalrwdmhdlxyj", "kcvqvpke", "datacnihgwqapnedgfbc"));
         model = BinaryData.fromObject(model).toObject(AscOperationProperties.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

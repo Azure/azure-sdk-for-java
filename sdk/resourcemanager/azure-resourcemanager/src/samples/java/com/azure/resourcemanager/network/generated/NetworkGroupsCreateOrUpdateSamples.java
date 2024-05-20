@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.fluent.models.NetworkGroupInner;
 public final class NetworkGroupsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/NetworkManagerGroupPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkManagerGroupPut.json
      */
     /**
      * Sample code: NetworkGroupsPut.

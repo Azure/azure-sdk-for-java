@@ -12,22 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class AdaptiveApplicationControlIssueSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdaptiveApplicationControlIssueSummary model =
-            BinaryData
-                .fromString("{\"issue\":\"ViolationsAudited\",\"numberOfVms\":60.195232}")
+        AdaptiveApplicationControlIssueSummary model
+            = BinaryData.fromString("{\"issue\":\"ViolationsBlocked\",\"numberOfVms\":55.927372}")
                 .toObject(AdaptiveApplicationControlIssueSummary.class);
-        Assertions.assertEquals(AdaptiveApplicationControlIssue.VIOLATIONS_AUDITED, model.issue());
-        Assertions.assertEquals(60.195232F, model.numberOfVms());
+        Assertions.assertEquals(AdaptiveApplicationControlIssue.VIOLATIONS_BLOCKED, model.issue());
+        Assertions.assertEquals(55.927372F, model.numberOfVms());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdaptiveApplicationControlIssueSummary model =
-            new AdaptiveApplicationControlIssueSummary()
-                .withIssue(AdaptiveApplicationControlIssue.VIOLATIONS_AUDITED)
-                .withNumberOfVms(60.195232F);
+        AdaptiveApplicationControlIssueSummary model
+            = new AdaptiveApplicationControlIssueSummary().withIssue(AdaptiveApplicationControlIssue.VIOLATIONS_BLOCKED)
+                .withNumberOfVms(55.927372F);
         model = BinaryData.fromObject(model).toObject(AdaptiveApplicationControlIssueSummary.class);
-        Assertions.assertEquals(AdaptiveApplicationControlIssue.VIOLATIONS_AUDITED, model.issue());
-        Assertions.assertEquals(60.195232F, model.numberOfVms());
+        Assertions.assertEquals(AdaptiveApplicationControlIssue.VIOLATIONS_BLOCKED, model.issue());
+        Assertions.assertEquals(55.927372F, model.numberOfVms());
     }
 }

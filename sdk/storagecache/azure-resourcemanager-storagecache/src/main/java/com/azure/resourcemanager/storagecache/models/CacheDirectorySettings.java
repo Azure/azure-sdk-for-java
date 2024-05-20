@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cache Directory Services settings. */
+/**
+ * Cache Directory Services settings.
+ */
 @Fluent
 public final class CacheDirectorySettings {
     /*
@@ -22,13 +24,15 @@ public final class CacheDirectorySettings {
     @JsonProperty(value = "usernameDownload")
     private CacheUsernameDownloadSettings usernameDownload;
 
-    /** Creates an instance of CacheDirectorySettings class. */
+    /**
+     * Creates an instance of CacheDirectorySettings class.
+     */
     public CacheDirectorySettings() {
     }
 
     /**
      * Get the activeDirectory property: Specifies settings for joining the HPC Cache to an Active Directory domain.
-     *
+     * 
      * @return the activeDirectory value.
      */
     public CacheActiveDirectorySettings activeDirectory() {
@@ -37,7 +41,7 @@ public final class CacheDirectorySettings {
 
     /**
      * Set the activeDirectory property: Specifies settings for joining the HPC Cache to an Active Directory domain.
-     *
+     * 
      * @param activeDirectory the activeDirectory value to set.
      * @return the CacheDirectorySettings object itself.
      */
@@ -49,7 +53,7 @@ public final class CacheDirectorySettings {
     /**
      * Get the usernameDownload property: Specifies settings for Extended Groups. Extended Groups allows users to be
      * members of more than 16 groups.
-     *
+     * 
      * @return the usernameDownload value.
      */
     public CacheUsernameDownloadSettings usernameDownload() {
@@ -59,7 +63,7 @@ public final class CacheDirectorySettings {
     /**
      * Set the usernameDownload property: Specifies settings for Extended Groups. Extended Groups allows users to be
      * members of more than 16 groups.
-     *
+     * 
      * @param usernameDownload the usernameDownload value to set.
      * @return the CacheDirectorySettings object itself.
      */
@@ -70,7 +74,7 @@ public final class CacheDirectorySettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Migration provider specific settings. */
+/**
+ * Migration provider specific settings.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "instanceType",
     defaultImpl = MigrationProviderSpecificSettings.class)
 @JsonTypeName("MigrationProviderSpecificSettings")
-@JsonSubTypes({@JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtMigrationDetails.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtMigrationDetails.class) })
 @Immutable
 public class MigrationProviderSpecificSettings {
-    /** Creates an instance of MigrationProviderSpecificSettings class. */
+    /**
+     * Creates an instance of MigrationProviderSpecificSettings class.
+     */
     public MigrationProviderSpecificSettings() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

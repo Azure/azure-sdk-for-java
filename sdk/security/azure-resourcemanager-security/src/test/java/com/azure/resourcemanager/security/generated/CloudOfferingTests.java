@@ -10,10 +10,8 @@ import com.azure.resourcemanager.security.models.CloudOffering;
 public final class CloudOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CloudOffering model =
-            BinaryData
-                .fromString("{\"offeringType\":\"CloudOffering\",\"description\":\"ivjreuyk\"}")
-                .toObject(CloudOffering.class);
+        CloudOffering model = BinaryData.fromString("{\"offeringType\":\"CloudOffering\",\"description\":\"d\"}")
+            .toObject(CloudOffering.class);
     }
 
     @org.junit.jupiter.api.Test

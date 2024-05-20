@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AML file system container storage interface information. */
+/**
+ * AML file system container storage interface information.
+ */
 @Immutable
 public final class AmlFilesystemContainerStorageInterface {
     /*
@@ -28,14 +30,16 @@ public final class AmlFilesystemContainerStorageInterface {
     @JsonProperty(value = "storageClass", access = JsonProperty.Access.WRITE_ONLY)
     private String storageClass;
 
-    /** Creates an instance of AmlFilesystemContainerStorageInterface class. */
+    /**
+     * Creates an instance of AmlFilesystemContainerStorageInterface class.
+     */
     public AmlFilesystemContainerStorageInterface() {
     }
 
     /**
      * Get the persistentVolumeClaim property: Recommended AKS Persistent Volume Claim for the CSI driver, in Base64
      * encoded YAML.
-     *
+     * 
      * @return the persistentVolumeClaim value.
      */
     public String persistentVolumeClaim() {
@@ -44,7 +48,7 @@ public final class AmlFilesystemContainerStorageInterface {
 
     /**
      * Get the persistentVolume property: Recommended AKS Persistent Volume for the CSI driver, in Base64 encoded YAML.
-     *
+     * 
      * @return the persistentVolume value.
      */
     public String persistentVolume() {
@@ -53,7 +57,7 @@ public final class AmlFilesystemContainerStorageInterface {
 
     /**
      * Get the storageClass property: Recommended AKS Storage Class for the CSI driver, in Base64 encoded YAML.
-     *
+     * 
      * @return the storageClass value.
      */
     public String storageClass() {
@@ -62,7 +66,7 @@ public final class AmlFilesystemContainerStorageInterface {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

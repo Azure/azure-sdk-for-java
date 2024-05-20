@@ -2590,6 +2590,16 @@ public interface VirtualMachine
             Update withNetworkInterfacesDeleteOptions(DeleteOptions deleteOptions, String... nicIds);
 
             /**
+             * Specifies delete options for all the existing network interfaces attached to the VM.
+             * <p>This operation only affects existing <strong>attached</strong> network interfaces. Any newly-attached
+             * network interfaces that appear before {@link Update#apply()} won't be affected.</p>
+             *
+             * @param deleteOptions delete options for all the network interfaces
+             * @return the next stage of the update
+             */
+            Update withNetworkInterfacesDeleteOptions(DeleteOptions deleteOptions);
+
+            /**
              * Specifies delete options for the existing data disk attached to the VM.
              * <p>This operation only affects existing <strong>attached</strong> data disks. Any newly-attached data disks
              * that appear before {@link Update#apply()} won't be affected.</p>
@@ -2599,6 +2609,16 @@ public interface VirtualMachine
              * @return the next stage of the update
              */
             Update withDataDisksDeleteOptions(DeleteOptions deleteOptions, Integer... luns);
+
+            /**
+             * Specifies delete options for all the existing data disk attached to the VM.
+             * <p>This operation only affects existing <strong>attached</strong> data disks. Any newly-attached data disks
+             * that appear before {@link Update#apply()} won't be affected.</p>
+             *
+             * @param deleteOptions delete options for all the data disk
+             * @return the next stage of the update
+             */
+            Update withDataDisksDeleteOptions(DeleteOptions deleteOptions);
         }
 
         /** The stage of the virtual machine update allowing to user data configurations. */

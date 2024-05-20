@@ -17,15 +17,15 @@ import com.azure.health.insights.radiologyinsights.models.Encounter;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
-import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible;
-import com.azure.health.insights.radiologyinsights.models.FhirR4Extendible1;
 import com.azure.health.insights.radiologyinsights.models.FindingOptions;
 import com.azure.health.insights.radiologyinsights.models.FollowupRecommendationOptions;
+import com.azure.health.insights.radiologyinsights.models.OrderedProcedure;
 import com.azure.health.insights.radiologyinsights.models.PatientDocument;
 import com.azure.health.insights.radiologyinsights.models.PatientDetails;
 import com.azure.health.insights.radiologyinsights.models.PatientSex;
 import com.azure.health.insights.radiologyinsights.models.PatientRecord;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceOptions;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
@@ -42,11 +42,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * The SampleCriticalResultInferenceSync class processes a sample radiology document 
- * with the Radiology Insights service. It will initialize a synchronous 
- * RadiologyInsightsClient, build a Radiology Insights request with the sample document, submit it to the client 
- * and display the Critical Results extracted by the Radiology Insights service.  
- * 
+ * The SampleCriticalResultInferenceSync class processes a sample radiology document
+ * with the Radiology Insights service. It will initialize a synchronous
+ * RadiologyInsightsClient, build a Radiology Insights request with the sample document, submit it to the client
+ * and display the Critical Results extracted by the Radiology Insights service.
+ *
  */
 public class SampleCriticalResultInferenceSync {
 
@@ -82,12 +82,12 @@ public class SampleCriticalResultInferenceSync {
         // BEGIN: com.azure.health.insights.radiologyinsights.buildsyncclient
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
-        
+
         RadiologyInsightsClient radiologyInsightsClient = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest())
                 .credential(new AzureKeyCredential(apiKey)).buildClient();
         // END: com.azure.health.insights.radiologyinsights.buildsyncclient
-        
+
         // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
         RadiologyInsightsInferenceResult riResults = radiologyInsightsClient.beginInferRadiologyInsights(createRadiologyInsightsRequest()).getFinalResult();
         // END: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
@@ -104,12 +104,12 @@ public class SampleCriticalResultInferenceSync {
     private static void displayCriticalResults(RadiologyInsightsInferenceResult radiologyInsightsResult) {
         List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
         for (RadiologyInsightsPatientResult patientResult : patientResults) {
-            List<FhirR4Extendible1> inferences = patientResult.getInferences();
-            for (FhirR4Extendible1 inference : inferences) {
+            List<RadiologyInsightsInference> inferences = patientResult.getInferences();
+            for (RadiologyInsightsInference inference : inferences) {
                 if (inference instanceof CriticalResultInference) {
                     CriticalResultInference criticalResultInference = (CriticalResultInference) inference;
                     String description = criticalResultInference.getResult().getDescription();
-                    System.out.println("Critical Result Inference found: " + description);                    
+                    System.out.println("Critical Result Inference found: " + description);
                 }
             }
         }
@@ -145,7 +145,7 @@ public class SampleCriticalResultInferenceSync {
 
         // Use LocalDate to set Date
         patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
-        
+
         patientRecord.setInfo(patientDetails);
 
         Encounter encounter = new Encounter("encounterid1");
@@ -175,7 +175,7 @@ public class SampleCriticalResultInferenceSync {
         patientDocument.setSpecialtyType(SpecialtyType.RADIOLOGY);
 
         DocumentAdministrativeMetadata adminMetadata = new DocumentAdministrativeMetadata();
-        FhirR4Extendible orderedProcedure = new FhirR4Extendible();
+        OrderedProcedure orderedProcedure = new OrderedProcedure();
 
         FhirR4CodeableConcept procedureCode = new FhirR4CodeableConcept();
         FhirR4Coding procedureCoding = new FhirR4Coding();

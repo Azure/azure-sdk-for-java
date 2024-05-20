@@ -17,13 +17,13 @@
     <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-identity</artifactId>
-        <version>1.8.2</version>
+        <version>1.11.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     
     <dependency>
         <groupId>io.lettuce</groupId>
-        <artifactId>lettuce-core</artifactId>
-        <version>6.2.4.RELEASE</version>
+        <artifactId>lettuce-core</artifactId> 
+        <version>6.3.1.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
     </dependency>
    ```
 
@@ -69,7 +69,7 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 <dependency>
     <groupId>io.lettuce</groupId>
     <artifactId>lettuce-core</artifactId>
-    <version>6.2.4.RELEASE</version>
+    <version>6.3.1.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
 </dependency>
 ```
 
@@ -220,7 +220,7 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 <dependency>
     <groupId>io.lettuce</groupId>
     <artifactId>lettuce-core</artifactId>
-    <version>6.2.4.RELEASE</version>
+    <version>6.3.1.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
 </dependency>
 ```
 
@@ -291,7 +291,7 @@ private static RedisClient createLettuceRedisClient(String hostName, int port, S
 public static class AzureRedisCredentials implements RedisCredentials {
     // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
     private TokenRequestContext tokenRequestContext = new TokenRequestContext()
-        .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+        .addScopes("https://redis.azure.com/.default");
     private TokenCredential tokenCredential;
     private final String username;
 
@@ -346,7 +346,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 
 // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
 // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
-TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
 // Host Name, Port, Username, and Microsoft Entra token are required here.
@@ -426,7 +426,7 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 <dependency>
   <groupId>io.lettuce</groupId>
   <artifactId>lettuce-core</artifactId>
-  <version>6.2.4.RELEASE</version>
+  <version>6.3.1.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
 </dependency>
 ```
 
@@ -510,7 +510,7 @@ private static RedisClient createLettuceRedisClient(String hostName, int port, R
  */
 public static class AzureRedisCredentials implements RedisCredentials {
     private TokenRequestContext tokenRequestContext = new TokenRequestContext()
-        .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+        .addScopes("https://redis.azure.com/.default");
     private TokenCredential tokenCredential;
     private TokenRefreshCache refreshCache;
     private final String username;
@@ -653,7 +653,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 
 // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
 // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
-TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 
 // Instantiate the Token Refresh Cache, this cache will proactively refresh the access token 2 minutes before expiry.
 TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
@@ -778,7 +778,7 @@ public static class TokenRefreshCache {
 In this error scenario, the username provided and the access token used as password are not compatible.
 To mitigate this error, navigate to your Azure Cache for Redis resource in the Azure portal. Confirm that:
 * In **Data Access Configuration**, you've assigned the required role to your user/service principal identity.
-* In **Advanced settings**, the **Microsoft Entra Authentication** box is selected. If not, select it and select the **Save** button.
+* Under **Authentication** -> **Microsoft Entra Authentication** category the **Enable Microsoft Entra Authentication** box is selected. If not, select it and select the **Save** button.
 
 ##### Permissions not granted / NOPERM Error
 In this error scenario, the authentication was successful, but your registered user/service principal is not granted the RBAC permission to perform the action.

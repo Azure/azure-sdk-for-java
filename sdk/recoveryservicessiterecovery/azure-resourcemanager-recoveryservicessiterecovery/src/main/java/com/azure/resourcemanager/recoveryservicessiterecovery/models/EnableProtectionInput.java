@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Enable protection input. */
+/**
+ * Enable protection input.
+ */
 @Fluent
 public final class EnableProtectionInput {
     /*
@@ -16,13 +18,15 @@ public final class EnableProtectionInput {
     @JsonProperty(value = "properties")
     private EnableProtectionInputProperties properties;
 
-    /** Creates an instance of EnableProtectionInput class. */
+    /**
+     * Creates an instance of EnableProtectionInput class.
+     */
     public EnableProtectionInput() {
     }
 
     /**
      * Get the properties property: Enable protection input properties.
-     *
+     * 
      * @return the properties value.
      */
     public EnableProtectionInputProperties properties() {
@@ -31,7 +35,7 @@ public final class EnableProtectionInput {
 
     /**
      * Set the properties property: Enable protection input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the EnableProtectionInput object itself.
      */
@@ -42,7 +46,7 @@ public final class EnableProtectionInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

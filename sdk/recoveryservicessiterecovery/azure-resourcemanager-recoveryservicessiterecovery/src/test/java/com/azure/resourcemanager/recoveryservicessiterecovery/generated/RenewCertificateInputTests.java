@@ -12,18 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class RenewCertificateInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RenewCertificateInput model =
-            BinaryData
-                .fromString("{\"properties\":{\"renewCertificateType\":\"aierhhb\"}}")
-                .toObject(RenewCertificateInput.class);
+        RenewCertificateInput model = BinaryData.fromString("{\"properties\":{\"renewCertificateType\":\"aierhhb\"}}")
+            .toObject(RenewCertificateInput.class);
         Assertions.assertEquals("aierhhb", model.properties().renewCertificateType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RenewCertificateInput model =
-            new RenewCertificateInput()
-                .withProperties(new RenewCertificateInputProperties().withRenewCertificateType("aierhhb"));
+        RenewCertificateInput model = new RenewCertificateInput()
+            .withProperties(new RenewCertificateInputProperties().withRenewCertificateType("aierhhb"));
         model = BinaryData.fromObject(model).toObject(RenewCertificateInput.class);
         Assertions.assertEquals("aierhhb", model.properties().renewCertificateType());
     }

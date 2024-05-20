@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RankingsResponseTablesItem model. */
+/**
+ * The RankingsResponseTablesItem model.
+ */
 @Fluent
 public final class RankingsResponseTablesItem {
     /*
@@ -23,13 +25,15 @@ public final class RankingsResponseTablesItem {
     @JsonProperty(value = "data")
     private List<RankingsResponseTablesPropertiesItemsItem> data;
 
-    /** Creates an instance of RankingsResponseTablesItem class. */
+    /**
+     * Creates an instance of RankingsResponseTablesItem class.
+     */
     public RankingsResponseTablesItem() {
     }
 
     /**
      * Get the ranking property: The ranking property.
-     *
+     * 
      * @return the ranking value.
      */
     public String ranking() {
@@ -38,7 +42,7 @@ public final class RankingsResponseTablesItem {
 
     /**
      * Set the ranking property: The ranking property.
-     *
+     * 
      * @param ranking the ranking value to set.
      * @return the RankingsResponseTablesItem object itself.
      */
@@ -49,7 +53,7 @@ public final class RankingsResponseTablesItem {
 
     /**
      * Get the data property: The data property.
-     *
+     * 
      * @return the data value.
      */
     public List<RankingsResponseTablesPropertiesItemsItem> data() {
@@ -58,7 +62,7 @@ public final class RankingsResponseTablesItem {
 
     /**
      * Set the data property: The data property.
-     *
+     * 
      * @param data the data value to set.
      * @return the RankingsResponseTablesItem object itself.
      */
@@ -69,7 +73,7 @@ public final class RankingsResponseTablesItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

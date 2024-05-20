@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskDetails model =
-            BinaryData
-                .fromString(
-                    "{\"maxSizeMB\":3920956440221145049,\"vhdType\":\"zm\",\"vhdId\":\"k\",\"vhdName\":\"wsxvjab\"}")
-                .toObject(DiskDetails.class);
+        DiskDetails model = BinaryData
+            .fromString(
+                "{\"maxSizeMB\":3920956440221145049,\"vhdType\":\"zm\",\"vhdId\":\"k\",\"vhdName\":\"wsxvjab\"}")
+            .toObject(DiskDetails.class);
         Assertions.assertEquals(3920956440221145049L, model.maxSizeMB());
         Assertions.assertEquals("zm", model.vhdType());
         Assertions.assertEquals("k", model.vhdId());
@@ -24,12 +23,8 @@ public final class DiskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskDetails model =
-            new DiskDetails()
-                .withMaxSizeMB(3920956440221145049L)
-                .withVhdType("zm")
-                .withVhdId("k")
-                .withVhdName("wsxvjab");
+        DiskDetails model = new DiskDetails().withMaxSizeMB(3920956440221145049L).withVhdType("zm").withVhdId("k")
+            .withVhdName("wsxvjab");
         model = BinaryData.fromObject(model).toObject(DiskDetails.class);
         Assertions.assertEquals(3920956440221145049L, model.maxSizeMB());
         Assertions.assertEquals("zm", model.vhdType());

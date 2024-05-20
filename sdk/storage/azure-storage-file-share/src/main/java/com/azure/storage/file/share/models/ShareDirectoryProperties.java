@@ -30,8 +30,8 @@ public final class ShareDirectoryProperties {
      * encrypted using the specified algorithm. Otherwise, the value is set to false.
      * @param smbProperties The SMB properties of the directory.
      */
-    public ShareDirectoryProperties(final Map<String, String> metadata, final String eTag,
-        final OffsetDateTime lastModified, final boolean isServerEncrypted, final FileSmbProperties smbProperties) {
+    public ShareDirectoryProperties(Map<String, String> metadata, String eTag, OffsetDateTime lastModified,
+        boolean isServerEncrypted, FileSmbProperties smbProperties) {
         this.metadata = metadata;
         this.eTag = eTag;
         this.lastModified = lastModified;
@@ -40,6 +40,8 @@ public final class ShareDirectoryProperties {
     }
 
     /**
+     * Gets the metadata associated with the directory.
+     *
      * @return A set of name-value pairs that contain metadata for the directory.
      */
     public Map<String, String> getMetadata() {
@@ -47,6 +49,8 @@ public final class ShareDirectoryProperties {
     }
 
     /**
+     * Gets the entity tag that corresponds to the directory.
+     *
      * @return Entity tag that corresponds to the directory.
      */
     public String getETag() {
@@ -54,13 +58,18 @@ public final class ShareDirectoryProperties {
     }
 
     /**
-     * @return Entity tag that corresponds to the directory.
+     * Gets the last time the directory was modified.
+     *
+     * @return Last time the directory was modified.
      */
     public OffsetDateTime getLastModified() {
         return lastModified;
     }
 
     /**
+     * Gets the value of this header is true if the directory metadata is completely encrypted using the specified
+     * algorithm. Otherwise, the value is false.
+     *
      * @return The value of this header is true if the directory metadata is completely encrypted using the specified
      * algorithm. Otherwise, the value is false.
      */
@@ -69,6 +78,8 @@ public final class ShareDirectoryProperties {
     }
 
     /**
+     * Gets the SMB properties of the directory.
+     *
      * @return The SMB Properties of the directory.
      */
     public FileSmbProperties getSmbProperties() {

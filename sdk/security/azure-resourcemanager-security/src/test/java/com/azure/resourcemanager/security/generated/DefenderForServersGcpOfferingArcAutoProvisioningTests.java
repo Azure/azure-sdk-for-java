@@ -5,35 +5,30 @@
 package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.security.models.ArcAutoProvisioningConfiguration;
 import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingArcAutoProvisioning;
-import com.azure.resourcemanager.security.models.DefenderForServersGcpOfferingArcAutoProvisioningConfiguration;
 import org.junit.jupiter.api.Assertions;
 
 public final class DefenderForServersGcpOfferingArcAutoProvisioningTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForServersGcpOfferingArcAutoProvisioning model =
-            BinaryData
-                .fromString(
-                    "{\"enabled\":false,\"configuration\":{\"proxy\":\"gfb\",\"privateLinkScope\":\"tlpqagynoi\"}}")
-                .toObject(DefenderForServersGcpOfferingArcAutoProvisioning.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("gfb", model.configuration().proxy());
-        Assertions.assertEquals("tlpqagynoi", model.configuration().privateLinkScope());
+        DefenderForServersGcpOfferingArcAutoProvisioning model = BinaryData
+            .fromString("{\"enabled\":true,\"configuration\":{\"proxy\":\"rugjqyckgtx\",\"privateLinkScope\":\"dtu\"}}")
+            .toObject(DefenderForServersGcpOfferingArcAutoProvisioning.class);
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("rugjqyckgtx", model.configuration().proxy());
+        Assertions.assertEquals("dtu", model.configuration().privateLinkScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForServersGcpOfferingArcAutoProvisioning model =
-            new DefenderForServersGcpOfferingArcAutoProvisioning()
-                .withEnabled(false)
+        DefenderForServersGcpOfferingArcAutoProvisioning model
+            = new DefenderForServersGcpOfferingArcAutoProvisioning().withEnabled(true)
                 .withConfiguration(
-                    new DefenderForServersGcpOfferingArcAutoProvisioningConfiguration()
-                        .withProxy("gfb")
-                        .withPrivateLinkScope("tlpqagynoi"));
+                    new ArcAutoProvisioningConfiguration().withProxy("rugjqyckgtx").withPrivateLinkScope("dtu"));
         model = BinaryData.fromObject(model).toObject(DefenderForServersGcpOfferingArcAutoProvisioning.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("gfb", model.configuration().proxy());
-        Assertions.assertEquals("tlpqagynoi", model.configuration().privateLinkScope());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("rugjqyckgtx", model.configuration().proxy());
+        Assertions.assertEquals("dtu", model.configuration().privateLinkScope());
     }
 }

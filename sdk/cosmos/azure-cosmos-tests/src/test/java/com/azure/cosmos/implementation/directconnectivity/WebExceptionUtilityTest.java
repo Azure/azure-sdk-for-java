@@ -3,6 +3,9 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import io.netty.channel.ChannelException;
 import io.netty.channel.ConnectTimeoutException;
@@ -21,6 +24,8 @@ import java.net.HttpRetryException;
 import java.net.NoRouteToHostException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.net.UnknownServiceException;
 import java.nio.channels.ClosedChannelException;
@@ -34,7 +39,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class WebExceptionUtilityTest {
 
     @DataProvider(name = "exceptionToIsRetriable")
-    public Object[][] exceptionToIsRetriable() {
+    public Object[][] exceptionToIsRetriable() throws URISyntaxException {
         return new Object[][]{
                 // exception, is retriable
                 {
@@ -66,6 +71,16 @@ public class WebExceptionUtilityTest {
                 },
                 {
                         PrematureCloseException.TEST_EXCEPTION, false
+                },
+                {
+                    BridgeInternal.createServiceUnavailableException(
+                        new GoneException(
+                            "Test acquire channel failed",
+                            new URI("https://localhost"),
+                            new ChannelAcquisitionException("Test acquire channel failed"),
+                            HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410),
+                        HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410),
+                    true
                 }
         };
     }

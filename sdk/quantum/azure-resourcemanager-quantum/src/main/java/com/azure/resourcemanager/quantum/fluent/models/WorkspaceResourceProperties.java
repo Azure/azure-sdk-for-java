@@ -11,7 +11,9 @@ import com.azure.resourcemanager.quantum.models.UsableStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a Workspace. */
+/**
+ * Properties of a Workspace.
+ */
 @Fluent
 public final class WorkspaceResourceProperties {
     /*
@@ -44,13 +46,21 @@ public final class WorkspaceResourceProperties {
     @JsonProperty(value = "endpointUri", access = JsonProperty.Access.WRITE_ONLY)
     private String endpointUri;
 
-    /** Creates an instance of WorkspaceResourceProperties class. */
+    /*
+     * Indicator of enablement of the Quantum workspace Api keys.
+     */
+    @JsonProperty(value = "apiKeyEnabled")
+    private Boolean apiKeyEnabled;
+
+    /**
+     * Creates an instance of WorkspaceResourceProperties class.
+     */
     public WorkspaceResourceProperties() {
     }
 
     /**
      * Get the providers property: List of Providers selected for this Workspace.
-     *
+     * 
      * @return the providers value.
      */
     public List<Provider> providers() {
@@ -59,7 +69,7 @@ public final class WorkspaceResourceProperties {
 
     /**
      * Set the providers property: List of Providers selected for this Workspace.
-     *
+     * 
      * @param providers the providers value to set.
      * @return the WorkspaceResourceProperties object itself.
      */
@@ -70,7 +80,7 @@ public final class WorkspaceResourceProperties {
 
     /**
      * Get the usable property: Whether the current workspace is ready to accept Jobs.
-     *
+     * 
      * @return the usable value.
      */
     public UsableStatus usable() {
@@ -79,7 +89,7 @@ public final class WorkspaceResourceProperties {
 
     /**
      * Get the provisioningState property: Provisioning status field.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStatus provisioningState() {
@@ -88,7 +98,7 @@ public final class WorkspaceResourceProperties {
 
     /**
      * Get the storageAccount property: ARM Resource Id of the storage account associated with this workspace.
-     *
+     * 
      * @return the storageAccount value.
      */
     public String storageAccount() {
@@ -97,7 +107,7 @@ public final class WorkspaceResourceProperties {
 
     /**
      * Set the storageAccount property: ARM Resource Id of the storage account associated with this workspace.
-     *
+     * 
      * @param storageAccount the storageAccount value to set.
      * @return the WorkspaceResourceProperties object itself.
      */
@@ -108,7 +118,7 @@ public final class WorkspaceResourceProperties {
 
     /**
      * Get the endpointUri property: The URI of the workspace endpoint.
-     *
+     * 
      * @return the endpointUri value.
      */
     public String endpointUri() {
@@ -116,8 +126,28 @@ public final class WorkspaceResourceProperties {
     }
 
     /**
+     * Get the apiKeyEnabled property: Indicator of enablement of the Quantum workspace Api keys.
+     * 
+     * @return the apiKeyEnabled value.
+     */
+    public Boolean apiKeyEnabled() {
+        return this.apiKeyEnabled;
+    }
+
+    /**
+     * Set the apiKeyEnabled property: Indicator of enablement of the Quantum workspace Api keys.
+     * 
+     * @param apiKeyEnabled the apiKeyEnabled value to set.
+     * @return the WorkspaceResourceProperties object itself.
+     */
+    public WorkspaceResourceProperties withApiKeyEnabled(Boolean apiKeyEnabled) {
+        this.apiKeyEnabled = apiKeyEnabled;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReplicationPolicies. */
+/**
+ * Resource collection API of ReplicationPolicies.
+ */
 public interface ReplicationPolicies {
     /**
      * Gets the list of replication policies.
-     *
-     * <p>Lists the replication policies for a vault.
-     *
+     * 
+     * Lists the replication policies for a vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface ReplicationPolicies {
 
     /**
      * Gets the list of replication policies.
-     *
-     * <p>Lists the replication policies for a vault.
-     *
+     * 
+     * Lists the replication policies for a vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -41,9 +43,9 @@ public interface ReplicationPolicies {
 
     /**
      * Gets the requested policy.
-     *
-     * <p>Gets the details of a replication policy.
-     *
+     * 
+     * Gets the details of a replication policy.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Replication policy name.
@@ -57,9 +59,9 @@ public interface ReplicationPolicies {
 
     /**
      * Gets the requested policy.
-     *
-     * <p>Gets the details of a replication policy.
-     *
+     * 
+     * Gets the details of a replication policy.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Replication policy name.
@@ -72,9 +74,9 @@ public interface ReplicationPolicies {
 
     /**
      * Delete the policy.
-     *
-     * <p>The operation to delete a replication policy.
-     *
+     * 
+     * The operation to delete a replication policy.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Replication policy name.
@@ -86,9 +88,9 @@ public interface ReplicationPolicies {
 
     /**
      * Delete the policy.
-     *
-     * <p>The operation to delete a replication policy.
-     *
+     * 
+     * The operation to delete a replication policy.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Replication policy name.
@@ -101,9 +103,9 @@ public interface ReplicationPolicies {
 
     /**
      * Gets the requested policy.
-     *
-     * <p>Gets the details of a replication policy.
-     *
+     * 
+     * Gets the details of a replication policy.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -114,9 +116,9 @@ public interface ReplicationPolicies {
 
     /**
      * Gets the requested policy.
-     *
-     * <p>Gets the details of a replication policy.
-     *
+     * 
+     * Gets the details of a replication policy.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -128,9 +130,9 @@ public interface ReplicationPolicies {
 
     /**
      * Delete the policy.
-     *
-     * <p>The operation to delete a replication policy.
-     *
+     * 
+     * The operation to delete a replication policy.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -140,9 +142,9 @@ public interface ReplicationPolicies {
 
     /**
      * Delete the policy.
-     *
-     * <p>The operation to delete a replication policy.
-     *
+     * 
+     * The operation to delete a replication policy.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +155,7 @@ public interface ReplicationPolicies {
 
     /**
      * Begins definition for a new Policy resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Policy definition.
      */

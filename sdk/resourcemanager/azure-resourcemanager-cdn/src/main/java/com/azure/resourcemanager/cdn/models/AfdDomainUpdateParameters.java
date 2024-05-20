@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cdn.fluent.models.AfdDomainUpdatePropertiesParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The domain JSON object required for domain creation or update. */
+/**
+ * The domain JSON object required for domain creation or update.
+ */
 @Fluent
 public final class AfdDomainUpdateParameters {
     /*
@@ -17,13 +19,15 @@ public final class AfdDomainUpdateParameters {
     @JsonProperty(value = "properties")
     private AfdDomainUpdatePropertiesParameters innerProperties;
 
-    /** Creates an instance of AfdDomainUpdateParameters class. */
+    /**
+     * Creates an instance of AfdDomainUpdateParameters class.
+     */
     public AfdDomainUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the domain to create.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AfdDomainUpdatePropertiesParameters innerProperties() {
@@ -32,7 +36,7 @@ public final class AfdDomainUpdateParameters {
 
     /**
      * Get the profileName property: The name of the profile which holds the domain.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -43,7 +47,7 @@ public final class AfdDomainUpdateParameters {
      * Get the tlsSettings property: The configuration specifying how to enable HTTPS for the domain - using
      * AzureFrontDoor managed certificate or user's own certificate. If not specified, enabling ssl uses AzureFrontDoor
      * managed certificate by default.
-     *
+     * 
      * @return the tlsSettings value.
      */
     public AfdDomainHttpsParameters tlsSettings() {
@@ -54,7 +58,7 @@ public final class AfdDomainUpdateParameters {
      * Set the tlsSettings property: The configuration specifying how to enable HTTPS for the domain - using
      * AzureFrontDoor managed certificate or user's own certificate. If not specified, enabling ssl uses AzureFrontDoor
      * managed certificate by default.
-     *
+     * 
      * @param tlsSettings the tlsSettings value to set.
      * @return the AfdDomainUpdateParameters object itself.
      */
@@ -68,7 +72,7 @@ public final class AfdDomainUpdateParameters {
 
     /**
      * Get the azureDnsZone property: Resource reference to the Azure DNS zone.
-     *
+     * 
      * @return the azureDnsZone value.
      */
     public ResourceReference azureDnsZone() {
@@ -77,7 +81,7 @@ public final class AfdDomainUpdateParameters {
 
     /**
      * Set the azureDnsZone property: Resource reference to the Azure DNS zone.
-     *
+     * 
      * @param azureDnsZone the azureDnsZone value to set.
      * @return the AfdDomainUpdateParameters object itself.
      */
@@ -90,9 +94,9 @@ public final class AfdDomainUpdateParameters {
     }
 
     /**
-     * Get the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom domain
-     * ownership was prevalidated.
-     *
+     * Get the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom
+     * domain ownership was prevalidated.
+     * 
      * @return the preValidatedCustomDomainResourceId value.
      */
     public ResourceReference preValidatedCustomDomainResourceId() {
@@ -100,14 +104,14 @@ public final class AfdDomainUpdateParameters {
     }
 
     /**
-     * Set the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom domain
-     * ownership was prevalidated.
-     *
+     * Set the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom
+     * domain ownership was prevalidated.
+     * 
      * @param preValidatedCustomDomainResourceId the preValidatedCustomDomainResourceId value to set.
      * @return the AfdDomainUpdateParameters object itself.
      */
-    public AfdDomainUpdateParameters withPreValidatedCustomDomainResourceId(
-        ResourceReference preValidatedCustomDomainResourceId) {
+    public AfdDomainUpdateParameters
+        withPreValidatedCustomDomainResourceId(ResourceReference preValidatedCustomDomainResourceId) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AfdDomainUpdatePropertiesParameters();
         }
@@ -117,7 +121,7 @@ public final class AfdDomainUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

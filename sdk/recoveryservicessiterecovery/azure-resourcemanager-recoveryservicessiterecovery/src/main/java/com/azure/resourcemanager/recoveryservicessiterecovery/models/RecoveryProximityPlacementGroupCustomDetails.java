@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery Proximity placement group custom input. */
+/**
+ * Recovery Proximity placement group custom input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "resourceType",
     defaultImpl = RecoveryProximityPlacementGroupCustomDetails.class)
 @JsonTypeName("RecoveryProximityPlacementGroupCustomDetails")
-@JsonSubTypes({@JsonSubTypes.Type(name = "Existing", value = ExistingRecoveryProximityPlacementGroup.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "Existing", value = ExistingRecoveryProximityPlacementGroup.class) })
 @Immutable
 public class RecoveryProximityPlacementGroupCustomDetails {
-    /** Creates an instance of RecoveryProximityPlacementGroupCustomDetails class. */
+    /**
+     * Creates an instance of RecoveryProximityPlacementGroupCustomDetails class.
+     */
     public RecoveryProximityPlacementGroupCustomDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

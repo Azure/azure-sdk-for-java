@@ -15,53 +15,43 @@ import org.junit.jupiter.api.Assertions;
 public final class GovernanceAssignmentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GovernanceAssignmentInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"owner\":\"wzfgbrttuiaclkie\",\"remediationDueDate\":\"2021-01-24T04:29:25Z\",\"remediationEta\":{\"eta\":\"2021-03-15T08:06:52Z\",\"justification\":\"lfnthiqfyut\"},\"isGracePeriod\":false,\"governanceEmailNotification\":{\"disableManagerEmailNotification\":false,\"disableOwnerEmailNotification\":false},\"additionalData\":{\"ticketNumber\":1375874232,\"ticketLink\":\"mtx\",\"ticketStatus\":\"ctwwgzw\"}},\"id\":\"jlmec\",\"name\":\"og\",\"type\":\"gzyvnee\"}")
-                .toObject(GovernanceAssignmentInner.class);
-        Assertions.assertEquals("wzfgbrttuiaclkie", model.owner());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-24T04:29:25Z"), model.remediationDueDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-15T08:06:52Z"), model.remediationEta().eta());
-        Assertions.assertEquals("lfnthiqfyut", model.remediationEta().justification());
-        Assertions.assertEquals(false, model.isGracePeriod());
-        Assertions.assertEquals(false, model.governanceEmailNotification().disableManagerEmailNotification());
+        GovernanceAssignmentInner model = BinaryData.fromString(
+            "{\"properties\":{\"owner\":\"qlpqwcciuq\",\"remediationDueDate\":\"2021-06-26T04:49:16Z\",\"remediationEta\":{\"eta\":\"2021-04-01T17:41:23Z\",\"justification\":\"utauv\"},\"isGracePeriod\":true,\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":false},\"additionalData\":{\"ticketNumber\":1745648414,\"ticketLink\":\"ojoxafnndlp\",\"ticketStatus\":\"hkoymkcdyhbp\"}},\"id\":\"kpw\",\"name\":\"reqnovvqfov\",\"type\":\"jxywsuws\"}")
+            .toObject(GovernanceAssignmentInner.class);
+        Assertions.assertEquals("qlpqwcciuq", model.owner());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-26T04:49:16Z"), model.remediationDueDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T17:41:23Z"), model.remediationEta().eta());
+        Assertions.assertEquals("utauv", model.remediationEta().justification());
+        Assertions.assertEquals(true, model.isGracePeriod());
+        Assertions.assertEquals(true, model.governanceEmailNotification().disableManagerEmailNotification());
         Assertions.assertEquals(false, model.governanceEmailNotification().disableOwnerEmailNotification());
-        Assertions.assertEquals(1375874232, model.additionalData().ticketNumber());
-        Assertions.assertEquals("mtx", model.additionalData().ticketLink());
-        Assertions.assertEquals("ctwwgzw", model.additionalData().ticketStatus());
+        Assertions.assertEquals(1745648414, model.additionalData().ticketNumber());
+        Assertions.assertEquals("ojoxafnndlp", model.additionalData().ticketLink());
+        Assertions.assertEquals("hkoymkcdyhbp", model.additionalData().ticketStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GovernanceAssignmentInner model =
-            new GovernanceAssignmentInner()
-                .withOwner("wzfgbrttuiaclkie")
-                .withRemediationDueDate(OffsetDateTime.parse("2021-01-24T04:29:25Z"))
-                .withRemediationEta(
-                    new RemediationEta()
-                        .withEta(OffsetDateTime.parse("2021-03-15T08:06:52Z"))
-                        .withJustification("lfnthiqfyut"))
-                .withIsGracePeriod(false)
-                .withGovernanceEmailNotification(
-                    new GovernanceEmailNotification()
-                        .withDisableManagerEmailNotification(false)
-                        .withDisableOwnerEmailNotification(false))
-                .withAdditionalData(
-                    new GovernanceAssignmentAdditionalData()
-                        .withTicketNumber(1375874232)
-                        .withTicketLink("mtx")
-                        .withTicketStatus("ctwwgzw"));
+        GovernanceAssignmentInner model = new GovernanceAssignmentInner().withOwner("qlpqwcciuq")
+            .withRemediationDueDate(OffsetDateTime.parse("2021-06-26T04:49:16Z"))
+            .withRemediationEta(
+                new RemediationEta().withEta(OffsetDateTime.parse("2021-04-01T17:41:23Z")).withJustification("utauv"))
+            .withIsGracePeriod(true)
+            .withGovernanceEmailNotification(new GovernanceEmailNotification().withDisableManagerEmailNotification(true)
+                .withDisableOwnerEmailNotification(false))
+            .withAdditionalData(new GovernanceAssignmentAdditionalData().withTicketNumber(1745648414)
+                .withTicketLink("ojoxafnndlp")
+                .withTicketStatus("hkoymkcdyhbp"));
         model = BinaryData.fromObject(model).toObject(GovernanceAssignmentInner.class);
-        Assertions.assertEquals("wzfgbrttuiaclkie", model.owner());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-24T04:29:25Z"), model.remediationDueDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-15T08:06:52Z"), model.remediationEta().eta());
-        Assertions.assertEquals("lfnthiqfyut", model.remediationEta().justification());
-        Assertions.assertEquals(false, model.isGracePeriod());
-        Assertions.assertEquals(false, model.governanceEmailNotification().disableManagerEmailNotification());
+        Assertions.assertEquals("qlpqwcciuq", model.owner());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-26T04:49:16Z"), model.remediationDueDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T17:41:23Z"), model.remediationEta().eta());
+        Assertions.assertEquals("utauv", model.remediationEta().justification());
+        Assertions.assertEquals(true, model.isGracePeriod());
+        Assertions.assertEquals(true, model.governanceEmailNotification().disableManagerEmailNotification());
         Assertions.assertEquals(false, model.governanceEmailNotification().disableOwnerEmailNotification());
-        Assertions.assertEquals(1375874232, model.additionalData().ticketNumber());
-        Assertions.assertEquals("mtx", model.additionalData().ticketLink());
-        Assertions.assertEquals("ctwwgzw", model.additionalData().ticketStatus());
+        Assertions.assertEquals(1745648414, model.additionalData().ticketNumber());
+        Assertions.assertEquals("ojoxafnndlp", model.additionalData().ticketLink());
+        Assertions.assertEquals("hkoymkcdyhbp", model.additionalData().ticketStatus());
     }
 }

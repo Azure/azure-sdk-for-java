@@ -8,21 +8,23 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Scheduler;
@@ -58,6 +60,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Test base for running integration tests.
  */
 public abstract class IntegrationTestBase extends TestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationTestBase.class);
+
     // The number of partitions we create in test-resources.json.
     // Partitions 0 and 1 are used for consume-only operations. 2, 3, and 4 are used to publish or consume events.
     protected static final int NUMBER_OF_PARTITIONS = 5;
@@ -65,7 +69,11 @@ public abstract class IntegrationTestBase extends TestBase {
         .mapToObj(String::valueOf)
         .collect(Collectors.toList());
     protected static final Duration TIMEOUT = Duration.ofMinutes(1);
-    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
+
+    // Tests use timeouts of 20-60 seconds to verify something has happened
+    // We need a short try timeout so that if transient issue happens we have a chance to retry it before overall test timeout.
+    // This is a good idea to do in any production application as well - no point in waiting too long
+    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3));
 
     protected final ClientLogger logger;
 
@@ -75,6 +83,7 @@ public abstract class IntegrationTestBase extends TestBase {
     private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
     private static final Configuration GLOBAL_CONFIGURATION = Configuration.getGlobalConfiguration();
+    private static final ClientOptions OPTIONS_WITH_TRACING = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
 
     private static Scheduler scheduler;
     private static Map<String, IntegrationTestEventData> testEventData;
@@ -96,10 +105,12 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     @BeforeEach
-    public void setupTest(TestInfo testInfo) {
-        System.out.printf("----- [%s]: Performing integration test set-up. -----%n", testInfo.getDisplayName());
+    @Override
+    public void setupTest(TestContextManager testContextManager) {
+        logger.info("----- {}: Performing integration test set-up. -----",
+            testContextManager.getTestPlaybackRecordingName());
 
-        testName = testInfo.getDisplayName();
+        testName = testContextManager.getTrackerTestName();
         skipIfNotRecordMode();
         toClose = new ArrayList<>();
         beforeTest();
@@ -117,9 +128,8 @@ public abstract class IntegrationTestBase extends TestBase {
 
     // These are overridden because we don't use the Interceptor Manager.
     @Override
-    @AfterEach
-    public void teardownTest(TestInfo testInfo) {
-        System.out.printf("----- [%s]: Performing test clean-up. -----%n", testInfo.getDisplayName());
+    public void teardownTest() {
+        logger.info("----- {}: Performing test clean-up. -----", testName);
         afterTest();
 
         logger.info("Disposing of subscriptions, consumers and clients.");
@@ -186,7 +196,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 }
                 return String.format(connectionStringWithSasAndEntityFormat, endpoint, signatureValue, entityPath);
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.log(LogLevel.VERBOSE, () -> "Error while getting connection string", e);
             }
         }
         return connectionString;
@@ -255,6 +265,7 @@ public abstract class IntegrationTestBase extends TestBase {
         final EventHubClientBuilder builder = new EventHubClientBuilder()
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retry(RETRY_OPTIONS)
+            .clientOptions(OPTIONS_WITH_TRACING)
             .transportType(AmqpTransportType.AMQP)
             .scheduler(scheduler);
 
@@ -294,15 +305,17 @@ public abstract class IntegrationTestBase extends TestBase {
             return testEventData;
         }
 
-        System.out.println("--> Adding events to Event Hubs.");
+        logger.info("--> Adding events to Event Hubs.");
         final Map<String, IntegrationTestEventData> integrationData = new HashMap<>();
 
         try (EventHubProducerClient producer = new EventHubClientBuilder()
             .connectionString(getConnectionString())
+            .retryOptions(RETRY_OPTIONS)
+            .clientOptions(OPTIONS_WITH_TRACING)
             .buildProducerClient()) {
 
             producer.getPartitionIds().forEach(partitionId -> {
-                System.out.printf("--> Adding events to partition: %s%n", partitionId);
+                logger.info("--> Adding events to partition: " + partitionId);
                 final PartitionProperties partitionProperties = producer.getPartitionProperties(partitionId);
                 final String messageId = UUID.randomUUID().toString();
                 final int numberOfEvents = 15;
@@ -316,7 +329,7 @@ public abstract class IntegrationTestBase extends TestBase {
             });
 
             if (integrationData.size() != NUMBER_OF_PARTITIONS) {
-                System.out.printf("--> WARNING: Number of partitions is different. Expected: %s. Actual %s%n",
+                logger.warning("--> WARNING: Number of partitions is different. Expected: {}. Actual {}",
                     NUMBER_OF_PARTITIONS, integrationData.size());
             }
 

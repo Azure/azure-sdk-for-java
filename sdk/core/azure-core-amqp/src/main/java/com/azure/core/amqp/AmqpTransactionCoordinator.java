@@ -10,13 +10,16 @@ import reactor.core.publisher.Mono;
  * in the messaging broker are part of one unit of work. The transaction must ensure that all operations belonging to a
  * given transaction either succeed or fail jointly. In general a transaction is involved with many operations on one
  * message broker entity. Sometime a transaction can span over multiple message broker entities explained as follows.
- *<p>
+ * <p>
  * Distributed Transactions: A distributed transaction where operations spans over different message broker entities.
  * For example an application receive from entity 'A' and sends to entity 'B' and 'C' and all these operations are part
  * of one transaction.
  *
- * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#choice-txn-capability-distributed-transactions">Distributed Transactions</a>
- * @see <a href="https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-transactions">Transactions</a>
+ * @see <a href=
+ * "http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#choice-txn-capability-distributed-transactions">Distributed
+ * Transactions</a>
+ * @see <a href=
+ * "https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#section-transactions">Transactions</a>
  */
 public interface AmqpTransactionCoordinator {
 

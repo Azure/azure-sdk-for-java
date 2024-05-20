@@ -6,14 +6,28 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The Defender for Containers AWS offering. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
+/**
+ * The Defender for Containers AWS offering.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "offeringType",
+    defaultImpl = DefenderForContainersAwsOffering.class,
+    visible = true)
 @JsonTypeName("DefenderForContainersAws")
 @Fluent
 public final class DefenderForContainersAwsOffering extends CloudOffering {
+    /*
+     * The type of the security offering.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "offeringType", required = true)
+    private OfferingType offeringType = OfferingType.DEFENDER_FOR_CONTAINERS_AWS;
+
     /*
      * The kubernetes service connection configuration
      */
@@ -21,10 +35,10 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
     private DefenderForContainersAwsOfferingKubernetesService kubernetesService;
 
     /*
-     * The kubernetes to scuba connection configuration
+     * The kubernetes data collection connection configuration
      */
-    @JsonProperty(value = "kubernetesScubaReader")
-    private DefenderForContainersAwsOfferingKubernetesScubaReader kubernetesScubaReader;
+    @JsonProperty(value = "kubernetesDataCollection")
+    private DefenderForContainersAwsOfferingKubernetesDataCollection kubernetesDataCollection;
 
     /*
      * The cloudwatch to kinesis connection configuration
@@ -39,28 +53,22 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
     private DefenderForContainersAwsOfferingKinesisToS3 kinesisToS3;
 
     /*
-     * The container vulnerability assessment configuration
+     * Is audit logs data collection enabled
      */
-    @JsonProperty(value = "containerVulnerabilityAssessment")
-    private DefenderForContainersAwsOfferingContainerVulnerabilityAssessment containerVulnerabilityAssessment;
+    @JsonProperty(value = "enableAuditLogsAutoProvisioning")
+    private Boolean enableAuditLogsAutoProvisioning;
 
     /*
-     * The container vulnerability assessment task configuration
+     * Is Microsoft Defender for Cloud Kubernetes agent auto provisioning enabled
      */
-    @JsonProperty(value = "containerVulnerabilityAssessmentTask")
-    private DefenderForContainersAwsOfferingContainerVulnerabilityAssessmentTask containerVulnerabilityAssessmentTask;
+    @JsonProperty(value = "enableDefenderAgentAutoProvisioning")
+    private Boolean enableDefenderAgentAutoProvisioning;
 
     /*
-     * Enable container vulnerability assessment feature
+     * Is Policy Kubernetes agent auto provisioning enabled
      */
-    @JsonProperty(value = "enableContainerVulnerabilityAssessment")
-    private Boolean enableContainerVulnerabilityAssessment;
-
-    /*
-     * Is audit logs pipeline auto provisioning enabled
-     */
-    @JsonProperty(value = "autoProvisioning")
-    private Boolean autoProvisioning;
+    @JsonProperty(value = "enablePolicyAgentAutoProvisioning")
+    private Boolean enablePolicyAgentAutoProvisioning;
 
     /*
      * The retention time in days of kube audit logs set on the CloudWatch log group
@@ -71,16 +79,46 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
     /*
      * The externalId used by the data reader to prevent the confused deputy attack
      */
-    @JsonProperty(value = "scubaExternalId")
-    private String scubaExternalId;
+    @JsonProperty(value = "dataCollectionExternalId")
+    private String dataCollectionExternalId;
 
-    /** Creates an instance of DefenderForContainersAwsOffering class. */
+    /*
+     * The Microsoft Defender container image assessment configuration
+     */
+    @JsonProperty(value = "mdcContainersImageAssessment")
+    private DefenderForContainersAwsOfferingMdcContainersImageAssessment mdcContainersImageAssessment;
+
+    /*
+     * The Microsoft Defender container agentless discovery K8s configuration
+     */
+    @JsonProperty(value = "mdcContainersAgentlessDiscoveryK8s")
+    private DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S mdcContainersAgentlessDiscoveryK8S;
+
+    /*
+     * The Microsoft Defender for Container K8s VM host scanning configuration
+     */
+    @JsonProperty(value = "vmScanners")
+    private DefenderForContainersAwsOfferingVmScanners vmScanners;
+
+    /**
+     * Creates an instance of DefenderForContainersAwsOffering class.
+     */
     public DefenderForContainersAwsOffering() {
     }
 
     /**
+     * Get the offeringType property: The type of the security offering.
+     * 
+     * @return the offeringType value.
+     */
+    @Override
+    public OfferingType offeringType() {
+        return this.offeringType;
+    }
+
+    /**
      * Get the kubernetesService property: The kubernetes service connection configuration.
-     *
+     * 
      * @return the kubernetesService value.
      */
     public DefenderForContainersAwsOfferingKubernetesService kubernetesService() {
@@ -89,40 +127,40 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
 
     /**
      * Set the kubernetesService property: The kubernetes service connection configuration.
-     *
+     * 
      * @param kubernetesService the kubernetesService value to set.
      * @return the DefenderForContainersAwsOffering object itself.
      */
-    public DefenderForContainersAwsOffering withKubernetesService(
-        DefenderForContainersAwsOfferingKubernetesService kubernetesService) {
+    public DefenderForContainersAwsOffering
+        withKubernetesService(DefenderForContainersAwsOfferingKubernetesService kubernetesService) {
         this.kubernetesService = kubernetesService;
         return this;
     }
 
     /**
-     * Get the kubernetesScubaReader property: The kubernetes to scuba connection configuration.
-     *
-     * @return the kubernetesScubaReader value.
+     * Get the kubernetesDataCollection property: The kubernetes data collection connection configuration.
+     * 
+     * @return the kubernetesDataCollection value.
      */
-    public DefenderForContainersAwsOfferingKubernetesScubaReader kubernetesScubaReader() {
-        return this.kubernetesScubaReader;
+    public DefenderForContainersAwsOfferingKubernetesDataCollection kubernetesDataCollection() {
+        return this.kubernetesDataCollection;
     }
 
     /**
-     * Set the kubernetesScubaReader property: The kubernetes to scuba connection configuration.
-     *
-     * @param kubernetesScubaReader the kubernetesScubaReader value to set.
+     * Set the kubernetesDataCollection property: The kubernetes data collection connection configuration.
+     * 
+     * @param kubernetesDataCollection the kubernetesDataCollection value to set.
      * @return the DefenderForContainersAwsOffering object itself.
      */
-    public DefenderForContainersAwsOffering withKubernetesScubaReader(
-        DefenderForContainersAwsOfferingKubernetesScubaReader kubernetesScubaReader) {
-        this.kubernetesScubaReader = kubernetesScubaReader;
+    public DefenderForContainersAwsOffering withKubernetesDataCollection(
+        DefenderForContainersAwsOfferingKubernetesDataCollection kubernetesDataCollection) {
+        this.kubernetesDataCollection = kubernetesDataCollection;
         return this;
     }
 
     /**
      * Get the cloudWatchToKinesis property: The cloudwatch to kinesis connection configuration.
-     *
+     * 
      * @return the cloudWatchToKinesis value.
      */
     public DefenderForContainersAwsOfferingCloudWatchToKinesis cloudWatchToKinesis() {
@@ -131,19 +169,19 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
 
     /**
      * Set the cloudWatchToKinesis property: The cloudwatch to kinesis connection configuration.
-     *
+     * 
      * @param cloudWatchToKinesis the cloudWatchToKinesis value to set.
      * @return the DefenderForContainersAwsOffering object itself.
      */
-    public DefenderForContainersAwsOffering withCloudWatchToKinesis(
-        DefenderForContainersAwsOfferingCloudWatchToKinesis cloudWatchToKinesis) {
+    public DefenderForContainersAwsOffering
+        withCloudWatchToKinesis(DefenderForContainersAwsOfferingCloudWatchToKinesis cloudWatchToKinesis) {
         this.cloudWatchToKinesis = cloudWatchToKinesis;
         return this;
     }
 
     /**
      * Get the kinesisToS3 property: The kinesis to s3 connection configuration.
-     *
+     * 
      * @return the kinesisToS3 value.
      */
     public DefenderForContainersAwsOfferingKinesisToS3 kinesisToS3() {
@@ -152,7 +190,7 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
 
     /**
      * Set the kinesisToS3 property: The kinesis to s3 connection configuration.
-     *
+     * 
      * @param kinesisToS3 the kinesisToS3 value to set.
      * @return the DefenderForContainersAwsOffering object itself.
      */
@@ -162,92 +200,74 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
     }
 
     /**
-     * Get the containerVulnerabilityAssessment property: The container vulnerability assessment configuration.
-     *
-     * @return the containerVulnerabilityAssessment value.
+     * Get the enableAuditLogsAutoProvisioning property: Is audit logs data collection enabled.
+     * 
+     * @return the enableAuditLogsAutoProvisioning value.
      */
-    public DefenderForContainersAwsOfferingContainerVulnerabilityAssessment containerVulnerabilityAssessment() {
-        return this.containerVulnerabilityAssessment;
+    public Boolean enableAuditLogsAutoProvisioning() {
+        return this.enableAuditLogsAutoProvisioning;
     }
 
     /**
-     * Set the containerVulnerabilityAssessment property: The container vulnerability assessment configuration.
-     *
-     * @param containerVulnerabilityAssessment the containerVulnerabilityAssessment value to set.
+     * Set the enableAuditLogsAutoProvisioning property: Is audit logs data collection enabled.
+     * 
+     * @param enableAuditLogsAutoProvisioning the enableAuditLogsAutoProvisioning value to set.
      * @return the DefenderForContainersAwsOffering object itself.
      */
-    public DefenderForContainersAwsOffering withContainerVulnerabilityAssessment(
-        DefenderForContainersAwsOfferingContainerVulnerabilityAssessment containerVulnerabilityAssessment) {
-        this.containerVulnerabilityAssessment = containerVulnerabilityAssessment;
+    public DefenderForContainersAwsOffering
+        withEnableAuditLogsAutoProvisioning(Boolean enableAuditLogsAutoProvisioning) {
+        this.enableAuditLogsAutoProvisioning = enableAuditLogsAutoProvisioning;
         return this;
     }
 
     /**
-     * Get the containerVulnerabilityAssessmentTask property: The container vulnerability assessment task configuration.
-     *
-     * @return the containerVulnerabilityAssessmentTask value.
+     * Get the enableDefenderAgentAutoProvisioning property: Is Microsoft Defender for Cloud Kubernetes agent auto
+     * provisioning enabled.
+     * 
+     * @return the enableDefenderAgentAutoProvisioning value.
      */
-    public DefenderForContainersAwsOfferingContainerVulnerabilityAssessmentTask containerVulnerabilityAssessmentTask() {
-        return this.containerVulnerabilityAssessmentTask;
+    public Boolean enableDefenderAgentAutoProvisioning() {
+        return this.enableDefenderAgentAutoProvisioning;
     }
 
     /**
-     * Set the containerVulnerabilityAssessmentTask property: The container vulnerability assessment task configuration.
-     *
-     * @param containerVulnerabilityAssessmentTask the containerVulnerabilityAssessmentTask value to set.
+     * Set the enableDefenderAgentAutoProvisioning property: Is Microsoft Defender for Cloud Kubernetes agent auto
+     * provisioning enabled.
+     * 
+     * @param enableDefenderAgentAutoProvisioning the enableDefenderAgentAutoProvisioning value to set.
      * @return the DefenderForContainersAwsOffering object itself.
      */
-    public DefenderForContainersAwsOffering withContainerVulnerabilityAssessmentTask(
-        DefenderForContainersAwsOfferingContainerVulnerabilityAssessmentTask containerVulnerabilityAssessmentTask) {
-        this.containerVulnerabilityAssessmentTask = containerVulnerabilityAssessmentTask;
+    public DefenderForContainersAwsOffering
+        withEnableDefenderAgentAutoProvisioning(Boolean enableDefenderAgentAutoProvisioning) {
+        this.enableDefenderAgentAutoProvisioning = enableDefenderAgentAutoProvisioning;
         return this;
     }
 
     /**
-     * Get the enableContainerVulnerabilityAssessment property: Enable container vulnerability assessment feature.
-     *
-     * @return the enableContainerVulnerabilityAssessment value.
+     * Get the enablePolicyAgentAutoProvisioning property: Is Policy Kubernetes agent auto provisioning enabled.
+     * 
+     * @return the enablePolicyAgentAutoProvisioning value.
      */
-    public Boolean enableContainerVulnerabilityAssessment() {
-        return this.enableContainerVulnerabilityAssessment;
+    public Boolean enablePolicyAgentAutoProvisioning() {
+        return this.enablePolicyAgentAutoProvisioning;
     }
 
     /**
-     * Set the enableContainerVulnerabilityAssessment property: Enable container vulnerability assessment feature.
-     *
-     * @param enableContainerVulnerabilityAssessment the enableContainerVulnerabilityAssessment value to set.
+     * Set the enablePolicyAgentAutoProvisioning property: Is Policy Kubernetes agent auto provisioning enabled.
+     * 
+     * @param enablePolicyAgentAutoProvisioning the enablePolicyAgentAutoProvisioning value to set.
      * @return the DefenderForContainersAwsOffering object itself.
      */
-    public DefenderForContainersAwsOffering withEnableContainerVulnerabilityAssessment(
-        Boolean enableContainerVulnerabilityAssessment) {
-        this.enableContainerVulnerabilityAssessment = enableContainerVulnerabilityAssessment;
-        return this;
-    }
-
-    /**
-     * Get the autoProvisioning property: Is audit logs pipeline auto provisioning enabled.
-     *
-     * @return the autoProvisioning value.
-     */
-    public Boolean autoProvisioning() {
-        return this.autoProvisioning;
-    }
-
-    /**
-     * Set the autoProvisioning property: Is audit logs pipeline auto provisioning enabled.
-     *
-     * @param autoProvisioning the autoProvisioning value to set.
-     * @return the DefenderForContainersAwsOffering object itself.
-     */
-    public DefenderForContainersAwsOffering withAutoProvisioning(Boolean autoProvisioning) {
-        this.autoProvisioning = autoProvisioning;
+    public DefenderForContainersAwsOffering
+        withEnablePolicyAgentAutoProvisioning(Boolean enablePolicyAgentAutoProvisioning) {
+        this.enablePolicyAgentAutoProvisioning = enablePolicyAgentAutoProvisioning;
         return this;
     }
 
     /**
      * Get the kubeAuditRetentionTime property: The retention time in days of kube audit logs set on the CloudWatch log
      * group.
-     *
+     * 
      * @return the kubeAuditRetentionTime value.
      */
     public Long kubeAuditRetentionTime() {
@@ -257,7 +277,7 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
     /**
      * Set the kubeAuditRetentionTime property: The retention time in days of kube audit logs set on the CloudWatch log
      * group.
-     *
+     * 
      * @param kubeAuditRetentionTime the kubeAuditRetentionTime value to set.
      * @return the DefenderForContainersAwsOffering object itself.
      */
@@ -267,28 +287,94 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
     }
 
     /**
-     * Get the scubaExternalId property: The externalId used by the data reader to prevent the confused deputy attack.
-     *
-     * @return the scubaExternalId value.
+     * Get the dataCollectionExternalId property: The externalId used by the data reader to prevent the confused deputy
+     * attack.
+     * 
+     * @return the dataCollectionExternalId value.
      */
-    public String scubaExternalId() {
-        return this.scubaExternalId;
+    public String dataCollectionExternalId() {
+        return this.dataCollectionExternalId;
     }
 
     /**
-     * Set the scubaExternalId property: The externalId used by the data reader to prevent the confused deputy attack.
-     *
-     * @param scubaExternalId the scubaExternalId value to set.
+     * Set the dataCollectionExternalId property: The externalId used by the data reader to prevent the confused deputy
+     * attack.
+     * 
+     * @param dataCollectionExternalId the dataCollectionExternalId value to set.
      * @return the DefenderForContainersAwsOffering object itself.
      */
-    public DefenderForContainersAwsOffering withScubaExternalId(String scubaExternalId) {
-        this.scubaExternalId = scubaExternalId;
+    public DefenderForContainersAwsOffering withDataCollectionExternalId(String dataCollectionExternalId) {
+        this.dataCollectionExternalId = dataCollectionExternalId;
+        return this;
+    }
+
+    /**
+     * Get the mdcContainersImageAssessment property: The Microsoft Defender container image assessment configuration.
+     * 
+     * @return the mdcContainersImageAssessment value.
+     */
+    public DefenderForContainersAwsOfferingMdcContainersImageAssessment mdcContainersImageAssessment() {
+        return this.mdcContainersImageAssessment;
+    }
+
+    /**
+     * Set the mdcContainersImageAssessment property: The Microsoft Defender container image assessment configuration.
+     * 
+     * @param mdcContainersImageAssessment the mdcContainersImageAssessment value to set.
+     * @return the DefenderForContainersAwsOffering object itself.
+     */
+    public DefenderForContainersAwsOffering withMdcContainersImageAssessment(
+        DefenderForContainersAwsOfferingMdcContainersImageAssessment mdcContainersImageAssessment) {
+        this.mdcContainersImageAssessment = mdcContainersImageAssessment;
+        return this;
+    }
+
+    /**
+     * Get the mdcContainersAgentlessDiscoveryK8S property: The Microsoft Defender container agentless discovery K8s
+     * configuration.
+     * 
+     * @return the mdcContainersAgentlessDiscoveryK8S value.
+     */
+    public DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S mdcContainersAgentlessDiscoveryK8S() {
+        return this.mdcContainersAgentlessDiscoveryK8S;
+    }
+
+    /**
+     * Set the mdcContainersAgentlessDiscoveryK8S property: The Microsoft Defender container agentless discovery K8s
+     * configuration.
+     * 
+     * @param mdcContainersAgentlessDiscoveryK8S the mdcContainersAgentlessDiscoveryK8S value to set.
+     * @return the DefenderForContainersAwsOffering object itself.
+     */
+    public DefenderForContainersAwsOffering withMdcContainersAgentlessDiscoveryK8S(
+        DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S mdcContainersAgentlessDiscoveryK8S) {
+        this.mdcContainersAgentlessDiscoveryK8S = mdcContainersAgentlessDiscoveryK8S;
+        return this;
+    }
+
+    /**
+     * Get the vmScanners property: The Microsoft Defender for Container K8s VM host scanning configuration.
+     * 
+     * @return the vmScanners value.
+     */
+    public DefenderForContainersAwsOfferingVmScanners vmScanners() {
+        return this.vmScanners;
+    }
+
+    /**
+     * Set the vmScanners property: The Microsoft Defender for Container K8s VM host scanning configuration.
+     * 
+     * @param vmScanners the vmScanners value to set.
+     * @return the DefenderForContainersAwsOffering object itself.
+     */
+    public DefenderForContainersAwsOffering withVmScanners(DefenderForContainersAwsOfferingVmScanners vmScanners) {
+        this.vmScanners = vmScanners;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -297,8 +383,8 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
         if (kubernetesService() != null) {
             kubernetesService().validate();
         }
-        if (kubernetesScubaReader() != null) {
-            kubernetesScubaReader().validate();
+        if (kubernetesDataCollection() != null) {
+            kubernetesDataCollection().validate();
         }
         if (cloudWatchToKinesis() != null) {
             cloudWatchToKinesis().validate();
@@ -306,11 +392,14 @@ public final class DefenderForContainersAwsOffering extends CloudOffering {
         if (kinesisToS3() != null) {
             kinesisToS3().validate();
         }
-        if (containerVulnerabilityAssessment() != null) {
-            containerVulnerabilityAssessment().validate();
+        if (mdcContainersImageAssessment() != null) {
+            mdcContainersImageAssessment().validate();
         }
-        if (containerVulnerabilityAssessmentTask() != null) {
-            containerVulnerabilityAssessmentTask().validate();
+        if (mdcContainersAgentlessDiscoveryK8S() != null) {
+            mdcContainersAgentlessDiscoveryK8S().validate();
+        }
+        if (vmScanners() != null) {
+            vmScanners().validate();
         }
     }
 }

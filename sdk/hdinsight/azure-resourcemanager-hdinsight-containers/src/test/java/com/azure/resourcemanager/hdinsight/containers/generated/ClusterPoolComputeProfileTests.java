@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterPoolComputeProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPoolComputeProfile model =
-            BinaryData.fromString("{\"vmSize\":\"hiv\",\"count\":1846033}").toObject(ClusterPoolComputeProfile.class);
-        Assertions.assertEquals("hiv", model.vmSize());
+        ClusterPoolComputeProfile model = BinaryData.fromString("{\"vmSize\":\"kkvnipjox\",\"count\":1539160915}")
+            .toObject(ClusterPoolComputeProfile.class);
+        Assertions.assertEquals("kkvnipjox", model.vmSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPoolComputeProfile model = new ClusterPoolComputeProfile().withVmSize("hiv");
+        ClusterPoolComputeProfile model = new ClusterPoolComputeProfile().withVmSize("kkvnipjox");
         model = BinaryData.fromObject(model).toObject(ClusterPoolComputeProfile.class);
-        Assertions.assertEquals("hiv", model.vmSize());
+        Assertions.assertEquals("kkvnipjox", model.vmSize());
     }
 }

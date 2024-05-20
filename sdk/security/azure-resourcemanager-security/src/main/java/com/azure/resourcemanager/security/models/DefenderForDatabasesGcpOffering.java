@@ -6,14 +6,28 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The Defender for Databases GCP offering configurations. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
+/**
+ * The Defender for Databases GCP offering configurations.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "offeringType",
+    defaultImpl = DefenderForDatabasesGcpOffering.class,
+    visible = true)
 @JsonTypeName("DefenderForDatabasesGcp")
 @Fluent
 public final class DefenderForDatabasesGcpOffering extends CloudOffering {
+    /*
+     * The type of the security offering.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "offeringType", required = true)
+    private OfferingType offeringType = OfferingType.DEFENDER_FOR_DATABASES_GCP;
+
     /*
      * The ARC autoprovisioning configuration
      */
@@ -24,16 +38,27 @@ public final class DefenderForDatabasesGcpOffering extends CloudOffering {
      * The native cloud connection configuration
      */
     @JsonProperty(value = "defenderForDatabasesArcAutoProvisioning")
-    private DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning
-        defenderForDatabasesArcAutoProvisioning;
+    private DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning defenderForDatabasesArcAutoProvisioning;
 
-    /** Creates an instance of DefenderForDatabasesGcpOffering class. */
+    /**
+     * Creates an instance of DefenderForDatabasesGcpOffering class.
+     */
     public DefenderForDatabasesGcpOffering() {
     }
 
     /**
+     * Get the offeringType property: The type of the security offering.
+     * 
+     * @return the offeringType value.
+     */
+    @Override
+    public OfferingType offeringType() {
+        return this.offeringType;
+    }
+
+    /**
      * Get the arcAutoProvisioning property: The ARC autoprovisioning configuration.
-     *
+     * 
      * @return the arcAutoProvisioning value.
      */
     public DefenderForDatabasesGcpOfferingArcAutoProvisioning arcAutoProvisioning() {
@@ -42,19 +67,19 @@ public final class DefenderForDatabasesGcpOffering extends CloudOffering {
 
     /**
      * Set the arcAutoProvisioning property: The ARC autoprovisioning configuration.
-     *
+     * 
      * @param arcAutoProvisioning the arcAutoProvisioning value to set.
      * @return the DefenderForDatabasesGcpOffering object itself.
      */
-    public DefenderForDatabasesGcpOffering withArcAutoProvisioning(
-        DefenderForDatabasesGcpOfferingArcAutoProvisioning arcAutoProvisioning) {
+    public DefenderForDatabasesGcpOffering
+        withArcAutoProvisioning(DefenderForDatabasesGcpOfferingArcAutoProvisioning arcAutoProvisioning) {
         this.arcAutoProvisioning = arcAutoProvisioning;
         return this;
     }
 
     /**
      * Get the defenderForDatabasesArcAutoProvisioning property: The native cloud connection configuration.
-     *
+     * 
      * @return the defenderForDatabasesArcAutoProvisioning value.
      */
     public DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning
@@ -64,20 +89,19 @@ public final class DefenderForDatabasesGcpOffering extends CloudOffering {
 
     /**
      * Set the defenderForDatabasesArcAutoProvisioning property: The native cloud connection configuration.
-     *
+     * 
      * @param defenderForDatabasesArcAutoProvisioning the defenderForDatabasesArcAutoProvisioning value to set.
      * @return the DefenderForDatabasesGcpOffering object itself.
      */
     public DefenderForDatabasesGcpOffering withDefenderForDatabasesArcAutoProvisioning(
-        DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning
-            defenderForDatabasesArcAutoProvisioning) {
+        DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning defenderForDatabasesArcAutoProvisioning) {
         this.defenderForDatabasesArcAutoProvisioning = defenderForDatabasesArcAutoProvisioning;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

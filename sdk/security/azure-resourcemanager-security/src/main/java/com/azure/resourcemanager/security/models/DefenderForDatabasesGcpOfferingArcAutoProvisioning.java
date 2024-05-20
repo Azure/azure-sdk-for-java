@@ -5,76 +5,44 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ARC autoprovisioning configuration. */
+/**
+ * The ARC autoprovisioning configuration.
+ */
 @Fluent
-public final class DefenderForDatabasesGcpOfferingArcAutoProvisioning {
-    /*
-     * Is arc auto provisioning enabled
+public final class DefenderForDatabasesGcpOfferingArcAutoProvisioning extends ArcAutoProvisioningGcp {
+    /**
+     * Creates an instance of DefenderForDatabasesGcpOfferingArcAutoProvisioning class.
      */
-    @JsonProperty(value = "enabled")
-    private Boolean enabled;
-
-    /*
-     * Configuration for servers Arc auto provisioning
-     */
-    @JsonProperty(value = "configuration")
-    private DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration configuration;
-
-    /** Creates an instance of DefenderForDatabasesGcpOfferingArcAutoProvisioning class. */
     public DefenderForDatabasesGcpOfferingArcAutoProvisioning() {
     }
 
     /**
-     * Get the enabled property: Is arc auto provisioning enabled.
-     *
-     * @return the enabled value.
+     * {@inheritDoc}
      */
-    public Boolean enabled() {
-        return this.enabled;
-    }
-
-    /**
-     * Set the enabled property: Is arc auto provisioning enabled.
-     *
-     * @param enabled the enabled value to set.
-     * @return the DefenderForDatabasesGcpOfferingArcAutoProvisioning object itself.
-     */
+    @Override
     public DefenderForDatabasesGcpOfferingArcAutoProvisioning withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        super.withEnabled(enabled);
         return this;
     }
 
     /**
-     * Get the configuration property: Configuration for servers Arc auto provisioning.
-     *
-     * @return the configuration value.
+     * {@inheritDoc}
      */
-    public DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration configuration() {
-        return this.configuration;
-    }
-
-    /**
-     * Set the configuration property: Configuration for servers Arc auto provisioning.
-     *
-     * @param configuration the configuration value to set.
-     * @return the DefenderForDatabasesGcpOfferingArcAutoProvisioning object itself.
-     */
-    public DefenderForDatabasesGcpOfferingArcAutoProvisioning withConfiguration(
-        DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration configuration) {
-        this.configuration = configuration;
+    @Override
+    public DefenderForDatabasesGcpOfferingArcAutoProvisioning
+        withConfiguration(ArcAutoProvisioningConfiguration configuration) {
+        super.withConfiguration(configuration);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (configuration() != null) {
-            configuration().validate();
-        }
+        super.validate();
     }
 }

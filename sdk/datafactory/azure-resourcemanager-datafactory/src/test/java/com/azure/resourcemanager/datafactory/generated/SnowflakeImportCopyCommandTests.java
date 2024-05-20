@@ -13,17 +13,17 @@ public final class SnowflakeImportCopyCommandTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnowflakeImportCopyCommand model = BinaryData.fromString(
-            "{\"type\":\"SnowflakeImportCopyCommand\",\"additionalCopyOptions\":{\"amoyxdigk\":\"datayxmpmsacbamtoqs\",\"ylqhqeosxdsxil\":\"datagz\",\"ttyh\":\"datafiottdawgkaohh\",\"kxoicbxsmfvltbo\":\"datapidzjjjfcyskpn\"},\"additionalFormatOptions\":{\"g\":\"datavtpmvppvgr\",\"lgkoqbzrcla\":\"dataeg\",\"moramsh\":\"datartfmfkuvyb\",\"zvzqhvzjdsn\":\"datavkuq\"},\"\":{\"ani\":\"datab\",\"aq\":\"dataozjrc\",\"almzpfylqevwwvz\":\"datag\",\"gjl\":\"datapdxcizrop\"}}")
+            "{\"type\":\"lb\",\"additionalCopyOptions\":{\"ezgbqi\":\"datanfqqlg\",\"aceokrarzkza\":\"datawe\",\"zomtzpukm\":\"dataznvyeuxd\"},\"additionalFormatOptions\":{\"nlfzq\":\"datalzb\",\"wzesejdcpcpeu\":\"datamxuo\",\"jrptltytbqhejhn\":\"databofzmvtwyjc\"},\"\":{\"vygquiwcfqzo\":\"datafmeeuuurxgslxz\",\"irqkskyyam\":\"datagwwdevqmtejhvggy\",\"lmibvczdj\":\"datamimsyiwcdwqjbrrx\"}}")
             .toObject(SnowflakeImportCopyCommand.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SnowflakeImportCopyCommand model = new SnowflakeImportCopyCommand()
-            .withAdditionalCopyOptions(mapOf("amoyxdigk", "datayxmpmsacbamtoqs", "ylqhqeosxdsxil", "datagz", "ttyh",
-                "datafiottdawgkaohh", "kxoicbxsmfvltbo", "datapidzjjjfcyskpn"))
-            .withAdditionalFormatOptions(mapOf("g", "datavtpmvppvgr", "lgkoqbzrcla", "dataeg", "moramsh",
-                "datartfmfkuvyb", "zvzqhvzjdsn", "datavkuq"));
+            .withAdditionalCopyOptions(
+                mapOf("ezgbqi", "datanfqqlg", "aceokrarzkza", "datawe", "zomtzpukm", "dataznvyeuxd"))
+            .withAdditionalFormatOptions(
+                mapOf("nlfzq", "datalzb", "wzesejdcpcpeu", "datamxuo", "jrptltytbqhejhn", "databofzmvtwyjc"));
         model = BinaryData.fromObject(model).toObject(SnowflakeImportCopyCommand.class);
     }
 

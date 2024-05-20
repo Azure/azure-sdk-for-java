@@ -11,7 +11,9 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.PrivateEndp
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A private endpoint connection. */
+/**
+ * A private endpoint connection.
+ */
 @Fluent
 public final class SimplePrivateEndpointConnection extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class SimplePrivateEndpointConnection extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SimplePrivateEndpointConnection class. */
+    /**
+     * Creates an instance of SimplePrivateEndpointConnection class.
+     */
     public SimplePrivateEndpointConnection() {
     }
 
     /**
      * Get the innerProperties property: Properties of the private endpoint connection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateEndpointConnectionSimpleProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class SimplePrivateEndpointConnection extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,7 +54,7 @@ public final class SimplePrivateEndpointConnection extends ProxyResource {
 
     /**
      * Get the privateEndpoint property: Private endpoint which the connection belongs to.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public PrivateEndpointProperty privateEndpoint() {
@@ -59,7 +63,7 @@ public final class SimplePrivateEndpointConnection extends ProxyResource {
 
     /**
      * Set the privateEndpoint property: Private endpoint which the connection belongs to.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the SimplePrivateEndpointConnection object itself.
      */
@@ -73,7 +77,7 @@ public final class SimplePrivateEndpointConnection extends ProxyResource {
 
     /**
      * Get the groupIds property: Group ids of the private endpoint connection.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<String> groupIds() {
@@ -82,7 +86,7 @@ public final class SimplePrivateEndpointConnection extends ProxyResource {
 
     /**
      * Set the groupIds property: Group ids of the private endpoint connection.
-     *
+     * 
      * @param groupIds the groupIds value to set.
      * @return the SimplePrivateEndpointConnection object itself.
      */
@@ -95,9 +99,9 @@ public final class SimplePrivateEndpointConnection extends ProxyResource {
     }
 
     /**
-     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
-     * between service consumer and provider.
-     *
+     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the
+     * connection between service consumer and provider.
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -105,14 +109,14 @@ public final class SimplePrivateEndpointConnection extends ProxyResource {
     }
 
     /**
-     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
-     * between service consumer and provider.
-     *
+     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the
+     * connection between service consumer and provider.
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the SimplePrivateEndpointConnection object itself.
      */
-    public SimplePrivateEndpointConnection withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public SimplePrivateEndpointConnection
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateEndpointConnectionSimpleProperties();
         }
@@ -122,7 +126,7 @@ public final class SimplePrivateEndpointConnection extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

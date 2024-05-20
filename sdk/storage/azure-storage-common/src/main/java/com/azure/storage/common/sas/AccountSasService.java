@@ -15,13 +15,9 @@ import java.util.Locale;
  * the order of the services is particular and this class guarantees correctness.
  */
 public final class AccountSasService {
-
     private boolean blob;
-
     private boolean file;
-
     private boolean queue;
-
     private boolean table;
 
     /**
@@ -35,7 +31,6 @@ public final class AccountSasService {
      * {@code IllegalArgumentException} if it encounters a character that does not correspond to a valid service.
      *
      * @param servicesString A {@code String} which represents the {@code SharedAccessAccountServices}.
-     *
      * @return A {@code AccountSasService} generated from the given {@code String}.
      * @throws IllegalArgumentException If {@code servicesString} contains a character other than b, f, q, or t.
      */
@@ -59,14 +54,16 @@ public final class AccountSasService {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Services",
-                                    servicesString, c));
+                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Services",
+                            servicesString, c));
             }
         }
         return services;
     }
 
     /**
+     * Gets the access status for blob resources.
+     *
      * @return the access status for blob resources.
      */
     public boolean hasBlobAccess() {
@@ -85,6 +82,8 @@ public final class AccountSasService {
     }
 
     /**
+     * Gets the access status for file resources.
+     *
      * @return the access status for file resources.
      */
     public boolean hasFileAccess() {
@@ -103,6 +102,8 @@ public final class AccountSasService {
     }
 
     /**
+     * Gets the access status for queue resources.
+     *
      * @return the access status for queue resources.
      */
     public boolean hasQueueAccess() {
@@ -121,6 +122,8 @@ public final class AccountSasService {
     }
 
     /**
+     * Gets the access status for table resources.
+     *
      * @return the access status for table resources.
      */
     public boolean hasTableAccess() {

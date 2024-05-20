@@ -12,8 +12,10 @@ import com.azure.resourcemanager.security.models.EnforcementSupport;
 import com.azure.resourcemanager.security.models.FileType;
 import com.azure.resourcemanager.security.models.PathRecommendation;
 import com.azure.resourcemanager.security.models.ProtectionMode;
+import com.azure.resourcemanager.security.models.PublisherInfo;
 import com.azure.resourcemanager.security.models.RecommendationAction;
 import com.azure.resourcemanager.security.models.RecommendationType;
+import com.azure.resourcemanager.security.models.UserRecommendation;
 import com.azure.resourcemanager.security.models.VmRecommendation;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
@@ -21,93 +23,90 @@ import org.junit.jupiter.api.Assertions;
 public final class AdaptiveApplicationControlGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdaptiveApplicationControlGroupInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"enforcementMode\":\"Enforce\",\"protectionMode\":{\"exe\":\"Audit\",\"msi\":\"Enforce\",\"script\":\"None\",\"executable\":\"Audit\"},\"configurationStatus\":\"Configured\",\"recommendationStatus\":\"NoStatus\",\"issues\":[{\"issue\":\"ExecutableViolationsAudited\",\"numberOfVms\":81.69838},{\"issue\":\"ExecutableViolationsAudited\",\"numberOfVms\":25.884687},{\"issue\":\"ViolationsBlocked\",\"numberOfVms\":0.6237805}],\"sourceSystem\":\"None\",\"vmRecommendations\":[{\"configurationStatus\":\"Failed\",\"recommendationAction\":\"Remove\",\"resourceId\":\"hlabrq\",\"enforcementSupport\":\"Unknown\"},{\"configurationStatus\":\"NoStatus\",\"recommendationAction\":\"Recommended\",\"resourceId\":\"trgaehvv\",\"enforcementSupport\":\"NotSupported\"},{\"configurationStatus\":\"NoStatus\",\"recommendationAction\":\"Remove\",\"resourceId\":\"oqbeitpkxzt\",\"enforcementSupport\":\"Supported\"},{\"configurationStatus\":\"InProgress\",\"recommendationAction\":\"Remove\",\"resourceId\":\"idgfc\",\"enforcementSupport\":\"NotSupported\"}],\"pathRecommendations\":[{\"path\":\"aqxzhemjyho\",\"action\":\"Remove\",\"type\":\"IoT_EdgeLoggingOptions\",\"common\":true,\"userSids\":[],\"usernames\":[],\"fileType\":\"Script\",\"configurationStatus\":\"Configured\"}]},\"location\":\"kb\",\"id\":\"wpfaj\",\"name\":\"jwltlwtjjgu\",\"type\":\"talhsnvkcdmxzr\"}")
-                .toObject(AdaptiveApplicationControlGroupInner.class);
-        Assertions.assertEquals(EnforcementMode.ENFORCE, model.enforcementMode());
-        Assertions.assertEquals(EnforcementMode.AUDIT, model.protectionMode().exe());
-        Assertions.assertEquals(EnforcementMode.ENFORCE, model.protectionMode().msi());
-        Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().script());
-        Assertions.assertEquals(EnforcementMode.AUDIT, model.protectionMode().executable());
+        AdaptiveApplicationControlGroupInner model = BinaryData.fromString(
+            "{\"properties\":{\"enforcementMode\":\"Audit\",\"protectionMode\":{\"exe\":\"Enforce\",\"msi\":\"None\",\"script\":\"Audit\",\"executable\":\"None\"},\"configurationStatus\":\"NoStatus\",\"recommendationStatus\":\"NotAvailable\",\"issues\":[{\"issue\":\"MsiAndScriptViolationsBlocked\",\"numberOfVms\":75.991745},{\"issue\":\"ViolationsBlocked\",\"numberOfVms\":14.712143},{\"issue\":\"ExecutableViolationsAudited\",\"numberOfVms\":86.28077},{\"issue\":\"ViolationsBlocked\",\"numberOfVms\":17.508417}],\"sourceSystem\":\"None\",\"vmRecommendations\":[{\"configurationStatus\":\"Failed\",\"recommendationAction\":\"Add\",\"resourceId\":\"bqamteuliyslpk\",\"enforcementSupport\":\"Supported\"}],\"pathRecommendations\":[{\"path\":\"uxx\",\"action\":\"Add\",\"type\":\"IoT_IPFilter_PermissiveRule\",\"publisherInfo\":{\"publisherName\":\"rmcqmiciijqpkz\",\"productName\":\"ojxjmcsmyqwix\",\"binaryName\":\"pwnkwywzwo\",\"version\":\"lickduoi\"},\"common\":false,\"userSids\":[\"yvsk\"],\"usernames\":[{\"username\":\"zawnvsbcfhzag\",\"recommendationAction\":\"Recommended\"},{\"username\":\"ycvdimw\",\"recommendationAction\":\"Remove\"}],\"fileType\":\"Msi\",\"configurationStatus\":\"InProgress\"}]},\"location\":\"ufutrwpw\",\"id\":\"ryekzkd\",\"name\":\"meottawj\",\"type\":\"osxw\"}")
+            .toObject(AdaptiveApplicationControlGroupInner.class);
+        Assertions.assertEquals(EnforcementMode.AUDIT, model.enforcementMode());
+        Assertions.assertEquals(EnforcementMode.ENFORCE, model.protectionMode().exe());
+        Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().msi());
+        Assertions.assertEquals(EnforcementMode.AUDIT, model.protectionMode().script());
+        Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().executable());
         Assertions.assertEquals(ConfigurationStatus.FAILED, model.vmRecommendations().get(0).configurationStatus());
-        Assertions.assertEquals(RecommendationAction.REMOVE, model.vmRecommendations().get(0).recommendationAction());
-        Assertions.assertEquals("hlabrq", model.vmRecommendations().get(0).resourceId());
-        Assertions.assertEquals(EnforcementSupport.UNKNOWN, model.vmRecommendations().get(0).enforcementSupport());
-        Assertions.assertEquals("aqxzhemjyho", model.pathRecommendations().get(0).path());
-        Assertions.assertEquals(RecommendationAction.REMOVE, model.pathRecommendations().get(0).action());
-        Assertions
-            .assertEquals(RecommendationType.IO_T_EDGE_LOGGING_OPTIONS, model.pathRecommendations().get(0).type());
-        Assertions.assertEquals(true, model.pathRecommendations().get(0).common());
-        Assertions.assertEquals(FileType.SCRIPT, model.pathRecommendations().get(0).fileType());
-        Assertions
-            .assertEquals(ConfigurationStatus.CONFIGURED, model.pathRecommendations().get(0).configurationStatus());
+        Assertions.assertEquals(RecommendationAction.ADD, model.vmRecommendations().get(0).recommendationAction());
+        Assertions.assertEquals("bqamteuliyslpk", model.vmRecommendations().get(0).resourceId());
+        Assertions.assertEquals(EnforcementSupport.SUPPORTED, model.vmRecommendations().get(0).enforcementSupport());
+        Assertions.assertEquals("uxx", model.pathRecommendations().get(0).path());
+        Assertions.assertEquals(RecommendationAction.ADD, model.pathRecommendations().get(0).action());
+        Assertions.assertEquals(RecommendationType.IO_T_IPFILTER_PERMISSIVE_RULE,
+            model.pathRecommendations().get(0).type());
+        Assertions.assertEquals("rmcqmiciijqpkz", model.pathRecommendations().get(0).publisherInfo().publisherName());
+        Assertions.assertEquals("ojxjmcsmyqwix", model.pathRecommendations().get(0).publisherInfo().productName());
+        Assertions.assertEquals("pwnkwywzwo", model.pathRecommendations().get(0).publisherInfo().binaryName());
+        Assertions.assertEquals("lickduoi", model.pathRecommendations().get(0).publisherInfo().version());
+        Assertions.assertEquals(false, model.pathRecommendations().get(0).common());
+        Assertions.assertEquals("yvsk", model.pathRecommendations().get(0).userSids().get(0));
+        Assertions.assertEquals("zawnvsbcfhzag", model.pathRecommendations().get(0).usernames().get(0).username());
+        Assertions.assertEquals(RecommendationAction.RECOMMENDED,
+            model.pathRecommendations().get(0).usernames().get(0).recommendationAction());
+        Assertions.assertEquals(FileType.MSI, model.pathRecommendations().get(0).fileType());
+        Assertions.assertEquals(ConfigurationStatus.IN_PROGRESS,
+            model.pathRecommendations().get(0).configurationStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdaptiveApplicationControlGroupInner model =
-            new AdaptiveApplicationControlGroupInner()
-                .withEnforcementMode(EnforcementMode.ENFORCE)
-                .withProtectionMode(
-                    new ProtectionMode()
-                        .withExe(EnforcementMode.AUDIT)
-                        .withMsi(EnforcementMode.ENFORCE)
-                        .withScript(EnforcementMode.NONE)
-                        .withExecutable(EnforcementMode.AUDIT))
+        AdaptiveApplicationControlGroupInner model
+            = new AdaptiveApplicationControlGroupInner().withEnforcementMode(EnforcementMode.AUDIT)
+                .withProtectionMode(new ProtectionMode().withExe(EnforcementMode.ENFORCE)
+                    .withMsi(EnforcementMode.NONE)
+                    .withScript(EnforcementMode.AUDIT)
+                    .withExecutable(EnforcementMode.NONE))
                 .withVmRecommendations(
-                    Arrays
-                        .asList(
-                            new VmRecommendation()
-                                .withConfigurationStatus(ConfigurationStatus.FAILED)
-                                .withRecommendationAction(RecommendationAction.REMOVE)
-                                .withResourceId("hlabrq")
-                                .withEnforcementSupport(EnforcementSupport.UNKNOWN),
-                            new VmRecommendation()
-                                .withConfigurationStatus(ConfigurationStatus.NO_STATUS)
-                                .withRecommendationAction(RecommendationAction.RECOMMENDED)
-                                .withResourceId("trgaehvv")
-                                .withEnforcementSupport(EnforcementSupport.NOT_SUPPORTED),
-                            new VmRecommendation()
-                                .withConfigurationStatus(ConfigurationStatus.NO_STATUS)
-                                .withRecommendationAction(RecommendationAction.REMOVE)
-                                .withResourceId("oqbeitpkxzt")
-                                .withEnforcementSupport(EnforcementSupport.SUPPORTED),
-                            new VmRecommendation()
-                                .withConfigurationStatus(ConfigurationStatus.IN_PROGRESS)
-                                .withRecommendationAction(RecommendationAction.REMOVE)
-                                .withResourceId("idgfc")
-                                .withEnforcementSupport(EnforcementSupport.NOT_SUPPORTED)))
-                .withPathRecommendations(
-                    Arrays
-                        .asList(
-                            new PathRecommendation()
-                                .withPath("aqxzhemjyho")
-                                .withAction(RecommendationAction.REMOVE)
-                                .withType(RecommendationType.IO_T_EDGE_LOGGING_OPTIONS)
-                                .withCommon(true)
-                                .withUserSids(Arrays.asList())
-                                .withUsernames(Arrays.asList())
-                                .withFileType(FileType.SCRIPT)
-                                .withConfigurationStatus(ConfigurationStatus.CONFIGURED)));
+                    Arrays.asList(new VmRecommendation().withConfigurationStatus(ConfigurationStatus.FAILED)
+                        .withRecommendationAction(RecommendationAction.ADD)
+                        .withResourceId("bqamteuliyslpk")
+                        .withEnforcementSupport(EnforcementSupport.SUPPORTED)))
+                .withPathRecommendations(Arrays.asList(new PathRecommendation().withPath("uxx")
+                    .withAction(RecommendationAction.ADD)
+                    .withType(RecommendationType.IO_T_IPFILTER_PERMISSIVE_RULE)
+                    .withPublisherInfo(new PublisherInfo().withPublisherName("rmcqmiciijqpkz")
+                        .withProductName("ojxjmcsmyqwix")
+                        .withBinaryName("pwnkwywzwo")
+                        .withVersion("lickduoi"))
+                    .withCommon(false)
+                    .withUserSids(Arrays.asList("yvsk"))
+                    .withUsernames(Arrays.asList(
+                        new UserRecommendation().withUsername("zawnvsbcfhzag")
+                            .withRecommendationAction(RecommendationAction.RECOMMENDED),
+                        new UserRecommendation().withUsername("ycvdimw")
+                            .withRecommendationAction(RecommendationAction.REMOVE)))
+                    .withFileType(FileType.MSI)
+                    .withConfigurationStatus(ConfigurationStatus.IN_PROGRESS)));
         model = BinaryData.fromObject(model).toObject(AdaptiveApplicationControlGroupInner.class);
-        Assertions.assertEquals(EnforcementMode.ENFORCE, model.enforcementMode());
-        Assertions.assertEquals(EnforcementMode.AUDIT, model.protectionMode().exe());
-        Assertions.assertEquals(EnforcementMode.ENFORCE, model.protectionMode().msi());
-        Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().script());
-        Assertions.assertEquals(EnforcementMode.AUDIT, model.protectionMode().executable());
+        Assertions.assertEquals(EnforcementMode.AUDIT, model.enforcementMode());
+        Assertions.assertEquals(EnforcementMode.ENFORCE, model.protectionMode().exe());
+        Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().msi());
+        Assertions.assertEquals(EnforcementMode.AUDIT, model.protectionMode().script());
+        Assertions.assertEquals(EnforcementMode.NONE, model.protectionMode().executable());
         Assertions.assertEquals(ConfigurationStatus.FAILED, model.vmRecommendations().get(0).configurationStatus());
-        Assertions.assertEquals(RecommendationAction.REMOVE, model.vmRecommendations().get(0).recommendationAction());
-        Assertions.assertEquals("hlabrq", model.vmRecommendations().get(0).resourceId());
-        Assertions.assertEquals(EnforcementSupport.UNKNOWN, model.vmRecommendations().get(0).enforcementSupport());
-        Assertions.assertEquals("aqxzhemjyho", model.pathRecommendations().get(0).path());
-        Assertions.assertEquals(RecommendationAction.REMOVE, model.pathRecommendations().get(0).action());
-        Assertions
-            .assertEquals(RecommendationType.IO_T_EDGE_LOGGING_OPTIONS, model.pathRecommendations().get(0).type());
-        Assertions.assertEquals(true, model.pathRecommendations().get(0).common());
-        Assertions.assertEquals(FileType.SCRIPT, model.pathRecommendations().get(0).fileType());
-        Assertions
-            .assertEquals(ConfigurationStatus.CONFIGURED, model.pathRecommendations().get(0).configurationStatus());
+        Assertions.assertEquals(RecommendationAction.ADD, model.vmRecommendations().get(0).recommendationAction());
+        Assertions.assertEquals("bqamteuliyslpk", model.vmRecommendations().get(0).resourceId());
+        Assertions.assertEquals(EnforcementSupport.SUPPORTED, model.vmRecommendations().get(0).enforcementSupport());
+        Assertions.assertEquals("uxx", model.pathRecommendations().get(0).path());
+        Assertions.assertEquals(RecommendationAction.ADD, model.pathRecommendations().get(0).action());
+        Assertions.assertEquals(RecommendationType.IO_T_IPFILTER_PERMISSIVE_RULE,
+            model.pathRecommendations().get(0).type());
+        Assertions.assertEquals("rmcqmiciijqpkz", model.pathRecommendations().get(0).publisherInfo().publisherName());
+        Assertions.assertEquals("ojxjmcsmyqwix", model.pathRecommendations().get(0).publisherInfo().productName());
+        Assertions.assertEquals("pwnkwywzwo", model.pathRecommendations().get(0).publisherInfo().binaryName());
+        Assertions.assertEquals("lickduoi", model.pathRecommendations().get(0).publisherInfo().version());
+        Assertions.assertEquals(false, model.pathRecommendations().get(0).common());
+        Assertions.assertEquals("yvsk", model.pathRecommendations().get(0).userSids().get(0));
+        Assertions.assertEquals("zawnvsbcfhzag", model.pathRecommendations().get(0).usernames().get(0).username());
+        Assertions.assertEquals(RecommendationAction.RECOMMENDED,
+            model.pathRecommendations().get(0).usernames().get(0).recommendationAction());
+        Assertions.assertEquals(FileType.MSI, model.pathRecommendations().get(0).fileType());
+        Assertions.assertEquals(ConfigurationStatus.IN_PROGRESS,
+            model.pathRecommendations().get(0).configurationStatus());
     }
 }

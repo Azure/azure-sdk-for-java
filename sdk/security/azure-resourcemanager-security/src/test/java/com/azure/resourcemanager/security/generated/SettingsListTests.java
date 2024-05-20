@@ -12,11 +12,9 @@ import java.util.Arrays;
 public final class SettingsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SettingsList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"kind\":\"Setting\",\"id\":\"sqowxwc\",\"name\":\"mlikytw\",\"type\":\"czcswka\"}],\"nextLink\":\"ejyfdvlvhbwrnfx\"}")
-                .toObject(SettingsList.class);
+        SettingsList model = BinaryData.fromString(
+            "{\"value\":[{\"kind\":\"Setting\",\"id\":\"atqtdiswxspvckoj\",\"name\":\"zbbgspftesubzpvp\",\"type\":\"dylytcovq\"}],\"nextLink\":\"usrf\"}")
+            .toObject(SettingsList.class);
     }
 
     @org.junit.jupiter.api.Test

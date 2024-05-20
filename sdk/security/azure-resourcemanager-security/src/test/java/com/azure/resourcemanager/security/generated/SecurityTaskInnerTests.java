@@ -13,22 +13,19 @@ import java.util.Map;
 public final class SecurityTaskInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityTaskInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"state\":\"mabiknsorgjhxb\",\"creationTimeUtc\":\"2021-05-03T07:32:41Z\",\"securityTaskParameters\":{\"name\":\"wrlkdmtn\",\"\":{\"xdy\":\"datakotl\"}},\"lastStateChangeTimeUtc\":\"2021-07-08T09:31:36Z\",\"subState\":\"ocogj\"},\"id\":\"tdtbnnhadooc\",\"name\":\"kvci\",\"type\":\"hnvpamqgxq\"}")
-                .toObject(SecurityTaskInner.class);
+        SecurityTaskInner model = BinaryData.fromString(
+            "{\"properties\":{\"state\":\"fkgiawxk\",\"creationTimeUtc\":\"2021-05-21T20:11:19Z\",\"securityTaskParameters\":{\"name\":\"wckbasyypnd\",\"\":{\"nqgoulzndli\":\"datagcbacphejkot\",\"dgak\":\"datawyqkgfgibm\"}},\"lastStateChangeTimeUtc\":\"2021-01-01T02:28:26Z\",\"subState\":\"xybz\"},\"id\":\"qedqytbciqfoufl\",\"name\":\"mnkzsmod\",\"type\":\"glougpbk\"}")
+            .toObject(SecurityTaskInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityTaskInner model =
-            new SecurityTaskInner()
-                .withSecurityTaskParameters(
-                    new SecurityTaskParameters().withAdditionalProperties(mapOf("name", "wrlkdmtn")));
+        SecurityTaskInner model = new SecurityTaskInner().withSecurityTaskParameters(
+            new SecurityTaskParameters().withAdditionalProperties(mapOf("name", "wckbasyypnd")));
         model = BinaryData.fromObject(model).toObject(SecurityTaskInner.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

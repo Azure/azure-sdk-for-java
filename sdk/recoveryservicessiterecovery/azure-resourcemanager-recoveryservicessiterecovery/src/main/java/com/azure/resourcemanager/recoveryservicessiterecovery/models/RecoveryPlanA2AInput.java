@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery plan A2A input. */
+/**
+ * Recovery plan A2A input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -38,13 +40,15 @@ public final class RecoveryPlanA2AInput extends RecoveryPlanProviderSpecificInpu
     @JsonProperty(value = "recoveryExtendedLocation")
     private ExtendedLocation recoveryExtendedLocation;
 
-    /** Creates an instance of RecoveryPlanA2AInput class. */
+    /**
+     * Creates an instance of RecoveryPlanA2AInput class.
+     */
     public RecoveryPlanA2AInput() {
     }
 
     /**
      * Get the primaryZone property: The primary zone.
-     *
+     * 
      * @return the primaryZone value.
      */
     public String primaryZone() {
@@ -53,7 +57,7 @@ public final class RecoveryPlanA2AInput extends RecoveryPlanProviderSpecificInpu
 
     /**
      * Set the primaryZone property: The primary zone.
-     *
+     * 
      * @param primaryZone the primaryZone value to set.
      * @return the RecoveryPlanA2AInput object itself.
      */
@@ -64,7 +68,7 @@ public final class RecoveryPlanA2AInput extends RecoveryPlanProviderSpecificInpu
 
     /**
      * Get the recoveryZone property: The recovery zone.
-     *
+     * 
      * @return the recoveryZone value.
      */
     public String recoveryZone() {
@@ -73,7 +77,7 @@ public final class RecoveryPlanA2AInput extends RecoveryPlanProviderSpecificInpu
 
     /**
      * Set the recoveryZone property: The recovery zone.
-     *
+     * 
      * @param recoveryZone the recoveryZone value to set.
      * @return the RecoveryPlanA2AInput object itself.
      */
@@ -84,7 +88,7 @@ public final class RecoveryPlanA2AInput extends RecoveryPlanProviderSpecificInpu
 
     /**
      * Get the primaryExtendedLocation property: The primary extended location.
-     *
+     * 
      * @return the primaryExtendedLocation value.
      */
     public ExtendedLocation primaryExtendedLocation() {
@@ -93,7 +97,7 @@ public final class RecoveryPlanA2AInput extends RecoveryPlanProviderSpecificInpu
 
     /**
      * Set the primaryExtendedLocation property: The primary extended location.
-     *
+     * 
      * @param primaryExtendedLocation the primaryExtendedLocation value to set.
      * @return the RecoveryPlanA2AInput object itself.
      */
@@ -104,7 +108,7 @@ public final class RecoveryPlanA2AInput extends RecoveryPlanProviderSpecificInpu
 
     /**
      * Get the recoveryExtendedLocation property: The recovery extended location.
-     *
+     * 
      * @return the recoveryExtendedLocation value.
      */
     public ExtendedLocation recoveryExtendedLocation() {
@@ -113,7 +117,7 @@ public final class RecoveryPlanA2AInput extends RecoveryPlanProviderSpecificInpu
 
     /**
      * Set the recoveryExtendedLocation property: The recovery extended location.
-     *
+     * 
      * @param recoveryExtendedLocation the recoveryExtendedLocation value to set.
      * @return the RecoveryPlanA2AInput object itself.
      */
@@ -124,7 +128,7 @@ public final class RecoveryPlanA2AInput extends RecoveryPlanProviderSpecificInpu
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

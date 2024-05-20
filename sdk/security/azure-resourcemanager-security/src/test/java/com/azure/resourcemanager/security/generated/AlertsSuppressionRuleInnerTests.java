@@ -7,41 +7,58 @@ package com.azure.resourcemanager.security.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.AlertsSuppressionRuleInner;
 import com.azure.resourcemanager.security.models.RuleState;
+import com.azure.resourcemanager.security.models.ScopeElement;
 import com.azure.resourcemanager.security.models.SuppressionAlertsScope;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class AlertsSuppressionRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertsSuppressionRuleInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"alertType\":\"vhmxtdrjfu\",\"lastModifiedUtc\":\"2021-09-25T19:58:32Z\",\"expirationDateUtc\":\"2021-07-27T22:13:32Z\",\"reason\":\"bj\",\"state\":\"Expired\",\"comment\":\"zcjznmwcpmgua\",\"suppressionAlertsScope\":{\"allOf\":[]}},\"id\":\"aufactkahzovajjz\",\"name\":\"uxxpshne\",\"type\":\"kulfg\"}")
-                .toObject(AlertsSuppressionRuleInner.class);
-        Assertions.assertEquals("vhmxtdrjfu", model.alertType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-27T22:13:32Z"), model.expirationDateUtc());
-        Assertions.assertEquals("bj", model.reason());
-        Assertions.assertEquals(RuleState.EXPIRED, model.state());
-        Assertions.assertEquals("zcjznmwcpmgua", model.comment());
+        AlertsSuppressionRuleInner model = BinaryData.fromString(
+            "{\"properties\":{\"alertType\":\"axuconuq\",\"lastModifiedUtc\":\"2021-09-25T01:29:01Z\",\"expirationDateUtc\":\"2021-05-20T10:54:42Z\",\"reason\":\"eyp\",\"state\":\"Enabled\",\"comment\":\"mjmwvvjektcx\",\"suppressionAlertsScope\":{\"allOf\":[{\"field\":\"wlrsffrzpwv\",\"\":{\"biqylihkaet\":\"dataq\",\"fcivfsnkym\":\"datakt\",\"jf\":\"datactq\",\"fuwutttxf\":\"dataebrjcxe\"}},{\"field\":\"rbirphxe\",\"\":{\"jky\":\"datavahfn\"}},{\"field\":\"j\",\"\":{\"gidokgjljyoxgvcl\":\"dataj\",\"jhtxfvgxbfsmxne\":\"databgsncghkjeszzhb\"}},{\"field\":\"pvecxgodeb\",\"\":{\"ukgri\":\"datakrbm\"}}]}},\"id\":\"flz\",\"name\":\"fbxzpuzycisp\",\"type\":\"qzahmgkbrp\"}")
+            .toObject(AlertsSuppressionRuleInner.class);
+        Assertions.assertEquals("axuconuq", model.alertType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-20T10:54:42Z"), model.expirationDateUtc());
+        Assertions.assertEquals("eyp", model.reason());
+        Assertions.assertEquals(RuleState.ENABLED, model.state());
+        Assertions.assertEquals("mjmwvvjektcx", model.comment());
+        Assertions.assertEquals("wlrsffrzpwv", model.suppressionAlertsScope().allOf().get(0).field());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertsSuppressionRuleInner model =
-            new AlertsSuppressionRuleInner()
-                .withAlertType("vhmxtdrjfu")
-                .withExpirationDateUtc(OffsetDateTime.parse("2021-07-27T22:13:32Z"))
-                .withReason("bj")
-                .withState(RuleState.EXPIRED)
-                .withComment("zcjznmwcpmgua")
-                .withSuppressionAlertsScope(new SuppressionAlertsScope().withAllOf(Arrays.asList()));
+        AlertsSuppressionRuleInner model = new AlertsSuppressionRuleInner().withAlertType("axuconuq")
+            .withExpirationDateUtc(OffsetDateTime.parse("2021-05-20T10:54:42Z"))
+            .withReason("eyp")
+            .withState(RuleState.ENABLED)
+            .withComment("mjmwvvjektcx")
+            .withSuppressionAlertsScope(new SuppressionAlertsScope()
+                .withAllOf(Arrays.asList(new ScopeElement().withField("wlrsffrzpwv").withAdditionalProperties(mapOf()),
+                    new ScopeElement().withField("rbirphxe").withAdditionalProperties(mapOf()),
+                    new ScopeElement().withField("j").withAdditionalProperties(mapOf()),
+                    new ScopeElement().withField("pvecxgodeb").withAdditionalProperties(mapOf()))));
         model = BinaryData.fromObject(model).toObject(AlertsSuppressionRuleInner.class);
-        Assertions.assertEquals("vhmxtdrjfu", model.alertType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-27T22:13:32Z"), model.expirationDateUtc());
-        Assertions.assertEquals("bj", model.reason());
-        Assertions.assertEquals(RuleState.EXPIRED, model.state());
-        Assertions.assertEquals("zcjznmwcpmgua", model.comment());
+        Assertions.assertEquals("axuconuq", model.alertType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-20T10:54:42Z"), model.expirationDateUtc());
+        Assertions.assertEquals("eyp", model.reason());
+        Assertions.assertEquals(RuleState.ENABLED, model.state());
+        Assertions.assertEquals("mjmwvvjektcx", model.comment());
+        Assertions.assertEquals("wlrsffrzpwv", model.suppressionAlertsScope().allOf().get(0).field());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

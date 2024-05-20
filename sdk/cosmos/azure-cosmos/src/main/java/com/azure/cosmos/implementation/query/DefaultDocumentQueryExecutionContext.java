@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -34,6 +35,7 @@ import com.azure.cosmos.implementation.routing.RoutingMapProviderHelper;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
@@ -62,7 +64,8 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
     private final SchedulingStopwatch fetchSchedulingMetrics;
     private final FetchExecutionRangeAccumulator fetchExecutionRangeAccumulator;
     private static final String DEFAULT_PARTITION_RANGE = "00-FF";
-    private final Function<JsonNode, T> factoryMethod;
+    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+    private final CosmosItemSerializer itemSerializer;
 
     public DefaultDocumentQueryExecutionContext(DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient client, ResourceType resourceTypeEnum,
                                                 Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
@@ -80,14 +83,18 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
         this.fetchSchedulingMetrics = new SchedulingStopwatch();
         this.fetchSchedulingMetrics.ready();
         this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(DEFAULT_PARTITION_RANGE);
-        this.factoryMethod = DocumentQueryExecutionContextBase.getEffectiveFactoryMethod(
-            cosmosQueryRequestOptions,
-            false,
-            resourceType);
+        CosmosItemSerializer candidateSerializer = client.getEffectiveItemSerializer(this.cosmosQueryRequestOptions);
+        this.itemSerializer = candidateSerializer != CosmosItemSerializer.DEFAULT_SERIALIZER
+            ? candidateSerializer
+            : ValueUnwrapCosmosItemSerializer.create(false);
     }
 
     protected PartitionKeyInternal getPartitionKeyInternal() {
         return this.cosmosQueryRequestOptions.getPartitionKey() == null ? null : BridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
+    }
+
+    protected PartitionKeyDefinition getPartitionKeyDefinition() {
+        return queryRequestOptionsAccessor.getPartitionKeyDefinition(this.cosmosQueryRequestOptions);
     }
 
     @Override
@@ -195,6 +202,9 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
 
         return BackoffRetryUtility.executeRetry(() -> {
                                       this.retries.incrementAndGet();
+                                      return executeRequestAsync(
+                                          this.itemSerializer,
+                                          req);
                                       return Mono.just(req)
                                           .flatMap(request -> client.populateFeedRangeHeader(request))
                                           .flatMap(request -> client.addPartitionLevelUnavailableRegionsOnRequest(request, cosmosQueryRequestOptions))

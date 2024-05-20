@@ -5,18 +5,17 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.notificationhubs.models.OperationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A NotificationHubs REST API operation. */
+/**
+ * A NotificationHubs REST API operation.
+ */
 @Fluent
 public final class OperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationInner.class);
-
     /*
-     * Operation name: {provider}/{resource}/{operation}
+     * Gets operation name: {provider}/{resource}/{operation}
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
@@ -27,9 +26,27 @@ public final class OperationInner {
     @JsonProperty(value = "display")
     private OperationDisplay display;
 
+    /*
+     * Optional operation properties.
+     */
+    @JsonProperty(value = "properties")
+    private OperationProperties properties;
+
+    /*
+     * Gets or sets IsDataAction property. It is used to differentiate management and data plane operations.
+     */
+    @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isDataAction;
+
     /**
-     * Get the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * Creates an instance of OperationInner class.
+     */
+    public OperationInner() {
+    }
+
+    /**
+     * Get the name property: Gets operation name: {provider}/{resource}/{operation}.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +55,7 @@ public final class OperationInner {
 
     /**
      * Get the display property: The object that represents the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -47,7 +64,7 @@ public final class OperationInner {
 
     /**
      * Set the display property: The object that represents the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationInner object itself.
      */
@@ -57,13 +74,46 @@ public final class OperationInner {
     }
 
     /**
+     * Get the properties property: Optional operation properties.
+     * 
+     * @return the properties value.
+     */
+    public OperationProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Optional operation properties.
+     * 
+     * @param properties the properties value to set.
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withProperties(OperationProperties properties) {
+        this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the isDataAction property: Gets or sets IsDataAction property. It is used to differentiate management and
+     * data plane operations.
+     * 
+     * @return the isDataAction value.
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (display() != null) {
             display().validate();
+        }
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

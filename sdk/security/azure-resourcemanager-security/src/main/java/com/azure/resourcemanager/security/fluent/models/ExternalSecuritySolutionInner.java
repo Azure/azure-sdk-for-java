@@ -9,8 +9,10 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.security.models.AadExternalSecuritySolution;
 import com.azure.resourcemanager.security.models.AtaExternalSecuritySolution;
 import com.azure.resourcemanager.security.models.CefExternalSecuritySolution;
+import com.azure.resourcemanager.security.models.ExternalSecuritySolutionKind;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -20,30 +22,48 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "kind",
-    defaultImpl = ExternalSecuritySolutionInner.class)
+    defaultImpl = ExternalSecuritySolutionInner.class,
+    visible = true)
 @JsonTypeName("ExternalSecuritySolution")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "CEF", value = CefExternalSecuritySolution.class),
     @JsonSubTypes.Type(name = "ATA", value = AtaExternalSecuritySolution.class),
-    @JsonSubTypes.Type(name = "AAD", value = AadExternalSecuritySolution.class)
-})
+    @JsonSubTypes.Type(name = "AAD", value = AadExternalSecuritySolution.class) })
 @Immutable
 public class ExternalSecuritySolutionInner extends ProxyResource {
+    /*
+     * The kind of the external solution
+     */
+    @JsonTypeId
+    @JsonProperty(value = "kind", required = true)
+    private ExternalSecuritySolutionKind kind;
+
     /*
      * Location where the resource is stored
      */
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of ExternalSecuritySolutionInner class. */
+    /**
+     * Creates an instance of ExternalSecuritySolutionInner class.
+     */
     public ExternalSecuritySolutionInner() {
+        this.kind = ExternalSecuritySolutionKind.fromString("ExternalSecuritySolution");
+    }
+
+    /**
+     * Get the kind property: The kind of the external solution.
+     * 
+     * @return the kind value.
+     */
+    public ExternalSecuritySolutionKind kind() {
+        return this.kind;
     }
 
     /**
      * Get the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -52,7 +72,7 @@ public class ExternalSecuritySolutionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

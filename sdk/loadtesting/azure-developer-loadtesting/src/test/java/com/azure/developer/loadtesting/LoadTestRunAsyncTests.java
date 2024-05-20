@@ -10,7 +10,11 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.fasterxml.jackson.databind.JsonNode;
-
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -19,11 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
@@ -210,38 +210,40 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     @Test
     @Order(10)
     public void listMetrics() {
-        Mono<Response<BinaryData>> monoResponse = getLoadTestRunAsyncClient().getTestRunWithResponse(newTestRunIdAsync,
-                null);
-        StepVerifier.create(monoResponse).assertNext(response -> {
-            String startDateTime = "", endDateTime = "";
-            try {
-                JsonNode testRun = OBJECT_MAPPER.readTree(response.getValue().toString());
-
-                startDateTime = testRun.get("startDateTime").asText();
-                endDateTime = testRun.get("endDateTime").asText();
-            } catch (Exception e) {
-                Assertions.assertTrue(false);
-            }
-
-            String timespan = startDateTime + "/" + endDateTime;
-            PagedFlux<BinaryData> metricsResponse = getLoadTestRunAsyncClient().listMetrics(newTestRunIdAsync,
-                    "VirtualUsers", "LoadTestRunMetrics", timespan, null);
-            Mono<Boolean> monoBoolean = metricsResponse.any((metricsBinary) -> {
+        Mono<Boolean> monoBoolean = getLoadTestRunAsyncClient()
+            .getTestRunWithResponse(newTestRunIdAsync, null)
+            .flatMap(response -> {
+                String startDateTime = "", endDateTime = "";
                 try {
-                    JsonNode metric = OBJECT_MAPPER.readTree(metricsBinary.toString());
-                    if (metric.has("data") && metric.get("data").get(0).has("value")) {
-                        return true;
-                    }
+                    JsonNode testRun = OBJECT_MAPPER.readTree(response.getValue().toString());
+
+                    startDateTime = testRun.get("startDateTime").asText();
+                    endDateTime = testRun.get("endDateTime").asText();
                 } catch (Exception e) {
-                    // no-op
+                    fail();
                 }
-                return false;
+
+                String timespan = startDateTime + "/" + endDateTime;
+                PagedFlux<BinaryData> metricsResponse = getLoadTestRunAsyncClient().listMetrics(newTestRunIdAsync,
+                    "VirtualUsers", "LoadTestRunMetrics", timespan, null);
+
+                return metricsResponse.any((metricsBinary) -> {
+                    try {
+                        JsonNode metric = OBJECT_MAPPER.readTree(metricsBinary.toString());
+                        if (metric.has("data") && metric.get("data").get(0).has("value")) {
+                            return true;
+                        }
+                    } catch (Exception e) {
+                        // no-op
+                    }
+                    return false;
+                });
             });
-            StepVerifier.create(monoBoolean)
-                    .expectNext(true)
-                    .thenConsumeWhile(ignored -> true)
-                    .verifyComplete();
-        }).verifyComplete();
+
+        StepVerifier.create(monoBoolean)
+            .expectNext(true)
+            .thenConsumeWhile(ignored -> true)
+            .verifyComplete();
     }
 
     // Lists

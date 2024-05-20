@@ -32,7 +32,7 @@ public final class MarketplaceAgreementsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"publisher\":\"obyu\",\"product\":\"rpqlp\",\"plan\":\"cciuqgbdbutau\",\"licenseTextLink\":\"btkuwhh\",\"privacyPolicyLink\":\"ykojoxafnndlpic\",\"retrieveDatetime\":\"2021-09-25T08:27:56Z\",\"signature\":\"mkcdyhbpkkpwdre\",\"accepted\":true},\"id\":\"vvqfovljxyws\",\"name\":\"w\",\"type\":\"yrs\"}]}";
+            = "{\"value\":[{\"properties\":{\"publisher\":\"bth\",\"product\":\"tgk\",\"plan\":\"tvdxeclzedqb\",\"licenseTextLink\":\"hzlhplodqkdlww\",\"privacyPolicyLink\":\"bum\",\"retrieveDatetime\":\"2021-01-09T13:22:40Z\",\"signature\":\"rqjfsmlm\",\"accepted\":true},\"id\":\"hwgfwsrt\",\"name\":\"wcoezbrhub\",\"type\":\"kh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -52,14 +52,14 @@ public final class MarketplaceAgreementsListMockTests {
         PagedIterable<ConfluentAgreementResource> response
             = manager.marketplaceAgreements().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("obyu", response.iterator().next().publisher());
-        Assertions.assertEquals("rpqlp", response.iterator().next().product());
-        Assertions.assertEquals("cciuqgbdbutau", response.iterator().next().plan());
-        Assertions.assertEquals("btkuwhh", response.iterator().next().licenseTextLink());
-        Assertions.assertEquals("ykojoxafnndlpic", response.iterator().next().privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-25T08:27:56Z"),
+        Assertions.assertEquals("bth", response.iterator().next().publisher());
+        Assertions.assertEquals("tgk", response.iterator().next().product());
+        Assertions.assertEquals("tvdxeclzedqb", response.iterator().next().plan());
+        Assertions.assertEquals("hzlhplodqkdlww", response.iterator().next().licenseTextLink());
+        Assertions.assertEquals("bum", response.iterator().next().privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-09T13:22:40Z"),
             response.iterator().next().retrieveDatetime());
-        Assertions.assertEquals("mkcdyhbpkkpwdre", response.iterator().next().signature());
+        Assertions.assertEquals("rqjfsmlm", response.iterator().next().signature());
         Assertions.assertEquals(true, response.iterator().next().accepted());
     }
 }

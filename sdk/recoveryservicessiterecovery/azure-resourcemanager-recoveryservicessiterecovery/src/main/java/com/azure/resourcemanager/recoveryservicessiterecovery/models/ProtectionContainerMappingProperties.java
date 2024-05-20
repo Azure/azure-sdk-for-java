@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Protection container mapping properties. */
+/**
+ * Protection container mapping properties.
+ */
 @Fluent
 public final class ProtectionContainerMappingProperties {
     /*
@@ -77,13 +79,15 @@ public final class ProtectionContainerMappingProperties {
     @JsonProperty(value = "policyFriendlyName")
     private String policyFriendlyName;
 
-    /** Creates an instance of ProtectionContainerMappingProperties class. */
+    /**
+     * Creates an instance of ProtectionContainerMappingProperties class.
+     */
     public ProtectionContainerMappingProperties() {
     }
 
     /**
      * Get the targetProtectionContainerId property: Paired protection container ARM ID.
-     *
+     * 
      * @return the targetProtectionContainerId value.
      */
     public String targetProtectionContainerId() {
@@ -92,7 +96,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Set the targetProtectionContainerId property: Paired protection container ARM ID.
-     *
+     * 
      * @param targetProtectionContainerId the targetProtectionContainerId value to set.
      * @return the ProtectionContainerMappingProperties object itself.
      */
@@ -103,7 +107,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Get the targetProtectionContainerFriendlyName property: Friendly name of paired container.
-     *
+     * 
      * @return the targetProtectionContainerFriendlyName value.
      */
     public String targetProtectionContainerFriendlyName() {
@@ -112,19 +116,19 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Set the targetProtectionContainerFriendlyName property: Friendly name of paired container.
-     *
+     * 
      * @param targetProtectionContainerFriendlyName the targetProtectionContainerFriendlyName value to set.
      * @return the ProtectionContainerMappingProperties object itself.
      */
-    public ProtectionContainerMappingProperties withTargetProtectionContainerFriendlyName(
-        String targetProtectionContainerFriendlyName) {
+    public ProtectionContainerMappingProperties
+        withTargetProtectionContainerFriendlyName(String targetProtectionContainerFriendlyName) {
         this.targetProtectionContainerFriendlyName = targetProtectionContainerFriendlyName;
         return this;
     }
 
     /**
      * Get the providerSpecificDetails property: Provider specific provider details.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public ProtectionContainerMappingProviderSpecificDetails providerSpecificDetails() {
@@ -133,19 +137,19 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Set the providerSpecificDetails property: Provider specific provider details.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the ProtectionContainerMappingProperties object itself.
      */
-    public ProtectionContainerMappingProperties withProviderSpecificDetails(
-        ProtectionContainerMappingProviderSpecificDetails providerSpecificDetails) {
+    public ProtectionContainerMappingProperties
+        withProviderSpecificDetails(ProtectionContainerMappingProviderSpecificDetails providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Get the health property: Health of pairing.
-     *
+     * 
      * @return the health value.
      */
     public String health() {
@@ -154,7 +158,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Set the health property: Health of pairing.
-     *
+     * 
      * @param health the health value to set.
      * @return the ProtectionContainerMappingProperties object itself.
      */
@@ -165,7 +169,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Get the healthErrorDetails property: Health error.
-     *
+     * 
      * @return the healthErrorDetails value.
      */
     public List<HealthError> healthErrorDetails() {
@@ -174,7 +178,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Set the healthErrorDetails property: Health error.
-     *
+     * 
      * @param healthErrorDetails the healthErrorDetails value to set.
      * @return the ProtectionContainerMappingProperties object itself.
      */
@@ -185,7 +189,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Get the policyId property: Policy ARM Id.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -194,7 +198,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Set the policyId property: Policy ARM Id.
-     *
+     * 
      * @param policyId the policyId value to set.
      * @return the ProtectionContainerMappingProperties object itself.
      */
@@ -205,7 +209,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Get the state property: Association Status.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -214,7 +218,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Set the state property: Association Status.
-     *
+     * 
      * @param state the state value to set.
      * @return the ProtectionContainerMappingProperties object itself.
      */
@@ -225,7 +229,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Get the sourceProtectionContainerFriendlyName property: Friendly name of source protection container.
-     *
+     * 
      * @return the sourceProtectionContainerFriendlyName value.
      */
     public String sourceProtectionContainerFriendlyName() {
@@ -234,19 +238,19 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Set the sourceProtectionContainerFriendlyName property: Friendly name of source protection container.
-     *
+     * 
      * @param sourceProtectionContainerFriendlyName the sourceProtectionContainerFriendlyName value to set.
      * @return the ProtectionContainerMappingProperties object itself.
      */
-    public ProtectionContainerMappingProperties withSourceProtectionContainerFriendlyName(
-        String sourceProtectionContainerFriendlyName) {
+    public ProtectionContainerMappingProperties
+        withSourceProtectionContainerFriendlyName(String sourceProtectionContainerFriendlyName) {
         this.sourceProtectionContainerFriendlyName = sourceProtectionContainerFriendlyName;
         return this;
     }
 
     /**
      * Get the sourceFabricFriendlyName property: Friendly name of source fabric.
-     *
+     * 
      * @return the sourceFabricFriendlyName value.
      */
     public String sourceFabricFriendlyName() {
@@ -255,7 +259,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Set the sourceFabricFriendlyName property: Friendly name of source fabric.
-     *
+     * 
      * @param sourceFabricFriendlyName the sourceFabricFriendlyName value to set.
      * @return the ProtectionContainerMappingProperties object itself.
      */
@@ -266,7 +270,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Get the targetFabricFriendlyName property: Friendly name of target fabric.
-     *
+     * 
      * @return the targetFabricFriendlyName value.
      */
     public String targetFabricFriendlyName() {
@@ -275,7 +279,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Set the targetFabricFriendlyName property: Friendly name of target fabric.
-     *
+     * 
      * @param targetFabricFriendlyName the targetFabricFriendlyName value to set.
      * @return the ProtectionContainerMappingProperties object itself.
      */
@@ -286,7 +290,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Get the policyFriendlyName property: Friendly name of replication policy.
-     *
+     * 
      * @return the policyFriendlyName value.
      */
     public String policyFriendlyName() {
@@ -295,7 +299,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Set the policyFriendlyName property: Friendly name of replication policy.
-     *
+     * 
      * @param policyFriendlyName the policyFriendlyName value to set.
      * @return the ProtectionContainerMappingProperties object itself.
      */
@@ -306,7 +310,7 @@ public final class ProtectionContainerMappingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

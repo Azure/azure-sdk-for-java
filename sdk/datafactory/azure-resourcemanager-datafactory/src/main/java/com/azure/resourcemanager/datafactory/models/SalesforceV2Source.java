@@ -6,16 +6,24 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Salesforce V2 source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SalesforceV2Source.class, visible = true)
 @JsonTypeName("SalesforceV2Source")
 @Fluent
 public final class SalesforceV2Source extends TabularSource {
+    /*
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SalesforceV2Source";
+
     /*
      * Database query. Type: string (or Expression with resultType string).
      */
@@ -23,8 +31,7 @@ public final class SalesforceV2Source extends TabularSource {
     private Object soqlQuery;
 
     /*
-     * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or
-     * Expression with resultType boolean).
+     * This property control whether query result contains Deleted objects. Default is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "includeDeletedObjects")
     private Object includeDeletedObjects;
@@ -33,6 +40,16 @@ public final class SalesforceV2Source extends TabularSource {
      * Creates an instance of SalesforceV2Source class.
      */
     public SalesforceV2Source() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

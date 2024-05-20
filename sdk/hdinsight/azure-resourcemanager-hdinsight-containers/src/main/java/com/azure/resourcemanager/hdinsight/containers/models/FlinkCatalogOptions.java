@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Flink cluster catalog options. */
+/**
+ * Flink cluster catalog options.
+ */
 @Fluent
 public final class FlinkCatalogOptions {
     /*
@@ -16,13 +18,15 @@ public final class FlinkCatalogOptions {
     @JsonProperty(value = "hive")
     private FlinkHiveCatalogOption hive;
 
-    /** Creates an instance of FlinkCatalogOptions class. */
+    /**
+     * Creates an instance of FlinkCatalogOptions class.
+     */
     public FlinkCatalogOptions() {
     }
 
     /**
      * Get the hive property: Hive Catalog Option for Flink cluster.
-     *
+     * 
      * @return the hive value.
      */
     public FlinkHiveCatalogOption hive() {
@@ -31,7 +35,7 @@ public final class FlinkCatalogOptions {
 
     /**
      * Set the hive property: Hive Catalog Option for Flink cluster.
-     *
+     * 
      * @param hive the hive value to set.
      * @return the FlinkCatalogOptions object itself.
      */
@@ -42,7 +46,7 @@ public final class FlinkCatalogOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

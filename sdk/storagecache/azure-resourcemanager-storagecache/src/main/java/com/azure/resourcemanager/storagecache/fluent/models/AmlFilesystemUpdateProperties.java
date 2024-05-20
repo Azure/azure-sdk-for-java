@@ -6,10 +6,13 @@ package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemEncryptionSettings;
+import com.azure.resourcemanager.storagecache.models.AmlFilesystemRootSquashSettings;
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemUpdatePropertiesMaintenanceWindow;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the AML file system. */
+/**
+ * Properties of the AML file system.
+ */
 @Fluent
 public final class AmlFilesystemUpdateProperties {
     /*
@@ -24,13 +27,21 @@ public final class AmlFilesystemUpdateProperties {
     @JsonProperty(value = "maintenanceWindow")
     private AmlFilesystemUpdatePropertiesMaintenanceWindow maintenanceWindow;
 
-    /** Creates an instance of AmlFilesystemUpdateProperties class. */
+    /*
+     * Specifies root squash settings of the AML file system.
+     */
+    @JsonProperty(value = "rootSquashSettings")
+    private AmlFilesystemRootSquashSettings rootSquashSettings;
+
+    /**
+     * Creates an instance of AmlFilesystemUpdateProperties class.
+     */
     public AmlFilesystemUpdateProperties() {
     }
 
     /**
      * Get the encryptionSettings property: Specifies encryption settings of the AML file system.
-     *
+     * 
      * @return the encryptionSettings value.
      */
     public AmlFilesystemEncryptionSettings encryptionSettings() {
@@ -39,7 +50,7 @@ public final class AmlFilesystemUpdateProperties {
 
     /**
      * Set the encryptionSettings property: Specifies encryption settings of the AML file system.
-     *
+     * 
      * @param encryptionSettings the encryptionSettings value to set.
      * @return the AmlFilesystemUpdateProperties object itself.
      */
@@ -50,7 +61,7 @@ public final class AmlFilesystemUpdateProperties {
 
     /**
      * Get the maintenanceWindow property: Start time of a 30-minute weekly maintenance window.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     public AmlFilesystemUpdatePropertiesMaintenanceWindow maintenanceWindow() {
@@ -59,19 +70,39 @@ public final class AmlFilesystemUpdateProperties {
 
     /**
      * Set the maintenanceWindow property: Start time of a 30-minute weekly maintenance window.
-     *
+     * 
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the AmlFilesystemUpdateProperties object itself.
      */
-    public AmlFilesystemUpdateProperties withMaintenanceWindow(
-        AmlFilesystemUpdatePropertiesMaintenanceWindow maintenanceWindow) {
+    public AmlFilesystemUpdateProperties
+        withMaintenanceWindow(AmlFilesystemUpdatePropertiesMaintenanceWindow maintenanceWindow) {
         this.maintenanceWindow = maintenanceWindow;
         return this;
     }
 
     /**
+     * Get the rootSquashSettings property: Specifies root squash settings of the AML file system.
+     * 
+     * @return the rootSquashSettings value.
+     */
+    public AmlFilesystemRootSquashSettings rootSquashSettings() {
+        return this.rootSquashSettings;
+    }
+
+    /**
+     * Set the rootSquashSettings property: Specifies root squash settings of the AML file system.
+     * 
+     * @param rootSquashSettings the rootSquashSettings value to set.
+     * @return the AmlFilesystemUpdateProperties object itself.
+     */
+    public AmlFilesystemUpdateProperties withRootSquashSettings(AmlFilesystemRootSquashSettings rootSquashSettings) {
+        this.rootSquashSettings = rootSquashSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -80,6 +111,9 @@ public final class AmlFilesystemUpdateProperties {
         }
         if (maintenanceWindow() != null) {
             maintenanceWindow().validate();
+        }
+        if (rootSquashSettings() != null) {
+            rootSquashSettings().validate();
         }
     }
 }

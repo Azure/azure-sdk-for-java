@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.CustomAssessmentAutomati
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of Custom Assessment Automations. */
+/**
+ * A list of Custom Assessment Automations.
+ */
 @Fluent
 public final class CustomAssessmentAutomationsListResult {
     /*
@@ -24,13 +26,15 @@ public final class CustomAssessmentAutomationsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of CustomAssessmentAutomationsListResult class. */
+    /**
+     * Creates an instance of CustomAssessmentAutomationsListResult class.
+     */
     public CustomAssessmentAutomationsListResult() {
     }
 
     /**
      * Get the value property: Collection of Custom Assessment Automations.
-     *
+     * 
      * @return the value value.
      */
     public List<CustomAssessmentAutomationInner> value() {
@@ -39,7 +43,7 @@ public final class CustomAssessmentAutomationsListResult {
 
     /**
      * Get the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class CustomAssessmentAutomationsListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CustomAssessmentAutomationsListResult object itself.
      */
@@ -59,7 +63,7 @@ public final class CustomAssessmentAutomationsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

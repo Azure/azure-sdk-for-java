@@ -6,25 +6,27 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.resourcemanager.appcontainers.fluent.models.JobExecutionBaseInner;
 
-/** An immutable client-side representation of JobExecutionBase. */
+/**
+ * An immutable client-side representation of JobExecutionBase.
+ */
 public interface JobExecutionBase {
     /**
      * Gets the name property: Job execution name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the id property: Job execution Id.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.JobExecutionBaseInner object.
-     *
+     * 
      * @return the inner object.
      */
     JobExecutionBaseInner innerModel();

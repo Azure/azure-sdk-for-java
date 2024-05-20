@@ -46,8 +46,8 @@ public final class VolumesBreakReplicationMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.volumes().breakReplication("qspkcdqzhlctd", "unqndyfpchrqb", "jjrcgegydc", "boxjumvq",
-            new BreakReplicationRequest().withForceBreakReplication(true), com.azure.core.util.Context.NONE);
+        manager.volumes().breakReplication("iuagydwqfbylyrfg", "agt", "ojocqwogf", "zjvusfzldmo",
+            new BreakReplicationRequest().withForceBreakReplication(false), com.azure.core.util.Context.NONE);
 
     }
 }

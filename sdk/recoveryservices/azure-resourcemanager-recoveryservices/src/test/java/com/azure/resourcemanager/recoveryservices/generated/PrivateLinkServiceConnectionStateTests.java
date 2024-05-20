@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservices.models.PrivateLinkServiceConne
 public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkServiceConnectionState model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"Approved\",\"description\":\"opjmcmatuokthfui\",\"actionsRequired\":\"odsfcpkvxodpuozm\"}")
-                .toObject(PrivateLinkServiceConnectionState.class);
+        PrivateLinkServiceConnectionState model = BinaryData.fromString(
+            "{\"status\":\"Approved\",\"description\":\"opjmcmatuokthfui\",\"actionsRequired\":\"odsfcpkvxodpuozm\"}")
+            .toObject(PrivateLinkServiceConnectionState.class);
     }
 
     @org.junit.jupiter.api.Test

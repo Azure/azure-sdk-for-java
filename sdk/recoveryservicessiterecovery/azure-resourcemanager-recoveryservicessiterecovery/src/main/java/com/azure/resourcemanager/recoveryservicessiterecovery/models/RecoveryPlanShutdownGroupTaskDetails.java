@@ -9,37 +9,49 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** This class represents the recovery plan shutdown group task details. */
+/**
+ * This class represents the recovery plan shutdown group task details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("RecoveryPlanShutdownGroupTaskDetails")
 @Fluent
 public final class RecoveryPlanShutdownGroupTaskDetails extends RecoveryPlanGroupTaskDetails {
-    /** Creates an instance of RecoveryPlanShutdownGroupTaskDetails class. */
+    /**
+     * Creates an instance of RecoveryPlanShutdownGroupTaskDetails class.
+     */
     public RecoveryPlanShutdownGroupTaskDetails() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPlanShutdownGroupTaskDetails withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPlanShutdownGroupTaskDetails withGroupId(String groupId) {
         super.withGroupId(groupId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPlanShutdownGroupTaskDetails withRpGroupType(String rpGroupType) {
         super.withRpGroupType(rpGroupType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecoveryPlanShutdownGroupTaskDetails withChildTasks(List<AsrTask> childTasks) {
         super.withChildTasks(childTasks);
@@ -48,7 +60,7 @@ public final class RecoveryPlanShutdownGroupTaskDetails extends RecoveryPlanGrou
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

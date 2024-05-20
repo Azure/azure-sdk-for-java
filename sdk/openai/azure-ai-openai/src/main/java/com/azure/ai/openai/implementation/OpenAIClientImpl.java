@@ -150,6 +150,7 @@ public final class OpenAIClientImpl {
     @Host("{endpoint}/openai")
     @ServiceInterface(name = "OpenAIClient")
     public interface OpenAIClientService {
+        // @Multipart not supported by RestProxy
         @Post("/deployments/{deploymentId}/audio/transcriptions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -158,9 +159,11 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranscriptionAsPlainText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData audioTranscriptionOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
+            Context context);
 
+        // @Multipart not supported by RestProxy
         @Post("/deployments/{deploymentId}/audio/transcriptions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -169,8 +172,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranscriptionAsPlainTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData audioTranscriptionOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
+            Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/deployments/{deploymentId}/audio/transcriptions")
@@ -198,6 +202,7 @@ public final class OpenAIClientImpl {
             @BodyParam("multipart/form-data") BinaryData audioTranscriptionOptions, RequestOptions requestOptions,
             Context context);
 
+        // @Multipart not supported by RestProxy
         @Post("/deployments/{deploymentId}/audio/translations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -206,9 +211,11 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getAudioTranslationAsPlainText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData audioTranslationOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData audioTranslationOptions, RequestOptions requestOptions,
+            Context context);
 
+        // @Multipart not supported by RestProxy
         @Post("/deployments/{deploymentId}/audio/translations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -217,8 +224,9 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getAudioTranslationAsPlainTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData audioTranslationOptions,
-            RequestOptions requestOptions, Context context);
+            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @BodyParam("multipart/form-data") BinaryData audioTranslationOptions, RequestOptions requestOptions,
+            Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/deployments/{deploymentId}/audio/translations")
@@ -290,28 +298,6 @@ public final class OpenAIClientImpl {
             @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData chatCompletionsOptions,
             RequestOptions requestOptions, Context context);
 
-        @Post("/deployments/{deploymentId}/extensions/chat/completions")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getChatCompletionsWithAzureExtensions(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData chatCompletionsOptions,
-            RequestOptions requestOptions, Context context);
-
-        @Post("/deployments/{deploymentId}/extensions/chat/completions")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getChatCompletionsWithAzureExtensionsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
-            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData chatCompletionsOptions,
-            RequestOptions requestOptions, Context context);
-
         @Post("/deployments/{deploymentId}/images/generations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -332,6 +318,28 @@ public final class OpenAIClientImpl {
         Response<BinaryData> getImageGenerationsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
             @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData imageGenerationOptions,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/deployments/{deploymentId}/audio/speech")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> generateSpeechFromText(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData speechGenerationOptions,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/deployments/{deploymentId}/audio/speech")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> generateSpeechFromTextSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("deploymentId") String deploymentOrModelName,
+            @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData speechGenerationOptions,
             RequestOptions requestOptions, Context context);
 
         @Post("/deployments/{deploymentId}/embeddings")
@@ -360,9 +368,8 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -381,18 +388,18 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponseAsync(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        final String accept = "application/json";
+        final String contentType = "multipart/form-data";
+        final String accept = "text/plain, application/json";
         return FluxUtil.withContext(context -> service.getAudioTranscriptionAsPlainText(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), deploymentOrModelName, accept, audioTranscriptionOptions,
-            requestOptions, context));
+            this.getServiceVersion().getVersion(), deploymentOrModelName, contentType, accept,
+            audioTranscriptionOptions, requestOptions, context));
     }
 
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -410,17 +417,17 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        final String accept = "application/json";
+        final String contentType = "multipart/form-data";
+        final String accept = "text/plain, application/json";
         return service.getAudioTranscriptionAsPlainTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, audioTranscriptionOptions, requestOptions, Context.NONE);
+            deploymentOrModelName, contentType, accept, audioTranscriptionOptions, requestOptions, Context.NONE);
     }
 
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -441,6 +448,13 @@ public final class OpenAIClientImpl {
      *                 int (Required)
      *             ]
      *             seek: int (Required)
+     *         }
+     *     ]
+     *     words (Optional): [
+     *          (Optional){
+     *             word: String (Required)
+     *             start: double (Required)
+     *             end: double (Required)
      *         }
      *     ]
      * }
@@ -470,9 +484,8 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -493,6 +506,13 @@ public final class OpenAIClientImpl {
      *                 int (Required)
      *             ]
      *             seek: int (Required)
+     *         }
+     *     ]
+     *     words (Optional): [
+     *          (Optional){
+     *             word: String (Required)
+     *             start: double (Required)
+     *             end: double (Required)
      *         }
      *     ]
      * }
@@ -520,9 +540,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -541,17 +560,17 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponseAsync(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        final String accept = "application/json";
+        final String contentType = "multipart/form-data";
+        final String accept = "text/plain, application/json";
         return FluxUtil.withContext(
             context -> service.getAudioTranslationAsPlainText(this.getEndpoint(), this.getServiceVersion().getVersion(),
-                deploymentOrModelName, accept, audioTranslationOptions, requestOptions, context));
+                deploymentOrModelName, contentType, accept, audioTranslationOptions, requestOptions, context));
     }
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * String
      * }</pre>
@@ -570,16 +589,16 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        final String accept = "application/json";
+        final String contentType = "multipart/form-data";
+        final String accept = "text/plain, application/json";
         return service.getAudioTranslationAsPlainTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            deploymentOrModelName, accept, audioTranslationOptions, requestOptions, Context.NONE);
+            deploymentOrModelName, contentType, accept, audioTranslationOptions, requestOptions, Context.NONE);
     }
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -628,9 +647,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -681,9 +699,8 @@ public final class OpenAIClientImpl {
      * Gets completions for the provided input prompts.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     prompt (Required): [
@@ -698,6 +715,7 @@ public final class OpenAIClientImpl {
      *     user: String (Optional)
      *     n: Integer (Optional)
      *     logprobs: Integer (Optional)
+     *     suffix: String (Optional)
      *     echo: Boolean (Optional)
      *     stop (Optional): [
      *         String (Optional)
@@ -709,9 +727,9 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -721,8 +739,8 @@ public final class OpenAIClientImpl {
      *             prompt_index: int (Required)
      *             content_filter_results (Required): {
      *                 sexual (Optional): {
-     *                     severity: String(safe/low/medium/high) (Required)
      *                     filtered: boolean (Required)
+     *                     severity: String(safe/low/medium/high) (Required)
      *                 }
      *                 violence (Optional): (recursive schema, see violence above)
      *                 hate (Optional): (recursive schema, see hate above)
@@ -731,12 +749,15 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                 }
-     *                 custom_blocklists (Optional): [
-     *                      (Optional){
-     *                         id: String (Required)
-     *                         filtered: boolean (Required)
-     *                     }
-     *                 ]
+     *                 custom_blocklists (Optional): {
+     *                     filtered: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             filtered: boolean (Required)
+     *                             id: String (Required)
+     *                         }
+     *                     ]
+     *                 }
      *                 error (Optional): {
      *                     code: String (Required)
      *                     message: String (Required)
@@ -750,6 +771,7 @@ public final class OpenAIClientImpl {
      *                     }
      *                 }
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *                 indirect_attack (Optional): (recursive schema, see indirect_attack above)
      *             }
      *         }
      *     ]
@@ -763,9 +785,7 @@ public final class OpenAIClientImpl {
      *                 hate (Optional): (recursive schema, see hate above)
      *                 self_harm (Optional): (recursive schema, see self_harm above)
      *                 profanity (Optional): (recursive schema, see profanity above)
-     *                 custom_blocklists (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
+     *                 custom_blocklists (Optional): (recursive schema, see custom_blocklists above)
      *                 error (Optional): (recursive schema, see error above)
      *                 protected_material_text (Optional): (recursive schema, see protected_material_text above)
      *                 protected_material_code (Optional): {
@@ -829,9 +849,8 @@ public final class OpenAIClientImpl {
      * Gets completions for the provided input prompts.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     prompt (Required): [
@@ -846,6 +865,7 @@ public final class OpenAIClientImpl {
      *     user: String (Optional)
      *     n: Integer (Optional)
      *     logprobs: Integer (Optional)
+     *     suffix: String (Optional)
      *     echo: Boolean (Optional)
      *     stop (Optional): [
      *         String (Optional)
@@ -857,9 +877,9 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -869,8 +889,8 @@ public final class OpenAIClientImpl {
      *             prompt_index: int (Required)
      *             content_filter_results (Required): {
      *                 sexual (Optional): {
-     *                     severity: String(safe/low/medium/high) (Required)
      *                     filtered: boolean (Required)
+     *                     severity: String(safe/low/medium/high) (Required)
      *                 }
      *                 violence (Optional): (recursive schema, see violence above)
      *                 hate (Optional): (recursive schema, see hate above)
@@ -879,12 +899,15 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                 }
-     *                 custom_blocklists (Optional): [
-     *                      (Optional){
-     *                         id: String (Required)
-     *                         filtered: boolean (Required)
-     *                     }
-     *                 ]
+     *                 custom_blocklists (Optional): {
+     *                     filtered: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             filtered: boolean (Required)
+     *                             id: String (Required)
+     *                         }
+     *                     ]
+     *                 }
      *                 error (Optional): {
      *                     code: String (Required)
      *                     message: String (Required)
@@ -898,6 +921,7 @@ public final class OpenAIClientImpl {
      *                     }
      *                 }
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *                 indirect_attack (Optional): (recursive schema, see indirect_attack above)
      *             }
      *         }
      *     ]
@@ -911,9 +935,7 @@ public final class OpenAIClientImpl {
      *                 hate (Optional): (recursive schema, see hate above)
      *                 self_harm (Optional): (recursive schema, see self_harm above)
      *                 profanity (Optional): (recursive schema, see profanity above)
-     *                 custom_blocklists (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
+     *                 custom_blocklists (Optional): (recursive schema, see custom_blocklists above)
      *                 error (Optional): (recursive schema, see error above)
      *                 protected_material_text (Optional): (recursive schema, see protected_material_text above)
      *                 protected_material_code (Optional): {
@@ -976,13 +998,13 @@ public final class OpenAIClientImpl {
      * Gets chat completions for the provided chat messages.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     messages (Required): [
      *          (Required){
+     *             role: String(system/assistant/user/function/tool) (Required)
      *         }
      *     ]
      *     functions (Optional): [
@@ -1008,8 +1030,9 @@ public final class OpenAIClientImpl {
      *     frequency_penalty: Double (Optional)
      *     stream: Boolean (Optional)
      *     model: String (Optional)
-     *     dataSources (Optional): [
+     *     data_sources (Optional): [
      *          (Optional){
+     *             type: String(azure_search/azure_ml_index/azure_cosmos_db/elasticsearch/pinecone) (Required)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -1021,18 +1044,22 @@ public final class OpenAIClientImpl {
      *         }
      *     }
      *     seed: Long (Optional)
+     *     logprobs: Boolean (Optional)
+     *     top_logprobs: Integer (Optional)
      *     response_format (Optional): {
+     *         type: String (Required)
      *     }
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1044,6 +1071,7 @@ public final class OpenAIClientImpl {
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
+     *                         type: String (Required)
      *                         id: String (Required)
      *                     }
      *                 ]
@@ -1052,20 +1080,48 @@ public final class OpenAIClientImpl {
      *                     arguments: String (Required)
      *                 }
      *                 context (Optional): {
-     *                     messages (Optional): [
-     *                         (recursive schema, see above)
+     *                     citations (Optional): [
+     *                          (Optional){
+     *                             content: String (Required)
+     *                             title: String (Optional)
+     *                             url: String (Optional)
+     *                             filepath: String (Optional)
+     *                             chunk_id: String (Optional)
+     *                         }
      *                     ]
+     *                     intent: String (Optional)
      *                 }
+     *             }
+     *             logprobs (Required): {
+     *                 content (Required): [
+     *                      (Required){
+     *                         token: String (Required)
+     *                         logprob: double (Required)
+     *                         bytes (Required): [
+     *                             int (Required)
+     *                         ]
+     *                         top_logprobs (Required): [
+     *                              (Required){
+     *                                 token: String (Required)
+     *                                 logprob: double (Required)
+     *                                 bytes (Required): [
+     *                                     int (Required)
+     *                                 ]
+     *                             }
+     *                         ]
+     *                     }
+     *                 ]
      *             }
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
      *             finish_details (Optional): {
+     *                 type: String (Required)
      *             }
      *             delta (Optional): (recursive schema, see delta above)
      *             content_filter_results (Optional): {
      *                 sexual (Optional): {
-     *                     severity: String(safe/low/medium/high) (Required)
      *                     filtered: boolean (Required)
+     *                     severity: String(safe/low/medium/high) (Required)
      *                 }
      *                 violence (Optional): (recursive schema, see violence above)
      *                 hate (Optional): (recursive schema, see hate above)
@@ -1074,12 +1130,15 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                 }
-     *                 custom_blocklists (Optional): [
-     *                      (Optional){
-     *                         id: String (Required)
-     *                         filtered: boolean (Required)
-     *                     }
-     *                 ]
+     *                 custom_blocklists (Optional): {
+     *                     filtered: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             filtered: boolean (Required)
+     *                             id: String (Required)
+     *                         }
+     *                     ]
+     *                 }
      *                 error (Optional): {
      *                     code: String (Required)
      *                     message: String (Required)
@@ -1124,6 +1183,7 @@ public final class OpenAIClientImpl {
      *             }
      *         }
      *     ]
+     *     model: String (Optional)
      *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
@@ -1133,11 +1193,10 @@ public final class OpenAIClientImpl {
      *                 hate (Optional): (recursive schema, see hate above)
      *                 self_harm (Optional): (recursive schema, see self_harm above)
      *                 profanity (Optional): (recursive schema, see profanity above)
-     *                 custom_blocklists (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
+     *                 custom_blocklists (Optional): (recursive schema, see custom_blocklists above)
      *                 error (Optional): (recursive schema, see error above)
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *                 indirect_attack (Optional): (recursive schema, see indirect_attack above)
      *             }
      *         }
      *     ]
@@ -1177,13 +1236,13 @@ public final class OpenAIClientImpl {
      * Gets chat completions for the provided chat messages.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     messages (Required): [
      *          (Required){
+     *             role: String(system/assistant/user/function/tool) (Required)
      *         }
      *     ]
      *     functions (Optional): [
@@ -1209,8 +1268,9 @@ public final class OpenAIClientImpl {
      *     frequency_penalty: Double (Optional)
      *     stream: Boolean (Optional)
      *     model: String (Optional)
-     *     dataSources (Optional): [
+     *     data_sources (Optional): [
      *          (Optional){
+     *             type: String(azure_search/azure_ml_index/azure_cosmos_db/elasticsearch/pinecone) (Required)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -1222,18 +1282,22 @@ public final class OpenAIClientImpl {
      *         }
      *     }
      *     seed: Long (Optional)
+     *     logprobs: Boolean (Optional)
+     *     top_logprobs: Integer (Optional)
      *     response_format (Optional): {
+     *         type: String (Required)
      *     }
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1245,6 +1309,7 @@ public final class OpenAIClientImpl {
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
+     *                         type: String (Required)
      *                         id: String (Required)
      *                     }
      *                 ]
@@ -1253,20 +1318,48 @@ public final class OpenAIClientImpl {
      *                     arguments: String (Required)
      *                 }
      *                 context (Optional): {
-     *                     messages (Optional): [
-     *                         (recursive schema, see above)
+     *                     citations (Optional): [
+     *                          (Optional){
+     *                             content: String (Required)
+     *                             title: String (Optional)
+     *                             url: String (Optional)
+     *                             filepath: String (Optional)
+     *                             chunk_id: String (Optional)
+     *                         }
      *                     ]
+     *                     intent: String (Optional)
      *                 }
+     *             }
+     *             logprobs (Required): {
+     *                 content (Required): [
+     *                      (Required){
+     *                         token: String (Required)
+     *                         logprob: double (Required)
+     *                         bytes (Required): [
+     *                             int (Required)
+     *                         ]
+     *                         top_logprobs (Required): [
+     *                              (Required){
+     *                                 token: String (Required)
+     *                                 logprob: double (Required)
+     *                                 bytes (Required): [
+     *                                     int (Required)
+     *                                 ]
+     *                             }
+     *                         ]
+     *                     }
+     *                 ]
      *             }
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
      *             finish_details (Optional): {
+     *                 type: String (Required)
      *             }
      *             delta (Optional): (recursive schema, see delta above)
      *             content_filter_results (Optional): {
      *                 sexual (Optional): {
-     *                     severity: String(safe/low/medium/high) (Required)
      *                     filtered: boolean (Required)
+     *                     severity: String(safe/low/medium/high) (Required)
      *                 }
      *                 violence (Optional): (recursive schema, see violence above)
      *                 hate (Optional): (recursive schema, see hate above)
@@ -1275,12 +1368,15 @@ public final class OpenAIClientImpl {
      *                     filtered: boolean (Required)
      *                     detected: boolean (Required)
      *                 }
-     *                 custom_blocklists (Optional): [
-     *                      (Optional){
-     *                         id: String (Required)
-     *                         filtered: boolean (Required)
-     *                     }
-     *                 ]
+     *                 custom_blocklists (Optional): {
+     *                     filtered: boolean (Required)
+     *                     details (Required): [
+     *                          (Required){
+     *                             filtered: boolean (Required)
+     *                             id: String (Required)
+     *                         }
+     *                     ]
+     *                 }
      *                 error (Optional): {
      *                     code: String (Required)
      *                     message: String (Required)
@@ -1325,6 +1421,7 @@ public final class OpenAIClientImpl {
      *             }
      *         }
      *     ]
+     *     model: String (Optional)
      *     prompt_filter_results (Optional): [
      *          (Optional){
      *             prompt_index: int (Required)
@@ -1334,11 +1431,10 @@ public final class OpenAIClientImpl {
      *                 hate (Optional): (recursive schema, see hate above)
      *                 self_harm (Optional): (recursive schema, see self_harm above)
      *                 profanity (Optional): (recursive schema, see profanity above)
-     *                 custom_blocklists (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
+     *                 custom_blocklists (Optional): (recursive schema, see custom_blocklists above)
      *                 error (Optional): (recursive schema, see error above)
      *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *                 indirect_attack (Optional): (recursive schema, see indirect_attack above)
      *             }
      *         }
      *     ]
@@ -1374,413 +1470,9 @@ public final class OpenAIClientImpl {
     }
 
     /**
-     * Gets chat completions for the provided chat messages.
-     * This is an Azure-specific version of chat completions that supports integration with configured data sources and
-     * other augmentations to the base chat completions capabilities.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     messages (Required): [
-     *          (Required){
-     *         }
-     *     ]
-     *     functions (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             description: String (Optional)
-     *             parameters: Object (Optional)
-     *         }
-     *     ]
-     *     function_call: BinaryData (Optional)
-     *     max_tokens: Integer (Optional)
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     logit_bias (Optional): {
-     *         String: int (Required)
-     *     }
-     *     user: String (Optional)
-     *     n: Integer (Optional)
-     *     stop (Optional): [
-     *         String (Optional)
-     *     ]
-     *     presence_penalty: Double (Optional)
-     *     frequency_penalty: Double (Optional)
-     *     stream: Boolean (Optional)
-     *     model: String (Optional)
-     *     dataSources (Optional): [
-     *          (Optional){
-     *         }
-     *     ]
-     *     enhancements (Optional): {
-     *         grounding (Optional): {
-     *             enabled: boolean (Required)
-     *         }
-     *         ocr (Optional): {
-     *             enabled: boolean (Required)
-     *         }
-     *     }
-     *     seed: Long (Optional)
-     *     response_format (Optional): {
-     *     }
-     *     tools (Optional): [
-     *          (Optional){
-     *         }
-     *     ]
-     *     tool_choice: BinaryData (Optional)
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     created: long (Required)
-     *     choices (Required): [
-     *          (Required){
-     *             message (Optional): {
-     *                 role: String(system/assistant/user/function/tool) (Required)
-     *                 content: String (Required)
-     *                 tool_calls (Optional): [
-     *                      (Optional){
-     *                         id: String (Required)
-     *                     }
-     *                 ]
-     *                 function_call (Optional): {
-     *                     name: String (Required)
-     *                     arguments: String (Required)
-     *                 }
-     *                 context (Optional): {
-     *                     messages (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
-     *             }
-     *             index: int (Required)
-     *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
-     *             finish_details (Optional): {
-     *             }
-     *             delta (Optional): (recursive schema, see delta above)
-     *             content_filter_results (Optional): {
-     *                 sexual (Optional): {
-     *                     severity: String(safe/low/medium/high) (Required)
-     *                     filtered: boolean (Required)
-     *                 }
-     *                 violence (Optional): (recursive schema, see violence above)
-     *                 hate (Optional): (recursive schema, see hate above)
-     *                 self_harm (Optional): (recursive schema, see self_harm above)
-     *                 profanity (Optional): {
-     *                     filtered: boolean (Required)
-     *                     detected: boolean (Required)
-     *                 }
-     *                 custom_blocklists (Optional): [
-     *                      (Optional){
-     *                         id: String (Required)
-     *                         filtered: boolean (Required)
-     *                     }
-     *                 ]
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
-     *                 }
-     *                 protected_material_text (Optional): (recursive schema, see protected_material_text above)
-     *                 protected_material_code (Optional): {
-     *                     filtered: boolean (Required)
-     *                     detected: boolean (Required)
-     *                     URL: String (Optional)
-     *                     license: String (Required)
-     *                 }
-     *             }
-     *             enhancements (Optional): {
-     *                 grounding (Optional): {
-     *                     lines (Required): [
-     *                          (Required){
-     *                             text: String (Required)
-     *                             spans (Required): [
-     *                                  (Required){
-     *                                     text: String (Required)
-     *                                     offset: int (Required)
-     *                                     length: int (Required)
-     *                                     polygon (Required): [
-     *                                          (Required){
-     *                                             x: double (Required)
-     *                                             y: double (Required)
-     *                                         }
-     *                                     ]
-     *                                 }
-     *                             ]
-     *                         }
-     *                     ]
-     *                 }
-     *             }
-     *         }
-     *     ]
-     *     prompt_filter_results (Optional): [
-     *          (Optional){
-     *             prompt_index: int (Required)
-     *             content_filter_results (Required): {
-     *                 sexual (Optional): (recursive schema, see sexual above)
-     *                 violence (Optional): (recursive schema, see violence above)
-     *                 hate (Optional): (recursive schema, see hate above)
-     *                 self_harm (Optional): (recursive schema, see self_harm above)
-     *                 profanity (Optional): (recursive schema, see profanity above)
-     *                 custom_blocklists (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 error (Optional): (recursive schema, see error above)
-     *                 jailbreak (Optional): (recursive schema, see jailbreak above)
-     *             }
-     *         }
-     *     ]
-     *     system_fingerprint: String (Optional)
-     *     usage (Required): {
-     *         completion_tokens: int (Required)
-     *         prompt_tokens: int (Required)
-     *         total_tokens: int (Required)
-     *     }
-     * }
-     * }</pre>
-     * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     * (when using non-Azure OpenAI) to use for this request.
-     * @param chatCompletionsOptions The configuration information for a chat completions request.
-     * Completions support a wide variety of tasks and generate text that continues from or "completes"
-     * provided prompt data.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return chat completions for the provided chat messages.
-     * This is an Azure-specific version of chat completions that supports integration with configured data sources and
-     * other augmentations to the base chat completions capabilities along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getChatCompletionsWithAzureExtensionsWithResponseAsync(
-        String deploymentOrModelName, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getChatCompletionsWithAzureExtensions(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), deploymentOrModelName, accept, chatCompletionsOptions,
-            requestOptions, context));
-    }
-
-    /**
-     * Gets chat completions for the provided chat messages.
-     * This is an Azure-specific version of chat completions that supports integration with configured data sources and
-     * other augmentations to the base chat completions capabilities.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     messages (Required): [
-     *          (Required){
-     *         }
-     *     ]
-     *     functions (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             description: String (Optional)
-     *             parameters: Object (Optional)
-     *         }
-     *     ]
-     *     function_call: BinaryData (Optional)
-     *     max_tokens: Integer (Optional)
-     *     temperature: Double (Optional)
-     *     top_p: Double (Optional)
-     *     logit_bias (Optional): {
-     *         String: int (Required)
-     *     }
-     *     user: String (Optional)
-     *     n: Integer (Optional)
-     *     stop (Optional): [
-     *         String (Optional)
-     *     ]
-     *     presence_penalty: Double (Optional)
-     *     frequency_penalty: Double (Optional)
-     *     stream: Boolean (Optional)
-     *     model: String (Optional)
-     *     dataSources (Optional): [
-     *          (Optional){
-     *         }
-     *     ]
-     *     enhancements (Optional): {
-     *         grounding (Optional): {
-     *             enabled: boolean (Required)
-     *         }
-     *         ocr (Optional): {
-     *             enabled: boolean (Required)
-     *         }
-     *     }
-     *     seed: Long (Optional)
-     *     response_format (Optional): {
-     *     }
-     *     tools (Optional): [
-     *          (Optional){
-     *         }
-     *     ]
-     *     tool_choice: BinaryData (Optional)
-     * }
-     * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     created: long (Required)
-     *     choices (Required): [
-     *          (Required){
-     *             message (Optional): {
-     *                 role: String(system/assistant/user/function/tool) (Required)
-     *                 content: String (Required)
-     *                 tool_calls (Optional): [
-     *                      (Optional){
-     *                         id: String (Required)
-     *                     }
-     *                 ]
-     *                 function_call (Optional): {
-     *                     name: String (Required)
-     *                     arguments: String (Required)
-     *                 }
-     *                 context (Optional): {
-     *                     messages (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
-     *             }
-     *             index: int (Required)
-     *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
-     *             finish_details (Optional): {
-     *             }
-     *             delta (Optional): (recursive schema, see delta above)
-     *             content_filter_results (Optional): {
-     *                 sexual (Optional): {
-     *                     severity: String(safe/low/medium/high) (Required)
-     *                     filtered: boolean (Required)
-     *                 }
-     *                 violence (Optional): (recursive schema, see violence above)
-     *                 hate (Optional): (recursive schema, see hate above)
-     *                 self_harm (Optional): (recursive schema, see self_harm above)
-     *                 profanity (Optional): {
-     *                     filtered: boolean (Required)
-     *                     detected: boolean (Required)
-     *                 }
-     *                 custom_blocklists (Optional): [
-     *                      (Optional){
-     *                         id: String (Required)
-     *                         filtered: boolean (Required)
-     *                     }
-     *                 ]
-     *                 error (Optional): {
-     *                     code: String (Required)
-     *                     message: String (Required)
-     *                     target: String (Optional)
-     *                     details (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     innererror (Optional): {
-     *                         code: String (Optional)
-     *                         innererror (Optional): (recursive schema, see innererror above)
-     *                     }
-     *                 }
-     *                 protected_material_text (Optional): (recursive schema, see protected_material_text above)
-     *                 protected_material_code (Optional): {
-     *                     filtered: boolean (Required)
-     *                     detected: boolean (Required)
-     *                     URL: String (Optional)
-     *                     license: String (Required)
-     *                 }
-     *             }
-     *             enhancements (Optional): {
-     *                 grounding (Optional): {
-     *                     lines (Required): [
-     *                          (Required){
-     *                             text: String (Required)
-     *                             spans (Required): [
-     *                                  (Required){
-     *                                     text: String (Required)
-     *                                     offset: int (Required)
-     *                                     length: int (Required)
-     *                                     polygon (Required): [
-     *                                          (Required){
-     *                                             x: double (Required)
-     *                                             y: double (Required)
-     *                                         }
-     *                                     ]
-     *                                 }
-     *                             ]
-     *                         }
-     *                     ]
-     *                 }
-     *             }
-     *         }
-     *     ]
-     *     prompt_filter_results (Optional): [
-     *          (Optional){
-     *             prompt_index: int (Required)
-     *             content_filter_results (Required): {
-     *                 sexual (Optional): (recursive schema, see sexual above)
-     *                 violence (Optional): (recursive schema, see violence above)
-     *                 hate (Optional): (recursive schema, see hate above)
-     *                 self_harm (Optional): (recursive schema, see self_harm above)
-     *                 profanity (Optional): (recursive schema, see profanity above)
-     *                 custom_blocklists (Optional): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *                 error (Optional): (recursive schema, see error above)
-     *                 jailbreak (Optional): (recursive schema, see jailbreak above)
-     *             }
-     *         }
-     *     ]
-     *     system_fingerprint: String (Optional)
-     *     usage (Required): {
-     *         completion_tokens: int (Required)
-     *         prompt_tokens: int (Required)
-     *         total_tokens: int (Required)
-     *     }
-     * }
-     * }</pre>
-     * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
-     * (when using non-Azure OpenAI) to use for this request.
-     * @param chatCompletionsOptions The configuration information for a chat completions request.
-     * Completions support a wide variety of tasks and generate text that continues from or "completes"
-     * provided prompt data.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return chat completions for the provided chat messages.
-     * This is an Azure-specific version of chat completions that supports integration with configured data sources and
-     * other augmentations to the base chat completions capabilities along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getChatCompletionsWithAzureExtensionsWithResponse(String deploymentOrModelName,
-        BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.getChatCompletionsWithAzureExtensionsSync(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), deploymentOrModelName, accept, chatCompletionsOptions,
-            requestOptions, Context.NONE);
-    }
-
-    /**
      * Creates an image given a prompt.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1793,9 +1485,9 @@ public final class OpenAIClientImpl {
      *     user: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     created: long (Required)
@@ -1803,7 +1495,27 @@ public final class OpenAIClientImpl {
      *          (Required){
      *             url: String (Optional)
      *             b64_json: String (Optional)
+     *             content_filter_results (Optional): {
+     *                 sexual (Optional): {
+     *                     filtered: boolean (Required)
+     *                     severity: String(safe/low/medium/high) (Required)
+     *                 }
+     *                 violence (Optional): (recursive schema, see violence above)
+     *                 hate (Optional): (recursive schema, see hate above)
+     *                 self_harm (Optional): (recursive schema, see self_harm above)
+     *             }
      *             revised_prompt: String (Optional)
+     *             prompt_filter_results (Optional): {
+     *                 sexual (Optional): (recursive schema, see sexual above)
+     *                 violence (Optional): (recursive schema, see violence above)
+     *                 hate (Optional): (recursive schema, see hate above)
+     *                 self_harm (Optional): (recursive schema, see self_harm above)
+     *                 profanity (Optional): {
+     *                     filtered: boolean (Required)
+     *                     detected: boolean (Required)
+     *                 }
+     *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *             }
      *         }
      *     ]
      * }
@@ -1831,9 +1543,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Creates an image given a prompt.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1846,9 +1557,9 @@ public final class OpenAIClientImpl {
      *     user: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     created: long (Required)
@@ -1856,7 +1567,27 @@ public final class OpenAIClientImpl {
      *          (Required){
      *             url: String (Optional)
      *             b64_json: String (Optional)
+     *             content_filter_results (Optional): {
+     *                 sexual (Optional): {
+     *                     filtered: boolean (Required)
+     *                     severity: String(safe/low/medium/high) (Required)
+     *                 }
+     *                 violence (Optional): (recursive schema, see violence above)
+     *                 hate (Optional): (recursive schema, see hate above)
+     *                 self_harm (Optional): (recursive schema, see self_harm above)
+     *             }
      *             revised_prompt: String (Optional)
+     *             prompt_filter_results (Optional): {
+     *                 sexual (Optional): (recursive schema, see sexual above)
+     *                 violence (Optional): (recursive schema, see violence above)
+     *                 hate (Optional): (recursive schema, see hate above)
+     *                 self_harm (Optional): (recursive schema, see self_harm above)
+     *                 profanity (Optional): {
+     *                     filtered: boolean (Required)
+     *                     detected: boolean (Required)
+     *                 }
+     *                 jailbreak (Optional): (recursive schema, see jailbreak above)
+     *             }
      *         }
      *     ]
      * }
@@ -1881,10 +1612,88 @@ public final class OpenAIClientImpl {
     }
 
     /**
+     * Generates text-to-speech audio from the input text.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     input: String (Required)
+     *     voice: String(alloy/echo/fable/onyx/nova/shimmer) (Required)
+     *     response_format: String(mp3/opus/aac/flac/wav/pcm) (Optional)
+     *     speed: Double (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     * 
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param speechGenerationOptions A representation of the request options that control the behavior of a
+     * text-to-speech operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> generateSpeechFromTextWithResponseAsync(String deploymentOrModelName,
+        BinaryData speechGenerationOptions, RequestOptions requestOptions) {
+        final String accept = "application/octet-stream, application/json";
+        return FluxUtil.withContext(
+            context -> service.generateSpeechFromText(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                deploymentOrModelName, accept, speechGenerationOptions, requestOptions, context));
+    }
+
+    /**
+     * Generates text-to-speech audio from the input text.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     input: String (Required)
+     *     voice: String(alloy/echo/fable/onyx/nova/shimmer) (Required)
+     *     response_format: String(mp3/opus/aac/flac/wav/pcm) (Optional)
+     *     speed: Double (Optional)
+     *     model: String (Optional)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     * 
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param speechGenerationOptions A representation of the request options that control the behavior of a
+     * text-to-speech operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> generateSpeechFromTextWithResponse(String deploymentOrModelName,
+        BinaryData speechGenerationOptions, RequestOptions requestOptions) {
+        final String accept = "application/octet-stream, application/json";
+        return service.generateSpeechFromTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            deploymentOrModelName, accept, speechGenerationOptions, requestOptions, Context.NONE);
+    }
+
+    /**
      * Return the embeddings for a given prompt.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     user: String (Optional)
@@ -1892,11 +1701,14 @@ public final class OpenAIClientImpl {
      *     input (Required): [
      *         String (Required)
      *     ]
+     *     encoding_format: String(float/base64) (Optional)
+     *     dimensions: Integer (Optional)
+     *     input_type: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     data (Required): [
@@ -1940,9 +1752,8 @@ public final class OpenAIClientImpl {
 
     /**
      * Return the embeddings for a given prompt.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     user: String (Optional)
@@ -1950,11 +1761,14 @@ public final class OpenAIClientImpl {
      *     input (Required): [
      *         String (Required)
      *     ]
+     *     encoding_format: String(float/base64) (Optional)
+     *     dimensions: Integer (Optional)
+     *     input_type: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     data (Required): [

@@ -18,28 +18,28 @@ public final class CustomDataSourceLinkedServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomDataSourceLinkedService model = BinaryData.fromString(
-            "{\"type\":\"CustomDataSource\",\"typeProperties\":\"datakrjucazwedma\",\"connectVia\":{\"referenceName\":\"lx\",\"parameters\":{\"nenxg\":\"datamxoanudvqa\",\"b\":\"datahmmgblqyfg\"}},\"description\":\"qifsgzfgxwfxji\",\"parameters\":{\"yooghjxhp\":{\"type\":\"Object\",\"defaultValue\":\"datahwnn\"},\"hoyg\":{\"type\":\"Object\",\"defaultValue\":\"dataksqiwlmegjtose\"},\"zzugdorc\":{\"type\":\"Float\",\"defaultValue\":\"dataz\"}},\"annotations\":[\"datavovsirtasepi\"],\"\":{\"amnvrcqjpbainsih\":\"dataexhhjjatlepzbiro\",\"eufj\":\"dataz\",\"zm\":\"datab\"}}")
+            "{\"type\":\"drgtuaoou\",\"typeProperties\":\"datatjpsjwlpcxljz\",\"connectVia\":{\"referenceName\":\"afaxv\",\"parameters\":{\"tx\":\"datapbnrolgelsgnen\",\"rqahlbyjahbzbtlm\":\"datauwd\",\"mjyzice\":\"datacbwmvp\",\"bnduqgjibrxxiao\":\"datarlazcgwn\"}},\"description\":\"wu\",\"parameters\":{\"tgwadudok\":{\"type\":\"String\",\"defaultValue\":\"dataspugnv\"}},\"annotations\":[\"databozezxz\"],\"\":{\"qllt\":\"datargukqobo\",\"zqlyputawdmdikuf\":\"datalqufkrnrbnjkcol\",\"ujzofyldxk\":\"dataqvv\"}}")
             .toObject(CustomDataSourceLinkedService.class);
-        Assertions.assertEquals("lx", model.connectVia().referenceName());
-        Assertions.assertEquals("qifsgzfgxwfxji", model.description());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("yooghjxhp").type());
+        Assertions.assertEquals("afaxv", model.connectVia().referenceName());
+        Assertions.assertEquals("wu", model.description());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("tgwadudok").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomDataSourceLinkedService model = new CustomDataSourceLinkedService()
-            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("lx")
-                .withParameters(mapOf("nenxg", "datamxoanudvqa", "b", "datahmmgblqyfg")))
-            .withDescription("qifsgzfgxwfxji")
-            .withParameters(mapOf("yooghjxhp",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datahwnn"), "hoyg",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataksqiwlmegjtose"),
-                "zzugdorc", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataz")))
-            .withAnnotations(Arrays.asList("datavovsirtasepi")).withTypeProperties("datakrjucazwedma");
+            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("afaxv")
+                .withParameters(mapOf("tx", "datapbnrolgelsgnen", "rqahlbyjahbzbtlm", "datauwd", "mjyzice",
+                    "datacbwmvp", "bnduqgjibrxxiao", "datarlazcgwn")))
+            .withDescription("wu")
+            .withParameters(mapOf("tgwadudok",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataspugnv")))
+            .withAnnotations(Arrays.asList("databozezxz"))
+            .withTypeProperties("datatjpsjwlpcxljz");
         model = BinaryData.fromObject(model).toObject(CustomDataSourceLinkedService.class);
-        Assertions.assertEquals("lx", model.connectVia().referenceName());
-        Assertions.assertEquals("qifsgzfgxwfxji", model.description());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("yooghjxhp").type());
+        Assertions.assertEquals("afaxv", model.connectVia().referenceName());
+        Assertions.assertEquals("wu", model.description());
+        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("tgwadudok").type());
     }
 
     // Use "Map.of" if available

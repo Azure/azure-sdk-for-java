@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VaultSettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VaultSettingInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"migrationSolutionId\":\"yxvrqtvbczsul\",\"vmwareToAzureProviderType\":\"gglmepjpfsey\"},\"location\":\"sa\",\"id\":\"gpszngafpg\",\"name\":\"lkvec\",\"type\":\"ujcngo\"}")
-                .toObject(VaultSettingInner.class);
+        VaultSettingInner model = BinaryData.fromString(
+            "{\"properties\":{\"migrationSolutionId\":\"yxvrqtvbczsul\",\"vmwareToAzureProviderType\":\"gglmepjpfsey\"},\"location\":\"sa\",\"id\":\"gpszngafpg\",\"name\":\"lkvec\",\"type\":\"ujcngo\"}")
+            .toObject(VaultSettingInner.class);
         Assertions.assertEquals("yxvrqtvbczsul", model.properties().migrationSolutionId());
         Assertions.assertEquals("gglmepjpfsey", model.properties().vmwareToAzureProviderType());
         Assertions.assertEquals("sa", model.location());
@@ -24,13 +22,8 @@ public final class VaultSettingInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VaultSettingInner model =
-            new VaultSettingInner()
-                .withProperties(
-                    new VaultSettingProperties()
-                        .withMigrationSolutionId("yxvrqtvbczsul")
-                        .withVmwareToAzureProviderType("gglmepjpfsey"))
-                .withLocation("sa");
+        VaultSettingInner model = new VaultSettingInner().withProperties(new VaultSettingProperties()
+            .withMigrationSolutionId("yxvrqtvbczsul").withVmwareToAzureProviderType("gglmepjpfsey")).withLocation("sa");
         model = BinaryData.fromObject(model).toObject(VaultSettingInner.class);
         Assertions.assertEquals("yxvrqtvbczsul", model.properties().migrationSolutionId());
         Assertions.assertEquals("gglmepjpfsey", model.properties().vmwareToAzureProviderType());

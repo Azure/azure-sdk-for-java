@@ -53,11 +53,13 @@ public final class DataDisk {
     private Boolean writeAcceleratorEnabled;
 
     /*
-     * Specifies how the virtual machine should be created. Possible values are: **Attach.** This value is used when
-     * you are using a specialized disk to create the virtual machine. **FromImage.** This value is used when you are
-     * using an image to create the virtual machine. If you are using a platform image, you should also use the
-     * imageReference element described above. If you are using a marketplace image, you should also use the plan
-     * element previously described.
+     * Specifies how the virtual machine disk should be created. Possible values are **Attach:** This value is used
+     * when you are using a specialized disk to create the virtual machine. **FromImage:** This value is used when you
+     * are using an image to create the virtual machine data disk. If you are using a platform image, you should also
+     * use the imageReference element described above. If you are using a marketplace image, you should also use the
+     * plan element previously described. **Empty:** This value is used when creating an empty data disk. **Copy:**
+     * This value is used to create a data disk from a snapshot or another disk. **Restore:** This value is used to
+     * create a data disk from a disk restore point.
      */
     @JsonProperty(value = "createOption", required = true)
     private DiskCreateOptionTypes createOption;
@@ -75,6 +77,12 @@ public final class DataDisk {
      */
     @JsonProperty(value = "managedDisk")
     private ManagedDiskParameters managedDisk;
+
+    /*
+     * The source resource identifier. It can be a snapshot, or disk restore point from which to create a disk.
+     */
+    @JsonProperty(value = "sourceResource")
+    private ApiEntityReference sourceResource;
 
     /*
      * Specifies whether the data disk is in process of detachment from the VirtualMachine/VirtualMachineScaleset
@@ -253,11 +261,13 @@ public final class DataDisk {
     }
 
     /**
-     * Get the createOption property: Specifies how the virtual machine should be created. Possible values are:
-     * **Attach.** This value is used when you are using a specialized disk to create the virtual machine.
-     * **FromImage.** This value is used when you are using an image to create the virtual machine. If you are using a
-     * platform image, you should also use the imageReference element described above. If you are using a marketplace
-     * image, you should also use the plan element previously described.
+     * Get the createOption property: Specifies how the virtual machine disk should be created. Possible values are
+     * **Attach:** This value is used when you are using a specialized disk to create the virtual machine.
+     * **FromImage:** This value is used when you are using an image to create the virtual machine data disk. If you
+     * are using a platform image, you should also use the imageReference element described above. If you are using a
+     * marketplace image, you should also use the plan element previously described. **Empty:** This value is used when
+     * creating an empty data disk. **Copy:** This value is used to create a data disk from a snapshot or another disk.
+     * **Restore:** This value is used to create a data disk from a disk restore point.
      * 
      * @return the createOption value.
      */
@@ -266,11 +276,13 @@ public final class DataDisk {
     }
 
     /**
-     * Set the createOption property: Specifies how the virtual machine should be created. Possible values are:
-     * **Attach.** This value is used when you are using a specialized disk to create the virtual machine.
-     * **FromImage.** This value is used when you are using an image to create the virtual machine. If you are using a
-     * platform image, you should also use the imageReference element described above. If you are using a marketplace
-     * image, you should also use the plan element previously described.
+     * Set the createOption property: Specifies how the virtual machine disk should be created. Possible values are
+     * **Attach:** This value is used when you are using a specialized disk to create the virtual machine.
+     * **FromImage:** This value is used when you are using an image to create the virtual machine data disk. If you
+     * are using a platform image, you should also use the imageReference element described above. If you are using a
+     * marketplace image, you should also use the plan element previously described. **Empty:** This value is used when
+     * creating an empty data disk. **Copy:** This value is used to create a data disk from a snapshot or another disk.
+     * **Restore:** This value is used to create a data disk from a disk restore point.
      * 
      * @param createOption the createOption value to set.
      * @return the DataDisk object itself.
@@ -321,6 +333,28 @@ public final class DataDisk {
      */
     public DataDisk withManagedDisk(ManagedDiskParameters managedDisk) {
         this.managedDisk = managedDisk;
+        return this;
+    }
+
+    /**
+     * Get the sourceResource property: The source resource identifier. It can be a snapshot, or disk restore point
+     * from which to create a disk.
+     * 
+     * @return the sourceResource value.
+     */
+    public ApiEntityReference sourceResource() {
+        return this.sourceResource;
+    }
+
+    /**
+     * Set the sourceResource property: The source resource identifier. It can be a snapshot, or disk restore point
+     * from which to create a disk.
+     * 
+     * @param sourceResource the sourceResource value to set.
+     * @return the DataDisk object itself.
+     */
+    public DataDisk withSourceResource(ApiEntityReference sourceResource) {
+        this.sourceResource = sourceResource;
         return this;
     }
 
@@ -444,6 +478,9 @@ public final class DataDisk {
         }
         if (managedDisk() != null) {
             managedDisk().validate();
+        }
+        if (sourceResource() != null) {
+            sourceResource().validate();
         }
     }
 

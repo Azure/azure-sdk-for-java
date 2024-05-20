@@ -13,24 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateProtectionContainerMappingInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateProtectionContainerMappingInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"targetProtectionContainerId\":\"smystuluqypfc\",\"policyId\":\"er\",\"providerSpecificInput\":{\"instanceType\":\"ReplicationProviderSpecificContainerMappingInput\"}}}")
-                .toObject(CreateProtectionContainerMappingInput.class);
+        CreateProtectionContainerMappingInput model = BinaryData.fromString(
+            "{\"properties\":{\"targetProtectionContainerId\":\"smystuluqypfc\",\"policyId\":\"er\",\"providerSpecificInput\":{\"instanceType\":\"ReplicationProviderSpecificContainerMappingInput\"}}}")
+            .toObject(CreateProtectionContainerMappingInput.class);
         Assertions.assertEquals("smystuluqypfc", model.properties().targetProtectionContainerId());
         Assertions.assertEquals("er", model.properties().policyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateProtectionContainerMappingInput model =
-            new CreateProtectionContainerMappingInput()
-                .withProperties(
-                    new CreateProtectionContainerMappingInputProperties()
-                        .withTargetProtectionContainerId("smystuluqypfc")
-                        .withPolicyId("er")
-                        .withProviderSpecificInput(new ReplicationProviderSpecificContainerMappingInput()));
+        CreateProtectionContainerMappingInput model = new CreateProtectionContainerMappingInput().withProperties(
+            new CreateProtectionContainerMappingInputProperties().withTargetProtectionContainerId("smystuluqypfc")
+                .withPolicyId("er").withProviderSpecificInput(new ReplicationProviderSpecificContainerMappingInput()));
         model = BinaryData.fromObject(model).toObject(CreateProtectionContainerMappingInput.class);
         Assertions.assertEquals("smystuluqypfc", model.properties().targetProtectionContainerId());
         Assertions.assertEquals("er", model.properties().policyId());

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Hyper-V host details. */
+/**
+ * Hyper-V host details.
+ */
 @Immutable
 public final class HyperVHostDetails {
     /*
@@ -28,13 +30,15 @@ public final class HyperVHostDetails {
     @JsonProperty(value = "marsAgentVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String marsAgentVersion;
 
-    /** Creates an instance of HyperVHostDetails class. */
+    /**
+     * Creates an instance of HyperVHostDetails class.
+     */
     public HyperVHostDetails() {
     }
 
     /**
      * Get the id property: The Hyper-V host Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +47,7 @@ public final class HyperVHostDetails {
 
     /**
      * Get the name property: The Hyper-V host name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +56,7 @@ public final class HyperVHostDetails {
 
     /**
      * Get the marsAgentVersion property: The Mars agent version.
-     *
+     * 
      * @return the marsAgentVersion value.
      */
     public String marsAgentVersion() {
@@ -61,7 +65,7 @@ public final class HyperVHostDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

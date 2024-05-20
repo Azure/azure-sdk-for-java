@@ -48,7 +48,6 @@ public final class InputStreamContent extends BinaryDataContent {
     private static final AtomicReferenceFieldUpdater<InputStreamContent, byte[]> BYTES_UPDATER
         = AtomicReferenceFieldUpdater.newUpdater(InputStreamContent.class, byte[].class, "bytes");
 
-
     /**
      * Creates an instance of {@link InputStreamContent}.
      *
@@ -194,8 +193,8 @@ public final class InputStreamContent extends BinaryDataContent {
 
     private static InputStreamContent readAndBuffer(InputStream inputStream, Long length) {
         try {
-            Tuple2<Long, List<ByteBuffer>> streamRead = StreamUtil.readStreamToListOfByteBuffers(
-                inputStream, length, INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
+            Tuple2<Long, List<ByteBuffer>> streamRead = StreamUtil.readStreamToListOfByteBuffers(inputStream, length,
+                INITIAL_BUFFER_CHUNK_SIZE, MAX_BUFFER_CHUNK_SIZE);
             long readLength = streamRead.getT1();
             List<ByteBuffer> byteBuffers = streamRead.getT2();
 
@@ -216,7 +215,8 @@ public final class InputStreamContent extends BinaryDataContent {
     private byte[] getBytes() {
         try {
             AccessibleByteArrayOutputStream dataOutputBuffer = (length == null || length < MAX_ARRAY_LENGTH)
-                ? new AccessibleByteArrayOutputStream() : new AccessibleByteArrayOutputStream(length.intValue());
+                ? new AccessibleByteArrayOutputStream()
+                : new AccessibleByteArrayOutputStream(length.intValue());
             int nRead;
             byte[] data = new byte[STREAM_READ_SIZE];
             InputStream inputStream = this.content.get();

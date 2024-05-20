@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery plan InMage failover input. */
+/**
+ * Recovery plan InMage failover input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMage")
 @Fluent
@@ -21,13 +23,15 @@ public final class RecoveryPlanInMageFailoverInput extends RecoveryPlanProviderS
     @JsonProperty(value = "recoveryPointType", required = true)
     private RpInMageRecoveryPointType recoveryPointType;
 
-    /** Creates an instance of RecoveryPlanInMageFailoverInput class. */
+    /**
+     * Creates an instance of RecoveryPlanInMageFailoverInput class.
+     */
     public RecoveryPlanInMageFailoverInput() {
     }
 
     /**
      * Get the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @return the recoveryPointType value.
      */
     public RpInMageRecoveryPointType recoveryPointType() {
@@ -36,7 +40,7 @@ public final class RecoveryPlanInMageFailoverInput extends RecoveryPlanProviderS
 
     /**
      * Set the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @param recoveryPointType the recoveryPointType value to set.
      * @return the RecoveryPlanInMageFailoverInput object itself.
      */
@@ -47,17 +51,15 @@ public final class RecoveryPlanInMageFailoverInput extends RecoveryPlanProviderS
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (recoveryPointType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryPointType in model RecoveryPlanInMageFailoverInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryPointType in model RecoveryPlanInMageFailoverInput"));
         }
     }
 

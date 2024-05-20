@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.support.generated;
 
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListOperations.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2024-04-01/examples/ListOperations.json
      */
     /**
      * Sample code: Get all operations.
-     *
+     * 
      * @param manager Entry point to SupportManager.
      */
     public static void getAllOperations(com.azure.resourcemanager.support.SupportManager manager) {

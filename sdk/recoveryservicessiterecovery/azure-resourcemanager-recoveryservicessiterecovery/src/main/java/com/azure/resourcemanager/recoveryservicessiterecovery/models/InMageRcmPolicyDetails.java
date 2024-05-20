@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMageRcm specific policy details. */
+/**
+ * InMageRcm specific policy details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcm")
 @Fluent
@@ -38,14 +40,16 @@ public final class InMageRcmPolicyDetails extends PolicyProviderSpecificDetails 
     @JsonProperty(value = "enableMultiVmSync")
     private String enableMultiVmSync;
 
-    /** Creates an instance of InMageRcmPolicyDetails class. */
+    /**
+     * Creates an instance of InMageRcmPolicyDetails class.
+     */
     public InMageRcmPolicyDetails() {
     }
 
     /**
      * Get the recoveryPointHistoryInMinutes property: The duration in minutes until which the recovery points need to
      * be stored.
-     *
+     * 
      * @return the recoveryPointHistoryInMinutes value.
      */
     public Integer recoveryPointHistoryInMinutes() {
@@ -55,7 +59,7 @@ public final class InMageRcmPolicyDetails extends PolicyProviderSpecificDetails 
     /**
      * Set the recoveryPointHistoryInMinutes property: The duration in minutes until which the recovery points need to
      * be stored.
-     *
+     * 
      * @param recoveryPointHistoryInMinutes the recoveryPointHistoryInMinutes value to set.
      * @return the InMageRcmPolicyDetails object itself.
      */
@@ -66,7 +70,7 @@ public final class InMageRcmPolicyDetails extends PolicyProviderSpecificDetails 
 
     /**
      * Get the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency in minutes.
-     *
+     * 
      * @return the appConsistentFrequencyInMinutes value.
      */
     public Integer appConsistentFrequencyInMinutes() {
@@ -75,7 +79,7 @@ public final class InMageRcmPolicyDetails extends PolicyProviderSpecificDetails 
 
     /**
      * Set the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency in minutes.
-     *
+     * 
      * @param appConsistentFrequencyInMinutes the appConsistentFrequencyInMinutes value to set.
      * @return the InMageRcmPolicyDetails object itself.
      */
@@ -86,7 +90,7 @@ public final class InMageRcmPolicyDetails extends PolicyProviderSpecificDetails 
 
     /**
      * Get the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency in minutes.
-     *
+     * 
      * @return the crashConsistentFrequencyInMinutes value.
      */
     public Integer crashConsistentFrequencyInMinutes() {
@@ -95,7 +99,7 @@ public final class InMageRcmPolicyDetails extends PolicyProviderSpecificDetails 
 
     /**
      * Set the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency in minutes.
-     *
+     * 
      * @param crashConsistentFrequencyInMinutes the crashConsistentFrequencyInMinutes value to set.
      * @return the InMageRcmPolicyDetails object itself.
      */
@@ -106,7 +110,7 @@ public final class InMageRcmPolicyDetails extends PolicyProviderSpecificDetails 
 
     /**
      * Get the enableMultiVmSync property: A value indicating whether multi-VM sync has to be enabled.
-     *
+     * 
      * @return the enableMultiVmSync value.
      */
     public String enableMultiVmSync() {
@@ -115,7 +119,7 @@ public final class InMageRcmPolicyDetails extends PolicyProviderSpecificDetails 
 
     /**
      * Set the enableMultiVmSync property: A value indicating whether multi-VM sync has to be enabled.
-     *
+     * 
      * @param enableMultiVmSync the enableMultiVmSync value to set.
      * @return the InMageRcmPolicyDetails object itself.
      */
@@ -126,7 +130,7 @@ public final class InMageRcmPolicyDetails extends PolicyProviderSpecificDetails 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** IoT Security solution analytics severity metrics. */
+/**
+ * IoT Security solution analytics severity metrics.
+ */
 @Fluent
 public final class IoTSeverityMetrics {
     /*
@@ -28,13 +30,15 @@ public final class IoTSeverityMetrics {
     @JsonProperty(value = "low")
     private Long low;
 
-    /** Creates an instance of IoTSeverityMetrics class. */
+    /**
+     * Creates an instance of IoTSeverityMetrics class.
+     */
     public IoTSeverityMetrics() {
     }
 
     /**
      * Get the high property: Count of high severity alerts/recommendations.
-     *
+     * 
      * @return the high value.
      */
     public Long high() {
@@ -43,7 +47,7 @@ public final class IoTSeverityMetrics {
 
     /**
      * Set the high property: Count of high severity alerts/recommendations.
-     *
+     * 
      * @param high the high value to set.
      * @return the IoTSeverityMetrics object itself.
      */
@@ -54,7 +58,7 @@ public final class IoTSeverityMetrics {
 
     /**
      * Get the medium property: Count of medium severity alerts/recommendations.
-     *
+     * 
      * @return the medium value.
      */
     public Long medium() {
@@ -63,7 +67,7 @@ public final class IoTSeverityMetrics {
 
     /**
      * Set the medium property: Count of medium severity alerts/recommendations.
-     *
+     * 
      * @param medium the medium value to set.
      * @return the IoTSeverityMetrics object itself.
      */
@@ -74,7 +78,7 @@ public final class IoTSeverityMetrics {
 
     /**
      * Get the low property: Count of low severity alerts/recommendations.
-     *
+     * 
      * @return the low value.
      */
     public Long low() {
@@ -83,7 +87,7 @@ public final class IoTSeverityMetrics {
 
     /**
      * Set the low property: Count of low severity alerts/recommendations.
-     *
+     * 
      * @param low the low value to set.
      * @return the IoTSeverityMetrics object itself.
      */
@@ -94,7 +98,7 @@ public final class IoTSeverityMetrics {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

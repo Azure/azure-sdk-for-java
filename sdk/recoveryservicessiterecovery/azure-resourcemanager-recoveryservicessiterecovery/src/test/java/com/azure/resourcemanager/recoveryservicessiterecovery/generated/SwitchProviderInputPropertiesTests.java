@@ -12,20 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SwitchProviderInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwitchProviderInputProperties model =
-            BinaryData
-                .fromString(
-                    "{\"targetInstanceType\":\"trgjupauutpwoqh\",\"providerSpecificDetails\":{\"instanceType\":\"SwitchProviderSpecificInput\"}}")
-                .toObject(SwitchProviderInputProperties.class);
+        SwitchProviderInputProperties model = BinaryData.fromString(
+            "{\"targetInstanceType\":\"trgjupauutpwoqh\",\"providerSpecificDetails\":{\"instanceType\":\"SwitchProviderSpecificInput\"}}")
+            .toObject(SwitchProviderInputProperties.class);
         Assertions.assertEquals("trgjupauutpwoqh", model.targetInstanceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwitchProviderInputProperties model =
-            new SwitchProviderInputProperties()
-                .withTargetInstanceType("trgjupauutpwoqh")
-                .withProviderSpecificDetails(new SwitchProviderSpecificInput());
+        SwitchProviderInputProperties model = new SwitchProviderInputProperties()
+            .withTargetInstanceType("trgjupauutpwoqh").withProviderSpecificDetails(new SwitchProviderSpecificInput());
         model = BinaryData.fromObject(model).toObject(SwitchProviderInputProperties.class);
         Assertions.assertEquals("trgjupauutpwoqh", model.targetInstanceType());
     }

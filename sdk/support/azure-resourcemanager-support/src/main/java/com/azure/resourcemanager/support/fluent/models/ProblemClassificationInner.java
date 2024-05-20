@@ -9,7 +9,9 @@ import com.azure.resourcemanager.support.models.SecondaryConsentEnabled;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ProblemClassification resource object. */
+/**
+ * ProblemClassification resource object.
+ */
 @Fluent
 public final class ProblemClassificationInner {
     /*
@@ -36,13 +38,15 @@ public final class ProblemClassificationInner {
     @JsonProperty(value = "properties")
     private ProblemClassificationProperties innerProperties;
 
-    /** Creates an instance of ProblemClassificationInner class. */
+    /**
+     * Creates an instance of ProblemClassificationInner class.
+     */
     public ProblemClassificationInner() {
     }
 
     /**
      * Get the id property: Id of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -51,7 +55,7 @@ public final class ProblemClassificationInner {
 
     /**
      * Get the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +64,7 @@ public final class ProblemClassificationInner {
 
     /**
      * Get the type property: Type of the resource 'Microsoft.Support/problemClassification'.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -69,7 +73,7 @@ public final class ProblemClassificationInner {
 
     /**
      * Get the innerProperties property: Properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProblemClassificationProperties innerProperties() {
@@ -78,7 +82,7 @@ public final class ProblemClassificationInner {
 
     /**
      * Get the displayName property: Localized name of problem classification.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -87,7 +91,7 @@ public final class ProblemClassificationInner {
 
     /**
      * Set the displayName property: Localized name of problem classification.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ProblemClassificationInner object itself.
      */
@@ -102,7 +106,7 @@ public final class ProblemClassificationInner {
     /**
      * Get the secondaryConsentEnabled property: This property indicates whether secondary consent is present for
      * problem classification.
-     *
+     * 
      * @return the secondaryConsentEnabled value.
      */
     public List<SecondaryConsentEnabled> secondaryConsentEnabled() {
@@ -112,12 +116,12 @@ public final class ProblemClassificationInner {
     /**
      * Set the secondaryConsentEnabled property: This property indicates whether secondary consent is present for
      * problem classification.
-     *
+     * 
      * @param secondaryConsentEnabled the secondaryConsentEnabled value to set.
      * @return the ProblemClassificationInner object itself.
      */
-    public ProblemClassificationInner withSecondaryConsentEnabled(
-        List<SecondaryConsentEnabled> secondaryConsentEnabled) {
+    public ProblemClassificationInner
+        withSecondaryConsentEnabled(List<SecondaryConsentEnabled> secondaryConsentEnabled) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ProblemClassificationProperties();
         }
@@ -127,7 +131,7 @@ public final class ProblemClassificationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

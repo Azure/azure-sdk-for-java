@@ -11,12 +11,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.WorkspaceSettingInner;
 
-/** An instance of this class provides access to all the operations defined in WorkspaceSettingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspaceSettingsClient.
+ */
 public interface WorkspaceSettingsClient {
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of workspace settings response as paginated response with {@link PagedIterable}.
@@ -27,7 +29,7 @@ public interface WorkspaceSettingsClient {
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +42,7 @@ public interface WorkspaceSettingsClient {
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,7 +56,7 @@ public interface WorkspaceSettingsClient {
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,7 +68,7 @@ public interface WorkspaceSettingsClient {
 
     /**
      * creating settings about where we should store your security data and logs.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
      * @param context The context to associate with this operation.
@@ -76,12 +78,12 @@ public interface WorkspaceSettingsClient {
      * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceSettingInner> createWithResponse(
-        String workspaceSettingName, WorkspaceSettingInner workspaceSetting, Context context);
+    Response<WorkspaceSettingInner> createWithResponse(String workspaceSettingName,
+        WorkspaceSettingInner workspaceSetting, Context context);
 
     /**
      * creating settings about where we should store your security data and logs.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -94,7 +96,7 @@ public interface WorkspaceSettingsClient {
 
     /**
      * Settings about where we should store your security data and logs.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
      * @param context The context to associate with this operation.
@@ -104,12 +106,12 @@ public interface WorkspaceSettingsClient {
      * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceSettingInner> updateWithResponse(
-        String workspaceSettingName, WorkspaceSettingInner workspaceSetting, Context context);
+    Response<WorkspaceSettingInner> updateWithResponse(String workspaceSettingName,
+        WorkspaceSettingInner workspaceSetting, Context context);
 
     /**
      * Settings about where we should store your security data and logs.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,7 +124,7 @@ public interface WorkspaceSettingsClient {
 
     /**
      * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +137,7 @@ public interface WorkspaceSettingsClient {
 
     /**
      * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

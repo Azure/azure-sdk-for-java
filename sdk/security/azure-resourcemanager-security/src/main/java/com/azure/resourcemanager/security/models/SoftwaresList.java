@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.SoftwareInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents the software inventory of the virtual machine. */
+/**
+ * Represents the software inventory of the virtual machine.
+ */
 @Fluent
 public final class SoftwaresList {
     /*
@@ -24,13 +26,15 @@ public final class SoftwaresList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SoftwaresList class. */
+    /**
+     * Creates an instance of SoftwaresList class.
+     */
     public SoftwaresList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<SoftwareInner> value() {
@@ -39,7 +43,7 @@ public final class SoftwaresList {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the SoftwaresList object itself.
      */
@@ -50,7 +54,7 @@ public final class SoftwaresList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class SoftwaresList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

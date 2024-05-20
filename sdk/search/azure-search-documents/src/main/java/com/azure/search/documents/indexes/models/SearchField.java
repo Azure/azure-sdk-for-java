@@ -47,6 +47,17 @@ public final class SearchField implements JsonSerializable<SearchField> {
     private Boolean hidden;
 
     /*
+     * An immutable value indicating whether the field will be persisted separately on disk to be returned in a search
+     * result. You can disable this option if you don't plan to return the field contents in a search response to save
+     * on storage overhead. This can only be set during index creation and only for vector fields. This property cannot
+     * be changed for existing fields or set as false for new fields. If this property is set as false, the property
+     * 'retrievable' must also be set to false. This property must be true or unset for key fields, for new fields, and
+     * for non-vector fields, and it must be null for complex fields. Disabling this property will reduce index storage
+     * requirements. The default is true for vector fields.
+     */
+    private Boolean stored;
+
+    /*
      * A value indicating whether the field is full-text searchable. This means it will undergo analysis such as
      * word-breaking during indexing. If you set a searchable field to a value like "sunny day", internally it will be
      * split into the individual tokens "sunny" and "day". This enables full-text searches for these terms. Fields of
@@ -129,6 +140,11 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * vector field.
      */
     private String vectorSearchProfileName;
+
+    /*
+     * The encoding format to interpret the field contents.
+     */
+    private VectorEncodingFormat vectorEncodingFormat;
 
     /*
      * A list of the names of synonym maps to associate with this field. This option can be used only with searchable
@@ -223,6 +239,38 @@ public final class SearchField implements JsonSerializable<SearchField> {
      */
     public SearchField setHidden(Boolean hidden) {
         this.hidden = (hidden == null) ? null : !hidden;
+        return this;
+    }
+
+    /**
+     * Get the stored property: An immutable value indicating whether the field will be persisted separately on disk to
+     * be returned in a search result. You can disable this option if you don't plan to return the field contents in a
+     * search response to save on storage overhead. This can only be set during index creation and only for vector
+     * fields. This property cannot be changed for existing fields or set as false for new fields. If this property is
+     * set as false, the property 'retrievable' must also be set to false. This property must be true or unset for key
+     * fields, for new fields, and for non-vector fields, and it must be null for complex fields. Disabling this
+     * property will reduce index storage requirements. The default is true for vector fields.
+     *
+     * @return the stored value.
+     */
+    public Boolean isStored() {
+        return this.stored;
+    }
+
+    /**
+     * Set the stored property: An immutable value indicating whether the field will be persisted separately on disk to
+     * be returned in a search result. You can disable this option if you don't plan to return the field contents in a
+     * search response to save on storage overhead. This can only be set during index creation and only for vector
+     * fields. This property cannot be changed for existing fields or set as false for new fields. If this property is
+     * set as false, the property 'retrievable' must also be set to false. This property must be true or unset for key
+     * fields, for new fields, and for non-vector fields, and it must be null for complex fields. Disabling this
+     * property will reduce index storage requirements. The default is true for vector fields.
+     *
+     * @param stored the stored value to set.
+     * @return the SearchField object itself.
+     */
+    public SearchField setStored(Boolean stored) {
+        this.stored = stored;
         return this;
     }
 
@@ -501,6 +549,26 @@ public final class SearchField implements JsonSerializable<SearchField> {
     }
 
     /**
+     * Get the vectorEncodingFormat property: The encoding format to interpret the field contents.
+     *
+     * @return the vectorEncodingFormat value.
+     */
+    public VectorEncodingFormat getVectorEncodingFormat() {
+        return this.vectorEncodingFormat;
+    }
+
+    /**
+     * Set the vectorEncodingFormat property: The encoding format to interpret the field contents.
+     *
+     * @param vectorEncodingFormat the vectorEncodingFormat value to set.
+     * @return the SearchField object itself.
+     */
+    public SearchField setVectorEncodingFormat(VectorEncodingFormat vectorEncodingFormat) {
+        this.vectorEncodingFormat = vectorEncodingFormat;
+        return this;
+    }
+
+    /**
      * Get the synonymMapNames property: A list of the names of synonym maps to associate with this field. This option
      * can be used only with searchable fields. Currently only one synonym map per field is supported. Assigning a
      * synonym map to a field ensures that query terms targeting that field are expanded at query-time using the rules
@@ -557,6 +625,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeBooleanField("key", this.key);
         jsonWriter.writeBooleanField("retrievable", this.hidden);
+        jsonWriter.writeBooleanField("stored", this.stored);
         jsonWriter.writeBooleanField("searchable", this.searchable);
         jsonWriter.writeBooleanField("filterable", this.filterable);
         jsonWriter.writeBooleanField("sortable", this.sortable);
@@ -569,6 +638,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
         jsonWriter.writeStringField("normalizer", this.normalizerName == null ? null : this.normalizerName.toString());
         jsonWriter.writeNumberField("dimensions", this.vectorSearchDimensions);
         jsonWriter.writeStringField("vectorSearchProfile", this.vectorSearchProfileName);
+        jsonWriter.writeStringField("vectorEncoding",
+            this.vectorEncodingFormat == null ? null : this.vectorEncodingFormat.toString());
         jsonWriter.writeArrayField("synonymMaps", this.synonymMapNames,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("fields", this.fields, (writer, element) -> writer.writeJson(element));
@@ -592,6 +663,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
             SearchFieldDataType type = null;
             Boolean key = null;
             Boolean hidden = null;
+            Boolean stored = null;
             Boolean searchable = null;
             Boolean filterable = null;
             Boolean sortable = null;
@@ -602,6 +674,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
             LexicalNormalizerName normalizerName = null;
             Integer vectorSearchDimensions = null;
             String vectorSearchProfileName = null;
+            VectorEncodingFormat vectorEncodingFormat = null;
             List<String> synonymMapNames = null;
             List<SearchField> fields = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -617,6 +690,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     key = reader.getNullable(JsonReader::getBoolean);
                 } else if ("retrievable".equals(fieldName)) {
                     hidden = reader.getNullable(JsonReader::getBoolean);
+                } else if ("stored".equals(fieldName)) {
+                    stored = reader.getNullable(JsonReader::getBoolean);
                 } else if ("searchable".equals(fieldName)) {
                     searchable = reader.getNullable(JsonReader::getBoolean);
                 } else if ("filterable".equals(fieldName)) {
@@ -637,6 +712,8 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     vectorSearchDimensions = reader.getNullable(JsonReader::getInt);
                 } else if ("vectorSearchProfile".equals(fieldName)) {
                     vectorSearchProfileName = reader.getString();
+                } else if ("vectorEncoding".equals(fieldName)) {
+                    vectorEncodingFormat = VectorEncodingFormat.fromString(reader.getString());
                 } else if ("synonymMaps".equals(fieldName)) {
                     synonymMapNames = reader.readArray(reader1 -> reader1.getString());
                 } else if ("fields".equals(fieldName)) {
@@ -649,6 +726,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                 SearchField deserializedSearchField = new SearchField(name, type);
                 deserializedSearchField.key = key;
                 deserializedSearchField.hidden = hidden;
+                deserializedSearchField.stored = stored;
                 deserializedSearchField.searchable = searchable;
                 deserializedSearchField.filterable = filterable;
                 deserializedSearchField.sortable = sortable;
@@ -659,6 +737,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                 deserializedSearchField.normalizerName = normalizerName;
                 deserializedSearchField.vectorSearchDimensions = vectorSearchDimensions;
                 deserializedSearchField.vectorSearchProfileName = vectorSearchProfileName;
+                deserializedSearchField.vectorEncodingFormat = vectorEncodingFormat;
                 deserializedSearchField.synonymMapNames = synonymMapNames;
                 deserializedSearchField.fields = fields;
                 return deserializedSearchField;

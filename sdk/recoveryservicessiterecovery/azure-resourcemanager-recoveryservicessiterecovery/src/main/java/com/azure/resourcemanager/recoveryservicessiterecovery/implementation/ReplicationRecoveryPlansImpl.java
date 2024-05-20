@@ -25,8 +25,7 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    public ReplicationRecoveryPlansImpl(
-        ReplicationRecoveryPlansClient innerClient,
+    public ReplicationRecoveryPlansImpl(ReplicationRecoveryPlansClient innerClient,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -34,23 +33,20 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
 
     public PagedIterable<RecoveryPlan> list(String resourceName, String resourceGroupName) {
         PagedIterable<RecoveryPlanInner> inner = this.serviceClient().list(resourceName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new RecoveryPlanImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryPlanImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RecoveryPlan> list(String resourceName, String resourceGroupName, Context context) {
         PagedIterable<RecoveryPlanInner> inner = this.serviceClient().list(resourceName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new RecoveryPlanImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryPlanImpl(inner1, this.manager()));
     }
 
-    public Response<RecoveryPlan> getWithResponse(
-        String resourceName, String resourceGroupName, String recoveryPlanName, Context context) {
-        Response<RecoveryPlanInner> inner =
-            this.serviceClient().getWithResponse(resourceName, resourceGroupName, recoveryPlanName, context);
+    public Response<RecoveryPlan> getWithResponse(String resourceName, String resourceGroupName,
+        String recoveryPlanName, Context context) {
+        Response<RecoveryPlanInner> inner
+            = this.serviceClient().getWithResponse(resourceName, resourceGroupName, recoveryPlanName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RecoveryPlanImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -75,8 +71,8 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
     }
 
     public RecoveryPlan failoverCancel(String resourceName, String resourceGroupName, String recoveryPlanName) {
-        RecoveryPlanInner inner =
-            this.serviceClient().failoverCancel(resourceName, resourceGroupName, recoveryPlanName);
+        RecoveryPlanInner inner
+            = this.serviceClient().failoverCancel(resourceName, resourceGroupName, recoveryPlanName);
         if (inner != null) {
             return new RecoveryPlanImpl(inner, this.manager());
         } else {
@@ -84,10 +80,10 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
         }
     }
 
-    public RecoveryPlan failoverCancel(
-        String resourceName, String resourceGroupName, String recoveryPlanName, Context context) {
-        RecoveryPlanInner inner =
-            this.serviceClient().failoverCancel(resourceName, resourceGroupName, recoveryPlanName, context);
+    public RecoveryPlan failoverCancel(String resourceName, String resourceGroupName, String recoveryPlanName,
+        Context context) {
+        RecoveryPlanInner inner
+            = this.serviceClient().failoverCancel(resourceName, resourceGroupName, recoveryPlanName, context);
         if (inner != null) {
             return new RecoveryPlanImpl(inner, this.manager());
         } else {
@@ -96,8 +92,8 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
     }
 
     public RecoveryPlan failoverCommit(String resourceName, String resourceGroupName, String recoveryPlanName) {
-        RecoveryPlanInner inner =
-            this.serviceClient().failoverCommit(resourceName, resourceGroupName, recoveryPlanName);
+        RecoveryPlanInner inner
+            = this.serviceClient().failoverCommit(resourceName, resourceGroupName, recoveryPlanName);
         if (inner != null) {
             return new RecoveryPlanImpl(inner, this.manager());
         } else {
@@ -105,39 +101,32 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
         }
     }
 
-    public RecoveryPlan failoverCommit(
-        String resourceName, String resourceGroupName, String recoveryPlanName, Context context) {
-        RecoveryPlanInner inner =
-            this.serviceClient().failoverCommit(resourceName, resourceGroupName, recoveryPlanName, context);
-        if (inner != null) {
-            return new RecoveryPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public RecoveryPlan plannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String recoveryPlanName,
-        RecoveryPlanPlannedFailoverInput input) {
-        RecoveryPlanInner inner =
-            this.serviceClient().plannedFailover(resourceName, resourceGroupName, recoveryPlanName, input);
-        if (inner != null) {
-            return new RecoveryPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public RecoveryPlan plannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String recoveryPlanName,
-        RecoveryPlanPlannedFailoverInput input,
+    public RecoveryPlan failoverCommit(String resourceName, String resourceGroupName, String recoveryPlanName,
         Context context) {
-        RecoveryPlanInner inner =
-            this.serviceClient().plannedFailover(resourceName, resourceGroupName, recoveryPlanName, input, context);
+        RecoveryPlanInner inner
+            = this.serviceClient().failoverCommit(resourceName, resourceGroupName, recoveryPlanName, context);
+        if (inner != null) {
+            return new RecoveryPlanImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public RecoveryPlan plannedFailover(String resourceName, String resourceGroupName, String recoveryPlanName,
+        RecoveryPlanPlannedFailoverInput input) {
+        RecoveryPlanInner inner
+            = this.serviceClient().plannedFailover(resourceName, resourceGroupName, recoveryPlanName, input);
+        if (inner != null) {
+            return new RecoveryPlanImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public RecoveryPlan plannedFailover(String resourceName, String resourceGroupName, String recoveryPlanName,
+        RecoveryPlanPlannedFailoverInput input, Context context) {
+        RecoveryPlanInner inner
+            = this.serviceClient().plannedFailover(resourceName, resourceGroupName, recoveryPlanName, input, context);
         if (inner != null) {
             return new RecoveryPlanImpl(inner, this.manager());
         } else {
@@ -154,36 +143,10 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
         }
     }
 
-    public RecoveryPlan reprotect(
-        String resourceName, String resourceGroupName, String recoveryPlanName, Context context) {
-        RecoveryPlanInner inner =
-            this.serviceClient().reprotect(resourceName, resourceGroupName, recoveryPlanName, context);
-        if (inner != null) {
-            return new RecoveryPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public RecoveryPlan testFailover(
-        String resourceName, String resourceGroupName, String recoveryPlanName, RecoveryPlanTestFailoverInput input) {
-        RecoveryPlanInner inner =
-            this.serviceClient().testFailover(resourceName, resourceGroupName, recoveryPlanName, input);
-        if (inner != null) {
-            return new RecoveryPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public RecoveryPlan testFailover(
-        String resourceName,
-        String resourceGroupName,
-        String recoveryPlanName,
-        RecoveryPlanTestFailoverInput input,
+    public RecoveryPlan reprotect(String resourceName, String resourceGroupName, String recoveryPlanName,
         Context context) {
-        RecoveryPlanInner inner =
-            this.serviceClient().testFailover(resourceName, resourceGroupName, recoveryPlanName, input, context);
+        RecoveryPlanInner inner
+            = this.serviceClient().reprotect(resourceName, resourceGroupName, recoveryPlanName, context);
         if (inner != null) {
             return new RecoveryPlanImpl(inner, this.manager());
         } else {
@@ -191,13 +154,32 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
         }
     }
 
-    public RecoveryPlan testFailoverCleanup(
-        String resourceName,
-        String resourceGroupName,
-        String recoveryPlanName,
+    public RecoveryPlan testFailover(String resourceName, String resourceGroupName, String recoveryPlanName,
+        RecoveryPlanTestFailoverInput input) {
+        RecoveryPlanInner inner
+            = this.serviceClient().testFailover(resourceName, resourceGroupName, recoveryPlanName, input);
+        if (inner != null) {
+            return new RecoveryPlanImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public RecoveryPlan testFailover(String resourceName, String resourceGroupName, String recoveryPlanName,
+        RecoveryPlanTestFailoverInput input, Context context) {
+        RecoveryPlanInner inner
+            = this.serviceClient().testFailover(resourceName, resourceGroupName, recoveryPlanName, input, context);
+        if (inner != null) {
+            return new RecoveryPlanImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public RecoveryPlan testFailoverCleanup(String resourceName, String resourceGroupName, String recoveryPlanName,
         RecoveryPlanTestFailoverCleanupInput input) {
-        RecoveryPlanInner inner =
-            this.serviceClient().testFailoverCleanup(resourceName, resourceGroupName, recoveryPlanName, input);
+        RecoveryPlanInner inner
+            = this.serviceClient().testFailoverCleanup(resourceName, resourceGroupName, recoveryPlanName, input);
         if (inner != null) {
             return new RecoveryPlanImpl(inner, this.manager());
         } else {
@@ -205,14 +187,10 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
         }
     }
 
-    public RecoveryPlan testFailoverCleanup(
-        String resourceName,
-        String resourceGroupName,
-        String recoveryPlanName,
-        RecoveryPlanTestFailoverCleanupInput input,
-        Context context) {
-        RecoveryPlanInner inner =
-            this.serviceClient().testFailoverCleanup(resourceName, resourceGroupName, recoveryPlanName, input, context);
+    public RecoveryPlan testFailoverCleanup(String resourceName, String resourceGroupName, String recoveryPlanName,
+        RecoveryPlanTestFailoverCleanupInput input, Context context) {
+        RecoveryPlanInner inner = this.serviceClient().testFailoverCleanup(resourceName, resourceGroupName,
+            recoveryPlanName, input, context);
         if (inner != null) {
             return new RecoveryPlanImpl(inner, this.manager());
         } else {
@@ -220,13 +198,10 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
         }
     }
 
-    public RecoveryPlan unplannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String recoveryPlanName,
+    public RecoveryPlan unplannedFailover(String resourceName, String resourceGroupName, String recoveryPlanName,
         RecoveryPlanUnplannedFailoverInput input) {
-        RecoveryPlanInner inner =
-            this.serviceClient().unplannedFailover(resourceName, resourceGroupName, recoveryPlanName, input);
+        RecoveryPlanInner inner
+            = this.serviceClient().unplannedFailover(resourceName, resourceGroupName, recoveryPlanName, input);
         if (inner != null) {
             return new RecoveryPlanImpl(inner, this.manager());
         } else {
@@ -234,14 +209,10 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
         }
     }
 
-    public RecoveryPlan unplannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String recoveryPlanName,
-        RecoveryPlanUnplannedFailoverInput input,
-        Context context) {
-        RecoveryPlanInner inner =
-            this.serviceClient().unplannedFailover(resourceName, resourceGroupName, recoveryPlanName, input, context);
+    public RecoveryPlan unplannedFailover(String resourceName, String resourceGroupName, String recoveryPlanName,
+        RecoveryPlanUnplannedFailoverInput input, Context context) {
+        RecoveryPlanInner inner
+            = this.serviceClient().unplannedFailover(resourceName, resourceGroupName, recoveryPlanName, input, context);
         if (inner != null) {
             return new RecoveryPlanImpl(inner, this.manager());
         } else {
@@ -250,117 +221,77 @@ public final class ReplicationRecoveryPlansImpl implements ReplicationRecoveryPl
     }
 
     public RecoveryPlan getById(String id) {
-        String resourceName = Utils.getValueFromIdByName(id, "vaults");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String recoveryPlanName = Utils.getValueFromIdByName(id, "replicationRecoveryPlans");
+        String recoveryPlanName = ResourceManagerUtils.getValueFromIdByName(id, "replicationRecoveryPlans");
         if (recoveryPlanName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationRecoveryPlans'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'replicationRecoveryPlans'.", id)));
         }
         return this.getWithResponse(resourceName, resourceGroupName, recoveryPlanName, Context.NONE).getValue();
     }
 
     public Response<RecoveryPlan> getByIdWithResponse(String id, Context context) {
-        String resourceName = Utils.getValueFromIdByName(id, "vaults");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String recoveryPlanName = Utils.getValueFromIdByName(id, "replicationRecoveryPlans");
+        String recoveryPlanName = ResourceManagerUtils.getValueFromIdByName(id, "replicationRecoveryPlans");
         if (recoveryPlanName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationRecoveryPlans'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'replicationRecoveryPlans'.", id)));
         }
         return this.getWithResponse(resourceName, resourceGroupName, recoveryPlanName, context);
     }
 
     public void deleteById(String id) {
-        String resourceName = Utils.getValueFromIdByName(id, "vaults");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String recoveryPlanName = Utils.getValueFromIdByName(id, "replicationRecoveryPlans");
+        String recoveryPlanName = ResourceManagerUtils.getValueFromIdByName(id, "replicationRecoveryPlans");
         if (recoveryPlanName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationRecoveryPlans'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'replicationRecoveryPlans'.", id)));
         }
         this.delete(resourceName, resourceGroupName, recoveryPlanName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceName = Utils.getValueFromIdByName(id, "vaults");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String recoveryPlanName = Utils.getValueFromIdByName(id, "replicationRecoveryPlans");
+        String recoveryPlanName = ResourceManagerUtils.getValueFromIdByName(id, "replicationRecoveryPlans");
         if (recoveryPlanName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationRecoveryPlans'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'replicationRecoveryPlans'.", id)));
         }
         this.delete(resourceName, resourceGroupName, recoveryPlanName, context);
     }

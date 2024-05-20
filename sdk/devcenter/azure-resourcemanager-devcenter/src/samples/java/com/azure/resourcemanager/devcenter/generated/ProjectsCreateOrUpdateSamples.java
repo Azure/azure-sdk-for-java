@@ -7,20 +7,21 @@ package com.azure.resourcemanager.devcenter.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Projects CreateOrUpdate. */
+/**
+ * Samples for Projects CreateOrUpdate.
+ */
 public final class ProjectsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Projects_PutWithMaxDevBoxPerUser.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Projects_PutWithMaxDevBoxPerUser.json
      */
     /**
      * Sample code: Projects_CreateOrUpdateWithLimitsPerDev.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
-    public static void projectsCreateOrUpdateWithLimitsPerDev(
-        com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager
-            .projects()
+    public static void
+        projectsCreateOrUpdateWithLimitsPerDev(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
+        manager.projects()
             .define("DevProject")
             .withRegion("centralus")
             .withExistingResourceGroup("rg1")
@@ -33,16 +34,15 @@ public final class ProjectsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Projects_Put.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Projects_Put.json
      */
     /**
      * Sample code: Projects_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void projectsCreateOrUpdate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager
-            .projects()
+        manager.projects()
             .define("DevProject")
             .withRegion("centralus")
             .withExistingResourceGroup("rg1")

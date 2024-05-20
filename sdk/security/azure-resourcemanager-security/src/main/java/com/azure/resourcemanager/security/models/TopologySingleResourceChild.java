@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TopologySingleResourceChild model. */
+/**
+ * The TopologySingleResourceChild model.
+ */
 @Immutable
 public final class TopologySingleResourceChild {
     /*
@@ -16,13 +18,15 @@ public final class TopologySingleResourceChild {
     @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
 
-    /** Creates an instance of TopologySingleResourceChild class. */
+    /**
+     * Creates an instance of TopologySingleResourceChild class.
+     */
     public TopologySingleResourceChild() {
     }
 
     /**
      * Get the resourceId property: Azure resource id which serves as child resource in topology view.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -31,7 +35,7 @@ public final class TopologySingleResourceChild {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

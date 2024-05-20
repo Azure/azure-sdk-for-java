@@ -6,14 +6,28 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The gcpOrganization data for the member account. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "organizationMembershipType")
+/**
+ * The gcpOrganization data for the member account.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "organizationMembershipType",
+    defaultImpl = GcpOrganizationalDataMember.class,
+    visible = true)
 @JsonTypeName("Member")
 @Fluent
 public final class GcpOrganizationalDataMember extends GcpOrganizationalData {
+    /*
+     * The multi cloud account's membership type in the organization
+     */
+    @JsonTypeId
+    @JsonProperty(value = "organizationMembershipType", required = true)
+    private OrganizationMembershipType organizationMembershipType = OrganizationMembershipType.MEMBER;
+
     /*
      * If the multi cloud account is not of membership type organization, this will be the ID of the project's parent
      */
@@ -26,14 +40,26 @@ public final class GcpOrganizationalDataMember extends GcpOrganizationalData {
     @JsonProperty(value = "managementProjectNumber")
     private String managementProjectNumber;
 
-    /** Creates an instance of GcpOrganizationalDataMember class. */
+    /**
+     * Creates an instance of GcpOrganizationalDataMember class.
+     */
     public GcpOrganizationalDataMember() {
+    }
+
+    /**
+     * Get the organizationMembershipType property: The multi cloud account's membership type in the organization.
+     * 
+     * @return the organizationMembershipType value.
+     */
+    @Override
+    public OrganizationMembershipType organizationMembershipType() {
+        return this.organizationMembershipType;
     }
 
     /**
      * Get the parentHierarchyId property: If the multi cloud account is not of membership type organization, this will
      * be the ID of the project's parent.
-     *
+     * 
      * @return the parentHierarchyId value.
      */
     public String parentHierarchyId() {
@@ -43,7 +69,7 @@ public final class GcpOrganizationalDataMember extends GcpOrganizationalData {
     /**
      * Set the parentHierarchyId property: If the multi cloud account is not of membership type organization, this will
      * be the ID of the project's parent.
-     *
+     * 
      * @param parentHierarchyId the parentHierarchyId value to set.
      * @return the GcpOrganizationalDataMember object itself.
      */
@@ -54,7 +80,7 @@ public final class GcpOrganizationalDataMember extends GcpOrganizationalData {
 
     /**
      * Get the managementProjectNumber property: The GCP management project number from organizational onboarding.
-     *
+     * 
      * @return the managementProjectNumber value.
      */
     public String managementProjectNumber() {
@@ -63,7 +89,7 @@ public final class GcpOrganizationalDataMember extends GcpOrganizationalData {
 
     /**
      * Set the managementProjectNumber property: The GCP management project number from organizational onboarding.
-     *
+     * 
      * @param managementProjectNumber the managementProjectNumber value to set.
      * @return the GcpOrganizationalDataMember object itself.
      */
@@ -74,7 +100,7 @@ public final class GcpOrganizationalDataMember extends GcpOrganizationalData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

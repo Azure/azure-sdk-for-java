@@ -7,18 +7,19 @@ package com.azure.resourcemanager.playwrighttesting.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.playwrighttesting.models.FreeTrialProperties;
-import com.azure.resourcemanager.playwrighttesting.models.ProvisioningState;
+import com.azure.resourcemanager.playwrighttesting.models.QuotaProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A quota resource. */
+/**
+ * A quota resource.
+ */
 @Fluent
 public final class QuotaInner extends ProxyResource {
     /*
      * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
-    private QuotaProperties innerProperties;
+    private QuotaProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -26,22 +27,35 @@ public final class QuotaInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of QuotaInner class. */
+    /**
+     * Creates an instance of QuotaInner class.
+     */
     public QuotaInner() {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
      */
-    private QuotaProperties innerProperties() {
-        return this.innerProperties;
+    public QuotaProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the QuotaInner object itself.
+     */
+    public QuotaInner withProperties(QuotaProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,45 +63,13 @@ public final class QuotaInner extends ProxyResource {
     }
 
     /**
-     * Get the freeTrial property: The free-trial quota.
-     *
-     * @return the freeTrial value.
-     */
-    public FreeTrialProperties freeTrial() {
-        return this.innerProperties() == null ? null : this.innerProperties().freeTrial();
-    }
-
-    /**
-     * Set the freeTrial property: The free-trial quota.
-     *
-     * @param freeTrial the freeTrial value to set.
-     * @return the QuotaInner object itself.
-     */
-    public QuotaInner withFreeTrial(FreeTrialProperties freeTrial) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new QuotaProperties();
-        }
-        this.innerProperties().withFreeTrial(freeTrial);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The status of the last operation.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

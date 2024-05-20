@@ -4,35 +4,27 @@
 
 package com.azure.resourcemanager.notificationhubs.generated;
 
-import com.azure.core.util.Context;
-import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
 import com.azure.resourcemanager.notificationhubs.models.AccessRights;
-import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleCreateOrUpdateParameters;
 import java.util.Arrays;
 
-/** Samples for NotificationHubs CreateOrUpdateAuthorizationRule. */
+/**
+ * Samples for NotificationHubs CreateOrUpdateAuthorizationRule.
+ */
 public final class NotificationHubsCreateOrUpdateAuthorizationRuleSamples {
     /*
-     * x-ms-original-file: specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/stable/2017-04-01/examples/NotificationHubs/NotificationHubAuthorizationRuleCreate.json
+     * x-ms-original-file:
+     * specification/notificationhubs/resource-manager/Microsoft.NotificationHubs/preview/2023-10-01-preview/examples/
+     * NotificationHubs/AuthorizationRuleCreateOrUpdate.json
      */
     /**
-     * Sample code: NotificationHubAuthorizationRuleCreate.
-     *
+     * Sample code: NotificationHubs_CreateOrUpdateAuthorizationRule.
+     * 
      * @param manager Entry point to NotificationHubsManager.
      */
-    public static void notificationHubAuthorizationRuleCreate(
+    public static void notificationHubsCreateOrUpdateAuthorizationRule(
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager manager) {
-        manager
-            .notificationHubs()
-            .createOrUpdateAuthorizationRuleWithResponse(
-                "5ktrial",
-                "nh-sdk-ns",
-                "nh-sdk-hub",
-                "DefaultListenSharedAccessSignature",
-                new SharedAccessAuthorizationRuleCreateOrUpdateParameters()
-                    .withProperties(
-                        new SharedAccessAuthorizationRuleProperties()
-                            .withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.SEND))),
-                Context.NONE);
+        manager.notificationHubs().defineAuthorizationRule("MyManageSharedAccessKey")
+            .withExistingNotificationHub("5ktrial", "nh-sdk-ns", "nh-sdk-hub")
+            .withRights(Arrays.asList(AccessRights.LISTEN, AccessRights.SEND)).create();
     }
 }

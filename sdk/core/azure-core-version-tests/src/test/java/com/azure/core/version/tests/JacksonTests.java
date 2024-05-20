@@ -47,7 +47,8 @@ public class JacksonTests {
         simpleXml.string = "hello";
         simpleXml.nullableDecimal = 12.5D;
 
-        assertEquals("<?xml version='1.0' encoding='UTF-8'?><SimpleXml><int>1</int><string>hello</string><nullableDecimal>12.5</nullableDecimal></SimpleXml>",
+        assertEquals(
+            "<?xml version='1.0' encoding='UTF-8'?><SimpleXml><int>1</int><string>hello</string><nullableDecimal>12.5</nullableDecimal></SimpleXml>",
             ADAPTER.serialize(simpleXml, SerializerEncoding.XML));
     }
 

@@ -94,7 +94,8 @@ class OpenTelemetryUtils {
         } else if (value instanceof Byte) {
             attributesBuilder.put(AttributeKey.longKey(key), (Byte) value);
         } else {
-            LOGGER.warning("Could not populate attribute with key '{}', type {} is not supported.", key, value.getClass().getName());
+            LOGGER.warning("Could not populate attribute with key '{}', type {} is not supported.", key,
+                value.getClass().getName());
         }
     }
 
@@ -127,7 +128,8 @@ class OpenTelemetryUtils {
         } else if (value instanceof Byte) {
             span.setAttribute(AttributeKey.longKey(key), (Byte) value);
         } else {
-            LOGGER.warning("Could not populate attribute with key '{}', type {} is not supported.", key, value.getClass().getName());
+            LOGGER.warning("Could not populate attribute with key '{}', type {} is not supported.", key,
+                value.getClass().getName());
         }
     }
 
@@ -155,8 +157,7 @@ class OpenTelemetryUtils {
             return span;
         }
 
-        span.setAttribute(ERROR_TYPE_ATTRIBUTE,
-            statusMessage != null ? statusMessage : throwable.getClass().getName());
+        span.setAttribute(ERROR_TYPE_ATTRIBUTE, statusMessage != null ? statusMessage : throwable.getClass().getName());
 
         return span.setStatus(StatusCode.ERROR, throwable != null ? throwable.getMessage() : statusMessage);
     }

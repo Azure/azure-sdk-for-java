@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureADAdministratorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureADAdministratorInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"uv\",\"sid\":\"xpyb\",\"tenantId\":\"m\",\"identityResourceId\":\"mtz\"},\"id\":\"bsphrupidgsybbe\",\"name\":\"hphoycm\",\"type\":\"xaobhdxbmtqioqjz\"}")
-                .toObject(AzureADAdministratorInner.class);
+        AzureADAdministratorInner model = BinaryData.fromString(
+            "{\"properties\":{\"administratorType\":\"ActiveDirectory\",\"login\":\"uv\",\"sid\":\"xpyb\",\"tenantId\":\"m\",\"identityResourceId\":\"mtz\"},\"id\":\"bsphrupidgsybbe\",\"name\":\"hphoycm\",\"type\":\"xaobhdxbmtqioqjz\"}")
+            .toObject(AzureADAdministratorInner.class);
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, model.administratorType());
         Assertions.assertEquals("uv", model.login());
         Assertions.assertEquals("xpyb", model.sid());
@@ -26,9 +24,8 @@ public final class AzureADAdministratorInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureADAdministratorInner model =
-            new AzureADAdministratorInner()
-                .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
+        AzureADAdministratorInner model
+            = new AzureADAdministratorInner().withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
                 .withLogin("uv")
                 .withSid("xpyb")
                 .withTenantId("m")

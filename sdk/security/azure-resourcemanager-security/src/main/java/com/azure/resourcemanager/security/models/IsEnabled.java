@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates whether the extension is enabled. */
+/**
+ * Indicates whether the extension is enabled.
+ */
 public final class IsEnabled extends ExpandableStringEnum<IsEnabled> {
-    /** Static value True for IsEnabled. */
+    /**
+     * Static value True for IsEnabled.
+     */
     public static final IsEnabled TRUE = fromString("True");
 
-    /** Static value False for IsEnabled. */
+    /**
+     * Static value False for IsEnabled.
+     */
     public static final IsEnabled FALSE = fromString("False");
 
     /**
      * Creates a new instance of IsEnabled value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class IsEnabled extends ExpandableStringEnum<IsEnabled> {
 
     /**
      * Creates or finds a IsEnabled from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IsEnabled.
      */
@@ -38,7 +44,7 @@ public final class IsEnabled extends ExpandableStringEnum<IsEnabled> {
 
     /**
      * Gets known IsEnabled values.
-     *
+     * 
      * @return known IsEnabled values.
      */
     public static Collection<IsEnabled> values() {

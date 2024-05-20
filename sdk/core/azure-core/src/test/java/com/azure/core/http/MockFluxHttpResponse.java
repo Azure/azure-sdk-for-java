@@ -70,9 +70,7 @@ public class MockFluxHttpResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        return getBodyAsByteArray().map(
-            bytes -> new String(bytes, charset)
-        );
+        return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
     }
 
     @Override

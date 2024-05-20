@@ -13,24 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class UnplannedFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UnplannedFailoverInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"failoverDirection\":\"szqujizdvoq\",\"sourceSiteOperations\":\"ibyowbblgyavutp\",\"providerSpecificDetails\":{\"instanceType\":\"UnplannedFailoverProviderSpecificInput\"}}}")
-                .toObject(UnplannedFailoverInput.class);
+        UnplannedFailoverInput model = BinaryData.fromString(
+            "{\"properties\":{\"failoverDirection\":\"szqujizdvoq\",\"sourceSiteOperations\":\"ibyowbblgyavutp\",\"providerSpecificDetails\":{\"instanceType\":\"UnplannedFailoverProviderSpecificInput\"}}}")
+            .toObject(UnplannedFailoverInput.class);
         Assertions.assertEquals("szqujizdvoq", model.properties().failoverDirection());
         Assertions.assertEquals("ibyowbblgyavutp", model.properties().sourceSiteOperations());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UnplannedFailoverInput model =
-            new UnplannedFailoverInput()
-                .withProperties(
-                    new UnplannedFailoverInputProperties()
-                        .withFailoverDirection("szqujizdvoq")
-                        .withSourceSiteOperations("ibyowbblgyavutp")
-                        .withProviderSpecificDetails(new UnplannedFailoverProviderSpecificInput()));
+        UnplannedFailoverInput model
+            = new UnplannedFailoverInput().withProperties(new UnplannedFailoverInputProperties()
+                .withFailoverDirection("szqujizdvoq").withSourceSiteOperations("ibyowbblgyavutp")
+                .withProviderSpecificDetails(new UnplannedFailoverProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(UnplannedFailoverInput.class);
         Assertions.assertEquals("szqujizdvoq", model.properties().failoverDirection());
         Assertions.assertEquals("ibyowbblgyavutp", model.properties().sourceSiteOperations());

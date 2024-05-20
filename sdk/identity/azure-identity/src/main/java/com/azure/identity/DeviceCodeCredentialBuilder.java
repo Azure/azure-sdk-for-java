@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  * Fluent credential builder for instantiating a {@link DeviceCodeCredential}.
  *
  * <p>Device code authentication is a type of authentication flow offered by
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Microsoft Entra ID</a> that
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> that
  * allows users to sign in to applications on devices that don't have a web browser or a keyboard.
  * This authentication method is particularly useful for devices such as smart TVs, gaming consoles, and
  * Internet of Things (IoT) devices that may not have the capability to enter a username and password.

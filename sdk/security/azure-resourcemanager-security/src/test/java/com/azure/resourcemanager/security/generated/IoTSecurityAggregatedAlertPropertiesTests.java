@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.IoTSecurityAggregatedAle
 public final class IoTSecurityAggregatedAlertPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IoTSecurityAggregatedAlertProperties model =
-            BinaryData
-                .fromString(
-                    "{\"alertType\":\"nsmvbxwyj\",\"alertDisplayName\":\"lh\",\"vendorName\":\"aln\",\"reportedSeverity\":\"High\",\"remediationSteps\":\"sxyawjoyaqcs\",\"description\":\"jpkiidzyexznelix\",\"count\":3030315127445847890,\"effectedResourceType\":\"folhbnxknal\",\"systemSource\":\"lp\",\"actionTaken\":\"gdtpnapnyiro\",\"logAnalyticsQuery\":\"hpigv\",\"topDevicesList\":[{\"deviceId\":\"gqgitxmedjvcsl\",\"alertsCount\":5849348987172300465,\"lastOccurrence\":\"ncw\"},{\"deviceId\":\"hxg\",\"alertsCount\":8312530618702549187,\"lastOccurrence\":\"ucnapkteoellwp\"},{\"deviceId\":\"d\",\"alertsCount\":4494990539994529771,\"lastOccurrence\":\"b\"},{\"deviceId\":\"ceopzfqrhhuaopp\",\"alertsCount\":5543596082951034644,\"lastOccurrence\":\"xolzdahzx\"}]}")
-                .toObject(IoTSecurityAggregatedAlertProperties.class);
+        IoTSecurityAggregatedAlertProperties model = BinaryData.fromString(
+            "{\"alertType\":\"idmhmwf\",\"alertDisplayName\":\"lfmu\",\"vendorName\":\"ck\",\"reportedSeverity\":\"Low\",\"remediationSteps\":\"vwe\",\"description\":\"xoy\",\"count\":275572615553249364,\"effectedResourceType\":\"aimmoiroqb\",\"systemSource\":\"hbragapyyr\",\"actionTaken\":\"svbpavbopfppdbwn\",\"logAnalyticsQuery\":\"gahxkumasjcaa\",\"topDevicesList\":[{\"deviceId\":\"mcp\",\"alertsCount\":1477885979521930288,\"lastOccurrence\":\"qepvufhbzeh\"},{\"deviceId\":\"hoqhnl\",\"alertsCount\":8263226324503910031,\"lastOccurrence\":\"dxeaclgsch\"},{\"deviceId\":\"imkrsrrmouc\",\"alertsCount\":1879165570822213378,\"lastOccurrence\":\"puviyfcaabe\"},{\"deviceId\":\"hbhlvbm\",\"alertsCount\":1945796688920432745,\"lastOccurrence\":\"s\"}]}")
+            .toObject(IoTSecurityAggregatedAlertProperties.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Replication eligibility results collection response model. */
+/**
+ * Replication eligibility results collection response model.
+ */
 @Fluent
 public final class ReplicationEligibilityResultsCollectionInner {
     /*
@@ -17,13 +19,15 @@ public final class ReplicationEligibilityResultsCollectionInner {
     @JsonProperty(value = "value")
     private List<ReplicationEligibilityResultsInner> value;
 
-    /** Creates an instance of ReplicationEligibilityResultsCollectionInner class. */
+    /**
+     * Creates an instance of ReplicationEligibilityResultsCollectionInner class.
+     */
     public ReplicationEligibilityResultsCollectionInner() {
     }
 
     /**
      * Get the value property: The replication eligibility results details.
-     *
+     * 
      * @return the value value.
      */
     public List<ReplicationEligibilityResultsInner> value() {
@@ -32,7 +36,7 @@ public final class ReplicationEligibilityResultsCollectionInner {
 
     /**
      * Set the value property: The replication eligibility results details.
-     *
+     * 
      * @param value the value value to set.
      * @return the ReplicationEligibilityResultsCollectionInner object itself.
      */
@@ -43,7 +47,7 @@ public final class ReplicationEligibilityResultsCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

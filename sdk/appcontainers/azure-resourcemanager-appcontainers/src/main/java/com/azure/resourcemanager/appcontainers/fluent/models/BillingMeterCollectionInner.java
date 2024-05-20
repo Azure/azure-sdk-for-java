@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appcontainers.models.BillingMeter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of billing meters. */
+/**
+ * Collection of billing meters.
+ */
 @Fluent
 public final class BillingMeterCollectionInner {
     /*
@@ -19,13 +21,15 @@ public final class BillingMeterCollectionInner {
     @JsonProperty(value = "value", required = true)
     private List<BillingMeter> value;
 
-    /** Creates an instance of BillingMeterCollectionInner class. */
+    /**
+     * Creates an instance of BillingMeterCollectionInner class.
+     */
     public BillingMeterCollectionInner() {
     }
 
     /**
      * Get the value property: Collection of billing meters.
-     *
+     * 
      * @return the value value.
      */
     public List<BillingMeter> value() {
@@ -34,7 +38,7 @@ public final class BillingMeterCollectionInner {
 
     /**
      * Set the value property: Collection of billing meters.
-     *
+     * 
      * @param value the value value to set.
      * @return the BillingMeterCollectionInner object itself.
      */
@@ -45,15 +49,13 @@ public final class BillingMeterCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model BillingMeterCollectionInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model BillingMeterCollectionInner"));
         } else {
             value().forEach(e -> e.validate());
         }

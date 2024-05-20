@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** This class represents the vm NicUpdates task details. */
+/**
+ * This class represents the vm NicUpdates task details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VmNicUpdatesTaskDetails")
 @Fluent
@@ -32,13 +34,15 @@ public final class VmNicUpdatesTaskDetails extends TaskTypeDetails {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of VmNicUpdatesTaskDetails class. */
+    /**
+     * Creates an instance of VmNicUpdatesTaskDetails class.
+     */
     public VmNicUpdatesTaskDetails() {
     }
 
     /**
      * Get the vmId property: Virtual machine Id.
-     *
+     * 
      * @return the vmId value.
      */
     public String vmId() {
@@ -47,7 +51,7 @@ public final class VmNicUpdatesTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the vmId property: Virtual machine Id.
-     *
+     * 
      * @param vmId the vmId value to set.
      * @return the VmNicUpdatesTaskDetails object itself.
      */
@@ -58,7 +62,7 @@ public final class VmNicUpdatesTaskDetails extends TaskTypeDetails {
 
     /**
      * Get the nicId property: Nic Id.
-     *
+     * 
      * @return the nicId value.
      */
     public String nicId() {
@@ -67,7 +71,7 @@ public final class VmNicUpdatesTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the nicId property: Nic Id.
-     *
+     * 
      * @param nicId the nicId value to set.
      * @return the VmNicUpdatesTaskDetails object itself.
      */
@@ -78,7 +82,7 @@ public final class VmNicUpdatesTaskDetails extends TaskTypeDetails {
 
     /**
      * Get the name property: Name of the Nic.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -87,7 +91,7 @@ public final class VmNicUpdatesTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the name property: Name of the Nic.
-     *
+     * 
      * @param name the name value to set.
      * @return the VmNicUpdatesTaskDetails object itself.
      */
@@ -98,7 +102,7 @@ public final class VmNicUpdatesTaskDetails extends TaskTypeDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -9,22 +9,19 @@ pr:
       - eng/pipelines/native-image-live-tests.yml
       - eng/scrips/Install-GraalVM-JDK.ps1
 
-variables:
-  - template: /eng/pipelines/templates/variables/globals.yml
-
-stages:
-  - template: /eng/pipelines/templates/stages/archetype-sdk-native-tests.yml
-    parameters:
-      ServiceDirectory: appconfiguration
-      Artifacts:
-      - name: azure-data-appconfiguration
-        groupId: com.azure
-        safeName: azuredataappconfiguration
-      TimeoutInMinutes: 90
-      SupportedClouds: 'Public'
-      EnvVars:
-        AZURE_CLIENT_ID: $(APPCONFIGURATION_CLIENT_ID)
-        AZURE_CLIENT_SECRET: $(APPCONFIGURATION_CLIENT_SECRET)
-        AZURE_TENANT_ID: $(APPCONFIGURATION_TENANT_ID)
-      TestGoals: 'verify'
-      TestOptions: '-DskipSpringITs=false'
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-native-tests.yml
+  parameters:
+    ServiceDirectory: appconfiguration
+    Artifacts:
+    - name: azure-data-appconfiguration
+      groupId: com.azure
+      safeName: azuredataappconfiguration
+    TimeoutInMinutes: 90
+    SupportedClouds: 'Public'
+    EnvVars:
+      AZURE_CLIENT_ID: $(APPCONFIGURATION_CLIENT_ID)
+      AZURE_CLIENT_SECRET: $(APPCONFIGURATION_CLIENT_SECRET)
+      AZURE_TENANT_ID: $(APPCONFIGURATION_TENANT_ID)
+    TestGoals: 'verify'
+    TestOptions: '-DskipSpringITs=false'

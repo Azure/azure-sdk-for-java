@@ -7,22 +7,27 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A custom alert rule. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "ruleType",
-    defaultImpl = CustomAlertRule.class)
+/**
+ * A custom alert rule.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "ruleType", defaultImpl = CustomAlertRule.class, visible = true)
 @JsonTypeName("CustomAlertRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ThresholdCustomAlertRule", value = ThresholdCustomAlertRule.class),
-    @JsonSubTypes.Type(name = "ListCustomAlertRule", value = ListCustomAlertRule.class)
-})
+    @JsonSubTypes.Type(name = "ListCustomAlertRule", value = ListCustomAlertRule.class) })
 @Fluent
 public class CustomAlertRule {
+    /*
+     * The type of the custom alert rule.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ruleType", required = true)
+    private String ruleType;
+
     /*
      * The display name of the custom alert.
      */
@@ -41,13 +46,25 @@ public class CustomAlertRule {
     @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
-    /** Creates an instance of CustomAlertRule class. */
+    /**
+     * Creates an instance of CustomAlertRule class.
+     */
     public CustomAlertRule() {
+        this.ruleType = "CustomAlertRule";
+    }
+
+    /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    public String ruleType() {
+        return this.ruleType;
     }
 
     /**
      * Get the displayName property: The display name of the custom alert.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -56,7 +73,7 @@ public class CustomAlertRule {
 
     /**
      * Get the description property: The description of the custom alert.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -65,7 +82,7 @@ public class CustomAlertRule {
 
     /**
      * Get the isEnabled property: Status of the custom alert.
-     *
+     * 
      * @return the isEnabled value.
      */
     public boolean isEnabled() {
@@ -74,7 +91,7 @@ public class CustomAlertRule {
 
     /**
      * Set the isEnabled property: Status of the custom alert.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the CustomAlertRule object itself.
      */
@@ -85,7 +102,7 @@ public class CustomAlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** This class represents details for export jobs workflow. */
+/**
+ * This class represents details for export jobs workflow.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("ExportJobDetails")
 @Fluent
@@ -27,13 +29,15 @@ public final class ExportJobDetails extends JobDetails {
     @JsonProperty(value = "sasToken")
     private String sasToken;
 
-    /** Creates an instance of ExportJobDetails class. */
+    /**
+     * Creates an instance of ExportJobDetails class.
+     */
     public ExportJobDetails() {
     }
 
     /**
      * Get the blobUri property: BlobUri of the exported jobs.
-     *
+     * 
      * @return the blobUri value.
      */
     public String blobUri() {
@@ -42,7 +46,7 @@ public final class ExportJobDetails extends JobDetails {
 
     /**
      * Set the blobUri property: BlobUri of the exported jobs.
-     *
+     * 
      * @param blobUri the blobUri value to set.
      * @return the ExportJobDetails object itself.
      */
@@ -53,7 +57,7 @@ public final class ExportJobDetails extends JobDetails {
 
     /**
      * Get the sasToken property: The sas token to access blob.
-     *
+     * 
      * @return the sasToken value.
      */
     public String sasToken() {
@@ -62,7 +66,7 @@ public final class ExportJobDetails extends JobDetails {
 
     /**
      * Set the sasToken property: The sas token to access blob.
-     *
+     * 
      * @param sasToken the sasToken value to set.
      * @return the ExportJobDetails object itself.
      */
@@ -71,7 +75,9 @@ public final class ExportJobDetails extends JobDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExportJobDetails withAffectedObjectDetails(Map<String, String> affectedObjectDetails) {
         super.withAffectedObjectDetails(affectedObjectDetails);
@@ -80,7 +86,7 @@ public final class ExportJobDetails extends JobDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

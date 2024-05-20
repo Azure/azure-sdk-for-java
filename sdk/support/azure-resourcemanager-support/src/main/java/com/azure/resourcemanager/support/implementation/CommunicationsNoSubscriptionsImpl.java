@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.support.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -23,34 +24,28 @@ public final class CommunicationsNoSubscriptionsImpl implements CommunicationsNo
 
     private final com.azure.resourcemanager.support.SupportManager serviceManager;
 
-    public CommunicationsNoSubscriptionsImpl(
-        CommunicationsNoSubscriptionsClient innerClient,
+    public CommunicationsNoSubscriptionsImpl(CommunicationsNoSubscriptionsClient innerClient,
         com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
-        Response<CheckNameAvailabilityOutputInner> inner =
-            this
-                .serviceClient()
-                .checkNameAvailabilityWithResponse(supportTicketName, checkNameAvailabilityInput, context);
+    public Response<CheckNameAvailabilityOutput> checkNameAvailabilityWithResponse(String supportTicketName,
+        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
+        Response<CheckNameAvailabilityOutputInner> inner = this.serviceClient()
+            .checkNameAvailabilityWithResponse(supportTicketName, checkNameAvailabilityInput, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityOutputImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckNameAvailabilityOutput checkNameAvailability(
-        String supportTicketName, CheckNameAvailabilityInput checkNameAvailabilityInput) {
-        CheckNameAvailabilityOutputInner inner =
-            this.serviceClient().checkNameAvailability(supportTicketName, checkNameAvailabilityInput);
+    public CheckNameAvailabilityOutput checkNameAvailability(String supportTicketName,
+        CheckNameAvailabilityInput checkNameAvailabilityInput) {
+        CheckNameAvailabilityOutputInner inner
+            = this.serviceClient().checkNameAvailability(supportTicketName, checkNameAvailabilityInput);
         if (inner != null) {
             return new CheckNameAvailabilityOutputImpl(inner, this.manager());
         } else {
@@ -58,15 +53,24 @@ public final class CommunicationsNoSubscriptionsImpl implements CommunicationsNo
         }
     }
 
-    public Response<CommunicationDetails> getWithResponse(
-        String supportTicketName, String communicationName, Context context) {
-        Response<CommunicationDetailsInner> inner =
-            this.serviceClient().getWithResponse(supportTicketName, communicationName, context);
+    public PagedIterable<CommunicationDetails> list(String supportTicketName) {
+        PagedIterable<CommunicationDetailsInner> inner = this.serviceClient().list(supportTicketName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommunicationDetailsImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<CommunicationDetails> list(String supportTicketName, Integer top, String filter,
+        Context context) {
+        PagedIterable<CommunicationDetailsInner> inner
+            = this.serviceClient().list(supportTicketName, top, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommunicationDetailsImpl(inner1, this.manager()));
+    }
+
+    public Response<CommunicationDetails> getWithResponse(String supportTicketName, String communicationName,
+        Context context) {
+        Response<CommunicationDetailsInner> inner
+            = this.serviceClient().getWithResponse(supportTicketName, communicationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CommunicationDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -82,10 +86,10 @@ public final class CommunicationsNoSubscriptionsImpl implements CommunicationsNo
         }
     }
 
-    public CommunicationDetails create(
-        String supportTicketName, String communicationName, CommunicationDetailsInner createCommunicationParameters) {
-        CommunicationDetailsInner inner =
-            this.serviceClient().create(supportTicketName, communicationName, createCommunicationParameters);
+    public CommunicationDetails create(String supportTicketName, String communicationName,
+        CommunicationDetailsInner createCommunicationParameters) {
+        CommunicationDetailsInner inner
+            = this.serviceClient().create(supportTicketName, communicationName, createCommunicationParameters);
         if (inner != null) {
             return new CommunicationDetailsImpl(inner, this.manager());
         } else {
@@ -93,13 +97,10 @@ public final class CommunicationsNoSubscriptionsImpl implements CommunicationsNo
         }
     }
 
-    public CommunicationDetails create(
-        String supportTicketName,
-        String communicationName,
-        CommunicationDetailsInner createCommunicationParameters,
-        Context context) {
-        CommunicationDetailsInner inner =
-            this.serviceClient().create(supportTicketName, communicationName, createCommunicationParameters, context);
+    public CommunicationDetails create(String supportTicketName, String communicationName,
+        CommunicationDetailsInner createCommunicationParameters, Context context) {
+        CommunicationDetailsInner inner
+            = this.serviceClient().create(supportTicketName, communicationName, createCommunicationParameters, context);
         if (inner != null) {
             return new CommunicationDetailsImpl(inner, this.manager());
         } else {

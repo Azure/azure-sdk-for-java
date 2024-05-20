@@ -10,7 +10,9 @@ import com.azure.resourcemanager.security.models.UserDefinedResourcesProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Update Security Solution setting data. */
+/**
+ * Update Security Solution setting data.
+ */
 @Fluent
 public final class UpdateIoTSecuritySolutionProperties {
     /*
@@ -25,13 +27,15 @@ public final class UpdateIoTSecuritySolutionProperties {
     @JsonProperty(value = "recommendationsConfiguration")
     private List<RecommendationConfigurationProperties> recommendationsConfiguration;
 
-    /** Creates an instance of UpdateIoTSecuritySolutionProperties class. */
+    /**
+     * Creates an instance of UpdateIoTSecuritySolutionProperties class.
+     */
     public UpdateIoTSecuritySolutionProperties() {
     }
 
     /**
      * Get the userDefinedResources property: Properties of the IoT Security solution's user defined resources.
-     *
+     * 
      * @return the userDefinedResources value.
      */
     public UserDefinedResourcesProperties userDefinedResources() {
@@ -40,19 +44,19 @@ public final class UpdateIoTSecuritySolutionProperties {
 
     /**
      * Set the userDefinedResources property: Properties of the IoT Security solution's user defined resources.
-     *
+     * 
      * @param userDefinedResources the userDefinedResources value to set.
      * @return the UpdateIoTSecuritySolutionProperties object itself.
      */
-    public UpdateIoTSecuritySolutionProperties withUserDefinedResources(
-        UserDefinedResourcesProperties userDefinedResources) {
+    public UpdateIoTSecuritySolutionProperties
+        withUserDefinedResources(UserDefinedResourcesProperties userDefinedResources) {
         this.userDefinedResources = userDefinedResources;
         return this;
     }
 
     /**
      * Get the recommendationsConfiguration property: List of the configuration status for each recommendation type.
-     *
+     * 
      * @return the recommendationsConfiguration value.
      */
     public List<RecommendationConfigurationProperties> recommendationsConfiguration() {
@@ -61,19 +65,19 @@ public final class UpdateIoTSecuritySolutionProperties {
 
     /**
      * Set the recommendationsConfiguration property: List of the configuration status for each recommendation type.
-     *
+     * 
      * @param recommendationsConfiguration the recommendationsConfiguration value to set.
      * @return the UpdateIoTSecuritySolutionProperties object itself.
      */
-    public UpdateIoTSecuritySolutionProperties withRecommendationsConfiguration(
-        List<RecommendationConfigurationProperties> recommendationsConfiguration) {
+    public UpdateIoTSecuritySolutionProperties
+        withRecommendationsConfiguration(List<RecommendationConfigurationProperties> recommendationsConfiguration) {
         this.recommendationsConfiguration = recommendationsConfiguration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

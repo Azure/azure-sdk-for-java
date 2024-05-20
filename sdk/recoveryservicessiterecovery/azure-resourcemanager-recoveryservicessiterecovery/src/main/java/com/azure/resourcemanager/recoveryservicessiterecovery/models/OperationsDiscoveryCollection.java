@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Oper
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of ClientDiscovery details. */
+/**
+ * Collection of ClientDiscovery details.
+ */
 @Fluent
 public final class OperationsDiscoveryCollection {
     /*
@@ -24,13 +26,15 @@ public final class OperationsDiscoveryCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of OperationsDiscoveryCollection class. */
+    /**
+     * Creates an instance of OperationsDiscoveryCollection class.
+     */
     public OperationsDiscoveryCollection() {
     }
 
     /**
      * Get the value property: The ClientDiscovery details.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationsDiscoveryInner> value() {
@@ -39,7 +43,7 @@ public final class OperationsDiscoveryCollection {
 
     /**
      * Set the value property: The ClientDiscovery details.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationsDiscoveryCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class OperationsDiscoveryCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class OperationsDiscoveryCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OperationsDiscoveryCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class OperationsDiscoveryCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

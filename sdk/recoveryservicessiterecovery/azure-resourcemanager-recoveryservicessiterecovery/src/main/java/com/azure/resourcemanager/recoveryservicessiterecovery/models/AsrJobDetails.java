@@ -9,16 +9,22 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** This class represents job details based on specific job type. */
+/**
+ * This class represents job details based on specific job type.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("AsrJobDetails")
 @Fluent
 public final class AsrJobDetails extends JobDetails {
-    /** Creates an instance of AsrJobDetails class. */
+    /**
+     * Creates an instance of AsrJobDetails class.
+     */
     public AsrJobDetails() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AsrJobDetails withAffectedObjectDetails(Map<String, String> affectedObjectDetails) {
         super.withAffectedObjectDetails(affectedObjectDetails);
@@ -27,7 +33,7 @@ public final class AsrJobDetails extends JobDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

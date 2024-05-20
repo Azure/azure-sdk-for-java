@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class DiskAccessesListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-04-02/examples/diskAccessExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2023-10-02/examples/diskAccessExamples/
      * DiskAccess_ListByResourceGroup.json
      */
     /**

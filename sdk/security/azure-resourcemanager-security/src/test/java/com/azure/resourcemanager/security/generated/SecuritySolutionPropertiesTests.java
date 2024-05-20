@@ -13,29 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class SecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecuritySolutionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"securityFamily\":\"Waf\",\"provisioningState\":\"Failed\",\"template\":\"lgmtrwahzjmucf\",\"protectionStatus\":\"byrplrohkpig\"}")
-                .toObject(SecuritySolutionProperties.class);
-        Assertions.assertEquals(SecurityFamily.WAF, model.securityFamily());
-        Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
-        Assertions.assertEquals("lgmtrwahzjmucf", model.template());
-        Assertions.assertEquals("byrplrohkpig", model.protectionStatus());
+        SecuritySolutionProperties model = BinaryData.fromString(
+            "{\"securityFamily\":\"Ngfw\",\"provisioningState\":\"Updating\",\"template\":\"zladltxkpbq\",\"protectionStatus\":\"v\"}")
+            .toObject(SecuritySolutionProperties.class);
+        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
+        Assertions.assertEquals(ProvisioningState.UPDATING, model.provisioningState());
+        Assertions.assertEquals("zladltxkpbq", model.template());
+        Assertions.assertEquals("v", model.protectionStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecuritySolutionProperties model =
-            new SecuritySolutionProperties()
-                .withSecurityFamily(SecurityFamily.WAF)
-                .withProvisioningState(ProvisioningState.FAILED)
-                .withTemplate("lgmtrwahzjmucf")
-                .withProtectionStatus("byrplrohkpig");
+        SecuritySolutionProperties model = new SecuritySolutionProperties().withSecurityFamily(SecurityFamily.NGFW)
+            .withProvisioningState(ProvisioningState.UPDATING)
+            .withTemplate("zladltxkpbq")
+            .withProtectionStatus("v");
         model = BinaryData.fromObject(model).toObject(SecuritySolutionProperties.class);
-        Assertions.assertEquals(SecurityFamily.WAF, model.securityFamily());
-        Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
-        Assertions.assertEquals("lgmtrwahzjmucf", model.template());
-        Assertions.assertEquals("byrplrohkpig", model.protectionStatus());
+        Assertions.assertEquals(SecurityFamily.NGFW, model.securityFamily());
+        Assertions.assertEquals(ProvisioningState.UPDATING, model.provisioningState());
+        Assertions.assertEquals("zladltxkpbq", model.template());
+        Assertions.assertEquals("v", model.protectionStatus());
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.storagecache.models.ResourceUsageName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The usage and limit (quota) for a resource. */
+/**
+ * The usage and limit (quota) for a resource.
+ */
 @Immutable
 public final class ResourceUsageInner {
     /*
@@ -35,13 +37,15 @@ public final class ResourceUsageInner {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceUsageName name;
 
-    /** Creates an instance of ResourceUsageInner class. */
+    /**
+     * Creates an instance of ResourceUsageInner class.
+     */
     public ResourceUsageInner() {
     }
 
     /**
      * Get the limit property: The limit (quota) for this resource.
-     *
+     * 
      * @return the limit value.
      */
     public Integer limit() {
@@ -50,7 +54,7 @@ public final class ResourceUsageInner {
 
     /**
      * Get the unit property: Unit that the limit and usages are expressed in, such as 'Count'.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -59,7 +63,7 @@ public final class ResourceUsageInner {
 
     /**
      * Get the currentValue property: The current usage of this resource.
-     *
+     * 
      * @return the currentValue value.
      */
     public Integer currentValue() {
@@ -68,7 +72,7 @@ public final class ResourceUsageInner {
 
     /**
      * Get the name property: Naming information for this resource type.
-     *
+     * 
      * @return the name value.
      */
     public ResourceUsageName name() {
@@ -77,7 +81,7 @@ public final class ResourceUsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

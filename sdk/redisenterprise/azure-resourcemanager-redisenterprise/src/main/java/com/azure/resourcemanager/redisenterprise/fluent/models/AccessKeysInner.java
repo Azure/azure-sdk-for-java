@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Access keys
- *
- * <p>The secret access keys used for authenticating connections to redis.
+ * 
+ * The secret access keys used for authenticating connections to redis.
  */
 @Immutable
 public final class AccessKeysInner {
@@ -26,13 +26,15 @@ public final class AccessKeysInner {
     @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
 
-    /** Creates an instance of AccessKeysInner class. */
+    /**
+     * Creates an instance of AccessKeysInner class.
+     */
     public AccessKeysInner() {
     }
 
     /**
      * Get the primaryKey property: The current primary key that clients can use to authenticate.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -41,7 +43,7 @@ public final class AccessKeysInner {
 
     /**
      * Get the secondaryKey property: The current secondary key that clients can use to authenticate.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -50,7 +52,7 @@ public final class AccessKeysInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

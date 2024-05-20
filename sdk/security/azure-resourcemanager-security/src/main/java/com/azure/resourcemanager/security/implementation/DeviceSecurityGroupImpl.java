@@ -86,22 +86,18 @@ public final class DeviceSecurityGroupImpl
     }
 
     public DeviceSecurityGroup create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeviceSecurityGroups()
-                .createOrUpdateWithResponse(resourceId, deviceSecurityGroupName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeviceSecurityGroups()
+            .createOrUpdateWithResponse(resourceId, deviceSecurityGroupName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public DeviceSecurityGroup create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeviceSecurityGroups()
-                .createOrUpdateWithResponse(resourceId, deviceSecurityGroupName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeviceSecurityGroups()
+            .createOrUpdateWithResponse(resourceId, deviceSecurityGroupName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -116,60 +112,45 @@ public final class DeviceSecurityGroupImpl
     }
 
     public DeviceSecurityGroup apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeviceSecurityGroups()
-                .createOrUpdateWithResponse(resourceId, deviceSecurityGroupName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeviceSecurityGroups()
+            .createOrUpdateWithResponse(resourceId, deviceSecurityGroupName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public DeviceSecurityGroup apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeviceSecurityGroups()
-                .createOrUpdateWithResponse(resourceId, deviceSecurityGroupName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeviceSecurityGroups()
+            .createOrUpdateWithResponse(resourceId, deviceSecurityGroupName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    DeviceSecurityGroupImpl(
-        DeviceSecurityGroupInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    DeviceSecurityGroupImpl(DeviceSecurityGroupInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceId =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(),
-                    "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}",
-                    "resourceId");
-        this.deviceSecurityGroupName =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(),
-                    "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}",
-                    "deviceSecurityGroupName");
+        this.resourceId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}", "resourceId");
+        this.deviceSecurityGroupName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups/{deviceSecurityGroupName}",
+            "deviceSecurityGroupName");
     }
 
     public DeviceSecurityGroup refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeviceSecurityGroups()
-                .getWithResponse(resourceId, deviceSecurityGroupName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeviceSecurityGroups()
+            .getWithResponse(resourceId, deviceSecurityGroupName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DeviceSecurityGroup refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeviceSecurityGroups()
-                .getWithResponse(resourceId, deviceSecurityGroupName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDeviceSecurityGroups()
+            .getWithResponse(resourceId, deviceSecurityGroupName, context)
+            .getValue();
         return this;
     }
 

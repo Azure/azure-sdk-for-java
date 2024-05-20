@@ -17,35 +17,37 @@ public final class CustomActivityReferenceObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomActivityReferenceObject model = BinaryData.fromString(
-            "{\"linkedServices\":[{\"referenceName\":\"fawfeeatvnmm\",\"parameters\":{\"gwtcll\":\"datawfqrykikh\",\"fohtsmkf\":\"datawaz\"}},{\"referenceName\":\"oxbavfseh\",\"parameters\":{\"qszn\":\"dataqion\",\"o\":\"databi\",\"dteyvpv\":\"dataexjcrw\"}},{\"referenceName\":\"cqjgwtiasfbp\",\"parameters\":{\"seh\":\"dataxxxhbrysns\",\"wqg\":\"dataegvwbykrndxbkv\",\"qyedhyfncwiyfzu\":\"datafhl\",\"ccgtujiwzbzed\":\"databsaaxstnziv\"}}],\"datasets\":[{\"referenceName\":\"ygjhclny\",\"parameters\":{\"mtajjfmkwqpgbti\":\"datacgmcthjgbrxmxqsk\",\"alhawopti\":\"datanidubocmjiibtv\"}},{\"referenceName\":\"fuiav\",\"parameters\":{\"ddmmwylrvztael\":\"datacxsma\",\"rcvo\":\"datauxhkuemcbtumt\",\"wee\":\"datahyqexujll\",\"mgfwxthrcmg\":\"datavqbsythycdckcpfo\"}},{\"referenceName\":\"imgosc\",\"parameters\":{\"na\":\"datagckk\",\"nkeolorosahgcc\":\"dataenyehmwzgf\"}}]}")
+            "{\"linkedServices\":[{\"referenceName\":\"c\",\"parameters\":{\"p\":\"datatumttmixe\",\"hvqnkwjhjut\":\"datarbazgou\",\"dflgqso\":\"dataxggn\",\"petsxetneher\":\"datauncmuvfukl\"}},{\"referenceName\":\"belms\",\"parameters\":{\"pjtduvsvgydtdt\":\"datahkzcdn\",\"izkwpo\":\"datamknzotm\"}},{\"referenceName\":\"askflrqw\",\"parameters\":{\"brzvnouth\":\"datakks\",\"fix\":\"datavvcbwudi\",\"rqivqzqcmrxh\":\"dataw\"}},{\"referenceName\":\"lozg\",\"parameters\":{\"yttxspaafs\":\"dataijcetcystrs\",\"u\":\"dataqoyoerlrqtqnx\"}}],\"datasets\":[{\"referenceName\":\"q\",\"parameters\":{\"kjzbxmgsxbk\":\"datamwbmqpbfjbsoljqk\",\"eobkmx\":\"datakambdoq\"}},{\"referenceName\":\"hmrbjh\",\"parameters\":{\"f\":\"dataxnwcejczi\",\"nkjyfy\":\"datadaq\"}},{\"referenceName\":\"mbtiugc\",\"parameters\":{\"uvu\":\"datahgryof\",\"uocmxtyjaxk\":\"datakrkibno\"}},{\"referenceName\":\"yovwtpm\",\"parameters\":{\"mzsvdrryzxhtvyth\":\"datas\"}}]}")
             .toObject(CustomActivityReferenceObject.class);
-        Assertions.assertEquals("fawfeeatvnmm", model.linkedServices().get(0).referenceName());
-        Assertions.assertEquals("ygjhclny", model.datasets().get(0).referenceName());
+        Assertions.assertEquals("c", model.linkedServices().get(0).referenceName());
+        Assertions.assertEquals("q", model.datasets().get(0).referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomActivityReferenceObject model
-            = new CustomActivityReferenceObject()
-                .withLinkedServices(Arrays.asList(
-                    new LinkedServiceReference().withReferenceName("fawfeeatvnmm")
-                        .withParameters(mapOf("gwtcll", "datawfqrykikh", "fohtsmkf", "datawaz")),
-                    new LinkedServiceReference().withReferenceName("oxbavfseh")
-                        .withParameters(mapOf("qszn", "dataqion", "o", "databi", "dteyvpv", "dataexjcrw")),
-                    new LinkedServiceReference().withReferenceName("cqjgwtiasfbp")
-                        .withParameters(mapOf("seh", "dataxxxhbrysns", "wqg", "dataegvwbykrndxbkv", "qyedhyfncwiyfzu",
-                            "datafhl", "ccgtujiwzbzed", "databsaaxstnziv"))))
-                .withDatasets(Arrays.asList(
-                    new DatasetReference().withReferenceName("ygjhclny").withParameters(
-                        mapOf("mtajjfmkwqpgbti", "datacgmcthjgbrxmxqsk", "alhawopti", "datanidubocmjiibtv")),
-                    new DatasetReference().withReferenceName("fuiav")
-                        .withParameters(mapOf("ddmmwylrvztael", "datacxsma", "rcvo", "datauxhkuemcbtumt", "wee",
-                            "datahyqexujll", "mgfwxthrcmg", "datavqbsythycdckcpfo")),
-                    new DatasetReference().withReferenceName("imgosc")
-                        .withParameters(mapOf("na", "datagckk", "nkeolorosahgcc", "dataenyehmwzgf"))));
+        CustomActivityReferenceObject model = new CustomActivityReferenceObject()
+            .withLinkedServices(Arrays.asList(
+                new LinkedServiceReference().withReferenceName("c")
+                    .withParameters(mapOf("p", "datatumttmixe", "hvqnkwjhjut", "datarbazgou", "dflgqso", "dataxggn",
+                        "petsxetneher", "datauncmuvfukl")),
+                new LinkedServiceReference().withReferenceName("belms")
+                    .withParameters(mapOf("pjtduvsvgydtdt", "datahkzcdn", "izkwpo", "datamknzotm")),
+                new LinkedServiceReference().withReferenceName("askflrqw")
+                    .withParameters(mapOf("brzvnouth", "datakks", "fix", "datavvcbwudi", "rqivqzqcmrxh", "dataw")),
+                new LinkedServiceReference().withReferenceName("lozg")
+                    .withParameters(mapOf("yttxspaafs", "dataijcetcystrs", "u", "dataqoyoerlrqtqnx"))))
+            .withDatasets(Arrays.asList(
+                new DatasetReference().withReferenceName("q")
+                    .withParameters(mapOf("kjzbxmgsxbk", "datamwbmqpbfjbsoljqk", "eobkmx", "datakambdoq")),
+                new DatasetReference().withReferenceName("hmrbjh")
+                    .withParameters(mapOf("f", "dataxnwcejczi", "nkjyfy", "datadaq")),
+                new DatasetReference().withReferenceName("mbtiugc")
+                    .withParameters(mapOf("uvu", "datahgryof", "uocmxtyjaxk", "datakrkibno")),
+                new DatasetReference().withReferenceName("yovwtpm")
+                    .withParameters(mapOf("mzsvdrryzxhtvyth", "datas"))));
         model = BinaryData.fromObject(model).toObject(CustomActivityReferenceObject.class);
-        Assertions.assertEquals("fawfeeatvnmm", model.linkedServices().get(0).referenceName());
-        Assertions.assertEquals("ygjhclny", model.datasets().get(0).referenceName());
+        Assertions.assertEquals("c", model.linkedServices().get(0).referenceName());
+        Assertions.assertEquals("q", model.datasets().get(0).referenceName());
     }
 
     // Use "Map.of" if available

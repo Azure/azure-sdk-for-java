@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrationItemProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Migration item. */
+/**
+ * Migration item.
+ */
 @Fluent
 public final class MigrationItemInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class MigrationItemInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of MigrationItemInner class. */
+    /**
+     * Creates an instance of MigrationItemInner class.
+     */
     public MigrationItemInner() {
     }
 
     /**
      * Get the properties property: The migration item properties.
-     *
+     * 
      * @return the properties value.
      */
     public MigrationItemProperties properties() {
@@ -39,7 +43,7 @@ public final class MigrationItemInner extends ProxyResource {
 
     /**
      * Set the properties property: The migration item properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MigrationItemInner object itself.
      */
@@ -50,7 +54,7 @@ public final class MigrationItemInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class MigrationItemInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the MigrationItemInner object itself.
      */
@@ -70,7 +74,7 @@ public final class MigrationItemInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

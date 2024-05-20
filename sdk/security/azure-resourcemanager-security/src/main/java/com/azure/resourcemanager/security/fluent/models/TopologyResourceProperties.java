@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The TopologyResourceProperties model. */
+/**
+ * The TopologyResourceProperties model.
+ */
 @Immutable
 public final class TopologyResourceProperties {
     /*
@@ -25,13 +27,15 @@ public final class TopologyResourceProperties {
     @JsonProperty(value = "topologyResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<TopologySingleResource> topologyResources;
 
-    /** Creates an instance of TopologyResourceProperties class. */
+    /**
+     * Creates an instance of TopologyResourceProperties class.
+     */
     public TopologyResourceProperties() {
     }
 
     /**
      * Get the calculatedDateTime property: The UTC time on which the topology was calculated.
-     *
+     * 
      * @return the calculatedDateTime value.
      */
     public OffsetDateTime calculatedDateTime() {
@@ -40,7 +44,7 @@ public final class TopologyResourceProperties {
 
     /**
      * Get the topologyResources property: Azure resources which are part of this topology resource.
-     *
+     * 
      * @return the topologyResources value.
      */
     public List<TopologySingleResource> topologyResources() {
@@ -49,7 +53,7 @@ public final class TopologyResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

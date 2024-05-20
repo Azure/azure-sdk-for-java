@@ -7,50 +7,96 @@ package com.azure.resourcemanager.security.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.models.DefenderForContainersGcpOffering;
 import com.azure.resourcemanager.security.models.DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection;
+import com.azure.resourcemanager.security.models.DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S;
+import com.azure.resourcemanager.security.models.DefenderForContainersGcpOfferingMdcContainersImageAssessment;
 import com.azure.resourcemanager.security.models.DefenderForContainersGcpOfferingNativeCloudConnection;
+import com.azure.resourcemanager.security.models.DefenderForContainersGcpOfferingVmScanners;
+import com.azure.resourcemanager.security.models.ScanningMode;
+import com.azure.resourcemanager.security.models.VmScannersBaseConfiguration;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class DefenderForContainersGcpOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForContainersGcpOffering model =
-            BinaryData
-                .fromString(
-                    "{\"offeringType\":\"DefenderForContainersGcp\",\"nativeCloudConnection\":{\"serviceAccountEmailAddress\":\"anfbc\",\"workloadIdentityProviderId\":\"qagywvtxig\"},\"dataPipelineNativeCloudConnection\":{\"serviceAccountEmailAddress\":\"ktpgaeukyawohp\",\"workloadIdentityProviderId\":\"hqnucs\"},\"auditLogsAutoProvisioningFlag\":true,\"defenderAgentAutoProvisioningFlag\":false,\"policyAgentAutoProvisioningFlag\":false,\"description\":\"tdlpbn\"}")
-                .toObject(DefenderForContainersGcpOffering.class);
-        Assertions.assertEquals("anfbc", model.nativeCloudConnection().serviceAccountEmailAddress());
-        Assertions.assertEquals("qagywvtxig", model.nativeCloudConnection().workloadIdentityProviderId());
-        Assertions
-            .assertEquals("ktpgaeukyawohp", model.dataPipelineNativeCloudConnection().serviceAccountEmailAddress());
-        Assertions.assertEquals("hqnucs", model.dataPipelineNativeCloudConnection().workloadIdentityProviderId());
-        Assertions.assertEquals(true, model.auditLogsAutoProvisioningFlag());
-        Assertions.assertEquals(false, model.defenderAgentAutoProvisioningFlag());
-        Assertions.assertEquals(false, model.policyAgentAutoProvisioningFlag());
+        DefenderForContainersGcpOffering model = BinaryData.fromString(
+            "{\"offeringType\":\"DefenderForContainersGcp\",\"nativeCloudConnection\":{\"serviceAccountEmailAddress\":\"vasormrexzvdubew\",\"workloadIdentityProviderId\":\"ygbadu\"},\"dataPipelineNativeCloudConnection\":{\"serviceAccountEmailAddress\":\"ovsdqhzrtdbakrli\",\"workloadIdentityProviderId\":\"fvppkeqsifj\"},\"enableAuditLogsAutoProvisioning\":false,\"enableDefenderAgentAutoProvisioning\":true,\"enablePolicyAgentAutoProvisioning\":true,\"mdcContainersImageAssessment\":{\"enabled\":true,\"workloadIdentityProviderId\":\"ombcdtajdopggo\",\"serviceAccountEmailAddress\":\"jo\"},\"mdcContainersAgentlessDiscoveryK8s\":{\"enabled\":false,\"workloadIdentityProviderId\":\"pvclpofyrl\",\"serviceAccountEmailAddress\":\"kptskwxjgvhxc\"},\"vmScanners\":{\"enabled\":true,\"configuration\":{\"scanningMode\":\"Default\",\"exclusionTags\":{\"vmuyak\":\"okbputm\",\"fowzkroyr\":\"lwk\"}}},\"description\":\"r\"}")
+            .toObject(DefenderForContainersGcpOffering.class);
+        Assertions.assertEquals("vasormrexzvdubew", model.nativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("ygbadu", model.nativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals("ovsdqhzrtdbakrli",
+            model.dataPipelineNativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("fvppkeqsifj", model.dataPipelineNativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals(false, model.enableAuditLogsAutoProvisioning());
+        Assertions.assertEquals(true, model.enableDefenderAgentAutoProvisioning());
+        Assertions.assertEquals(true, model.enablePolicyAgentAutoProvisioning());
+        Assertions.assertEquals(true, model.mdcContainersImageAssessment().enabled());
+        Assertions.assertEquals("ombcdtajdopggo", model.mdcContainersImageAssessment().workloadIdentityProviderId());
+        Assertions.assertEquals("jo", model.mdcContainersImageAssessment().serviceAccountEmailAddress());
+        Assertions.assertEquals(false, model.mdcContainersAgentlessDiscoveryK8S().enabled());
+        Assertions.assertEquals("pvclpofyrl", model.mdcContainersAgentlessDiscoveryK8S().workloadIdentityProviderId());
+        Assertions.assertEquals("kptskwxjgvhxc",
+            model.mdcContainersAgentlessDiscoveryK8S().serviceAccountEmailAddress());
+        Assertions.assertEquals(true, model.vmScanners().enabled());
+        Assertions.assertEquals(ScanningMode.DEFAULT, model.vmScanners().configuration().scanningMode());
+        Assertions.assertEquals("okbputm", model.vmScanners().configuration().exclusionTags().get("vmuyak"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForContainersGcpOffering model =
-            new DefenderForContainersGcpOffering()
-                .withNativeCloudConnection(
-                    new DefenderForContainersGcpOfferingNativeCloudConnection()
-                        .withServiceAccountEmailAddress("anfbc")
-                        .withWorkloadIdentityProviderId("qagywvtxig"))
-                .withDataPipelineNativeCloudConnection(
-                    new DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection()
-                        .withServiceAccountEmailAddress("ktpgaeukyawohp")
-                        .withWorkloadIdentityProviderId("hqnucs"))
-                .withAuditLogsAutoProvisioningFlag(true)
-                .withDefenderAgentAutoProvisioningFlag(false)
-                .withPolicyAgentAutoProvisioningFlag(false);
+        DefenderForContainersGcpOffering model = new DefenderForContainersGcpOffering()
+            .withNativeCloudConnection(new DefenderForContainersGcpOfferingNativeCloudConnection()
+                .withServiceAccountEmailAddress("vasormrexzvdubew")
+                .withWorkloadIdentityProviderId("ygbadu"))
+            .withDataPipelineNativeCloudConnection(
+                new DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection()
+                    .withServiceAccountEmailAddress("ovsdqhzrtdbakrli")
+                    .withWorkloadIdentityProviderId("fvppkeqsifj"))
+            .withEnableAuditLogsAutoProvisioning(false)
+            .withEnableDefenderAgentAutoProvisioning(true)
+            .withEnablePolicyAgentAutoProvisioning(true)
+            .withMdcContainersImageAssessment(
+                new DefenderForContainersGcpOfferingMdcContainersImageAssessment().withEnabled(true)
+                    .withWorkloadIdentityProviderId("ombcdtajdopggo")
+                    .withServiceAccountEmailAddress("jo"))
+            .withMdcContainersAgentlessDiscoveryK8S(
+                new DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S().withEnabled(false)
+                    .withWorkloadIdentityProviderId("pvclpofyrl")
+                    .withServiceAccountEmailAddress("kptskwxjgvhxc"))
+            .withVmScanners(new DefenderForContainersGcpOfferingVmScanners().withEnabled(true)
+                .withConfiguration(new VmScannersBaseConfiguration().withScanningMode(ScanningMode.DEFAULT)
+                    .withExclusionTags(mapOf("vmuyak", "okbputm", "fowzkroyr", "lwk"))));
         model = BinaryData.fromObject(model).toObject(DefenderForContainersGcpOffering.class);
-        Assertions.assertEquals("anfbc", model.nativeCloudConnection().serviceAccountEmailAddress());
-        Assertions.assertEquals("qagywvtxig", model.nativeCloudConnection().workloadIdentityProviderId());
-        Assertions
-            .assertEquals("ktpgaeukyawohp", model.dataPipelineNativeCloudConnection().serviceAccountEmailAddress());
-        Assertions.assertEquals("hqnucs", model.dataPipelineNativeCloudConnection().workloadIdentityProviderId());
-        Assertions.assertEquals(true, model.auditLogsAutoProvisioningFlag());
-        Assertions.assertEquals(false, model.defenderAgentAutoProvisioningFlag());
-        Assertions.assertEquals(false, model.policyAgentAutoProvisioningFlag());
+        Assertions.assertEquals("vasormrexzvdubew", model.nativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("ygbadu", model.nativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals("ovsdqhzrtdbakrli",
+            model.dataPipelineNativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("fvppkeqsifj", model.dataPipelineNativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals(false, model.enableAuditLogsAutoProvisioning());
+        Assertions.assertEquals(true, model.enableDefenderAgentAutoProvisioning());
+        Assertions.assertEquals(true, model.enablePolicyAgentAutoProvisioning());
+        Assertions.assertEquals(true, model.mdcContainersImageAssessment().enabled());
+        Assertions.assertEquals("ombcdtajdopggo", model.mdcContainersImageAssessment().workloadIdentityProviderId());
+        Assertions.assertEquals("jo", model.mdcContainersImageAssessment().serviceAccountEmailAddress());
+        Assertions.assertEquals(false, model.mdcContainersAgentlessDiscoveryK8S().enabled());
+        Assertions.assertEquals("pvclpofyrl", model.mdcContainersAgentlessDiscoveryK8S().workloadIdentityProviderId());
+        Assertions.assertEquals("kptskwxjgvhxc",
+            model.mdcContainersAgentlessDiscoveryK8S().serviceAccountEmailAddress());
+        Assertions.assertEquals(true, model.vmScanners().enabled());
+        Assertions.assertEquals(ScanningMode.DEFAULT, model.vmScanners().configuration().scanningMode());
+        Assertions.assertEquals("okbputm", model.vmScanners().configuration().exclusionTags().get("vmuyak"));
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

@@ -30,7 +30,6 @@ import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 
-
 /**
  * Handler that receives events from its corresponding {@link Receiver}. Handlers must be associated to a
  * {@link Receiver} to receive its events.
@@ -50,20 +49,6 @@ public class ReceiveLinkHandler extends LinkHandler {
     private final Sinks.Many<Delivery> deliveries = Sinks.many().multicast().onBackpressureBuffer();
     private final Set<Delivery> queuedDeliveries = Collections.newSetFromMap(new ConcurrentHashMap<>());
     private final String entityPath;
-
-    /**
-     * Creates a new instance of ReceiveLinkHandler.
-     *
-     * @param connectionId Identifier for the connection.
-     * @param hostname Hostname of the connection.
-     * @param linkName Name of the link.
-     * @param entityPath Address to the entity.
-     * @deprecated use {@link #ReceiveLinkHandler(String, String, String, String, AmqpMetricsProvider)} instead.
-     */
-    @Deprecated
-    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
-        this(connectionId, hostname, linkName, entityPath, new AmqpMetricsProvider(null, hostname, entityPath));
-    }
 
     /**
      * Creates a new instance of ReceiveLinkHandler.
@@ -134,9 +119,8 @@ public class ReceiveLinkHandler extends LinkHandler {
             return;
         }
 
-        LoggingEventBuilder logBuilder =  logger.atInfo()
-            .addKeyValue(ENTITY_PATH_KEY, entityPath)
-            .addKeyValue(LINK_NAME_KEY, link.getName());
+        LoggingEventBuilder logBuilder
+            = logger.atInfo().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, link.getName());
 
         if (link.getRemoteSource() != null) {
             logBuilder.addKeyValue("remoteSource", link.getRemoteSource());
@@ -145,8 +129,7 @@ public class ReceiveLinkHandler extends LinkHandler {
                 onNext(EndpointState.ACTIVE);
             }
         } else {
-            logBuilder
-                .addKeyValue("action", "waitingForError");
+            logBuilder.addKeyValue("action", "waitingForError");
         }
 
         logBuilder.log("onLinkRemoteOpen");
@@ -220,8 +203,7 @@ public class ReceiveLinkHandler extends LinkHandler {
 
         if (link != null) {
             final ErrorCondition condition = link.getRemoteCondition();
-            addErrorCondition(logger.atVerbose(), condition)
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+            addErrorCondition(logger.atVerbose(), condition).addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue("updatedLinkCredit", link.getCredit())
                 .addKeyValue("remoteCredit", link.getRemoteCredit())

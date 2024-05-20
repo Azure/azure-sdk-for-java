@@ -46,22 +46,28 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LogAnalyticsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LogAnalyticsClient.
+ */
 public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LogAnalyticsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CdnManagementClientImpl client;
 
     /**
      * Initializes an instance of LogAnalyticsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LogAnalyticsClientImpl(CdnManagementClientImpl client) {
-        this.service =
-            RestProxy.create(LogAnalyticsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(LogAnalyticsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -72,16 +78,13 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientL")
     public interface LogAnalyticsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsMetrics")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsMetrics")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetricsResponseInner>> getLogAnalyticsMetrics(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MetricsResponseInner>> getLogAnalyticsMetrics(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("profileName") String profileName,
             @QueryParam(value = "metrics", multipleQueryParams = true) List<String> metrics,
             @QueryParam("dateTimeBegin") OffsetDateTime dateTimeBegin,
@@ -92,67 +95,48 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             @QueryParam(value = "countryOrRegions", multipleQueryParams = true) List<String> countryOrRegions,
             @QueryParam(value = "customDomains", multipleQueryParams = true) List<String> customDomains,
             @QueryParam(value = "protocols", multipleQueryParams = true) List<String> protocols,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsRankings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsRankings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RankingsResponseInner>> getLogAnalyticsRankings(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RankingsResponseInner>> getLogAnalyticsRankings(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("profileName") String profileName,
             @QueryParam(value = "rankings", multipleQueryParams = true) List<String> rankings,
             @QueryParam(value = "metrics", multipleQueryParams = true) List<String> metrics,
-            @QueryParam("maxRanking") int maxRanking,
-            @QueryParam("dateTimeBegin") OffsetDateTime dateTimeBegin,
+            @QueryParam("maxRanking") int maxRanking, @QueryParam("dateTimeBegin") OffsetDateTime dateTimeBegin,
             @QueryParam("dateTimeEnd") OffsetDateTime dateTimeEnd,
             @QueryParam(value = "customDomains", multipleQueryParams = true) List<String> customDomains,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsLocations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsLocations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContinentsResponseInner>> getLogAnalyticsLocations(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ContinentsResponseInner>> getLogAnalyticsLocations(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("profileName") String profileName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("profileName") String profileName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getLogAnalyticsResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourcesResponseInner>> getLogAnalyticsResources(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ResourcesResponseInner>> getLogAnalyticsResources(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("profileName") String profileName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("profileName") String profileName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getWafLogAnalyticsMetrics")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getWafLogAnalyticsMetrics")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WafMetricsResponseInner>> getWafLogAnalyticsMetrics(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WafMetricsResponseInner>> getWafLogAnalyticsMetrics(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("profileName") String profileName,
             @QueryParam(value = "metrics", multipleQueryParams = true) List<String> metrics,
             @QueryParam("dateTimeBegin") OffsetDateTime dateTimeBegin,
@@ -161,37 +145,31 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             @QueryParam(value = "actions", multipleQueryParams = true) List<String> actions,
             @QueryParam(value = "groupBy", multipleQueryParams = true) List<String> groupBy,
             @QueryParam(value = "ruleTypes", multipleQueryParams = true) List<String> ruleTypes,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getWafLogAnalyticsRankings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/getWafLogAnalyticsRankings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WafRankingsResponseInner>> getWafLogAnalyticsRankings(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WafRankingsResponseInner>> getWafLogAnalyticsRankings(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("profileName") String profileName,
             @QueryParam(value = "metrics", multipleQueryParams = true) List<String> metrics,
             @QueryParam("dateTimeBegin") OffsetDateTime dateTimeBegin,
-            @QueryParam("dateTimeEnd") OffsetDateTime dateTimeEnd,
-            @QueryParam("maxRanking") int maxRanking,
+            @QueryParam("dateTimeEnd") OffsetDateTime dateTimeEnd, @QueryParam("maxRanking") int maxRanking,
             @QueryParam(value = "rankings", multipleQueryParams = true) List<String> rankings,
             @QueryParam(value = "actions", multipleQueryParams = true) List<String> actions,
             @QueryParam(value = "ruleTypes", multipleQueryParams = true) List<String> ruleTypes,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get log report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -207,29 +185,17 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return log report for AFD profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MetricsResponseInner>> getLogAnalyticsMetricsWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        List<LogMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        LogMetricsGranularity granularity,
-        List<String> customDomains,
-        List<String> protocols,
-        List<LogMetricsGroupBy> groupBy,
-        List<String> continents,
-        List<String> countryOrRegions) {
+    public Mono<Response<MetricsResponseInner>> getLogAnalyticsMetricsWithResponseAsync(String resourceGroupName,
+        String profileName, List<LogMetric> metrics, OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd,
+        LogMetricsGranularity granularity, List<String> customDomains, List<String> protocols,
+        List<LogMetricsGroupBy> groupBy, List<String> continents, List<String> countryOrRegions) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -257,54 +223,32 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             return Mono.error(new IllegalArgumentException("Parameter protocols is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> metricsConverted =
-            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> groupByConverted =
-            (groupBy == null)
-                ? new ArrayList<>()
-                : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> continentsConverted =
-            (continents == null)
-                ? new ArrayList<>()
-                : continents.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> countryOrRegionsConverted =
-            (countryOrRegions == null)
-                ? new ArrayList<>()
-                : countryOrRegions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> customDomainsConverted =
-            customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> protocolsConverted =
-            protocols.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> metricsConverted
+            = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> groupByConverted = (groupBy == null) ? new ArrayList<>()
+            : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> continentsConverted = (continents == null) ? new ArrayList<>()
+            : continents.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> countryOrRegionsConverted = (countryOrRegions == null) ? new ArrayList<>()
+            : countryOrRegions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> customDomainsConverted
+            = customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> protocolsConverted
+            = protocols.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getLogAnalyticsMetrics(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            profileName,
-                            metricsConverted,
-                            dateTimeBegin,
-                            dateTimeEnd,
-                            granularity,
-                            groupByConverted,
-                            continentsConverted,
-                            countryOrRegionsConverted,
-                            customDomainsConverted,
-                            protocolsConverted,
-                            accept,
-                            context))
+            .withContext(context -> service.getLogAnalyticsMetrics(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), profileName,
+                metricsConverted, dateTimeBegin, dateTimeEnd, granularity, groupByConverted, continentsConverted,
+                countryOrRegionsConverted, customDomainsConverted, protocolsConverted, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get log report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -321,30 +265,17 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return log report for AFD profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MetricsResponseInner>> getLogAnalyticsMetricsWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        List<LogMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        LogMetricsGranularity granularity,
-        List<String> customDomains,
-        List<String> protocols,
-        List<LogMetricsGroupBy> groupBy,
-        List<String> continents,
-        List<String> countryOrRegions,
-        Context context) {
+    private Mono<Response<MetricsResponseInner>> getLogAnalyticsMetricsWithResponseAsync(String resourceGroupName,
+        String profileName, List<LogMetric> metrics, OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd,
+        LogMetricsGranularity granularity, List<String> customDomains, List<String> protocols,
+        List<LogMetricsGroupBy> groupBy, List<String> continents, List<String> countryOrRegions, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -372,51 +303,31 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             return Mono.error(new IllegalArgumentException("Parameter protocols is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> metricsConverted =
-            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> groupByConverted =
-            (groupBy == null)
-                ? new ArrayList<>()
-                : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> continentsConverted =
-            (continents == null)
-                ? new ArrayList<>()
-                : continents.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> countryOrRegionsConverted =
-            (countryOrRegions == null)
-                ? new ArrayList<>()
-                : countryOrRegions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> customDomainsConverted =
-            customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> protocolsConverted =
-            protocols.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> metricsConverted
+            = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> groupByConverted = (groupBy == null) ? new ArrayList<>()
+            : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> continentsConverted = (continents == null) ? new ArrayList<>()
+            : continents.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> countryOrRegionsConverted = (countryOrRegions == null) ? new ArrayList<>()
+            : countryOrRegions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> customDomainsConverted
+            = customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> protocolsConverted
+            = protocols.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
-        return service
-            .getLogAnalyticsMetrics(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                profileName,
-                metricsConverted,
-                dateTimeBegin,
-                dateTimeEnd,
-                granularity,
-                groupByConverted,
-                continentsConverted,
-                countryOrRegionsConverted,
-                customDomainsConverted,
-                protocolsConverted,
-                accept,
-                context);
+        return service.getLogAnalyticsMetrics(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), profileName, metricsConverted, dateTimeBegin, dateTimeEnd,
+            granularity, groupByConverted, continentsConverted, countryOrRegionsConverted, customDomainsConverted,
+            protocolsConverted, accept, context);
     }
 
     /**
      * Get log report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -429,39 +340,23 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return log report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricsResponseInner> getLogAnalyticsMetricsAsync(
-        String resourceGroupName,
-        String profileName,
-        List<LogMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        LogMetricsGranularity granularity,
-        List<String> customDomains,
-        List<String> protocols) {
+    public Mono<MetricsResponseInner> getLogAnalyticsMetricsAsync(String resourceGroupName, String profileName,
+        List<LogMetric> metrics, OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd,
+        LogMetricsGranularity granularity, List<String> customDomains, List<String> protocols) {
         final List<LogMetricsGroupBy> groupBy = null;
         final List<String> continents = null;
         final List<String> countryOrRegions = null;
-        return getLogAnalyticsMetricsWithResponseAsync(
-                resourceGroupName,
-                profileName,
-                metrics,
-                dateTimeBegin,
-                dateTimeEnd,
-                granularity,
-                customDomains,
-                protocols,
-                groupBy,
-                continents,
-                countryOrRegions)
+        return getLogAnalyticsMetricsWithResponseAsync(resourceGroupName, profileName, metrics, dateTimeBegin,
+            dateTimeEnd, granularity, customDomains, protocols, groupBy, continents, countryOrRegions)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get log report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -478,41 +373,20 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return log report for AFD profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetricsResponseInner> getLogAnalyticsMetricsWithResponse(
-        String resourceGroupName,
-        String profileName,
-        List<LogMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        LogMetricsGranularity granularity,
-        List<String> customDomains,
-        List<String> protocols,
-        List<LogMetricsGroupBy> groupBy,
-        List<String> continents,
-        List<String> countryOrRegions,
-        Context context) {
-        return getLogAnalyticsMetricsWithResponseAsync(
-                resourceGroupName,
-                profileName,
-                metrics,
-                dateTimeBegin,
-                dateTimeEnd,
-                granularity,
-                customDomains,
-                protocols,
-                groupBy,
-                continents,
-                countryOrRegions,
-                context)
-            .block();
+    public Response<MetricsResponseInner> getLogAnalyticsMetricsWithResponse(String resourceGroupName,
+        String profileName, List<LogMetric> metrics, OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd,
+        LogMetricsGranularity granularity, List<String> customDomains, List<String> protocols,
+        List<LogMetricsGroupBy> groupBy, List<String> continents, List<String> countryOrRegions, Context context) {
+        return getLogAnalyticsMetricsWithResponseAsync(resourceGroupName, profileName, metrics, dateTimeBegin,
+            dateTimeEnd, granularity, customDomains, protocols, groupBy, continents, countryOrRegions, context).block();
     }
 
     /**
      * Get log report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of LogMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -525,40 +399,22 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return log report for AFD profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricsResponseInner getLogAnalyticsMetrics(
-        String resourceGroupName,
-        String profileName,
-        List<LogMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        LogMetricsGranularity granularity,
-        List<String> customDomains,
-        List<String> protocols) {
+    public MetricsResponseInner getLogAnalyticsMetrics(String resourceGroupName, String profileName,
+        List<LogMetric> metrics, OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd,
+        LogMetricsGranularity granularity, List<String> customDomains, List<String> protocols) {
         final List<LogMetricsGroupBy> groupBy = null;
         final List<String> continents = null;
         final List<String> countryOrRegions = null;
-        return getLogAnalyticsMetricsWithResponse(
-                resourceGroupName,
-                profileName,
-                metrics,
-                dateTimeBegin,
-                dateTimeEnd,
-                granularity,
-                customDomains,
-                protocols,
-                groupBy,
-                continents,
-                countryOrRegions,
-                Context.NONE)
-            .getValue();
+        return getLogAnalyticsMetricsWithResponse(resourceGroupName, profileName, metrics, dateTimeBegin, dateTimeEnd,
+            granularity, customDomains, protocols, groupBy, continents, countryOrRegions, Context.NONE).getValue();
     }
 
     /**
      * Get log analytics ranking report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -569,29 +425,19 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return log analytics ranking report for AFD profile along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RankingsResponseInner>> getLogAnalyticsRankingsWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        List<LogRanking> rankings,
-        List<LogRankingMetric> metrics,
-        int maxRanking,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        List<String> customDomains) {
+    public Mono<Response<RankingsResponseInner>> getLogAnalyticsRankingsWithResponseAsync(String resourceGroupName,
+        String profileName, List<LogRanking> rankings, List<LogRankingMetric> metrics, int maxRanking,
+        OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd, List<String> customDomains) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -613,41 +459,26 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             return Mono.error(new IllegalArgumentException("Parameter dateTimeEnd is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> rankingsConverted =
-            rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> metricsConverted =
-            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> customDomainsConverted =
-            (customDomains == null)
-                ? new ArrayList<>()
-                : customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> rankingsConverted
+            = rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> metricsConverted
+            = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> customDomainsConverted = (customDomains == null) ? new ArrayList<>()
+            : customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getLogAnalyticsRankings(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            profileName,
-                            rankingsConverted,
-                            metricsConverted,
-                            maxRanking,
-                            dateTimeBegin,
-                            dateTimeEnd,
-                            customDomainsConverted,
-                            accept,
-                            context))
+                context -> service.getLogAnalyticsRankings(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), profileName, rankingsConverted, metricsConverted,
+                    maxRanking, dateTimeBegin, dateTimeEnd, customDomainsConverted, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get log analytics ranking report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -659,30 +490,19 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return log analytics ranking report for AFD profile along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RankingsResponseInner>> getLogAnalyticsRankingsWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        List<LogRanking> rankings,
-        List<LogRankingMetric> metrics,
-        int maxRanking,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        List<String> customDomains,
-        Context context) {
+    private Mono<Response<RankingsResponseInner>> getLogAnalyticsRankingsWithResponseAsync(String resourceGroupName,
+        String profileName, List<LogRanking> rankings, List<LogRankingMetric> metrics, int maxRanking,
+        OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd, List<String> customDomains, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -704,38 +524,24 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             return Mono.error(new IllegalArgumentException("Parameter dateTimeEnd is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> rankingsConverted =
-            rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> metricsConverted =
-            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> customDomainsConverted =
-            (customDomains == null)
-                ? new ArrayList<>()
-                : customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> rankingsConverted
+            = rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> metricsConverted
+            = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> customDomainsConverted = (customDomains == null) ? new ArrayList<>()
+            : customDomains.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
-        return service
-            .getLogAnalyticsRankings(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                profileName,
-                rankingsConverted,
-                metricsConverted,
-                maxRanking,
-                dateTimeBegin,
-                dateTimeEnd,
-                customDomainsConverted,
-                accept,
-                context);
+        return service.getLogAnalyticsRankings(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), profileName, rankingsConverted, metricsConverted,
+            maxRanking, dateTimeBegin, dateTimeEnd, customDomainsConverted, accept, context);
     }
 
     /**
      * Get log analytics ranking report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -747,33 +553,20 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return log analytics ranking report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RankingsResponseInner> getLogAnalyticsRankingsAsync(
-        String resourceGroupName,
-        String profileName,
-        List<LogRanking> rankings,
-        List<LogRankingMetric> metrics,
-        int maxRanking,
-        OffsetDateTime dateTimeBegin,
+    public Mono<RankingsResponseInner> getLogAnalyticsRankingsAsync(String resourceGroupName, String profileName,
+        List<LogRanking> rankings, List<LogRankingMetric> metrics, int maxRanking, OffsetDateTime dateTimeBegin,
         OffsetDateTime dateTimeEnd) {
         final List<String> customDomains = null;
-        return getLogAnalyticsRankingsWithResponseAsync(
-                resourceGroupName,
-                profileName,
-                rankings,
-                metrics,
-                maxRanking,
-                dateTimeBegin,
-                dateTimeEnd,
-                customDomains)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getLogAnalyticsRankingsWithResponseAsync(resourceGroupName, profileName, rankings, metrics, maxRanking,
+            dateTimeBegin, dateTimeEnd, customDomains).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get log analytics ranking report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -787,35 +580,19 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return log analytics ranking report for AFD profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RankingsResponseInner> getLogAnalyticsRankingsWithResponse(
-        String resourceGroupName,
-        String profileName,
-        List<LogRanking> rankings,
-        List<LogRankingMetric> metrics,
-        int maxRanking,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        List<String> customDomains,
-        Context context) {
-        return getLogAnalyticsRankingsWithResponseAsync(
-                resourceGroupName,
-                profileName,
-                rankings,
-                metrics,
-                maxRanking,
-                dateTimeBegin,
-                dateTimeEnd,
-                customDomains,
-                context)
-            .block();
+    public Response<RankingsResponseInner> getLogAnalyticsRankingsWithResponse(String resourceGroupName,
+        String profileName, List<LogRanking> rankings, List<LogRankingMetric> metrics, int maxRanking,
+        OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd, List<String> customDomains, Context context) {
+        return getLogAnalyticsRankingsWithResponseAsync(resourceGroupName, profileName, rankings, metrics, maxRanking,
+            dateTimeBegin, dateTimeEnd, customDomains, context).block();
     }
 
     /**
      * Get log analytics ranking report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param rankings Array of LogRanking.
      * @param metrics Array of LogRankingMetric.
      * @param maxRanking The maxRanking parameter.
@@ -827,54 +604,36 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return log analytics ranking report for AFD profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RankingsResponseInner getLogAnalyticsRankings(
-        String resourceGroupName,
-        String profileName,
-        List<LogRanking> rankings,
-        List<LogRankingMetric> metrics,
-        int maxRanking,
-        OffsetDateTime dateTimeBegin,
+    public RankingsResponseInner getLogAnalyticsRankings(String resourceGroupName, String profileName,
+        List<LogRanking> rankings, List<LogRankingMetric> metrics, int maxRanking, OffsetDateTime dateTimeBegin,
         OffsetDateTime dateTimeEnd) {
         final List<String> customDomains = null;
-        return getLogAnalyticsRankingsWithResponse(
-                resourceGroupName,
-                profileName,
-                rankings,
-                metrics,
-                maxRanking,
-                dateTimeBegin,
-                dateTimeEnd,
-                customDomains,
-                Context.NONE)
-            .getValue();
+        return getLogAnalyticsRankingsWithResponse(resourceGroupName, profileName, rankings, metrics, maxRanking,
+            dateTimeBegin, dateTimeEnd, customDomains, Context.NONE).getValue();
     }
 
     /**
      * Get all available location names for AFD log analytics report.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available location names for AFD log analytics report along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ContinentsResponseInner>> getLogAnalyticsLocationsWithResponseAsync(
-        String resourceGroupName, String profileName) {
+    public Mono<Response<ContinentsResponseInner>> getLogAnalyticsLocationsWithResponseAsync(String resourceGroupName,
+        String profileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -886,46 +645,34 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getLogAnalyticsLocations(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            profileName,
-                            accept,
-                            context))
+                context -> service.getLogAnalyticsLocations(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), profileName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all available location names for AFD log analytics report.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available location names for AFD log analytics report along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ContinentsResponseInner>> getLogAnalyticsLocationsWithResponseAsync(
-        String resourceGroupName, String profileName, Context context) {
+    private Mono<Response<ContinentsResponseInner>> getLogAnalyticsLocationsWithResponseAsync(String resourceGroupName,
+        String profileName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -936,23 +683,16 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getLogAnalyticsLocations(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                profileName,
-                accept,
-                context);
+        return service.getLogAnalyticsLocations(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), profileName, accept, context);
     }
 
     /**
      * Get all available location names for AFD log analytics report.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -966,10 +706,10 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Get all available location names for AFD log analytics report.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -977,17 +717,17 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return all available location names for AFD log analytics report along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContinentsResponseInner> getLogAnalyticsLocationsWithResponse(
-        String resourceGroupName, String profileName, Context context) {
+    public Response<ContinentsResponseInner> getLogAnalyticsLocationsWithResponse(String resourceGroupName,
+        String profileName, Context context) {
         return getLogAnalyticsLocationsWithResponseAsync(resourceGroupName, profileName, context).block();
     }
 
     /**
      * Get all available location names for AFD log analytics report.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1000,30 +740,26 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Get all endpoints and custom domains available for AFD log report.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all endpoints and custom domains available for AFD log report along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ResourcesResponseInner>> getLogAnalyticsResourcesWithResponseAsync(
-        String resourceGroupName, String profileName) {
+    public Mono<Response<ResourcesResponseInner>> getLogAnalyticsResourcesWithResponseAsync(String resourceGroupName,
+        String profileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1035,46 +771,34 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getLogAnalyticsResources(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            profileName,
-                            accept,
-                            context))
+                context -> service.getLogAnalyticsResources(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), profileName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all endpoints and custom domains available for AFD log report.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all endpoints and custom domains available for AFD log report along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourcesResponseInner>> getLogAnalyticsResourcesWithResponseAsync(
-        String resourceGroupName, String profileName, Context context) {
+    private Mono<Response<ResourcesResponseInner>> getLogAnalyticsResourcesWithResponseAsync(String resourceGroupName,
+        String profileName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1085,23 +809,16 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getLogAnalyticsResources(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                profileName,
-                accept,
-                context);
+        return service.getLogAnalyticsResources(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), profileName, accept, context);
     }
 
     /**
      * Get all endpoints and custom domains available for AFD log report.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1115,10 +832,10 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Get all endpoints and custom domains available for AFD log report.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1126,17 +843,17 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return all endpoints and custom domains available for AFD log report along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ResourcesResponseInner> getLogAnalyticsResourcesWithResponse(
-        String resourceGroupName, String profileName, Context context) {
+    public Response<ResourcesResponseInner> getLogAnalyticsResourcesWithResponse(String resourceGroupName,
+        String profileName, Context context) {
         return getLogAnalyticsResourcesWithResponseAsync(resourceGroupName, profileName, context).block();
     }
 
     /**
      * Get all endpoints and custom domains available for AFD log report.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1149,10 +866,10 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
     /**
      * Get Waf related log analytics report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -1164,30 +881,20 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return waf related log analytics report for AFD profile along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<WafMetricsResponseInner>> getWafLogAnalyticsMetricsWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        List<WafMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        WafGranularity granularity,
-        List<WafAction> actions,
-        List<WafRankingGroupBy> groupBy,
+    public Mono<Response<WafMetricsResponseInner>> getWafLogAnalyticsMetricsWithResponseAsync(String resourceGroupName,
+        String profileName, List<WafMetric> metrics, OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd,
+        WafGranularity granularity, List<WafAction> actions, List<WafRankingGroupBy> groupBy,
         List<WafRuleType> ruleTypes) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1209,48 +916,28 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             return Mono.error(new IllegalArgumentException("Parameter granularity is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> metricsConverted =
-            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> actionsConverted =
-            (actions == null)
-                ? new ArrayList<>()
-                : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> groupByConverted =
-            (groupBy == null)
-                ? new ArrayList<>()
-                : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> ruleTypesConverted =
-            (ruleTypes == null)
-                ? new ArrayList<>()
-                : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> metricsConverted
+            = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> actionsConverted = (actions == null) ? new ArrayList<>()
+            : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> groupByConverted = (groupBy == null) ? new ArrayList<>()
+            : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> ruleTypesConverted = (ruleTypes == null) ? new ArrayList<>()
+            : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getWafLogAnalyticsMetrics(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            profileName,
-                            metricsConverted,
-                            dateTimeBegin,
-                            dateTimeEnd,
-                            granularity,
-                            actionsConverted,
-                            groupByConverted,
-                            ruleTypesConverted,
-                            accept,
-                            context))
+                context -> service.getWafLogAnalyticsMetrics(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), profileName, metricsConverted, dateTimeBegin,
+                    dateTimeEnd, granularity, actionsConverted, groupByConverted, ruleTypesConverted, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get Waf related log analytics report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -1263,31 +950,20 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return waf related log analytics report for AFD profile along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WafMetricsResponseInner>> getWafLogAnalyticsMetricsWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        List<WafMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        WafGranularity granularity,
-        List<WafAction> actions,
-        List<WafRankingGroupBy> groupBy,
-        List<WafRuleType> ruleTypes,
-        Context context) {
+    private Mono<Response<WafMetricsResponseInner>> getWafLogAnalyticsMetricsWithResponseAsync(String resourceGroupName,
+        String profileName, List<WafMetric> metrics, OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd,
+        WafGranularity granularity, List<WafAction> actions, List<WafRankingGroupBy> groupBy,
+        List<WafRuleType> ruleTypes, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1309,45 +985,26 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             return Mono.error(new IllegalArgumentException("Parameter granularity is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> metricsConverted =
-            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> actionsConverted =
-            (actions == null)
-                ? new ArrayList<>()
-                : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> groupByConverted =
-            (groupBy == null)
-                ? new ArrayList<>()
-                : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> ruleTypesConverted =
-            (ruleTypes == null)
-                ? new ArrayList<>()
-                : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> metricsConverted
+            = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> actionsConverted = (actions == null) ? new ArrayList<>()
+            : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> groupByConverted = (groupBy == null) ? new ArrayList<>()
+            : groupBy.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> ruleTypesConverted = (ruleTypes == null) ? new ArrayList<>()
+            : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
-        return service
-            .getWafLogAnalyticsMetrics(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                profileName,
-                metricsConverted,
-                dateTimeBegin,
-                dateTimeEnd,
-                granularity,
-                actionsConverted,
-                groupByConverted,
-                ruleTypesConverted,
-                accept,
-                context);
+        return service.getWafLogAnalyticsMetrics(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), profileName, metricsConverted, dateTimeBegin, dateTimeEnd,
+            granularity, actionsConverted, groupByConverted, ruleTypesConverted, accept, context);
     }
 
     /**
      * Get Waf related log analytics report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -1358,35 +1015,21 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return waf related log analytics report for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WafMetricsResponseInner> getWafLogAnalyticsMetricsAsync(
-        String resourceGroupName,
-        String profileName,
-        List<WafMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        WafGranularity granularity) {
+    public Mono<WafMetricsResponseInner> getWafLogAnalyticsMetricsAsync(String resourceGroupName, String profileName,
+        List<WafMetric> metrics, OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd, WafGranularity granularity) {
         final List<WafAction> actions = null;
         final List<WafRankingGroupBy> groupBy = null;
         final List<WafRuleType> ruleTypes = null;
-        return getWafLogAnalyticsMetricsWithResponseAsync(
-                resourceGroupName,
-                profileName,
-                metrics,
-                dateTimeBegin,
-                dateTimeEnd,
-                granularity,
-                actions,
-                groupBy,
-                ruleTypes)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getWafLogAnalyticsMetricsWithResponseAsync(resourceGroupName, profileName, metrics, dateTimeBegin,
+            dateTimeEnd, granularity, actions, groupBy, ruleTypes).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Waf related log analytics report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -1401,37 +1044,20 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return waf related log analytics report for AFD profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WafMetricsResponseInner> getWafLogAnalyticsMetricsWithResponse(
-        String resourceGroupName,
-        String profileName,
-        List<WafMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        WafGranularity granularity,
-        List<WafAction> actions,
-        List<WafRankingGroupBy> groupBy,
-        List<WafRuleType> ruleTypes,
-        Context context) {
-        return getWafLogAnalyticsMetricsWithResponseAsync(
-                resourceGroupName,
-                profileName,
-                metrics,
-                dateTimeBegin,
-                dateTimeEnd,
-                granularity,
-                actions,
-                groupBy,
-                ruleTypes,
-                context)
-            .block();
+    public Response<WafMetricsResponseInner> getWafLogAnalyticsMetricsWithResponse(String resourceGroupName,
+        String profileName, List<WafMetric> metrics, OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd,
+        WafGranularity granularity, List<WafAction> actions, List<WafRankingGroupBy> groupBy,
+        List<WafRuleType> ruleTypes, Context context) {
+        return getWafLogAnalyticsMetricsWithResponseAsync(resourceGroupName, profileName, metrics, dateTimeBegin,
+            dateTimeEnd, granularity, actions, groupBy, ruleTypes, context).block();
     }
 
     /**
      * Get Waf related log analytics report for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -1442,36 +1068,21 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return waf related log analytics report for AFD profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WafMetricsResponseInner getWafLogAnalyticsMetrics(
-        String resourceGroupName,
-        String profileName,
-        List<WafMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        WafGranularity granularity) {
+    public WafMetricsResponseInner getWafLogAnalyticsMetrics(String resourceGroupName, String profileName,
+        List<WafMetric> metrics, OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd, WafGranularity granularity) {
         final List<WafAction> actions = null;
         final List<WafRankingGroupBy> groupBy = null;
         final List<WafRuleType> ruleTypes = null;
-        return getWafLogAnalyticsMetricsWithResponse(
-                resourceGroupName,
-                profileName,
-                metrics,
-                dateTimeBegin,
-                dateTimeEnd,
-                granularity,
-                actions,
-                groupBy,
-                ruleTypes,
-                Context.NONE)
-            .getValue();
+        return getWafLogAnalyticsMetricsWithResponse(resourceGroupName, profileName, metrics, dateTimeBegin,
+            dateTimeEnd, granularity, actions, groupBy, ruleTypes, Context.NONE).getValue();
     }
 
     /**
      * Get WAF log analytics charts for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -1482,31 +1093,21 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wAF log analytics charts for AFD profile along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return wAF log analytics charts for AFD profile along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<WafRankingsResponseInner>> getWafLogAnalyticsRankingsWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        List<WafMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        int maxRanking,
-        List<WafRankingType> rankings,
-        List<WafAction> actions,
+        String resourceGroupName, String profileName, List<WafMetric> metrics, OffsetDateTime dateTimeBegin,
+        OffsetDateTime dateTimeEnd, int maxRanking, List<WafRankingType> rankings, List<WafAction> actions,
         List<WafRuleType> ruleTypes) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1528,46 +1129,28 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             return Mono.error(new IllegalArgumentException("Parameter rankings is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> metricsConverted =
-            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> rankingsConverted =
-            rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> actionsConverted =
-            (actions == null)
-                ? new ArrayList<>()
-                : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> ruleTypesConverted =
-            (ruleTypes == null)
-                ? new ArrayList<>()
-                : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> metricsConverted
+            = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> rankingsConverted
+            = rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> actionsConverted = (actions == null) ? new ArrayList<>()
+            : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> ruleTypesConverted = (ruleTypes == null) ? new ArrayList<>()
+            : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getWafLogAnalyticsRankings(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            profileName,
-                            metricsConverted,
-                            dateTimeBegin,
-                            dateTimeEnd,
-                            maxRanking,
-                            rankingsConverted,
-                            actionsConverted,
-                            ruleTypesConverted,
-                            accept,
-                            context))
+            .withContext(context -> service.getWafLogAnalyticsRankings(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), profileName,
+                metricsConverted, dateTimeBegin, dateTimeEnd, maxRanking, rankingsConverted, actionsConverted,
+                ruleTypesConverted, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get WAF log analytics charts for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -1579,32 +1162,21 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wAF log analytics charts for AFD profile along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return wAF log analytics charts for AFD profile along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WafRankingsResponseInner>> getWafLogAnalyticsRankingsWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        List<WafMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        int maxRanking,
-        List<WafRankingType> rankings,
-        List<WafAction> actions,
-        List<WafRuleType> ruleTypes,
-        Context context) {
+        String resourceGroupName, String profileName, List<WafMetric> metrics, OffsetDateTime dateTimeBegin,
+        OffsetDateTime dateTimeEnd, int maxRanking, List<WafRankingType> rankings, List<WafAction> actions,
+        List<WafRuleType> ruleTypes, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1626,43 +1198,26 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
             return Mono.error(new IllegalArgumentException("Parameter rankings is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> metricsConverted =
-            metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> rankingsConverted =
-            rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> actionsConverted =
-            (actions == null)
-                ? new ArrayList<>()
-                : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> ruleTypesConverted =
-            (ruleTypes == null)
-                ? new ArrayList<>()
-                : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> metricsConverted
+            = metrics.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> rankingsConverted
+            = rankings.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> actionsConverted = (actions == null) ? new ArrayList<>()
+            : actions.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> ruleTypesConverted = (ruleTypes == null) ? new ArrayList<>()
+            : ruleTypes.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
-        return service
-            .getWafLogAnalyticsRankings(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                profileName,
-                metricsConverted,
-                dateTimeBegin,
-                dateTimeEnd,
-                maxRanking,
-                rankingsConverted,
-                actionsConverted,
-                ruleTypesConverted,
-                accept,
-                context);
+        return service.getWafLogAnalyticsRankings(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), profileName, metricsConverted, dateTimeBegin, dateTimeEnd,
+            maxRanking, rankingsConverted, actionsConverted, ruleTypesConverted, accept, context);
     }
 
     /**
      * Get WAF log analytics charts for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -1674,35 +1229,21 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return wAF log analytics charts for AFD profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<WafRankingsResponseInner> getWafLogAnalyticsRankingsAsync(
-        String resourceGroupName,
-        String profileName,
-        List<WafMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        int maxRanking,
+    public Mono<WafRankingsResponseInner> getWafLogAnalyticsRankingsAsync(String resourceGroupName, String profileName,
+        List<WafMetric> metrics, OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd, int maxRanking,
         List<WafRankingType> rankings) {
         final List<WafAction> actions = null;
         final List<WafRuleType> ruleTypes = null;
-        return getWafLogAnalyticsRankingsWithResponseAsync(
-                resourceGroupName,
-                profileName,
-                metrics,
-                dateTimeBegin,
-                dateTimeEnd,
-                maxRanking,
-                rankings,
-                actions,
-                ruleTypes)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return getWafLogAnalyticsRankingsWithResponseAsync(resourceGroupName, profileName, metrics, dateTimeBegin,
+            dateTimeEnd, maxRanking, rankings, actions, ruleTypes).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get WAF log analytics charts for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -1717,37 +1258,20 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return wAF log analytics charts for AFD profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WafRankingsResponseInner> getWafLogAnalyticsRankingsWithResponse(
-        String resourceGroupName,
-        String profileName,
-        List<WafMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        int maxRanking,
-        List<WafRankingType> rankings,
-        List<WafAction> actions,
-        List<WafRuleType> ruleTypes,
+    public Response<WafRankingsResponseInner> getWafLogAnalyticsRankingsWithResponse(String resourceGroupName,
+        String profileName, List<WafMetric> metrics, OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd,
+        int maxRanking, List<WafRankingType> rankings, List<WafAction> actions, List<WafRuleType> ruleTypes,
         Context context) {
-        return getWafLogAnalyticsRankingsWithResponseAsync(
-                resourceGroupName,
-                profileName,
-                metrics,
-                dateTimeBegin,
-                dateTimeEnd,
-                maxRanking,
-                rankings,
-                actions,
-                ruleTypes,
-                context)
-            .block();
+        return getWafLogAnalyticsRankingsWithResponseAsync(resourceGroupName, profileName, metrics, dateTimeBegin,
+            dateTimeEnd, maxRanking, rankings, actions, ruleTypes, context).block();
     }
 
     /**
      * Get WAF log analytics charts for AFD profile.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
-     *     within the resource group. which is unique within the resource group.
+     * within the resource group. which is unique within the resource group.
      * @param metrics Array of WafMetric.
      * @param dateTimeBegin The dateTimeBegin parameter.
      * @param dateTimeEnd The dateTimeEnd parameter.
@@ -1759,27 +1283,12 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
      * @return wAF log analytics charts for AFD profile.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WafRankingsResponseInner getWafLogAnalyticsRankings(
-        String resourceGroupName,
-        String profileName,
-        List<WafMetric> metrics,
-        OffsetDateTime dateTimeBegin,
-        OffsetDateTime dateTimeEnd,
-        int maxRanking,
+    public WafRankingsResponseInner getWafLogAnalyticsRankings(String resourceGroupName, String profileName,
+        List<WafMetric> metrics, OffsetDateTime dateTimeBegin, OffsetDateTime dateTimeEnd, int maxRanking,
         List<WafRankingType> rankings) {
         final List<WafAction> actions = null;
         final List<WafRuleType> ruleTypes = null;
-        return getWafLogAnalyticsRankingsWithResponse(
-                resourceGroupName,
-                profileName,
-                metrics,
-                dateTimeBegin,
-                dateTimeEnd,
-                maxRanking,
-                rankings,
-                actions,
-                ruleTypes,
-                Context.NONE)
-            .getValue();
+        return getWafLogAnalyticsRankingsWithResponse(resourceGroupName, profileName, metrics, dateTimeBegin,
+            dateTimeEnd, maxRanking, rankings, actions, ruleTypes, Context.NONE).getValue();
     }
 }

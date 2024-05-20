@@ -33,8 +33,8 @@ public final class OkHttpProxySelector extends ProxySelector {
         String nonProxyHosts) {
         this.proxyType = proxyType;
         this.proxyAddressSupplier = proxyAddressSupplier;
-        this.nonProxyHostsPattern = (nonProxyHosts == null)
-            ? null : Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
+        this.nonProxyHostsPattern
+            = (nonProxyHosts == null) ? null : Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
     }
 
     @Override

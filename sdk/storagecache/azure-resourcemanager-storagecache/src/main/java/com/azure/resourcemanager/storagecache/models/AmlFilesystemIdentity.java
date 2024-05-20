@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Managed Identity properties. */
+/**
+ * Managed Identity properties.
+ */
 @Fluent
 public final class AmlFilesystemIdentity {
     /*
@@ -31,20 +33,21 @@ public final class AmlFilesystemIdentity {
     private AmlFilesystemIdentityType type;
 
     /*
-     * A dictionary where each key is a user assigned identity resource ID, and each key's value is an empty
-     * dictionary.
+     * A dictionary where each key is a user assigned identity resource ID, and each key's value is an empty dictionary.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentitiesValue> userAssignedIdentities;
 
-    /** Creates an instance of AmlFilesystemIdentity class. */
+    /**
+     * Creates an instance of AmlFilesystemIdentity class.
+     */
     public AmlFilesystemIdentity() {
     }
 
     /**
      * Get the principalId property: The principal ID for the user-assigned identity of the resource.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -53,7 +56,7 @@ public final class AmlFilesystemIdentity {
 
     /**
      * Get the tenantId property: The tenant ID associated with the resource.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -62,7 +65,7 @@ public final class AmlFilesystemIdentity {
 
     /**
      * Get the type property: The type of identity used for the resource.
-     *
+     * 
      * @return the type value.
      */
     public AmlFilesystemIdentityType type() {
@@ -71,7 +74,7 @@ public final class AmlFilesystemIdentity {
 
     /**
      * Set the type property: The type of identity used for the resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the AmlFilesystemIdentity object itself.
      */
@@ -83,7 +86,7 @@ public final class AmlFilesystemIdentity {
     /**
      * Get the userAssignedIdentities property: A dictionary where each key is a user assigned identity resource ID, and
      * each key's value is an empty dictionary.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserAssignedIdentitiesValue> userAssignedIdentities() {
@@ -93,31 +96,28 @@ public final class AmlFilesystemIdentity {
     /**
      * Set the userAssignedIdentities property: A dictionary where each key is a user assigned identity resource ID, and
      * each key's value is an empty dictionary.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the AmlFilesystemIdentity object itself.
      */
-    public AmlFilesystemIdentity withUserAssignedIdentities(
-        Map<String, UserAssignedIdentitiesValue> userAssignedIdentities) {
+    public AmlFilesystemIdentity
+        withUserAssignedIdentities(Map<String, UserAssignedIdentitiesValue> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

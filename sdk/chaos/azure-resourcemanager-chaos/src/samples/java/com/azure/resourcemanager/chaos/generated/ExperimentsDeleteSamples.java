@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.chaos.generated;
 
-/** Samples for Experiments Delete. */
+/**
+ * Samples for Experiments Delete.
+ */
 public final class ExperimentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/DeleteExperiment.json
+     * x-ms-original-file:
+     * specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/DeleteExperiment.json
      */
     /**
      * Sample code: Delete a Experiment in a resource group.
-     *
+     * 
      * @param manager Entry point to ChaosManager.
      */
     public static void deleteAExperimentInAResourceGroup(com.azure.resourcemanager.chaos.ChaosManager manager) {

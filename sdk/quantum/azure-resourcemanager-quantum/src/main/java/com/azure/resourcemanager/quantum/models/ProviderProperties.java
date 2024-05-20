@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Provider properties. */
+/**
+ * Provider properties.
+ */
 @Fluent
 public final class ProviderProperties {
     /*
@@ -71,13 +73,15 @@ public final class ProviderProperties {
     @JsonProperty(value = "pricingDimensions")
     private List<PricingDimension> pricingDimensions;
 
-    /** Creates an instance of ProviderProperties class. */
+    /**
+     * Creates an instance of ProviderProperties class.
+     */
     public ProviderProperties() {
     }
 
     /**
      * Get the description property: A description about this provider.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -86,7 +90,7 @@ public final class ProviderProperties {
 
     /**
      * Get the providerType property: Provider type.
-     *
+     * 
      * @return the providerType value.
      */
     public String providerType() {
@@ -95,7 +99,7 @@ public final class ProviderProperties {
 
     /**
      * Get the company property: Company name.
-     *
+     * 
      * @return the company value.
      */
     public String company() {
@@ -104,7 +108,7 @@ public final class ProviderProperties {
 
     /**
      * Get the defaultEndpoint property: Provider's default endpoint.
-     *
+     * 
      * @return the defaultEndpoint value.
      */
     public String defaultEndpoint() {
@@ -113,7 +117,7 @@ public final class ProviderProperties {
 
     /**
      * Get the aad property: Azure Active Directory info.
-     *
+     * 
      * @return the aad value.
      */
     public ProviderPropertiesAad aad() {
@@ -122,7 +126,7 @@ public final class ProviderProperties {
 
     /**
      * Set the aad property: Azure Active Directory info.
-     *
+     * 
      * @param aad the aad value to set.
      * @return the ProviderProperties object itself.
      */
@@ -133,7 +137,7 @@ public final class ProviderProperties {
 
     /**
      * Get the managedApplication property: Provider's Managed-Application info.
-     *
+     * 
      * @return the managedApplication value.
      */
     public ProviderPropertiesManagedApplication managedApplication() {
@@ -142,7 +146,7 @@ public final class ProviderProperties {
 
     /**
      * Set the managedApplication property: Provider's Managed-Application info.
-     *
+     * 
      * @param managedApplication the managedApplication value to set.
      * @return the ProviderProperties object itself.
      */
@@ -153,7 +157,7 @@ public final class ProviderProperties {
 
     /**
      * Get the targets property: The list of targets available from this provider.
-     *
+     * 
      * @return the targets value.
      */
     public List<TargetDescription> targets() {
@@ -162,7 +166,7 @@ public final class ProviderProperties {
 
     /**
      * Set the targets property: The list of targets available from this provider.
-     *
+     * 
      * @param targets the targets value to set.
      * @return the ProviderProperties object itself.
      */
@@ -173,7 +177,7 @@ public final class ProviderProperties {
 
     /**
      * Get the skus property: The list of skus available from this provider.
-     *
+     * 
      * @return the skus value.
      */
     public List<SkuDescription> skus() {
@@ -182,7 +186,7 @@ public final class ProviderProperties {
 
     /**
      * Set the skus property: The list of skus available from this provider.
-     *
+     * 
      * @param skus the skus value to set.
      * @return the ProviderProperties object itself.
      */
@@ -193,7 +197,7 @@ public final class ProviderProperties {
 
     /**
      * Get the quotaDimensions property: The list of quota dimensions from the provider.
-     *
+     * 
      * @return the quotaDimensions value.
      */
     public List<QuotaDimension> quotaDimensions() {
@@ -202,7 +206,7 @@ public final class ProviderProperties {
 
     /**
      * Set the quotaDimensions property: The list of quota dimensions from the provider.
-     *
+     * 
      * @param quotaDimensions the quotaDimensions value to set.
      * @return the ProviderProperties object itself.
      */
@@ -213,7 +217,7 @@ public final class ProviderProperties {
 
     /**
      * Get the pricingDimensions property: The list of pricing dimensions from the provider.
-     *
+     * 
      * @return the pricingDimensions value.
      */
     public List<PricingDimension> pricingDimensions() {
@@ -222,7 +226,7 @@ public final class ProviderProperties {
 
     /**
      * Set the pricingDimensions property: The list of pricing dimensions from the provider.
-     *
+     * 
      * @param pricingDimensions the pricingDimensions value to set.
      * @return the ProviderProperties object itself.
      */
@@ -233,7 +237,7 @@ public final class ProviderProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Current running state of the replica. */
+/**
+ * Current running state of the replica.
+ */
 public final class ContainerAppReplicaRunningState extends ExpandableStringEnum<ContainerAppReplicaRunningState> {
-    /** Static value Running for ContainerAppReplicaRunningState. */
+    /**
+     * Static value Running for ContainerAppReplicaRunningState.
+     */
     public static final ContainerAppReplicaRunningState RUNNING = fromString("Running");
 
-    /** Static value NotRunning for ContainerAppReplicaRunningState. */
+    /**
+     * Static value NotRunning for ContainerAppReplicaRunningState.
+     */
     public static final ContainerAppReplicaRunningState NOT_RUNNING = fromString("NotRunning");
 
-    /** Static value Unknown for ContainerAppReplicaRunningState. */
+    /**
+     * Static value Unknown for ContainerAppReplicaRunningState.
+     */
     public static final ContainerAppReplicaRunningState UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of ContainerAppReplicaRunningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ContainerAppReplicaRunningState extends ExpandableStringEnum<
 
     /**
      * Creates or finds a ContainerAppReplicaRunningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContainerAppReplicaRunningState.
      */
@@ -41,7 +49,7 @@ public final class ContainerAppReplicaRunningState extends ExpandableStringEnum<
 
     /**
      * Gets known ContainerAppReplicaRunningState values.
-     *
+     * 
      * @return known ContainerAppReplicaRunningState values.
      */
     public static Collection<ContainerAppReplicaRunningState> values() {

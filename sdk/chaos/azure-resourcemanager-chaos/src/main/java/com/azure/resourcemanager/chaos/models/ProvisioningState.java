@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Current provisioning state for a given Azure Chaos resource. */
+/**
+ * Current provisioning state for a given Azure Chaos resource.
+ */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
-    /** Static value Succeeded for ProvisioningState. */
+    /**
+     * Static value Succeeded for ProvisioningState.
+     */
     public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ProvisioningState. */
+    /**
+     * Static value Failed for ProvisioningState.
+     */
     public static final ProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for ProvisioningState. */
+    /**
+     * Static value Canceled for ProvisioningState.
+     */
     public static final ProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Creating for ProvisioningState. */
+    /**
+     * Static value Creating for ProvisioningState.
+     */
     public static final ProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for ProvisioningState. */
+    /**
+     * Static value Updating for ProvisioningState.
+     */
     public static final ProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for ProvisioningState. */
+    /**
+     * Static value Deleting for ProvisioningState.
+     */
     public static final ProvisioningState DELETING = fromString("Deleting");
 
     /**
      * Creates a new instance of ProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
 
     /**
      * Creates or finds a ProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProvisioningState.
      */
@@ -50,7 +64,7 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
 
     /**
      * Gets known ProvisioningState values.
-     *
+     * 
      * @return known ProvisioningState values.
      */
     public static Collection<ProvisioningState> values() {

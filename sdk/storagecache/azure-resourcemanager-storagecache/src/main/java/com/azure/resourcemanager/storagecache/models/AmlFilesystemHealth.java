@@ -30,13 +30,15 @@ public final class AmlFilesystemHealth {
     @JsonProperty(value = "statusDescription")
     private String statusDescription;
 
-    /** Creates an instance of AmlFilesystemHealth class. */
+    /**
+     * Creates an instance of AmlFilesystemHealth class.
+     */
     public AmlFilesystemHealth() {
     }
 
     /**
      * Get the state property: List of AML file system health states.
-     *
+     * 
      * @return the state value.
      */
     public AmlFilesystemHealthStateType state() {
@@ -45,7 +47,7 @@ public final class AmlFilesystemHealth {
 
     /**
      * Set the state property: List of AML file system health states.
-     *
+     * 
      * @param state the state value to set.
      * @return the AmlFilesystemHealth object itself.
      */
@@ -56,7 +58,7 @@ public final class AmlFilesystemHealth {
 
     /**
      * Get the statusCode property: Server-defined error code for the AML file system health.
-     *
+     * 
      * @return the statusCode value.
      */
     public String statusCode() {
@@ -65,7 +67,7 @@ public final class AmlFilesystemHealth {
 
     /**
      * Set the statusCode property: Server-defined error code for the AML file system health.
-     *
+     * 
      * @param statusCode the statusCode value to set.
      * @return the AmlFilesystemHealth object itself.
      */
@@ -76,7 +78,7 @@ public final class AmlFilesystemHealth {
 
     /**
      * Get the statusDescription property: Describes the health state.
-     *
+     * 
      * @return the statusDescription value.
      */
     public String statusDescription() {
@@ -85,7 +87,7 @@ public final class AmlFilesystemHealth {
 
     /**
      * Set the statusDescription property: Describes the health state.
-     *
+     * 
      * @param statusDescription the statusDescription value to set.
      * @return the AmlFilesystemHealth object itself.
      */
@@ -96,7 +98,7 @@ public final class AmlFilesystemHealth {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

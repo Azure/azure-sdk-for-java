@@ -32,7 +32,7 @@ public final class MarketplaceAgreementsCreateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"publisher\":\"zrpzb\",\"product\":\"ckqqzqioxiysui\",\"plan\":\"ynkedyatrwyhqmib\",\"licenseTextLink\":\"hwit\",\"privacyPolicyLink\":\"ypyynpcdpumnzg\",\"retrieveDatetime\":\"2021-04-26T17:55:24Z\",\"signature\":\"mabiknsorgjhxb\",\"accepted\":false},\"id\":\"lwwrl\",\"name\":\"dmtnc\",\"type\":\"ok\"}";
+            = "{\"properties\":{\"publisher\":\"kmr\",\"product\":\"mvvhmxtdrjfuta\",\"plan\":\"ebjvewzcjzn\",\"licenseTextLink\":\"cpmguaadraufact\",\"privacyPolicyLink\":\"hzovaj\",\"retrieveDatetime\":\"2021-02-15T15:09:11Z\",\"signature\":\"xxpshneeku\",\"accepted\":false},\"id\":\"slqubkwdl\",\"name\":\"nrdsutujbazpjuoh\",\"type\":\"inyflnorwmduvwp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,19 +50,19 @@ public final class MarketplaceAgreementsCreateWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ConfluentAgreementResource response = manager.marketplaceAgreements()
-            .createWithResponse(new ConfluentAgreementResourceInner().withPublisher("tgadgvraeaen").withProduct("nzar")
-                .withPlan("lquuijfqkacewii").withLicenseTextLink("pubjibw").withPrivacyPolicyLink("f")
-                .withRetrieveDatetime(OffsetDateTime.parse("2021-01-20T11:33:50Z")).withSignature("kvpuvksgplsaknyn")
+            .createWithResponse(new ConfluentAgreementResourceInner().withPublisher("oookkqfq").withProduct("vleo")
+                .withPlan("ml").withLicenseTextLink("qtqzfavyv").withPrivacyPolicyLink("qybaryeua")
+                .withRetrieveDatetime(OffsetDateTime.parse("2021-06-23T02:25:47Z")).withSignature("abqgzslesjcbh")
                 .withAccepted(false), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zrpzb", response.publisher());
-        Assertions.assertEquals("ckqqzqioxiysui", response.product());
-        Assertions.assertEquals("ynkedyatrwyhqmib", response.plan());
-        Assertions.assertEquals("hwit", response.licenseTextLink());
-        Assertions.assertEquals("ypyynpcdpumnzg", response.privacyPolicyLink());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-26T17:55:24Z"), response.retrieveDatetime());
-        Assertions.assertEquals("mabiknsorgjhxb", response.signature());
+        Assertions.assertEquals("kmr", response.publisher());
+        Assertions.assertEquals("mvvhmxtdrjfuta", response.product());
+        Assertions.assertEquals("ebjvewzcjzn", response.plan());
+        Assertions.assertEquals("cpmguaadraufact", response.licenseTextLink());
+        Assertions.assertEquals("hzovaj", response.privacyPolicyLink());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-15T15:09:11Z"), response.retrieveDatetime());
+        Assertions.assertEquals("xxpshneeku", response.signature());
         Assertions.assertEquals(false, response.accepted());
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resync input properties. */
+/**
+ * Resync input properties.
+ */
 @Fluent
 public final class ResyncInputProperties {
     /*
@@ -17,13 +19,15 @@ public final class ResyncInputProperties {
     @JsonProperty(value = "providerSpecificDetails", required = true)
     private ResyncProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of ResyncInputProperties class. */
+    /**
+     * Creates an instance of ResyncInputProperties class.
+     */
     public ResyncInputProperties() {
     }
 
     /**
      * Get the providerSpecificDetails property: The provider specific details.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public ResyncProviderSpecificInput providerSpecificDetails() {
@@ -32,7 +36,7 @@ public final class ResyncInputProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific details.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the ResyncInputProperties object itself.
      */
@@ -43,15 +47,13 @@ public final class ResyncInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (providerSpecificDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property providerSpecificDetails in model ResyncInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property providerSpecificDetails in model ResyncInputProperties"));
         } else {
             providerSpecificDetails().validate();
         }

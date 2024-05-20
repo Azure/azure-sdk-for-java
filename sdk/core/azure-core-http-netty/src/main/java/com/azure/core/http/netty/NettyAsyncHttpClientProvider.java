@@ -11,17 +11,19 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.netty.resources.ConnectionProvider;
 
 /**
- * <p>The NettyAsyncHttpClientProvider class is an implementation of the HttpClientProvider interface that provides
+ * <p>
+ * The NettyAsyncHttpClientProvider class is an implementation of the HttpClientProvider interface that provides
  * an instance of HttpClient based on Netty. Instances are either shared or a newly created based
- * on the configuration.</p>
+ * on the configuration.
+ * </p>
  *
  * @see com.azure.core.http.netty
  * @see NettyAsyncHttpClient
  * @see HttpClient
  */
 public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
-    private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING =
-        Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
+    private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING
+        = Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     private final boolean enableHttpClientSharing;
     private static final int DEFAULT_MAX_CONNECTIONS = 500;
 
@@ -82,8 +84,8 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
         // Only configure the maximum connections if it has been set in the options.
         Integer maximumConnectionPoolSize = clientOptions.getMaximumConnectionPoolSize();
         if (maximumConnectionPoolSize != null && maximumConnectionPoolSize > 0) {
-            LOGGER.verbose("Setting Reactor Netty ConnectionProvider's maximum connections to "
-                + maximumConnectionPoolSize + ".");
+            LOGGER.verbose(
+                "Setting Reactor Netty ConnectionProvider's maximum connections to " + maximumConnectionPoolSize + ".");
             connectionProviderBuilder.maxConnections(maximumConnectionPoolSize);
         } else {
             // reactor-netty (as of version 1.0.13) uses different default values for maxConnections when creating
@@ -93,7 +95,8 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
             // HttpClient.create() uses 500 connections (called when HttpClientOptions is not set)
             // HttpClient.create(ConnectionProvider) uses maxAvailableProcessors * 2 (minimum of 16) (called
             // when HttpClientOptions is set). This number can be very small depending on the host on which
-            // applications run and can lead to issues like this - https://github.com/Azure/azure-sdk-for-java/issues/26027
+            // applications run and can lead to issues like this -
+            // https://github.com/Azure/azure-sdk-for-java/issues/26027
 
             // So, we need to unfortunately hardcode the maxConnections to 500 (when user doesn't set it) to have
             // consistent configuration whether HttpClientOptions is set.

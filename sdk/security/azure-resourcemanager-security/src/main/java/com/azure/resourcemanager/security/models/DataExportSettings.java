@@ -8,27 +8,49 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.security.fluent.models.DataExportSettingProperties;
 import com.azure.resourcemanager.security.fluent.models.SettingInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Represents a data export setting. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+/**
+ * Represents a data export setting.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = DataExportSettings.class, visible = true)
 @JsonTypeName("DataExportSettings")
 @Fluent
 public final class DataExportSettings extends SettingInner {
+    /*
+     * the kind of the settings string
+     */
+    @JsonTypeId
+    @JsonProperty(value = "kind", required = true)
+    private SettingKind kind = SettingKind.DATA_EXPORT_SETTINGS;
+
     /*
      * Data export setting data
      */
     @JsonProperty(value = "properties")
     private DataExportSettingProperties innerProperties;
 
-    /** Creates an instance of DataExportSettings class. */
+    /**
+     * Creates an instance of DataExportSettings class.
+     */
     public DataExportSettings() {
     }
 
     /**
+     * Get the kind property: the kind of the settings string.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public SettingKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the innerProperties property: Data export setting data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DataExportSettingProperties innerProperties() {
@@ -37,7 +59,7 @@ public final class DataExportSettings extends SettingInner {
 
     /**
      * Get the enabled property: Is the data export setting enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -46,7 +68,7 @@ public final class DataExportSettings extends SettingInner {
 
     /**
      * Set the enabled property: Is the data export setting enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the DataExportSettings object itself.
      */
@@ -60,7 +82,7 @@ public final class DataExportSettings extends SettingInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

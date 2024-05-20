@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.Trigger;
 import com.azure.resourcemanager.datafactory.models.TriggerResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -22,44 +19,32 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TriggersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"twstqgc\",\"runtimeState\":\"Stopped\",\"annotations\":[\"datarzoafxoyddus\",\"datavyjh\",\"dataynlmxzdwpdw\"],\"\":{\"yznyeghm\":\"datau\",\"xdnckgdcszz\":\"datam\",\"ldeq\":\"dataedfdzleaz\",\"q\":\"datafzyhikhnwseftlj\"}},\"name\":\"fkdy\",\"type\":\"zaxithppjxtobe\",\"etag\":\"zcadoqijfll\",\"id\":\"uzeolcgqjtvp\"}";
+            = "{\"properties\":{\"type\":\"shwcgomgfflyp\",\"description\":\"gzz\",\"runtimeState\":\"Disabled\",\"annotations\":[\"dataqnp\",\"databeplicbohvvkmtx\",\"datacbnmzcbtwofeuih\"],\"\":{\"wgdrwev\":\"datauerxaqhpecnf\"}},\"name\":\"wlhi\",\"type\":\"odogcvadpbajfms\",\"etag\":\"oirdpgm\",\"id\":\"twfb\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        TriggerResource response = manager.triggers()
+            .define("oapjjmytku")
+            .withExistingFactory("ldtusvnr", "pohpkoalwspq")
+            .withProperties(new Trigger().withDescription("ottjkrlielb")
+                .withAnnotations(Arrays.asList("datavvhp", "datauhfbjuzsp"))
+                .withAdditionalProperties(mapOf("type", "ctnmybainctm", "runtimeState", "Stopped")))
+            .withIfMatch("gbpdpjewof")
+            .create();
 
-        TriggerResource response = manager.triggers().define("a").withExistingFactory("rklxnbbk", "jnnzqz")
-            .withProperties(new Trigger().withDescription("fxvlac")
-                .withAnnotations(Arrays.asList("dataksguccotgqge", "dataielyhow"))
-                .withAdditionalProperties(mapOf("type", "Trigger", "runtimeState", "Stopped")))
-            .withIfMatch("lpiccx").create();
-
-        Assertions.assertEquals("uzeolcgqjtvp", response.id());
-        Assertions.assertEquals("twstqgc", response.properties().description());
+        Assertions.assertEquals("twfb", response.id());
+        Assertions.assertEquals("gzz", response.properties().description());
     }
 
     // Use "Map.of" if available

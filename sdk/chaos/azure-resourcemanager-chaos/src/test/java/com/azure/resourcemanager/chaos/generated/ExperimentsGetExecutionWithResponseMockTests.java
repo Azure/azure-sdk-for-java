@@ -29,39 +29,27 @@ public final class ExperimentsGetExecutionWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"type\":\"wcfzqljyxgt\",\"id\":\"heyd\",\"name\":\"dshmkxmaehvbbx\",\"properties\":{\"status\":\"pltfnhtba\",\"startedAt\":\"2021-07-30T22:05:34Z\",\"stoppedAt\":\"2021-11-06T21:21:21Z\"}}";
+        String responseStr
+            = "{\"type\":\"ripltf\",\"id\":\"tbaxk\",\"name\":\"ywrckp\",\"properties\":{\"status\":\"yhpluodpvruudlgz\",\"startedAt\":\"2021-07-04T20:01:35Z\",\"stoppedAt\":\"2021-04-27T04:41:25Z\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ChaosManager manager =
-            ChaosManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChaosManager manager = ChaosManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ExperimentExecution response =
-            manager
-                .experiments()
-                .getExecutionWithResponse("w", "qioknssxmojm", "vpkjpr", com.azure.core.util.Context.NONE)
-                .getValue();
+        ExperimentExecution response = manager.experiments()
+            .getExecutionWithResponse("zqljyxgtczh", "ydbsd", "hmkxmaehvbb", com.azure.core.util.Context.NONE)
+            .getValue();
+
     }
 }

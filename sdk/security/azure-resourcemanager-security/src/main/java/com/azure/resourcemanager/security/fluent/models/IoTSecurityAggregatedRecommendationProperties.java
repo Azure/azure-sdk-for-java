@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.security.models.ReportedSeverity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** IoT Security solution aggregated recommendation information. */
+/**
+ * IoT Security solution aggregated recommendation information.
+ */
 @Fluent
 public final class IoTSecurityAggregatedRecommendationProperties {
     /*
@@ -71,13 +73,15 @@ public final class IoTSecurityAggregatedRecommendationProperties {
     @JsonProperty(value = "logAnalyticsQuery", access = JsonProperty.Access.WRITE_ONLY)
     private String logAnalyticsQuery;
 
-    /** Creates an instance of IoTSecurityAggregatedRecommendationProperties class. */
+    /**
+     * Creates an instance of IoTSecurityAggregatedRecommendationProperties class.
+     */
     public IoTSecurityAggregatedRecommendationProperties() {
     }
 
     /**
      * Get the recommendationName property: Name of the recommendation.
-     *
+     * 
      * @return the recommendationName value.
      */
     public String recommendationName() {
@@ -86,7 +90,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Set the recommendationName property: Name of the recommendation.
-     *
+     * 
      * @param recommendationName the recommendationName value to set.
      * @return the IoTSecurityAggregatedRecommendationProperties object itself.
      */
@@ -97,7 +101,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the recommendationDisplayName property: Display name of the recommendation type.
-     *
+     * 
      * @return the recommendationDisplayName value.
      */
     public String recommendationDisplayName() {
@@ -106,7 +110,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the description property: Description of the suspected vulnerability and meaning.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -115,7 +119,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the recommendationTypeId property: Recommendation-type GUID.
-     *
+     * 
      * @return the recommendationTypeId value.
      */
     public String recommendationTypeId() {
@@ -124,7 +128,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the detectedBy property: Name of the organization that made the recommendation.
-     *
+     * 
      * @return the detectedBy value.
      */
     public String detectedBy() {
@@ -133,7 +137,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the remediationSteps property: Recommended steps for remediation.
-     *
+     * 
      * @return the remediationSteps value.
      */
     public String remediationSteps() {
@@ -142,7 +146,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the reportedSeverity property: Assessed recommendation severity.
-     *
+     * 
      * @return the reportedSeverity value.
      */
     public ReportedSeverity reportedSeverity() {
@@ -151,7 +155,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the healthyDevices property: Number of healthy devices within the IoT Security solution.
-     *
+     * 
      * @return the healthyDevices value.
      */
     public Long healthyDevices() {
@@ -160,7 +164,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the unhealthyDeviceCount property: Number of unhealthy devices within the IoT Security solution.
-     *
+     * 
      * @return the unhealthyDeviceCount value.
      */
     public Long unhealthyDeviceCount() {
@@ -169,7 +173,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Get the logAnalyticsQuery property: Log analytics query for getting the list of affected devices/alerts.
-     *
+     * 
      * @return the logAnalyticsQuery value.
      */
     public String logAnalyticsQuery() {
@@ -178,7 +182,7 @@ public final class IoTSecurityAggregatedRecommendationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

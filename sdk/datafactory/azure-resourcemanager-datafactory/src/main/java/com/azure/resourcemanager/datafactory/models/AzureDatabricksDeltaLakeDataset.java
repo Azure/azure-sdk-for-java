@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureDatabricksDeltaLakeDatasetTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,10 +16,21 @@ import java.util.Map;
 /**
  * Azure Databricks Delta Lake dataset.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureDatabricksDeltaLakeDataset.class,
+    visible = true)
 @JsonTypeName("AzureDatabricksDeltaLakeDataset")
 @Fluent
 public final class AzureDatabricksDeltaLakeDataset extends Dataset {
+    /*
+     * Type of dataset.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "AzureDatabricksDeltaLakeDataset";
+
     /*
      * Properties specific to this dataset type.
      */
@@ -29,6 +41,16 @@ public final class AzureDatabricksDeltaLakeDataset extends Dataset {
      * Creates an instance of AzureDatabricksDeltaLakeDataset class.
      */
     public AzureDatabricksDeltaLakeDataset() {
+    }
+
+    /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -127,8 +149,7 @@ public final class AzureDatabricksDeltaLakeDataset extends Dataset {
     }
 
     /**
-     * Get the database property: The database name of delta table. Type: string (or Expression with resultType
-     * string).
+     * Get the database property: The database name of delta table. Type: string (or Expression with resultType string).
      * 
      * @return the database value.
      */
@@ -137,8 +158,7 @@ public final class AzureDatabricksDeltaLakeDataset extends Dataset {
     }
 
     /**
-     * Set the database property: The database name of delta table. Type: string (or Expression with resultType
-     * string).
+     * Set the database property: The database name of delta table. Type: string (or Expression with resultType string).
      * 
      * @param database the database value to set.
      * @return the AzureDatabricksDeltaLakeDataset object itself.

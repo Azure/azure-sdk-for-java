@@ -10,14 +10,14 @@ import com.azure.resourcemanager.datafactory.fluent.models.SapTableResourceDatas
 public final class SapTableResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapTableResourceDatasetTypeProperties model = BinaryData.fromString("{\"tableName\":\"datagpdglkf\"}")
+        SapTableResourceDatasetTypeProperties model = BinaryData.fromString("{\"tableName\":\"datapwbopvhcbt\"}")
             .toObject(SapTableResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SapTableResourceDatasetTypeProperties model
-            = new SapTableResourceDatasetTypeProperties().withTableName("datagpdglkf");
+            = new SapTableResourceDatasetTypeProperties().withTableName("datapwbopvhcbt");
         model = BinaryData.fromObject(model).toObject(SapTableResourceDatasetTypeProperties.class);
     }
 }

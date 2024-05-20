@@ -6,58 +6,41 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
+import com.azure.resourcemanager.security.models.Enforce;
+import com.azure.resourcemanager.security.models.IsEnabled;
 import com.azure.resourcemanager.security.models.PricingList;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.security.models.PricingTier;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PricingsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"xauphzefineyy\",\"freeTrialRemainingTime\":\"PT6H36M49S\",\"enablementTime\":\"2021-04-24T07:19:38Z\",\"enforce\":\"False\",\"inherited\":\"False\",\"inheritedFrom\":\"deexccw\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"uywmwtacr\",\"isEnabled\":\"True\"},{\"name\":\"fcncrvjcullmfw\",\"isEnabled\":\"True\"},{\"name\":\"oeowoszzwncsjgf\",\"isEnabled\":\"True\"},{\"name\":\"chmubyguqhgnmsvj\",\"isEnabled\":\"True\"}],\"deprecated\":false,\"replacedBy\":[\"yircba\",\"xjrbv\",\"rkbuatxkznl\",\"lmbx\"]},\"id\":\"gkev\",\"name\":\"ay\",\"type\":\"x\"},{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"ymzgrgkja\",\"freeTrialRemainingTime\":\"PT219H50M51S\",\"enablementTime\":\"2021-12-08T09:47:04Z\",\"enforce\":\"False\",\"inherited\":\"False\",\"inheritedFrom\":\"bspsbo\",\"resourcesCoverageStatus\":\"PartiallyCovered\",\"extensions\":[{\"name\":\"zimfcf\",\"isEnabled\":\"False\"}],\"deprecated\":true,\"replacedBy\":[\"pasckpgb\",\"lyxbwslxg\",\"mxtoejtqvq\"]},\"id\":\"tmlidk\",\"name\":\"zxoluzntbpca\",\"type\":\"d\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"bafo\",\"name\":\"to\",\"type\":\"zhaquvwsxb\"},{\"id\":\"vkervqchoadhrsxq\",\"name\":\"z\",\"type\":\"spabdsrgfa\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PricingList response = manager.pricings()
+            .listWithResponse("qy", "clwbjgiynqryoisw", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PricingList response = manager.pricings().listWithResponse(com.azure.core.util.Context.NONE).getValue();
+        Assertions.assertEquals(PricingTier.FREE, response.value().get(0).pricingTier());
+        Assertions.assertEquals("xauphzefineyy", response.value().get(0).subPlan());
+        Assertions.assertEquals(Enforce.FALSE, response.value().get(0).enforce());
+        Assertions.assertEquals("uywmwtacr", response.value().get(0).extensions().get(0).name());
+        Assertions.assertEquals(IsEnabled.TRUE, response.value().get(0).extensions().get(0).isEnabled());
     }
 }

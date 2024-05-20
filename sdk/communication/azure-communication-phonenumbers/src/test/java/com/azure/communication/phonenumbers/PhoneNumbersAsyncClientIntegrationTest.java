@@ -6,6 +6,8 @@ import com.azure.communication.phonenumbers.implementation.converters.PhoneNumbe
 import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
 import com.azure.communication.phonenumbers.models.BillingFrequency;
 import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
+import com.azure.communication.phonenumbers.models.OperatorInformationResult;
+import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
@@ -478,6 +480,67 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         CommunicationError communicationError = null;
         PhoneNumberError error = PhoneNumberErrorConverter.convert(communicationError);
         assertEquals(null, error);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void searchOperatorInformationSucceeds(HttpClient httpClient) {
+        List<String> phoneNumbers = new ArrayList<String>();
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
+                        .searchOperatorInformation(phoneNumbers))
+                .assertNext((OperatorInformationResult result) -> {
+                    assertEquals(phoneNumbers.get(0), result.getValues().get(0).getPhoneNumber());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void searchOperatorInformationOnlyAcceptsOnePhoneNumber(HttpClient httpClient) {
+        List<String> phoneNumbers = new ArrayList<String>();
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "searchOperatorInformationOnlyAcceptsOnePhoneNumber")
+                        .searchOperatorInformation(phoneNumbers))
+                .verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void searchOperatorInformationRespectsSearchOptions(HttpClient httpClient) {
+        List<String> phoneNumbers = new ArrayList<String>();
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        OperatorInformationOptions requestOptions = new OperatorInformationOptions();
+        requestOptions.setIncludeAdditionalOperatorDetails(false);
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
+                        .searchOperatorInformationWithResponse(phoneNumbers, requestOptions))
+                .assertNext((Response<OperatorInformationResult> result) -> {
+                    assertEquals(phoneNumbers.get(0), result.getValue().getValues().get(0).getPhoneNumber());
+                    assertNotNull(result.getValue().getValues().get(0).getNationalFormat());
+                    assertNotNull(result.getValue().getValues().get(0).getInternationalFormat());
+                    assertEquals(null, result.getValue().getValues().get(0).getNumberType());
+                    assertEquals(null, result.getValue().getValues().get(0).getIsoCountryCode());
+                    assertEquals(null, result.getValue().getValues().get(0).getOperatorDetails());
+                })
+                .verifyComplete();
+
+        requestOptions.setIncludeAdditionalOperatorDetails(true);
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
+                        .searchOperatorInformationWithResponse(phoneNumbers, requestOptions))
+                .assertNext((Response<OperatorInformationResult> result) -> {
+                    assertEquals(phoneNumbers.get(0), result.getValue().getValues().get(0).getPhoneNumber());
+                    assertNotNull(result.getValue().getValues().get(0).getNationalFormat());
+                    assertNotNull(result.getValue().getValues().get(0).getInternationalFormat());
+                    assertNotNull(result.getValue().getValues().get(0).getNumberType());
+                    assertNotNull(result.getValue().getValues().get(0).getIsoCountryCode());
+                    assertNotNull(result.getValue().getValues().get(0).getOperatorDetails());
+                })
+                .verifyComplete();
     }
 
     private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(

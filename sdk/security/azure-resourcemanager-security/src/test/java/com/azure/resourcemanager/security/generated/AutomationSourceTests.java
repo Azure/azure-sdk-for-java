@@ -7,31 +7,51 @@ package com.azure.resourcemanager.security.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.models.AutomationRuleSet;
 import com.azure.resourcemanager.security.models.AutomationSource;
+import com.azure.resourcemanager.security.models.AutomationTriggeringRule;
 import com.azure.resourcemanager.security.models.EventSource;
+import com.azure.resourcemanager.security.models.Operator;
+import com.azure.resourcemanager.security.models.PropertyType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class AutomationSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomationSource model =
-            BinaryData
-                .fromString("{\"eventSource\":\"SubAssessmentsSnapshot\",\"ruleSets\":[{\"rules\":[]},{\"rules\":[]}]}")
-                .toObject(AutomationSource.class);
-        Assertions.assertEquals(EventSource.SUB_ASSESSMENTS_SNAPSHOT, model.eventSource());
+        AutomationSource model = BinaryData.fromString(
+            "{\"eventSource\":\"Assessments\",\"ruleSets\":[{\"rules\":[{\"propertyJPath\":\"tvtzeexavoxtfg\",\"propertyType\":\"String\",\"expectedValue\":\"m\",\"operator\":\"Equals\"},{\"propertyJPath\":\"pypqtgsfj\",\"propertyType\":\"String\",\"expectedValue\":\"lhhxudbxvodhtnsi\",\"operator\":\"EndsWith\"},{\"propertyJPath\":\"z\",\"propertyType\":\"String\",\"expectedValue\":\"ckdlpag\",\"operator\":\"GreaterThan\"},{\"propertyJPath\":\"failcfx\",\"propertyType\":\"Boolean\",\"expectedValue\":\"oxdfgsftu\",\"operator\":\"Contains\"}]}]}")
+            .toObject(AutomationSource.class);
+        Assertions.assertEquals(EventSource.ASSESSMENTS, model.eventSource());
+        Assertions.assertEquals("tvtzeexavoxtfg", model.ruleSets().get(0).rules().get(0).propertyJPath());
+        Assertions.assertEquals(PropertyType.STRING, model.ruleSets().get(0).rules().get(0).propertyType());
+        Assertions.assertEquals("m", model.ruleSets().get(0).rules().get(0).expectedValue());
+        Assertions.assertEquals(Operator.EQUALS, model.ruleSets().get(0).rules().get(0).operator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationSource model =
-            new AutomationSource()
-                .withEventSource(EventSource.SUB_ASSESSMENTS_SNAPSHOT)
-                .withRuleSets(
-                    Arrays
-                        .asList(
-                            new AutomationRuleSet().withRules(Arrays.asList()),
-                            new AutomationRuleSet().withRules(Arrays.asList())));
+        AutomationSource model = new AutomationSource().withEventSource(EventSource.ASSESSMENTS)
+            .withRuleSets(Arrays.asList(new AutomationRuleSet().withRules(Arrays.asList(
+                new AutomationTriggeringRule().withPropertyJPath("tvtzeexavoxtfg")
+                    .withPropertyType(PropertyType.STRING)
+                    .withExpectedValue("m")
+                    .withOperator(Operator.EQUALS),
+                new AutomationTriggeringRule().withPropertyJPath("pypqtgsfj")
+                    .withPropertyType(PropertyType.STRING)
+                    .withExpectedValue("lhhxudbxvodhtnsi")
+                    .withOperator(Operator.ENDS_WITH),
+                new AutomationTriggeringRule().withPropertyJPath("z")
+                    .withPropertyType(PropertyType.STRING)
+                    .withExpectedValue("ckdlpag")
+                    .withOperator(Operator.GREATER_THAN),
+                new AutomationTriggeringRule().withPropertyJPath("failcfx")
+                    .withPropertyType(PropertyType.BOOLEAN)
+                    .withExpectedValue("oxdfgsftu")
+                    .withOperator(Operator.CONTAINS)))));
         model = BinaryData.fromObject(model).toObject(AutomationSource.class);
-        Assertions.assertEquals(EventSource.SUB_ASSESSMENTS_SNAPSHOT, model.eventSource());
+        Assertions.assertEquals(EventSource.ASSESSMENTS, model.eventSource());
+        Assertions.assertEquals("tvtzeexavoxtfg", model.ruleSets().get(0).rules().get(0).propertyJPath());
+        Assertions.assertEquals(PropertyType.STRING, model.ruleSets().get(0).rules().get(0).propertyType());
+        Assertions.assertEquals("m", model.ruleSets().get(0).rules().get(0).expectedValue());
+        Assertions.assertEquals(Operator.EQUALS, model.ruleSets().get(0).rules().get(0).operator());
     }
 }

@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.hdinsight.containers.implementation;
 
 import com.azure.resourcemanager.hdinsight.containers.fluent.models.ClusterInstanceViewResultInner;
-import com.azure.resourcemanager.hdinsight.containers.models.ClusterInstanceViewPropertiesStatus;
 import com.azure.resourcemanager.hdinsight.containers.models.ClusterInstanceViewResult;
-import com.azure.resourcemanager.hdinsight.containers.models.ServiceStatus;
-import java.util.Collections;
-import java.util.List;
+import com.azure.resourcemanager.hdinsight.containers.models.ClusterInstanceViewResultProperties;
 
 public final class ClusterInstanceViewResultImpl implements ClusterInstanceViewResult {
     private ClusterInstanceViewResultInner innerObject;
 
     private final com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager;
 
-    ClusterInstanceViewResultImpl(
-        ClusterInstanceViewResultInner innerObject,
+    ClusterInstanceViewResultImpl(ClusterInstanceViewResultInner innerObject,
         com.azure.resourcemanager.hdinsight.containers.HDInsightContainersManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,17 +23,8 @@ public final class ClusterInstanceViewResultImpl implements ClusterInstanceViewR
         return this.innerModel().name();
     }
 
-    public ClusterInstanceViewPropertiesStatus status() {
-        return this.innerModel().status();
-    }
-
-    public List<ServiceStatus> serviceStatuses() {
-        List<ServiceStatus> inner = this.innerModel().serviceStatuses();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
+    public ClusterInstanceViewResultProperties properties() {
+        return this.innerModel().properties();
     }
 
     public ClusterInstanceViewResultInner innerModel() {

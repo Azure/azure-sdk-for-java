@@ -1,14 +1,62 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 2.0.0-beta.1 (Unreleased)
 
 ### Features Added
 
+- Added `MaxConcurrentOffers` to RouterWorker and CreateWorkerOptions
+- Added createJobWithClassificationPolicy and createJobWithClassificationPolicyWithResponse to JobRouterClient and JobRouterAsyncClient
+- Added updateXX methods that accept and return XX in JobRouterClient, JobRouterAdministrationClient, JobRouterAsyncClient and JobRouterAdministrationAsyncClient
+
 ### Breaking Changes
+
+- Added value to RouterWorkerSelector/RouterQueueSelector constructor, remove setter
+- Change return type of createJobWithResponse to RouterJob instead of BinaryData in JobRouterClient and JobRouterAsyncClient
 
 ### Bugs Fixed
 
+- Fix Jackson annotations for all models
+- JobRouterClient and JobRouterAdminClient no longer throws 401 errors when HmacAuthenticationPolicy is not provided
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+
+## 1.1.3 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-communication-common` from `1.3.1` to version `1.3.2`.
+
+
+## 1.1.2 (2024-03-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-communication-common` from `1.3.0` to version `1.3.1`.
+
+### Bugs Fixed
+
+
+## 1.1.1 (2024-02-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` to `1.3.0`
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
 
 ## 1.1.0 (2024-01-04)
 

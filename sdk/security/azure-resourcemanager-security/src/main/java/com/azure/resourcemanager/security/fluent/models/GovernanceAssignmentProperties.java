@@ -12,7 +12,9 @@ import com.azure.resourcemanager.security.models.RemediationEta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Describes properties of an governance assignment. */
+/**
+ * Describes properties of an governance assignment.
+ */
 @Fluent
 public final class GovernanceAssignmentProperties {
     /*
@@ -40,8 +42,7 @@ public final class GovernanceAssignmentProperties {
     private Boolean isGracePeriod;
 
     /*
-     * The email notifications settings for the governance rule, states whether to disable notifications for mangers
-     * and owners
+     * The email notifications settings for the governance rule, states whether to disable notifications for mangers and owners
      */
     @JsonProperty(value = "governanceEmailNotification")
     private GovernanceEmailNotification governanceEmailNotification;
@@ -52,13 +53,15 @@ public final class GovernanceAssignmentProperties {
     @JsonProperty(value = "additionalData")
     private GovernanceAssignmentAdditionalData additionalData;
 
-    /** Creates an instance of GovernanceAssignmentProperties class. */
+    /**
+     * Creates an instance of GovernanceAssignmentProperties class.
+     */
     public GovernanceAssignmentProperties() {
     }
 
     /**
-     * Get the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see example.
-     *
+     * Get the owner property: The Owner for the governance assignment - e.g. user&#064;contoso.com - see example.
+     * 
      * @return the owner value.
      */
     public String owner() {
@@ -66,8 +69,8 @@ public final class GovernanceAssignmentProperties {
     }
 
     /**
-     * Set the owner property: The Owner for the governance assignment - e.g. user@contoso.com - see example.
-     *
+     * Set the owner property: The Owner for the governance assignment - e.g. user&#064;contoso.com - see example.
+     * 
      * @param owner the owner value to set.
      * @return the GovernanceAssignmentProperties object itself.
      */
@@ -79,7 +82,7 @@ public final class GovernanceAssignmentProperties {
     /**
      * Get the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected (in
      * case of active grace-period).
-     *
+     * 
      * @return the remediationDueDate value.
      */
     public OffsetDateTime remediationDueDate() {
@@ -89,7 +92,7 @@ public final class GovernanceAssignmentProperties {
     /**
      * Set the remediationDueDate property: The remediation due-date - after this date Secure Score will be affected (in
      * case of active grace-period).
-     *
+     * 
      * @param remediationDueDate the remediationDueDate value to set.
      * @return the GovernanceAssignmentProperties object itself.
      */
@@ -100,7 +103,7 @@ public final class GovernanceAssignmentProperties {
 
     /**
      * Get the remediationEta property: The ETA (estimated time of arrival) for remediation (optional), see example.
-     *
+     * 
      * @return the remediationEta value.
      */
     public RemediationEta remediationEta() {
@@ -109,7 +112,7 @@ public final class GovernanceAssignmentProperties {
 
     /**
      * Set the remediationEta property: The ETA (estimated time of arrival) for remediation (optional), see example.
-     *
+     * 
      * @param remediationEta the remediationEta value to set.
      * @return the GovernanceAssignmentProperties object itself.
      */
@@ -120,7 +123,7 @@ public final class GovernanceAssignmentProperties {
 
     /**
      * Get the isGracePeriod property: Defines whether there is a grace period on the governance assignment.
-     *
+     * 
      * @return the isGracePeriod value.
      */
     public Boolean isGracePeriod() {
@@ -129,7 +132,7 @@ public final class GovernanceAssignmentProperties {
 
     /**
      * Set the isGracePeriod property: Defines whether there is a grace period on the governance assignment.
-     *
+     * 
      * @param isGracePeriod the isGracePeriod value to set.
      * @return the GovernanceAssignmentProperties object itself.
      */
@@ -141,7 +144,7 @@ public final class GovernanceAssignmentProperties {
     /**
      * Get the governanceEmailNotification property: The email notifications settings for the governance rule, states
      * whether to disable notifications for mangers and owners.
-     *
+     * 
      * @return the governanceEmailNotification value.
      */
     public GovernanceEmailNotification governanceEmailNotification() {
@@ -151,12 +154,12 @@ public final class GovernanceAssignmentProperties {
     /**
      * Set the governanceEmailNotification property: The email notifications settings for the governance rule, states
      * whether to disable notifications for mangers and owners.
-     *
+     * 
      * @param governanceEmailNotification the governanceEmailNotification value to set.
      * @return the GovernanceAssignmentProperties object itself.
      */
-    public GovernanceAssignmentProperties withGovernanceEmailNotification(
-        GovernanceEmailNotification governanceEmailNotification) {
+    public GovernanceAssignmentProperties
+        withGovernanceEmailNotification(GovernanceEmailNotification governanceEmailNotification) {
         this.governanceEmailNotification = governanceEmailNotification;
         return this;
     }
@@ -164,7 +167,7 @@ public final class GovernanceAssignmentProperties {
     /**
      * Get the additionalData property: The additional data for the governance assignment - e.g. links to ticket
      * (optional), see example.
-     *
+     * 
      * @return the additionalData value.
      */
     public GovernanceAssignmentAdditionalData additionalData() {
@@ -174,7 +177,7 @@ public final class GovernanceAssignmentProperties {
     /**
      * Set the additionalData property: The additional data for the governance assignment - e.g. links to ticket
      * (optional), see example.
-     *
+     * 
      * @param additionalData the additionalData value to set.
      * @return the GovernanceAssignmentProperties object itself.
      */
@@ -185,15 +188,14 @@ public final class GovernanceAssignmentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (remediationDueDate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property remediationDueDate in model GovernanceAssignmentProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property remediationDueDate in model GovernanceAssignmentProperties"));
         }
         if (remediationEta() != null) {
             remediationEta().validate();

@@ -23,47 +23,43 @@ public final class ConfigurationsImpl implements Configurations {
 
     private final com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager;
 
-    public ConfigurationsImpl(
-        ConfigurationsClient innerClient,
+    public ConfigurationsImpl(ConfigurationsClient innerClient,
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ServerConfiguration> listByServer(
-        String resourceGroupName, String clusterName, String serverName) {
-        PagedIterable<ServerConfigurationInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, clusterName, serverName);
-        return Utils.mapPage(inner, inner1 -> new ServerConfigurationImpl(inner1, this.manager()));
+    public PagedIterable<ServerConfiguration> listByServer(String resourceGroupName, String clusterName,
+        String serverName) {
+        PagedIterable<ServerConfigurationInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, clusterName, serverName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServerConfigurationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ServerConfiguration> listByServer(
-        String resourceGroupName, String clusterName, String serverName, Context context) {
-        PagedIterable<ServerConfigurationInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, clusterName, serverName, context);
-        return Utils.mapPage(inner, inner1 -> new ServerConfigurationImpl(inner1, this.manager()));
+    public PagedIterable<ServerConfiguration> listByServer(String resourceGroupName, String clusterName,
+        String serverName, Context context) {
+        PagedIterable<ServerConfigurationInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, clusterName, serverName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServerConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Configuration> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<ConfigurationInner> inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Configuration> listByCluster(String resourceGroupName, String clusterName, Context context) {
-        PagedIterable<ConfigurationInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
+        PagedIterable<ConfigurationInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
     }
 
-    public Response<Configuration> getWithResponse(
-        String resourceGroupName, String clusterName, String configurationName, Context context) {
-        Response<ConfigurationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, clusterName, configurationName, context);
+    public Response<Configuration> getWithResponse(String resourceGroupName, String clusterName,
+        String configurationName, Context context) {
+        Response<ConfigurationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, clusterName, configurationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ConfigurationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -79,15 +75,12 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public Response<ServerConfiguration> getCoordinatorWithResponse(
-        String resourceGroupName, String clusterName, String configurationName, Context context) {
-        Response<ServerConfigurationInner> inner =
-            this.serviceClient().getCoordinatorWithResponse(resourceGroupName, clusterName, configurationName, context);
+    public Response<ServerConfiguration> getCoordinatorWithResponse(String resourceGroupName, String clusterName,
+        String configurationName, Context context) {
+        Response<ServerConfigurationInner> inner = this.serviceClient().getCoordinatorWithResponse(resourceGroupName,
+            clusterName, configurationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ServerConfigurationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -95,8 +88,8 @@ public final class ConfigurationsImpl implements Configurations {
     }
 
     public ServerConfiguration getCoordinator(String resourceGroupName, String clusterName, String configurationName) {
-        ServerConfigurationInner inner =
-            this.serviceClient().getCoordinator(resourceGroupName, clusterName, configurationName);
+        ServerConfigurationInner inner
+            = this.serviceClient().getCoordinator(resourceGroupName, clusterName, configurationName);
         if (inner != null) {
             return new ServerConfigurationImpl(inner, this.manager());
         } else {
@@ -104,10 +97,10 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public ServerConfiguration updateOnCoordinator(
-        String resourceGroupName, String clusterName, String configurationName, ServerConfigurationInner parameters) {
-        ServerConfigurationInner inner =
-            this.serviceClient().updateOnCoordinator(resourceGroupName, clusterName, configurationName, parameters);
+    public ServerConfiguration updateOnCoordinator(String resourceGroupName, String clusterName,
+        String configurationName, ServerConfigurationInner parameters) {
+        ServerConfigurationInner inner
+            = this.serviceClient().updateOnCoordinator(resourceGroupName, clusterName, configurationName, parameters);
         if (inner != null) {
             return new ServerConfigurationImpl(inner, this.manager());
         } else {
@@ -115,16 +108,10 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public ServerConfiguration updateOnCoordinator(
-        String resourceGroupName,
-        String clusterName,
-        String configurationName,
-        ServerConfigurationInner parameters,
-        Context context) {
-        ServerConfigurationInner inner =
-            this
-                .serviceClient()
-                .updateOnCoordinator(resourceGroupName, clusterName, configurationName, parameters, context);
+    public ServerConfiguration updateOnCoordinator(String resourceGroupName, String clusterName,
+        String configurationName, ServerConfigurationInner parameters, Context context) {
+        ServerConfigurationInner inner = this.serviceClient().updateOnCoordinator(resourceGroupName, clusterName,
+            configurationName, parameters, context);
         if (inner != null) {
             return new ServerConfigurationImpl(inner, this.manager());
         } else {
@@ -132,15 +119,12 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public Response<ServerConfiguration> getNodeWithResponse(
-        String resourceGroupName, String clusterName, String configurationName, Context context) {
-        Response<ServerConfigurationInner> inner =
-            this.serviceClient().getNodeWithResponse(resourceGroupName, clusterName, configurationName, context);
+    public Response<ServerConfiguration> getNodeWithResponse(String resourceGroupName, String clusterName,
+        String configurationName, Context context) {
+        Response<ServerConfigurationInner> inner
+            = this.serviceClient().getNodeWithResponse(resourceGroupName, clusterName, configurationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ServerConfigurationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -148,8 +132,8 @@ public final class ConfigurationsImpl implements Configurations {
     }
 
     public ServerConfiguration getNode(String resourceGroupName, String clusterName, String configurationName) {
-        ServerConfigurationInner inner =
-            this.serviceClient().getNode(resourceGroupName, clusterName, configurationName);
+        ServerConfigurationInner inner
+            = this.serviceClient().getNode(resourceGroupName, clusterName, configurationName);
         if (inner != null) {
             return new ServerConfigurationImpl(inner, this.manager());
         } else {
@@ -157,10 +141,10 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public ServerConfiguration updateOnNode(
-        String resourceGroupName, String clusterName, String configurationName, ServerConfigurationInner parameters) {
-        ServerConfigurationInner inner =
-            this.serviceClient().updateOnNode(resourceGroupName, clusterName, configurationName, parameters);
+    public ServerConfiguration updateOnNode(String resourceGroupName, String clusterName, String configurationName,
+        ServerConfigurationInner parameters) {
+        ServerConfigurationInner inner
+            = this.serviceClient().updateOnNode(resourceGroupName, clusterName, configurationName, parameters);
         if (inner != null) {
             return new ServerConfigurationImpl(inner, this.manager());
         } else {
@@ -168,14 +152,10 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public ServerConfiguration updateOnNode(
-        String resourceGroupName,
-        String clusterName,
-        String configurationName,
-        ServerConfigurationInner parameters,
-        Context context) {
-        ServerConfigurationInner inner =
-            this.serviceClient().updateOnNode(resourceGroupName, clusterName, configurationName, parameters, context);
+    public ServerConfiguration updateOnNode(String resourceGroupName, String clusterName, String configurationName,
+        ServerConfigurationInner parameters, Context context) {
+        ServerConfigurationInner inner
+            = this.serviceClient().updateOnNode(resourceGroupName, clusterName, configurationName, parameters, context);
         if (inner != null) {
             return new ServerConfigurationImpl(inner, this.manager());
         } else {

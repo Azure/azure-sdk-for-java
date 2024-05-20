@@ -7,6 +7,8 @@ package com.azure.resourcemanager.security.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.SecurityConnectorInner;
 import com.azure.resourcemanager.security.models.CloudName;
+import com.azure.resourcemanager.security.models.CloudOffering;
+import com.azure.resourcemanager.security.models.EnvironmentData;
 import com.azure.resourcemanager.security.models.SecurityConnectorsList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,52 +18,44 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityConnectorsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityConnectorsList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"ifrkgwltxeqipx\",\"hierarchyIdentifierTrialEndDate\":\"2021-05-11T17:28:43Z\",\"environmentName\":\"GCP\",\"offerings\":[]},\"location\":\"fayorpravkjoges\",\"tags\":{\"kvwjtqpkevmy\":\"nsmjkwynqxaekqs\",\"gxannnoytzposewx\":\"tjcrspxklurccl\",\"dfaifyzyzeyuube\":\"gpxvkqmaupxvpi\",\"l\":\"ds\"},\"id\":\"ytoithgygvfl\",\"name\":\"gvdihoynkrxwetwk\",\"type\":\"rcyrucpcunnu\"},{\"properties\":{\"hierarchyIdentifier\":\"moenodnaien\",\"hierarchyIdentifierTrialEndDate\":\"2021-09-25T15:40:50Z\",\"environmentName\":\"GCP\",\"offerings\":[]},\"location\":\"nelqkaadl\",\"tags\":{\"vcnrly\":\"foanniyopetx\"},\"id\":\"nucaephblkwqpat\",\"name\":\"bqsdtcjbctvi\",\"type\":\"uzqymtuowog\"}],\"nextLink\":\"it\"}")
-                .toObject(SecurityConnectorsList.class);
-        Assertions.assertEquals("fayorpravkjoges", model.value().get(0).location());
-        Assertions.assertEquals("nsmjkwynqxaekqs", model.value().get(0).tags().get("kvwjtqpkevmy"));
-        Assertions.assertEquals("ifrkgwltxeqipx", model.value().get(0).hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GCP, model.value().get(0).environmentName());
+        SecurityConnectorsList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"ccxjm\",\"hierarchyIdentifierTrialEndDate\":\"2021-06-04T20:01:35Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"cypuuwwlt\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"qjctzenkeif\",\"tags\":{\"lyhb\":\"mkdasv\",\"chxgs\":\"cu\",\"vizbfhfo\":\"boldforobwj\"},\"id\":\"vacqpbtuodxesz\",\"name\":\"bbelawumuaslzk\",\"type\":\"rrwoycqucwyhahn\"},{\"properties\":{\"hierarchyIdentifier\":\"kywuhpsvfuu\",\"hierarchyIdentifierTrialEndDate\":\"2021-01-22T12:10:56Z\",\"environmentName\":\"AWS\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"wlalniexzsrzp\"},{\"offeringType\":\"CloudOffering\",\"description\":\"pqtybb\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"pgdakchzyvli\",\"tags\":{\"bn\":\"rkcxkj\",\"swqrntvlwijp\":\"mysu\"},\"id\":\"ttexoqqpwcyyufmh\",\"name\":\"uncuw\",\"type\":\"qspkcdqzhlctd\"},{\"properties\":{\"hierarchyIdentifier\":\"ndy\",\"hierarchyIdentifierTrialEndDate\":\"2021-08-29T15:16:01Z\",\"environmentName\":\"AWS\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"jjrcgegydc\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"oxjumvqqo\",\"tags\":{\"aiouaubrjt\":\"r\",\"fuojrngif\":\"oq\",\"dfqwmkyoq\":\"rzpasccbiuimzdly\"},\"id\":\"fdvruz\",\"name\":\"lzo\",\"type\":\"hpc\"}],\"nextLink\":\"nmdxotngfd\"}")
+            .toObject(SecurityConnectorsList.class);
+        Assertions.assertEquals("qjctzenkeif", model.value().get(0).location());
+        Assertions.assertEquals("mkdasv", model.value().get(0).tags().get("lyhb"));
+        Assertions.assertEquals("ccxjm", model.value().get(0).hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.GITHUB, model.value().get(0).environmentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityConnectorsList model =
-            new SecurityConnectorsList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SecurityConnectorInner()
-                                .withLocation("fayorpravkjoges")
-                                .withTags(
-                                    mapOf(
-                                        "kvwjtqpkevmy",
-                                        "nsmjkwynqxaekqs",
-                                        "gxannnoytzposewx",
-                                        "tjcrspxklurccl",
-                                        "dfaifyzyzeyuube",
-                                        "gpxvkqmaupxvpi",
-                                        "l",
-                                        "ds"))
-                                .withHierarchyIdentifier("ifrkgwltxeqipx")
-                                .withEnvironmentName(CloudName.GCP)
-                                .withOfferings(Arrays.asList()),
-                            new SecurityConnectorInner()
-                                .withLocation("nelqkaadl")
-                                .withTags(mapOf("vcnrly", "foanniyopetx"))
-                                .withHierarchyIdentifier("moenodnaien")
-                                .withEnvironmentName(CloudName.GCP)
-                                .withOfferings(Arrays.asList())));
+        SecurityConnectorsList model = new SecurityConnectorsList().withValue(Arrays.asList(
+            new SecurityConnectorInner().withLocation("qjctzenkeif")
+                .withTags(mapOf("lyhb", "mkdasv", "chxgs", "cu", "vizbfhfo", "boldforobwj"))
+                .withHierarchyIdentifier("ccxjm")
+                .withEnvironmentName(CloudName.GITHUB)
+                .withOfferings(Arrays.asList(new CloudOffering()))
+                .withEnvironmentData(new EnvironmentData()),
+            new SecurityConnectorInner().withLocation("pgdakchzyvli")
+                .withTags(mapOf("bn", "rkcxkj", "swqrntvlwijp", "mysu"))
+                .withHierarchyIdentifier("kywuhpsvfuu")
+                .withEnvironmentName(CloudName.AWS)
+                .withOfferings(Arrays.asList(new CloudOffering(), new CloudOffering()))
+                .withEnvironmentData(new EnvironmentData()),
+            new SecurityConnectorInner().withLocation("oxjumvqqo")
+                .withTags(mapOf("aiouaubrjt", "r", "fuojrngif", "oq", "dfqwmkyoq", "rzpasccbiuimzdly"))
+                .withHierarchyIdentifier("ndy")
+                .withEnvironmentName(CloudName.AWS)
+                .withOfferings(Arrays.asList(new CloudOffering()))
+                .withEnvironmentData(new EnvironmentData())));
         model = BinaryData.fromObject(model).toObject(SecurityConnectorsList.class);
-        Assertions.assertEquals("fayorpravkjoges", model.value().get(0).location());
-        Assertions.assertEquals("nsmjkwynqxaekqs", model.value().get(0).tags().get("kvwjtqpkevmy"));
-        Assertions.assertEquals("ifrkgwltxeqipx", model.value().get(0).hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GCP, model.value().get(0).environmentName());
+        Assertions.assertEquals("qjctzenkeif", model.value().get(0).location());
+        Assertions.assertEquals("mkdasv", model.value().get(0).tags().get("lyhb"));
+        Assertions.assertEquals("ccxjm", model.value().get(0).hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.GITHUB, model.value().get(0).environmentName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

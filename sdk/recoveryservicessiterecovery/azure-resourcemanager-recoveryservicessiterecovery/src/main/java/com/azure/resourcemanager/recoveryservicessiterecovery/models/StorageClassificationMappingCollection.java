@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Stor
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of storage mapping details. */
+/**
+ * Collection of storage mapping details.
+ */
 @Fluent
 public final class StorageClassificationMappingCollection {
     /*
@@ -24,13 +26,15 @@ public final class StorageClassificationMappingCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of StorageClassificationMappingCollection class. */
+    /**
+     * Creates an instance of StorageClassificationMappingCollection class.
+     */
     public StorageClassificationMappingCollection() {
     }
 
     /**
      * Get the value property: The storage details.
-     *
+     * 
      * @return the value value.
      */
     public List<StorageClassificationMappingInner> value() {
@@ -39,7 +43,7 @@ public final class StorageClassificationMappingCollection {
 
     /**
      * Set the value property: The storage details.
-     *
+     * 
      * @param value the value value to set.
      * @return the StorageClassificationMappingCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class StorageClassificationMappingCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class StorageClassificationMappingCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the StorageClassificationMappingCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class StorageClassificationMappingCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

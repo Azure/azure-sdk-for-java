@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReverseRepl
 public final class ReverseReplicationProviderSpecificInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReverseReplicationProviderSpecificInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"ReverseReplicationProviderSpecificInput\"}")
+        ReverseReplicationProviderSpecificInput model
+            = BinaryData.fromString("{\"instanceType\":\"ReverseReplicationProviderSpecificInput\"}")
                 .toObject(ReverseReplicationProviderSpecificInput.class);
     }
 

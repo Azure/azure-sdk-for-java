@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.containerservicefleet.generated;
 
-/** Samples for FleetMembers Delete. */
+/**
+ * Samples for FleetMembers Delete.
+ */
 public final class FleetMembersDeleteSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/FleetMembers_Delete.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2024-04-01/examples/FleetMembers_Delete.json
      */
     /**
      * Sample code: Deletes a FleetMember resource asynchronously with a long running operation.
-     *
+     * 
      * @param manager Entry point to ContainerServiceFleetManager.
      */
     public static void deletesAFleetMemberResourceAsynchronouslyWithALongRunningOperation(

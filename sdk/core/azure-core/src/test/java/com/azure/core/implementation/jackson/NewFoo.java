@@ -22,14 +22,12 @@ import java.util.Map;
 @JsonFlatten
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "$type")
 @JsonTypeName("newfoo")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "newfoochild", value = NewFooChild.class)
-})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "newfoochild", value = NewFooChild.class) })
 public class NewFoo {
     @JsonProperty(value = "properties.bar")
     private String bar;
     @JsonProperty(value = "properties.props.baz")
-    private List<String>  baz;
+    private List<String> baz;
     @JsonProperty(value = "properties.props.q.qux")
     private Map<String, String> qux;
     @JsonProperty(value = "properties.more\\.props")

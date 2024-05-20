@@ -12,22 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class EnableProtectionInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnableProtectionInputProperties model =
-            BinaryData
-                .fromString(
-                    "{\"policyId\":\"rey\",\"protectableItemId\":\"zi\",\"providerSpecificDetails\":{\"instanceType\":\"EnableProtectionProviderSpecificInput\"}}")
-                .toObject(EnableProtectionInputProperties.class);
+        EnableProtectionInputProperties model = BinaryData.fromString(
+            "{\"policyId\":\"rey\",\"protectableItemId\":\"zi\",\"providerSpecificDetails\":{\"instanceType\":\"EnableProtectionProviderSpecificInput\"}}")
+            .toObject(EnableProtectionInputProperties.class);
         Assertions.assertEquals("rey", model.policyId());
         Assertions.assertEquals("zi", model.protectableItemId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnableProtectionInputProperties model =
-            new EnableProtectionInputProperties()
-                .withPolicyId("rey")
-                .withProtectableItemId("zi")
-                .withProviderSpecificDetails(new EnableProtectionProviderSpecificInput());
+        EnableProtectionInputProperties model = new EnableProtectionInputProperties().withPolicyId("rey")
+            .withProtectableItemId("zi").withProviderSpecificDetails(new EnableProtectionProviderSpecificInput());
         model = BinaryData.fromObject(model).toObject(EnableProtectionInputProperties.class);
         Assertions.assertEquals("rey", model.policyId());
         Assertions.assertEquals("zi", model.protectableItemId());

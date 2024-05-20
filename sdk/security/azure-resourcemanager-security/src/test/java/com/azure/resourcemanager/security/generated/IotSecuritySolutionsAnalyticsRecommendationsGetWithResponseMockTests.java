@@ -6,66 +6,35 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.IoTSecurityAggregatedRecommendation;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IotSecuritySolutionsAnalyticsRecommendationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"recommendationName\":\"ynoy\",\"recommendationDisplayName\":\"flsmsbnlyoifg\",\"description\":\"zjqthykcvo\",\"recommendationTypeId\":\"cwfzotkxxl\",\"detectedBy\":\"ooxgbsd\",\"remediationSteps\":\"gcvypjhu\",\"reportedSeverity\":\"High\",\"healthyDevices\":4186193399949006969,\"unhealthyDeviceCount\":3588661982854941532,\"logAnalyticsQuery\":\"jcqgzwvxwi\"},\"tags\":{\"qrljdcukylaxrj\":\"ibmjk\"},\"id\":\"qoqovqhgphgx\",\"name\":\"wudgcyqruv\",\"type\":\"mryddnqivahfcq\"}";
 
-        String responseStr =
-            "{\"properties\":{\"recommendationName\":\"uavt\",\"recommendationDisplayName\":\"bkew\",\"description\":\"yn\",\"recommendationTypeId\":\"gbvoffbkk\",\"detectedBy\":\"dxaexqokmyrljia\",\"remediationSteps\":\"bn\",\"reportedSeverity\":\"Medium\",\"healthyDevices\":565720864272399930,\"unhealthyDeviceCount\":7735327142708488909,\"logAnalyticsQuery\":\"rpzuyudivbx\"},\"tags\":{\"nqelwgdhuru\":\"qeae\",\"za\":\"y\",\"mpinmzvfkneerzzt\":\"ogatmoljiy\"},\"id\":\"knsjulugd\",\"name\":\"bnhrxlelfjhkeiz\",\"type\":\"pihtdmiwjekpt\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        IoTSecurityAggregatedRecommendation response = manager.iotSecuritySolutionsAnalyticsRecommendations()
+            .getWithResponse("orwp", "b", "tweobptscruykkie", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        IoTSecurityAggregatedRecommendation response =
-            manager
-                .iotSecuritySolutionsAnalyticsRecommendations()
-                .getWithResponse("h", "qtwmlmhjnqtqeahj", "dvragpokddxejhh", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("qeae", response.tags().get("nqelwgdhuru"));
-        Assertions.assertEquals("uavt", response.recommendationName());
+        Assertions.assertEquals("ibmjk", response.tags().get("qrljdcukylaxrj"));
+        Assertions.assertEquals("ynoy", response.recommendationName());
     }
 }

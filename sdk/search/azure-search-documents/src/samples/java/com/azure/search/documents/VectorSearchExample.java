@@ -31,6 +31,7 @@ import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaption;
 import com.azure.search.documents.models.QueryCaptionResult;
 import com.azure.search.documents.models.QueryCaptionType;
+import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SemanticSearchOptions;
@@ -244,6 +245,7 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchOptions searchOptions = new SearchOptions()
+            .setQueryType(QueryType.SEMANTIC)
             .setVectorSearchOptions(new VectorSearchOptions()
                 .setQueries(vectorizableQuery))
             .setSemanticSearchOptions(new SemanticSearchOptions()

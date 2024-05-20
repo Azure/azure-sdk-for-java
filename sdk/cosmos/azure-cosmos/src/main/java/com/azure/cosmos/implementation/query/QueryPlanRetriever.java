@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -28,12 +29,16 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 class QueryPlanRetriever {
-
     private final static
     ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
 
     private static final String TRUE = "True";
+
+    // For a limited time, if the query runs against a region or emulator that has not yet been updated with the
+    // new NonStreamingOrderBy query feature the client might run into some issue of not being able to recognize this,
+    // and throw a 400 exception. If the environment variable `AZURE_COSMOS_DISABLE_NON_STREAMING_ORDER_BY` is set to
+    // True to opt out of this new query feature, we will return the OLD query features to operate correctly.
     private static final String SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
                                                                QueryFeature.CompositeAggregate.name() + ", " +
                                                                QueryFeature.MultipleOrderBy.name() + ", " +
@@ -44,7 +49,20 @@ class QueryPlanRetriever {
                                                                QueryFeature.GroupBy.name() + ", " +
                                                                QueryFeature.Top.name() + ", " +
                                                                QueryFeature.DCount.name() + ", " +
-                                                               QueryFeature.NonValueAggregate.name();
+                                                               QueryFeature.NonValueAggregate.name() + ", " +
+                                                               QueryFeature.NonStreamingOrderBy.name();
+
+    private static final String OLD_SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
+                                                                QueryFeature.CompositeAggregate.name() + ", " +
+                                                                QueryFeature.MultipleOrderBy.name() + ", " +
+                                                                QueryFeature.MultipleAggregates.name() + ", " +
+                                                                QueryFeature.OrderBy.name() + ", " +
+                                                                QueryFeature.OffsetAndLimit.name() + ", " +
+                                                                QueryFeature.Distinct.name() + ", " +
+                                                                QueryFeature.GroupBy.name() + ", " +
+                                                                QueryFeature.Top.name() + ", " +
+                                                                QueryFeature.DCount.name() + ", " +
+                                                                QueryFeature.NonValueAggregate.name();
 
     static Mono<PartitionedQueryExecutionInfo> getQueryPlanThroughGatewayAsync(DiagnosticsClientContext diagnosticsClientContext,
                                                                                IDocumentQueryClient queryClient,
@@ -62,7 +80,8 @@ class QueryPlanRetriever {
         final Map<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
         requestHeaders.put(HttpConstants.HttpHeaders.IS_QUERY_PLAN_REQUEST, TRUE);
-        requestHeaders.put(HttpConstants.HttpHeaders.SUPPORTED_QUERY_FEATURES, SUPPORTED_QUERY_FEATURES);
+        requestHeaders.put(HttpConstants.HttpHeaders.SUPPORTED_QUERY_FEATURES,
+            Configs.getAzureCosmosNonStreamingOrderByDisabled() ? OLD_SUPPORTED_QUERY_FEATURES : SUPPORTED_QUERY_FEATURES);
         requestHeaders.put(HttpConstants.HttpHeaders.QUERY_VERSION, HttpConstants.Versions.QUERY_VERSION);
 
         if (partitionKey != null && partitionKey != PartitionKey.NONE) {
@@ -78,8 +97,9 @@ class QueryPlanRetriever {
         queryPlanRequest.useGatewayMode = true;
         queryPlanRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
 
-        CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig =
-            qryOptAccessor.getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions);
+        CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig = qryOptAccessor
+            .getImpl(nonNullRequestOptions)
+            .getEndToEndOperationLatencyConfig();
         if (end2EndConfig != null) {
             queryPlanRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(end2EndConfig);
         }

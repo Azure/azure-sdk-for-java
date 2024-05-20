@@ -18,28 +18,34 @@ public final class AvroSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvroSink model = BinaryData.fromString(
-            "{\"type\":\"AvroSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"dataqgcn\",\"disableMetricsCollection\":\"datahgcz\",\"copyBehavior\":\"dataouxigdwpgmhqhv\",\"metadata\":[{\"name\":\"datawxqwcx\",\"value\":\"datalymmhzvnetecfy\"},{\"name\":\"datafkcwfpoaflgkzgzx\",\"value\":\"datavvfkqbgkssygdv\"},{\"name\":\"databbd\",\"value\":\"datal\"}],\"\":{\"nxpsebazbtyrjr\":\"datawpsxygrni\",\"fzrra\":\"dataqgn\",\"jqzgyymyywhfdkj\":\"dataimtu\"}},\"formatSettings\":{\"type\":\"AvroWriteSettings\",\"recordName\":\"ezso\",\"recordNamespace\":\"zdhzk\",\"maxRowsPerFile\":\"datazldplamcc\",\"fileNamePrefix\":\"datajrnveqleozqqwia\",\"\":{\"fhysatoplqcujsrl\":\"datazyvbu\",\"to\":\"datawuqkprfqoco\"}},\"writeBatchSize\":\"datawbsbkobbdss\",\"writeBatchTimeout\":\"datawhf\",\"sinkRetryCount\":\"datawrjbr\",\"sinkRetryWait\":\"datarsetttul\",\"maxConcurrentConnections\":\"dataajb\",\"disableMetricsCollection\":\"dataspfgmosiskihfsl\",\"\":{\"pypxg\":\"datajzgmxqa\",\"yf\":\"dataypokoo\",\"fucmhonoje\":\"datasnozjn\"}}")
+            "{\"type\":\"p\",\"storeSettings\":{\"type\":\"nqcgbijyp\",\"maxConcurrentConnections\":\"databyrkxzebvxuzch\",\"disableMetricsCollection\":\"dataeogdkcrc\",\"copyBehavior\":\"datazzeu\",\"metadata\":[{\"name\":\"datapxir\",\"value\":\"datahuqkicimyykmke\"},{\"name\":\"dataqmnr\",\"value\":\"dataefxkattpkkwldvk\"},{\"name\":\"datagxakgoptbjooqo\",\"value\":\"datankvnuwjrxbbxkh\"}],\"\":{\"tglo\":\"databx\",\"jhyiey\":\"datafmlbhlimgzimtzz\",\"xalvdhmumsmnub\":\"datarwfu\",\"xidqnvhrbfepf\":\"datanxrpsty\"}},\"formatSettings\":{\"type\":\"kwoommqvzz\",\"recordName\":\"pxthsfuxhlgoexu\",\"recordNamespace\":\"bfoo\",\"maxRowsPerFile\":\"datatxdlewh\",\"fileNamePrefix\":\"datavrip\",\"\":{\"fh\":\"datawfo\"}},\"writeBatchSize\":\"dataljajz\",\"writeBatchTimeout\":\"datagwarbvblat\",\"sinkRetryCount\":\"datajk\",\"sinkRetryWait\":\"datatodgisfej\",\"maxConcurrentConnections\":\"datap\",\"disableMetricsCollection\":\"dataifujynfjwktiyhiy\",\"\":{\"wo\":\"datavaodifupdafuf\",\"rqhgnrxxhzwtrx\":\"datas\"}}")
             .toObject(AvroSink.class);
-        Assertions.assertEquals("ezso", model.formatSettings().recordName());
-        Assertions.assertEquals("zdhzk", model.formatSettings().recordNamespace());
+        Assertions.assertEquals("pxthsfuxhlgoexu", model.formatSettings().recordName());
+        Assertions.assertEquals("bfoo", model.formatSettings().recordNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvroSink model = new AvroSink().withWriteBatchSize("datawbsbkobbdss").withWriteBatchTimeout("datawhf")
-            .withSinkRetryCount("datawrjbr").withSinkRetryWait("datarsetttul").withMaxConcurrentConnections("dataajb")
-            .withDisableMetricsCollection("dataspfgmosiskihfsl")
-            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("dataqgcn")
-                .withDisableMetricsCollection("datahgcz").withCopyBehavior("dataouxigdwpgmhqhv")
-                .withMetadata(Arrays.asList(new MetadataItem().withName("datawxqwcx").withValue("datalymmhzvnetecfy"),
-                    new MetadataItem().withName("datafkcwfpoaflgkzgzx").withValue("datavvfkqbgkssygdv"),
-                    new MetadataItem().withName("databbd").withValue("datal")))
-                .withAdditionalProperties(mapOf("type", "StoreWriteSettings")))
-            .withFormatSettings(new AvroWriteSettings().withRecordName("ezso").withRecordNamespace("zdhzk")
-                .withMaxRowsPerFile("datazldplamcc").withFileNamePrefix("datajrnveqleozqqwia"));
+        AvroSink model = new AvroSink().withWriteBatchSize("dataljajz")
+            .withWriteBatchTimeout("datagwarbvblat")
+            .withSinkRetryCount("datajk")
+            .withSinkRetryWait("datatodgisfej")
+            .withMaxConcurrentConnections("datap")
+            .withDisableMetricsCollection("dataifujynfjwktiyhiy")
+            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("databyrkxzebvxuzch")
+                .withDisableMetricsCollection("dataeogdkcrc")
+                .withCopyBehavior("datazzeu")
+                .withMetadata(Arrays.asList(new MetadataItem().withName("datapxir").withValue("datahuqkicimyykmke"),
+                    new MetadataItem().withName("dataqmnr").withValue("dataefxkattpkkwldvk"),
+                    new MetadataItem().withName("datagxakgoptbjooqo").withValue("datankvnuwjrxbbxkh")))
+                .withAdditionalProperties(mapOf("type", "nqcgbijyp")))
+            .withFormatSettings(new AvroWriteSettings().withRecordName("pxthsfuxhlgoexu")
+                .withRecordNamespace("bfoo")
+                .withMaxRowsPerFile("datatxdlewh")
+                .withFileNamePrefix("datavrip"));
         model = BinaryData.fromObject(model).toObject(AvroSink.class);
-        Assertions.assertEquals("ezso", model.formatSettings().recordName());
-        Assertions.assertEquals("zdhzk", model.formatSettings().recordNamespace());
+        Assertions.assertEquals("pxthsfuxhlgoexu", model.formatSettings().recordName());
+        Assertions.assertEquals("bfoo", model.formatSettings().recordNamespace());
     }
 
     // Use "Map.of" if available

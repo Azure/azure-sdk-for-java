@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.TopologyResourceInner;
 public final class TopologyResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TopologyResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"calculatedDateTime\":\"2021-09-17T20:28:14Z\",\"topologyResources\":[{\"resourceId\":\"r\",\"severity\":\"iouaubrjt\",\"recommendationsExist\":true,\"networkZones\":\"fuojrngif\",\"topologyScore\":193344927,\"location\":\"asccbiui\",\"parents\":[],\"children\":[]},{\"resourceId\":\"yjdfqwmky\",\"severity\":\"ufdvruz\",\"recommendationsExist\":true,\"networkZones\":\"j\",\"topologyScore\":617076882,\"location\":\"fnmdxotn\",\"parents\":[],\"children\":[]},{\"resourceId\":\"ugeyzihgrkyuiza\",\"severity\":\"nmfpp\",\"recommendationsExist\":false,\"networkZones\":\"evy\",\"topologyScore\":1052982888,\"location\":\"gzfc\",\"parents\":[],\"children\":[]}]},\"location\":\"mfg\",\"id\":\"eglqgleohibetn\",\"name\":\"uankrrfxeeeb\",\"type\":\"ij\"}")
-                .toObject(TopologyResourceInner.class);
+        TopologyResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"calculatedDateTime\":\"2021-09-15T11:04:17Z\",\"topologyResources\":[{\"resourceId\":\"ay\",\"severity\":\"ribqlotokh\",\"recommendationsExist\":true,\"networkZones\":\"azn\",\"topologyScore\":634667700,\"location\":\"wxwjyofgwhnkb\",\"parents\":[{\"resourceId\":\"jssmctsnldkpwo\"}],\"children\":[{\"resourceId\":\"ubxbteogfgfiijr\"},{\"resourceId\":\"wlefksxqceazfpxg\"},{\"resourceId\":\"qvzvlu\"}]}]},\"location\":\"qa\",\"id\":\"ossscyva\",\"name\":\"fppuacvfye\",\"type\":\"w\"}")
+            .toObject(TopologyResourceInner.class);
     }
 
     @org.junit.jupiter.api.Test

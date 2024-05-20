@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Trigger configuration of an event driven job. */
+/**
+ * Trigger configuration of an event driven job.
+ */
 @Fluent
 public final class JobConfigurationEventTriggerConfig {
     /*
@@ -28,14 +30,16 @@ public final class JobConfigurationEventTriggerConfig {
     @JsonProperty(value = "scale")
     private JobScale scale;
 
-    /** Creates an instance of JobConfigurationEventTriggerConfig class. */
+    /**
+     * Creates an instance of JobConfigurationEventTriggerConfig class.
+     */
     public JobConfigurationEventTriggerConfig() {
     }
 
     /**
      * Get the replicaCompletionCount property: Minimum number of successful replica completions before overall job
      * completion.
-     *
+     * 
      * @return the replicaCompletionCount value.
      */
     public Integer replicaCompletionCount() {
@@ -45,7 +49,7 @@ public final class JobConfigurationEventTriggerConfig {
     /**
      * Set the replicaCompletionCount property: Minimum number of successful replica completions before overall job
      * completion.
-     *
+     * 
      * @param replicaCompletionCount the replicaCompletionCount value to set.
      * @return the JobConfigurationEventTriggerConfig object itself.
      */
@@ -56,7 +60,7 @@ public final class JobConfigurationEventTriggerConfig {
 
     /**
      * Get the parallelism property: Number of parallel replicas of a job that can run at a given time.
-     *
+     * 
      * @return the parallelism value.
      */
     public Integer parallelism() {
@@ -65,7 +69,7 @@ public final class JobConfigurationEventTriggerConfig {
 
     /**
      * Set the parallelism property: Number of parallel replicas of a job that can run at a given time.
-     *
+     * 
      * @param parallelism the parallelism value to set.
      * @return the JobConfigurationEventTriggerConfig object itself.
      */
@@ -76,7 +80,7 @@ public final class JobConfigurationEventTriggerConfig {
 
     /**
      * Get the scale property: Scaling configurations for event driven jobs.
-     *
+     * 
      * @return the scale value.
      */
     public JobScale scale() {
@@ -85,7 +89,7 @@ public final class JobConfigurationEventTriggerConfig {
 
     /**
      * Set the scale property: Scaling configurations for event driven jobs.
-     *
+     * 
      * @param scale the scale value to set.
      * @return the JobConfigurationEventTriggerConfig object itself.
      */
@@ -96,7 +100,7 @@ public final class JobConfigurationEventTriggerConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

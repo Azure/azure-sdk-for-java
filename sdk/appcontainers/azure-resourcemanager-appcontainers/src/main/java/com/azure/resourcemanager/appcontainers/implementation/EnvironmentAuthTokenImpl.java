@@ -16,8 +16,7 @@ public final class EnvironmentAuthTokenImpl implements EnvironmentAuthToken {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    EnvironmentAuthTokenImpl(
-        EnvironmentAuthTokenInner innerObject,
+    EnvironmentAuthTokenImpl(EnvironmentAuthTokenInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

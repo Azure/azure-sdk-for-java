@@ -28,7 +28,8 @@ final class EmissionDrivenCreditAccountingStrategy extends CreditAccountingStrat
      * @param prefetch the prefetch configured.
      * @param logger the logger.
      */
-    EmissionDrivenCreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
+    EmissionDrivenCreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch,
+        ClientLogger logger) {
         super(receiver, subscription, validateAndGet(prefetch, logger), logger);
         // Refill the buffer once 50% of the prefetch has emitted.
         this.limit = this.prefetch - (this.prefetch >> 1);

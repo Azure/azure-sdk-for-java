@@ -31,42 +31,31 @@ public final class ReplicationNetworksListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"fabricType\":\"gxqbfkce\",\"subnets\":[{\"name\":\"recjb\",\"friendlyName\":\"wevsfgdrmnszdosm\",\"addressList\":[\"svz\",\"mxtc\",\"ghndae\"]},{\"name\":\"gsulwvgseufigvfj\",\"friendlyName\":\"zkilmciwuh\",\"addressList\":[\"kypy\",\"vljlbzdlby\",\"paxhpz\"]}],\"friendlyName\":\"ov\",\"networkType\":\"wbh\"},\"location\":\"zges\",\"id\":\"hshagpa\",\"name\":\"nezpby\",\"type\":\"yvynpmggqgage\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"fabricType\":\"gxqbfkce\",\"subnets\":[{\"name\":\"recjb\",\"friendlyName\":\"wevsfgdrmnszdosm\",\"addressList\":[\"svz\",\"mxtc\",\"ghndae\"]},{\"name\":\"gsulwvgseufigvfj\",\"friendlyName\":\"zkilmciwuh\",\"addressList\":[\"kypy\",\"vljlbzdlby\",\"paxhpz\"]}],\"friendlyName\":\"ov\",\"networkType\":\"wbh\"},\"location\":\"zges\",\"id\":\"hshagpa\",\"name\":\"nezpby\",\"type\":\"yvynpmggqgage\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SiteRecoveryManager manager =
-            SiteRecoveryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Network> response =
-            manager.replicationNetworks().list("sybxhqvov", "pmhttuvsqjsrvjnq", com.azure.core.util.Context.NONE);
+        PagedIterable<Network> response
+            = manager.replicationNetworks().list("sybxhqvov", "pmhttuvsqjsrvjnq", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("gxqbfkce", response.iterator().next().properties().fabricType());
         Assertions.assertEquals("recjb", response.iterator().next().properties().subnets().get(0).name());
-        Assertions
-            .assertEquals("wevsfgdrmnszdosm", response.iterator().next().properties().subnets().get(0).friendlyName());
+        Assertions.assertEquals("wevsfgdrmnszdosm",
+            response.iterator().next().properties().subnets().get(0).friendlyName());
         Assertions.assertEquals("svz", response.iterator().next().properties().subnets().get(0).addressList().get(0));
         Assertions.assertEquals("ov", response.iterator().next().properties().friendlyName());
         Assertions.assertEquals("wbh", response.iterator().next().properties().networkType());

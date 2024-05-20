@@ -10,10 +10,10 @@ import com.azure.resourcemanager.security.fluent.models.SettingInner;
 public final class SettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SettingInner model =
-            BinaryData
-                .fromString("{\"kind\":\"Setting\",\"id\":\"gddpq\",\"name\":\"hehnmnaoya\",\"type\":\"kcoeqswank\"}")
-                .toObject(SettingInner.class);
+        SettingInner model = BinaryData
+            .fromString(
+                "{\"kind\":\"Setting\",\"id\":\"bdxzfxnxmlbmu\",\"name\":\"swkjmdihdcyyyz\",\"type\":\"whbwzjnufzrf\"}")
+            .toObject(SettingInner.class);
     }
 
     @org.junit.jupiter.api.Test

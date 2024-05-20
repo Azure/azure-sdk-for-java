@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request of a switch billing Operation. */
+/**
+ * Request of a switch billing Operation.
+ */
 @Fluent
 public final class SwitchBillingRequest {
     /*
@@ -35,13 +37,15 @@ public final class SwitchBillingRequest {
     @JsonProperty(value = "userEmail", required = true)
     private String userEmail;
 
-    /** Creates an instance of SwitchBillingRequest class. */
+    /**
+     * Creates an instance of SwitchBillingRequest class.
+     */
     public SwitchBillingRequest() {
     }
 
     /**
      * Get the azureResourceId property: Azure resource Id.
-     *
+     * 
      * @return the azureResourceId value.
      */
     public String azureResourceId() {
@@ -50,7 +54,7 @@ public final class SwitchBillingRequest {
 
     /**
      * Set the azureResourceId property: Azure resource Id.
-     *
+     * 
      * @param azureResourceId the azureResourceId value to set.
      * @return the SwitchBillingRequest object itself.
      */
@@ -61,7 +65,7 @@ public final class SwitchBillingRequest {
 
     /**
      * Get the organizationId property: Organization id.
-     *
+     * 
      * @return the organizationId value.
      */
     public String organizationId() {
@@ -70,7 +74,7 @@ public final class SwitchBillingRequest {
 
     /**
      * Set the organizationId property: Organization id.
-     *
+     * 
      * @param organizationId the organizationId value to set.
      * @return the SwitchBillingRequest object itself.
      */
@@ -81,7 +85,7 @@ public final class SwitchBillingRequest {
 
     /**
      * Get the planData property: Plan details.
-     *
+     * 
      * @return the planData value.
      */
     public PlanData planData() {
@@ -90,7 +94,7 @@ public final class SwitchBillingRequest {
 
     /**
      * Set the planData property: Plan details.
-     *
+     * 
      * @param planData the planData value to set.
      * @return the SwitchBillingRequest object itself.
      */
@@ -101,7 +105,7 @@ public final class SwitchBillingRequest {
 
     /**
      * Get the userEmail property: User Email.
-     *
+     * 
      * @return the userEmail value.
      */
     public String userEmail() {
@@ -110,7 +114,7 @@ public final class SwitchBillingRequest {
 
     /**
      * Set the userEmail property: User Email.
-     *
+     * 
      * @param userEmail the userEmail value to set.
      * @return the SwitchBillingRequest object itself.
      */
@@ -121,7 +125,7 @@ public final class SwitchBillingRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -129,9 +133,8 @@ public final class SwitchBillingRequest {
             planData().validate();
         }
         if (userEmail() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property userEmail in model SwitchBillingRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property userEmail in model SwitchBillingRequest"));
         }
     }
 

@@ -10,8 +10,8 @@ import com.azure.resourcemanager.security.models.AdditionalData;
 public final class AdditionalDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdditionalData model =
-            BinaryData.fromString("{\"assessedResourceType\":\"AdditionalData\"}").toObject(AdditionalData.class);
+        AdditionalData model
+            = BinaryData.fromString("{\"assessedResourceType\":\"AdditionalData\"}").toObject(AdditionalData.class);
     }
 
     @org.junit.jupiter.api.Test

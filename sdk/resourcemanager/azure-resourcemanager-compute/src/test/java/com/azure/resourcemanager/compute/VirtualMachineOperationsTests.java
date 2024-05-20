@@ -13,6 +13,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
@@ -82,6 +84,8 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class VirtualMachineOperationsTests extends ComputeManagementTest {
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineOperationsTests.class);
+
     private String rgName = "";
     private String rgName2 = "";
     private final Region region = Region.US_EAST;
@@ -731,7 +735,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 createdResource -> {
                     if (createdResource instanceof Resource) {
                         Resource resource = (Resource) createdResource;
-                        System.out.println("Created: " + resource.id());
+                        LOGGER.log(LogLevel.VERBOSE, () -> "Created: " + resource.id());
                         if (resource instanceof VirtualMachine) {
                             VirtualMachine virtualMachine = (VirtualMachine) resource;
                             Assertions.assertTrue(virtualMachineNames.contains(virtualMachine.name()));
@@ -1742,6 +1746,15 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(DeleteOptions.DELETE, vm.primaryNetworkInterfaceDeleteOptions());
         Assertions.assertTrue(vm.networkInterfaceIds().stream().allMatch(nicId -> DeleteOptions.DELETE.equals(vm.networkInterfaceDeleteOptions(nicId))));
         Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DELETE.equals(disk.deleteOptions())));
+
+        // update all to DETACH
+        vm.update()
+            .withDataDisksDeleteOptions(DeleteOptions.DETACH)
+            .withNetworkInterfacesDeleteOptions(DeleteOptions.DETACH)
+            .apply();
+
+        Assertions.assertTrue(vm.networkInterfaceIds().stream().allMatch(nicId -> DeleteOptions.DETACH.equals(vm.networkInterfaceDeleteOptions(nicId))));
+        Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DETACH.equals(disk.deleteOptions())));
     }
 
     @Test

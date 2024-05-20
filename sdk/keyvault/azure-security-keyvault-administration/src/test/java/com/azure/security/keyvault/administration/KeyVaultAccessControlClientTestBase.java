@@ -23,7 +23,7 @@ public abstract class KeyVaultAccessControlClientTestBase extends KeyVaultAdmini
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlClientTestBase.class);
 
     protected final String servicePrincipalId =
-        Configuration.getGlobalConfiguration().get("CLIENT_OBJECTID", "aed295e0-2ae7-4c2a-9abc-813f0ca233d3");
+        Configuration.getGlobalConfiguration().get("CLIENT_OBJECTID", "f84ae8f9-c979-4750-a2fe-b350a00bebff");
 
     KeyVaultAccessControlClientBuilder getClientBuilder(HttpClient httpClient, boolean forCleanup) {
         return new KeyVaultAccessControlClientBuilder()

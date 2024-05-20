@@ -22,19 +22,20 @@ public final class AutomationSource {
     private EventSource eventSource;
 
     /*
-     * A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule
-     * sets (logical 'or').
+     * A set of rules which evaluate upon event interception. A logical disjunction is applied between defined rule sets (logical 'or').
      */
     @JsonProperty(value = "ruleSets")
     private List<AutomationRuleSet> ruleSets;
 
-    /** Creates an instance of AutomationSource class. */
+    /**
+     * Creates an instance of AutomationSource class.
+     */
     public AutomationSource() {
     }
 
     /**
      * Get the eventSource property: A valid event source type.
-     *
+     * 
      * @return the eventSource value.
      */
     public EventSource eventSource() {
@@ -43,7 +44,7 @@ public final class AutomationSource {
 
     /**
      * Set the eventSource property: A valid event source type.
-     *
+     * 
      * @param eventSource the eventSource value to set.
      * @return the AutomationSource object itself.
      */
@@ -55,7 +56,7 @@ public final class AutomationSource {
     /**
      * Get the ruleSets property: A set of rules which evaluate upon event interception. A logical disjunction is
      * applied between defined rule sets (logical 'or').
-     *
+     * 
      * @return the ruleSets value.
      */
     public List<AutomationRuleSet> ruleSets() {
@@ -65,7 +66,7 @@ public final class AutomationSource {
     /**
      * Set the ruleSets property: A set of rules which evaluate upon event interception. A logical disjunction is
      * applied between defined rule sets (logical 'or').
-     *
+     * 
      * @param ruleSets the ruleSets value to set.
      * @return the AutomationSource object itself.
      */
@@ -76,7 +77,7 @@ public final class AutomationSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

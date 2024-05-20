@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Information protection policy. */
+/**
+ * Information protection policy.
+ */
 @Fluent
 public final class InformationProtectionPolicyInner extends ProxyResource {
     /*
@@ -21,13 +23,15 @@ public final class InformationProtectionPolicyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private InformationProtectionPolicyProperties innerProperties;
 
-    /** Creates an instance of InformationProtectionPolicyInner class. */
+    /**
+     * Creates an instance of InformationProtectionPolicyInner class.
+     */
     public InformationProtectionPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: Information protection policy data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private InformationProtectionPolicyProperties innerProperties() {
@@ -36,7 +40,7 @@ public final class InformationProtectionPolicyInner extends ProxyResource {
 
     /**
      * Get the lastModifiedUtc property: Describes the last UTC time the policy was modified.
-     *
+     * 
      * @return the lastModifiedUtc value.
      */
     public OffsetDateTime lastModifiedUtc() {
@@ -45,7 +49,7 @@ public final class InformationProtectionPolicyInner extends ProxyResource {
 
     /**
      * Get the version property: Describes the version of the policy.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -54,7 +58,7 @@ public final class InformationProtectionPolicyInner extends ProxyResource {
 
     /**
      * Get the labels property: Dictionary of sensitivity labels.
-     *
+     * 
      * @return the labels value.
      */
     public Map<String, SensitivityLabel> labels() {
@@ -63,7 +67,7 @@ public final class InformationProtectionPolicyInner extends ProxyResource {
 
     /**
      * Set the labels property: Dictionary of sensitivity labels.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the InformationProtectionPolicyInner object itself.
      */
@@ -77,7 +81,7 @@ public final class InformationProtectionPolicyInner extends ProxyResource {
 
     /**
      * Get the informationTypes property: The sensitivity information types.
-     *
+     * 
      * @return the informationTypes value.
      */
     public Map<String, InformationType> informationTypes() {
@@ -86,7 +90,7 @@ public final class InformationProtectionPolicyInner extends ProxyResource {
 
     /**
      * Set the informationTypes property: The sensitivity information types.
-     *
+     * 
      * @param informationTypes the informationTypes value to set.
      * @return the InformationProtectionPolicyInner object itself.
      */
@@ -100,7 +104,7 @@ public final class InformationProtectionPolicyInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

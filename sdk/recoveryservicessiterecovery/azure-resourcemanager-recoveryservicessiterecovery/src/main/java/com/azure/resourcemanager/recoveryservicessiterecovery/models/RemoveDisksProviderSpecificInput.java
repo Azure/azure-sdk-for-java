@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Remove Disk provider specific input. */
+/**
+ * Remove Disk provider specific input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "instanceType",
     defaultImpl = RemoveDisksProviderSpecificInput.class)
 @JsonTypeName("RemoveDisksProviderSpecificInput")
-@JsonSubTypes({@JsonSubTypes.Type(name = "A2A", value = A2ARemoveDisksInput.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "A2A", value = A2ARemoveDisksInput.class) })
 @Immutable
 public class RemoveDisksProviderSpecificInput {
-    /** Creates an instance of RemoveDisksProviderSpecificInput class. */
+    /**
+     * Creates an instance of RemoveDisksProviderSpecificInput class.
+     */
     public RemoveDisksProviderSpecificInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

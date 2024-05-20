@@ -7,7 +7,9 @@ package com.azure.resourcemanager.chaos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Runtime properties of this Capability Type. */
+/**
+ * Runtime properties of this Capability Type.
+ */
 @Immutable
 public final class CapabilityTypePropertiesRuntimeProperties {
     /*
@@ -16,13 +18,15 @@ public final class CapabilityTypePropertiesRuntimeProperties {
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
-    /** Creates an instance of CapabilityTypePropertiesRuntimeProperties class. */
+    /**
+     * Creates an instance of CapabilityTypePropertiesRuntimeProperties class.
+     */
     public CapabilityTypePropertiesRuntimeProperties() {
     }
 
     /**
      * Get the kind property: String of the kind of the resource's action type (continuous or discrete).
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -31,7 +35,7 @@ public final class CapabilityTypePropertiesRuntimeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

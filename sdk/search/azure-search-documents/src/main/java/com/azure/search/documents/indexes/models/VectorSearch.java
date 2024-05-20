@@ -34,6 +34,11 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
      */
     private List<VectorSearchVectorizer> vectorizers;
 
+    /*
+     * Contains configuration options specific to the compression method used during indexing or querying.
+     */
+    private List<VectorSearchCompressionConfiguration> compressions;
+
     /**
      * Creates an instance of VectorSearch class.
      */
@@ -102,12 +107,35 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
         return this;
     }
 
+    /**
+     * Get the compressions property: Contains configuration options specific to the compression method used during
+     * indexing or querying.
+     *
+     * @return the compressions value.
+     */
+    public List<VectorSearchCompressionConfiguration> getCompressions() {
+        return this.compressions;
+    }
+
+    /**
+     * Set the compressions property: Contains configuration options specific to the compression method used during
+     * indexing or querying.
+     *
+     * @param compressions the compressions value to set.
+     * @return the VectorSearch object itself.
+     */
+    public VectorSearch setCompressions(List<VectorSearchCompressionConfiguration> compressions) {
+        this.compressions = compressions;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("profiles", this.profiles, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("algorithms", this.algorithms, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("vectorizers", this.vectorizers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("compressions", this.compressions, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -137,6 +165,10 @@ public final class VectorSearch implements JsonSerializable<VectorSearch> {
                     List<VectorSearchVectorizer> vectorizers
                         = reader.readArray(reader1 -> VectorSearchVectorizer.fromJson(reader1));
                     deserializedVectorSearch.vectorizers = vectorizers;
+                } else if ("compressions".equals(fieldName)) {
+                    List<VectorSearchCompressionConfiguration> compressions
+                        = reader.readArray(reader1 -> VectorSearchCompressionConfiguration.fromJson(reader1));
+                    deserializedVectorSearch.compressions = compressions;
                 } else {
                     reader.skipChildren();
                 }

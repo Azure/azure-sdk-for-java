@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ComputeSizeErrorDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeSizeErrorDetails model =
-            BinaryData
-                .fromString("{\"message\":\"miloxggdufiqndie\",\"severity\":\"ao\"}")
-                .toObject(ComputeSizeErrorDetails.class);
+        ComputeSizeErrorDetails model = BinaryData.fromString("{\"message\":\"miloxggdufiqndie\",\"severity\":\"ao\"}")
+            .toObject(ComputeSizeErrorDetails.class);
         Assertions.assertEquals("miloxggdufiqndie", model.message());
         Assertions.assertEquals("ao", model.severity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComputeSizeErrorDetails model =
-            new ComputeSizeErrorDetails().withMessage("miloxggdufiqndie").withSeverity("ao");
+        ComputeSizeErrorDetails model
+            = new ComputeSizeErrorDetails().withMessage("miloxggdufiqndie").withSeverity("ao");
         model = BinaryData.fromObject(model).toObject(ComputeSizeErrorDetails.class);
         Assertions.assertEquals("miloxggdufiqndie", model.message());
         Assertions.assertEquals("ao", model.severity());

@@ -33,7 +33,7 @@ public final class VolumesReplicationStatusWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"healthy\":true,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Mirrored\",\"totalProgress\":\"fqwmkyoquf\",\"errorMessage\":\"ruzslzoj\"}";
+            = "{\"healthy\":true,\"relationshipStatus\":\"Transferring\",\"mirrorState\":\"Mirrored\",\"totalProgress\":\"jqctojcmisofie\",\"errorMessage\":\"efojyqdhcupl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,13 +50,13 @@ public final class VolumesReplicationStatusWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ReplicationStatus response = manager.volumes().replicationStatusWithResponse("ihrraiouaub", "jtlo", "xfuojrn",
-            "iflrzpasccbiu", com.azure.core.util.Context.NONE).getValue();
+        ReplicationStatus response = manager.volumes()
+            .replicationStatusWithResponse("ylfsbtk", "dp", "s", "wn", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals(true, response.healthy());
-        Assertions.assertEquals(RelationshipStatus.IDLE, response.relationshipStatus());
+        Assertions.assertEquals(RelationshipStatus.TRANSFERRING, response.relationshipStatus());
         Assertions.assertEquals(MirrorState.MIRRORED, response.mirrorState());
-        Assertions.assertEquals("fqwmkyoquf", response.totalProgress());
-        Assertions.assertEquals("ruzslzoj", response.errorMessage());
+        Assertions.assertEquals("jqctojcmisofie", response.totalProgress());
+        Assertions.assertEquals("efojyqdhcupl", response.errorMessage());
     }
 }

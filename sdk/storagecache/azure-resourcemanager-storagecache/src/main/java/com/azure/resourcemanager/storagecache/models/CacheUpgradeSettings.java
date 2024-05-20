@@ -8,25 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Cache Upgrade Settings. */
+/**
+ * Cache Upgrade Settings.
+ */
 @Fluent
 public final class CacheUpgradeSettings {
     /*
-     * True if the user chooses to select an installation time between now and firmwareUpdateDeadline. Else the
-     * firmware will automatically be installed after firmwareUpdateDeadline if not triggered earlier via the upgrade
-     * operation.
+     * True if the user chooses to select an installation time between now and firmwareUpdateDeadline. Else the firmware will automatically be installed after firmwareUpdateDeadline if not triggered earlier via the upgrade operation.
      */
     @JsonProperty(value = "upgradeScheduleEnabled")
     private Boolean upgradeScheduleEnabled;
 
     /*
-     * When upgradeScheduleEnabled is true, this field holds the user-chosen upgrade time. At the user-chosen time, the
-     * firmware update will automatically be installed on the cache.
+     * When upgradeScheduleEnabled is true, this field holds the user-chosen upgrade time. At the user-chosen time, the firmware update will automatically be installed on the cache.
      */
     @JsonProperty(value = "scheduledTime")
     private OffsetDateTime scheduledTime;
 
-    /** Creates an instance of CacheUpgradeSettings class. */
+    /**
+     * Creates an instance of CacheUpgradeSettings class.
+     */
     public CacheUpgradeSettings() {
     }
 
@@ -34,7 +35,7 @@ public final class CacheUpgradeSettings {
      * Get the upgradeScheduleEnabled property: True if the user chooses to select an installation time between now and
      * firmwareUpdateDeadline. Else the firmware will automatically be installed after firmwareUpdateDeadline if not
      * triggered earlier via the upgrade operation.
-     *
+     * 
      * @return the upgradeScheduleEnabled value.
      */
     public Boolean upgradeScheduleEnabled() {
@@ -45,7 +46,7 @@ public final class CacheUpgradeSettings {
      * Set the upgradeScheduleEnabled property: True if the user chooses to select an installation time between now and
      * firmwareUpdateDeadline. Else the firmware will automatically be installed after firmwareUpdateDeadline if not
      * triggered earlier via the upgrade operation.
-     *
+     * 
      * @param upgradeScheduleEnabled the upgradeScheduleEnabled value to set.
      * @return the CacheUpgradeSettings object itself.
      */
@@ -57,7 +58,7 @@ public final class CacheUpgradeSettings {
     /**
      * Get the scheduledTime property: When upgradeScheduleEnabled is true, this field holds the user-chosen upgrade
      * time. At the user-chosen time, the firmware update will automatically be installed on the cache.
-     *
+     * 
      * @return the scheduledTime value.
      */
     public OffsetDateTime scheduledTime() {
@@ -67,7 +68,7 @@ public final class CacheUpgradeSettings {
     /**
      * Set the scheduledTime property: When upgradeScheduleEnabled is true, this field holds the user-chosen upgrade
      * time. At the user-chosen time, the firmware update will automatically be installed on the cache.
-     *
+     * 
      * @param scheduledTime the scheduledTime value to set.
      * @return the CacheUpgradeSettings object itself.
      */
@@ -78,7 +79,7 @@ public final class CacheUpgradeSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

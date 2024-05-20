@@ -10,10 +10,9 @@ import com.azure.resourcemanager.security.models.ConnectedResource;
 public final class ConnectedResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectedResource model =
-            BinaryData
-                .fromString("{\"connectedResourceId\":\"rb\",\"tcpPorts\":\"d\",\"udpPorts\":\"robwjlvizbfhf\"}")
-                .toObject(ConnectedResource.class);
+        ConnectedResource model = BinaryData
+            .fromString("{\"connectedResourceId\":\"jbzten\",\"tcpPorts\":\"kzykjtjk\",\"udpPorts\":\"xfwush\"}")
+            .toObject(ConnectedResource.class);
     }
 
     @org.junit.jupiter.api.Test

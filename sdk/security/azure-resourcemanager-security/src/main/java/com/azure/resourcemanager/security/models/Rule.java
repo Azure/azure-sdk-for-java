@@ -39,19 +39,20 @@ public final class Rule {
     private List<TransportProtocol> protocols;
 
     /*
-     * The remote IP addresses that should be able to communicate with the Azure resource on the rule's destination
-     * port and protocol
+     * The remote IP addresses that should be able to communicate with the Azure resource on the rule's destination port and protocol
      */
     @JsonProperty(value = "ipAddresses")
     private List<String> ipAddresses;
 
-    /** Creates an instance of Rule class. */
+    /**
+     * Creates an instance of Rule class.
+     */
     public Rule() {
     }
 
     /**
      * Get the name property: The name of the rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +61,7 @@ public final class Rule {
 
     /**
      * Set the name property: The name of the rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the Rule object itself.
      */
@@ -71,7 +72,7 @@ public final class Rule {
 
     /**
      * Get the direction property: The rule's direction.
-     *
+     * 
      * @return the direction value.
      */
     public Direction direction() {
@@ -80,7 +81,7 @@ public final class Rule {
 
     /**
      * Set the direction property: The rule's direction.
-     *
+     * 
      * @param direction the direction value to set.
      * @return the Rule object itself.
      */
@@ -91,7 +92,7 @@ public final class Rule {
 
     /**
      * Get the destinationPort property: The rule's destination port.
-     *
+     * 
      * @return the destinationPort value.
      */
     public Integer destinationPort() {
@@ -100,7 +101,7 @@ public final class Rule {
 
     /**
      * Set the destinationPort property: The rule's destination port.
-     *
+     * 
      * @param destinationPort the destinationPort value to set.
      * @return the Rule object itself.
      */
@@ -111,7 +112,7 @@ public final class Rule {
 
     /**
      * Get the protocols property: The rule's transport protocols.
-     *
+     * 
      * @return the protocols value.
      */
     public List<TransportProtocol> protocols() {
@@ -120,7 +121,7 @@ public final class Rule {
 
     /**
      * Set the protocols property: The rule's transport protocols.
-     *
+     * 
      * @param protocols the protocols value to set.
      * @return the Rule object itself.
      */
@@ -132,7 +133,7 @@ public final class Rule {
     /**
      * Get the ipAddresses property: The remote IP addresses that should be able to communicate with the Azure resource
      * on the rule's destination port and protocol.
-     *
+     * 
      * @return the ipAddresses value.
      */
     public List<String> ipAddresses() {
@@ -142,7 +143,7 @@ public final class Rule {
     /**
      * Set the ipAddresses property: The remote IP addresses that should be able to communicate with the Azure resource
      * on the rule's destination port and protocol.
-     *
+     * 
      * @param ipAddresses the ipAddresses value to set.
      * @return the Rule object itself.
      */
@@ -153,7 +154,7 @@ public final class Rule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryRes
 public final class RecoveryResourceGroupCustomDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryResourceGroupCustomDetails model =
-            BinaryData
-                .fromString("{\"resourceType\":\"RecoveryResourceGroupCustomDetails\"}")
+        RecoveryResourceGroupCustomDetails model
+            = BinaryData.fromString("{\"resourceType\":\"RecoveryResourceGroupCustomDetails\"}")
                 .toObject(RecoveryResourceGroupCustomDetails.class);
     }
 

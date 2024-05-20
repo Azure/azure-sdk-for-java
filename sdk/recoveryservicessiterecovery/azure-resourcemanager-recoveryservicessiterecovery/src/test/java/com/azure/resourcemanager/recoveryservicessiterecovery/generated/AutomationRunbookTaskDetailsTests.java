@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AutomationRunbookTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomationRunbookTaskDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"AutomationRunbookTaskDetails\",\"name\":\"idqpxlbtpakftn\",\"cloudServiceName\":\"twmykyut\",\"subscriptionId\":\"mdwmf\",\"accountName\":\"pycvjqdvdwkqpldr\",\"runbookId\":\"fgnaavuagnteta\",\"runbookName\":\"tnpdctuhspfefy\",\"jobId\":\"duyeuyl\",\"jobOutput\":\"hmtybkcgsuthhll\",\"isPrimarySideScript\":false}")
-                .toObject(AutomationRunbookTaskDetails.class);
+        AutomationRunbookTaskDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"AutomationRunbookTaskDetails\",\"name\":\"idqpxlbtpakftn\",\"cloudServiceName\":\"twmykyut\",\"subscriptionId\":\"mdwmf\",\"accountName\":\"pycvjqdvdwkqpldr\",\"runbookId\":\"fgnaavuagnteta\",\"runbookName\":\"tnpdctuhspfefy\",\"jobId\":\"duyeuyl\",\"jobOutput\":\"hmtybkcgsuthhll\",\"isPrimarySideScript\":false}")
+            .toObject(AutomationRunbookTaskDetails.class);
         Assertions.assertEquals("idqpxlbtpakftn", model.name());
         Assertions.assertEquals("twmykyut", model.cloudServiceName());
         Assertions.assertEquals("mdwmf", model.subscriptionId());
@@ -29,17 +27,10 @@ public final class AutomationRunbookTaskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationRunbookTaskDetails model =
-            new AutomationRunbookTaskDetails()
-                .withName("idqpxlbtpakftn")
-                .withCloudServiceName("twmykyut")
-                .withSubscriptionId("mdwmf")
-                .withAccountName("pycvjqdvdwkqpldr")
-                .withRunbookId("fgnaavuagnteta")
-                .withRunbookName("tnpdctuhspfefy")
-                .withJobId("duyeuyl")
-                .withJobOutput("hmtybkcgsuthhll")
-                .withIsPrimarySideScript(false);
+        AutomationRunbookTaskDetails model = new AutomationRunbookTaskDetails().withName("idqpxlbtpakftn")
+            .withCloudServiceName("twmykyut").withSubscriptionId("mdwmf").withAccountName("pycvjqdvdwkqpldr")
+            .withRunbookId("fgnaavuagnteta").withRunbookName("tnpdctuhspfefy").withJobId("duyeuyl")
+            .withJobOutput("hmtybkcgsuthhll").withIsPrimarySideScript(false);
         model = BinaryData.fromObject(model).toObject(AutomationRunbookTaskDetails.class);
         Assertions.assertEquals("idqpxlbtpakftn", model.name());
         Assertions.assertEquals("twmykyut", model.cloudServiceName());

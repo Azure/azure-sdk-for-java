@@ -41,7 +41,8 @@ public class GeoObjectTests {
         properties.put("key2", "value2");
         assertNotEquals(properties, geoObject.getCustomProperties());
 
-        Assertions.assertThrows(UnsupportedOperationException.class, () -> geoObject.getCustomProperties().put("key2", "value2"));
+        Assertions.assertThrows(UnsupportedOperationException.class,
+            () -> geoObject.getCustomProperties().put("key2", "value2"));
     }
 
     @ParameterizedTest
@@ -62,17 +63,14 @@ public class GeoObjectTests {
             Arguments.of(geoObject, 1, false),
 
             // Other is itself.
-            Arguments.of(geoObject, geoObject, true),
-            Arguments.of(geoObject1, geoObject1, true),
+            Arguments.of(geoObject, geoObject, true), Arguments.of(geoObject1, geoObject1, true),
 
             // Other is a different value.
-            Arguments.of(geoObject, geoObject1, false),
-            Arguments.of(geoObject1, geoObject, false),
+            Arguments.of(geoObject, geoObject1, false), Arguments.of(geoObject1, geoObject, false),
 
             // Other is the same value.
             Arguments.of(geoObject, new ConcreteGeoObject(null, null), true),
-            Arguments.of(geoObject1, new ConcreteGeoObject(null, Collections.singletonMap("key", "value")), true)
-        );
+            Arguments.of(geoObject1, new ConcreteGeoObject(null, Collections.singletonMap("key", "value")), true));
     }
 
     private static final class ConcreteGeoObject extends GeoObject {

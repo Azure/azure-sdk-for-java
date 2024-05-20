@@ -5,31 +5,31 @@
 package com.azure.resourcemanager.playwrighttesting.generated;
 
 import com.azure.resourcemanager.playwrighttesting.models.Account;
+import com.azure.resourcemanager.playwrighttesting.models.AccountUpdateProperties;
 import com.azure.resourcemanager.playwrighttesting.models.EnablementStatus;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Accounts Update. */
+/**
+ * Samples for Accounts Update.
+ */
 public final class AccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/preview/2023-10-01-preview/examples/Accounts_Update.json
+     * x-ms-original-file:
+     * specification/playwrighttesting/resource-manager/Microsoft.AzurePlaywrightService/preview/2023-10-01-preview/
+     * examples/Accounts_Update.json
      */
     /**
      * Sample code: Accounts_Update.
-     *
+     * 
      * @param manager Entry point to PlaywrightTestingManager.
      */
     public static void accountsUpdate(com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager manager) {
-        Account resource =
-            manager
-                .accounts()
-                .getByResourceGroupWithResponse("dummyrg", "myPlaywrightAccount", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withTags(mapOf("Division", "LT", "Team", "Dev Exp"))
-            .withRegionalAffinity(EnablementStatus.ENABLED)
-            .apply();
+        Account resource = manager.accounts()
+            .getByResourceGroupWithResponse("dummyrg", "myPlaywrightAccount", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("Division", "LT", "Team", "Dev Exp"))
+            .withProperties(new AccountUpdateProperties().withRegionalAffinity(EnablementStatus.ENABLED)).apply();
     }
 
     // Use "Map.of" if available

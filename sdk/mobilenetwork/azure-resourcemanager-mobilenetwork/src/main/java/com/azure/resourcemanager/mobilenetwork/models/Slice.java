@@ -10,53 +10,55 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SliceInner;
 import java.util.Map;
 
-/** An immutable client-side representation of Slice. */
+/**
+ * An immutable client-side representation of Slice.
+ */
 public interface Slice {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: The provisioning state of the network slice resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
@@ -64,66 +66,70 @@ public interface Slice {
     /**
      * Gets the snssai property: Single-network slice selection assistance information (S-NSSAI). Unique at the scope of
      * a mobile network.
-     *
+     * 
      * @return the snssai value.
      */
     Snssai snssai();
 
     /**
      * Gets the description property: An optional description for this network slice.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.SliceInner object.
-     *
+     * 
      * @return the inner object.
      */
     SliceInner innerModel();
 
-    /** The entirety of the Slice definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithSnssai,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the Slice definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithSnssai, DefinitionStages.WithCreate {
     }
 
-    /** The Slice definition stages. */
+    /**
+     * The Slice definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Slice definition. */
+        /**
+         * The first stage of the Slice definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the Slice definition allowing to specify location. */
+        /**
+         * The stage of the Slice definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -131,18 +137,20 @@ public interface Slice {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithParentResource withRegion(String location);
         }
 
-        /** The stage of the Slice definition allowing to specify parent resource. */
+        /**
+         * The stage of the Slice definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, mobileNetworkName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param mobileNetworkName The name of the mobile network.
              * @return the next definition stage.
@@ -150,14 +158,16 @@ public interface Slice {
             WithSnssai withExistingMobileNetwork(String resourceGroupName, String mobileNetworkName);
         }
 
-        /** The stage of the Slice definition allowing to specify snssai. */
+        /**
+         * The stage of the Slice definition allowing to specify snssai.
+         */
         interface WithSnssai {
             /**
              * Specifies the snssai property: Single-network slice selection assistance information (S-NSSAI). Unique at
              * the scope of a mobile network..
-             *
+             * 
              * @param snssai Single-network slice selection assistance information (S-NSSAI). Unique at the scope of a
-             *     mobile network.
+             * mobile network.
              * @return the next definition stage.
              */
             WithCreate withSnssai(Snssai snssai);
@@ -170,36 +180,40 @@ public interface Slice {
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithDescription {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Slice create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             Slice create(Context context);
         }
 
-        /** The stage of the Slice definition allowing to specify tags. */
+        /**
+         * The stage of the Slice definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the Slice definition allowing to specify description. */
+        /**
+         * The stage of the Slice definition allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: An optional description for this network slice..
-             *
+             * 
              * @param description An optional description for this network slice.
              * @return the next definition stage.
              */
@@ -209,36 +223,42 @@ public interface Slice {
 
     /**
      * Begins update for the Slice resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     Slice.Update update();
 
-    /** The template for Slice update. */
+    /**
+     * The template for Slice update.
+     */
     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         Slice apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         Slice apply(Context context);
     }
 
-    /** The Slice update stages. */
+    /**
+     * The Slice update stages.
+     */
     interface UpdateStages {
-        /** The stage of the Slice update allowing to specify tags. */
+        /**
+         * The stage of the Slice update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
@@ -248,14 +268,14 @@ public interface Slice {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Slice refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

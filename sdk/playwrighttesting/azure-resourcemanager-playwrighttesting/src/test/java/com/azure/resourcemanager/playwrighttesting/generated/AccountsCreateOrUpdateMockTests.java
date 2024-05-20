@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager;
 import com.azure.resourcemanager.playwrighttesting.models.Account;
+import com.azure.resourcemanager.playwrighttesting.models.AccountProperties;
 import com.azure.resourcemanager.playwrighttesting.models.EnablementStatus;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -33,52 +34,35 @@ public final class AccountsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"dashboardUri\":\"bdxkqpxokaj\",\"regionalAffinity\":\"Enabled\",\"scalableExecution\":\"Disabled\",\"reporting\":\"Enabled\",\"provisioningState\":\"Succeeded\"},\"location\":\"txgcpodgmaajr\",\"tags\":{\"vmclw\":\"jwzrl\",\"aqsqsycbkbfk\":\"ijcoejctb\"},\"id\":\"ukdkexxppofmxa\",\"name\":\"c\",\"type\":\"jpgd\"}";
+        String responseStr
+            = "{\"properties\":{\"dashboardUri\":\"bdxkqpxokaj\",\"regionalAffinity\":\"Enabled\",\"scalableExecution\":\"Disabled\",\"reporting\":\"Enabled\",\"provisioningState\":\"Succeeded\"},\"location\":\"txgcpodgmaajr\",\"tags\":{\"vmclw\":\"jwzrl\",\"aqsqsycbkbfk\":\"ijcoejctb\"},\"id\":\"ukdkexxppofmxa\",\"name\":\"c\",\"type\":\"jpgd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PlaywrightTestingManager manager =
-            PlaywrightTestingManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PlaywrightTestingManager manager = PlaywrightTestingManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Account response =
-            manager
-                .accounts()
-                .define("bznorcjxvsnby")
-                .withRegion("fblj")
-                .withExistingResourceGroup("gr")
-                .withTags(mapOf("qajzyulpkudjkr", "btoqcjmkljavbqid", "e", "khbzhfepgzg", "scpai", "zloc"))
-                .withRegionalAffinity(EnablementStatus.DISABLED)
-                .withScalableExecution(EnablementStatus.DISABLED)
-                .withReporting(EnablementStatus.ENABLED)
-                .create();
+        Account response = manager.accounts().define("bznorcjxvsnby").withRegion("fblj").withExistingResourceGroup("gr")
+            .withTags(mapOf("qajzyulpkudjkr", "btoqcjmkljavbqid", "e", "khbzhfepgzg", "scpai", "zloc"))
+            .withProperties(new AccountProperties().withRegionalAffinity(EnablementStatus.DISABLED)
+                .withScalableExecution(EnablementStatus.DISABLED).withReporting(EnablementStatus.ENABLED))
+            .create();
 
         Assertions.assertEquals("txgcpodgmaajr", response.location());
         Assertions.assertEquals("jwzrl", response.tags().get("vmclw"));
-        Assertions.assertEquals(EnablementStatus.ENABLED, response.regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.DISABLED, response.scalableExecution());
-        Assertions.assertEquals(EnablementStatus.ENABLED, response.reporting());
+        Assertions.assertEquals(EnablementStatus.ENABLED, response.properties().regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.DISABLED, response.properties().scalableExecution());
+        Assertions.assertEquals(EnablementStatus.ENABLED, response.properties().reporting());
     }
 
     // Use "Map.of" if available

@@ -13,23 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class RecommendationConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecommendationConfigurationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"recommendationType\":\"IoT_PermissiveFirewallPolicy\",\"name\":\"xepcyvahfn\",\"status\":\"Disabled\"}")
-                .toObject(RecommendationConfigurationProperties.class);
-        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY, model.recommendationType());
+        RecommendationConfigurationProperties model = BinaryData
+            .fromString("{\"recommendationType\":\"IoT_InstallAgent\",\"name\":\"kois\",\"status\":\"Disabled\"}")
+            .toObject(RecommendationConfigurationProperties.class);
+        Assertions.assertEquals(RecommendationType.IO_T_INSTALL_AGENT, model.recommendationType());
         Assertions.assertEquals(RecommendationConfigStatus.DISABLED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecommendationConfigurationProperties model =
-            new RecommendationConfigurationProperties()
-                .withRecommendationType(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY)
+        RecommendationConfigurationProperties model
+            = new RecommendationConfigurationProperties().withRecommendationType(RecommendationType.IO_T_INSTALL_AGENT)
                 .withStatus(RecommendationConfigStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(RecommendationConfigurationProperties.class);
-        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY, model.recommendationType());
+        Assertions.assertEquals(RecommendationType.IO_T_INSTALL_AGENT, model.recommendationType());
         Assertions.assertEquals(RecommendationConfigStatus.DISABLED, model.status());
     }
 }

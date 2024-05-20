@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A value indicating whether security update required. */
+/**
+ * A value indicating whether security update required.
+ */
 public final class AgentVersionStatus extends ExpandableStringEnum<AgentVersionStatus> {
-    /** Static value Supported for AgentVersionStatus. */
+    /**
+     * Static value Supported for AgentVersionStatus.
+     */
     public static final AgentVersionStatus SUPPORTED = fromString("Supported");
 
-    /** Static value NotSupported for AgentVersionStatus. */
+    /**
+     * Static value NotSupported for AgentVersionStatus.
+     */
     public static final AgentVersionStatus NOT_SUPPORTED = fromString("NotSupported");
 
-    /** Static value Deprecated for AgentVersionStatus. */
+    /**
+     * Static value Deprecated for AgentVersionStatus.
+     */
     public static final AgentVersionStatus DEPRECATED = fromString("Deprecated");
 
-    /** Static value UpdateRequired for AgentVersionStatus. */
+    /**
+     * Static value UpdateRequired for AgentVersionStatus.
+     */
     public static final AgentVersionStatus UPDATE_REQUIRED = fromString("UpdateRequired");
 
-    /** Static value SecurityUpdateRequired for AgentVersionStatus. */
+    /**
+     * Static value SecurityUpdateRequired for AgentVersionStatus.
+     */
     public static final AgentVersionStatus SECURITY_UPDATE_REQUIRED = fromString("SecurityUpdateRequired");
 
     /**
      * Creates a new instance of AgentVersionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class AgentVersionStatus extends ExpandableStringEnum<AgentVersionS
 
     /**
      * Creates or finds a AgentVersionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AgentVersionStatus.
      */
@@ -47,7 +59,7 @@ public final class AgentVersionStatus extends ExpandableStringEnum<AgentVersionS
 
     /**
      * Gets known AgentVersionStatus values.
-     *
+     * 
      * @return known AgentVersionStatus values.
      */
     public static Collection<AgentVersionStatus> values() {

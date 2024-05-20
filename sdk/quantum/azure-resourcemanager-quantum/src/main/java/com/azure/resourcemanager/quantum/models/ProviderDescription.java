@@ -6,32 +6,34 @@ package com.azure.resourcemanager.quantum.models;
 
 import com.azure.resourcemanager.quantum.fluent.models.ProviderDescriptionInner;
 
-/** An immutable client-side representation of ProviderDescription. */
+/**
+ * An immutable client-side representation of ProviderDescription.
+ */
 public interface ProviderDescription {
     /**
      * Gets the id property: Unique provider's id.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: Provider's display name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
-     * Gets the properties property: A list of provider-specific properties.
-     *
+     * Gets the properties property: Provider properties.
+     * 
      * @return the properties value.
      */
     ProviderProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.quantum.fluent.models.ProviderDescriptionInner object.
-     *
+     * 
      * @return the inner object.
      */
     ProviderDescriptionInner innerModel();

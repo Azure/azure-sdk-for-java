@@ -5,31 +5,53 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Details of the sub-assessment. */
+/**
+ * Details of the sub-assessment.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "assessedResourceType",
-    defaultImpl = AdditionalData.class)
+    defaultImpl = AdditionalData.class,
+    visible = true)
 @JsonTypeName("AdditionalData")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SqlServerVulnerability", value = SqlServerVulnerabilityProperties.class),
     @JsonSubTypes.Type(name = "ContainerRegistryVulnerability", value = ContainerRegistryVulnerabilityProperties.class),
-    @JsonSubTypes.Type(name = "ServerVulnerabilityAssessment", value = ServerVulnerabilityProperties.class)
-})
+    @JsonSubTypes.Type(name = "ServerVulnerabilityAssessment", value = ServerVulnerabilityProperties.class) })
 @Immutable
 public class AdditionalData {
-    /** Creates an instance of AdditionalData class. */
+    /*
+     * Sub-assessment resource type
+     */
+    @JsonTypeId
+    @JsonProperty(value = "assessedResourceType", required = true)
+    private AssessedResourceType assessedResourceType;
+
+    /**
+     * Creates an instance of AdditionalData class.
+     */
     public AdditionalData() {
+        this.assessedResourceType = AssessedResourceType.fromString("AdditionalData");
+    }
+
+    /**
+     * Get the assessedResourceType property: Sub-assessment resource type.
+     * 
+     * @return the assessedResourceType value.
+     */
+    public AssessedResourceType assessedResourceType() {
+        return this.assessedResourceType;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of RegulatoryComplianceStandards. */
+/**
+ * Resource collection API of RegulatoryComplianceStandards.
+ */
 public interface RegulatoryComplianceStandards {
     /**
      * Supported regulatory compliance standards details and state.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of regulatory compliance standards response as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface RegulatoryComplianceStandards {
 
     /**
      * Supported regulatory compliance standards details and state.
-     *
+     * 
      * @param filter OData filter. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,7 +35,7 @@ public interface RegulatoryComplianceStandards {
 
     /**
      * Supported regulatory compliance details state for selected standard.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +47,7 @@ public interface RegulatoryComplianceStandards {
 
     /**
      * Supported regulatory compliance details state for selected standard.
-     *
+     * 
      * @param regulatoryComplianceStandardName Name of the regulatory compliance standard object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

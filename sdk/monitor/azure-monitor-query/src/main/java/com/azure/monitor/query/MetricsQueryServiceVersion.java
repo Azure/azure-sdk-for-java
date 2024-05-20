@@ -12,7 +12,11 @@ public enum MetricsQueryServiceVersion implements ServiceVersion {
     /**
      * Service version {@code 2018-01-01}.
      */
-    V2018_01_01("2018-01-01");
+    V2018_01_01("2018-01-01"),
+    /**
+     * Service version {@code 2024-02-01}.
+     */
+    V2024_02_01("2024-02-01");
 
     String version;
 
@@ -29,7 +33,7 @@ public enum MetricsQueryServiceVersion implements ServiceVersion {
      * @return The latest supported service version by this library.
      */
     public static MetricsQueryServiceVersion getLatest() {
-        return V2018_01_01;
+        return V2024_02_01;
     }
 
     @Override

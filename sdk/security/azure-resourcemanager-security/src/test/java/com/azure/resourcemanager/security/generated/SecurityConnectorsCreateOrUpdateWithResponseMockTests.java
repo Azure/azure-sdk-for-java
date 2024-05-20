@@ -6,16 +6,14 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.CloudName;
+import com.azure.resourcemanager.security.models.CloudOffering;
 import com.azure.resourcemanager.security.models.EnvironmentData;
 import com.azure.resourcemanager.security.models.SecurityConnector;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -23,66 +21,40 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SecurityConnectorsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"hierarchyIdentifier\":\"cnuestbsliejdnc\",\"hierarchyIdentifierTrialEndDate\":\"2021-02-08T15:18:26Z\",\"environmentName\":\"Azure\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"iytehhxtzxqdwbym\"},{\"offeringType\":\"CloudOffering\",\"description\":\"lngncrdorc\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"s\",\"tags\":{\"dbyhqtzcvim\":\"ekh\"},\"id\":\"wckozvlf\",\"name\":\"mtrtsv\",\"type\":\"upqtzckj\"}";
 
-        String responseStr =
-            "{\"properties\":{\"hierarchyIdentifier\":\"m\",\"hierarchyIdentifierTrialEndDate\":\"2021-06-20T07:23:24Z\",\"environmentName\":\"AWS\",\"offerings\":[],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"rpvsgloiovs\",\"tags\":{\"suvw\":\"v\",\"i\":\"enbg\",\"oa\":\"pkhc\"},\"id\":\"xukuicjuftekio\",\"name\":\"anduew\",\"type\":\"hvpxjhxz\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        SecurityConnector response = manager.securityConnectors()
+            .define("cqqnlsjxcsc")
+            .withRegion("lsfo")
+            .withExistingResourceGroup("lrlqxbctatezyozd")
+            .withTags(mapOf("elpfijtezgxmpes", "mtfcqmmynbr", "f", "amadlerzi", "mirmnrijefmrt", "ivczktllxswtdap",
+                "ffmwt", "xcevdspth"))
+            .withHierarchyIdentifier("dmra")
+            .withEnvironmentName(CloudName.AZURE)
+            .withOfferings(Arrays.asList(new CloudOffering(), new CloudOffering(), new CloudOffering()))
+            .withEnvironmentData(new EnvironmentData())
+            .create();
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        SecurityConnector response =
-            manager
-                .securityConnectors()
-                .define("qpqsdoctpzpuj")
-                .withRegion("hfwlfxzfwugeup")
-                .withExistingResourceGroup("krjflsgaojb")
-                .withTags(mapOf("sytqpdzfyxcnwawo", "ecexkgrvfpsjdmn", "bejqfbifopfjx", "cg", "q", "wdrpa"))
-                .withHierarchyIdentifier("cdsgxceluji")
-                .withEnvironmentName(CloudName.AWS)
-                .withOfferings(Arrays.asList())
-                .withEnvironmentData(new EnvironmentData())
-                .create();
-
-        Assertions.assertEquals("rpvsgloiovs", response.location());
-        Assertions.assertEquals("v", response.tags().get("suvw"));
-        Assertions.assertEquals("m", response.hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.AWS, response.environmentName());
+        Assertions.assertEquals("s", response.location());
+        Assertions.assertEquals("ekh", response.tags().get("dbyhqtzcvim"));
+        Assertions.assertEquals("cnuestbsliejdnc", response.hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.AZURE, response.environmentName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

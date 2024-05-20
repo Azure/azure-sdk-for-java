@@ -40,24 +40,6 @@ public class SessionHandler extends Handler {
      * @param sessionName Name of the session.
      * @param reactorDispatcher Reactor dispatcher.
      * @param openTimeout Timeout for opening the session.
-     * @deprecated use {@link #SessionHandler(String, String, String, ReactorDispatcher, Duration, AmqpMetricsProvider)}
-     * instead.
-     */
-    @Deprecated
-    public SessionHandler(String connectionId, String hostname, String sessionName, ReactorDispatcher reactorDispatcher,
-        Duration openTimeout) {
-        this(connectionId, hostname, sessionName, reactorDispatcher, openTimeout,
-            new AmqpMetricsProvider(null, hostname, null));
-    }
-
-    /**
-     * Creates a session handler.
-     *
-     * @param connectionId Identifier for the connection.
-     * @param hostname Hostname of the connection.
-     * @param sessionName Name of the session.
-     * @param reactorDispatcher Reactor dispatcher.
-     * @param openTimeout Timeout for opening the session.
      * @param metricProvider Metrics provider.
      */
     public SessionHandler(String connectionId, String hostname, String sessionName, ReactorDispatcher reactorDispatcher,
@@ -80,8 +62,7 @@ public class SessionHandler extends Handler {
 
     @Override
     public void onSessionLocalOpen(Event e) {
-        addErrorCondition(logger.atVerbose(), e.getSession().getCondition())
-            .addKeyValue(SESSION_NAME_KEY, sessionName)
+        addErrorCondition(logger.atVerbose(), e.getSession().getCondition()).addKeyValue(SESSION_NAME_KEY, sessionName)
             .log("onSessionLocalOpen");
 
         final Session session = e.getSession();
@@ -96,10 +77,10 @@ public class SessionHandler extends Handler {
 
             session.close();
 
-            final String message =
-                String.format(Locale.US, "onSessionLocalOpen connectionId[%s], entityName[%s], underlying IO of"
-                        + " reactorDispatcher faulted with error: %s",
-                    getConnectionId(), sessionName, ioException.getMessage());
+            final String message = String.format(Locale.US,
+                "onSessionLocalOpen connectionId[%s], entityName[%s], underlying IO of"
+                    + " reactorDispatcher faulted with error: %s",
+                getConnectionId(), sessionName, ioException.getMessage());
             final Throwable exception = new AmqpException(false, message, ioException, getErrorContext());
 
             onError(exception);
@@ -127,12 +108,9 @@ public class SessionHandler extends Handler {
 
     @Override
     public void onSessionLocalClose(Event e) {
-        final ErrorCondition condition = (e != null && e.getSession() != null)
-            ? e.getSession().getCondition()
-            : null;
+        final ErrorCondition condition = (e != null && e.getSession() != null) ? e.getSession().getCondition() : null;
 
-        addErrorCondition(logger.atVerbose(), condition)
-            .addKeyValue(SESSION_NAME_KEY, sessionName)
+        addErrorCondition(logger.atVerbose(), condition).addKeyValue(SESSION_NAME_KEY, sessionName)
             .log("onSessionLocalClose");
     }
 
@@ -141,13 +119,11 @@ public class SessionHandler extends Handler {
         final Session session = e.getSession();
         final ErrorCondition condition = session != null ? session.getRemoteCondition() : null;
 
-        addErrorCondition(logger.atInfo(), condition)
-            .addKeyValue(SESSION_NAME_KEY, sessionName)
+        addErrorCondition(logger.atInfo(), condition).addKeyValue(SESSION_NAME_KEY, sessionName)
             .log("onSessionRemoteClose");
 
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
-            addErrorCondition(logger.atInfo(), condition)
-                .addKeyValue(SESSION_NAME_KEY, sessionName)
+            addErrorCondition(logger.atInfo(), condition).addKeyValue(SESSION_NAME_KEY, sessionName)
                 .log("onSessionRemoteClose closing a local session.");
 
             session.setCondition(session.getRemoteCondition());
@@ -160,9 +136,10 @@ public class SessionHandler extends Handler {
             final String id = getConnectionId();
             final AmqpErrorContext context = getErrorContext();
 
-            final Exception exception = ExceptionUtil.toException(condition.getCondition().toString(),
-                String.format(Locale.US, "onSessionRemoteClose connectionId[%s], entityName[%s] condition[%s]",
-                    id, sessionName, condition), context);
+            final Exception exception = ExceptionUtil.toException(
+                condition.getCondition().toString(), String.format(Locale.US,
+                    "onSessionRemoteClose connectionId[%s], entityName[%s] condition[%s]", id, sessionName, condition),
+                context);
 
             metricsProvider.recordHandlerError(AmqpMetricsProvider.ErrorSource.SESSION, condition);
             onError(exception);
@@ -174,9 +151,7 @@ public class SessionHandler extends Handler {
         final Session session = e.getSession();
         final ErrorCondition condition = session != null ? session.getCondition() : null;
 
-        addErrorCondition(logger.atInfo(), condition)
-            .addKeyValue(SESSION_NAME_KEY, sessionName)
-            .log("onSessionFinal.");
+        addErrorCondition(logger.atInfo(), condition).addKeyValue(SESSION_NAME_KEY, sessionName).log("onSessionFinal.");
         close();
     }
 
@@ -189,9 +164,9 @@ public class SessionHandler extends Handler {
 
         // TODO: handle timeout error once the proton-j bug is fixed.
         // if (!sessionCreated && !sessionOpenErrorDispatched) {
-        //     logger.warning(
-        //     "SessionTimeoutHandler.onEvent - connectionId[{}], entityName[{}], session open timed out.",
-        //     this.connectionId, this.entityName);
+        // logger.warning(
+        // "SessionTimeoutHandler.onEvent - connectionId[{}], entityName[{}], session open timed out.",
+        // this.connectionId, this.entityName);
         // }
     }
 }

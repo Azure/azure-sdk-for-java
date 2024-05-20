@@ -10,9 +10,8 @@ import com.azure.resourcemanager.security.models.CspmMonitorAzureDevOpsOffering;
 public final class CspmMonitorAzureDevOpsOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CspmMonitorAzureDevOpsOffering model =
-            BinaryData
-                .fromString("{\"offeringType\":\"CspmMonitorAzureDevOps\",\"description\":\"ytjlkesmmpath\"}")
+        CspmMonitorAzureDevOpsOffering model
+            = BinaryData.fromString("{\"offeringType\":\"CspmMonitorAzureDevOps\",\"description\":\"vrak\"}")
                 .toObject(CspmMonitorAzureDevOpsOffering.class);
     }
 

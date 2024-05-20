@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ASC location of the subscription is in the "name" field. */
+/**
+ * The ASC location of the subscription is in the "name" field.
+ */
 @Fluent
 public final class AscLocationInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class AscLocationInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private Object properties;
 
-    /** Creates an instance of AscLocationInner class. */
+    /**
+     * Creates an instance of AscLocationInner class.
+     */
     public AscLocationInner() {
     }
 
     /**
      * Get the properties property: An empty set of properties.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -32,7 +36,7 @@ public final class AscLocationInner extends ProxyResource {
 
     /**
      * Set the properties property: An empty set of properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AscLocationInner object itself.
      */
@@ -43,7 +47,7 @@ public final class AscLocationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPro
 public final class RecoveryProximityPlacementGroupCustomDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryProximityPlacementGroupCustomDetails model =
-            BinaryData
-                .fromString("{\"resourceType\":\"RecoveryProximityPlacementGroupCustomDetails\"}")
+        RecoveryProximityPlacementGroupCustomDetails model
+            = BinaryData.fromString("{\"resourceType\":\"RecoveryProximityPlacementGroupCustomDetails\"}")
                 .toObject(RecoveryProximityPlacementGroupCustomDetails.class);
     }
 

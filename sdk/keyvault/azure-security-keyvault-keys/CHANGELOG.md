@@ -1,6 +1,6 @@
 # Release History
 
-## 4.8.0-beta.2 (Unreleased)
+## 4.9.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,59 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.8.4 (2024-05-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+
+## 4.8.3 (2024-04-30)
+
+### Other Changes
+
+- No changes but only upgrade version to fix Microsoft Doc.
+
+## 4.8.2 (2024-04-09)
+
+### Bugs Fixed
+- Fixed issue where `hsmPlatform` was not being set in `KeyProperties`. ([#39537](https://github.com/Azure/azure-sdk-for-java/pull/39537))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+## 4.8.1 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
+
+## 4.8.0 (2024-02-22)
+Changes when compared to the last stable release (`4.7.3`) include:
+
+### Features Added
+- Added support for service version `7.5`.
+- Added `KeyProperties.getHsmPlatform()` to get the underlying HSM platform that a key was generated with.
+
+- Added fallback logic to use service-side cryptography if a key cannot be retrieved for local operations. ([#38334](https://github.com/Azure/azure-sdk-for-java/pull/38334))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
 
 ## 4.7.3 (2023-12-04)
 

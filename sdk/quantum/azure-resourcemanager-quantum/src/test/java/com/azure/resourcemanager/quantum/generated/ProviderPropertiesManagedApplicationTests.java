@@ -10,9 +10,8 @@ import com.azure.resourcemanager.quantum.models.ProviderPropertiesManagedApplica
 public final class ProviderPropertiesManagedApplicationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProviderPropertiesManagedApplication model =
-            BinaryData
-                .fromString("{\"publisherId\":\"lqlfm\",\"offerId\":\"n\"}")
+        ProviderPropertiesManagedApplication model
+            = BinaryData.fromString("{\"publisherId\":\"gbkdmoizpos\",\"offerId\":\"grcfb\"}")
                 .toObject(ProviderPropertiesManagedApplication.class);
     }
 

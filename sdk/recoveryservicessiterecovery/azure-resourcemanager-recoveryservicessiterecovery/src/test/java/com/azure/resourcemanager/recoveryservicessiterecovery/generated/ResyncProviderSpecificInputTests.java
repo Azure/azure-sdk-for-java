@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResyncProvi
 public final class ResyncProviderSpecificInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResyncProviderSpecificInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"ResyncProviderSpecificInput\"}")
-                .toObject(ResyncProviderSpecificInput.class);
+        ResyncProviderSpecificInput model = BinaryData.fromString("{\"instanceType\":\"ResyncProviderSpecificInput\"}")
+            .toObject(ResyncProviderSpecificInput.class);
     }
 
     @org.junit.jupiter.api.Test

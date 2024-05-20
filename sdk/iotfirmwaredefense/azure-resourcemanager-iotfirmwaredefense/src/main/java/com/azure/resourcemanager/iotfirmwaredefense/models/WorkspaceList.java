@@ -9,7 +9,9 @@ import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.WorkspaceInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Return a list of firmware analysis workspaces. */
+/**
+ * Return a list of firmware analysis workspaces.
+ */
 @Fluent
 public final class WorkspaceList {
     /*
@@ -24,13 +26,15 @@ public final class WorkspaceList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of WorkspaceList class. */
+    /**
+     * Creates an instance of WorkspaceList class.
+     */
     public WorkspaceList() {
     }
 
     /**
      * Get the value property: The list of firmware analysis workspaces.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkspaceInner> value() {
@@ -39,7 +43,7 @@ public final class WorkspaceList {
 
     /**
      * Get the nextLink property: The uri to fetch the next page of asset.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class WorkspaceList {
 
     /**
      * Set the nextLink property: The uri to fetch the next page of asset.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the WorkspaceList object itself.
      */
@@ -59,7 +63,7 @@ public final class WorkspaceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

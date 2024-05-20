@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Storage object properties. */
+/**
+ * Storage object properties.
+ */
 @Fluent
 public final class StorageClassificationProperties {
     /*
@@ -16,13 +18,15 @@ public final class StorageClassificationProperties {
     @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
-    /** Creates an instance of StorageClassificationProperties class. */
+    /**
+     * Creates an instance of StorageClassificationProperties class.
+     */
     public StorageClassificationProperties() {
     }
 
     /**
      * Get the friendlyName property: Friendly name of the Storage classification.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -31,7 +35,7 @@ public final class StorageClassificationProperties {
 
     /**
      * Set the friendlyName property: Friendly name of the Storage classification.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the StorageClassificationProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class StorageClassificationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -2269,11 +2269,9 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNetworkInterfacesDeleteOptions(DeleteOptions deleteOptions, String... nicIds) {
-        if (nicIds == null || nicIds.length == 0) {
-            throw new IllegalArgumentException("No nicIds specified for `withNetworkInterfacesDeleteOptions`");
-        }
         if (this.innerModel().networkProfile() != null
             && this.innerModel().networkProfile().networkInterfaces() != null) {
+            // vararg "nicIds" will never be null, an array will always be created to hold the variables
             Set<String> nicIdSet = Arrays.stream(nicIds).map(nicId -> nicId.toLowerCase(Locale.ROOT)).collect(Collectors.toSet());
             this.innerModel().networkProfile().networkInterfaces().forEach(
                 nic -> {
@@ -2287,15 +2285,18 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withNetworkInterfacesDeleteOptions(DeleteOptions deleteOptions) {
+        this.innerModel().networkProfile().networkInterfaces().forEach(
+            nic -> nic.withDeleteOption(deleteOptions)
+        );
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withDataDisksDeleteOptions(DeleteOptions deleteOptions, Integer... luns) {
-        if (luns == null || luns.length == 0) {
-            throw new IllegalArgumentException("No luns specified for `withDataDisksDeleteOptions`");
-        }
-        Set<Integer> lunSet = Arrays.stream(luns).filter(Objects::nonNull).collect(Collectors.toSet());
-        if (lunSet.isEmpty()) {
-            throw new IllegalArgumentException("No non-null luns specified for `withDataDisksDeleteOptions`");
-        }
         if (this.innerModel().storageProfile() != null && this.innerModel().storageProfile().dataDisks() != null) {
+            // vararg "luns" will never be null, an array will always be created to hold the variables
+            Set<Integer> lunSet = Arrays.stream(luns).filter(Objects::nonNull).collect(Collectors.toSet());
             this.innerModel().storageProfile().dataDisks().forEach(
                 dataDisk -> {
                     if (lunSet.contains(dataDisk.lun())) {
@@ -2304,6 +2305,14 @@ class VirtualMachineImpl
                 }
             );
         }
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withDataDisksDeleteOptions(DeleteOptions deleteOptions) {
+        this.innerModel().storageProfile().dataDisks().forEach(
+            dataDisk -> dataDisk.withDeleteOption(diskDeleteOptionsFromDeleteOptions(deleteOptions))
+        );
         return this;
     }
 

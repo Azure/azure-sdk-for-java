@@ -15,20 +15,20 @@ public final class AzureMLUpdateResourceActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMLUpdateResourceActivityTypeProperties model = BinaryData.fromString(
-            "{\"trainedModelName\":\"datamtahnimkndujyw\",\"trainedModelLinkedServiceName\":{\"referenceName\":\"xf\",\"parameters\":{\"wafslytmttjduco\":\"datam\",\"ovtnfwpmpap\":\"dataxcdh\"}},\"trainedModelFilePath\":\"datampdsvki\"}")
+            "{\"trainedModelName\":\"dataxurdfzynfm\",\"trainedModelLinkedServiceName\":{\"referenceName\":\"jqrnuo\",\"parameters\":{\"crutf\":\"datatzeauifc\"}},\"trainedModelFilePath\":\"datazdobh\"}")
             .toObject(AzureMLUpdateResourceActivityTypeProperties.class);
-        Assertions.assertEquals("xf", model.trainedModelLinkedServiceName().referenceName());
+        Assertions.assertEquals("jqrnuo", model.trainedModelLinkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMLUpdateResourceActivityTypeProperties model
-            = new AzureMLUpdateResourceActivityTypeProperties().withTrainedModelName("datamtahnimkndujyw")
-                .withTrainedModelLinkedServiceName(new LinkedServiceReference().withReferenceName("xf")
-                    .withParameters(mapOf("wafslytmttjduco", "datam", "ovtnfwpmpap", "dataxcdh")))
-                .withTrainedModelFilePath("datampdsvki");
+        AzureMLUpdateResourceActivityTypeProperties model = new AzureMLUpdateResourceActivityTypeProperties()
+            .withTrainedModelName("dataxurdfzynfm")
+            .withTrainedModelLinkedServiceName(
+                new LinkedServiceReference().withReferenceName("jqrnuo").withParameters(mapOf("crutf", "datatzeauifc")))
+            .withTrainedModelFilePath("datazdobh");
         model = BinaryData.fromObject(model).toObject(AzureMLUpdateResourceActivityTypeProperties.class);
-        Assertions.assertEquals("xf", model.trainedModelLinkedServiceName().referenceName());
+        Assertions.assertEquals("jqrnuo", model.trainedModelLinkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

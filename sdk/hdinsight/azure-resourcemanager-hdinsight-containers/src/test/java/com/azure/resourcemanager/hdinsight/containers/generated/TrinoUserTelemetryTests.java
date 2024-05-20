@@ -12,31 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class TrinoUserTelemetryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrinoUserTelemetry model =
-            BinaryData
-                .fromString(
-                    "{\"storage\":{\"hivecatalogName\":\"mtsavjcbpwxqp\",\"hivecatalogSchema\":\"knftguvriuh\",\"partitionRetentionInDays\":499230067,\"path\":\"dyvxqtayriww\"}}")
-                .toObject(TrinoUserTelemetry.class);
-        Assertions.assertEquals("mtsavjcbpwxqp", model.storage().hivecatalogName());
-        Assertions.assertEquals("knftguvriuh", model.storage().hivecatalogSchema());
-        Assertions.assertEquals(499230067, model.storage().partitionRetentionInDays());
-        Assertions.assertEquals("dyvxqtayriww", model.storage().path());
+        TrinoUserTelemetry model = BinaryData.fromString(
+            "{\"storage\":{\"hivecatalogName\":\"qugxywpmueefjzwf\",\"hivecatalogSchema\":\"q\",\"partitionRetentionInDays\":640895390,\"path\":\"suyonobglaocq\"}}")
+            .toObject(TrinoUserTelemetry.class);
+        Assertions.assertEquals("qugxywpmueefjzwf", model.storage().hivecatalogName());
+        Assertions.assertEquals("q", model.storage().hivecatalogSchema());
+        Assertions.assertEquals(640895390, model.storage().partitionRetentionInDays());
+        Assertions.assertEquals("suyonobglaocq", model.storage().path());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrinoUserTelemetry model =
-            new TrinoUserTelemetry()
-                .withStorage(
-                    new TrinoTelemetryConfig()
-                        .withHivecatalogName("mtsavjcbpwxqp")
-                        .withHivecatalogSchema("knftguvriuh")
-                        .withPartitionRetentionInDays(499230067)
-                        .withPath("dyvxqtayriww"));
+        TrinoUserTelemetry model
+            = new TrinoUserTelemetry().withStorage(new TrinoTelemetryConfig().withHivecatalogName("qugxywpmueefjzwf")
+                .withHivecatalogSchema("q").withPartitionRetentionInDays(640895390).withPath("suyonobglaocq"));
         model = BinaryData.fromObject(model).toObject(TrinoUserTelemetry.class);
-        Assertions.assertEquals("mtsavjcbpwxqp", model.storage().hivecatalogName());
-        Assertions.assertEquals("knftguvriuh", model.storage().hivecatalogSchema());
-        Assertions.assertEquals(499230067, model.storage().partitionRetentionInDays());
-        Assertions.assertEquals("dyvxqtayriww", model.storage().path());
+        Assertions.assertEquals("qugxywpmueefjzwf", model.storage().hivecatalogName());
+        Assertions.assertEquals("q", model.storage().hivecatalogSchema());
+        Assertions.assertEquals(640895390, model.storage().partitionRetentionInDays());
+        Assertions.assertEquals("suyonobglaocq", model.storage().path());
     }
 }

@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Backup Format for the current backup. (CollatedFormat is INTERNAL – DO NOT USE). */
+/**
+ * Backup Format for the current backup. (CollatedFormat is INTERNAL – DO NOT USE).
+ */
 public final class BackupFormat extends ExpandableStringEnum<BackupFormat> {
-    /** Static value None for BackupFormat. */
-    public static final BackupFormat NONE = fromString("None");
-
-    /** Static value CollatedFormat for BackupFormat. */
+    /**
+     * Static value CollatedFormat for BackupFormat.
+     */
     public static final BackupFormat COLLATED_FORMAT = fromString("CollatedFormat");
 
     /**
+     * Static value Raw for BackupFormat.
+     */
+    public static final BackupFormat RAW = fromString("Raw");
+
+    /**
      * Creates a new instance of BackupFormat value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class BackupFormat extends ExpandableStringEnum<BackupFormat> {
 
     /**
      * Creates or finds a BackupFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BackupFormat.
      */
@@ -38,7 +44,7 @@ public final class BackupFormat extends ExpandableStringEnum<BackupFormat> {
 
     /**
      * Gets known BackupFormat values.
-     *
+     * 
      * @return known BackupFormat values.
      */
     public static Collection<BackupFormat> values() {

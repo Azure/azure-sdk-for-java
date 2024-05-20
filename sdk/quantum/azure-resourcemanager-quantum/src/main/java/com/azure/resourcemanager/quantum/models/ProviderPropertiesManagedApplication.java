@@ -7,7 +7,9 @@ package com.azure.resourcemanager.quantum.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Provider's Managed-Application info. */
+/**
+ * Provider's Managed-Application info.
+ */
 @Immutable
 public final class ProviderPropertiesManagedApplication {
     /*
@@ -22,13 +24,15 @@ public final class ProviderPropertiesManagedApplication {
     @JsonProperty(value = "offerId", access = JsonProperty.Access.WRITE_ONLY)
     private String offerId;
 
-    /** Creates an instance of ProviderPropertiesManagedApplication class. */
+    /**
+     * Creates an instance of ProviderPropertiesManagedApplication class.
+     */
     public ProviderPropertiesManagedApplication() {
     }
 
     /**
      * Get the publisherId property: Provider's publisher id.
-     *
+     * 
      * @return the publisherId value.
      */
     public String publisherId() {
@@ -37,7 +41,7 @@ public final class ProviderPropertiesManagedApplication {
 
     /**
      * Get the offerId property: Provider's offer id.
-     *
+     * 
      * @return the offerId value.
      */
     public String offerId() {
@@ -46,7 +50,7 @@ public final class ProviderPropertiesManagedApplication {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

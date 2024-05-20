@@ -7,24 +7,27 @@ package com.azure.resourcemanager.security.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** describes properties of custom entity store assignment request. */
+/**
+ * describes properties of custom entity store assignment request.
+ */
 @Fluent
 public final class CustomEntityStoreAssignmentRequestProperties {
     /*
-     * The principal assigned with entity store. If not provided, will use caller principal. Format of principal is:
-     * [AAD type]=[PrincipalObjectId];[TenantId]
+     * The principal assigned with entity store. If not provided, will use caller principal. Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId]
      */
     @JsonProperty(value = "principal")
     private String principal;
 
-    /** Creates an instance of CustomEntityStoreAssignmentRequestProperties class. */
+    /**
+     * Creates an instance of CustomEntityStoreAssignmentRequestProperties class.
+     */
     public CustomEntityStoreAssignmentRequestProperties() {
     }
 
     /**
      * Get the principal property: The principal assigned with entity store. If not provided, will use caller principal.
      * Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
-     *
+     * 
      * @return the principal value.
      */
     public String principal() {
@@ -34,7 +37,7 @@ public final class CustomEntityStoreAssignmentRequestProperties {
     /**
      * Set the principal property: The principal assigned with entity store. If not provided, will use caller principal.
      * Format of principal is: [AAD type]=[PrincipalObjectId];[TenantId].
-     *
+     * 
      * @param principal the principal value to set.
      * @return the CustomEntityStoreAssignmentRequestProperties object itself.
      */
@@ -45,7 +48,7 @@ public final class CustomEntityStoreAssignmentRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

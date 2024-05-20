@@ -26,16 +26,12 @@ public class JacksonJsonInstantiationTests {
     }
 
     private static Stream<Executable> throwsNullPointerExceptionSupplier() {
-        return Stream.of(
-            () -> AzureJsonUtils.createReader((byte[]) null, null),
+        return Stream.of(() -> AzureJsonUtils.createReader((byte[]) null, null),
             () -> AzureJsonUtils.createReader((String) null, null),
             () -> AzureJsonUtils.createReader((InputStream) null, null),
-            () -> AzureJsonUtils.createReader((Reader) null, null),
-            () -> AzureJsonUtils.createReader(null),
+            () -> AzureJsonUtils.createReader((Reader) null, null), () -> AzureJsonUtils.createReader(null),
 
             () -> AzureJsonUtils.createWriter((OutputStream) null, null),
-            () -> AzureJsonUtils.createWriter((Writer) null, null),
-            () -> AzureJsonUtils.createWriter(null)
-        );
+            () -> AzureJsonUtils.createWriter((Writer) null, null), () -> AzureJsonUtils.createWriter(null));
     }
 }

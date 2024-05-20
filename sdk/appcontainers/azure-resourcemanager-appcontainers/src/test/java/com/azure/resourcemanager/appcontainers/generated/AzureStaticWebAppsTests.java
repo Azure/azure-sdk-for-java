@@ -12,22 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureStaticWebAppsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureStaticWebApps model =
-            BinaryData
-                .fromString("{\"enabled\":false,\"registration\":{\"clientId\":\"icbtwnpzao\"}}")
+        AzureStaticWebApps model
+            = BinaryData.fromString("{\"enabled\":true,\"registration\":{\"clientId\":\"ktzlcuiywg\"}}")
                 .toObject(AzureStaticWebApps.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("icbtwnpzao", model.registration().clientId());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("ktzlcuiywg", model.registration().clientId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureStaticWebApps model =
-            new AzureStaticWebApps()
-                .withEnabled(false)
-                .withRegistration(new AzureStaticWebAppsRegistration().withClientId("icbtwnpzao"));
+        AzureStaticWebApps model = new AzureStaticWebApps().withEnabled(true)
+            .withRegistration(new AzureStaticWebAppsRegistration().withClientId("ktzlcuiywg"));
         model = BinaryData.fromObject(model).toObject(AzureStaticWebApps.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("icbtwnpzao", model.registration().clientId());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("ktzlcuiywg", model.registration().clientId());
     }
 }

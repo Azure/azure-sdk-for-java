@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** indicates whether the profile is default for the location. */
+/**
+ * indicates whether the profile is default for the location.
+ */
 public final class Applicability extends ExpandableStringEnum<Applicability> {
-    /** Static value LocationDefault for Applicability. */
+    /**
+     * Static value LocationDefault for Applicability.
+     */
     public static final Applicability LOCATION_DEFAULT = fromString("LocationDefault");
 
-    /** Static value Custom for Applicability. */
+    /**
+     * Static value Custom for Applicability.
+     */
     public static final Applicability CUSTOM = fromString("Custom");
 
     /**
      * Creates a new instance of Applicability value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class Applicability extends ExpandableStringEnum<Applicability> {
 
     /**
      * Creates or finds a Applicability from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Applicability.
      */
@@ -38,7 +44,7 @@ public final class Applicability extends ExpandableStringEnum<Applicability> {
 
     /**
      * Gets known Applicability values.
-     *
+     * 
      * @return known Applicability values.
      */
     public static Collection<Applicability> values() {

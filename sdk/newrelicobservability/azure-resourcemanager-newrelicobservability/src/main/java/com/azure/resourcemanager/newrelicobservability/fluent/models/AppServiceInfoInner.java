@@ -7,7 +7,9 @@ package com.azure.resourcemanager.newrelicobservability.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of VM Resource having NewRelic OneAgent installed. */
+/**
+ * Details of VM Resource having NewRelic OneAgent installed.
+ */
 @Fluent
 public final class AppServiceInfoInner {
     /*
@@ -28,13 +30,15 @@ public final class AppServiceInfoInner {
     @JsonProperty(value = "agentStatus")
     private String agentStatus;
 
-    /** Creates an instance of AppServiceInfoInner class. */
+    /**
+     * Creates an instance of AppServiceInfoInner class.
+     */
     public AppServiceInfoInner() {
     }
 
     /**
      * Get the azureResourceId property: Azure App service resource ID.
-     *
+     * 
      * @return the azureResourceId value.
      */
     public String azureResourceId() {
@@ -43,7 +47,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Set the azureResourceId property: Azure App service resource ID.
-     *
+     * 
      * @param azureResourceId the azureResourceId value to set.
      * @return the AppServiceInfoInner object itself.
      */
@@ -54,7 +58,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Get the agentVersion property: Version of the NewRelic agent installed on the App service.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -63,7 +67,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Set the agentVersion property: Version of the NewRelic agent installed on the App service.
-     *
+     * 
      * @param agentVersion the agentVersion value to set.
      * @return the AppServiceInfoInner object itself.
      */
@@ -74,7 +78,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Get the agentStatus property: Status of the NewRelic agent installed on the App service.
-     *
+     * 
      * @return the agentStatus value.
      */
     public String agentStatus() {
@@ -83,7 +87,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Set the agentStatus property: Status of the NewRelic agent installed on the App service.
-     *
+     * 
      * @param agentStatus the agentStatus value to set.
      * @return the AppServiceInfoInner object itself.
      */
@@ -94,7 +98,7 @@ public final class AppServiceInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

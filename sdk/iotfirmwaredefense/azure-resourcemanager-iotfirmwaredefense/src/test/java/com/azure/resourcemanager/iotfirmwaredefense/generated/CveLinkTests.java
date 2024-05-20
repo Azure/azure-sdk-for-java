@@ -11,16 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CveLinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CveLink model = BinaryData.fromString("{\"href\":\"x\",\"label\":\"qgtz\"}").toObject(CveLink.class);
-        Assertions.assertEquals("x", model.href());
-        Assertions.assertEquals("qgtz", model.label());
+        CveLink model
+            = BinaryData.fromString("{\"href\":\"wqsmbsur\",\"label\":\"imoryocfsfksym\"}").toObject(CveLink.class);
+        Assertions.assertEquals("wqsmbsur", model.href());
+        Assertions.assertEquals("imoryocfsfksym", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CveLink model = new CveLink().withHref("x").withLabel("qgtz");
+        CveLink model = new CveLink().withHref("wqsmbsur").withLabel("imoryocfsfksym");
         model = BinaryData.fromObject(model).toObject(CveLink.class);
-        Assertions.assertEquals("x", model.href());
-        Assertions.assertEquals("qgtz", model.label());
+        Assertions.assertEquals("wqsmbsur", model.href());
+        Assertions.assertEquals("imoryocfsfksym", model.label());
     }
 }

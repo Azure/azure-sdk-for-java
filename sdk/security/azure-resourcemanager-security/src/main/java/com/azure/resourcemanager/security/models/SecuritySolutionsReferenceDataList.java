@@ -7,18 +7,20 @@ package com.azure.resourcemanager.security.models;
 import com.azure.resourcemanager.security.fluent.models.SecuritySolutionsReferenceDataListInner;
 import java.util.List;
 
-/** An immutable client-side representation of SecuritySolutionsReferenceDataList. */
+/**
+ * An immutable client-side representation of SecuritySolutionsReferenceDataList.
+ */
 public interface SecuritySolutionsReferenceDataList {
     /**
      * Gets the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     List<SecuritySolutionsReferenceData> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.SecuritySolutionsReferenceDataListInner object.
-     *
+     * 
      * @return the inner object.
      */
     SecuritySolutionsReferenceDataListInner innerModel();

@@ -24,6 +24,18 @@ public final class VirtualNetworkPrivateEndpointNetworkPolicies
     public static final VirtualNetworkPrivateEndpointNetworkPolicies DISABLED = fromString("Disabled");
 
     /**
+     * Static value NetworkSecurityGroupEnabled for VirtualNetworkPrivateEndpointNetworkPolicies.
+     */
+    public static final VirtualNetworkPrivateEndpointNetworkPolicies NETWORK_SECURITY_GROUP_ENABLED
+        = fromString("NetworkSecurityGroupEnabled");
+
+    /**
+     * Static value RouteTableEnabled for VirtualNetworkPrivateEndpointNetworkPolicies.
+     */
+    public static final VirtualNetworkPrivateEndpointNetworkPolicies ROUTE_TABLE_ENABLED
+        = fromString("RouteTableEnabled");
+
+    /**
      * Creates a new instance of VirtualNetworkPrivateEndpointNetworkPolicies value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

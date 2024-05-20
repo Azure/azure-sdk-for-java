@@ -7,16 +7,19 @@ package com.azure.resourcemanager.security.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.HealthReportInner;
 
-/** An instance of this class provides access to all the operations defined in HealthReportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in HealthReportsClient.
+ */
 public interface HealthReportsClient {
     /**
      * Get a list of all health reports inside a scope. Valid scopes are: subscription (format:
      * 'subscriptions/{subscriptionId}'), or security connector (format:
      * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
-     *
+     * 
      * @param scope The scope at which the operation is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -30,7 +33,7 @@ public interface HealthReportsClient {
      * Get a list of all health reports inside a scope. Valid scopes are: subscription (format:
      * 'subscriptions/{subscriptionId}'), or security connector (format:
      * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
-     *
+     * 
      * @param scope The scope at which the operation is performed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -40,4 +43,31 @@ public interface HealthReportsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HealthReportInner> list(String scope, Context context);
+
+    /**
+     * Get health report of resource.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param healthReportName The health report Key - Unique key for the health report type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health report of resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<HealthReportInner> getWithResponse(String resourceId, String healthReportName, Context context);
+
+    /**
+     * Get health report of resource.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param healthReportName The health report Key - Unique key for the health report type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health report of resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    HealthReportInner get(String resourceId, String healthReportName);
 }

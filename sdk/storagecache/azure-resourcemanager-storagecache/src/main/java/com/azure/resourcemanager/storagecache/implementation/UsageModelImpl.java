@@ -13,8 +13,8 @@ public final class UsageModelImpl implements UsageModel {
 
     private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    UsageModelImpl(
-        UsageModelInner innerObject, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
+    UsageModelImpl(UsageModelInner innerObject,
+        com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

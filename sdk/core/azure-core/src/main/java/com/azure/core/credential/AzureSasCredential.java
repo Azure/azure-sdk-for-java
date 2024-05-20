@@ -9,34 +9,50 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * <p>Represents a credential that uses a shared access signature to authenticate to an Azure Service.
- * It is used for authenticating and authorizing access to Azure services using a shared access signature.</p>
+ * <p>
+ * Represents a credential that uses a shared access signature to authenticate to an Azure Service.
+ * It is used for authenticating and authorizing access to Azure services using a shared access signature.
+ * </p>
  *
- * <p>A shared access signature is a string-based token that grants limited permissions and access to specific
+ * <p>
+ * A shared access signature is a string-based token that grants limited permissions and access to specific
  * resources within an Azure service for a specified period. It allows you to provide time-limited access to your
- * resources without sharing your account key or other sensitive credentials.</p>
+ * resources without sharing your account key or other sensitive credentials.
+ * </p>
  *
- * <p>The {@link AzureSasCredential} enables you to authenticate and access Azure services that
+ * <p>
+ * The {@link AzureSasCredential} enables you to authenticate and access Azure services that
  * support shared access signatures. By creating an instance of the {@link AzureSasCredential} class and providing the
- * SAS token as a parameter, you can use this credential to authenticate requests to Azure services.</p>
+ * SAS token as a parameter, you can use this credential to authenticate requests to Azure services.
+ * </p>
  *
- * <p>To use the Credential, you typically pass it to the appropriate Azure client or service client
+ * <p>
+ * To use the Credential, you typically pass it to the appropriate Azure client or service client
  * builder during instantiation. The library internally handles the authentication process and includes the
  * SAS token in the HTTP requests made to the Azure service, allowing you to access the resources specified in
- * the SAS token.</p>
+ * the SAS token.
+ * </p>
  *
- * <p>The {@link AzureSasCredential} is particularly useful when you need to grant temporary and limited access to
+ * <p>
+ * The {@link AzureSasCredential} is particularly useful when you need to grant temporary and limited access to
  * specific resources, such as Azure Storage containers, blobs, queues, or files, without exposing
- * your account key.</p>
+ * your account key.
+ * </p>
  *
- * <p>It's important to note that the availability and usage of the {@link AzureSasCredential} may depend on the
+ * <p>
+ * It's important to note that the availability and usage of the {@link AzureSasCredential} may depend on the
  * specific Azure service and its support for shared access signatures. Additionally, the format and content of the
- * SAS token may vary depending on the service and resource you are targeting.</p>
+ * SAS token may vary depending on the service and resource you are targeting.
+ * </p>
  *
- * <p><strong>Sample: Azure SAS Authentication</strong></p>
+ * <p>
+ * <strong>Sample: Azure SAS Authentication</strong>
+ * </p>
  *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.core.credential.AzureSasCredential},
- * using the sas token to configure it.</p>
+ * <p>
+ * The following code sample demonstrates the creation of a {@link com.azure.core.credential.AzureSasCredential},
+ * using the sas token to configure it.
+ * </p>
  *
  * <!-- src_embed com.azure.core.credential.azureSasCredential -->
  * <pre>

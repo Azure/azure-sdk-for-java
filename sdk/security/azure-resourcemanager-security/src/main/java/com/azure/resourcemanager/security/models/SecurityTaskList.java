@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.SecurityTaskInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of security task recommendations. */
+/**
+ * List of security task recommendations.
+ */
 @Immutable
 public final class SecurityTaskList {
     /*
@@ -24,13 +26,15 @@ public final class SecurityTaskList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SecurityTaskList class. */
+    /**
+     * Creates an instance of SecurityTaskList class.
+     */
     public SecurityTaskList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<SecurityTaskInner> value() {
@@ -39,7 +43,7 @@ public final class SecurityTaskList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class SecurityTaskList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

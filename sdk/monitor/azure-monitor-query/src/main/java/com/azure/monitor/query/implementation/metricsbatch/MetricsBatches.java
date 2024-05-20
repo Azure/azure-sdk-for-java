@@ -20,7 +20,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.monitor.query.implementation.metricsbatch.models.AdditionalInfoErrorResponseException;
+import com.azure.monitor.query.implementation.metricsbatch.models.ErrorResponseException;
 import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponse;
 import com.azure.monitor.query.implementation.metricsbatch.models.ResourceIdList;
 import java.time.Duration;
@@ -63,27 +63,29 @@ public final class MetricsBatches {
     public interface MetricsBatchesService {
         @Post("/subscriptions/{subscriptionId}/metrics:getBatch")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(AdditionalInfoErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<MetricResultsResponse>> batch(@HostParam("endpoint") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("starttime") String starttime,
             @QueryParam("endtime") String endtime, @QueryParam("interval") Duration interval,
             @QueryParam("metricnamespace") String metricnamespace, @QueryParam("metricnames") String metricnames,
             @QueryParam("aggregation") String aggregation, @QueryParam("top") Integer top,
             @QueryParam("orderby") String orderBy, @QueryParam("filter") String filter,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ResourceIdList resourceIds,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("rollupby") String rollupby, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ResourceIdList batchRequest, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/subscriptions/{subscriptionId}/metrics:getBatch")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(AdditionalInfoErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<MetricResultsResponse> batchSync(@HostParam("endpoint") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("starttime") String starttime,
             @QueryParam("endtime") String endtime, @QueryParam("interval") Duration interval,
             @QueryParam("metricnamespace") String metricnamespace, @QueryParam("metricnames") String metricnames,
             @QueryParam("aggregation") String aggregation, @QueryParam("top") Integer top,
             @QueryParam("orderby") String orderBy, @QueryParam("filter") String filter,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ResourceIdList resourceIds,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("rollupby") String rollupby, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ResourceIdList batchRequest, @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -92,14 +94,15 @@ public final class MetricsBatches {
      * @param subscriptionId The subscription identifier for the resources in this batch.
      * @param metricnamespace Metric namespace that contains the requested metric names.
      * @param metricnames The names of the metrics (comma separated) to retrieve.
-     * @param resourceIds The comma separated list of resource IDs to query metrics for.
+     * @param batchRequest Metrics batch body including the list of resource ids.
      * @param starttime The start time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'. If you
      * have specified the endtime parameter, then this parameter is required.
      * If only starttime is specified, then endtime defaults to the current time.
      * If no time interval is specified, the default is 1 hour.
      * @param endtime The end time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'.
-     * @param interval The interval (i.e. timegrain) of the query.
-     * *Examples: PT15M, PT1H, P1D*.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * *Examples: average, minimum, maximum*.
      * @param top The maximum number of records to retrieve per resource ID in the request.
@@ -115,21 +118,24 @@ public final class MetricsBatches {
      * the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series where A =
      * a1, B = b1 and C = c1:&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time
      * series where A = a1&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AdditionalInfoErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metrics result for a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricResultsResponse>> batchWithResponseAsync(String subscriptionId, String metricnamespace,
-        List<String> metricnames, ResourceIdList resourceIds, String starttime, String endtime, Duration interval,
-        String aggregation, Integer top, String orderBy, String filter) {
+        List<String> metricnames, ResourceIdList batchRequest, String starttime, String endtime, Duration interval,
+        String aggregation, Integer top, String orderBy, String filter, String rollupby) {
         final String accept = "application/json";
         String metricnamesConverted = metricnames.stream().map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.joining(","));
         return FluxUtil.withContext(context -> service.batch(this.client.getEndpoint(), subscriptionId, starttime,
-            endtime, interval, metricnamespace, metricnamesConverted, aggregation, top, orderBy, filter,
-            this.client.getApiVersion(), resourceIds, accept, context));
+            endtime, interval, metricnamespace, metricnamesConverted, aggregation, top, orderBy, filter, rollupby,
+            this.client.getApiVersion(), batchRequest, accept, context));
     }
 
     /**
@@ -138,14 +144,15 @@ public final class MetricsBatches {
      * @param subscriptionId The subscription identifier for the resources in this batch.
      * @param metricnamespace Metric namespace that contains the requested metric names.
      * @param metricnames The names of the metrics (comma separated) to retrieve.
-     * @param resourceIds The comma separated list of resource IDs to query metrics for.
+     * @param batchRequest Metrics batch body including the list of resource ids.
      * @param starttime The start time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'. If you
      * have specified the endtime parameter, then this parameter is required.
      * If only starttime is specified, then endtime defaults to the current time.
      * If no time interval is specified, the default is 1 hour.
      * @param endtime The end time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'.
-     * @param interval The interval (i.e. timegrain) of the query.
-     * *Examples: PT15M, PT1H, P1D*.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * *Examples: average, minimum, maximum*.
      * @param top The maximum number of records to retrieve per resource ID in the request.
@@ -161,22 +168,25 @@ public final class MetricsBatches {
      * the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series where A =
      * a1, B = b1 and C = c1:&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time
      * series where A = a1&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AdditionalInfoErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metrics result for a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricResultsResponse>> batchWithResponseAsync(String subscriptionId, String metricnamespace,
-        List<String> metricnames, ResourceIdList resourceIds, String starttime, String endtime, Duration interval,
-        String aggregation, Integer top, String orderBy, String filter, Context context) {
+        List<String> metricnames, ResourceIdList batchRequest, String starttime, String endtime, Duration interval,
+        String aggregation, Integer top, String orderBy, String filter, String rollupby, Context context) {
         final String accept = "application/json";
         String metricnamesConverted = metricnames.stream().map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.joining(","));
         return service.batch(this.client.getEndpoint(), subscriptionId, starttime, endtime, interval, metricnamespace,
-            metricnamesConverted, aggregation, top, orderBy, filter, this.client.getApiVersion(), resourceIds, accept,
-            context);
+            metricnamesConverted, aggregation, top, orderBy, filter, rollupby, this.client.getApiVersion(),
+            batchRequest, accept, context);
     }
 
     /**
@@ -185,14 +195,15 @@ public final class MetricsBatches {
      * @param subscriptionId The subscription identifier for the resources in this batch.
      * @param metricnamespace Metric namespace that contains the requested metric names.
      * @param metricnames The names of the metrics (comma separated) to retrieve.
-     * @param resourceIds The comma separated list of resource IDs to query metrics for.
+     * @param batchRequest Metrics batch body including the list of resource ids.
      * @param starttime The start time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'. If you
      * have specified the endtime parameter, then this parameter is required.
      * If only starttime is specified, then endtime defaults to the current time.
      * If no time interval is specified, the default is 1 hour.
      * @param endtime The end time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'.
-     * @param interval The interval (i.e. timegrain) of the query.
-     * *Examples: PT15M, PT1H, P1D*.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * *Examples: average, minimum, maximum*.
      * @param top The maximum number of records to retrieve per resource ID in the request.
@@ -208,17 +219,20 @@ public final class MetricsBatches {
      * the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series where A =
      * a1, B = b1 and C = c1:&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time
      * series where A = a1&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AdditionalInfoErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metrics result for a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetricResultsResponse> batchAsync(String subscriptionId, String metricnamespace,
-        List<String> metricnames, ResourceIdList resourceIds, String starttime, String endtime, Duration interval,
-        String aggregation, Integer top, String orderBy, String filter) {
-        return batchWithResponseAsync(subscriptionId, metricnamespace, metricnames, resourceIds, starttime, endtime,
-            interval, aggregation, top, orderBy, filter).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        List<String> metricnames, ResourceIdList batchRequest, String starttime, String endtime, Duration interval,
+        String aggregation, Integer top, String orderBy, String filter, String rollupby) {
+        return batchWithResponseAsync(subscriptionId, metricnamespace, metricnames, batchRequest, starttime, endtime,
+            interval, aggregation, top, orderBy, filter, rollupby).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -227,14 +241,15 @@ public final class MetricsBatches {
      * @param subscriptionId The subscription identifier for the resources in this batch.
      * @param metricnamespace Metric namespace that contains the requested metric names.
      * @param metricnames The names of the metrics (comma separated) to retrieve.
-     * @param resourceIds The comma separated list of resource IDs to query metrics for.
+     * @param batchRequest Metrics batch body including the list of resource ids.
      * @param starttime The start time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'. If you
      * have specified the endtime parameter, then this parameter is required.
      * If only starttime is specified, then endtime defaults to the current time.
      * If no time interval is specified, the default is 1 hour.
      * @param endtime The end time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'.
-     * @param interval The interval (i.e. timegrain) of the query.
-     * *Examples: PT15M, PT1H, P1D*.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * *Examples: average, minimum, maximum*.
      * @param top The maximum number of records to retrieve per resource ID in the request.
@@ -250,18 +265,22 @@ public final class MetricsBatches {
      * the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series where A =
      * a1, B = b1 and C = c1:&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time
      * series where A = a1&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AdditionalInfoErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metrics result for a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetricResultsResponse> batchAsync(String subscriptionId, String metricnamespace,
-        List<String> metricnames, ResourceIdList resourceIds, String starttime, String endtime, Duration interval,
-        String aggregation, Integer top, String orderBy, String filter, Context context) {
-        return batchWithResponseAsync(subscriptionId, metricnamespace, metricnames, resourceIds, starttime, endtime,
-            interval, aggregation, top, orderBy, filter, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        List<String> metricnames, ResourceIdList batchRequest, String starttime, String endtime, Duration interval,
+        String aggregation, Integer top, String orderBy, String filter, String rollupby, Context context) {
+        return batchWithResponseAsync(subscriptionId, metricnamespace, metricnames, batchRequest, starttime, endtime,
+            interval, aggregation, top, orderBy, filter, rollupby, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -270,14 +289,15 @@ public final class MetricsBatches {
      * @param subscriptionId The subscription identifier for the resources in this batch.
      * @param metricnamespace Metric namespace that contains the requested metric names.
      * @param metricnames The names of the metrics (comma separated) to retrieve.
-     * @param resourceIds The comma separated list of resource IDs to query metrics for.
+     * @param batchRequest Metrics batch body including the list of resource ids.
      * @param starttime The start time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'. If you
      * have specified the endtime parameter, then this parameter is required.
      * If only starttime is specified, then endtime defaults to the current time.
      * If no time interval is specified, the default is 1 hour.
      * @param endtime The end time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'.
-     * @param interval The interval (i.e. timegrain) of the query.
-     * *Examples: PT15M, PT1H, P1D*.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * *Examples: average, minimum, maximum*.
      * @param top The maximum number of records to retrieve per resource ID in the request.
@@ -293,22 +313,25 @@ public final class MetricsBatches {
      * the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series where A =
      * a1, B = b1 and C = c1:&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time
      * series where A = a1&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AdditionalInfoErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metrics result for a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricResultsResponse> batchWithResponse(String subscriptionId, String metricnamespace,
-        List<String> metricnames, ResourceIdList resourceIds, String starttime, String endtime, Duration interval,
-        String aggregation, Integer top, String orderBy, String filter, Context context) {
+        List<String> metricnames, ResourceIdList batchRequest, String starttime, String endtime, Duration interval,
+        String aggregation, Integer top, String orderBy, String filter, String rollupby, Context context) {
         final String accept = "application/json";
         String metricnamesConverted = metricnames.stream().map(paramItemValue -> Objects.toString(paramItemValue, ""))
             .collect(Collectors.joining(","));
         return service.batchSync(this.client.getEndpoint(), subscriptionId, starttime, endtime, interval,
-            metricnamespace, metricnamesConverted, aggregation, top, orderBy, filter, this.client.getApiVersion(),
-            resourceIds, accept, context);
+            metricnamespace, metricnamesConverted, aggregation, top, orderBy, filter, rollupby,
+            this.client.getApiVersion(), batchRequest, accept, context);
     }
 
     /**
@@ -317,14 +340,15 @@ public final class MetricsBatches {
      * @param subscriptionId The subscription identifier for the resources in this batch.
      * @param metricnamespace Metric namespace that contains the requested metric names.
      * @param metricnames The names of the metrics (comma separated) to retrieve.
-     * @param resourceIds The comma separated list of resource IDs to query metrics for.
+     * @param batchRequest Metrics batch body including the list of resource ids.
      * @param starttime The start time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'. If you
      * have specified the endtime parameter, then this parameter is required.
      * If only starttime is specified, then endtime defaults to the current time.
      * If no time interval is specified, the default is 1 hour.
      * @param endtime The end time of the query. It is a string in the format 'yyyy-MM-ddTHH:mm:ss.fffZ'.
-     * @param interval The interval (i.e. timegrain) of the query.
-     * *Examples: PT15M, PT1H, P1D*.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
      * *Examples: average, minimum, maximum*.
      * @param top The maximum number of records to retrieve per resource ID in the request.
@@ -340,16 +364,19 @@ public final class MetricsBatches {
      * the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series where A =
      * a1, B = b1 and C = c1:&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all time
      * series where A = a1&lt;br&gt;**filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws AdditionalInfoErrorResponseException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metrics result for a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricResultsResponse batch(String subscriptionId, String metricnamespace, List<String> metricnames,
-        ResourceIdList resourceIds, String starttime, String endtime, Duration interval, String aggregation,
-        Integer top, String orderBy, String filter) {
-        return batchWithResponse(subscriptionId, metricnamespace, metricnames, resourceIds, starttime, endtime,
-            interval, aggregation, top, orderBy, filter, Context.NONE).getValue();
+        ResourceIdList batchRequest, String starttime, String endtime, Duration interval, String aggregation,
+        Integer top, String orderBy, String filter, String rollupby) {
+        return batchWithResponse(subscriptionId, metricnamespace, metricnames, batchRequest, starttime, endtime,
+            interval, aggregation, top, orderBy, filter, rollupby, Context.NONE).getValue();
     }
 }

@@ -4,15 +4,13 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PhoneNumberLocalities model. */
+/** Represents a wrapper around a list of cities or towns. */
 @Immutable
-@Generated
 public final class PhoneNumberLocalities {
     /*
      * Represents the underlying list of localities, e.g. cities or town.

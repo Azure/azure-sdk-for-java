@@ -76,20 +76,14 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
     }
 
     public Policy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationPolicies()
-                .create(resourceName, resourceGroupName, policyName, createInput, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getReplicationPolicies().create(resourceName,
+            resourceGroupName, policyName, createInput, Context.NONE);
         return this;
     }
 
     public Policy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationPolicies()
-                .create(resourceName, resourceGroupName, policyName, createInput, context);
+        this.innerObject = serviceManager.serviceClient().getReplicationPolicies().create(resourceName,
+            resourceGroupName, policyName, createInput, context);
         return this;
     }
 
@@ -106,50 +100,35 @@ public final class PolicyImpl implements Policy, Policy.Definition, Policy.Updat
     }
 
     public Policy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationPolicies()
-                .update(resourceName, resourceGroupName, policyName, updateInput, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getReplicationPolicies().update(resourceName,
+            resourceGroupName, policyName, updateInput, Context.NONE);
         return this;
     }
 
     public Policy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationPolicies()
-                .update(resourceName, resourceGroupName, policyName, updateInput, context);
+        this.innerObject = serviceManager.serviceClient().getReplicationPolicies().update(resourceName,
+            resourceGroupName, policyName, updateInput, context);
         return this;
     }
 
-    PolicyImpl(
-        PolicyInner innerObject,
+    PolicyImpl(PolicyInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "vaults");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.policyName = Utils.getValueFromIdByName(innerObject.id(), "replicationPolicies");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.policyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationPolicies");
     }
 
     public Policy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationPolicies()
-                .getWithResponse(resourceName, resourceGroupName, policyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getReplicationPolicies()
+            .getWithResponse(resourceName, resourceGroupName, policyName, Context.NONE).getValue();
         return this;
     }
 
     public Policy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationPolicies()
-                .getWithResponse(resourceName, resourceGroupName, policyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getReplicationPolicies()
+            .getWithResponse(resourceName, resourceGroupName, policyName, context).getValue();
         return this;
     }
 

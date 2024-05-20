@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HyperVReplicaAzureFailbackProviderInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HyperVReplicaAzureFailbackProviderInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"HyperVReplicaAzureFailback\",\"dataSyncOption\":\"vgohtw\",\"recoveryVmCreationOption\":\"qilrixysfn\",\"providerIdForAlternateRecovery\":\"sqywwwmhkru\"}")
-                .toObject(HyperVReplicaAzureFailbackProviderInput.class);
+        HyperVReplicaAzureFailbackProviderInput model = BinaryData.fromString(
+            "{\"instanceType\":\"HyperVReplicaAzureFailback\",\"dataSyncOption\":\"vgohtw\",\"recoveryVmCreationOption\":\"qilrixysfn\",\"providerIdForAlternateRecovery\":\"sqywwwmhkru\"}")
+            .toObject(HyperVReplicaAzureFailbackProviderInput.class);
         Assertions.assertEquals("vgohtw", model.dataSyncOption());
         Assertions.assertEquals("qilrixysfn", model.recoveryVmCreationOption());
         Assertions.assertEquals("sqywwwmhkru", model.providerIdForAlternateRecovery());
@@ -23,11 +21,9 @@ public final class HyperVReplicaAzureFailbackProviderInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaAzureFailbackProviderInput model =
-            new HyperVReplicaAzureFailbackProviderInput()
-                .withDataSyncOption("vgohtw")
-                .withRecoveryVmCreationOption("qilrixysfn")
-                .withProviderIdForAlternateRecovery("sqywwwmhkru");
+        HyperVReplicaAzureFailbackProviderInput model
+            = new HyperVReplicaAzureFailbackProviderInput().withDataSyncOption("vgohtw")
+                .withRecoveryVmCreationOption("qilrixysfn").withProviderIdForAlternateRecovery("sqywwwmhkru");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureFailbackProviderInput.class);
         Assertions.assertEquals("vgohtw", model.dataSyncOption());
         Assertions.assertEquals("qilrixysfn", model.recoveryVmCreationOption());

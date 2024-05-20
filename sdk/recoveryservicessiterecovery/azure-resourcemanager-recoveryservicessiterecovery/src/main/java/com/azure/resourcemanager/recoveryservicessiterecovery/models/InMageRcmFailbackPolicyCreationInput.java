@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMageRcmFailback policy creation input. */
+/**
+ * InMageRcmFailback policy creation input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcmFailback")
 @Fluent
@@ -26,13 +28,15 @@ public final class InMageRcmFailbackPolicyCreationInput extends PolicyProviderSp
     @JsonProperty(value = "appConsistentFrequencyInMinutes")
     private Integer appConsistentFrequencyInMinutes;
 
-    /** Creates an instance of InMageRcmFailbackPolicyCreationInput class. */
+    /**
+     * Creates an instance of InMageRcmFailbackPolicyCreationInput class.
+     */
     public InMageRcmFailbackPolicyCreationInput() {
     }
 
     /**
      * Get the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency (in minutes).
-     *
+     * 
      * @return the crashConsistentFrequencyInMinutes value.
      */
     public Integer crashConsistentFrequencyInMinutes() {
@@ -41,19 +45,19 @@ public final class InMageRcmFailbackPolicyCreationInput extends PolicyProviderSp
 
     /**
      * Set the crashConsistentFrequencyInMinutes property: The crash consistent snapshot frequency (in minutes).
-     *
+     * 
      * @param crashConsistentFrequencyInMinutes the crashConsistentFrequencyInMinutes value to set.
      * @return the InMageRcmFailbackPolicyCreationInput object itself.
      */
-    public InMageRcmFailbackPolicyCreationInput withCrashConsistentFrequencyInMinutes(
-        Integer crashConsistentFrequencyInMinutes) {
+    public InMageRcmFailbackPolicyCreationInput
+        withCrashConsistentFrequencyInMinutes(Integer crashConsistentFrequencyInMinutes) {
         this.crashConsistentFrequencyInMinutes = crashConsistentFrequencyInMinutes;
         return this;
     }
 
     /**
      * Get the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency (in minutes).
-     *
+     * 
      * @return the appConsistentFrequencyInMinutes value.
      */
     public Integer appConsistentFrequencyInMinutes() {
@@ -62,19 +66,19 @@ public final class InMageRcmFailbackPolicyCreationInput extends PolicyProviderSp
 
     /**
      * Set the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency (in minutes).
-     *
+     * 
      * @param appConsistentFrequencyInMinutes the appConsistentFrequencyInMinutes value to set.
      * @return the InMageRcmFailbackPolicyCreationInput object itself.
      */
-    public InMageRcmFailbackPolicyCreationInput withAppConsistentFrequencyInMinutes(
-        Integer appConsistentFrequencyInMinutes) {
+    public InMageRcmFailbackPolicyCreationInput
+        withAppConsistentFrequencyInMinutes(Integer appConsistentFrequencyInMinutes) {
         this.appConsistentFrequencyInMinutes = appConsistentFrequencyInMinutes;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

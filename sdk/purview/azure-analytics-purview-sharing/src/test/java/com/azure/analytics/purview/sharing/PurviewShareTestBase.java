@@ -88,8 +88,9 @@ class PurviewShareTestBase extends TestProxyTestBase {
         sentShare.setArtifact(artifact);
 
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> response = sentSharesClient.beginCreateOrReplaceSentShare(sentShareId,
-                BinaryData.fromObject(sentShare), requestOptions);
+        SyncPoller<BinaryData, BinaryData> response = setPlaybackSyncPollerPollInterval(
+            sentSharesClient.beginCreateOrReplaceSentShare(sentShareId, BinaryData.fromObject(sentShare),
+                requestOptions));
 
         response.waitForCompletion();
 

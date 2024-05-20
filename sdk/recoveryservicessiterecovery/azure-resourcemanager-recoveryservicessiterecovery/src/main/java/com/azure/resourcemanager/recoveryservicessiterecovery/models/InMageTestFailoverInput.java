@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Provider specific input for InMage test failover. */
+/**
+ * Provider specific input for InMage test failover.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMage")
 @Fluent
@@ -28,7 +30,9 @@ public final class InMageTestFailoverInput extends TestFailoverProviderSpecificI
     @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
-    /** Creates an instance of InMageTestFailoverInput class. */
+    /**
+     * Creates an instance of InMageTestFailoverInput class.
+     */
     public InMageTestFailoverInput() {
     }
 
@@ -36,7 +40,7 @@ public final class InMageTestFailoverInput extends TestFailoverProviderSpecificI
      * Get the recoveryPointType property: The recovery point type. Values from LatestTime, LatestTag or Custom. In the
      * case of custom, the recovery point provided by RecoveryPointId will be used. In the other two cases, recovery
      * point id will be ignored.
-     *
+     * 
      * @return the recoveryPointType value.
      */
     public RecoveryPointType recoveryPointType() {
@@ -47,7 +51,7 @@ public final class InMageTestFailoverInput extends TestFailoverProviderSpecificI
      * Set the recoveryPointType property: The recovery point type. Values from LatestTime, LatestTag or Custom. In the
      * case of custom, the recovery point provided by RecoveryPointId will be used. In the other two cases, recovery
      * point id will be ignored.
-     *
+     * 
      * @param recoveryPointType the recoveryPointType value to set.
      * @return the InMageTestFailoverInput object itself.
      */
@@ -59,7 +63,7 @@ public final class InMageTestFailoverInput extends TestFailoverProviderSpecificI
     /**
      * Get the recoveryPointId property: The recovery point id to be passed to test failover to a particular recovery
      * point. In case of latest recovery point, null should be passed.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -69,7 +73,7 @@ public final class InMageTestFailoverInput extends TestFailoverProviderSpecificI
     /**
      * Set the recoveryPointId property: The recovery point id to be passed to test failover to a particular recovery
      * point. In case of latest recovery point, null should be passed.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the InMageTestFailoverInput object itself.
      */
@@ -80,7 +84,7 @@ public final class InMageTestFailoverInput extends TestFailoverProviderSpecificI
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

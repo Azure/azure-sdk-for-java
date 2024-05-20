@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Container App Revision Replicas collection ARM resource. */
+/**
+ * Container App Revision Replicas collection ARM resource.
+ */
 @Fluent
 public final class ReplicaCollectionInner {
     /*
@@ -18,13 +20,15 @@ public final class ReplicaCollectionInner {
     @JsonProperty(value = "value", required = true)
     private List<ReplicaInner> value;
 
-    /** Creates an instance of ReplicaCollectionInner class. */
+    /**
+     * Creates an instance of ReplicaCollectionInner class.
+     */
     public ReplicaCollectionInner() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ReplicaInner> value() {
@@ -33,7 +37,7 @@ public final class ReplicaCollectionInner {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ReplicaCollectionInner object itself.
      */
@@ -44,14 +48,13 @@ public final class ReplicaCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ReplicaCollectionInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ReplicaCollectionInner"));
         } else {
             value().forEach(e -> e.validate());
         }

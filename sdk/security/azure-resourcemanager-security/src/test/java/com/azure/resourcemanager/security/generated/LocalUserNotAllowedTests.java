@@ -12,23 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class LocalUserNotAllowedTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LocalUserNotAllowed model =
-            BinaryData
-                .fromString(
-                    "{\"ruleType\":\"LocalUserNotAllowed\",\"allowlistValues\":[\"rijwai\",\"fanraybfu\",\"qfrojsydgrhyd\",\"ygywe\"],\"valueType\":\"String\",\"displayName\":\"ec\",\"description\":\"ygzmxieqvdsmak\",\"isEnabled\":true}")
-                .toObject(LocalUserNotAllowed.class);
+        LocalUserNotAllowed model = BinaryData.fromString(
+            "{\"ruleType\":\"LocalUserNotAllowed\",\"allowlistValues\":[\"loamfmxtllfltym\",\"cn\",\"rfijhggabq\",\"gamk\"],\"valueType\":\"IpCidr\",\"displayName\":\"rwdvffhsdpzou\",\"description\":\"tqrxqwqnjxrdf\",\"isEnabled\":true}")
+            .toObject(LocalUserNotAllowed.class);
         Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals("rijwai", model.allowlistValues().get(0));
+        Assertions.assertEquals("loamfmxtllfltym", model.allowlistValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocalUserNotAllowed model =
-            new LocalUserNotAllowed()
-                .withIsEnabled(true)
-                .withAllowlistValues(Arrays.asList("rijwai", "fanraybfu", "qfrojsydgrhyd", "ygywe"));
+        LocalUserNotAllowed model = new LocalUserNotAllowed().withIsEnabled(true)
+            .withAllowlistValues(Arrays.asList("loamfmxtllfltym", "cn", "rfijhggabq", "gamk"));
         model = BinaryData.fromObject(model).toObject(LocalUserNotAllowed.class);
         Assertions.assertEquals(true, model.isEnabled());
-        Assertions.assertEquals("rijwai", model.allowlistValues().get(0));
+        Assertions.assertEquals("loamfmxtllfltym", model.allowlistValues().get(0));
     }
 }

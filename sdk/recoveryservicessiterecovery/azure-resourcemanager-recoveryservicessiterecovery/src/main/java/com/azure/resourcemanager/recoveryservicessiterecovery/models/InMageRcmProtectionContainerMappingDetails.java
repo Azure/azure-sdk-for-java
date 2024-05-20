@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMageRcm provider specific container mapping details. */
+/**
+ * InMageRcm provider specific container mapping details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcm")
 @Immutable
@@ -21,13 +23,15 @@ public final class InMageRcmProtectionContainerMappingDetails
     @JsonProperty(value = "enableAgentAutoUpgrade", access = JsonProperty.Access.WRITE_ONLY)
     private String enableAgentAutoUpgrade;
 
-    /** Creates an instance of InMageRcmProtectionContainerMappingDetails class. */
+    /**
+     * Creates an instance of InMageRcmProtectionContainerMappingDetails class.
+     */
     public InMageRcmProtectionContainerMappingDetails() {
     }
 
     /**
      * Get the enableAgentAutoUpgrade property: A value indicating whether the flag for enable agent auto upgrade.
-     *
+     * 
      * @return the enableAgentAutoUpgrade value.
      */
     public String enableAgentAutoUpgrade() {
@@ -36,7 +40,7 @@ public final class InMageRcmProtectionContainerMappingDetails
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

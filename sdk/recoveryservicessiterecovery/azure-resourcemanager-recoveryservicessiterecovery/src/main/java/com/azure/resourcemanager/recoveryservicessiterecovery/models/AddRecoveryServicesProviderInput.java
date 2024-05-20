@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input required to add a provider. */
+/**
+ * Input required to add a provider.
+ */
 @Fluent
 public final class AddRecoveryServicesProviderInput {
     /*
@@ -17,13 +19,15 @@ public final class AddRecoveryServicesProviderInput {
     @JsonProperty(value = "properties", required = true)
     private AddRecoveryServicesProviderInputProperties properties;
 
-    /** Creates an instance of AddRecoveryServicesProviderInput class. */
+    /**
+     * Creates an instance of AddRecoveryServicesProviderInput class.
+     */
     public AddRecoveryServicesProviderInput() {
     }
 
     /**
      * Get the properties property: The properties of an add provider request.
-     *
+     * 
      * @return the properties value.
      */
     public AddRecoveryServicesProviderInputProperties properties() {
@@ -32,7 +36,7 @@ public final class AddRecoveryServicesProviderInput {
 
     /**
      * Set the properties property: The properties of an add provider request.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AddRecoveryServicesProviderInput object itself.
      */
@@ -43,15 +47,13 @@ public final class AddRecoveryServicesProviderInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model AddRecoveryServicesProviderInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model AddRecoveryServicesProviderInput"));
         } else {
             properties().validate();
         }

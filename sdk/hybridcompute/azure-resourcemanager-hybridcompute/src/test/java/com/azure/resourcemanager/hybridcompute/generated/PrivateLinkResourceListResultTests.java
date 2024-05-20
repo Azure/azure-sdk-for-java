@@ -10,11 +10,9 @@ import com.azure.resourcemanager.hybridcompute.models.PrivateLinkResourceListRes
 public final class PrivateLinkResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkResourceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"sobqw\",\"requiredMembers\":[\"bnwdcfh\"],\"requiredZoneNames\":[\"dpfuvg\",\"sbjjc\",\"nvxbvt\",\"udutnco\"]},\"id\":\"r\",\"name\":\"xqtvcofu\",\"type\":\"f\"},{\"properties\":{\"groupId\":\"gj\",\"requiredMembers\":[\"dknnqvsazn\",\"n\"],\"requiredZoneNames\":[\"udsgs\",\"hmk\"]},\"id\":\"grauwjuetaebur\",\"name\":\"vdmovsmzlxwabm\",\"type\":\"oefki\"}],\"nextLink\":\"vtpuqujmqlgk\"}")
-                .toObject(PrivateLinkResourceListResult.class);
+        PrivateLinkResourceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"groupId\":\"xqi\",\"requiredMembers\":[\"unyowxwl\",\"djrkvfgbvfvpd\",\"odacizs\",\"q\"],\"requiredZoneNames\":[\"rribd\",\"ibqipqkg\",\"vxndz\"]},\"id\":\"krefajpjo\",\"name\":\"wkqnyhg\",\"type\":\"ij\"},{\"properties\":{\"groupId\":\"vfxzsjab\",\"requiredMembers\":[\"ystawfsdjpvkvp\",\"jxbkzbzkdvn\",\"jabudurgkakmo\"],\"requiredZoneNames\":[\"jjklff\",\"mouwqlgzrfzeey\"]},\"id\":\"izikayuhq\",\"name\":\"bjbsybb\",\"type\":\"wrv\"}],\"nextLink\":\"dgmfpgvmpipasl\"}")
+            .toObject(PrivateLinkResourceListResult.class);
     }
 
     @org.junit.jupiter.api.Test

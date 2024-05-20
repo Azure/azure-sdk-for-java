@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appcontainers.models.Template;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ContainerApp resource specific properties. */
+/**
+ * ContainerApp resource specific properties.
+ */
 @Fluent
 public final class ContainerAppProperties {
     /*
@@ -86,13 +88,15 @@ public final class ContainerAppProperties {
     @JsonProperty(value = "eventStreamEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String eventStreamEndpoint;
 
-    /** Creates an instance of ContainerAppProperties class. */
+    /**
+     * Creates an instance of ContainerAppProperties class.
+     */
     public ContainerAppProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the Container App.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ContainerAppProvisioningState provisioningState() {
@@ -101,7 +105,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the managedEnvironmentId property: Deprecated. Resource ID of the Container App's environment.
-     *
+     * 
      * @return the managedEnvironmentId value.
      */
     public String managedEnvironmentId() {
@@ -110,7 +114,7 @@ public final class ContainerAppProperties {
 
     /**
      * Set the managedEnvironmentId property: Deprecated. Resource ID of the Container App's environment.
-     *
+     * 
      * @param managedEnvironmentId the managedEnvironmentId value to set.
      * @return the ContainerAppProperties object itself.
      */
@@ -121,7 +125,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the environmentId property: Resource ID of environment.
-     *
+     * 
      * @return the environmentId value.
      */
     public String environmentId() {
@@ -130,7 +134,7 @@ public final class ContainerAppProperties {
 
     /**
      * Set the environmentId property: Resource ID of environment.
-     *
+     * 
      * @param environmentId the environmentId value to set.
      * @return the ContainerAppProperties object itself.
      */
@@ -141,7 +145,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the workloadProfileName property: Workload profile name to pin for container app execution.
-     *
+     * 
      * @return the workloadProfileName value.
      */
     public String workloadProfileName() {
@@ -150,7 +154,7 @@ public final class ContainerAppProperties {
 
     /**
      * Set the workloadProfileName property: Workload profile name to pin for container app execution.
-     *
+     * 
      * @param workloadProfileName the workloadProfileName value to set.
      * @return the ContainerAppProperties object itself.
      */
@@ -161,7 +165,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the latestRevisionName property: Name of the latest revision of the Container App.
-     *
+     * 
      * @return the latestRevisionName value.
      */
     public String latestRevisionName() {
@@ -170,7 +174,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the latestReadyRevisionName property: Name of the latest ready revision of the Container App.
-     *
+     * 
      * @return the latestReadyRevisionName value.
      */
     public String latestReadyRevisionName() {
@@ -179,7 +183,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the latestRevisionFqdn property: Fully Qualified Domain Name of the latest revision of the Container App.
-     *
+     * 
      * @return the latestRevisionFqdn value.
      */
     public String latestRevisionFqdn() {
@@ -188,7 +192,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the customDomainVerificationId property: Id used to verify domain name ownership.
-     *
+     * 
      * @return the customDomainVerificationId value.
      */
     public String customDomainVerificationId() {
@@ -197,7 +201,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the configuration property: Non versioned Container App configuration properties.
-     *
+     * 
      * @return the configuration value.
      */
     public Configuration configuration() {
@@ -206,7 +210,7 @@ public final class ContainerAppProperties {
 
     /**
      * Set the configuration property: Non versioned Container App configuration properties.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the ContainerAppProperties object itself.
      */
@@ -217,7 +221,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the template property: Container App versioned application definition.
-     *
+     * 
      * @return the template value.
      */
     public Template template() {
@@ -226,7 +230,7 @@ public final class ContainerAppProperties {
 
     /**
      * Set the template property: Container App versioned application definition.
-     *
+     * 
      * @param template the template value to set.
      * @return the ContainerAppProperties object itself.
      */
@@ -237,7 +241,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the outboundIpAddresses property: Outbound IP Addresses for container app.
-     *
+     * 
      * @return the outboundIpAddresses value.
      */
     public List<String> outboundIpAddresses() {
@@ -246,7 +250,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the eventStreamEndpoint property: The endpoint of the eventstream of the container app.
-     *
+     * 
      * @return the eventStreamEndpoint value.
      */
     public String eventStreamEndpoint() {
@@ -255,7 +259,7 @@ public final class ContainerAppProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

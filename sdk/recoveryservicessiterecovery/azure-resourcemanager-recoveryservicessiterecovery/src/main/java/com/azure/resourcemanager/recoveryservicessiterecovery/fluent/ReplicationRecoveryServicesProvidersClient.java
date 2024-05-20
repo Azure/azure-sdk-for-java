@@ -21,9 +21,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.AddRecovery
 public interface ReplicationRecoveryServicesProvidersClient {
     /**
      * Gets the list of registered recovery services providers for the fabric.
-     *
-     * <p>Lists the registered recovery services providers for the specified fabric.
-     *
+     * 
+     * Lists the registered recovery services providers for the specified fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -33,14 +33,14 @@ public interface ReplicationRecoveryServicesProvidersClient {
      * @return collection of providers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecoveryServicesProviderInner> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName);
+    PagedIterable<RecoveryServicesProviderInner> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName);
 
     /**
      * Gets the list of registered recovery services providers for the fabric.
-     *
-     * <p>Lists the registered recovery services providers for the specified fabric.
-     *
+     * 
+     * Lists the registered recovery services providers for the specified fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -51,14 +51,14 @@ public interface ReplicationRecoveryServicesProvidersClient {
      * @return collection of providers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RecoveryServicesProviderInner> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName, Context context);
+    PagedIterable<RecoveryServicesProviderInner> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName, Context context);
 
     /**
      * Gets the details of a recovery services provider.
-     *
-     * <p>Gets the details of registered recovery services provider.
-     *
+     * 
+     * Gets the details of registered recovery services provider.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -70,14 +70,14 @@ public interface ReplicationRecoveryServicesProvidersClient {
      * @return the details of registered recovery services provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecoveryServicesProviderInner> getWithResponse(
-        String resourceName, String resourceGroupName, String fabricName, String providerName, Context context);
+    Response<RecoveryServicesProviderInner> getWithResponse(String resourceName, String resourceGroupName,
+        String fabricName, String providerName, Context context);
 
     /**
      * Gets the details of a recovery services provider.
-     *
-     * <p>Gets the details of registered recovery services provider.
-     *
+     * 
+     * Gets the details of registered recovery services provider.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -88,14 +88,14 @@ public interface ReplicationRecoveryServicesProvidersClient {
      * @return the details of registered recovery services provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecoveryServicesProviderInner get(
-        String resourceName, String resourceGroupName, String fabricName, String providerName);
+    RecoveryServicesProviderInner get(String resourceName, String resourceGroupName, String fabricName,
+        String providerName);
 
     /**
      * Adds a recovery services provider.
-     *
-     * <p>The operation to add a recovery services provider.
-     *
+     * 
+     * The operation to add a recovery services provider.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -108,17 +108,14 @@ public interface ReplicationRecoveryServicesProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String providerName,
+        String resourceName, String resourceGroupName, String fabricName, String providerName,
         AddRecoveryServicesProviderInput addProviderInput);
 
     /**
      * Adds a recovery services provider.
-     *
-     * <p>The operation to add a recovery services provider.
-     *
+     * 
+     * The operation to add a recovery services provider.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -132,18 +129,14 @@ public interface ReplicationRecoveryServicesProvidersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String providerName,
-        AddRecoveryServicesProviderInput addProviderInput,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String providerName,
+        AddRecoveryServicesProviderInput addProviderInput, Context context);
 
     /**
      * Adds a recovery services provider.
-     *
-     * <p>The operation to add a recovery services provider.
-     *
+     * 
+     * The operation to add a recovery services provider.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -155,18 +148,14 @@ public interface ReplicationRecoveryServicesProvidersClient {
      * @return provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecoveryServicesProviderInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String providerName,
-        AddRecoveryServicesProviderInput addProviderInput);
+    RecoveryServicesProviderInner create(String resourceName, String resourceGroupName, String fabricName,
+        String providerName, AddRecoveryServicesProviderInput addProviderInput);
 
     /**
      * Adds a recovery services provider.
-     *
-     * <p>The operation to add a recovery services provider.
-     *
+     * 
+     * The operation to add a recovery services provider.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -179,19 +168,14 @@ public interface ReplicationRecoveryServicesProvidersClient {
      * @return provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecoveryServicesProviderInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String providerName,
-        AddRecoveryServicesProviderInput addProviderInput,
-        Context context);
+    RecoveryServicesProviderInner create(String resourceName, String resourceGroupName, String fabricName,
+        String providerName, AddRecoveryServicesProviderInput addProviderInput, Context context);
 
     /**
      * Purges recovery service provider from fabric.
-     *
-     * <p>The operation to purge(force delete) a recovery services provider from the vault.
-     *
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -202,14 +186,14 @@ public interface ReplicationRecoveryServicesProvidersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPurge(
-        String resourceName, String resourceGroupName, String fabricName, String providerName);
+    SyncPoller<PollResult<Void>, Void> beginPurge(String resourceName, String resourceGroupName, String fabricName,
+        String providerName);
 
     /**
      * Purges recovery service provider from fabric.
-     *
-     * <p>The operation to purge(force delete) a recovery services provider from the vault.
-     *
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -221,14 +205,14 @@ public interface ReplicationRecoveryServicesProvidersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPurge(
-        String resourceName, String resourceGroupName, String fabricName, String providerName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginPurge(String resourceName, String resourceGroupName, String fabricName,
+        String providerName, Context context);
 
     /**
      * Purges recovery service provider from fabric.
-     *
-     * <p>The operation to purge(force delete) a recovery services provider from the vault.
-     *
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -242,9 +226,9 @@ public interface ReplicationRecoveryServicesProvidersClient {
 
     /**
      * Purges recovery service provider from fabric.
-     *
-     * <p>The operation to purge(force delete) a recovery services provider from the vault.
-     *
+     * 
+     * The operation to purge(force delete) a recovery services provider from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -259,9 +243,9 @@ public interface ReplicationRecoveryServicesProvidersClient {
 
     /**
      * Refresh details from the recovery services provider.
-     *
-     * <p>The operation to refresh the information from the recovery services provider.
-     *
+     * 
+     * The operation to refresh the information from the recovery services provider.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -272,14 +256,14 @@ public interface ReplicationRecoveryServicesProvidersClient {
      * @return the {@link SyncPoller} for polling of provider details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner> beginRefreshProvider(
-        String resourceName, String resourceGroupName, String fabricName, String providerName);
+    SyncPoller<PollResult<RecoveryServicesProviderInner>, RecoveryServicesProviderInner>
+        beginRefreshProvider(String resourceName, String resourceGroupName, String fabricName, String providerName);
 
     /**
      * Refresh details from the recovery services provider.
-     *
-     * <p>The operation to refresh the information from the recovery services provider.
-     *
+     * 
+     * The operation to refresh the information from the recovery services provider.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -296,9 +280,9 @@ public interface ReplicationRecoveryServicesProvidersClient {
 
     /**
      * Refresh details from the recovery services provider.
-     *
-     * <p>The operation to refresh the information from the recovery services provider.
-     *
+     * 
+     * The operation to refresh the information from the recovery services provider.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -309,14 +293,14 @@ public interface ReplicationRecoveryServicesProvidersClient {
      * @return provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecoveryServicesProviderInner refreshProvider(
-        String resourceName, String resourceGroupName, String fabricName, String providerName);
+    RecoveryServicesProviderInner refreshProvider(String resourceName, String resourceGroupName, String fabricName,
+        String providerName);
 
     /**
      * Refresh details from the recovery services provider.
-     *
-     * <p>The operation to refresh the information from the recovery services provider.
-     *
+     * 
+     * The operation to refresh the information from the recovery services provider.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -328,16 +312,16 @@ public interface ReplicationRecoveryServicesProvidersClient {
      * @return provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecoveryServicesProviderInner refreshProvider(
-        String resourceName, String resourceGroupName, String fabricName, String providerName, Context context);
+    RecoveryServicesProviderInner refreshProvider(String resourceName, String resourceGroupName, String fabricName,
+        String providerName, Context context);
 
     /**
      * Deletes provider from fabric. Note: Deleting provider for any fabric other than SingleHost is unsupported. To
      * maintain backward compatibility for released clients the object "deleteRspInput" is used (if the object is empty
      * we assume that it is old client and continue the old behavior).
-     *
-     * <p>The operation to removes/delete(unregister) a recovery services provider from the vault.
-     *
+     * 
+     * The operation to removes/delete(unregister) a recovery services provider from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -348,16 +332,16 @@ public interface ReplicationRecoveryServicesProvidersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName, String resourceGroupName, String fabricName, String providerName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName, String fabricName,
+        String providerName);
 
     /**
      * Deletes provider from fabric. Note: Deleting provider for any fabric other than SingleHost is unsupported. To
      * maintain backward compatibility for released clients the object "deleteRspInput" is used (if the object is empty
      * we assume that it is old client and continue the old behavior).
-     *
-     * <p>The operation to removes/delete(unregister) a recovery services provider from the vault.
-     *
+     * 
+     * The operation to removes/delete(unregister) a recovery services provider from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -369,16 +353,16 @@ public interface ReplicationRecoveryServicesProvidersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName, String resourceGroupName, String fabricName, String providerName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName, String fabricName,
+        String providerName, Context context);
 
     /**
      * Deletes provider from fabric. Note: Deleting provider for any fabric other than SingleHost is unsupported. To
      * maintain backward compatibility for released clients the object "deleteRspInput" is used (if the object is empty
      * we assume that it is old client and continue the old behavior).
-     *
-     * <p>The operation to removes/delete(unregister) a recovery services provider from the vault.
-     *
+     * 
+     * The operation to removes/delete(unregister) a recovery services provider from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -394,9 +378,9 @@ public interface ReplicationRecoveryServicesProvidersClient {
      * Deletes provider from fabric. Note: Deleting provider for any fabric other than SingleHost is unsupported. To
      * maintain backward compatibility for released clients the object "deleteRspInput" is used (if the object is empty
      * we assume that it is old client and continue the old behavior).
-     *
-     * <p>The operation to removes/delete(unregister) a recovery services provider from the vault.
-     *
+     * 
+     * The operation to removes/delete(unregister) a recovery services provider from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -411,9 +395,9 @@ public interface ReplicationRecoveryServicesProvidersClient {
 
     /**
      * Gets the list of registered recovery services providers in the vault. This is a view only api.
-     *
-     * <p>Lists the registered recovery services providers in the vault.
-     *
+     * 
+     * Lists the registered recovery services providers in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -426,9 +410,9 @@ public interface ReplicationRecoveryServicesProvidersClient {
 
     /**
      * Gets the list of registered recovery services providers in the vault. This is a view only api.
-     *
-     * <p>Lists the registered recovery services providers in the vault.
-     *
+     * 
+     * Lists the registered recovery services providers in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.

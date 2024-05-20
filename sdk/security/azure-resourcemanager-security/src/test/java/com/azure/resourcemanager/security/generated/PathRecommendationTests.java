@@ -18,65 +18,57 @@ import org.junit.jupiter.api.Assertions;
 public final class PathRecommendationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PathRecommendation model =
-            BinaryData
-                .fromString(
-                    "{\"path\":\"sgbpfgzdjtx\",\"action\":\"Remove\",\"type\":\"IoT_InstallAgent\",\"publisherInfo\":{\"publisherName\":\"gaqvlgafcqusrd\",\"productName\":\"t\",\"binaryName\":\"sdtutnwlduyc\",\"version\":\"zhyrmewipmve\"},\"common\":false,\"userSids\":[\"uqgsj\",\"xundxgk\",\"twzhhzjhfjmhv\",\"muvgp\"],\"usernames\":[{\"username\":\"qsxvmhf\",\"recommendationAction\":\"Remove\"},{\"username\":\"yihsasbhudypohyu\",\"recommendationAction\":\"Add\"}],\"fileType\":\"Script\",\"configurationStatus\":\"NoStatus\"}")
-                .toObject(PathRecommendation.class);
-        Assertions.assertEquals("sgbpfgzdjtx", model.path());
-        Assertions.assertEquals(RecommendationAction.REMOVE, model.action());
-        Assertions.assertEquals(RecommendationType.IO_T_INSTALL_AGENT, model.type());
-        Assertions.assertEquals("gaqvlgafcqusrd", model.publisherInfo().publisherName());
-        Assertions.assertEquals("t", model.publisherInfo().productName());
-        Assertions.assertEquals("sdtutnwlduyc", model.publisherInfo().binaryName());
-        Assertions.assertEquals("zhyrmewipmve", model.publisherInfo().version());
+        PathRecommendation model = BinaryData.fromString(
+            "{\"path\":\"mmpuj\",\"action\":\"Recommended\",\"type\":\"IoT_VulnerableTLSCipherSuite\",\"publisherInfo\":{\"publisherName\":\"uvsmbms\",\"productName\":\"oyovwz\",\"binaryName\":\"pqvyb\",\"version\":\"gvmxnok\"},\"common\":false,\"userSids\":[\"bse\",\"kvcuartrhunl\",\"iryky\",\"ndzfqivjreuyk\"],\"usernames\":[{\"username\":\"wagltbxoeeonqlnf\",\"recommendationAction\":\"Add\"},{\"username\":\"mvqdbpbhfckdvez\",\"recommendationAction\":\"Recommended\"},{\"username\":\"sbzhd\",\"recommendationAction\":\"Recommended\"}],\"fileType\":\"Script\",\"configurationStatus\":\"Configured\"}")
+            .toObject(PathRecommendation.class);
+        Assertions.assertEquals("mmpuj", model.path());
+        Assertions.assertEquals(RecommendationAction.RECOMMENDED, model.action());
+        Assertions.assertEquals(RecommendationType.IO_T_VULNERABLE_TLSCIPHER_SUITE, model.type());
+        Assertions.assertEquals("uvsmbms", model.publisherInfo().publisherName());
+        Assertions.assertEquals("oyovwz", model.publisherInfo().productName());
+        Assertions.assertEquals("pqvyb", model.publisherInfo().binaryName());
+        Assertions.assertEquals("gvmxnok", model.publisherInfo().version());
         Assertions.assertEquals(false, model.common());
-        Assertions.assertEquals("uqgsj", model.userSids().get(0));
-        Assertions.assertEquals("qsxvmhf", model.usernames().get(0).username());
-        Assertions.assertEquals(RecommendationAction.REMOVE, model.usernames().get(0).recommendationAction());
+        Assertions.assertEquals("bse", model.userSids().get(0));
+        Assertions.assertEquals("wagltbxoeeonqlnf", model.usernames().get(0).username());
+        Assertions.assertEquals(RecommendationAction.ADD, model.usernames().get(0).recommendationAction());
         Assertions.assertEquals(FileType.SCRIPT, model.fileType());
-        Assertions.assertEquals(ConfigurationStatus.NO_STATUS, model.configurationStatus());
+        Assertions.assertEquals(ConfigurationStatus.CONFIGURED, model.configurationStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PathRecommendation model =
-            new PathRecommendation()
-                .withPath("sgbpfgzdjtx")
-                .withAction(RecommendationAction.REMOVE)
-                .withType(RecommendationType.IO_T_INSTALL_AGENT)
-                .withPublisherInfo(
-                    new PublisherInfo()
-                        .withPublisherName("gaqvlgafcqusrd")
-                        .withProductName("t")
-                        .withBinaryName("sdtutnwlduyc")
-                        .withVersion("zhyrmewipmve"))
-                .withCommon(false)
-                .withUserSids(Arrays.asList("uqgsj", "xundxgk", "twzhhzjhfjmhv", "muvgp"))
-                .withUsernames(
-                    Arrays
-                        .asList(
-                            new UserRecommendation()
-                                .withUsername("qsxvmhf")
-                                .withRecommendationAction(RecommendationAction.REMOVE),
-                            new UserRecommendation()
-                                .withUsername("yihsasbhudypohyu")
-                                .withRecommendationAction(RecommendationAction.ADD)))
-                .withFileType(FileType.SCRIPT)
-                .withConfigurationStatus(ConfigurationStatus.NO_STATUS);
+        PathRecommendation model = new PathRecommendation().withPath("mmpuj")
+            .withAction(RecommendationAction.RECOMMENDED)
+            .withType(RecommendationType.IO_T_VULNERABLE_TLSCIPHER_SUITE)
+            .withPublisherInfo(new PublisherInfo().withPublisherName("uvsmbms")
+                .withProductName("oyovwz")
+                .withBinaryName("pqvyb")
+                .withVersion("gvmxnok"))
+            .withCommon(false)
+            .withUserSids(Arrays.asList("bse", "kvcuartrhunl", "iryky", "ndzfqivjreuyk"))
+            .withUsernames(Arrays.asList(
+                new UserRecommendation().withUsername("wagltbxoeeonqlnf")
+                    .withRecommendationAction(RecommendationAction.ADD),
+                new UserRecommendation().withUsername("mvqdbpbhfckdvez")
+                    .withRecommendationAction(RecommendationAction.RECOMMENDED),
+                new UserRecommendation().withUsername("sbzhd")
+                    .withRecommendationAction(RecommendationAction.RECOMMENDED)))
+            .withFileType(FileType.SCRIPT)
+            .withConfigurationStatus(ConfigurationStatus.CONFIGURED);
         model = BinaryData.fromObject(model).toObject(PathRecommendation.class);
-        Assertions.assertEquals("sgbpfgzdjtx", model.path());
-        Assertions.assertEquals(RecommendationAction.REMOVE, model.action());
-        Assertions.assertEquals(RecommendationType.IO_T_INSTALL_AGENT, model.type());
-        Assertions.assertEquals("gaqvlgafcqusrd", model.publisherInfo().publisherName());
-        Assertions.assertEquals("t", model.publisherInfo().productName());
-        Assertions.assertEquals("sdtutnwlduyc", model.publisherInfo().binaryName());
-        Assertions.assertEquals("zhyrmewipmve", model.publisherInfo().version());
+        Assertions.assertEquals("mmpuj", model.path());
+        Assertions.assertEquals(RecommendationAction.RECOMMENDED, model.action());
+        Assertions.assertEquals(RecommendationType.IO_T_VULNERABLE_TLSCIPHER_SUITE, model.type());
+        Assertions.assertEquals("uvsmbms", model.publisherInfo().publisherName());
+        Assertions.assertEquals("oyovwz", model.publisherInfo().productName());
+        Assertions.assertEquals("pqvyb", model.publisherInfo().binaryName());
+        Assertions.assertEquals("gvmxnok", model.publisherInfo().version());
         Assertions.assertEquals(false, model.common());
-        Assertions.assertEquals("uqgsj", model.userSids().get(0));
-        Assertions.assertEquals("qsxvmhf", model.usernames().get(0).username());
-        Assertions.assertEquals(RecommendationAction.REMOVE, model.usernames().get(0).recommendationAction());
+        Assertions.assertEquals("bse", model.userSids().get(0));
+        Assertions.assertEquals("wagltbxoeeonqlnf", model.usernames().get(0).username());
+        Assertions.assertEquals(RecommendationAction.ADD, model.usernames().get(0).recommendationAction());
         Assertions.assertEquals(FileType.SCRIPT, model.fileType());
-        Assertions.assertEquals(ConfigurationStatus.NO_STATUS, model.configurationStatus());
+        Assertions.assertEquals(ConfigurationStatus.CONFIGURED, model.configurationStatus());
     }
 }

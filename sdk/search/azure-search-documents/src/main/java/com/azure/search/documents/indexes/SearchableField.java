@@ -8,6 +8,7 @@ import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.models.VectorEncodingFormat;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -48,6 +49,13 @@ public @interface SearchableField {
      * @return A flag indicating if the field or method should generate as a sortable {@link SearchField field}.
      */
     boolean isSortable() default false;
+
+    /**
+     * Indicates if whether the field will be persisted separately on disk to be returned in a search result.
+     *
+     * @return A flag indicating if the field or method should generate as a stored {@link SearchField field}.
+     */
+    boolean isStored() default true;
 
     /**
      * Indicates if the field or method should generate as a filterable {@link SearchField field}.
@@ -118,4 +126,13 @@ public @interface SearchableField {
      * {@link SearchField field}.
      */
     String vectorSearchProfileName() default "";
+
+    /**
+     * A {@link VectorEncodingFormat} to be associated with the {@link SearchField field}.
+     * <p>
+     * If the value is empty, the field won't have a {@link SearchField#getVectorEncodingFormat()} value.
+     *
+     * @return The {@link VectorEncodingFormat} that will be associated with the {@link SearchField field}.
+     */
+    String vectorEncodingFormat() default "";
 }

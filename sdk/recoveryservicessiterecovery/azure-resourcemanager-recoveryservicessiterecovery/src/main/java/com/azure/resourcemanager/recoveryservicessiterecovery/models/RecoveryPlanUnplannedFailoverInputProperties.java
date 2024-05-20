@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Recovery plan unplanned failover input properties. */
+/**
+ * Recovery plan unplanned failover input properties.
+ */
 @Fluent
 public final class RecoveryPlanUnplannedFailoverInputProperties {
     /*
@@ -30,13 +32,15 @@ public final class RecoveryPlanUnplannedFailoverInputProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails;
 
-    /** Creates an instance of RecoveryPlanUnplannedFailoverInputProperties class. */
+    /**
+     * Creates an instance of RecoveryPlanUnplannedFailoverInputProperties class.
+     */
     public RecoveryPlanUnplannedFailoverInputProperties() {
     }
 
     /**
      * Get the failoverDirection property: The failover direction.
-     *
+     * 
      * @return the failoverDirection value.
      */
     public PossibleOperationsDirections failoverDirection() {
@@ -45,19 +49,19 @@ public final class RecoveryPlanUnplannedFailoverInputProperties {
 
     /**
      * Set the failoverDirection property: The failover direction.
-     *
+     * 
      * @param failoverDirection the failoverDirection value to set.
      * @return the RecoveryPlanUnplannedFailoverInputProperties object itself.
      */
-    public RecoveryPlanUnplannedFailoverInputProperties withFailoverDirection(
-        PossibleOperationsDirections failoverDirection) {
+    public RecoveryPlanUnplannedFailoverInputProperties
+        withFailoverDirection(PossibleOperationsDirections failoverDirection) {
         this.failoverDirection = failoverDirection;
         return this;
     }
 
     /**
      * Get the sourceSiteOperations property: A value indicating whether source site operations are required.
-     *
+     * 
      * @return the sourceSiteOperations value.
      */
     public SourceSiteOperations sourceSiteOperations() {
@@ -66,19 +70,19 @@ public final class RecoveryPlanUnplannedFailoverInputProperties {
 
     /**
      * Set the sourceSiteOperations property: A value indicating whether source site operations are required.
-     *
+     * 
      * @param sourceSiteOperations the sourceSiteOperations value to set.
      * @return the RecoveryPlanUnplannedFailoverInputProperties object itself.
      */
-    public RecoveryPlanUnplannedFailoverInputProperties withSourceSiteOperations(
-        SourceSiteOperations sourceSiteOperations) {
+    public RecoveryPlanUnplannedFailoverInputProperties
+        withSourceSiteOperations(SourceSiteOperations sourceSiteOperations) {
         this.sourceSiteOperations = sourceSiteOperations;
         return this;
     }
 
     /**
      * Get the providerSpecificDetails property: The provider specific properties.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails() {
@@ -87,35 +91,29 @@ public final class RecoveryPlanUnplannedFailoverInputProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific properties.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the RecoveryPlanUnplannedFailoverInputProperties object itself.
      */
-    public RecoveryPlanUnplannedFailoverInputProperties withProviderSpecificDetails(
-        List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails) {
+    public RecoveryPlanUnplannedFailoverInputProperties
+        withProviderSpecificDetails(List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (failoverDirection() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property failoverDirection in model"
-                            + " RecoveryPlanUnplannedFailoverInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property failoverDirection in model RecoveryPlanUnplannedFailoverInputProperties"));
         }
         if (sourceSiteOperations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceSiteOperations in model"
-                            + " RecoveryPlanUnplannedFailoverInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceSiteOperations in model RecoveryPlanUnplannedFailoverInputProperties"));
         }
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().forEach(e -> e.validate());

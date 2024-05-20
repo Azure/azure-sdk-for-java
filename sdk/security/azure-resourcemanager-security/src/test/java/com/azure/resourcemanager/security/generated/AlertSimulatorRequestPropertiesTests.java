@@ -12,20 +12,19 @@ import java.util.Map;
 public final class AlertSimulatorRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertSimulatorRequestProperties model =
-            BinaryData
-                .fromString("{\"kind\":\"AlertSimulatorRequestProperties\",\"\":{\"aztb\":\"datagkkumuikjcj\"}}")
-                .toObject(AlertSimulatorRequestProperties.class);
+        AlertSimulatorRequestProperties model = BinaryData.fromString(
+            "{\"kind\":\"AlertSimulatorRequestProperties\",\"\":{\"xwspcaxikhfjq\":\"dataeevsa\",\"ysemtmesrfsvpin\":\"databglcxkxgzzromvy\"}}")
+            .toObject(AlertSimulatorRequestProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertSimulatorRequestProperties model =
-            new AlertSimulatorRequestProperties()
-                .withAdditionalProperties(mapOf("kind", "AlertSimulatorRequestProperties"));
+        AlertSimulatorRequestProperties model = new AlertSimulatorRequestProperties()
+            .withAdditionalProperties(mapOf("kind", "AlertSimulatorRequestProperties"));
         model = BinaryData.fromObject(model).toObject(AlertSimulatorRequestProperties.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

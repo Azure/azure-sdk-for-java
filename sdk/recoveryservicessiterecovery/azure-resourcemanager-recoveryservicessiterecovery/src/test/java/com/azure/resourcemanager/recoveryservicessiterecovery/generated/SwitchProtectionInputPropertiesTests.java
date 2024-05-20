@@ -12,19 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SwitchProtectionInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwitchProtectionInputProperties model =
-            BinaryData
-                .fromString(
-                    "{\"replicationProtectedItemName\":\"onbzoggculapzwy\",\"providerSpecificDetails\":{\"instanceType\":\"SwitchProtectionProviderSpecificInput\"}}")
-                .toObject(SwitchProtectionInputProperties.class);
+        SwitchProtectionInputProperties model = BinaryData.fromString(
+            "{\"replicationProtectedItemName\":\"onbzoggculapzwy\",\"providerSpecificDetails\":{\"instanceType\":\"SwitchProtectionProviderSpecificInput\"}}")
+            .toObject(SwitchProtectionInputProperties.class);
         Assertions.assertEquals("onbzoggculapzwy", model.replicationProtectedItemName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwitchProtectionInputProperties model =
-            new SwitchProtectionInputProperties()
-                .withReplicationProtectedItemName("onbzoggculapzwy")
+        SwitchProtectionInputProperties model
+            = new SwitchProtectionInputProperties().withReplicationProtectedItemName("onbzoggculapzwy")
                 .withProviderSpecificDetails(new SwitchProtectionProviderSpecificInput());
         model = BinaryData.fromObject(model).toObject(SwitchProtectionInputProperties.class);
         Assertions.assertEquals("onbzoggculapzwy", model.replicationProtectedItemName());

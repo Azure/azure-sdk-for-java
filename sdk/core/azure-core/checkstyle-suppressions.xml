@@ -12,7 +12,7 @@
             files="com.azure.core.util.serializer.JacksonAdapter"/>
 
   <!-- Logger class suppression -->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="(ClientLogger|DefaultLogger|LoggingEventBuilder).java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="(ClientLogger|ClientLoggerAccessHelper|DefaultLogger|LoggingEventBuilder).java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
             files="com.azure.core.implementation.jackson.(MemberNameConverterImpl|ObjectMapperFactory|XmlMapperFactory).java"/>

@@ -10,8 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2AApplyRec
 public final class A2AApplyRecoveryPointInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2AApplyRecoveryPointInput model =
-            BinaryData.fromString("{\"instanceType\":\"A2A\"}").toObject(A2AApplyRecoveryPointInput.class);
+        A2AApplyRecoveryPointInput model
+            = BinaryData.fromString("{\"instanceType\":\"A2A\"}").toObject(A2AApplyRecoveryPointInput.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Store the fabric details specific to the VMware fabric. */
+/**
+ * Store the fabric details specific to the VMware fabric.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMware")
 @Fluent
@@ -214,13 +216,15 @@ public final class VMwareDetails extends FabricSpecificDetails {
     @JsonProperty(value = "switchProviderBlockingErrorDetails")
     private List<InMageFabricSwitchProviderBlockingErrorDetails> switchProviderBlockingErrorDetails;
 
-    /** Creates an instance of VMwareDetails class. */
+    /**
+     * Creates an instance of VMwareDetails class.
+     */
     public VMwareDetails() {
     }
 
     /**
      * Get the processServers property: The list of Process Servers associated with the fabric.
-     *
+     * 
      * @return the processServers value.
      */
     public List<ProcessServer> processServers() {
@@ -229,7 +233,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the processServers property: The list of Process Servers associated with the fabric.
-     *
+     * 
      * @param processServers the processServers value to set.
      * @return the VMwareDetails object itself.
      */
@@ -240,7 +244,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the masterTargetServers property: The list of Master Target servers associated with the fabric.
-     *
+     * 
      * @return the masterTargetServers value.
      */
     public List<MasterTargetServer> masterTargetServers() {
@@ -249,7 +253,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the masterTargetServers property: The list of Master Target servers associated with the fabric.
-     *
+     * 
      * @param masterTargetServers the masterTargetServers value to set.
      * @return the VMwareDetails object itself.
      */
@@ -260,7 +264,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the runAsAccounts property: The list of run as accounts created on the server.
-     *
+     * 
      * @return the runAsAccounts value.
      */
     public List<RunAsAccount> runAsAccounts() {
@@ -269,7 +273,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the runAsAccounts property: The list of run as accounts created on the server.
-     *
+     * 
      * @param runAsAccounts the runAsAccounts value to set.
      * @return the VMwareDetails object itself.
      */
@@ -280,7 +284,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the replicationPairCount property: The number of replication pairs configured in this CS.
-     *
+     * 
      * @return the replicationPairCount value.
      */
     public String replicationPairCount() {
@@ -289,7 +293,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the replicationPairCount property: The number of replication pairs configured in this CS.
-     *
+     * 
      * @param replicationPairCount the replicationPairCount value to set.
      * @return the VMwareDetails object itself.
      */
@@ -300,7 +304,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the processServerCount property: The number of process servers.
-     *
+     * 
      * @return the processServerCount value.
      */
     public String processServerCount() {
@@ -309,7 +313,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the processServerCount property: The number of process servers.
-     *
+     * 
      * @param processServerCount the processServerCount value to set.
      * @return the VMwareDetails object itself.
      */
@@ -320,7 +324,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the agentCount property: The number of source and target servers configured to talk to this CS.
-     *
+     * 
      * @return the agentCount value.
      */
     public String agentCount() {
@@ -329,7 +333,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the agentCount property: The number of source and target servers configured to talk to this CS.
-     *
+     * 
      * @param agentCount the agentCount value to set.
      * @return the VMwareDetails object itself.
      */
@@ -340,7 +344,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the protectedServers property: The number of protected servers.
-     *
+     * 
      * @return the protectedServers value.
      */
     public String protectedServers() {
@@ -349,7 +353,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the protectedServers property: The number of protected servers.
-     *
+     * 
      * @param protectedServers the protectedServers value to set.
      * @return the VMwareDetails object itself.
      */
@@ -360,7 +364,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the systemLoad property: The percentage of the system load.
-     *
+     * 
      * @return the systemLoad value.
      */
     public String systemLoad() {
@@ -369,7 +373,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the systemLoad property: The percentage of the system load.
-     *
+     * 
      * @param systemLoad the systemLoad value to set.
      * @return the VMwareDetails object itself.
      */
@@ -380,7 +384,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the systemLoadStatus property: The system load status.
-     *
+     * 
      * @return the systemLoadStatus value.
      */
     public String systemLoadStatus() {
@@ -389,7 +393,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the systemLoadStatus property: The system load status.
-     *
+     * 
      * @param systemLoadStatus the systemLoadStatus value to set.
      * @return the VMwareDetails object itself.
      */
@@ -400,7 +404,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the cpuLoad property: The percentage of the CPU load.
-     *
+     * 
      * @return the cpuLoad value.
      */
     public String cpuLoad() {
@@ -409,7 +413,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the cpuLoad property: The percentage of the CPU load.
-     *
+     * 
      * @param cpuLoad the cpuLoad value to set.
      * @return the VMwareDetails object itself.
      */
@@ -420,7 +424,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the cpuLoadStatus property: The CPU load status.
-     *
+     * 
      * @return the cpuLoadStatus value.
      */
     public String cpuLoadStatus() {
@@ -429,7 +433,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the cpuLoadStatus property: The CPU load status.
-     *
+     * 
      * @param cpuLoadStatus the cpuLoadStatus value to set.
      * @return the VMwareDetails object itself.
      */
@@ -440,7 +444,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the totalMemoryInBytes property: The total memory.
-     *
+     * 
      * @return the totalMemoryInBytes value.
      */
     public Long totalMemoryInBytes() {
@@ -449,7 +453,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the totalMemoryInBytes property: The total memory.
-     *
+     * 
      * @param totalMemoryInBytes the totalMemoryInBytes value to set.
      * @return the VMwareDetails object itself.
      */
@@ -460,7 +464,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the availableMemoryInBytes property: The available memory.
-     *
+     * 
      * @return the availableMemoryInBytes value.
      */
     public Long availableMemoryInBytes() {
@@ -469,7 +473,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the availableMemoryInBytes property: The available memory.
-     *
+     * 
      * @param availableMemoryInBytes the availableMemoryInBytes value to set.
      * @return the VMwareDetails object itself.
      */
@@ -480,7 +484,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the memoryUsageStatus property: The memory usage status.
-     *
+     * 
      * @return the memoryUsageStatus value.
      */
     public String memoryUsageStatus() {
@@ -489,7 +493,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the memoryUsageStatus property: The memory usage status.
-     *
+     * 
      * @param memoryUsageStatus the memoryUsageStatus value to set.
      * @return the VMwareDetails object itself.
      */
@@ -500,7 +504,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the totalSpaceInBytes property: The total space.
-     *
+     * 
      * @return the totalSpaceInBytes value.
      */
     public Long totalSpaceInBytes() {
@@ -509,7 +513,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the totalSpaceInBytes property: The total space.
-     *
+     * 
      * @param totalSpaceInBytes the totalSpaceInBytes value to set.
      * @return the VMwareDetails object itself.
      */
@@ -520,7 +524,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the availableSpaceInBytes property: The available space.
-     *
+     * 
      * @return the availableSpaceInBytes value.
      */
     public Long availableSpaceInBytes() {
@@ -529,7 +533,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the availableSpaceInBytes property: The available space.
-     *
+     * 
      * @param availableSpaceInBytes the availableSpaceInBytes value to set.
      * @return the VMwareDetails object itself.
      */
@@ -540,7 +544,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the spaceUsageStatus property: The space usage status.
-     *
+     * 
      * @return the spaceUsageStatus value.
      */
     public String spaceUsageStatus() {
@@ -549,7 +553,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the spaceUsageStatus property: The space usage status.
-     *
+     * 
      * @param spaceUsageStatus the spaceUsageStatus value to set.
      * @return the VMwareDetails object itself.
      */
@@ -560,7 +564,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the webLoad property: The web load.
-     *
+     * 
      * @return the webLoad value.
      */
     public String webLoad() {
@@ -569,7 +573,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the webLoad property: The web load.
-     *
+     * 
      * @param webLoad the webLoad value to set.
      * @return the VMwareDetails object itself.
      */
@@ -580,7 +584,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the webLoadStatus property: The web load status.
-     *
+     * 
      * @return the webLoadStatus value.
      */
     public String webLoadStatus() {
@@ -589,7 +593,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the webLoadStatus property: The web load status.
-     *
+     * 
      * @param webLoadStatus the webLoadStatus value to set.
      * @return the VMwareDetails object itself.
      */
@@ -600,7 +604,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the databaseServerLoad property: The database server load.
-     *
+     * 
      * @return the databaseServerLoad value.
      */
     public String databaseServerLoad() {
@@ -609,7 +613,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the databaseServerLoad property: The database server load.
-     *
+     * 
      * @param databaseServerLoad the databaseServerLoad value to set.
      * @return the VMwareDetails object itself.
      */
@@ -620,7 +624,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the databaseServerLoadStatus property: The database server load status.
-     *
+     * 
      * @return the databaseServerLoadStatus value.
      */
     public String databaseServerLoadStatus() {
@@ -629,7 +633,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the databaseServerLoadStatus property: The database server load status.
-     *
+     * 
      * @param databaseServerLoadStatus the databaseServerLoadStatus value to set.
      * @return the VMwareDetails object itself.
      */
@@ -640,7 +644,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the csServiceStatus property: The CS service status.
-     *
+     * 
      * @return the csServiceStatus value.
      */
     public String csServiceStatus() {
@@ -649,7 +653,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the csServiceStatus property: The CS service status.
-     *
+     * 
      * @param csServiceStatus the csServiceStatus value to set.
      * @return the VMwareDetails object itself.
      */
@@ -660,7 +664,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the ipAddress property: The IP address.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -669,7 +673,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the ipAddress property: The IP address.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the VMwareDetails object itself.
      */
@@ -680,7 +684,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the agentVersion property: The agent Version.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -689,7 +693,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the agentVersion property: The agent Version.
-     *
+     * 
      * @param agentVersion the agentVersion value to set.
      * @return the VMwareDetails object itself.
      */
@@ -700,7 +704,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the hostname property: The host name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -709,7 +713,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the hostname property: The host name.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the VMwareDetails object itself.
      */
@@ -720,7 +724,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the lastHeartbeat property: The last heartbeat received from CS server.
-     *
+     * 
      * @return the lastHeartbeat value.
      */
     public OffsetDateTime lastHeartbeat() {
@@ -729,7 +733,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the lastHeartbeat property: The last heartbeat received from CS server.
-     *
+     * 
      * @param lastHeartbeat the lastHeartbeat value to set.
      * @return the VMwareDetails object itself.
      */
@@ -740,7 +744,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the versionStatus property: Version status.
-     *
+     * 
      * @return the versionStatus value.
      */
     public String versionStatus() {
@@ -749,7 +753,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the versionStatus property: Version status.
-     *
+     * 
      * @param versionStatus the versionStatus value to set.
      * @return the VMwareDetails object itself.
      */
@@ -760,7 +764,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the sslCertExpiryDate property: CS SSL cert expiry date.
-     *
+     * 
      * @return the sslCertExpiryDate value.
      */
     public OffsetDateTime sslCertExpiryDate() {
@@ -769,7 +773,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the sslCertExpiryDate property: CS SSL cert expiry date.
-     *
+     * 
      * @param sslCertExpiryDate the sslCertExpiryDate value to set.
      * @return the VMwareDetails object itself.
      */
@@ -780,7 +784,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the sslCertExpiryRemainingDays property: CS SSL cert expiry date.
-     *
+     * 
      * @return the sslCertExpiryRemainingDays value.
      */
     public Integer sslCertExpiryRemainingDays() {
@@ -789,7 +793,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the sslCertExpiryRemainingDays property: CS SSL cert expiry date.
-     *
+     * 
      * @param sslCertExpiryRemainingDays the sslCertExpiryRemainingDays value to set.
      * @return the VMwareDetails object itself.
      */
@@ -800,7 +804,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the psTemplateVersion property: PS template version.
-     *
+     * 
      * @return the psTemplateVersion value.
      */
     public String psTemplateVersion() {
@@ -809,7 +813,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the psTemplateVersion property: PS template version.
-     *
+     * 
      * @param psTemplateVersion the psTemplateVersion value to set.
      * @return the VMwareDetails object itself.
      */
@@ -820,7 +824,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the agentExpiryDate property: Agent expiry date.
-     *
+     * 
      * @return the agentExpiryDate value.
      */
     public OffsetDateTime agentExpiryDate() {
@@ -829,7 +833,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the agentExpiryDate property: Agent expiry date.
-     *
+     * 
      * @param agentExpiryDate the agentExpiryDate value to set.
      * @return the VMwareDetails object itself.
      */
@@ -840,7 +844,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the agentVersionDetails property: The agent version details.
-     *
+     * 
      * @return the agentVersionDetails value.
      */
     public VersionDetails agentVersionDetails() {
@@ -849,7 +853,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the agentVersionDetails property: The agent version details.
-     *
+     * 
      * @param agentVersionDetails the agentVersionDetails value to set.
      * @return the VMwareDetails object itself.
      */
@@ -860,7 +864,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Get the switchProviderBlockingErrorDetails property: The switch provider blocking error information.
-     *
+     * 
      * @return the switchProviderBlockingErrorDetails value.
      */
     public List<InMageFabricSwitchProviderBlockingErrorDetails> switchProviderBlockingErrorDetails() {
@@ -869,7 +873,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Set the switchProviderBlockingErrorDetails property: The switch provider blocking error information.
-     *
+     * 
      * @param switchProviderBlockingErrorDetails the switchProviderBlockingErrorDetails value to set.
      * @return the VMwareDetails object itself.
      */
@@ -881,7 +885,7 @@ public final class VMwareDetails extends FabricSpecificDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

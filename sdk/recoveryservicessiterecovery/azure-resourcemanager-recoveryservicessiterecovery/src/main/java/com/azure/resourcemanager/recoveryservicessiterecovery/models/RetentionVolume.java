@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The retention details of the MT. */
+/**
+ * The retention details of the MT.
+ */
 @Fluent
 public final class RetentionVolume {
     /*
@@ -34,13 +36,15 @@ public final class RetentionVolume {
     @JsonProperty(value = "thresholdPercentage")
     private Integer thresholdPercentage;
 
-    /** Creates an instance of RetentionVolume class. */
+    /**
+     * Creates an instance of RetentionVolume class.
+     */
     public RetentionVolume() {
     }
 
     /**
      * Get the volumeName property: The volume name.
-     *
+     * 
      * @return the volumeName value.
      */
     public String volumeName() {
@@ -49,7 +53,7 @@ public final class RetentionVolume {
 
     /**
      * Set the volumeName property: The volume name.
-     *
+     * 
      * @param volumeName the volumeName value to set.
      * @return the RetentionVolume object itself.
      */
@@ -60,7 +64,7 @@ public final class RetentionVolume {
 
     /**
      * Get the capacityInBytes property: The volume capacity.
-     *
+     * 
      * @return the capacityInBytes value.
      */
     public Long capacityInBytes() {
@@ -69,7 +73,7 @@ public final class RetentionVolume {
 
     /**
      * Set the capacityInBytes property: The volume capacity.
-     *
+     * 
      * @param capacityInBytes the capacityInBytes value to set.
      * @return the RetentionVolume object itself.
      */
@@ -80,7 +84,7 @@ public final class RetentionVolume {
 
     /**
      * Get the freeSpaceInBytes property: The free space available in this volume.
-     *
+     * 
      * @return the freeSpaceInBytes value.
      */
     public Long freeSpaceInBytes() {
@@ -89,7 +93,7 @@ public final class RetentionVolume {
 
     /**
      * Set the freeSpaceInBytes property: The free space available in this volume.
-     *
+     * 
      * @param freeSpaceInBytes the freeSpaceInBytes value to set.
      * @return the RetentionVolume object itself.
      */
@@ -100,7 +104,7 @@ public final class RetentionVolume {
 
     /**
      * Get the thresholdPercentage property: The threshold percentage.
-     *
+     * 
      * @return the thresholdPercentage value.
      */
     public Integer thresholdPercentage() {
@@ -109,7 +113,7 @@ public final class RetentionVolume {
 
     /**
      * Set the thresholdPercentage property: The threshold percentage.
-     *
+     * 
      * @param thresholdPercentage the thresholdPercentage value to set.
      * @return the RetentionVolume object itself.
      */
@@ -120,7 +124,7 @@ public final class RetentionVolume {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

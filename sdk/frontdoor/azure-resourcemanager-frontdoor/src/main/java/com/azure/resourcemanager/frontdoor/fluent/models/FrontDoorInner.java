@@ -29,27 +29,33 @@ public final class FrontDoorInner extends Resource {
     @JsonProperty(value = "properties")
     private FrontDoorProperties innerProperties;
 
-    /** Creates an instance of FrontDoorInner class. */
+    /**
+     * Creates an instance of FrontDoorInner class.
+     */
     public FrontDoorInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Front Door Load Balancer.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FrontDoorProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontDoorInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FrontDoorInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -58,9 +64,9 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     *
-     * <p>Resource status of the Front Door.
-     *
+     * 
+     * Resource status of the Front Door.
+     * 
      * @return the resourceState value.
      */
     public FrontDoorResourceState resourceState() {
@@ -69,7 +75,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the Front Door.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -78,7 +84,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Get the cname property: The host that each frontendEndpoint must CNAME to.
-     *
+     * 
      * @return the cname value.
      */
     public String cname() {
@@ -87,7 +93,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Get the frontdoorId property: The Id of the frontdoor.
-     *
+     * 
      * @return the frontdoorId value.
      */
     public String frontdoorId() {
@@ -96,7 +102,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Get the rulesEngines property: Rules Engine Configurations available to routing rules.
-     *
+     * 
      * @return the rulesEngines value.
      */
     public List<RulesEngineInner> rulesEngines() {
@@ -105,7 +111,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Get the extendedProperties property: Key-Value pair representing additional properties for frontdoor.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
@@ -114,7 +120,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Get the friendlyName property: A friendly name for the frontDoor.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -123,7 +129,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Set the friendlyName property: A friendly name for the frontDoor.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the FrontDoorInner object itself.
      */
@@ -137,7 +143,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Get the routingRules property: Routing rules associated with this Front Door.
-     *
+     * 
      * @return the routingRules value.
      */
     public List<RoutingRule> routingRules() {
@@ -146,7 +152,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Set the routingRules property: Routing rules associated with this Front Door.
-     *
+     * 
      * @param routingRules the routingRules value to set.
      * @return the FrontDoorInner object itself.
      */
@@ -160,7 +166,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Get the loadBalancingSettings property: Load balancing settings associated with this Front Door instance.
-     *
+     * 
      * @return the loadBalancingSettings value.
      */
     public List<LoadBalancingSettingsModel> loadBalancingSettings() {
@@ -169,7 +175,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Set the loadBalancingSettings property: Load balancing settings associated with this Front Door instance.
-     *
+     * 
      * @param loadBalancingSettings the loadBalancingSettings value to set.
      * @return the FrontDoorInner object itself.
      */
@@ -183,7 +189,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Get the healthProbeSettings property: Health probe settings associated with this Front Door instance.
-     *
+     * 
      * @return the healthProbeSettings value.
      */
     public List<HealthProbeSettingsModel> healthProbeSettings() {
@@ -192,7 +198,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Set the healthProbeSettings property: Health probe settings associated with this Front Door instance.
-     *
+     * 
      * @param healthProbeSettings the healthProbeSettings value to set.
      * @return the FrontDoorInner object itself.
      */
@@ -206,7 +212,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Get the backendPools property: Backend pools available to routing rules.
-     *
+     * 
      * @return the backendPools value.
      */
     public List<BackendPool> backendPools() {
@@ -215,7 +221,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Set the backendPools property: Backend pools available to routing rules.
-     *
+     * 
      * @param backendPools the backendPools value to set.
      * @return the FrontDoorInner object itself.
      */
@@ -229,7 +235,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Get the frontendEndpoints property: Frontend endpoints available to routing rules.
-     *
+     * 
      * @return the frontendEndpoints value.
      */
     public List<FrontendEndpointInner> frontendEndpoints() {
@@ -238,7 +244,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Set the frontendEndpoints property: Frontend endpoints available to routing rules.
-     *
+     * 
      * @param frontendEndpoints the frontendEndpoints value to set.
      * @return the FrontDoorInner object itself.
      */
@@ -252,7 +258,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Get the backendPoolsSettings property: Settings for all backendPools.
-     *
+     * 
      * @return the backendPoolsSettings value.
      */
     public BackendPoolsSettings backendPoolsSettings() {
@@ -261,7 +267,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Set the backendPoolsSettings property: Settings for all backendPools.
-     *
+     * 
      * @param backendPoolsSettings the backendPoolsSettings value to set.
      * @return the FrontDoorInner object itself.
      */
@@ -276,7 +282,7 @@ public final class FrontDoorInner extends Resource {
     /**
      * Get the enabledState property: Operational status of the Front Door load balancer. Permitted values are 'Enabled'
      * or 'Disabled'.
-     *
+     * 
      * @return the enabledState value.
      */
     public FrontDoorEnabledState enabledState() {
@@ -286,7 +292,7 @@ public final class FrontDoorInner extends Resource {
     /**
      * Set the enabledState property: Operational status of the Front Door load balancer. Permitted values are 'Enabled'
      * or 'Disabled'.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the FrontDoorInner object itself.
      */
@@ -300,7 +306,7 @@ public final class FrontDoorInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

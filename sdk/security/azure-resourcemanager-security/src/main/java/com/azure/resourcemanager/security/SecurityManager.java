@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -30,29 +30,36 @@ import com.azure.resourcemanager.security.implementation.AdvancedThreatProtectio
 import com.azure.resourcemanager.security.implementation.AlertsImpl;
 import com.azure.resourcemanager.security.implementation.AlertsSuppressionRulesImpl;
 import com.azure.resourcemanager.security.implementation.AllowedConnectionsImpl;
-import com.azure.resourcemanager.security.implementation.ApiCollectionOffboardingsImpl;
-import com.azure.resourcemanager.security.implementation.ApiCollectionOnboardingsImpl;
 import com.azure.resourcemanager.security.implementation.ApiCollectionsImpl;
 import com.azure.resourcemanager.security.implementation.ApplicationOperationsImpl;
 import com.azure.resourcemanager.security.implementation.ApplicationsImpl;
 import com.azure.resourcemanager.security.implementation.AssessmentsImpl;
 import com.azure.resourcemanager.security.implementation.AssessmentsMetadatasImpl;
-import com.azure.resourcemanager.security.implementation.AutoProvisioningSettingsImpl;
 import com.azure.resourcemanager.security.implementation.AutomationsImpl;
+import com.azure.resourcemanager.security.implementation.AutoProvisioningSettingsImpl;
+import com.azure.resourcemanager.security.implementation.AzureDevOpsOrgsImpl;
+import com.azure.resourcemanager.security.implementation.AzureDevOpsProjectsImpl;
+import com.azure.resourcemanager.security.implementation.AzureDevOpsReposImpl;
 import com.azure.resourcemanager.security.implementation.ComplianceResultsImpl;
 import com.azure.resourcemanager.security.implementation.CompliancesImpl;
 import com.azure.resourcemanager.security.implementation.ConnectorsImpl;
 import com.azure.resourcemanager.security.implementation.CustomAssessmentAutomationsImpl;
 import com.azure.resourcemanager.security.implementation.CustomEntityStoreAssignmentsImpl;
+import com.azure.resourcemanager.security.implementation.DefenderForStoragesImpl;
 import com.azure.resourcemanager.security.implementation.DeviceSecurityGroupsImpl;
+import com.azure.resourcemanager.security.implementation.DevOpsConfigurationsImpl;
+import com.azure.resourcemanager.security.implementation.DevOpsOperationResultsImpl;
 import com.azure.resourcemanager.security.implementation.DiscoveredSecuritySolutionsImpl;
 import com.azure.resourcemanager.security.implementation.ExternalSecuritySolutionsImpl;
+import com.azure.resourcemanager.security.implementation.GitHubOwnersImpl;
+import com.azure.resourcemanager.security.implementation.GitHubReposImpl;
+import com.azure.resourcemanager.security.implementation.GitLabGroupsImpl;
+import com.azure.resourcemanager.security.implementation.GitLabProjectsImpl;
+import com.azure.resourcemanager.security.implementation.GitLabSubgroupsImpl;
 import com.azure.resourcemanager.security.implementation.GovernanceAssignmentsImpl;
 import com.azure.resourcemanager.security.implementation.GovernanceRulesImpl;
-import com.azure.resourcemanager.security.implementation.HealthReportOperationsImpl;
 import com.azure.resourcemanager.security.implementation.HealthReportsImpl;
 import com.azure.resourcemanager.security.implementation.InformationProtectionPoliciesImpl;
-import com.azure.resourcemanager.security.implementation.IngestionSettingsImpl;
 import com.azure.resourcemanager.security.implementation.IotSecuritySolutionAnalyticsImpl;
 import com.azure.resourcemanager.security.implementation.IotSecuritySolutionsAnalyticsAggregatedAlertsImpl;
 import com.azure.resourcemanager.security.implementation.IotSecuritySolutionsAnalyticsRecommendationsImpl;
@@ -76,7 +83,9 @@ import com.azure.resourcemanager.security.implementation.SecurityContactsImpl;
 import com.azure.resourcemanager.security.implementation.SecurityOperatorsImpl;
 import com.azure.resourcemanager.security.implementation.SecuritySolutionsImpl;
 import com.azure.resourcemanager.security.implementation.SecuritySolutionsReferenceDatasImpl;
+import com.azure.resourcemanager.security.implementation.SensitivitySettingsImpl;
 import com.azure.resourcemanager.security.implementation.ServerVulnerabilityAssessmentsImpl;
+import com.azure.resourcemanager.security.implementation.ServerVulnerabilityAssessmentsSettingsImpl;
 import com.azure.resourcemanager.security.implementation.SettingsImpl;
 import com.azure.resourcemanager.security.implementation.SoftwareInventoriesImpl;
 import com.azure.resourcemanager.security.implementation.SqlVulnerabilityAssessmentBaselineRulesImpl;
@@ -92,29 +101,36 @@ import com.azure.resourcemanager.security.models.AdvancedThreatProtections;
 import com.azure.resourcemanager.security.models.Alerts;
 import com.azure.resourcemanager.security.models.AlertsSuppressionRules;
 import com.azure.resourcemanager.security.models.AllowedConnections;
-import com.azure.resourcemanager.security.models.ApiCollectionOffboardings;
-import com.azure.resourcemanager.security.models.ApiCollectionOnboardings;
 import com.azure.resourcemanager.security.models.ApiCollections;
 import com.azure.resourcemanager.security.models.ApplicationOperations;
 import com.azure.resourcemanager.security.models.Applications;
 import com.azure.resourcemanager.security.models.Assessments;
 import com.azure.resourcemanager.security.models.AssessmentsMetadatas;
-import com.azure.resourcemanager.security.models.AutoProvisioningSettings;
 import com.azure.resourcemanager.security.models.Automations;
+import com.azure.resourcemanager.security.models.AutoProvisioningSettings;
+import com.azure.resourcemanager.security.models.AzureDevOpsOrgs;
+import com.azure.resourcemanager.security.models.AzureDevOpsProjects;
+import com.azure.resourcemanager.security.models.AzureDevOpsRepos;
 import com.azure.resourcemanager.security.models.ComplianceResults;
 import com.azure.resourcemanager.security.models.Compliances;
 import com.azure.resourcemanager.security.models.Connectors;
 import com.azure.resourcemanager.security.models.CustomAssessmentAutomations;
 import com.azure.resourcemanager.security.models.CustomEntityStoreAssignments;
+import com.azure.resourcemanager.security.models.DefenderForStorages;
 import com.azure.resourcemanager.security.models.DeviceSecurityGroups;
+import com.azure.resourcemanager.security.models.DevOpsConfigurations;
+import com.azure.resourcemanager.security.models.DevOpsOperationResults;
 import com.azure.resourcemanager.security.models.DiscoveredSecuritySolutions;
 import com.azure.resourcemanager.security.models.ExternalSecuritySolutions;
+import com.azure.resourcemanager.security.models.GitHubOwners;
+import com.azure.resourcemanager.security.models.GitHubRepos;
+import com.azure.resourcemanager.security.models.GitLabGroups;
+import com.azure.resourcemanager.security.models.GitLabProjects;
+import com.azure.resourcemanager.security.models.GitLabSubgroups;
 import com.azure.resourcemanager.security.models.GovernanceAssignments;
 import com.azure.resourcemanager.security.models.GovernanceRules;
-import com.azure.resourcemanager.security.models.HealthReportOperations;
 import com.azure.resourcemanager.security.models.HealthReports;
 import com.azure.resourcemanager.security.models.InformationProtectionPolicies;
-import com.azure.resourcemanager.security.models.IngestionSettings;
 import com.azure.resourcemanager.security.models.IotSecuritySolutionAnalytics;
 import com.azure.resourcemanager.security.models.IotSecuritySolutions;
 import com.azure.resourcemanager.security.models.IotSecuritySolutionsAnalyticsAggregatedAlerts;
@@ -137,7 +153,9 @@ import com.azure.resourcemanager.security.models.SecurityContacts;
 import com.azure.resourcemanager.security.models.SecurityOperators;
 import com.azure.resourcemanager.security.models.SecuritySolutions;
 import com.azure.resourcemanager.security.models.SecuritySolutionsReferenceDatas;
+import com.azure.resourcemanager.security.models.SensitivitySettings;
 import com.azure.resourcemanager.security.models.ServerVulnerabilityAssessments;
+import com.azure.resourcemanager.security.models.ServerVulnerabilityAssessmentsSettings;
 import com.azure.resourcemanager.security.models.Settings;
 import com.azure.resourcemanager.security.models.SoftwareInventories;
 import com.azure.resourcemanager.security.models.SqlVulnerabilityAssessmentBaselineRules;
@@ -154,30 +172,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to SecurityManager. API spec for Microsoft.Security (Azure Security Center) resource provider. */
+/**
+ * Entry point to SecurityManager.
+ * API spec for Microsoft.Security (Azure Security Center) resource provider.
+ */
 public final class SecurityManager {
-    private MdeOnboardings mdeOnboardings;
-
-    private CustomAssessmentAutomations customAssessmentAutomations;
-
-    private CustomEntityStoreAssignments customEntityStoreAssignments;
-
-    private ComplianceResults complianceResults;
-
-    private Pricings pricings;
-
-    private AdvancedThreatProtections advancedThreatProtections;
-
-    private DeviceSecurityGroups deviceSecurityGroups;
-
-    private IotSecuritySolutions iotSecuritySolutions;
-
-    private IotSecuritySolutionAnalytics iotSecuritySolutionAnalytics;
-
-    private IotSecuritySolutionsAnalyticsAggregatedAlerts iotSecuritySolutionsAnalyticsAggregatedAlerts;
-
-    private IotSecuritySolutionsAnalyticsRecommendations iotSecuritySolutionsAnalyticsRecommendations;
-
     private Locations locations;
 
     private Operations operations;
@@ -190,9 +189,9 @@ public final class SecurityManager {
 
     private InformationProtectionPolicies informationProtectionPolicies;
 
-    private SecurityContacts securityContacts;
-
     private WorkspaceSettings workspaceSettings;
+
+    private AlertsSuppressionRules alertsSuppressionRules;
 
     private RegulatoryComplianceStandards regulatoryComplianceStandards;
 
@@ -202,53 +201,19 @@ public final class SecurityManager {
 
     private SubAssessments subAssessments;
 
-    private Automations automations;
-
-    private AlertsSuppressionRules alertsSuppressionRules;
-
-    private ServerVulnerabilityAssessments serverVulnerabilityAssessments;
-
-    private AssessmentsMetadatas assessmentsMetadatas;
-
-    private Assessments assessments;
-
-    private AdaptiveApplicationControls adaptiveApplicationControls;
-
-    private AdaptiveNetworkHardenings adaptiveNetworkHardenings;
-
-    private AllowedConnections allowedConnections;
-
-    private Topologies topologies;
-
-    private JitNetworkAccessPolicies jitNetworkAccessPolicies;
-
-    private DiscoveredSecuritySolutions discoveredSecuritySolutions;
-
-    private SecuritySolutionsReferenceDatas securitySolutionsReferenceDatas;
-
-    private ExternalSecuritySolutions externalSecuritySolutions;
-
-    private SecureScores secureScores;
-
-    private SecureScoreControls secureScoreControls;
-
-    private SecureScoreControlDefinitions secureScoreControlDefinitions;
-
-    private SecuritySolutions securitySolutions;
-
     private Connectors connectors;
-
-    private Alerts alerts;
-
-    private Settings settings;
-
-    private IngestionSettings ingestionSettings;
 
     private SoftwareInventories softwareInventories;
 
-    private GovernanceRules governanceRules;
+    private CustomAssessmentAutomations customAssessmentAutomations;
+
+    private CustomEntityStoreAssignments customEntityStoreAssignments;
+
+    private MdeOnboardings mdeOnboardings;
 
     private GovernanceAssignments governanceAssignments;
+
+    private GovernanceRules governanceRules;
 
     private Applications applications;
 
@@ -258,43 +223,115 @@ public final class SecurityManager {
 
     private SecurityConnectorApplicationOperations securityConnectorApplicationOperations;
 
-    private ApiCollections apiCollections;
+    private DefenderForStorages defenderForStorages;
 
-    private ApiCollectionOnboardings apiCollectionOnboardings;
+    private SecurityOperators securityOperators;
 
-    private ApiCollectionOffboardings apiCollectionOffboardings;
-
-    private HealthReports healthReports;
-
-    private HealthReportOperations healthReportOperations;
+    private SqlVulnerabilityAssessmentBaselineRules sqlVulnerabilityAssessmentBaselineRules;
 
     private SqlVulnerabilityAssessmentScans sqlVulnerabilityAssessmentScans;
 
     private SqlVulnerabilityAssessmentScanResults sqlVulnerabilityAssessmentScanResults;
 
-    private SqlVulnerabilityAssessmentBaselineRules sqlVulnerabilityAssessmentBaselineRules;
+    private SensitivitySettings sensitivitySettings;
+
+    private HealthReports healthReports;
+
+    private Automations automations;
+
+    private SecurityContacts securityContacts;
 
     private SecurityConnectors securityConnectors;
 
-    private SecurityOperators securityOperators;
+    private ComplianceResults complianceResults;
+
+    private AdvancedThreatProtections advancedThreatProtections;
+
+    private DeviceSecurityGroups deviceSecurityGroups;
+
+    private IotSecuritySolutionAnalytics iotSecuritySolutionAnalytics;
+
+    private IotSecuritySolutionsAnalyticsAggregatedAlerts iotSecuritySolutionsAnalyticsAggregatedAlerts;
+
+    private IotSecuritySolutionsAnalyticsRecommendations iotSecuritySolutionsAnalyticsRecommendations;
+
+    private IotSecuritySolutions iotSecuritySolutions;
+
+    private AdaptiveNetworkHardenings adaptiveNetworkHardenings;
+
+    private AllowedConnections allowedConnections;
+
+    private AdaptiveApplicationControls adaptiveApplicationControls;
+
+    private DiscoveredSecuritySolutions discoveredSecuritySolutions;
+
+    private ExternalSecuritySolutions externalSecuritySolutions;
+
+    private JitNetworkAccessPolicies jitNetworkAccessPolicies;
+
+    private SecureScores secureScores;
+
+    private SecureScoreControls secureScoreControls;
+
+    private SecureScoreControlDefinitions secureScoreControlDefinitions;
+
+    private SecuritySolutions securitySolutions;
+
+    private SecuritySolutionsReferenceDatas securitySolutionsReferenceDatas;
+
+    private ServerVulnerabilityAssessments serverVulnerabilityAssessments;
+
+    private Topologies topologies;
+
+    private AssessmentsMetadatas assessmentsMetadatas;
+
+    private Assessments assessments;
+
+    private Alerts alerts;
+
+    private Settings settings;
+
+    private ServerVulnerabilityAssessmentsSettings serverVulnerabilityAssessmentsSettings;
+
+    private ApiCollections apiCollections;
+
+    private Pricings pricings;
+
+    private AzureDevOpsOrgs azureDevOpsOrgs;
+
+    private AzureDevOpsProjects azureDevOpsProjects;
+
+    private AzureDevOpsRepos azureDevOpsRepos;
+
+    private DevOpsConfigurations devOpsConfigurations;
+
+    private GitHubOwners gitHubOwners;
+
+    private GitHubRepos gitHubRepos;
+
+    private GitLabGroups gitLabGroups;
+
+    private GitLabSubgroups gitLabSubgroups;
+
+    private GitLabProjects gitLabProjects;
+
+    private DevOpsOperationResults devOpsOperationResults;
 
     private final SecurityCenter clientObject;
 
     private SecurityManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new SecurityCenterBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new SecurityCenterBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of Security service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Security service API instance.
@@ -307,7 +344,7 @@ public final class SecurityManager {
 
     /**
      * Creates an instance of Security service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Security service API instance.
@@ -320,14 +357,16 @@ public final class SecurityManager {
 
     /**
      * Gets a Configurable instance that can be used to create SecurityManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new SecurityManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -399,8 +438,8 @@ public final class SecurityManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -417,8 +456,8 @@ public final class SecurityManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -438,15 +477,13 @@ public final class SecurityManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.security")
                 .append("/")
-                .append("1.0.0-beta.5");
+                .append("1.0.0-beta.7");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -471,178 +508,28 @@ public final class SecurityManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new SecurityManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
-     * Gets the resource collection API of MdeOnboardings.
-     *
-     * @return Resource collection API of MdeOnboardings.
-     */
-    public MdeOnboardings mdeOnboardings() {
-        if (this.mdeOnboardings == null) {
-            this.mdeOnboardings = new MdeOnboardingsImpl(clientObject.getMdeOnboardings(), this);
-        }
-        return mdeOnboardings;
-    }
-
-    /**
-     * Gets the resource collection API of CustomAssessmentAutomations. It manages CustomAssessmentAutomation.
-     *
-     * @return Resource collection API of CustomAssessmentAutomations.
-     */
-    public CustomAssessmentAutomations customAssessmentAutomations() {
-        if (this.customAssessmentAutomations == null) {
-            this.customAssessmentAutomations =
-                new CustomAssessmentAutomationsImpl(clientObject.getCustomAssessmentAutomations(), this);
-        }
-        return customAssessmentAutomations;
-    }
-
-    /**
-     * Gets the resource collection API of CustomEntityStoreAssignments. It manages CustomEntityStoreAssignment.
-     *
-     * @return Resource collection API of CustomEntityStoreAssignments.
-     */
-    public CustomEntityStoreAssignments customEntityStoreAssignments() {
-        if (this.customEntityStoreAssignments == null) {
-            this.customEntityStoreAssignments =
-                new CustomEntityStoreAssignmentsImpl(clientObject.getCustomEntityStoreAssignments(), this);
-        }
-        return customEntityStoreAssignments;
-    }
-
-    /**
-     * Gets the resource collection API of ComplianceResults.
-     *
-     * @return Resource collection API of ComplianceResults.
-     */
-    public ComplianceResults complianceResults() {
-        if (this.complianceResults == null) {
-            this.complianceResults = new ComplianceResultsImpl(clientObject.getComplianceResults(), this);
-        }
-        return complianceResults;
-    }
-
-    /**
-     * Gets the resource collection API of Pricings.
-     *
-     * @return Resource collection API of Pricings.
-     */
-    public Pricings pricings() {
-        if (this.pricings == null) {
-            this.pricings = new PricingsImpl(clientObject.getPricings(), this);
-        }
-        return pricings;
-    }
-
-    /**
-     * Gets the resource collection API of AdvancedThreatProtections. It manages AdvancedThreatProtectionSetting.
-     *
-     * @return Resource collection API of AdvancedThreatProtections.
-     */
-    public AdvancedThreatProtections advancedThreatProtections() {
-        if (this.advancedThreatProtections == null) {
-            this.advancedThreatProtections =
-                new AdvancedThreatProtectionsImpl(clientObject.getAdvancedThreatProtections(), this);
-        }
-        return advancedThreatProtections;
-    }
-
-    /**
-     * Gets the resource collection API of DeviceSecurityGroups. It manages DeviceSecurityGroup.
-     *
-     * @return Resource collection API of DeviceSecurityGroups.
-     */
-    public DeviceSecurityGroups deviceSecurityGroups() {
-        if (this.deviceSecurityGroups == null) {
-            this.deviceSecurityGroups = new DeviceSecurityGroupsImpl(clientObject.getDeviceSecurityGroups(), this);
-        }
-        return deviceSecurityGroups;
-    }
-
-    /**
-     * Gets the resource collection API of IotSecuritySolutions. It manages IoTSecuritySolutionModel.
-     *
-     * @return Resource collection API of IotSecuritySolutions.
-     */
-    public IotSecuritySolutions iotSecuritySolutions() {
-        if (this.iotSecuritySolutions == null) {
-            this.iotSecuritySolutions = new IotSecuritySolutionsImpl(clientObject.getIotSecuritySolutions(), this);
-        }
-        return iotSecuritySolutions;
-    }
-
-    /**
-     * Gets the resource collection API of IotSecuritySolutionAnalytics.
-     *
-     * @return Resource collection API of IotSecuritySolutionAnalytics.
-     */
-    public IotSecuritySolutionAnalytics iotSecuritySolutionAnalytics() {
-        if (this.iotSecuritySolutionAnalytics == null) {
-            this.iotSecuritySolutionAnalytics =
-                new IotSecuritySolutionAnalyticsImpl(clientObject.getIotSecuritySolutionAnalytics(), this);
-        }
-        return iotSecuritySolutionAnalytics;
-    }
-
-    /**
-     * Gets the resource collection API of IotSecuritySolutionsAnalyticsAggregatedAlerts.
-     *
-     * @return Resource collection API of IotSecuritySolutionsAnalyticsAggregatedAlerts.
-     */
-    public IotSecuritySolutionsAnalyticsAggregatedAlerts iotSecuritySolutionsAnalyticsAggregatedAlerts() {
-        if (this.iotSecuritySolutionsAnalyticsAggregatedAlerts == null) {
-            this.iotSecuritySolutionsAnalyticsAggregatedAlerts =
-                new IotSecuritySolutionsAnalyticsAggregatedAlertsImpl(
-                    clientObject.getIotSecuritySolutionsAnalyticsAggregatedAlerts(), this);
-        }
-        return iotSecuritySolutionsAnalyticsAggregatedAlerts;
-    }
-
-    /**
-     * Gets the resource collection API of IotSecuritySolutionsAnalyticsRecommendations.
-     *
-     * @return Resource collection API of IotSecuritySolutionsAnalyticsRecommendations.
-     */
-    public IotSecuritySolutionsAnalyticsRecommendations iotSecuritySolutionsAnalyticsRecommendations() {
-        if (this.iotSecuritySolutionsAnalyticsRecommendations == null) {
-            this.iotSecuritySolutionsAnalyticsRecommendations =
-                new IotSecuritySolutionsAnalyticsRecommendationsImpl(
-                    clientObject.getIotSecuritySolutionsAnalyticsRecommendations(), this);
-        }
-        return iotSecuritySolutionsAnalyticsRecommendations;
-    }
-
-    /**
      * Gets the resource collection API of Locations.
-     *
+     * 
      * @return Resource collection API of Locations.
      */
     public Locations locations() {
@@ -654,7 +541,7 @@ public final class SecurityManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -666,7 +553,7 @@ public final class SecurityManager {
 
     /**
      * Gets the resource collection API of Tasks.
-     *
+     * 
      * @return Resource collection API of Tasks.
      */
     public Tasks tasks() {
@@ -678,20 +565,20 @@ public final class SecurityManager {
 
     /**
      * Gets the resource collection API of AutoProvisioningSettings. It manages AutoProvisioningSetting.
-     *
+     * 
      * @return Resource collection API of AutoProvisioningSettings.
      */
     public AutoProvisioningSettings autoProvisioningSettings() {
         if (this.autoProvisioningSettings == null) {
-            this.autoProvisioningSettings =
-                new AutoProvisioningSettingsImpl(clientObject.getAutoProvisioningSettings(), this);
+            this.autoProvisioningSettings
+                = new AutoProvisioningSettingsImpl(clientObject.getAutoProvisioningSettings(), this);
         }
         return autoProvisioningSettings;
     }
 
     /**
      * Gets the resource collection API of Compliances.
-     *
+     * 
      * @return Resource collection API of Compliances.
      */
     public Compliances compliances() {
@@ -703,32 +590,20 @@ public final class SecurityManager {
 
     /**
      * Gets the resource collection API of InformationProtectionPolicies. It manages InformationProtectionPolicy.
-     *
+     * 
      * @return Resource collection API of InformationProtectionPolicies.
      */
     public InformationProtectionPolicies informationProtectionPolicies() {
         if (this.informationProtectionPolicies == null) {
-            this.informationProtectionPolicies =
-                new InformationProtectionPoliciesImpl(clientObject.getInformationProtectionPolicies(), this);
+            this.informationProtectionPolicies
+                = new InformationProtectionPoliciesImpl(clientObject.getInformationProtectionPolicies(), this);
         }
         return informationProtectionPolicies;
     }
 
     /**
-     * Gets the resource collection API of SecurityContacts. It manages SecurityContact.
-     *
-     * @return Resource collection API of SecurityContacts.
-     */
-    public SecurityContacts securityContacts() {
-        if (this.securityContacts == null) {
-            this.securityContacts = new SecurityContactsImpl(clientObject.getSecurityContacts(), this);
-        }
-        return securityContacts;
-    }
-
-    /**
      * Gets the resource collection API of WorkspaceSettings. It manages WorkspaceSetting.
-     *
+     * 
      * @return Resource collection API of WorkspaceSettings.
      */
     public WorkspaceSettings workspaceSettings() {
@@ -739,47 +614,60 @@ public final class SecurityManager {
     }
 
     /**
+     * Gets the resource collection API of AlertsSuppressionRules.
+     * 
+     * @return Resource collection API of AlertsSuppressionRules.
+     */
+    public AlertsSuppressionRules alertsSuppressionRules() {
+        if (this.alertsSuppressionRules == null) {
+            this.alertsSuppressionRules
+                = new AlertsSuppressionRulesImpl(clientObject.getAlertsSuppressionRules(), this);
+        }
+        return alertsSuppressionRules;
+    }
+
+    /**
      * Gets the resource collection API of RegulatoryComplianceStandards.
-     *
+     * 
      * @return Resource collection API of RegulatoryComplianceStandards.
      */
     public RegulatoryComplianceStandards regulatoryComplianceStandards() {
         if (this.regulatoryComplianceStandards == null) {
-            this.regulatoryComplianceStandards =
-                new RegulatoryComplianceStandardsImpl(clientObject.getRegulatoryComplianceStandards(), this);
+            this.regulatoryComplianceStandards
+                = new RegulatoryComplianceStandardsImpl(clientObject.getRegulatoryComplianceStandards(), this);
         }
         return regulatoryComplianceStandards;
     }
 
     /**
      * Gets the resource collection API of RegulatoryComplianceControls.
-     *
+     * 
      * @return Resource collection API of RegulatoryComplianceControls.
      */
     public RegulatoryComplianceControls regulatoryComplianceControls() {
         if (this.regulatoryComplianceControls == null) {
-            this.regulatoryComplianceControls =
-                new RegulatoryComplianceControlsImpl(clientObject.getRegulatoryComplianceControls(), this);
+            this.regulatoryComplianceControls
+                = new RegulatoryComplianceControlsImpl(clientObject.getRegulatoryComplianceControls(), this);
         }
         return regulatoryComplianceControls;
     }
 
     /**
      * Gets the resource collection API of RegulatoryComplianceAssessments.
-     *
+     * 
      * @return Resource collection API of RegulatoryComplianceAssessments.
      */
     public RegulatoryComplianceAssessments regulatoryComplianceAssessments() {
         if (this.regulatoryComplianceAssessments == null) {
-            this.regulatoryComplianceAssessments =
-                new RegulatoryComplianceAssessmentsImpl(clientObject.getRegulatoryComplianceAssessments(), this);
+            this.regulatoryComplianceAssessments
+                = new RegulatoryComplianceAssessmentsImpl(clientObject.getRegulatoryComplianceAssessments(), this);
         }
         return regulatoryComplianceAssessments;
     }
 
     /**
      * Gets the resource collection API of SubAssessments.
-     *
+     * 
      * @return Resource collection API of SubAssessments.
      */
     public SubAssessments subAssessments() {
@@ -790,221 +678,8 @@ public final class SecurityManager {
     }
 
     /**
-     * Gets the resource collection API of Automations. It manages Automation.
-     *
-     * @return Resource collection API of Automations.
-     */
-    public Automations automations() {
-        if (this.automations == null) {
-            this.automations = new AutomationsImpl(clientObject.getAutomations(), this);
-        }
-        return automations;
-    }
-
-    /**
-     * Gets the resource collection API of AlertsSuppressionRules.
-     *
-     * @return Resource collection API of AlertsSuppressionRules.
-     */
-    public AlertsSuppressionRules alertsSuppressionRules() {
-        if (this.alertsSuppressionRules == null) {
-            this.alertsSuppressionRules =
-                new AlertsSuppressionRulesImpl(clientObject.getAlertsSuppressionRules(), this);
-        }
-        return alertsSuppressionRules;
-    }
-
-    /**
-     * Gets the resource collection API of ServerVulnerabilityAssessments.
-     *
-     * @return Resource collection API of ServerVulnerabilityAssessments.
-     */
-    public ServerVulnerabilityAssessments serverVulnerabilityAssessments() {
-        if (this.serverVulnerabilityAssessments == null) {
-            this.serverVulnerabilityAssessments =
-                new ServerVulnerabilityAssessmentsImpl(clientObject.getServerVulnerabilityAssessments(), this);
-        }
-        return serverVulnerabilityAssessments;
-    }
-
-    /**
-     * Gets the resource collection API of AssessmentsMetadatas. It manages SecurityAssessmentMetadataResponse.
-     *
-     * @return Resource collection API of AssessmentsMetadatas.
-     */
-    public AssessmentsMetadatas assessmentsMetadatas() {
-        if (this.assessmentsMetadatas == null) {
-            this.assessmentsMetadatas = new AssessmentsMetadatasImpl(clientObject.getAssessmentsMetadatas(), this);
-        }
-        return assessmentsMetadatas;
-    }
-
-    /**
-     * Gets the resource collection API of Assessments. It manages SecurityAssessmentResponse.
-     *
-     * @return Resource collection API of Assessments.
-     */
-    public Assessments assessments() {
-        if (this.assessments == null) {
-            this.assessments = new AssessmentsImpl(clientObject.getAssessments(), this);
-        }
-        return assessments;
-    }
-
-    /**
-     * Gets the resource collection API of AdaptiveApplicationControls. It manages AdaptiveApplicationControlGroup.
-     *
-     * @return Resource collection API of AdaptiveApplicationControls.
-     */
-    public AdaptiveApplicationControls adaptiveApplicationControls() {
-        if (this.adaptiveApplicationControls == null) {
-            this.adaptiveApplicationControls =
-                new AdaptiveApplicationControlsImpl(clientObject.getAdaptiveApplicationControls(), this);
-        }
-        return adaptiveApplicationControls;
-    }
-
-    /**
-     * Gets the resource collection API of AdaptiveNetworkHardenings.
-     *
-     * @return Resource collection API of AdaptiveNetworkHardenings.
-     */
-    public AdaptiveNetworkHardenings adaptiveNetworkHardenings() {
-        if (this.adaptiveNetworkHardenings == null) {
-            this.adaptiveNetworkHardenings =
-                new AdaptiveNetworkHardeningsImpl(clientObject.getAdaptiveNetworkHardenings(), this);
-        }
-        return adaptiveNetworkHardenings;
-    }
-
-    /**
-     * Gets the resource collection API of AllowedConnections.
-     *
-     * @return Resource collection API of AllowedConnections.
-     */
-    public AllowedConnections allowedConnections() {
-        if (this.allowedConnections == null) {
-            this.allowedConnections = new AllowedConnectionsImpl(clientObject.getAllowedConnections(), this);
-        }
-        return allowedConnections;
-    }
-
-    /**
-     * Gets the resource collection API of Topologies.
-     *
-     * @return Resource collection API of Topologies.
-     */
-    public Topologies topologies() {
-        if (this.topologies == null) {
-            this.topologies = new TopologiesImpl(clientObject.getTopologies(), this);
-        }
-        return topologies;
-    }
-
-    /**
-     * Gets the resource collection API of JitNetworkAccessPolicies. It manages JitNetworkAccessPolicy.
-     *
-     * @return Resource collection API of JitNetworkAccessPolicies.
-     */
-    public JitNetworkAccessPolicies jitNetworkAccessPolicies() {
-        if (this.jitNetworkAccessPolicies == null) {
-            this.jitNetworkAccessPolicies =
-                new JitNetworkAccessPoliciesImpl(clientObject.getJitNetworkAccessPolicies(), this);
-        }
-        return jitNetworkAccessPolicies;
-    }
-
-    /**
-     * Gets the resource collection API of DiscoveredSecuritySolutions.
-     *
-     * @return Resource collection API of DiscoveredSecuritySolutions.
-     */
-    public DiscoveredSecuritySolutions discoveredSecuritySolutions() {
-        if (this.discoveredSecuritySolutions == null) {
-            this.discoveredSecuritySolutions =
-                new DiscoveredSecuritySolutionsImpl(clientObject.getDiscoveredSecuritySolutions(), this);
-        }
-        return discoveredSecuritySolutions;
-    }
-
-    /**
-     * Gets the resource collection API of SecuritySolutionsReferenceDatas.
-     *
-     * @return Resource collection API of SecuritySolutionsReferenceDatas.
-     */
-    public SecuritySolutionsReferenceDatas securitySolutionsReferenceDatas() {
-        if (this.securitySolutionsReferenceDatas == null) {
-            this.securitySolutionsReferenceDatas =
-                new SecuritySolutionsReferenceDatasImpl(clientObject.getSecuritySolutionsReferenceDatas(), this);
-        }
-        return securitySolutionsReferenceDatas;
-    }
-
-    /**
-     * Gets the resource collection API of ExternalSecuritySolutions.
-     *
-     * @return Resource collection API of ExternalSecuritySolutions.
-     */
-    public ExternalSecuritySolutions externalSecuritySolutions() {
-        if (this.externalSecuritySolutions == null) {
-            this.externalSecuritySolutions =
-                new ExternalSecuritySolutionsImpl(clientObject.getExternalSecuritySolutions(), this);
-        }
-        return externalSecuritySolutions;
-    }
-
-    /**
-     * Gets the resource collection API of SecureScores.
-     *
-     * @return Resource collection API of SecureScores.
-     */
-    public SecureScores secureScores() {
-        if (this.secureScores == null) {
-            this.secureScores = new SecureScoresImpl(clientObject.getSecureScores(), this);
-        }
-        return secureScores;
-    }
-
-    /**
-     * Gets the resource collection API of SecureScoreControls.
-     *
-     * @return Resource collection API of SecureScoreControls.
-     */
-    public SecureScoreControls secureScoreControls() {
-        if (this.secureScoreControls == null) {
-            this.secureScoreControls = new SecureScoreControlsImpl(clientObject.getSecureScoreControls(), this);
-        }
-        return secureScoreControls;
-    }
-
-    /**
-     * Gets the resource collection API of SecureScoreControlDefinitions.
-     *
-     * @return Resource collection API of SecureScoreControlDefinitions.
-     */
-    public SecureScoreControlDefinitions secureScoreControlDefinitions() {
-        if (this.secureScoreControlDefinitions == null) {
-            this.secureScoreControlDefinitions =
-                new SecureScoreControlDefinitionsImpl(clientObject.getSecureScoreControlDefinitions(), this);
-        }
-        return secureScoreControlDefinitions;
-    }
-
-    /**
-     * Gets the resource collection API of SecuritySolutions.
-     *
-     * @return Resource collection API of SecuritySolutions.
-     */
-    public SecuritySolutions securitySolutions() {
-        if (this.securitySolutions == null) {
-            this.securitySolutions = new SecuritySolutionsImpl(clientObject.getSecuritySolutions(), this);
-        }
-        return securitySolutions;
-    }
-
-    /**
      * Gets the resource collection API of Connectors. It manages ConnectorSetting.
-     *
+     * 
      * @return Resource collection API of Connectors.
      */
     public Connectors connectors() {
@@ -1015,44 +690,8 @@ public final class SecurityManager {
     }
 
     /**
-     * Gets the resource collection API of Alerts.
-     *
-     * @return Resource collection API of Alerts.
-     */
-    public Alerts alerts() {
-        if (this.alerts == null) {
-            this.alerts = new AlertsImpl(clientObject.getAlerts(), this);
-        }
-        return alerts;
-    }
-
-    /**
-     * Gets the resource collection API of Settings.
-     *
-     * @return Resource collection API of Settings.
-     */
-    public Settings settings() {
-        if (this.settings == null) {
-            this.settings = new SettingsImpl(clientObject.getSettings(), this);
-        }
-        return settings;
-    }
-
-    /**
-     * Gets the resource collection API of IngestionSettings. It manages IngestionSetting.
-     *
-     * @return Resource collection API of IngestionSettings.
-     */
-    public IngestionSettings ingestionSettings() {
-        if (this.ingestionSettings == null) {
-            this.ingestionSettings = new IngestionSettingsImpl(clientObject.getIngestionSettings(), this);
-        }
-        return ingestionSettings;
-    }
-
-    /**
      * Gets the resource collection API of SoftwareInventories.
-     *
+     * 
      * @return Resource collection API of SoftwareInventories.
      */
     public SoftwareInventories softwareInventories() {
@@ -1063,20 +702,46 @@ public final class SecurityManager {
     }
 
     /**
-     * Gets the resource collection API of GovernanceRules. It manages GovernanceRule.
-     *
-     * @return Resource collection API of GovernanceRules.
+     * Gets the resource collection API of CustomAssessmentAutomations. It manages CustomAssessmentAutomation.
+     * 
+     * @return Resource collection API of CustomAssessmentAutomations.
      */
-    public GovernanceRules governanceRules() {
-        if (this.governanceRules == null) {
-            this.governanceRules = new GovernanceRulesImpl(clientObject.getGovernanceRules(), this);
+    public CustomAssessmentAutomations customAssessmentAutomations() {
+        if (this.customAssessmentAutomations == null) {
+            this.customAssessmentAutomations
+                = new CustomAssessmentAutomationsImpl(clientObject.getCustomAssessmentAutomations(), this);
         }
-        return governanceRules;
+        return customAssessmentAutomations;
+    }
+
+    /**
+     * Gets the resource collection API of CustomEntityStoreAssignments. It manages CustomEntityStoreAssignment.
+     * 
+     * @return Resource collection API of CustomEntityStoreAssignments.
+     */
+    public CustomEntityStoreAssignments customEntityStoreAssignments() {
+        if (this.customEntityStoreAssignments == null) {
+            this.customEntityStoreAssignments
+                = new CustomEntityStoreAssignmentsImpl(clientObject.getCustomEntityStoreAssignments(), this);
+        }
+        return customEntityStoreAssignments;
+    }
+
+    /**
+     * Gets the resource collection API of MdeOnboardings.
+     * 
+     * @return Resource collection API of MdeOnboardings.
+     */
+    public MdeOnboardings mdeOnboardings() {
+        if (this.mdeOnboardings == null) {
+            this.mdeOnboardings = new MdeOnboardingsImpl(clientObject.getMdeOnboardings(), this);
+        }
+        return mdeOnboardings;
     }
 
     /**
      * Gets the resource collection API of GovernanceAssignments. It manages GovernanceAssignment.
-     *
+     * 
      * @return Resource collection API of GovernanceAssignments.
      */
     public GovernanceAssignments governanceAssignments() {
@@ -1087,8 +752,20 @@ public final class SecurityManager {
     }
 
     /**
+     * Gets the resource collection API of GovernanceRules. It manages GovernanceRule.
+     * 
+     * @return Resource collection API of GovernanceRules.
+     */
+    public GovernanceRules governanceRules() {
+        if (this.governanceRules == null) {
+            this.governanceRules = new GovernanceRulesImpl(clientObject.getGovernanceRules(), this);
+        }
+        return governanceRules;
+    }
+
+    /**
      * Gets the resource collection API of Applications.
-     *
+     * 
      * @return Resource collection API of Applications.
      */
     public Applications applications() {
@@ -1100,7 +777,7 @@ public final class SecurityManager {
 
     /**
      * Gets the resource collection API of ApplicationOperations. It manages Application.
-     *
+     * 
      * @return Resource collection API of ApplicationOperations.
      */
     public ApplicationOperations applicationOperations() {
@@ -1112,150 +789,45 @@ public final class SecurityManager {
 
     /**
      * Gets the resource collection API of SecurityConnectorApplications.
-     *
+     * 
      * @return Resource collection API of SecurityConnectorApplications.
      */
     public SecurityConnectorApplications securityConnectorApplications() {
         if (this.securityConnectorApplications == null) {
-            this.securityConnectorApplications =
-                new SecurityConnectorApplicationsImpl(clientObject.getSecurityConnectorApplications(), this);
+            this.securityConnectorApplications
+                = new SecurityConnectorApplicationsImpl(clientObject.getSecurityConnectorApplications(), this);
         }
         return securityConnectorApplications;
     }
 
     /**
      * Gets the resource collection API of SecurityConnectorApplicationOperations.
-     *
+     * 
      * @return Resource collection API of SecurityConnectorApplicationOperations.
      */
     public SecurityConnectorApplicationOperations securityConnectorApplicationOperations() {
         if (this.securityConnectorApplicationOperations == null) {
-            this.securityConnectorApplicationOperations =
-                new SecurityConnectorApplicationOperationsImpl(
-                    clientObject.getSecurityConnectorApplicationOperations(), this);
+            this.securityConnectorApplicationOperations = new SecurityConnectorApplicationOperationsImpl(
+                clientObject.getSecurityConnectorApplicationOperations(), this);
         }
         return securityConnectorApplicationOperations;
     }
 
     /**
-     * Gets the resource collection API of ApiCollections.
-     *
-     * @return Resource collection API of ApiCollections.
+     * Gets the resource collection API of DefenderForStorages. It manages DefenderForStorageSetting.
+     * 
+     * @return Resource collection API of DefenderForStorages.
      */
-    public ApiCollections apiCollections() {
-        if (this.apiCollections == null) {
-            this.apiCollections = new ApiCollectionsImpl(clientObject.getApiCollections(), this);
+    public DefenderForStorages defenderForStorages() {
+        if (this.defenderForStorages == null) {
+            this.defenderForStorages = new DefenderForStoragesImpl(clientObject.getDefenderForStorages(), this);
         }
-        return apiCollections;
-    }
-
-    /**
-     * Gets the resource collection API of ApiCollectionOnboardings.
-     *
-     * @return Resource collection API of ApiCollectionOnboardings.
-     */
-    public ApiCollectionOnboardings apiCollectionOnboardings() {
-        if (this.apiCollectionOnboardings == null) {
-            this.apiCollectionOnboardings =
-                new ApiCollectionOnboardingsImpl(clientObject.getApiCollectionOnboardings(), this);
-        }
-        return apiCollectionOnboardings;
-    }
-
-    /**
-     * Gets the resource collection API of ApiCollectionOffboardings.
-     *
-     * @return Resource collection API of ApiCollectionOffboardings.
-     */
-    public ApiCollectionOffboardings apiCollectionOffboardings() {
-        if (this.apiCollectionOffboardings == null) {
-            this.apiCollectionOffboardings =
-                new ApiCollectionOffboardingsImpl(clientObject.getApiCollectionOffboardings(), this);
-        }
-        return apiCollectionOffboardings;
-    }
-
-    /**
-     * Gets the resource collection API of HealthReports.
-     *
-     * @return Resource collection API of HealthReports.
-     */
-    public HealthReports healthReports() {
-        if (this.healthReports == null) {
-            this.healthReports = new HealthReportsImpl(clientObject.getHealthReports(), this);
-        }
-        return healthReports;
-    }
-
-    /**
-     * Gets the resource collection API of HealthReportOperations.
-     *
-     * @return Resource collection API of HealthReportOperations.
-     */
-    public HealthReportOperations healthReportOperations() {
-        if (this.healthReportOperations == null) {
-            this.healthReportOperations =
-                new HealthReportOperationsImpl(clientObject.getHealthReportOperations(), this);
-        }
-        return healthReportOperations;
-    }
-
-    /**
-     * Gets the resource collection API of SqlVulnerabilityAssessmentScans.
-     *
-     * @return Resource collection API of SqlVulnerabilityAssessmentScans.
-     */
-    public SqlVulnerabilityAssessmentScans sqlVulnerabilityAssessmentScans() {
-        if (this.sqlVulnerabilityAssessmentScans == null) {
-            this.sqlVulnerabilityAssessmentScans =
-                new SqlVulnerabilityAssessmentScansImpl(clientObject.getSqlVulnerabilityAssessmentScans(), this);
-        }
-        return sqlVulnerabilityAssessmentScans;
-    }
-
-    /**
-     * Gets the resource collection API of SqlVulnerabilityAssessmentScanResults.
-     *
-     * @return Resource collection API of SqlVulnerabilityAssessmentScanResults.
-     */
-    public SqlVulnerabilityAssessmentScanResults sqlVulnerabilityAssessmentScanResults() {
-        if (this.sqlVulnerabilityAssessmentScanResults == null) {
-            this.sqlVulnerabilityAssessmentScanResults =
-                new SqlVulnerabilityAssessmentScanResultsImpl(
-                    clientObject.getSqlVulnerabilityAssessmentScanResults(), this);
-        }
-        return sqlVulnerabilityAssessmentScanResults;
-    }
-
-    /**
-     * Gets the resource collection API of SqlVulnerabilityAssessmentBaselineRules. It manages RuleResults.
-     *
-     * @return Resource collection API of SqlVulnerabilityAssessmentBaselineRules.
-     */
-    public SqlVulnerabilityAssessmentBaselineRules sqlVulnerabilityAssessmentBaselineRules() {
-        if (this.sqlVulnerabilityAssessmentBaselineRules == null) {
-            this.sqlVulnerabilityAssessmentBaselineRules =
-                new SqlVulnerabilityAssessmentBaselineRulesImpl(
-                    clientObject.getSqlVulnerabilityAssessmentBaselineRules(), this);
-        }
-        return sqlVulnerabilityAssessmentBaselineRules;
-    }
-
-    /**
-     * Gets the resource collection API of SecurityConnectors. It manages SecurityConnector.
-     *
-     * @return Resource collection API of SecurityConnectors.
-     */
-    public SecurityConnectors securityConnectors() {
-        if (this.securityConnectors == null) {
-            this.securityConnectors = new SecurityConnectorsImpl(clientObject.getSecurityConnectors(), this);
-        }
-        return securityConnectors;
+        return defenderForStorages;
     }
 
     /**
      * Gets the resource collection API of SecurityOperators.
-     *
+     * 
      * @return Resource collection API of SecurityOperators.
      */
     public SecurityOperators securityOperators() {
@@ -1266,8 +838,567 @@ public final class SecurityManager {
     }
 
     /**
-     * @return Wrapped service client SecurityCenter providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets the resource collection API of SqlVulnerabilityAssessmentBaselineRules. It manages RuleResults.
+     * 
+     * @return Resource collection API of SqlVulnerabilityAssessmentBaselineRules.
+     */
+    public SqlVulnerabilityAssessmentBaselineRules sqlVulnerabilityAssessmentBaselineRules() {
+        if (this.sqlVulnerabilityAssessmentBaselineRules == null) {
+            this.sqlVulnerabilityAssessmentBaselineRules = new SqlVulnerabilityAssessmentBaselineRulesImpl(
+                clientObject.getSqlVulnerabilityAssessmentBaselineRules(), this);
+        }
+        return sqlVulnerabilityAssessmentBaselineRules;
+    }
+
+    /**
+     * Gets the resource collection API of SqlVulnerabilityAssessmentScans.
+     * 
+     * @return Resource collection API of SqlVulnerabilityAssessmentScans.
+     */
+    public SqlVulnerabilityAssessmentScans sqlVulnerabilityAssessmentScans() {
+        if (this.sqlVulnerabilityAssessmentScans == null) {
+            this.sqlVulnerabilityAssessmentScans
+                = new SqlVulnerabilityAssessmentScansImpl(clientObject.getSqlVulnerabilityAssessmentScans(), this);
+        }
+        return sqlVulnerabilityAssessmentScans;
+    }
+
+    /**
+     * Gets the resource collection API of SqlVulnerabilityAssessmentScanResults.
+     * 
+     * @return Resource collection API of SqlVulnerabilityAssessmentScanResults.
+     */
+    public SqlVulnerabilityAssessmentScanResults sqlVulnerabilityAssessmentScanResults() {
+        if (this.sqlVulnerabilityAssessmentScanResults == null) {
+            this.sqlVulnerabilityAssessmentScanResults = new SqlVulnerabilityAssessmentScanResultsImpl(
+                clientObject.getSqlVulnerabilityAssessmentScanResults(), this);
+        }
+        return sqlVulnerabilityAssessmentScanResults;
+    }
+
+    /**
+     * Gets the resource collection API of SensitivitySettings.
+     * 
+     * @return Resource collection API of SensitivitySettings.
+     */
+    public SensitivitySettings sensitivitySettings() {
+        if (this.sensitivitySettings == null) {
+            this.sensitivitySettings = new SensitivitySettingsImpl(clientObject.getSensitivitySettings(), this);
+        }
+        return sensitivitySettings;
+    }
+
+    /**
+     * Gets the resource collection API of HealthReports.
+     * 
+     * @return Resource collection API of HealthReports.
+     */
+    public HealthReports healthReports() {
+        if (this.healthReports == null) {
+            this.healthReports = new HealthReportsImpl(clientObject.getHealthReports(), this);
+        }
+        return healthReports;
+    }
+
+    /**
+     * Gets the resource collection API of Automations. It manages Automation.
+     * 
+     * @return Resource collection API of Automations.
+     */
+    public Automations automations() {
+        if (this.automations == null) {
+            this.automations = new AutomationsImpl(clientObject.getAutomations(), this);
+        }
+        return automations;
+    }
+
+    /**
+     * Gets the resource collection API of SecurityContacts. It manages SecurityContact.
+     * 
+     * @return Resource collection API of SecurityContacts.
+     */
+    public SecurityContacts securityContacts() {
+        if (this.securityContacts == null) {
+            this.securityContacts = new SecurityContactsImpl(clientObject.getSecurityContacts(), this);
+        }
+        return securityContacts;
+    }
+
+    /**
+     * Gets the resource collection API of SecurityConnectors. It manages SecurityConnector.
+     * 
+     * @return Resource collection API of SecurityConnectors.
+     */
+    public SecurityConnectors securityConnectors() {
+        if (this.securityConnectors == null) {
+            this.securityConnectors = new SecurityConnectorsImpl(clientObject.getSecurityConnectors(), this);
+        }
+        return securityConnectors;
+    }
+
+    /**
+     * Gets the resource collection API of ComplianceResults.
+     * 
+     * @return Resource collection API of ComplianceResults.
+     */
+    public ComplianceResults complianceResults() {
+        if (this.complianceResults == null) {
+            this.complianceResults = new ComplianceResultsImpl(clientObject.getComplianceResults(), this);
+        }
+        return complianceResults;
+    }
+
+    /**
+     * Gets the resource collection API of AdvancedThreatProtections. It manages AdvancedThreatProtectionSetting.
+     * 
+     * @return Resource collection API of AdvancedThreatProtections.
+     */
+    public AdvancedThreatProtections advancedThreatProtections() {
+        if (this.advancedThreatProtections == null) {
+            this.advancedThreatProtections
+                = new AdvancedThreatProtectionsImpl(clientObject.getAdvancedThreatProtections(), this);
+        }
+        return advancedThreatProtections;
+    }
+
+    /**
+     * Gets the resource collection API of DeviceSecurityGroups. It manages DeviceSecurityGroup.
+     * 
+     * @return Resource collection API of DeviceSecurityGroups.
+     */
+    public DeviceSecurityGroups deviceSecurityGroups() {
+        if (this.deviceSecurityGroups == null) {
+            this.deviceSecurityGroups = new DeviceSecurityGroupsImpl(clientObject.getDeviceSecurityGroups(), this);
+        }
+        return deviceSecurityGroups;
+    }
+
+    /**
+     * Gets the resource collection API of IotSecuritySolutionAnalytics.
+     * 
+     * @return Resource collection API of IotSecuritySolutionAnalytics.
+     */
+    public IotSecuritySolutionAnalytics iotSecuritySolutionAnalytics() {
+        if (this.iotSecuritySolutionAnalytics == null) {
+            this.iotSecuritySolutionAnalytics
+                = new IotSecuritySolutionAnalyticsImpl(clientObject.getIotSecuritySolutionAnalytics(), this);
+        }
+        return iotSecuritySolutionAnalytics;
+    }
+
+    /**
+     * Gets the resource collection API of IotSecuritySolutionsAnalyticsAggregatedAlerts.
+     * 
+     * @return Resource collection API of IotSecuritySolutionsAnalyticsAggregatedAlerts.
+     */
+    public IotSecuritySolutionsAnalyticsAggregatedAlerts iotSecuritySolutionsAnalyticsAggregatedAlerts() {
+        if (this.iotSecuritySolutionsAnalyticsAggregatedAlerts == null) {
+            this.iotSecuritySolutionsAnalyticsAggregatedAlerts = new IotSecuritySolutionsAnalyticsAggregatedAlertsImpl(
+                clientObject.getIotSecuritySolutionsAnalyticsAggregatedAlerts(), this);
+        }
+        return iotSecuritySolutionsAnalyticsAggregatedAlerts;
+    }
+
+    /**
+     * Gets the resource collection API of IotSecuritySolutionsAnalyticsRecommendations.
+     * 
+     * @return Resource collection API of IotSecuritySolutionsAnalyticsRecommendations.
+     */
+    public IotSecuritySolutionsAnalyticsRecommendations iotSecuritySolutionsAnalyticsRecommendations() {
+        if (this.iotSecuritySolutionsAnalyticsRecommendations == null) {
+            this.iotSecuritySolutionsAnalyticsRecommendations = new IotSecuritySolutionsAnalyticsRecommendationsImpl(
+                clientObject.getIotSecuritySolutionsAnalyticsRecommendations(), this);
+        }
+        return iotSecuritySolutionsAnalyticsRecommendations;
+    }
+
+    /**
+     * Gets the resource collection API of IotSecuritySolutions. It manages IoTSecuritySolutionModel.
+     * 
+     * @return Resource collection API of IotSecuritySolutions.
+     */
+    public IotSecuritySolutions iotSecuritySolutions() {
+        if (this.iotSecuritySolutions == null) {
+            this.iotSecuritySolutions = new IotSecuritySolutionsImpl(clientObject.getIotSecuritySolutions(), this);
+        }
+        return iotSecuritySolutions;
+    }
+
+    /**
+     * Gets the resource collection API of AdaptiveNetworkHardenings.
+     * 
+     * @return Resource collection API of AdaptiveNetworkHardenings.
+     */
+    public AdaptiveNetworkHardenings adaptiveNetworkHardenings() {
+        if (this.adaptiveNetworkHardenings == null) {
+            this.adaptiveNetworkHardenings
+                = new AdaptiveNetworkHardeningsImpl(clientObject.getAdaptiveNetworkHardenings(), this);
+        }
+        return adaptiveNetworkHardenings;
+    }
+
+    /**
+     * Gets the resource collection API of AllowedConnections.
+     * 
+     * @return Resource collection API of AllowedConnections.
+     */
+    public AllowedConnections allowedConnections() {
+        if (this.allowedConnections == null) {
+            this.allowedConnections = new AllowedConnectionsImpl(clientObject.getAllowedConnections(), this);
+        }
+        return allowedConnections;
+    }
+
+    /**
+     * Gets the resource collection API of AdaptiveApplicationControls. It manages AdaptiveApplicationControlGroup.
+     * 
+     * @return Resource collection API of AdaptiveApplicationControls.
+     */
+    public AdaptiveApplicationControls adaptiveApplicationControls() {
+        if (this.adaptiveApplicationControls == null) {
+            this.adaptiveApplicationControls
+                = new AdaptiveApplicationControlsImpl(clientObject.getAdaptiveApplicationControls(), this);
+        }
+        return adaptiveApplicationControls;
+    }
+
+    /**
+     * Gets the resource collection API of DiscoveredSecuritySolutions.
+     * 
+     * @return Resource collection API of DiscoveredSecuritySolutions.
+     */
+    public DiscoveredSecuritySolutions discoveredSecuritySolutions() {
+        if (this.discoveredSecuritySolutions == null) {
+            this.discoveredSecuritySolutions
+                = new DiscoveredSecuritySolutionsImpl(clientObject.getDiscoveredSecuritySolutions(), this);
+        }
+        return discoveredSecuritySolutions;
+    }
+
+    /**
+     * Gets the resource collection API of ExternalSecuritySolutions.
+     * 
+     * @return Resource collection API of ExternalSecuritySolutions.
+     */
+    public ExternalSecuritySolutions externalSecuritySolutions() {
+        if (this.externalSecuritySolutions == null) {
+            this.externalSecuritySolutions
+                = new ExternalSecuritySolutionsImpl(clientObject.getExternalSecuritySolutions(), this);
+        }
+        return externalSecuritySolutions;
+    }
+
+    /**
+     * Gets the resource collection API of JitNetworkAccessPolicies. It manages JitNetworkAccessPolicy.
+     * 
+     * @return Resource collection API of JitNetworkAccessPolicies.
+     */
+    public JitNetworkAccessPolicies jitNetworkAccessPolicies() {
+        if (this.jitNetworkAccessPolicies == null) {
+            this.jitNetworkAccessPolicies
+                = new JitNetworkAccessPoliciesImpl(clientObject.getJitNetworkAccessPolicies(), this);
+        }
+        return jitNetworkAccessPolicies;
+    }
+
+    /**
+     * Gets the resource collection API of SecureScores.
+     * 
+     * @return Resource collection API of SecureScores.
+     */
+    public SecureScores secureScores() {
+        if (this.secureScores == null) {
+            this.secureScores = new SecureScoresImpl(clientObject.getSecureScores(), this);
+        }
+        return secureScores;
+    }
+
+    /**
+     * Gets the resource collection API of SecureScoreControls.
+     * 
+     * @return Resource collection API of SecureScoreControls.
+     */
+    public SecureScoreControls secureScoreControls() {
+        if (this.secureScoreControls == null) {
+            this.secureScoreControls = new SecureScoreControlsImpl(clientObject.getSecureScoreControls(), this);
+        }
+        return secureScoreControls;
+    }
+
+    /**
+     * Gets the resource collection API of SecureScoreControlDefinitions.
+     * 
+     * @return Resource collection API of SecureScoreControlDefinitions.
+     */
+    public SecureScoreControlDefinitions secureScoreControlDefinitions() {
+        if (this.secureScoreControlDefinitions == null) {
+            this.secureScoreControlDefinitions
+                = new SecureScoreControlDefinitionsImpl(clientObject.getSecureScoreControlDefinitions(), this);
+        }
+        return secureScoreControlDefinitions;
+    }
+
+    /**
+     * Gets the resource collection API of SecuritySolutions.
+     * 
+     * @return Resource collection API of SecuritySolutions.
+     */
+    public SecuritySolutions securitySolutions() {
+        if (this.securitySolutions == null) {
+            this.securitySolutions = new SecuritySolutionsImpl(clientObject.getSecuritySolutions(), this);
+        }
+        return securitySolutions;
+    }
+
+    /**
+     * Gets the resource collection API of SecuritySolutionsReferenceDatas.
+     * 
+     * @return Resource collection API of SecuritySolutionsReferenceDatas.
+     */
+    public SecuritySolutionsReferenceDatas securitySolutionsReferenceDatas() {
+        if (this.securitySolutionsReferenceDatas == null) {
+            this.securitySolutionsReferenceDatas
+                = new SecuritySolutionsReferenceDatasImpl(clientObject.getSecuritySolutionsReferenceDatas(), this);
+        }
+        return securitySolutionsReferenceDatas;
+    }
+
+    /**
+     * Gets the resource collection API of ServerVulnerabilityAssessments.
+     * 
+     * @return Resource collection API of ServerVulnerabilityAssessments.
+     */
+    public ServerVulnerabilityAssessments serverVulnerabilityAssessments() {
+        if (this.serverVulnerabilityAssessments == null) {
+            this.serverVulnerabilityAssessments
+                = new ServerVulnerabilityAssessmentsImpl(clientObject.getServerVulnerabilityAssessments(), this);
+        }
+        return serverVulnerabilityAssessments;
+    }
+
+    /**
+     * Gets the resource collection API of Topologies.
+     * 
+     * @return Resource collection API of Topologies.
+     */
+    public Topologies topologies() {
+        if (this.topologies == null) {
+            this.topologies = new TopologiesImpl(clientObject.getTopologies(), this);
+        }
+        return topologies;
+    }
+
+    /**
+     * Gets the resource collection API of AssessmentsMetadatas. It manages SecurityAssessmentMetadataResponse.
+     * 
+     * @return Resource collection API of AssessmentsMetadatas.
+     */
+    public AssessmentsMetadatas assessmentsMetadatas() {
+        if (this.assessmentsMetadatas == null) {
+            this.assessmentsMetadatas = new AssessmentsMetadatasImpl(clientObject.getAssessmentsMetadatas(), this);
+        }
+        return assessmentsMetadatas;
+    }
+
+    /**
+     * Gets the resource collection API of Assessments. It manages SecurityAssessmentResponse.
+     * 
+     * @return Resource collection API of Assessments.
+     */
+    public Assessments assessments() {
+        if (this.assessments == null) {
+            this.assessments = new AssessmentsImpl(clientObject.getAssessments(), this);
+        }
+        return assessments;
+    }
+
+    /**
+     * Gets the resource collection API of Alerts.
+     * 
+     * @return Resource collection API of Alerts.
+     */
+    public Alerts alerts() {
+        if (this.alerts == null) {
+            this.alerts = new AlertsImpl(clientObject.getAlerts(), this);
+        }
+        return alerts;
+    }
+
+    /**
+     * Gets the resource collection API of Settings.
+     * 
+     * @return Resource collection API of Settings.
+     */
+    public Settings settings() {
+        if (this.settings == null) {
+            this.settings = new SettingsImpl(clientObject.getSettings(), this);
+        }
+        return settings;
+    }
+
+    /**
+     * Gets the resource collection API of ServerVulnerabilityAssessmentsSettings.
+     * 
+     * @return Resource collection API of ServerVulnerabilityAssessmentsSettings.
+     */
+    public ServerVulnerabilityAssessmentsSettings serverVulnerabilityAssessmentsSettings() {
+        if (this.serverVulnerabilityAssessmentsSettings == null) {
+            this.serverVulnerabilityAssessmentsSettings = new ServerVulnerabilityAssessmentsSettingsImpl(
+                clientObject.getServerVulnerabilityAssessmentsSettings(), this);
+        }
+        return serverVulnerabilityAssessmentsSettings;
+    }
+
+    /**
+     * Gets the resource collection API of ApiCollections.
+     * 
+     * @return Resource collection API of ApiCollections.
+     */
+    public ApiCollections apiCollections() {
+        if (this.apiCollections == null) {
+            this.apiCollections = new ApiCollectionsImpl(clientObject.getApiCollections(), this);
+        }
+        return apiCollections;
+    }
+
+    /**
+     * Gets the resource collection API of Pricings.
+     * 
+     * @return Resource collection API of Pricings.
+     */
+    public Pricings pricings() {
+        if (this.pricings == null) {
+            this.pricings = new PricingsImpl(clientObject.getPricings(), this);
+        }
+        return pricings;
+    }
+
+    /**
+     * Gets the resource collection API of AzureDevOpsOrgs. It manages AzureDevOpsOrg.
+     * 
+     * @return Resource collection API of AzureDevOpsOrgs.
+     */
+    public AzureDevOpsOrgs azureDevOpsOrgs() {
+        if (this.azureDevOpsOrgs == null) {
+            this.azureDevOpsOrgs = new AzureDevOpsOrgsImpl(clientObject.getAzureDevOpsOrgs(), this);
+        }
+        return azureDevOpsOrgs;
+    }
+
+    /**
+     * Gets the resource collection API of AzureDevOpsProjects. It manages AzureDevOpsProject.
+     * 
+     * @return Resource collection API of AzureDevOpsProjects.
+     */
+    public AzureDevOpsProjects azureDevOpsProjects() {
+        if (this.azureDevOpsProjects == null) {
+            this.azureDevOpsProjects = new AzureDevOpsProjectsImpl(clientObject.getAzureDevOpsProjects(), this);
+        }
+        return azureDevOpsProjects;
+    }
+
+    /**
+     * Gets the resource collection API of AzureDevOpsRepos. It manages AzureDevOpsRepository.
+     * 
+     * @return Resource collection API of AzureDevOpsRepos.
+     */
+    public AzureDevOpsRepos azureDevOpsRepos() {
+        if (this.azureDevOpsRepos == null) {
+            this.azureDevOpsRepos = new AzureDevOpsReposImpl(clientObject.getAzureDevOpsRepos(), this);
+        }
+        return azureDevOpsRepos;
+    }
+
+    /**
+     * Gets the resource collection API of DevOpsConfigurations.
+     * 
+     * @return Resource collection API of DevOpsConfigurations.
+     */
+    public DevOpsConfigurations devOpsConfigurations() {
+        if (this.devOpsConfigurations == null) {
+            this.devOpsConfigurations = new DevOpsConfigurationsImpl(clientObject.getDevOpsConfigurations(), this);
+        }
+        return devOpsConfigurations;
+    }
+
+    /**
+     * Gets the resource collection API of GitHubOwners.
+     * 
+     * @return Resource collection API of GitHubOwners.
+     */
+    public GitHubOwners gitHubOwners() {
+        if (this.gitHubOwners == null) {
+            this.gitHubOwners = new GitHubOwnersImpl(clientObject.getGitHubOwners(), this);
+        }
+        return gitHubOwners;
+    }
+
+    /**
+     * Gets the resource collection API of GitHubRepos.
+     * 
+     * @return Resource collection API of GitHubRepos.
+     */
+    public GitHubRepos gitHubRepos() {
+        if (this.gitHubRepos == null) {
+            this.gitHubRepos = new GitHubReposImpl(clientObject.getGitHubRepos(), this);
+        }
+        return gitHubRepos;
+    }
+
+    /**
+     * Gets the resource collection API of GitLabGroups.
+     * 
+     * @return Resource collection API of GitLabGroups.
+     */
+    public GitLabGroups gitLabGroups() {
+        if (this.gitLabGroups == null) {
+            this.gitLabGroups = new GitLabGroupsImpl(clientObject.getGitLabGroups(), this);
+        }
+        return gitLabGroups;
+    }
+
+    /**
+     * Gets the resource collection API of GitLabSubgroups.
+     * 
+     * @return Resource collection API of GitLabSubgroups.
+     */
+    public GitLabSubgroups gitLabSubgroups() {
+        if (this.gitLabSubgroups == null) {
+            this.gitLabSubgroups = new GitLabSubgroupsImpl(clientObject.getGitLabSubgroups(), this);
+        }
+        return gitLabSubgroups;
+    }
+
+    /**
+     * Gets the resource collection API of GitLabProjects.
+     * 
+     * @return Resource collection API of GitLabProjects.
+     */
+    public GitLabProjects gitLabProjects() {
+        if (this.gitLabProjects == null) {
+            this.gitLabProjects = new GitLabProjectsImpl(clientObject.getGitLabProjects(), this);
+        }
+        return gitLabProjects;
+    }
+
+    /**
+     * Gets the resource collection API of DevOpsOperationResults.
+     * 
+     * @return Resource collection API of DevOpsOperationResults.
+     */
+    public DevOpsOperationResults devOpsOperationResults() {
+        if (this.devOpsOperationResults == null) {
+            this.devOpsOperationResults
+                = new DevOpsOperationResultsImpl(clientObject.getDevOpsOperationResults(), this);
+        }
+        return devOpsOperationResults;
+    }
+
+    /**
+     * Gets wrapped service client SecurityCenter providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client SecurityCenter.
      */
     public SecurityCenter serviceClient() {
         return this.clientObject;

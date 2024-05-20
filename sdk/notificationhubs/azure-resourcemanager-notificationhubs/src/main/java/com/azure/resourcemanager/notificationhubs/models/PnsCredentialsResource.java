@@ -4,98 +4,122 @@
 
 package com.azure.resourcemanager.notificationhubs.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.notificationhubs.fluent.models.PnsCredentialsResourceInner;
 import java.util.Map;
 
-/** An immutable client-side representation of PnsCredentialsResource. */
+/**
+ * An immutable client-side representation of PnsCredentialsResource.
+ */
 public interface PnsCredentialsResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the location property: The geo-location where the resource lives.
-     *
+     * Gets the location property: Deprecated - only for compatibility.
+     * 
      * @return the location value.
      */
     String location();
 
     /**
-     * Gets the tags property: Resource tags.
-     *
+     * Gets the tags property: Deprecated - only for compatibility.
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: The sku of the created namespace.
-     *
-     * @return the sku value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    Sku sku();
+    SystemData systemData();
 
     /**
-     * Gets the apnsCredential property: The ApnsCredential of the created NotificationHub.
-     *
-     * @return the apnsCredential value.
-     */
-    ApnsCredential apnsCredential();
-
-    /**
-     * Gets the wnsCredential property: The WnsCredential of the created NotificationHub.
-     *
-     * @return the wnsCredential value.
-     */
-    WnsCredential wnsCredential();
-
-    /**
-     * Gets the gcmCredential property: The GcmCredential of the created NotificationHub.
-     *
-     * @return the gcmCredential value.
-     */
-    GcmCredential gcmCredential();
-
-    /**
-     * Gets the mpnsCredential property: The MpnsCredential of the created NotificationHub.
-     *
-     * @return the mpnsCredential value.
-     */
-    MpnsCredential mpnsCredential();
-
-    /**
-     * Gets the admCredential property: The AdmCredential of the created NotificationHub.
-     *
+     * Gets the admCredential property: Description of a NotificationHub AdmCredential.
+     * 
      * @return the admCredential value.
      */
     AdmCredential admCredential();
 
     /**
-     * Gets the baiduCredential property: The BaiduCredential of the created NotificationHub.
-     *
+     * Gets the apnsCredential property: Description of a NotificationHub ApnsCredential.
+     * 
+     * @return the apnsCredential value.
+     */
+    ApnsCredential apnsCredential();
+
+    /**
+     * Gets the baiduCredential property: Description of a NotificationHub BaiduCredential.
+     * 
      * @return the baiduCredential value.
      */
     BaiduCredential baiduCredential();
 
     /**
+     * Gets the browserCredential property: Description of a NotificationHub BrowserCredential.
+     * 
+     * @return the browserCredential value.
+     */
+    BrowserCredential browserCredential();
+
+    /**
+     * Gets the gcmCredential property: Description of a NotificationHub GcmCredential.
+     * 
+     * @return the gcmCredential value.
+     */
+    GcmCredential gcmCredential();
+
+    /**
+     * Gets the mpnsCredential property: Description of a NotificationHub MpnsCredential.
+     * 
+     * @return the mpnsCredential value.
+     */
+    MpnsCredential mpnsCredential();
+
+    /**
+     * Gets the wnsCredential property: Description of a NotificationHub WnsCredential.
+     * 
+     * @return the wnsCredential value.
+     */
+    WnsCredential wnsCredential();
+
+    /**
+     * Gets the xiaomiCredential property: Description of a NotificationHub XiaomiCredential.
+     * 
+     * @return the xiaomiCredential value.
+     */
+    XiaomiCredential xiaomiCredential();
+
+    /**
+     * Gets the fcmV1Credential property: Description of a NotificationHub FcmV1Credential.
+     * 
+     * @return the fcmV1Credential value.
+     */
+    FcmV1Credential fcmV1Credential();
+
+    /**
      * Gets the inner com.azure.resourcemanager.notificationhubs.fluent.models.PnsCredentialsResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     PnsCredentialsResourceInner innerModel();

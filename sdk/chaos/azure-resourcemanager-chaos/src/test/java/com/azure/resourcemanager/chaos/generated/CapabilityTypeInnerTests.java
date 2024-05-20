@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CapabilityTypeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapabilityTypeInner model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"huticndvkao\",\"properties\":{\"publisher\":\"i\",\"targetType\":\"yhxhu\",\"displayName\":\"k\",\"description\":\"yxolniwp\",\"parametersSchema\":\"ukjfkgiawxklr\",\"urn\":\"lwckbasyypnddhs\",\"kind\":\"bacphejko\",\"azureRbacActions\":[\"qgoulznd\",\"i\",\"wyqkgfgibm\"],\"azureRbacDataActions\":[\"akeqs\",\"xybz\"],\"runtimeProperties\":{\"kind\":\"dqytbciqfouflmm\"}},\"id\":\"kzsmodm\",\"name\":\"lougpbkw\",\"type\":\"mutduqktaps\"}")
-                .toObject(CapabilityTypeInner.class);
+        CapabilityTypeInner model = BinaryData.fromString(
+            "{\"location\":\"huticndvkao\",\"properties\":{\"publisher\":\"i\",\"targetType\":\"yhxhu\",\"displayName\":\"k\",\"description\":\"yxolniwp\",\"parametersSchema\":\"ukjfkgiawxklr\",\"urn\":\"lwckbasyypnddhs\",\"kind\":\"bacphejko\",\"azureRbacActions\":[\"qgoulznd\",\"i\",\"wyqkgfgibm\"],\"azureRbacDataActions\":[\"akeqs\",\"xybz\"],\"runtimeProperties\":{\"kind\":\"dqytbciqfouflmm\"}},\"id\":\"kzsmodm\",\"name\":\"lougpbkw\",\"type\":\"mutduqktaps\"}")
+            .toObject(CapabilityTypeInner.class);
         Assertions.assertEquals("huticndvkao", model.location());
     }
 

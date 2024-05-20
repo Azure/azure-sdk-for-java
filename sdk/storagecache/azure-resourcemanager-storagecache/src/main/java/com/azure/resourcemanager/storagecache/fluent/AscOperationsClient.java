@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storagecache.fluent.models.AscOperationInner;
 
-/** An instance of this class provides access to all the operations defined in AscOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AscOperationsClient.
+ */
 public interface AscOperationsClient {
     /**
      * Gets the status of an asynchronous operation for the Azure HPC Cache.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @param context The context to associate with this operation.
@@ -28,7 +30,7 @@ public interface AscOperationsClient {
 
     /**
      * Gets the status of an asynchronous operation for the Azure HPC Cache.
-     *
+     * 
      * @param location The name of Azure region.
      * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

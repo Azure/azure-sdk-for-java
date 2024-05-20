@@ -14,37 +14,33 @@ import org.junit.jupiter.api.Assertions;
 public final class JitNetworkAccessPolicyInitiateVirtualMachineTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JitNetworkAccessPolicyInitiateVirtualMachine model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"w\",\"ports\":[{\"number\":636641870,\"allowedSourceAddressPrefix\":\"exfdeqvhpsylk\",\"endTimeUtc\":\"2021-04-17T08:49:18Z\"},{\"number\":2021763833,\"allowedSourceAddressPrefix\":\"bffmbmxz\",\"endTimeUtc\":\"2021-06-13T14:19:09Z\"}]}")
-                .toObject(JitNetworkAccessPolicyInitiateVirtualMachine.class);
-        Assertions.assertEquals("w", model.id());
-        Assertions.assertEquals(636641870, model.ports().get(0).number());
-        Assertions.assertEquals("exfdeqvhpsylk", model.ports().get(0).allowedSourceAddressPrefix());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-17T08:49:18Z"), model.ports().get(0).endTimeUtc());
+        JitNetworkAccessPolicyInitiateVirtualMachine model = BinaryData.fromString(
+            "{\"id\":\"zzoslpkyb\",\"ports\":[{\"number\":1502522516,\"allowedSourceAddressPrefix\":\"kzpgaj\",\"endTimeUtc\":\"2021-11-25T07:52:54Z\"},{\"number\":1240101833,\"allowedSourceAddressPrefix\":\"emqbmfuvqarwzxuq\",\"endTimeUtc\":\"2021-07-16T14:19:09Z\"},{\"number\":2143333617,\"allowedSourceAddressPrefix\":\"uim\",\"endTimeUtc\":\"2021-10-18T08:32:02Z\"}]}")
+            .toObject(JitNetworkAccessPolicyInitiateVirtualMachine.class);
+        Assertions.assertEquals("zzoslpkyb", model.id());
+        Assertions.assertEquals(1502522516, model.ports().get(0).number());
+        Assertions.assertEquals("kzpgaj", model.ports().get(0).allowedSourceAddressPrefix());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-25T07:52:54Z"), model.ports().get(0).endTimeUtc());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JitNetworkAccessPolicyInitiateVirtualMachine model =
-            new JitNetworkAccessPolicyInitiateVirtualMachine()
-                .withId("w")
-                .withPorts(
-                    Arrays
-                        .asList(
-                            new JitNetworkAccessPolicyInitiatePort()
-                                .withNumber(636641870)
-                                .withAllowedSourceAddressPrefix("exfdeqvhpsylk")
-                                .withEndTimeUtc(OffsetDateTime.parse("2021-04-17T08:49:18Z")),
-                            new JitNetworkAccessPolicyInitiatePort()
-                                .withNumber(2021763833)
-                                .withAllowedSourceAddressPrefix("bffmbmxz")
-                                .withEndTimeUtc(OffsetDateTime.parse("2021-06-13T14:19:09Z"))));
+        JitNetworkAccessPolicyInitiateVirtualMachine model
+            = new JitNetworkAccessPolicyInitiateVirtualMachine().withId("zzoslpkyb")
+                .withPorts(Arrays.asList(
+                    new JitNetworkAccessPolicyInitiatePort().withNumber(1502522516)
+                        .withAllowedSourceAddressPrefix("kzpgaj")
+                        .withEndTimeUtc(OffsetDateTime.parse("2021-11-25T07:52:54Z")),
+                    new JitNetworkAccessPolicyInitiatePort().withNumber(1240101833)
+                        .withAllowedSourceAddressPrefix("emqbmfuvqarwzxuq")
+                        .withEndTimeUtc(OffsetDateTime.parse("2021-07-16T14:19:09Z")),
+                    new JitNetworkAccessPolicyInitiatePort().withNumber(2143333617)
+                        .withAllowedSourceAddressPrefix("uim")
+                        .withEndTimeUtc(OffsetDateTime.parse("2021-10-18T08:32:02Z"))));
         model = BinaryData.fromObject(model).toObject(JitNetworkAccessPolicyInitiateVirtualMachine.class);
-        Assertions.assertEquals("w", model.id());
-        Assertions.assertEquals(636641870, model.ports().get(0).number());
-        Assertions.assertEquals("exfdeqvhpsylk", model.ports().get(0).allowedSourceAddressPrefix());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-17T08:49:18Z"), model.ports().get(0).endTimeUtc());
+        Assertions.assertEquals("zzoslpkyb", model.id());
+        Assertions.assertEquals(1502522516, model.ports().get(0).number());
+        Assertions.assertEquals("kzpgaj", model.ports().get(0).allowedSourceAddressPrefix());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-25T07:52:54Z"), model.ports().get(0).endTimeUtc());
     }
 }

@@ -14,6 +14,7 @@ import java.io.IOException;
  */
 public class JacksonJsonReaderContractTests extends JsonReaderContractTests {
     private JsonReader reader;
+
     @Override
     public JsonReader getJsonReader(String json) throws IOException {
         this.reader = AzureJsonUtils.createReader(json, null);

@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class JobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobTaskDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"JobTaskDetails\",\"jobTask\":{\"jobId\":\"wwmjs\",\"jobFriendlyName\":\"na\",\"targetObjectId\":\"amecle\",\"targetObjectName\":\"oulndhzyoeojhto\",\"targetInstanceType\":\"h\",\"jobScenarioName\":\"idmytzln\"}}")
-                .toObject(JobTaskDetails.class);
+        JobTaskDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"JobTaskDetails\",\"jobTask\":{\"jobId\":\"wwmjs\",\"jobFriendlyName\":\"na\",\"targetObjectId\":\"amecle\",\"targetObjectName\":\"oulndhzyoeojhto\",\"targetInstanceType\":\"h\",\"jobScenarioName\":\"idmytzln\"}}")
+            .toObject(JobTaskDetails.class);
         Assertions.assertEquals("wwmjs", model.jobTask().jobId());
         Assertions.assertEquals("na", model.jobTask().jobFriendlyName());
         Assertions.assertEquals("amecle", model.jobTask().targetObjectId());
@@ -27,16 +25,9 @@ public final class JobTaskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobTaskDetails model =
-            new JobTaskDetails()
-                .withJobTask(
-                    new JobEntity()
-                        .withJobId("wwmjs")
-                        .withJobFriendlyName("na")
-                        .withTargetObjectId("amecle")
-                        .withTargetObjectName("oulndhzyoeojhto")
-                        .withTargetInstanceType("h")
-                        .withJobScenarioName("idmytzln"));
+        JobTaskDetails model = new JobTaskDetails()
+            .withJobTask(new JobEntity().withJobId("wwmjs").withJobFriendlyName("na").withTargetObjectId("amecle")
+                .withTargetObjectName("oulndhzyoeojhto").withTargetInstanceType("h").withJobScenarioName("idmytzln"));
         model = BinaryData.fromObject(model).toObject(JobTaskDetails.class);
         Assertions.assertEquals("wwmjs", model.jobTask().jobId());
         Assertions.assertEquals("na", model.jobTask().jobFriendlyName());

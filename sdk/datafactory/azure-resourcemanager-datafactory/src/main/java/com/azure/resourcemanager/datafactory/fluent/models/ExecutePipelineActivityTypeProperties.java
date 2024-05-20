@@ -110,8 +110,9 @@ public final class ExecutePipelineActivityTypeProperties {
      */
     public void validate() {
         if (pipeline() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property pipeline in model ExecutePipelineActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property pipeline in model ExecutePipelineActivityTypeProperties"));
         } else {
             pipeline().validate();
         }

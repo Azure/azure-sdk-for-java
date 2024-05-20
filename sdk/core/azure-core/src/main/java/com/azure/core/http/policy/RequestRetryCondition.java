@@ -24,13 +24,12 @@ public final class RequestRetryCondition {
      * @param tryCount The number of tries that have been attempted.
      * @param retriedThrowables The list of throwables that have been encountered during retries.
      */
-    RequestRetryCondition(HttpResponse response, Throwable throwable, int tryCount,
-        List<Throwable> retriedThrowables) {
+    RequestRetryCondition(HttpResponse response, Throwable throwable, int tryCount, List<Throwable> retriedThrowables) {
         this.response = response;
         this.throwable = throwable;
         this.tryCount = tryCount;
-        this.retriedExceptions = retriedThrowables == null
-            ? Collections.emptyList() : Collections.unmodifiableList(retriedThrowables);
+        this.retriedExceptions
+            = retriedThrowables == null ? Collections.emptyList() : Collections.unmodifiableList(retriedThrowables);
     }
 
     /**

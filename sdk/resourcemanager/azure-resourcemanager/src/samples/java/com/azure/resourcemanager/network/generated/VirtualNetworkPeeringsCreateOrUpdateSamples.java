@@ -14,7 +14,7 @@ import com.azure.resourcemanager.network.models.SyncRemoteAddressSpace;
 public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VirtualNetworkPeeringSync.
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkPeeringSync.
      * json
      */
     /**
@@ -34,7 +34,7 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VirtualNetworkPeeringCreate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkPeeringCreate.
      * json
      */
     /**
@@ -53,7 +53,7 @@ public final class VirtualNetworkPeeringsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
      * VirtualNetworkPeeringCreateWithRemoteVirtualNetworkEncryption.json
      */
     /**

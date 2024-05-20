@@ -36,6 +36,12 @@ public final class DiskSecurityTypes extends ExpandableStringEnum<DiskSecurityTy
         = fromString("ConfidentialVM_DiskEncryptedWithCustomerKey");
 
     /**
+     * Static value ConfidentialVM_NonPersistedTPM for DiskSecurityTypes.
+     */
+    public static final DiskSecurityTypes CONFIDENTIAL_VM_NON_PERSISTED_TPM
+        = fromString("ConfidentialVM_NonPersistedTPM");
+
+    /**
      * Creates a new instance of DiskSecurityTypes value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

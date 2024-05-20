@@ -12,19 +12,17 @@ import java.util.Map;
 public final class AlertEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertEntity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"hqjjys\",\"\":{\"mpqvwwsk\":\"datalpshhkvpedwqslsr\",\"uvqejosovyrrle\":\"datandcbrwi\"}}")
-                .toObject(AlertEntity.class);
+        AlertEntity model = BinaryData.fromString("{\"type\":\"hgouarh\",\"\":{\"sjrclrvtzq\":\"dataxqqggljky\"}}")
+            .toObject(AlertEntity.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertEntity model = new AlertEntity().withAdditionalProperties(mapOf("type", "hqjjys"));
+        AlertEntity model = new AlertEntity().withAdditionalProperties(mapOf("type", "hgouarh"));
         model = BinaryData.fromObject(model).toObject(AlertEntity.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

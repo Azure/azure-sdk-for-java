@@ -17,7 +17,8 @@ import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * Temporary type to support receive link handler in v1 ({@link ReceiveLinkHandler}) and v2 ({@link ReceiveLinkHandler2})
+ * Temporary type to support receive link handler in v1 ({@link ReceiveLinkHandler}) and v2
+ * ({@link ReceiveLinkHandler2})
  * side by side.
  * <p>
  * ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack
@@ -140,6 +141,7 @@ public final class ReceiveLinkHandlerWrapper {
     }
 
     private static RuntimeException unsupportedOperation(String operation, String unsupportedStack) {
-        return new UnsupportedOperationException("The " + operation + " is not needed or supported in " + unsupportedStack + ".");
+        return new UnsupportedOperationException(
+            "The " + operation + " is not needed or supported in " + unsupportedStack + ".");
     }
 }

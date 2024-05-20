@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Recovery point properties. */
+/**
+ * Recovery point properties.
+ */
 @Fluent
 public final class RecoveryPointProperties {
     /*
@@ -29,13 +31,15 @@ public final class RecoveryPointProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private ProviderSpecificRecoveryPointDetails providerSpecificDetails;
 
-    /** Creates an instance of RecoveryPointProperties class. */
+    /**
+     * Creates an instance of RecoveryPointProperties class.
+     */
     public RecoveryPointProperties() {
     }
 
     /**
      * Get the recoveryPointTime property: The recovery point time.
-     *
+     * 
      * @return the recoveryPointTime value.
      */
     public OffsetDateTime recoveryPointTime() {
@@ -44,7 +48,7 @@ public final class RecoveryPointProperties {
 
     /**
      * Set the recoveryPointTime property: The recovery point time.
-     *
+     * 
      * @param recoveryPointTime the recoveryPointTime value to set.
      * @return the RecoveryPointProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class RecoveryPointProperties {
 
     /**
      * Get the recoveryPointType property: The recovery point type: ApplicationConsistent, CrashConsistent.
-     *
+     * 
      * @return the recoveryPointType value.
      */
     public String recoveryPointType() {
@@ -64,7 +68,7 @@ public final class RecoveryPointProperties {
 
     /**
      * Set the recoveryPointType property: The recovery point type: ApplicationConsistent, CrashConsistent.
-     *
+     * 
      * @param recoveryPointType the recoveryPointType value to set.
      * @return the RecoveryPointProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class RecoveryPointProperties {
 
     /**
      * Get the providerSpecificDetails property: The provider specific details for the recovery point.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public ProviderSpecificRecoveryPointDetails providerSpecificDetails() {
@@ -84,19 +88,19 @@ public final class RecoveryPointProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific details for the recovery point.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the RecoveryPointProperties object itself.
      */
-    public RecoveryPointProperties withProviderSpecificDetails(
-        ProviderSpecificRecoveryPointDetails providerSpecificDetails) {
+    public RecoveryPointProperties
+        withProviderSpecificDetails(ProviderSpecificRecoveryPointDetails providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

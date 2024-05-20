@@ -30,35 +30,25 @@ public final class QuotasListBySubscriptionMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"freeTrial\":{\"accountId\":\"hvpmoue\",\"createdAt\":\"2021-09-12T01:29:13Z\",\"expiryAt\":\"2021-06-30T20:07:19Z\",\"allocatedValue\":2146697807,\"usedValue\":9507758,\"state\":\"Active\"},\"provisioningState\":\"Deleting\"},\"id\":\"ojnxqbzvdd\",\"name\":\"t\",\"type\":\"ndei\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"freeTrial\":{\"accountId\":\"hvpmoue\",\"createdAt\":\"2021-09-12T01:29:13Z\",\"expiryAt\":\"2021-06-30T20:07:19Z\",\"allocatedValue\":2146697807,\"usedValue\":9507758,\"state\":\"Active\"},\"provisioningState\":\"Deleting\"},\"id\":\"ojnxqbzvdd\",\"name\":\"t\",\"type\":\"ndei\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PlaywrightTestingManager manager =
-            PlaywrightTestingManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PlaywrightTestingManager manager = PlaywrightTestingManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Quota> response = manager.quotas().listBySubscription("toc", com.azure.core.util.Context.NONE);
+
     }
 }

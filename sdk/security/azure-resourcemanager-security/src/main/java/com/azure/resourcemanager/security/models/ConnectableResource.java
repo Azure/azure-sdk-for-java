@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the allowed inbound and outbound traffic of an Azure resource. */
+/**
+ * Describes the allowed inbound and outbound traffic of an Azure resource.
+ */
 @Immutable
 public final class ConnectableResource {
     /*
@@ -29,13 +31,15 @@ public final class ConnectableResource {
     @JsonProperty(value = "outboundConnectedResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectedResource> outboundConnectedResources;
 
-    /** Creates an instance of ConnectableResource class. */
+    /**
+     * Creates an instance of ConnectableResource class.
+     */
     public ConnectableResource() {
     }
 
     /**
      * Get the id property: The Azure resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -45,7 +49,7 @@ public final class ConnectableResource {
     /**
      * Get the inboundConnectedResources property: The list of Azure resources that the resource has inbound allowed
      * connection from.
-     *
+     * 
      * @return the inboundConnectedResources value.
      */
     public List<ConnectedResource> inboundConnectedResources() {
@@ -55,7 +59,7 @@ public final class ConnectableResource {
     /**
      * Get the outboundConnectedResources property: The list of Azure resources that the resource has outbound allowed
      * connection to.
-     *
+     * 
      * @return the outboundConnectedResources value.
      */
     public List<ConnectedResource> outboundConnectedResources() {
@@ -64,7 +68,7 @@ public final class ConnectableResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

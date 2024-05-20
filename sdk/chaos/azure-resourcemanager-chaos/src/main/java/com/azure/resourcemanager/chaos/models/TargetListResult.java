@@ -9,7 +9,9 @@ import com.azure.resourcemanager.chaos.fluent.models.TargetInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Model that represents a list of Target resources and a link for pagination. */
+/**
+ * Model that represents a list of Target resources and a link for pagination.
+ */
 @Immutable
 public final class TargetListResult {
     /*
@@ -24,13 +26,15 @@ public final class TargetListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of TargetListResult class. */
+    /**
+     * Creates an instance of TargetListResult class.
+     */
     public TargetListResult() {
     }
 
     /**
      * Get the value property: List of Target resources.
-     *
+     * 
      * @return the value value.
      */
     public List<TargetInner> value() {
@@ -39,7 +43,7 @@ public final class TargetListResult {
 
     /**
      * Get the nextLink property: URL to retrieve the next page of Target resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class TargetListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

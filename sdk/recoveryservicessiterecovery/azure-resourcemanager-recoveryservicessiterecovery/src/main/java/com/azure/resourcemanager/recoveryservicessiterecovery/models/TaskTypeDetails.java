@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Task details based on specific task type. */
+/**
+ * Task details based on specific task type.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -22,17 +24,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "JobTaskDetails", value = JobTaskDetails.class),
     @JsonSubTypes.Type(name = "ManualActionTaskDetails", value = ManualActionTaskDetails.class),
     @JsonSubTypes.Type(name = "ScriptActionTaskDetails", value = ScriptActionTaskDetails.class),
-    @JsonSubTypes.Type(name = "VmNicUpdatesTaskDetails", value = VmNicUpdatesTaskDetails.class)
-})
+    @JsonSubTypes.Type(name = "VmNicUpdatesTaskDetails", value = VmNicUpdatesTaskDetails.class) })
 @Immutable
 public class TaskTypeDetails {
-    /** Creates an instance of TaskTypeDetails class. */
+    /**
+     * Creates an instance of TaskTypeDetails class.
+     */
     public TaskTypeDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

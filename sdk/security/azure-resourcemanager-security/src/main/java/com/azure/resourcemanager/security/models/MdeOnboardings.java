@@ -7,11 +7,13 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of MdeOnboardings. */
+/**
+ * Resource collection API of MdeOnboardings.
+ */
 public interface MdeOnboardings {
     /**
      * The configuration or data needed to onboard the machine to MDE.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -22,7 +24,7 @@ public interface MdeOnboardings {
 
     /**
      * The configuration or data needed to onboard the machine to MDE.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of all MDE onboarding data resources.
@@ -31,19 +33,19 @@ public interface MdeOnboardings {
 
     /**
      * The default configuration or data needed to onboard the machine to MDE.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the resource of the configuration or data needed to onboard the machine to MDE along with {@link
-     *     Response}.
+     * @return the resource of the configuration or data needed to onboard the machine to MDE along with
+     * {@link Response}.
      */
     Response<MdeOnboardingData> getWithResponse(Context context);
 
     /**
      * The default configuration or data needed to onboard the machine to MDE.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the resource of the configuration or data needed to onboard the machine to MDE.

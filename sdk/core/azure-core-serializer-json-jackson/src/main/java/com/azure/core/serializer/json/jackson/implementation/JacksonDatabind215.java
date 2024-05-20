@@ -34,8 +34,8 @@ final class JacksonDatabind215 {
         boolean useJackson215 = false;
         try {
             Class<?> streamReadConstraints = Class.forName(STREAM_READ_CONSTRAINTS, true, thisClassLoader);
-            Class<?> streamReadConstraintsBuilder = Class.forName(STREAM_READ_CONSTRAINTS_BUILDER, true,
-                thisClassLoader);
+            Class<?> streamReadConstraintsBuilder
+                = Class.forName(STREAM_READ_CONSTRAINTS_BUILDER, true, thisClassLoader);
 
             createStreamReadConstraintsBuilder = ReflectionUtils.getMethodInvoker(streamReadConstraints,
                 streamReadConstraints.getDeclaredMethod("builder"), false);

@@ -29,7 +29,8 @@ final class RequestDrivenCreditAccountingStrategy extends CreditAccountingStrate
      * @param prefetch the prefetch configured.
      * @param logger the logger.
      */
-    RequestDrivenCreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
+    RequestDrivenCreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch,
+        ClientLogger logger) {
         super(receiver, subscription, validateAndGet(prefetch, logger), logger);
     }
 
@@ -49,7 +50,7 @@ final class RequestDrivenCreditAccountingStrategy extends CreditAccountingStrate
             // Once an unbounded downstream request is encountered, future downstream request values, if any, will not
             // be honored per reactive spec.
             // While unbounded requests in the messaging context indicate a wrong downstream usage pattern, we'll
-            // adhere to  the spec by switching to a safe request constant value MAX_LONG_REQUEST_BOUND for the lifetime
+            // adhere to the spec by switching to a safe request constant value MAX_LONG_REQUEST_BOUND for the lifetime
             // of this RequestDrivenCreditAccounting object (ref:MultiSubscriptionSubscriber.produced).
             unbounded = true;
         }

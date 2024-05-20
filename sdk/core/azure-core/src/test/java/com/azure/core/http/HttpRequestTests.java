@@ -28,11 +28,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 public class HttpRequestTests {
 
     private static final String BODY = "this is a sample body";
-    private static final Flux<ByteBuffer> BODY_FLUX = Flux.defer(() ->
-        Flux.fromStream(
-            Stream.of(BODY.split(""))
-                .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
-        ));
+    private static final Flux<ByteBuffer> BODY_FLUX = Flux.defer(
+        () -> Flux.fromStream(Stream.of(BODY.split("")).map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))));
     private static final byte[] BODY_BYTES = BODY.getBytes(StandardCharsets.UTF_8);
     private static final long BODY_LENGTH = BODY_BYTES.length;
 
@@ -59,8 +56,8 @@ public class HttpRequestTests {
     @Test
     public void constructorWithFluxBody() throws MalformedURLException {
         final HttpHeaders httpHeaders = new HttpHeaders();
-        final HttpRequest request = new HttpRequest(
-            HttpMethod.POST, createUrl("http://request.url"), httpHeaders, BODY_FLUX);
+        final HttpRequest request
+            = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"), httpHeaders, BODY_FLUX);
         assertEquals(HttpMethod.POST, request.getHttpMethod());
         assertEquals(createUrl("http://request.url"), request.getUrl());
 
@@ -75,8 +72,8 @@ public class HttpRequestTests {
     public void constructorWithBinaryDataBody(BinaryData data, Long expectedContentLength)
         throws MalformedURLException {
 
-        final HttpRequest request = new HttpRequest(
-            HttpMethod.POST, createUrl("http://request.url"), new HttpHeaders(), data);
+        final HttpRequest request
+            = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"), new HttpHeaders(), data);
 
         assertEquals(HttpMethod.POST, request.getHttpMethod());
         assertEquals(createUrl("http://request.url"), request.getUrl());
@@ -85,7 +82,7 @@ public class HttpRequestTests {
         assertEquals(expectedContentLength, getContentLength(request));
         if (data != null) {
             assertArraysEqual(BODY_BYTES, FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
-        } else  {
+        } else {
             assertNull(request.getBody());
         }
     }
@@ -101,7 +98,7 @@ public class HttpRequestTests {
         assertEquals(expectedContentLength, getContentLength(request));
         if (data != null) {
             assertArraysEqual(BODY_BYTES, FluxUtil.collectBytesInByteBufferStream(request.getBody()).block());
-        } else  {
+        } else {
             assertNull(request.getBody());
         }
     }
@@ -143,11 +140,10 @@ public class HttpRequestTests {
     @SuppressWarnings("deprecation")
     @Test
     public void testClone() throws IOException {
-        final HttpHeaders headers = new HttpHeaders().set("my-header", "my-value")
-            .set("other-header", "other-value");
+        final HttpHeaders headers = new HttpHeaders().set("my-header", "my-value").set("other-header", "other-value");
 
-        final HttpRequest request = new HttpRequest(HttpMethod.PUT, createUrl("http://request.url"), headers,
-            Flux.empty());
+        final HttpRequest request
+            = new HttpRequest(HttpMethod.PUT, createUrl("http://request.url"), headers, Flux.empty());
 
         final HttpRequest bufferedRequest = request.copy();
 
@@ -173,13 +169,11 @@ public class HttpRequestTests {
     private static Stream<Arguments> getBinaryDataBodyVariants() {
         return Stream.of(
             // body, expectedContentLength
-            Arguments.of(null, null),
-            Arguments.of(BinaryData.fromString(BODY), BODY_LENGTH),
+            Arguments.of(null, null), Arguments.of(BinaryData.fromString(BODY), BODY_LENGTH),
             Arguments.of(BinaryData.fromBytes(BODY_BYTES), BODY_LENGTH),
             Arguments.of(BinaryData.fromFlux(BODY_FLUX, null, false).block(), null),
             Arguments.of(BinaryData.fromStream(new ByteArrayInputStream(BODY_BYTES)), null),
-            Arguments.of(BinaryData.fromStream(new ByteArrayInputStream(BODY_BYTES), BODY_LENGTH), BODY_LENGTH)
-        );
+            Arguments.of(BinaryData.fromStream(new ByteArrayInputStream(BODY_BYTES), BODY_LENGTH), BODY_LENGTH));
     }
 
     private Long getContentLength(HttpRequest request) {

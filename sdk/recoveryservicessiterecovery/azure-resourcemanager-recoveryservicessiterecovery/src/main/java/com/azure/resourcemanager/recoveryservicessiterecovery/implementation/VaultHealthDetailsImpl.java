@@ -13,8 +13,7 @@ public final class VaultHealthDetailsImpl implements VaultHealthDetails {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    VaultHealthDetailsImpl(
-        VaultHealthDetailsInner innerObject,
+    VaultHealthDetailsImpl(VaultHealthDetailsInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

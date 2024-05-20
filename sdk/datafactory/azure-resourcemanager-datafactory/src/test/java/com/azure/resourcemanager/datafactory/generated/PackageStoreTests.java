@@ -14,22 +14,24 @@ public final class PackageStoreTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PackageStore model = BinaryData.fromString(
-            "{\"name\":\"paseqcp\",\"packageStoreLinkedService\":{\"type\":\"IntegrationRuntimeReference\",\"referenceName\":\"reuwv\"}}")
+            "{\"name\":\"zorprraptvbj\",\"packageStoreLinkedService\":{\"type\":\"IntegrationRuntimeReference\",\"referenceName\":\"gebrsnvofu\"}}")
             .toObject(PackageStore.class);
-        Assertions.assertEquals("paseqcp", model.name());
+        Assertions.assertEquals("zorprraptvbj", model.name());
         Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE,
             model.packageStoreLinkedService().type());
-        Assertions.assertEquals("reuwv", model.packageStoreLinkedService().referenceName());
+        Assertions.assertEquals("gebrsnvofu", model.packageStoreLinkedService().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PackageStore model = new PackageStore().withName("paseqcp").withPackageStoreLinkedService(new EntityReference()
-            .withType(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE).withReferenceName("reuwv"));
+        PackageStore model = new PackageStore().withName("zorprraptvbj")
+            .withPackageStoreLinkedService(
+                new EntityReference().withType(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE)
+                    .withReferenceName("gebrsnvofu"));
         model = BinaryData.fromObject(model).toObject(PackageStore.class);
-        Assertions.assertEquals("paseqcp", model.name());
+        Assertions.assertEquals("zorprraptvbj", model.name());
         Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.INTEGRATION_RUNTIME_REFERENCE,
             model.packageStoreLinkedService().type());
-        Assertions.assertEquals("reuwv", model.packageStoreLinkedService().referenceName());
+        Assertions.assertEquals("gebrsnvofu", model.packageStoreLinkedService().referenceName());
     }
 }

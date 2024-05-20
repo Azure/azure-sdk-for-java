@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Critical past job details of the migration item. */
+/**
+ * Critical past job details of the migration item.
+ */
 @Immutable
 public final class CriticalJobHistoryDetails {
     /*
@@ -35,13 +37,15 @@ public final class CriticalJobHistoryDetails {
     @JsonProperty(value = "jobStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String jobStatus;
 
-    /** Creates an instance of CriticalJobHistoryDetails class. */
+    /**
+     * Creates an instance of CriticalJobHistoryDetails class.
+     */
     public CriticalJobHistoryDetails() {
     }
 
     /**
      * Get the jobName property: The job name.
-     *
+     * 
      * @return the jobName value.
      */
     public String jobName() {
@@ -50,7 +54,7 @@ public final class CriticalJobHistoryDetails {
 
     /**
      * Get the jobId property: The ARM Id of the job being executed.
-     *
+     * 
      * @return the jobId value.
      */
     public String jobId() {
@@ -59,7 +63,7 @@ public final class CriticalJobHistoryDetails {
 
     /**
      * Get the startTime property: The start time of the job.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -68,7 +72,7 @@ public final class CriticalJobHistoryDetails {
 
     /**
      * Get the jobStatus property: The job state.
-     *
+     * 
      * @return the jobStatus value.
      */
     public String jobStatus() {
@@ -77,7 +81,7 @@ public final class CriticalJobHistoryDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

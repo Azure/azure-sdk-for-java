@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Dapr component Secret for ListSecrets Action. */
+/**
+ * Dapr component Secret for ListSecrets Action.
+ */
 @Immutable
 public final class DaprSecret {
     /*
@@ -22,13 +24,15 @@ public final class DaprSecret {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
-    /** Creates an instance of DaprSecret class. */
+    /**
+     * Creates an instance of DaprSecret class.
+     */
     public DaprSecret() {
     }
 
     /**
      * Get the name property: Secret Name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class DaprSecret {
 
     /**
      * Get the value property: Secret Value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -46,7 +50,7 @@ public final class DaprSecret {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

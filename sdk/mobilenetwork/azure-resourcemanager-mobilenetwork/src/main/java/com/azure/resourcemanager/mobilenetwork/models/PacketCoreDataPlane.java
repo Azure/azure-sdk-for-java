@@ -11,53 +11,55 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreDataPlane
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of PacketCoreDataPlane. */
+/**
+ * An immutable client-side representation of PacketCoreDataPlane.
+ */
 public interface PacketCoreDataPlane {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: The provisioning state of the packet core data plane resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
@@ -65,7 +67,7 @@ public interface PacketCoreDataPlane {
     /**
      * Gets the userPlaneAccessInterface property: The user plane interface on the access network. For 5G networks, this
      * is the N3 interface. For 4G networks, this is the S1-U interface.
-     *
+     * 
      * @return the userPlaneAccessInterface value.
      */
     InterfaceProperties userPlaneAccessInterface();
@@ -75,59 +77,64 @@ public interface PacketCoreDataPlane {
      * access network in a High Availability (HA) system. In an HA deployment the access network router should be
      * configured to forward traffic for this address to the control plane access interface on the active or standby
      * node. In non-HA system this list should be omitted or empty.
-     *
+     * 
      * @return the userPlaneAccessVirtualIpv4Addresses value.
      */
     List<String> userPlaneAccessVirtualIpv4Addresses();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mobilenetwork.fluent.models.PacketCoreDataPlaneInner object.
-     *
+     * 
      * @return the inner object.
      */
     PacketCoreDataPlaneInner innerModel();
 
-    /** The entirety of the PacketCoreDataPlane definition. */
+    /**
+     * The entirety of the PacketCoreDataPlane definition.
+     */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithUserPlaneAccessInterface,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithParentResource,
+        DefinitionStages.WithUserPlaneAccessInterface, DefinitionStages.WithCreate {
     }
 
-    /** The PacketCoreDataPlane definition stages. */
+    /**
+     * The PacketCoreDataPlane definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the PacketCoreDataPlane definition. */
+        /**
+         * The first stage of the PacketCoreDataPlane definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the PacketCoreDataPlane definition allowing to specify location. */
+        /**
+         * The stage of the PacketCoreDataPlane definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -135,34 +142,38 @@ public interface PacketCoreDataPlane {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithParentResource withRegion(String location);
         }
 
-        /** The stage of the PacketCoreDataPlane definition allowing to specify parent resource. */
+        /**
+         * The stage of the PacketCoreDataPlane definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, packetCoreControlPlaneName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param packetCoreControlPlaneName The name of the packet core control plane.
              * @return the next definition stage.
              */
-            WithUserPlaneAccessInterface withExistingPacketCoreControlPlane(
-                String resourceGroupName, String packetCoreControlPlaneName);
+            WithUserPlaneAccessInterface withExistingPacketCoreControlPlane(String resourceGroupName,
+                String packetCoreControlPlaneName);
         }
 
-        /** The stage of the PacketCoreDataPlane definition allowing to specify userPlaneAccessInterface. */
+        /**
+         * The stage of the PacketCoreDataPlane definition allowing to specify userPlaneAccessInterface.
+         */
         interface WithUserPlaneAccessInterface {
             /**
              * Specifies the userPlaneAccessInterface property: The user plane interface on the access network. For 5G
              * networks, this is the N3 interface. For 4G networks, this is the S1-U interface..
-             *
+             * 
              * @param userPlaneAccessInterface The user plane interface on the access network. For 5G networks, this is
-             *     the N3 interface. For 4G networks, this is the S1-U interface.
+             * the N3 interface. For 4G networks, this is the S1-U interface.
              * @return the next definition stage.
              */
             WithCreate withUserPlaneAccessInterface(InterfaceProperties userPlaneAccessInterface);
@@ -176,43 +187,47 @@ public interface PacketCoreDataPlane {
             extends DefinitionStages.WithTags, DefinitionStages.WithUserPlaneAccessVirtualIpv4Addresses {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             PacketCoreDataPlane create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             PacketCoreDataPlane create(Context context);
         }
 
-        /** The stage of the PacketCoreDataPlane definition allowing to specify tags. */
+        /**
+         * The stage of the PacketCoreDataPlane definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the PacketCoreDataPlane definition allowing to specify userPlaneAccessVirtualIpv4Addresses. */
+        /**
+         * The stage of the PacketCoreDataPlane definition allowing to specify userPlaneAccessVirtualIpv4Addresses.
+         */
         interface WithUserPlaneAccessVirtualIpv4Addresses {
             /**
              * Specifies the userPlaneAccessVirtualIpv4Addresses property: The virtual IP address(es) for the user plane
              * on the access network in a High Availability (HA) system. In an HA deployment the access network router
              * should be configured to forward traffic for this address to the control plane access interface on the
              * active or standby node. In non-HA system this list should be omitted or empty..
-             *
+             * 
              * @param userPlaneAccessVirtualIpv4Addresses The virtual IP address(es) for the user plane on the access
-             *     network in a High Availability (HA) system. In an HA deployment the access network router should be
-             *     configured to forward traffic for this address to the control plane access interface on the active or
-             *     standby node. In non-HA system this list should be omitted or empty.
+             * network in a High Availability (HA) system. In an HA deployment the access network router should be
+             * configured to forward traffic for this address to the control plane access interface on the active or
+             * standby node. In non-HA system this list should be omitted or empty.
              * @return the next definition stage.
              */
             WithCreate withUserPlaneAccessVirtualIpv4Addresses(List<String> userPlaneAccessVirtualIpv4Addresses);
@@ -221,36 +236,42 @@ public interface PacketCoreDataPlane {
 
     /**
      * Begins update for the PacketCoreDataPlane resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     PacketCoreDataPlane.Update update();
 
-    /** The template for PacketCoreDataPlane update. */
+    /**
+     * The template for PacketCoreDataPlane update.
+     */
     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         PacketCoreDataPlane apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         PacketCoreDataPlane apply(Context context);
     }
 
-    /** The PacketCoreDataPlane update stages. */
+    /**
+     * The PacketCoreDataPlane update stages.
+     */
     interface UpdateStages {
-        /** The stage of the PacketCoreDataPlane update allowing to specify tags. */
+        /**
+         * The stage of the PacketCoreDataPlane update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
@@ -260,14 +281,14 @@ public interface PacketCoreDataPlane {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     PacketCoreDataPlane refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

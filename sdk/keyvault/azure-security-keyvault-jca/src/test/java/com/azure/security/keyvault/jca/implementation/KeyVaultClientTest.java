@@ -37,6 +37,9 @@ public class KeyVaultClientTest {
     private static final String KEY_VAULT_TEST_URI_CN = "https://fake.vault.azure.cn/";
     private static final String KEY_VAULT_TEST_URI_US = "https://fake.vault.usgovcloudapi.net/";
     private static final String KEY_VAULT_TEST_URI_DE = "https://fake.vault.microsoftazure.de/";
+    private static final String KEY_VAULT_TEST_URI_CUSTOM = "https://fake.vault.contoso.net/";
+    private static final String KEY_VAULT_TEST_URI_BASE = "https://vault.contoso.net";
+    private static final String LOGIN_TEST_URI = "https://fake.login.com";
 
     private KeyVaultClient keyVaultClient;
 
@@ -47,28 +50,42 @@ public class KeyVaultClientTest {
     public void testInitializationOfGlobalURI() {
         keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null);
         Assertions.assertEquals(keyVaultClient.getKeyVaultBaseUri(), KEY_VAULT_BASE_URI_GLOBAL);
-        Assertions.assertEquals(keyVaultClient.getAadAuthenticationUrl(), AAD_LOGIN_URI_GLOBAL);
+        Assertions.assertEquals(keyVaultClient.getAadAuthenticationUri(), AAD_LOGIN_URI_GLOBAL);
     }
 
     @Test
     public void testInitializationOfCNURI() {
         keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_CN, null);
         Assertions.assertEquals(keyVaultClient.getKeyVaultBaseUri(), KEY_VAULT_BASE_URI_CN);
-        Assertions.assertEquals(keyVaultClient.getAadAuthenticationUrl(), AAD_LOGIN_URI_CN);
+        Assertions.assertEquals(keyVaultClient.getAadAuthenticationUri(), AAD_LOGIN_URI_CN);
     }
 
     @Test
     public void testInitializationOfUSURI() {
         keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_US, null);
         Assertions.assertEquals(keyVaultClient.getKeyVaultBaseUri(), KEY_VAULT_BASE_URI_US);
-        Assertions.assertEquals(keyVaultClient.getAadAuthenticationUrl(), AAD_LOGIN_URI_US);
+        Assertions.assertEquals(keyVaultClient.getAadAuthenticationUri(), AAD_LOGIN_URI_US);
     }
 
     @Test
     public void testInitializationOfDEURI() {
         keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_DE, null);
         Assertions.assertEquals(keyVaultClient.getKeyVaultBaseUri(), KEY_VAULT_BASE_URI_DE);
-        Assertions.assertEquals(keyVaultClient.getAadAuthenticationUrl(), AAD_LOGIN_URI_DE);
+        Assertions.assertEquals(keyVaultClient.getAadAuthenticationUri(), AAD_LOGIN_URI_DE);
+    }
+
+    @Test
+    public void testInitializationOfLoginURI() {
+        keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, LOGIN_TEST_URI, null, null, null, null);
+        Assertions.assertEquals(keyVaultClient.getKeyVaultBaseUri(), KEY_VAULT_BASE_URI_GLOBAL);
+        Assertions.assertEquals(keyVaultClient.getAadAuthenticationUri(), LOGIN_TEST_URI + "/"); // We add a trailing slash to the login URI if missing.
+    }
+
+    @Test
+    public void testInitializationOfLoginURIWithCustomKeyVaultURI() {
+        keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_CUSTOM, LOGIN_TEST_URI, null, null, null, null);
+        Assertions.assertEquals(keyVaultClient.getKeyVaultBaseUri(), KEY_VAULT_TEST_URI_BASE);
+        Assertions.assertEquals(keyVaultClient.getAadAuthenticationUri(), LOGIN_TEST_URI + "/"); // We add a trailing slash to the login URI if missing.
     }
 
     @Test

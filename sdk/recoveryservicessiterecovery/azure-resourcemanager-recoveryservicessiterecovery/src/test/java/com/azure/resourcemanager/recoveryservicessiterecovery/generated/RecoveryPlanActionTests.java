@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPlanActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPlanAction model =
-            BinaryData
-                .fromString(
-                    "{\"actionName\":\"tod\",\"failoverTypes\":[\"RepairReplication\",\"UnplannedFailover\",\"TestFailoverCleanup\",\"PlannedFailover\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}")
-                .toObject(RecoveryPlanAction.class);
+        RecoveryPlanAction model = BinaryData.fromString(
+            "{\"actionName\":\"tod\",\"failoverTypes\":[\"RepairReplication\",\"UnplannedFailover\",\"TestFailoverCleanup\",\"PlannedFailover\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}")
+            .toObject(RecoveryPlanAction.class);
         Assertions.assertEquals("tod", model.actionName());
         Assertions.assertEquals(ReplicationProtectedItemOperation.REPAIR_REPLICATION, model.failoverTypes().get(0));
         Assertions.assertEquals(PossibleOperationsDirections.RECOVERY_TO_PRIMARY, model.failoverDirections().get(0));
@@ -27,22 +25,14 @@ public final class RecoveryPlanActionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanAction model =
-            new RecoveryPlanAction()
-                .withActionName("tod")
-                .withFailoverTypes(
-                    Arrays
-                        .asList(
-                            ReplicationProtectedItemOperation.REPAIR_REPLICATION,
-                            ReplicationProtectedItemOperation.UNPLANNED_FAILOVER,
-                            ReplicationProtectedItemOperation.TEST_FAILOVER_CLEANUP,
-                            ReplicationProtectedItemOperation.PLANNED_FAILOVER))
-                .withFailoverDirections(
-                    Arrays
-                        .asList(
-                            PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
-                            PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
-                .withCustomDetails(new RecoveryPlanActionDetails());
+        RecoveryPlanAction model = new RecoveryPlanAction().withActionName("tod")
+            .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.REPAIR_REPLICATION,
+                ReplicationProtectedItemOperation.UNPLANNED_FAILOVER,
+                ReplicationProtectedItemOperation.TEST_FAILOVER_CLEANUP,
+                ReplicationProtectedItemOperation.PLANNED_FAILOVER))
+            .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
+            .withCustomDetails(new RecoveryPlanActionDetails());
         model = BinaryData.fromObject(model).toObject(RecoveryPlanAction.class);
         Assertions.assertEquals("tod", model.actionName());
         Assertions.assertEquals(ReplicationProtectedItemOperation.REPAIR_REPLICATION, model.failoverTypes().get(0));

@@ -31,39 +31,26 @@ public final class ReplicationProtectionIntentsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"friendlyName\":\"mrgm\",\"jobId\":\"gtlhz\",\"jobState\":\"a\",\"isActive\":false,\"creationTimeUTC\":\"iy\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"nvzmsvzng\",\"id\":\"eqzhehgvmm\",\"name\":\"oyzgnbnypluz\",\"type\":\"pkfcdfu\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"friendlyName\":\"mrgm\",\"jobId\":\"gtlhz\",\"jobState\":\"a\",\"isActive\":false,\"creationTimeUTC\":\"iy\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"nvzmsvzng\",\"id\":\"eqzhehgvmm\",\"name\":\"oyzgnbnypluz\",\"type\":\"pkfcdfu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SiteRecoveryManager manager =
-            SiteRecoveryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ReplicationProtectionIntent> response =
-            manager
-                .replicationProtectionIntents()
-                .list("frzcwuejmxl", "zlnzyrgr", "hchraunjovlx", "tvmvzpni", com.azure.core.util.Context.NONE);
+        PagedIterable<ReplicationProtectionIntent> response = manager.replicationProtectionIntents().list("frzcwuejmxl",
+            "zlnzyrgr", "hchraunjovlx", "tvmvzpni", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("mrgm", response.iterator().next().properties().friendlyName());
         Assertions.assertEquals("nvzmsvzng", response.iterator().next().location());

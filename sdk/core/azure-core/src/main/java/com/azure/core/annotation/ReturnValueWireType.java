@@ -19,10 +19,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * are:
  *
  * <ol>
- *     <li>{@link Base64Url}</li>
- *     <li>{@link DateTimeRfc1123}</li>
- *     <li>{@link Page}</li>
- *     <li>{@link List List&lt;T&gt;} where {@code T} can be one of the four values above.</li>
+ * <li>{@link Base64Url}</li>
+ * <li>{@link DateTimeRfc1123}</li>
+ * <li>{@link Page}</li>
+ * <li>{@link List List&lt;T&gt;} where {@code T} can be one of the four values above.</li>
  * </ol>
  */
 @Retention(RUNTIME)

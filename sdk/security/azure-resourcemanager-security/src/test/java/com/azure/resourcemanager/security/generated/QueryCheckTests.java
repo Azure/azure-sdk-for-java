@@ -12,31 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryCheckTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryCheck model =
-            BinaryData
-                .fromString(
-                    "{\"query\":\"vcoqraswugyxpqi\",\"expectedResult\":[[\"alwvskbu\",\"z\"],[\"aq\"],[\"ltcoqc\",\"jpds\",\"zakuejk\"]],\"columnNames\":[\"iztjof\"]}")
-                .toObject(QueryCheck.class);
-        Assertions.assertEquals("vcoqraswugyxpqi", model.query());
-        Assertions.assertEquals("alwvskbu", model.expectedResult().get(0).get(0));
-        Assertions.assertEquals("iztjof", model.columnNames().get(0));
+        QueryCheck model = BinaryData.fromString(
+            "{\"query\":\"utujba\",\"expectedResult\":[[\"o\"],[\"inyflnorwmduvwp\",\"lvxwmyg\",\"xpgpq\"],[\"isze\",\"nnbj\",\"rxgibbd\",\"xconfozauors\"],[\"okwbqplh\",\"vnuuepzl\",\"phwzsoldweyuqdu\",\"vmnnrw\"]],\"columnNames\":[\"ork\"]}")
+            .toObject(QueryCheck.class);
+        Assertions.assertEquals("utujba", model.query());
+        Assertions.assertEquals("o", model.expectedResult().get(0).get(0));
+        Assertions.assertEquals("ork", model.columnNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryCheck model =
-            new QueryCheck()
-                .withQuery("vcoqraswugyxpqi")
-                .withExpectedResult(
-                    Arrays
-                        .asList(
-                            Arrays.asList("alwvskbu", "z"),
-                            Arrays.asList("aq"),
-                            Arrays.asList("ltcoqc", "jpds", "zakuejk")))
-                .withColumnNames(Arrays.asList("iztjof"));
+        QueryCheck model = new QueryCheck().withQuery("utujba")
+            .withExpectedResult(Arrays.asList(Arrays.asList("o"), Arrays.asList("inyflnorwmduvwp", "lvxwmyg", "xpgpq"),
+                Arrays.asList("isze", "nnbj", "rxgibbd", "xconfozauors"),
+                Arrays.asList("okwbqplh", "vnuuepzl", "phwzsoldweyuqdu", "vmnnrw")))
+            .withColumnNames(Arrays.asList("ork"));
         model = BinaryData.fromObject(model).toObject(QueryCheck.class);
-        Assertions.assertEquals("vcoqraswugyxpqi", model.query());
-        Assertions.assertEquals("alwvskbu", model.expectedResult().get(0).get(0));
-        Assertions.assertEquals("iztjof", model.columnNames().get(0));
+        Assertions.assertEquals("utujba", model.query());
+        Assertions.assertEquals("o", model.expectedResult().get(0).get(0));
+        Assertions.assertEquals("ork", model.columnNames().get(0));
     }
 }

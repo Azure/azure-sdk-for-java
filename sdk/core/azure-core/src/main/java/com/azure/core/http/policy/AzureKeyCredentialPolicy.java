@@ -8,10 +8,33 @@ import com.azure.core.credential.AzureKeyCredential;
 import java.util.Objects;
 
 /**
- * Pipeline policy that uses an {@link AzureKeyCredential} to set the authorization key for a request.
- * <p>
- * Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using {@code HTTPS}
- * an exception will be thrown to prevent leaking the key.
+ * The {@code AzureKeyCredentialPolicy} class is an implementation of the {@link KeyCredentialPolicy} interface. This
+ * policy uses an {@link AzureKeyCredential} to set the authorization key for a request.
+ *
+ * <p>This class is useful when you need to authorize requests with a key from Azure.</p>
+ *
+ * <p>Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using
+ * {@code HTTPS} an exception will be thrown to prevent leaking the key.</p>
+ *
+ * <p><strong>Code sample:</strong></p>
+ *
+ * <p>In this example, an {@code AzureKeyCredentialPolicy} is created with a key and a header name. The policy
+ * can be added to a pipeline. The requests sent by the pipeline will then include the specified header with the
+ * key as its value.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.AzureKeyCredentialPolicy.constructor -->
+ * <pre>
+ * AzureKeyCredential credential = new AzureKeyCredential&#40;&quot;my_key&quot;&#41;;
+ * AzureKeyCredentialPolicy policy = new AzureKeyCredentialPolicy&#40;&quot;my_header&quot;, credential&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.AzureKeyCredentialPolicy.constructor -->
+ *
+ * @see com.azure.core.http.policy
+ * @see com.azure.core.http.policy.KeyCredentialPolicy
+ * @see com.azure.core.credential.AzureKeyCredential
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public final class AzureKeyCredentialPolicy extends KeyCredentialPolicy {
     /**

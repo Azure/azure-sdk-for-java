@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Collection of logs to be enabled or disabled for log analytics. */
+/**
+ * Collection of logs to be enabled or disabled for log analytics.
+ */
 @Fluent
 public final class ClusterLogAnalyticsApplicationLogs {
     /*
@@ -22,13 +24,15 @@ public final class ClusterLogAnalyticsApplicationLogs {
     @JsonProperty(value = "stdErrorEnabled")
     private Boolean stdErrorEnabled;
 
-    /** Creates an instance of ClusterLogAnalyticsApplicationLogs class. */
+    /**
+     * Creates an instance of ClusterLogAnalyticsApplicationLogs class.
+     */
     public ClusterLogAnalyticsApplicationLogs() {
     }
 
     /**
      * Get the stdOutEnabled property: True if stdout is enabled, otherwise false.
-     *
+     * 
      * @return the stdOutEnabled value.
      */
     public Boolean stdOutEnabled() {
@@ -37,7 +41,7 @@ public final class ClusterLogAnalyticsApplicationLogs {
 
     /**
      * Set the stdOutEnabled property: True if stdout is enabled, otherwise false.
-     *
+     * 
      * @param stdOutEnabled the stdOutEnabled value to set.
      * @return the ClusterLogAnalyticsApplicationLogs object itself.
      */
@@ -48,7 +52,7 @@ public final class ClusterLogAnalyticsApplicationLogs {
 
     /**
      * Get the stdErrorEnabled property: True if stderror is enabled, otherwise false.
-     *
+     * 
      * @return the stdErrorEnabled value.
      */
     public Boolean stdErrorEnabled() {
@@ -57,7 +61,7 @@ public final class ClusterLogAnalyticsApplicationLogs {
 
     /**
      * Set the stdErrorEnabled property: True if stderror is enabled, otherwise false.
-     *
+     * 
      * @param stdErrorEnabled the stdErrorEnabled value to set.
      * @return the ClusterLogAnalyticsApplicationLogs object itself.
      */
@@ -68,7 +72,7 @@ public final class ClusterLogAnalyticsApplicationLogs {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

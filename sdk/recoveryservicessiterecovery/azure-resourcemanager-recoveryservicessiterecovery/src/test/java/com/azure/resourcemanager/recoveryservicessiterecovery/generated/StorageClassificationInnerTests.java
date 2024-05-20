@@ -12,21 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageClassificationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageClassificationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"friendlyName\":\"em\"},\"location\":\"h\",\"id\":\"hujswtwkozzwcul\",\"name\":\"bawpfajnjwltlwt\",\"type\":\"j\"}")
-                .toObject(StorageClassificationInner.class);
+        StorageClassificationInner model = BinaryData.fromString(
+            "{\"properties\":{\"friendlyName\":\"em\"},\"location\":\"h\",\"id\":\"hujswtwkozzwcul\",\"name\":\"bawpfajnjwltlwt\",\"type\":\"j\"}")
+            .toObject(StorageClassificationInner.class);
         Assertions.assertEquals("em", model.properties().friendlyName());
         Assertions.assertEquals("h", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageClassificationInner model =
-            new StorageClassificationInner()
-                .withProperties(new StorageClassificationProperties().withFriendlyName("em"))
-                .withLocation("h");
+        StorageClassificationInner model = new StorageClassificationInner()
+            .withProperties(new StorageClassificationProperties().withFriendlyName("em")).withLocation("h");
         model = BinaryData.fromObject(model).toObject(StorageClassificationInner.class);
         Assertions.assertEquals("em", model.properties().friendlyName());
         Assertions.assertEquals("h", model.location());

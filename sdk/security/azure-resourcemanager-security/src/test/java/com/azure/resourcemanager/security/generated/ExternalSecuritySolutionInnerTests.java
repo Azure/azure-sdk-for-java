@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.ExternalSecuritySolution
 public final class ExternalSecuritySolutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExternalSecuritySolutionInner model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"ExternalSecuritySolution\",\"location\":\"ddoui\",\"id\":\"amowaziynknlqwzd\",\"name\":\"piwhxqs\",\"type\":\"dtmaa\"}")
-                .toObject(ExternalSecuritySolutionInner.class);
+        ExternalSecuritySolutionInner model = BinaryData.fromString(
+            "{\"kind\":\"ExternalSecuritySolution\",\"location\":\"ygzmxieqvdsmak\",\"id\":\"ixqcahyhxalybxaw\",\"name\":\"ijpodtblxpkkwj\",\"type\":\"jodqhykincn\"}")
+            .toObject(ExternalSecuritySolutionInner.class);
     }
 
     @org.junit.jupiter.api.Test

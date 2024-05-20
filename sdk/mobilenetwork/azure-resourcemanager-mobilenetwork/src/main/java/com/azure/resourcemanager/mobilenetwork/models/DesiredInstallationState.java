@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The desired installation state of the packet core. */
+/**
+ * The desired installation state of the packet core.
+ */
 public final class DesiredInstallationState extends ExpandableStringEnum<DesiredInstallationState> {
-    /** Static value Uninstalled for DesiredInstallationState. */
+    /**
+     * Static value Uninstalled for DesiredInstallationState.
+     */
     public static final DesiredInstallationState UNINSTALLED = fromString("Uninstalled");
 
-    /** Static value Installed for DesiredInstallationState. */
+    /**
+     * Static value Installed for DesiredInstallationState.
+     */
     public static final DesiredInstallationState INSTALLED = fromString("Installed");
 
     /**
      * Creates a new instance of DesiredInstallationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class DesiredInstallationState extends ExpandableStringEnum<Desired
 
     /**
      * Creates or finds a DesiredInstallationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DesiredInstallationState.
      */
@@ -38,7 +44,7 @@ public final class DesiredInstallationState extends ExpandableStringEnum<Desired
 
     /**
      * Gets known DesiredInstallationState values.
-     *
+     * 
      * @return known DesiredInstallationState values.
      */
     public static Collection<DesiredInstallationState> values() {

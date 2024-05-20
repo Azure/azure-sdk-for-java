@@ -10,9 +10,12 @@
 # prior to calling this script.
 param(
   # $(Build.SourcesDirectory) - root of the repository
-  [Parameter(Mandatory=$true)][string]$SourcesDirectory,
-  # ArtifactsList will be using ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
-  [Parameter(Mandatory=$true)][array] $ProjectList
+  [Parameter(Mandatory=$true)]
+  [string]$SourcesDirectory,
+
+  [Parameter(Mandatory=$true)]
+  [AllowEmptyCollection()]
+  [array] $ProjectList
 )
 
 $StartTime = $(get-date)
@@ -124,5 +127,8 @@ $temp =  ConvertTo-Json @($serviceDirectories | Sort-Object | Get-Unique) -Compr
 Write-Host "setting env variable ServiceDirectories = $temp"
 Write-Host "##vso[task.setvariable variable=ServiceDirectories;]$temp"
 $ElapsedTime = $(get-date) - $StartTime
+if ($ElapsedTime -lt 0) {
+    $ElapsedTime = [datetime]0
+}
 $TotalRunTime = "{0:HH:mm:ss}" -f ([datetime]$ElapsedTime.Ticks)
 Write-Host "Total run time=$($TotalRunTime)"

@@ -5,32 +5,38 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** The retention policy. */
-@JacksonXmlRootElement(localName = "RetentionPolicy")
+/**
+ * The retention policy.
+ */
 @Fluent
-public final class RetentionPolicy {
+public final class RetentionPolicy implements XmlSerializable<RetentionPolicy> {
     /*
      * Indicates whether a retention policy is enabled for the service.
      */
-    @JsonProperty(value = "Enabled", required = true)
     private boolean enabled;
 
     /*
-     * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older
-     * than this value will be deleted.
+     * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than this value will be deleted.
      */
-    @JsonProperty(value = "Days")
     private Integer days;
 
-    /** Creates an instance of RetentionPolicy class. */
-    public RetentionPolicy() {}
+    /**
+     * Creates an instance of RetentionPolicy class.
+     */
+    public RetentionPolicy() {
+    }
 
     /**
      * Get the enabled property: Indicates whether a retention policy is enabled for the service.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean isEnabled() {
@@ -39,7 +45,7 @@ public final class RetentionPolicy {
 
     /**
      * Set the enabled property: Indicates whether a retention policy is enabled for the service.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the RetentionPolicy object itself.
      */
@@ -51,7 +57,7 @@ public final class RetentionPolicy {
     /**
      * Get the days property: Indicates the number of days that metrics or logging or soft-deleted data should be
      * retained. All data older than this value will be deleted.
-     *
+     * 
      * @return the days value.
      */
     public Integer getDays() {
@@ -61,12 +67,70 @@ public final class RetentionPolicy {
     /**
      * Set the days property: Indicates the number of days that metrics or logging or soft-deleted data should be
      * retained. All data older than this value will be deleted.
-     *
+     * 
      * @param days the days value to set.
      * @return the RetentionPolicy object itself.
      */
     public RetentionPolicy setDays(Integer days) {
         this.days = days;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "RetentionPolicy" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeBooleanElement("Enabled", this.enabled);
+        xmlWriter.writeNumberElement("Days", this.days);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of RetentionPolicy from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of RetentionPolicy if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the RetentionPolicy.
+     */
+    public static RetentionPolicy fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of RetentionPolicy from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of RetentionPolicy if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the RetentionPolicy.
+     */
+    public static RetentionPolicy fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "RetentionPolicy" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            RetentionPolicy deserializedRetentionPolicy = new RetentionPolicy();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Enabled".equals(elementName.getLocalPart())) {
+                    deserializedRetentionPolicy.enabled = reader.getBooleanElement();
+                } else if ("Days".equals(elementName.getLocalPart())) {
+                    deserializedRetentionPolicy.days = reader.getNullableElement(Integer::parseInt);
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedRetentionPolicy;
+        });
     }
 }

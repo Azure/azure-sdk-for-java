@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Key Encryption Key (KEK) information. */
+/**
+ * Key Encryption Key (KEK) information.
+ */
 @Fluent
 public final class KeyEncryptionKeyInfo {
     /*
@@ -22,13 +24,15 @@ public final class KeyEncryptionKeyInfo {
     @JsonProperty(value = "keyVaultResourceArmId")
     private String keyVaultResourceArmId;
 
-    /** Creates an instance of KeyEncryptionKeyInfo class. */
+    /**
+     * Creates an instance of KeyEncryptionKeyInfo class.
+     */
     public KeyEncryptionKeyInfo() {
     }
 
     /**
      * Get the keyIdentifier property: The key URL / identifier.
-     *
+     * 
      * @return the keyIdentifier value.
      */
     public String keyIdentifier() {
@@ -37,7 +41,7 @@ public final class KeyEncryptionKeyInfo {
 
     /**
      * Set the keyIdentifier property: The key URL / identifier.
-     *
+     * 
      * @param keyIdentifier the keyIdentifier value to set.
      * @return the KeyEncryptionKeyInfo object itself.
      */
@@ -48,7 +52,7 @@ public final class KeyEncryptionKeyInfo {
 
     /**
      * Get the keyVaultResourceArmId property: The KeyVault resource ARM Id for key.
-     *
+     * 
      * @return the keyVaultResourceArmId value.
      */
     public String keyVaultResourceArmId() {
@@ -57,7 +61,7 @@ public final class KeyEncryptionKeyInfo {
 
     /**
      * Set the keyVaultResourceArmId property: The KeyVault resource ARM Id for key.
-     *
+     * 
      * @param keyVaultResourceArmId the keyVaultResourceArmId value to set.
      * @return the KeyEncryptionKeyInfo object itself.
      */
@@ -68,7 +72,7 @@ public final class KeyEncryptionKeyInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

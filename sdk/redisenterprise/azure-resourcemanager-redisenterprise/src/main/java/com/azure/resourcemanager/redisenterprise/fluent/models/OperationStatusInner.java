@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The status of a long-running operation. */
+/**
+ * The status of a long-running operation.
+ */
 @Fluent
 public final class OperationStatusInner {
     /*
@@ -43,19 +45,21 @@ public final class OperationStatusInner {
 
     /*
      * Error response
-     *
+     * 
      * Error response describing why the operation failed.
      */
     @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of OperationStatusInner class. */
+    /**
+     * Creates an instance of OperationStatusInner class.
+     */
     public OperationStatusInner() {
     }
 
     /**
      * Get the id property: The operation's unique id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -64,7 +68,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the id property: The operation's unique id.
-     *
+     * 
      * @param id the id value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -75,7 +79,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the name property: The operation's name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -84,7 +88,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the name property: The operation's name.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -95,7 +99,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the startTime property: The start time of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -104,7 +108,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the startTime property: The start time of the operation.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -115,7 +119,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the endTime property: The end time of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -124,7 +128,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the endTime property: The end time of the operation.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -135,7 +139,7 @@ public final class OperationStatusInner {
 
     /**
      * Get the status property: The current status of the operation.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -144,7 +148,7 @@ public final class OperationStatusInner {
 
     /**
      * Set the status property: The current status of the operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -155,9 +159,9 @@ public final class OperationStatusInner {
 
     /**
      * Get the error property: Error response
-     *
-     * <p>Error response describing why the operation failed.
-     *
+     * 
+     * Error response describing why the operation failed.
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -166,9 +170,9 @@ public final class OperationStatusInner {
 
     /**
      * Set the error property: Error response
-     *
-     * <p>Error response describing why the operation failed.
-     *
+     * 
+     * Error response describing why the operation failed.
+     * 
      * @param error the error value to set.
      * @return the OperationStatusInner object itself.
      */
@@ -179,7 +183,7 @@ public final class OperationStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

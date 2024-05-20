@@ -6,7 +6,7 @@ import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.{CosmosItemIdentity, PartitionKey}
 import com.azure.cosmos.spark.CosmosPredicates.assertOnSparkDriver
-import com.azure.cosmos.spark.diagnostics.{BasicLoggingTrait, DiagnosticsContext, SparkTaskContext}
+import com.azure.cosmos.spark.diagnostics.{BasicLoggingTrait, DiagnosticsContext}
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
@@ -15,10 +15,6 @@ import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import org.apache.spark.sql.types.StructType
 
 import java.util.UUID
-
-// scalastyle:off underscore.import
-import scala.collection.JavaConverters._
-// scalastyle:on underscore.import
 
 private[spark] class CosmosReadManyReader(
                                          val userProvidedSchema: StructType,

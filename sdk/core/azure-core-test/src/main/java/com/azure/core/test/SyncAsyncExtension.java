@@ -97,12 +97,10 @@ public final class SyncAsyncExtension implements TestTemplateInvocationContextPr
     }
 
     @Override
-    public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
-        ExtensionContext extensionContext) {
-        return Stream.of(
-            new SyncAsyncTestTemplateInvocationContext(true),
-            new SyncAsyncTestTemplateInvocationContext(false)
-        );
+    public Stream<TestTemplateInvocationContext>
+        provideTestTemplateInvocationContexts(ExtensionContext extensionContext) {
+        return Stream.of(new SyncAsyncTestTemplateInvocationContext(true),
+            new SyncAsyncTestTemplateInvocationContext(false));
     }
 
     private static final class SyncAsyncTestTemplateInvocationContext implements TestTemplateInvocationContext {

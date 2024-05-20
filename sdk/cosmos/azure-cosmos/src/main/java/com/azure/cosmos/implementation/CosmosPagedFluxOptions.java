@@ -102,9 +102,9 @@ public class CosmosPagedFluxOptions {
         return samplingRateSnapshot;
     }
 
-    public void setSamplingRateSnapshot(double samplingRateSnapshot) {
+    public void setSamplingRateSnapshot(double samplingRateSnapshot, boolean isSampledOut) {
         if (this.operationState != null) {
-            this.operationState.setSamplingRateSnapshot(samplingRateSnapshot);
+            this.operationState.setSamplingRateSnapshot(samplingRateSnapshot, isSampledOut);
         }
     }
 }

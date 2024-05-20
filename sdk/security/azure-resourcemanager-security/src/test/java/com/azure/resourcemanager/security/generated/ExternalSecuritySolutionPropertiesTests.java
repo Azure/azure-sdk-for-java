@@ -14,30 +14,28 @@ import org.junit.jupiter.api.Assertions;
 public final class ExternalSecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExternalSecuritySolutionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"deviceVendor\":\"rbzg\",\"deviceType\":\"oxqmjeajc\",\"workspace\":{\"id\":\"qg\"},\"\":{\"simjceagbjqvlsu\":\"datausrvx\",\"gon\":\"dataywzash\"}}")
-                .toObject(ExternalSecuritySolutionProperties.class);
-        Assertions.assertEquals("rbzg", model.deviceVendor());
-        Assertions.assertEquals("oxqmjeajc", model.deviceType());
-        Assertions.assertEquals("qg", model.workspace().id());
+        ExternalSecuritySolutionProperties model = BinaryData.fromString(
+            "{\"deviceVendor\":\"tmjoduifvu\",\"deviceType\":\"faryrvjlg\",\"workspace\":{\"id\":\"vjqwaho\"},\"\":{\"ovbooqbmdqrxy\":\"dataaxqvjweiwtczkddn\",\"e\":\"datalaetscflwtjdtlr\",\"cuxd\":\"dataooy\",\"ehxlantolamlb\":\"datazcqipsdudgcozzo\"}}")
+            .toObject(ExternalSecuritySolutionProperties.class);
+        Assertions.assertEquals("tmjoduifvu", model.deviceVendor());
+        Assertions.assertEquals("faryrvjlg", model.deviceType());
+        Assertions.assertEquals("vjqwaho", model.workspace().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExternalSecuritySolutionProperties model =
-            new ExternalSecuritySolutionProperties()
-                .withDeviceVendor("rbzg")
-                .withDeviceType("oxqmjeajc")
-                .withWorkspace(new ConnectedWorkspace().withId("qg"))
+        ExternalSecuritySolutionProperties model
+            = new ExternalSecuritySolutionProperties().withDeviceVendor("tmjoduifvu")
+                .withDeviceType("faryrvjlg")
+                .withWorkspace(new ConnectedWorkspace().withId("vjqwaho"))
                 .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ExternalSecuritySolutionProperties.class);
-        Assertions.assertEquals("rbzg", model.deviceVendor());
-        Assertions.assertEquals("oxqmjeajc", model.deviceType());
-        Assertions.assertEquals("qg", model.workspace().id());
+        Assertions.assertEquals("tmjoduifvu", model.deviceVendor());
+        Assertions.assertEquals("faryrvjlg", model.deviceType());
+        Assertions.assertEquals("vjqwaho", model.workspace().id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

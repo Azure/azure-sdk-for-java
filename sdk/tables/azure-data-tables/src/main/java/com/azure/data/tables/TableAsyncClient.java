@@ -34,7 +34,7 @@ import com.azure.data.tables.implementation.models.SignedIdentifier;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
-import com.azure.data.tables.implementation.models.TableServiceError;
+import com.azure.data.tables.implementation.models.TableServiceJsonError;
 import com.azure.data.tables.implementation.models.TransactionalBatchAction;
 import com.azure.data.tables.implementation.models.TransactionalBatchChangeSet;
 import com.azure.data.tables.implementation.models.TransactionalBatchRequestBody;
@@ -1352,7 +1352,7 @@ public final class TableAsyncClient {
                 .getAccessPolicyWithResponseAsync(tableName, null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> new SimpleResponse<>(response,
-                    new TableAccessPolicies(response.getValue() == null ? null : response.getValue().stream()
+                    new TableAccessPolicies(response.getValue() == null ? null : response.getValue().items().stream()
                         .map(TableUtils::toTableSignedIdentifier)
                         .collect(Collectors.toList()))));
         } catch (RuntimeException e) {
@@ -1740,7 +1740,7 @@ public final class TableAsyncClient {
 
     private Mono<Response<List<TableTransactionActionResponse>>> parseResponse(TransactionalBatchRequestBody requestBody,
         ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> response) {
-        TableServiceError error = null;
+        TableServiceJsonError error = null;
         String errorMessage = null;
         TransactionalBatchChangeSet changes = null;
         TransactionalBatchAction failedAction = null;
@@ -1761,8 +1761,8 @@ public final class TableAsyncClient {
 
             // If one sub-response was an error, we need to throw even though the service responded with 202
             if (subResponse.getStatusCode() >= 400 && error == null && errorMessage == null) {
-                if (subResponse.getValue() instanceof TableServiceError) {
-                    error = (TableServiceError) subResponse.getValue();
+                if (subResponse.getValue() instanceof TableServiceJsonError) {
+                    error = (TableServiceJsonError) subResponse.getValue();
 
                     // Make a best effort to locate the failed operation and include it in the message
                     if (changes != null && error.getOdataError() != null

@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class FleetMemberInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FleetMemberInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"clusterResourceId\":\"olniwpwcukjf\",\"group\":\"iawxklry\",\"provisioningState\":\"Joining\"},\"eTag\":\"kbasyypn\",\"id\":\"hsgcbacphejkot\",\"name\":\"nqgoulzndli\",\"type\":\"wyqkgfgibm\"}")
-                .toObject(FleetMemberInner.class);
-        Assertions.assertEquals("olniwpwcukjf", model.clusterResourceId());
-        Assertions.assertEquals("iawxklry", model.group());
+        FleetMemberInner model = BinaryData.fromString(
+            "{\"properties\":{\"clusterResourceId\":\"kyfi\",\"group\":\"fidfvzw\",\"provisioningState\":\"Joining\"},\"eTag\":\"tymw\",\"id\":\"dkfthwxmnt\",\"name\":\"i\",\"type\":\"aop\"}")
+            .toObject(FleetMemberInner.class);
+        Assertions.assertEquals("kyfi", model.clusterResourceId());
+        Assertions.assertEquals("fidfvzw", model.group());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FleetMemberInner model = new FleetMemberInner().withClusterResourceId("olniwpwcukjf").withGroup("iawxklry");
+        FleetMemberInner model = new FleetMemberInner().withClusterResourceId("kyfi").withGroup("fidfvzw");
         model = BinaryData.fromObject(model).toObject(FleetMemberInner.class);
-        Assertions.assertEquals("olniwpwcukjf", model.clusterResourceId());
-        Assertions.assertEquals("iawxklry", model.group());
+        Assertions.assertEquals("kyfi", model.clusterResourceId());
+        Assertions.assertEquals("fidfvzw", model.group());
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Storage mapping input properties. */
+/**
+ * Storage mapping input properties.
+ */
 @Fluent
 public final class StorageMappingInputProperties {
     /*
@@ -16,13 +18,15 @@ public final class StorageMappingInputProperties {
     @JsonProperty(value = "targetStorageClassificationId")
     private String targetStorageClassificationId;
 
-    /** Creates an instance of StorageMappingInputProperties class. */
+    /**
+     * Creates an instance of StorageMappingInputProperties class.
+     */
     public StorageMappingInputProperties() {
     }
 
     /**
      * Get the targetStorageClassificationId property: The ID of the storage object.
-     *
+     * 
      * @return the targetStorageClassificationId value.
      */
     public String targetStorageClassificationId() {
@@ -31,7 +35,7 @@ public final class StorageMappingInputProperties {
 
     /**
      * Set the targetStorageClassificationId property: The ID of the storage object.
-     *
+     * 
      * @param targetStorageClassificationId the targetStorageClassificationId value to set.
      * @return the StorageMappingInputProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class StorageMappingInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

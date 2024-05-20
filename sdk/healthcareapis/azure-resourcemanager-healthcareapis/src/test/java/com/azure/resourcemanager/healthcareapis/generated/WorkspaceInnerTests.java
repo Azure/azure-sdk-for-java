@@ -26,7 +26,8 @@ public final class WorkspaceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceInner model = new WorkspaceInner().withEtag("zevgb").withLocation("cpecfvmmcoofs")
+        WorkspaceInner model = new WorkspaceInner().withEtag("zevgb")
+            .withLocation("cpecfvmmcoofs")
             .withTags(
                 mapOf("xdqmidtthzrvqdra", "efgugnxk", "skanyk", "hjybigehoqfbo", "nhzgpphrcgyn", "zlcuiywgqywgndrv"))
             .withProperties(new WorkspaceProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED));

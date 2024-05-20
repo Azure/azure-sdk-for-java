@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,1038 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.7 (2024-05-15)
+
+- Azure Resource Manager Security client library for Java. This package contains Microsoft Azure SDK for Security Management SDK. API spec for Microsoft.Security (Azure Security Center) resource provider. Package tag package-composite-v3. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration` was removed
+
+* `models.DefenderForServersAwsOfferingArcAutoProvisioningConfiguration` was removed
+
+* `models.DefenderForContainersAwsOfferingContainerVulnerabilityAssessment` was removed
+
+* `models.DefenderForDevOpsGitLabOffering` was removed
+
+* `models.InformationProtectionAwsOffering` was removed
+
+* `models.DefenderForServersAwsOfferingVmScannersConfiguration` was removed
+
+* `models.DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration` was removed
+
+* `models.ResourceProviders` was removed
+
+* `models.DefenderForContainersAwsOfferingContainerVulnerabilityAssessmentTask` was removed
+
+* `models.DefenderCspmAwsOfferingVmScannersConfiguration` was removed
+
+* `models.DefenderCspmGcpOfferingVmScannersConfiguration` was removed
+
+* `models.DefenderForServersGcpOfferingVmScannersConfiguration` was removed
+
+* `models.DefenderForDevOpsGithubOffering` was removed
+
+* `models.DefenderForServersGcpOfferingArcAutoProvisioningConfiguration` was removed
+
+* `models.DefenderForContainersAwsOfferingKubernetesScubaReader` was removed
+
+* `models.InformationProtectionAwsOfferingInformationProtection` was removed
+
+* `models.DefenderForDevOpsAzureDevOpsOffering` was removed
+
+#### `models.DefenderCspmGcpOfferingVmScanners` was modified
+
+* `enabled()` was removed
+* `withConfiguration(models.DefenderCspmGcpOfferingVmScannersConfiguration)` was removed
+* `configuration()` was removed
+
+#### `models.DefenderForServersGcpOfferingArcAutoProvisioning` was modified
+
+* `enabled()` was removed
+* `configuration()` was removed
+* `withConfiguration(models.DefenderForServersGcpOfferingArcAutoProvisioningConfiguration)` was removed
+
+#### `models.DefenderForServersGcpOfferingVmScanners` was modified
+
+* `configuration()` was removed
+* `withConfiguration(models.DefenderForServersGcpOfferingVmScannersConfiguration)` was removed
+* `enabled()` was removed
+
+#### `SecurityManager` was modified
+
+* `resourceProviders()` was removed
+
+#### `models.DefenderForDatabasesGcpOfferingArcAutoProvisioning` was modified
+
+* `enabled()` was removed
+* `configuration()` was removed
+* `withConfiguration(models.DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration)` was removed
+
+#### `models.DefenderFoDatabasesAwsOfferingArcAutoProvisioning` was modified
+
+* `cloudRoleArn()` was removed
+* `enabled()` was removed
+* `withConfiguration(models.DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration)` was removed
+* `configuration()` was removed
+
+#### `models.DefenderCspmAwsOfferingVmScanners` was modified
+
+* `enabled()` was removed
+* `configuration()` was removed
+* `withConfiguration(models.DefenderCspmAwsOfferingVmScannersConfiguration)` was removed
+
+#### `models.DefenderForServersAwsOfferingVmScanners` was modified
+
+* `withConfiguration(models.DefenderForServersAwsOfferingVmScannersConfiguration)` was removed
+* `enabled()` was removed
+* `configuration()` was removed
+
+#### `models.DefenderForContainersAwsOffering` was modified
+
+* `autoProvisioning()` was removed
+* `kubernetesScubaReader()` was removed
+* `containerVulnerabilityAssessment()` was removed
+* `enableContainerVulnerabilityAssessment()` was removed
+* `withScubaExternalId(java.lang.String)` was removed
+* `containerVulnerabilityAssessmentTask()` was removed
+* `withAutoProvisioning(java.lang.Boolean)` was removed
+* `withContainerVulnerabilityAssessmentTask(models.DefenderForContainersAwsOfferingContainerVulnerabilityAssessmentTask)` was removed
+* `withContainerVulnerabilityAssessment(models.DefenderForContainersAwsOfferingContainerVulnerabilityAssessment)` was removed
+* `scubaExternalId()` was removed
+* `withKubernetesScubaReader(models.DefenderForContainersAwsOfferingKubernetesScubaReader)` was removed
+* `withEnableContainerVulnerabilityAssessment(java.lang.Boolean)` was removed
+
+#### `models.DefenderForContainersGcpOffering` was modified
+
+* `defenderAgentAutoProvisioningFlag()` was removed
+* `withDefenderAgentAutoProvisioningFlag(java.lang.Boolean)` was removed
+* `policyAgentAutoProvisioningFlag()` was removed
+* `withPolicyAgentAutoProvisioningFlag(java.lang.Boolean)` was removed
+* `auditLogsAutoProvisioningFlag()` was removed
+* `withAuditLogsAutoProvisioningFlag(java.lang.Boolean)` was removed
+
+#### `models.DefenderForServersAwsOfferingArcAutoProvisioning` was modified
+
+* `cloudRoleArn()` was removed
+* `withConfiguration(models.DefenderForServersAwsOfferingArcAutoProvisioningConfiguration)` was removed
+* `configuration()` was removed
+* `enabled()` was removed
+
+### Features Added
+
+* `models.DefenderForContainersGcpOfferingVmScanners` was added
+
+* `models.ArcAutoProvisioning` was added
+
+* `models.ArcAutoProvisioningAws` was added
+
+* `models.ArcAutoProvisioningConfiguration` was added
+
+* `models.VmScannersGcp` was added
+
+* `models.VmScannersBaseConfiguration` was added
+
+* `models.VmScannersBase` was added
+
+* `models.ArcAutoProvisioningGcp` was added
+
+* `models.VmScannersAws` was added
+
+* `models.DefenderForContainersAwsOfferingKubernetesDataCollection` was added
+
+* `models.DevOpsCapability` was added
+
+* `models.DefenderForContainersAwsOfferingVmScanners` was added
+
+#### `models.AdditionalData` was modified
+
+* `assessedResourceType()` was added
+
+#### `models.NotificationsSourceAlert` was modified
+
+* `sourceType()` was added
+
+#### `models.GcpOrganizationalDataOrganization` was modified
+
+* `organizationMembershipType()` was added
+
+#### `models.DenylistCustomAlertRule` was modified
+
+* `ruleType()` was added
+
+#### `models.AzureResourceIdentifier` was modified
+
+* `type()` was added
+
+#### `models.DirectMethodInvokesNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.AuthenticationDetailsProperties` was modified
+
+* `authenticationType()` was added
+
+#### `models.DefenderForServersGcpOffering` was modified
+
+* `offeringType()` was added
+
+#### `models.GcpProjectEnvironmentData` was modified
+
+* `environmentType()` was added
+
+#### `models.LogAnalyticsIdentifier` was modified
+
+* `type()` was added
+
+#### `models.AwsOrganizationalDataMaster` was modified
+
+* `organizationMembershipType()` was added
+
+#### `models.GcpOrganizationalDataMember` was modified
+
+* `organizationMembershipType()` was added
+
+#### `models.ThresholdCustomAlertRule` was modified
+
+* `ruleType()` was added
+
+#### `models.SensitivitySettings` was modified
+
+* `createOrUpdate(models.UpdateSensitivitySettingsRequest)` was added
+* `getWithResponse(com.azure.core.util.Context)` was added
+* `get()` was added
+* `createOrUpdateWithResponse(models.UpdateSensitivitySettingsRequest,com.azure.core.util.Context)` was added
+
+#### `models.ResourceDetails` was modified
+
+* `source()` was added
+
+#### `models.ResourceIdentifier` was modified
+
+* `type()` was added
+
+#### `models.ConnectionToIpNotAllowed` was modified
+
+* `ruleType()` was added
+
+#### `models.GitlabScopeEnvironmentData` was modified
+
+* `environmentType()` was added
+
+#### `models.AwsOrganizationalDataMember` was modified
+
+* `organizationMembershipType()` was added
+
+#### `models.DevOpsConfigurationProperties` was modified
+
+* `capabilities()` was added
+
+#### `models.AzureDevOpsScopeEnvironmentData` was modified
+
+* `environmentType()` was added
+
+#### `models.FailedLocalLoginsNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.NotificationsSourceAttackPath` was modified
+
+* `sourceType()` was added
+
+#### `models.FileUploadsNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.MqttC2DMessagesNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.ExternalSecuritySolution` was modified
+
+* `kind()` was added
+
+#### `models.ConnectionFromIpNotAllowed` was modified
+
+* `ruleType()` was added
+
+#### `models.DefenderCspmGcpOfferingVmScanners` was modified
+
+* `withEnabled(java.lang.Boolean)` was added
+* `withConfiguration(models.VmScannersBaseConfiguration)` was added
+
+#### `models.AutomationActionWorkspace` was modified
+
+* `actionType()` was added
+
+#### `models.AmqpC2DRejectedMessagesNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.CspmMonitorAzureDevOpsOffering` was modified
+
+* `offeringType()` was added
+
+#### `models.LocalUserNotAllowed` was modified
+
+* `ruleType()` was added
+
+#### `models.EnvironmentData` was modified
+
+* `environmentType()` was added
+
+#### `models.DefenderForServersAwsOffering` was modified
+
+* `offeringType()` was added
+
+#### `models.CspmMonitorGithubOffering` was modified
+
+* `offeringType()` was added
+
+#### `models.ContainerRegistryVulnerabilityProperties` was modified
+
+* `assessedResourceType()` was added
+
+#### `models.MqttC2DRejectedMessagesNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.AwAssumeRoleAuthenticationDetailsProperties` was modified
+
+* `authenticationType()` was added
+
+#### `models.OnPremiseSqlResourceDetails` was modified
+
+* `source()` was added
+
+#### `models.AutomationAction` was modified
+
+* `actionType()` was added
+
+#### `models.CustomAlertRule` was modified
+
+* `ruleType()` was added
+
+#### `models.AzureServersSetting` was modified
+
+* `kind()` was added
+
+#### `models.AtaExternalSecuritySolution` was modified
+
+* `kind()` was added
+
+#### `models.AutomationActionEventHub` was modified
+
+* `actionType()` was added
+
+#### `models.AlertSyncSettings` was modified
+
+* `kind()` was added
+
+#### `models.DefenderForServersGcpOfferingArcAutoProvisioning` was modified
+
+* `withEnabled(java.lang.Boolean)` was added
+* `withConfiguration(models.ArcAutoProvisioningConfiguration)` was added
+
+#### `models.TwinUpdatesNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.DefenderForServersGcpOfferingVmScanners` was modified
+
+* `withEnabled(java.lang.Boolean)` was added
+* `withConfiguration(models.VmScannersBaseConfiguration)` was added
+
+#### `models.CefExternalSecuritySolution` was modified
+
+* `kind()` was added
+
+#### `models.SqlServerVulnerabilityProperties` was modified
+
+* `assessedResourceType()` was added
+
+#### `models.AwsOrganizationalData` was modified
+
+* `organizationMembershipType()` was added
+
+#### `models.AwsEnvironmentData` was modified
+
+* `environmentType()` was added
+
+#### `models.AmqpC2DMessagesNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.AlertSimulatorRequestProperties` was modified
+
+* `kind()` was added
+
+#### `models.HttpC2DRejectedMessagesNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.DefenderForDatabasesGcpOfferingArcAutoProvisioning` was modified
+
+* `withEnabled(java.lang.Boolean)` was added
+* `withConfiguration(models.ArcAutoProvisioningConfiguration)` was added
+
+#### `models.GcpOrganizationalData` was modified
+
+* `organizationMembershipType()` was added
+
+#### `models.DefenderFoDatabasesAwsOfferingArcAutoProvisioning` was modified
+
+* `withEnabled(java.lang.Boolean)` was added
+* `withConfiguration(models.ArcAutoProvisioningConfiguration)` was added
+* `withCloudRoleArn(java.lang.String)` was added
+
+#### `models.AmqpD2CMessagesNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.CloudOffering` was modified
+
+* `offeringType()` was added
+
+#### `models.DataExportSettings` was modified
+
+* `kind()` was added
+
+#### `models.DefenderCspmAwsOfferingVmScanners` was modified
+
+* `withEnabled(java.lang.Boolean)` was added
+* `withCloudRoleArn(java.lang.String)` was added
+* `withConfiguration(models.VmScannersBaseConfiguration)` was added
+
+#### `models.ListCustomAlertRule` was modified
+
+* `ruleType()` was added
+
+#### `models.MqttD2CMessagesNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.ActiveConnectionsNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.AadExternalSecuritySolution` was modified
+
+* `kind()` was added
+
+#### `models.GithubScopeEnvironmentData` was modified
+
+* `environmentType()` was added
+
+#### `models.QueuePurgesNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.DefenderForServersAwsOfferingVmScanners` was modified
+
+* `withConfiguration(models.VmScannersBaseConfiguration)` was added
+* `withCloudRoleArn(java.lang.String)` was added
+* `withEnabled(java.lang.Boolean)` was added
+
+#### `models.DefenderFoDatabasesAwsOffering` was modified
+
+* `offeringType()` was added
+
+#### `models.AutomationActionLogicApp` was modified
+
+* `actionType()` was added
+
+#### `models.HttpC2DMessagesNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.CspmMonitorGcpOffering` was modified
+
+* `offeringType()` was added
+
+#### `models.AzureResourceDetails` was modified
+
+* `source()` was added
+
+#### `models.CspmMonitorAwsOffering` was modified
+
+* `offeringType()` was added
+
+#### `models.DefenderForDatabasesGcpOffering` was modified
+
+* `offeringType()` was added
+
+#### `models.AllowlistCustomAlertRule` was modified
+
+* `ruleType()` was added
+
+#### `models.ServerVulnerabilityAssessmentsSetting` was modified
+
+* `kind()` was added
+
+#### `models.OnPremiseResourceDetails` was modified
+
+* `source()` was added
+
+#### `models.DefenderForContainersAwsOffering` was modified
+
+* `withEnableDefenderAgentAutoProvisioning(java.lang.Boolean)` was added
+* `offeringType()` was added
+* `withEnablePolicyAgentAutoProvisioning(java.lang.Boolean)` was added
+* `kubernetesDataCollection()` was added
+* `enableAuditLogsAutoProvisioning()` was added
+* `withVmScanners(models.DefenderForContainersAwsOfferingVmScanners)` was added
+* `withKubernetesDataCollection(models.DefenderForContainersAwsOfferingKubernetesDataCollection)` was added
+* `dataCollectionExternalId()` was added
+* `enableDefenderAgentAutoProvisioning()` was added
+* `withEnableAuditLogsAutoProvisioning(java.lang.Boolean)` was added
+* `withDataCollectionExternalId(java.lang.String)` was added
+* `enablePolicyAgentAutoProvisioning()` was added
+* `vmScanners()` was added
+
+#### `models.HttpD2CMessagesNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.UnauthorizedOperationsNotInAllowedRange` was modified
+
+* `ruleType()` was added
+
+#### `models.Setting` was modified
+
+* `kind()` was added
+
+#### `models.AlertSimulatorBundlesRequestProperties` was modified
+
+* `kind()` was added
+
+#### `models.DefenderForContainersGcpOffering` was modified
+
+* `enableAuditLogsAutoProvisioning()` was added
+* `offeringType()` was added
+* `enablePolicyAgentAutoProvisioning()` was added
+* `withEnablePolicyAgentAutoProvisioning(java.lang.Boolean)` was added
+* `withEnableAuditLogsAutoProvisioning(java.lang.Boolean)` was added
+* `enableDefenderAgentAutoProvisioning()` was added
+* `withVmScanners(models.DefenderForContainersGcpOfferingVmScanners)` was added
+* `withEnableDefenderAgentAutoProvisioning(java.lang.Boolean)` was added
+* `vmScanners()` was added
+
+#### `models.AwsCredsAuthenticationDetailsProperties` was modified
+
+* `authenticationType()` was added
+
+#### `models.DefenderCspmAwsOffering` was modified
+
+* `offeringType()` was added
+
+#### `models.GcpCredentialsDetailsProperties` was modified
+
+* `authenticationType()` was added
+
+#### `models.ServerVulnerabilityProperties` was modified
+
+* `assessedResourceType()` was added
+
+#### `models.CspmMonitorGitLabOffering` was modified
+
+* `offeringType()` was added
+
+#### `models.DefenderCspmGcpOffering` was modified
+
+* `offeringType()` was added
+
+#### `models.ProcessNotAllowed` was modified
+
+* `ruleType()` was added
+
+#### `models.DefenderForServersAwsOfferingArcAutoProvisioning` was modified
+
+* `withEnabled(java.lang.Boolean)` was added
+* `withConfiguration(models.ArcAutoProvisioningConfiguration)` was added
+* `withCloudRoleArn(java.lang.String)` was added
+
+#### `models.TimeWindowCustomAlertRule` was modified
+
+* `ruleType()` was added
+
+#### `models.NotificationsSource` was modified
+
+* `sourceType()` was added
+
+## 1.0.0-beta.6 (2024-03-14)
+
+- Azure Resource Manager Security client library for Java. This package contains Microsoft Azure SDK for Security Management SDK. API spec for Microsoft.Security (Azure Security Center) resource provider. Package tag package-composite-v3. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ApiCollectionOffboardings` was removed
+
+* `models.IngestionSettingList` was removed
+
+* `models.IngestionConnectionString` was removed
+
+* `models.Roles` was removed
+
+* `models.ScopeName` was removed
+
+* `models.IngestionSettings` was removed
+
+* `models.IngestionSetting` was removed
+
+* `models.IngestionSetting$Definition` was removed
+
+* `models.ApiCollectionResponse` was removed
+
+* `models.SecurityContactPropertiesAlertNotifications` was removed
+
+* `models.IngestionSettingToken` was removed
+
+* `models.ApiCollectionOnboardings` was removed
+
+* `models.HealthReportOperations` was removed
+
+* `models.ApiCollectionResponseList` was removed
+
+* `models.IngestionSetting$DefinitionStages` was removed
+
+* `models.ConnectionStrings` was removed
+
+#### `models.Extension` was modified
+
+* `models.OperationStatus operationStatus()` -> `models.OperationStatusAutoGenerated operationStatus()`
+
+#### `models.SecurityContacts` was modified
+
+* `delete(java.lang.String)` was removed
+* `get(java.lang.String)` was removed
+* `define(java.lang.String)` was removed
+* `deleteWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `getWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `SecurityManager` was modified
+
+* `apiCollectionOffboardings()` was removed
+* `apiCollectionOnboardings()` was removed
+* `ingestionSettings()` was removed
+* `healthReportOperations()` was removed
+
+#### `models.ApiCollections` was modified
+
+* `list(java.lang.String,java.lang.String)` was removed
+* `list(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `get(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.SecurityContact$Definition` was modified
+
+* `withAlertNotifications(models.SecurityContactPropertiesAlertNotifications)` was removed
+
+#### `models.Pricings` was modified
+
+* `getWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `get(java.lang.String)` was removed
+* `updateWithResponse(java.lang.String,fluent.models.PricingInner,com.azure.core.util.Context)` was removed
+* `listWithResponse(com.azure.core.util.Context)` was removed
+* `update(java.lang.String,fluent.models.PricingInner)` was removed
+* `list()` was removed
+
+#### `models.Settings` was modified
+
+* `getWithResponse(models.SettingName,com.azure.core.util.Context)` was removed
+* `updateWithResponse(models.SettingName,fluent.models.SettingInner,com.azure.core.util.Context)` was removed
+* `get(models.SettingName)` was removed
+* `update(models.SettingName,fluent.models.SettingInner)` was removed
+
+#### `models.HealthDataClassification` was modified
+
+* `models.ScopeName scope()` -> `java.lang.String scope()`
+* `withScope(models.ScopeName)` was removed
+
+#### `models.OperationStatus` was modified
+
+* `withCode(models.Code)` was removed
+* `models.Code code()` -> `java.lang.String code()`
+
+#### `models.SecurityContact` was modified
+
+* `alertNotifications()` was removed
+
+### Features Added
+
+* `models.OnboardingState` was added
+
+* `models.NotificationsSourceAlert` was added
+
+* `models.ServerVulnerabilityAssessmentsAzureSettingSelectedProvider` was added
+
+* `models.DevOpsProvisioningState` was added
+
+* `models.AzureDevOpsRepository$UpdateStages` was added
+
+* `models.AzureDevOpsProject$UpdateStages` was added
+
+* `models.DefenderForStorageSetting$Definition` was added
+
+* `models.AzureDevOpsRepository$Definition` was added
+
+* `models.DefenderForContainersAwsOfferingMdcContainersImageAssessment` was added
+
+* `models.DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S` was added
+
+* `models.ActionableRemediationState` was added
+
+* `models.GitHubRepositoryProperties` was added
+
+* `models.SensitivitySettings` was added
+
+* `models.SecurityContactRole` was added
+
+* `models.AzureDevOpsProject$Update` was added
+
+* `models.DefenderCspmGcpOfferingMdcContainersImageAssessment` was added
+
+* `models.AzureDevOpsProjects` was added
+
+* `models.DevOpsConfigurationProperties` was added
+
+* `models.AzureDevOpsOrgProperties` was added
+
+* `models.GitLabProject` was added
+
+* `models.NotificationsSourceAttackPath` was added
+
+* `models.GitLabProjects` was added
+
+* `models.GitHubOwnerProperties` was added
+
+* `models.Label` was added
+
+* `models.DefenderForStorageSetting$DefinitionStages` was added
+
+* `models.DefenderCspmGcpOfferingVmScanners` was added
+
+* `models.ServerVulnerabilityAssessmentsSettingKindName` was added
+
+* `models.AzureDevOpsRepository$DefinitionStages` was added
+
+* `models.AzureDevOpsOrgListResponse` was added
+
+* `models.AnnotateDefaultBranchState` was added
+
+* `models.ActionableRemediation` was added
+
+* `models.OperationStatusResult` was added
+
+* `models.GitLabSubgroups` was added
+
+* `models.GetSensitivitySettingsListResponse` was added
+
+* `models.AzureDevOpsRepository$Update` was added
+
+* `models.Enforce` was added
+
+* `models.AzureDevOpsRepos` was added
+
+* `models.GitLabGroup` was added
+
+* `models.Inherited` was added
+
+* `models.AzureDevOpsRepositoryListResponse` was added
+
+* `models.GitHubRepository` was added
+
+* `models.AzureServersSetting` was added
+
+* `models.ServerVulnerabilityAssessmentsSettings` was added
+
+* `models.SecurityContactName` was added
+
+* `models.ApiCollectionList` was added
+
+* `models.DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S` was added
+
+* `models.GitHubOwners` was added
+
+* `models.SourceType` was added
+
+* `models.DevOpsOperationResults` was added
+
+* `models.DevOpsConfigurationListResponse` was added
+
+* `models.ServerVulnerabilityAssessmentsSettingsList` was added
+
+* `models.GetSensitivitySettingsResponseProperties` was added
+
+* `models.GitLabProjectListResponse` was added
+
+* `models.GitLabGroupProperties` was added
+
+* `models.ResourcesCoverageStatus` was added
+
+* `models.ServerVulnerabilityAssessmentsSettingKind` was added
+
+* `models.DefenderForStorages` was added
+
+* `models.GitHubOwner` was added
+
+* `models.MipIntegrationStatus` was added
+
+* `models.AzureDevOpsProject` was added
+
+* `models.AzureDevOpsOrg$Definition` was added
+
+* `models.DefenderForContainersGcpOfferingMdcContainersImageAssessment` was added
+
+* `models.ResourceProviders` was added
+
+* `models.AzureDevOpsProject$Definition` was added
+
+* `models.GitLabGroupListResponse` was added
+
+* `models.AutomationUpdateModel` was added
+
+* `models.DefenderCspmAwsOfferingCiemOidc` was added
+
+* `models.UpdateSensitivitySettingsRequest` was added
+
+* `models.DefenderCspmGcpOfferingVmScannersConfiguration` was added
+
+* `models.DevOpsConfigurations` was added
+
+* `models.DefenderCspmAwsOfferingCiem` was added
+
+* `models.AzureDevOpsOrg$UpdateStages` was added
+
+* `models.AzureDevOpsOrg` was added
+
+* `models.DefenderCspmGcpOfferingDataSensitivityDiscovery` was added
+
+* `models.AzureDevOpsRepositoryProperties` was added
+
+* `models.Authorization` was added
+
+* `models.AzureDevOpsProjectListResponse` was added
+
+* `models.GitHubRepositoryListResponse` was added
+
+* `models.AzureDevOpsRepository` was added
+
+* `models.GitHubRepos` was added
+
+* `models.CategoryConfiguration` was added
+
+* `models.DefenderCspmAwsOfferingCiemDiscovery` was added
+
+* `models.SettingNameAutoGenerated` was added
+
+* `models.RuleCategory` was added
+
+* `models.BuiltInInfoType` was added
+
+* `models.GitLabProjectProperties` was added
+
+* `models.ServerVulnerabilityAssessmentsSetting` was added
+
+* `models.DefenderForStorageSetting` was added
+
+* `models.GitLabGroups` was added
+
+* `models.OperationStatusAutoGenerated` was added
+
+* `models.DefenderCspmGcpOfferingCiemDiscovery` was added
+
+* `models.ApiCollection` was added
+
+* `models.InfoType` was added
+
+* `models.AutoDiscovery` was added
+
+* `models.GitHubOwnerListResponse` was added
+
+* `models.InheritFromParentState` was added
+
+* `models.GetSensitivitySettingsResponse` was added
+
+* `models.MinimalRiskLevel` was added
+
+* `models.AzureDevOpsOrg$Update` was added
+
+* `models.GetSensitivitySettingsResponsePropertiesMipInformation` was added
+
+* `models.TargetBranchConfiguration` was added
+
+* `models.AzureDevOpsProjectProperties` was added
+
+* `models.DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S` was added
+
+* `models.DefenderCspmAwsOfferingMdcContainersImageAssessment` was added
+
+* `models.AzureDevOpsOrg$DefinitionStages` was added
+
+* `models.DevOpsConfiguration` was added
+
+* `models.AzureDevOpsProject$DefinitionStages` was added
+
+* `models.AzureDevOpsOrgs` was added
+
+* `models.DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S` was added
+
+* `models.NotificationsSource` was added
+
+#### `models.GcpProjectEnvironmentData` was modified
+
+* `scanInterval()` was added
+* `withScanInterval(java.lang.Long)` was added
+
+#### `models.SecurityContactList` was modified
+
+* `withValue(java.util.List)` was added
+
+#### `models.Pricing` was modified
+
+* `resourcesCoverageStatus()` was added
+* `inherited()` was added
+* `enforce()` was added
+* `inheritedFrom()` was added
+
+#### `models.HealthReport` was modified
+
+* `affectedDefendersSubPlans()` was added
+* `reportAdditionalData()` was added
+
+#### `models.HealthReports` was modified
+
+* `get(java.lang.String,java.lang.String)` was added
+* `getWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.SecurityContacts` was modified
+
+* `define(models.SecurityContactName)` was added
+* `getWithResponse(models.SecurityContactName,com.azure.core.util.Context)` was added
+* `get(models.SecurityContactName)` was added
+* `deleteWithResponse(models.SecurityContactName,com.azure.core.util.Context)` was added
+* `delete(models.SecurityContactName)` was added
+
+#### `models.AutomationActionEventHub` was modified
+
+* `isTrustedServiceEnabled()` was added
+* `withIsTrustedServiceEnabled(java.lang.Boolean)` was added
+
+#### `models.AwsEnvironmentData` was modified
+
+* `scanInterval()` was added
+* `withScanInterval(java.lang.Long)` was added
+
+#### `SecurityManager` was modified
+
+* `serverVulnerabilityAssessmentsSettings()` was added
+* `azureDevOpsOrgs()` was added
+* `devOpsOperationResults()` was added
+* `azureDevOpsProjects()` was added
+* `devOpsConfigurations()` was added
+* `gitLabProjects()` was added
+* `gitHubRepos()` was added
+* `azureDevOpsRepos()` was added
+* `gitLabSubgroups()` was added
+* `resourceProviders()` was added
+* `sensitivitySettings()` was added
+* `defenderForStorages()` was added
+* `gitHubOwners()` was added
+* `gitLabGroups()` was added
+
+#### `models.ApiCollections` was modified
+
+* `onboardAzureApiManagementApi(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listByResourceGroup(java.lang.String)` was added
+* `list(com.azure.core.util.Context)` was added
+* `getByAzureApiManagementService(java.lang.String,java.lang.String,java.lang.String)` was added
+* `offboardAzureApiManagementApi(java.lang.String,java.lang.String,java.lang.String)` was added
+* `offboardAzureApiManagementApiWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `onboardAzureApiManagementApi(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listByAzureApiManagementService(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listByAzureApiManagementService(java.lang.String,java.lang.String)` was added
+* `list()` was added
+* `getByAzureApiManagementServiceWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listByResourceGroup(java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.StatusAutoGenerated` was modified
+
+* `lastScannedDate()` was added
+* `reason()` was added
+
+#### `models.SecurityContact$Definition` was modified
+
+* `withNotificationsSources(java.util.List)` was added
+* `withIsEnabled(java.lang.Boolean)` was added
+
+#### `models.DefenderForContainersAwsOffering` was modified
+
+* `mdcContainersImageAssessment()` was added
+* `withMdcContainersAgentlessDiscoveryK8S(models.DefenderForContainersAwsOfferingMdcContainersAgentlessDiscoveryK8S)` was added
+* `withMdcContainersImageAssessment(models.DefenderForContainersAwsOfferingMdcContainersImageAssessment)` was added
+* `mdcContainersAgentlessDiscoveryK8S()` was added
+
+#### `models.Pricings` was modified
+
+* `listWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByResourceGroup(java.lang.String,java.lang.String)` was added
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `list(java.lang.String)` was added
+* `update(java.lang.String,java.lang.String,fluent.models.PricingInner)` was added
+* `get(java.lang.String,java.lang.String)` was added
+* `getWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `updateWithResponse(java.lang.String,java.lang.String,fluent.models.PricingInner,com.azure.core.util.Context)` was added
+
+#### `models.Settings` was modified
+
+* `get(models.SettingNameAutoGenerated)` was added
+* `getWithResponse(models.SettingNameAutoGenerated,com.azure.core.util.Context)` was added
+* `update(models.SettingNameAutoGenerated,fluent.models.SettingInner)` was added
+* `updateWithResponse(models.SettingNameAutoGenerated,fluent.models.SettingInner,com.azure.core.util.Context)` was added
+
+#### `models.DefenderForContainersGcpOffering` was modified
+
+* `withMdcContainersImageAssessment(models.DefenderForContainersGcpOfferingMdcContainersImageAssessment)` was added
+* `mdcContainersAgentlessDiscoveryK8S()` was added
+* `withMdcContainersAgentlessDiscoveryK8S(models.DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S)` was added
+* `mdcContainersImageAssessment()` was added
+
+#### `models.DefenderCspmAwsOffering` was modified
+
+* `mdcContainersAgentlessDiscoveryK8S()` was added
+* `mdcContainersImageAssessment()` was added
+* `withCiem(models.DefenderCspmAwsOfferingCiem)` was added
+* `ciem()` was added
+* `withMdcContainersImageAssessment(models.DefenderCspmAwsOfferingMdcContainersImageAssessment)` was added
+* `withMdcContainersAgentlessDiscoveryK8S(models.DefenderCspmAwsOfferingMdcContainersAgentlessDiscoveryK8S)` was added
+
+#### `models.HealthDataClassification` was modified
+
+* `withScope(java.lang.String)` was added
+
+#### `models.DefenderCspmGcpOffering` was modified
+
+* `ciemDiscovery()` was added
+* `mdcContainersAgentlessDiscoveryK8S()` was added
+* `withVmScanners(models.DefenderCspmGcpOfferingVmScanners)` was added
+* `withCiemDiscovery(models.DefenderCspmGcpOfferingCiemDiscovery)` was added
+* `withMdcContainersAgentlessDiscoveryK8S(models.DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S)` was added
+* `withDataSensitivityDiscovery(models.DefenderCspmGcpOfferingDataSensitivityDiscovery)` was added
+* `vmScanners()` was added
+* `withMdcContainersImageAssessment(models.DefenderCspmGcpOfferingMdcContainersImageAssessment)` was added
+* `mdcContainersImageAssessment()` was added
+* `dataSensitivityDiscovery()` was added
+
+#### `models.OperationStatus` was modified
+
+* `withCode(java.lang.String)` was added
+
+#### `models.SecurityContact` was modified
+
+* `notificationsSources()` was added
+* `isEnabled()` was added
 
 ## 1.0.0-beta.5 (2023-04-18)
 

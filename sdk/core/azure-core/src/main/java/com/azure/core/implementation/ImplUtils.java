@@ -9,6 +9,7 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.implementation.accesshelpers.ExponentialBackoffAccessHelper;
 import com.azure.core.implementation.accesshelpers.FixedDelayAccessHelper;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
@@ -324,11 +325,17 @@ public final class ImplUtils {
 
         if (count >= 3 && bytes[offset] == EF && bytes[offset + 1] == BB && bytes[offset + 2] == BF) {
             return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
-        } else if (count >= 4 && bytes[offset] == ZERO && bytes[offset + 1] == ZERO
-            && bytes[offset + 2] == FE && bytes[offset + 3] == FF) {
+        } else if (count >= 4
+            && bytes[offset] == ZERO
+            && bytes[offset + 1] == ZERO
+            && bytes[offset + 2] == FE
+            && bytes[offset + 3] == FF) {
             return new String(bytes, 4, bytes.length - 4, UTF_32BE);
-        } else if (count >= 4 && bytes[offset] == FF && bytes[offset + 1] == FE
-            && bytes[offset + 2] == ZERO && bytes[offset + 3] == ZERO) {
+        } else if (count >= 4
+            && bytes[offset] == FF
+            && bytes[offset + 1] == FE
+            && bytes[offset + 2] == ZERO
+            && bytes[offset + 3] == ZERO) {
             return new String(bytes, 4, bytes.length - 4, UTF_32LE);
         } else if (count >= 2 && bytes[offset] == FE && bytes[offset + 1] == FF) {
             return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
@@ -389,8 +396,8 @@ public final class ImplUtils {
         try {
             return (Class<? extends T>) Class.forName(className, false, ImplUtils.class.getClassLoader());
         } catch (ClassNotFoundException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(
-                "Class '" + className + "' is not found on the classpath.", e));
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException("Class '" + className + "' is not found on the classpath.", e));
         }
     }
 
@@ -409,7 +416,8 @@ public final class ImplUtils {
             return ExponentialBackoffAccessHelper.create(retryOptions.getExponentialBackoffOptions(),
                 retryOptions.getShouldRetryCondition());
         } else if (retryOptions.getFixedDelayOptions() != null) {
-            return FixedDelayAccessHelper.create(retryOptions.getFixedDelayOptions(), retryOptions.getShouldRetryCondition());
+            return FixedDelayAccessHelper.create(retryOptions.getFixedDelayOptions(),
+                retryOptions.getShouldRetryCondition());
         } else {
             // This should never happen.
             throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");
@@ -488,6 +496,91 @@ public final class ImplUtils {
                 throw e;
             }
         }
+    }
+
+    /**
+     * Helper method that safely adds a {@link Runtime#addShutdownHook(Thread)} to the JVM that will run when the JVM is
+     * shutting down.
+     * <p>
+     * {@link Runtime#addShutdownHook(Thread)} checks for security privileges and will throw an exception if the proper
+     * security isn't available. So, if running with a security manager, setting
+     * {@code AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE} to true will have this method use access controller to add
+     * the shutdown hook with privileged permissions.
+     * <p>
+     * If {@code shutdownThread} is null, no shutdown hook will be added and this method will return null.
+     *
+     * @param shutdownThread The {@link Thread} that will be added as a
+     * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
+     * @return The {@link Thread} that was passed in.
+     */
+    @SuppressWarnings({ "deprecation", "removal" })
+    public static Thread addShutdownHookSafely(Thread shutdownThread) {
+        if (shutdownThread == null) {
+            return null;
+        }
+
+        if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
+            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
+                Runtime.getRuntime().addShutdownHook(shutdownThread);
+                return null;
+            });
+        } else {
+            Runtime.getRuntime().addShutdownHook(shutdownThread);
+        }
+
+        return shutdownThread;
+    }
+
+    /**
+     * Helper method that safely removes a {@link Runtime#removeShutdownHook(Thread)} from the JVM.
+     * <p>
+     * {@link Runtime#removeShutdownHook(Thread)} checks for security privileges and will throw an exception if the
+     * proper security isn't available. So, if running with a security manager, setting
+     * {@code AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE} to true will have this method use access controller to remove
+     * the shutdown hook with privileged permissions.
+     * <p>
+     * If {@code shutdownThread} is null, no shutdown hook will be removed.
+     *
+     * @param shutdownThread The {@link Thread} that will be added as a
+     * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
+     */
+    @SuppressWarnings({ "deprecation", "removal" })
+    public static void removeShutdownHookSafely(Thread shutdownThread) {
+        if (shutdownThread == null) {
+            return;
+        }
+
+        if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
+            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
+                Runtime.getRuntime().removeShutdownHook(shutdownThread);
+                return null;
+            });
+        } else {
+            Runtime.getRuntime().removeShutdownHook(shutdownThread);
+        }
+    }
+
+    /*
+     * This looks a bit strange but is needed as CoreUtils is used within Configuration code and if this was done in
+     * the static constructor for CoreUtils it would cause a circular dependency, potentially causing a deadlock.
+     * Since this is in a static holder class, it will only be loaded when CoreUtils accesses it, which won't happen
+     * until CoreUtils is loaded.
+     */
+    private static final class ShutdownHookAccessHelperHolder {
+        private static boolean shutdownHookAccessHelper;
+
+        static {
+            shutdownHookAccessHelper = Boolean
+                .parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE"));
+        }
+    }
+
+    static boolean isShutdownHookAccessHelper() {
+        return ShutdownHookAccessHelperHolder.shutdownHookAccessHelper;
+    }
+
+    static void setShutdownHookAccessHelper(boolean shutdownHookAccessHelper) {
+        ShutdownHookAccessHelperHolder.shutdownHookAccessHelper = shutdownHookAccessHelper;
     }
 
     private ImplUtils() {

@@ -12,20 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class GovernanceRuleOwnerSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GovernanceRuleOwnerSource model =
-            BinaryData
-                .fromString("{\"type\":\"ByTag\",\"value\":\"vfkoxml\"}")
-                .toObject(GovernanceRuleOwnerSource.class);
-        Assertions.assertEquals(GovernanceRuleOwnerSourceType.BY_TAG, model.type());
-        Assertions.assertEquals("vfkoxml", model.value());
+        GovernanceRuleOwnerSource model = BinaryData.fromString("{\"type\":\"Manually\",\"value\":\"dxrbuukzcle\"}")
+            .toObject(GovernanceRuleOwnerSource.class);
+        Assertions.assertEquals(GovernanceRuleOwnerSourceType.MANUALLY, model.type());
+        Assertions.assertEquals("dxrbuukzcle", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GovernanceRuleOwnerSource model =
-            new GovernanceRuleOwnerSource().withType(GovernanceRuleOwnerSourceType.BY_TAG).withValue("vfkoxml");
+        GovernanceRuleOwnerSource model
+            = new GovernanceRuleOwnerSource().withType(GovernanceRuleOwnerSourceType.MANUALLY).withValue("dxrbuukzcle");
         model = BinaryData.fromObject(model).toObject(GovernanceRuleOwnerSource.class);
-        Assertions.assertEquals(GovernanceRuleOwnerSourceType.BY_TAG, model.type());
-        Assertions.assertEquals("vfkoxml", model.value());
+        Assertions.assertEquals(GovernanceRuleOwnerSourceType.MANUALLY, model.type());
+        Assertions.assertEquals("dxrbuukzcle", model.value());
     }
 }

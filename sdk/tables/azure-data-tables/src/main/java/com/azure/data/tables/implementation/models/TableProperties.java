@@ -5,25 +5,31 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties for creating a table. */
-@JacksonXmlRootElement(localName = "TableProperties")
+/**
+ * The properties for creating a table.
+ */
 @Fluent
-public final class TableProperties {
+public final class TableProperties implements JsonSerializable<TableProperties> {
     /*
      * The name of the table to create.
      */
-    @JsonProperty(value = "TableName")
     private String tableName;
 
-    /** Creates an instance of TableProperties class. */
-    public TableProperties() {}
+    /**
+     * Creates an instance of TableProperties class.
+     */
+    public TableProperties() {
+    }
 
     /**
      * Get the tableName property: The name of the table to create.
-     *
+     * 
      * @return the tableName value.
      */
     public String getTableName() {
@@ -32,12 +38,48 @@ public final class TableProperties {
 
     /**
      * Set the tableName property: The name of the table to create.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the TableProperties object itself.
      */
     public TableProperties setTableName(String tableName) {
         this.tableName = tableName;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("TableName", this.tableName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TableProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TableProperties.
+     */
+    public static TableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TableProperties deserializedTableProperties = new TableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("TableName".equals(fieldName)) {
+                    deserializedTableProperties.tableName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTableProperties;
+        });
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of the security control, its score, and the health status of the relevant resources. */
+/**
+ * Details of the security control, its score, and the health status of the relevant resources.
+ */
 @Fluent
 public final class SecureScoreControlDetailsInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class SecureScoreControlDetailsInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SecureScoreControlScoreDetailsInner innerProperties;
 
-    /** Creates an instance of SecureScoreControlDetailsInner class. */
+    /**
+     * Creates an instance of SecureScoreControlDetailsInner class.
+     */
     public SecureScoreControlDetailsInner() {
     }
 
     /**
      * Get the innerProperties property: Calculation result data in control level.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecureScoreControlScoreDetailsInner innerProperties() {
@@ -32,7 +36,7 @@ public final class SecureScoreControlDetailsInner extends ProxyResource {
 
     /**
      * Get the displayName property: User friendly display name of the control.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -41,7 +45,7 @@ public final class SecureScoreControlDetailsInner extends ProxyResource {
 
     /**
      * Get the healthyResourceCount property: Number of healthy resources in the control.
-     *
+     * 
      * @return the healthyResourceCount value.
      */
     public Integer healthyResourceCount() {
@@ -50,7 +54,7 @@ public final class SecureScoreControlDetailsInner extends ProxyResource {
 
     /**
      * Get the unhealthyResourceCount property: Number of unhealthy resources in the control.
-     *
+     * 
      * @return the unhealthyResourceCount value.
      */
     public Integer unhealthyResourceCount() {
@@ -59,7 +63,7 @@ public final class SecureScoreControlDetailsInner extends ProxyResource {
 
     /**
      * Get the notApplicableResourceCount property: Number of not applicable resources in the control.
-     *
+     * 
      * @return the notApplicableResourceCount value.
      */
     public Integer notApplicableResourceCount() {
@@ -69,7 +73,7 @@ public final class SecureScoreControlDetailsInner extends ProxyResource {
     /**
      * Get the weight property: The relative weight for this specific control in each of your subscriptions. Used when
      * calculating an aggregated score for this control across all of your subscriptions.
-     *
+     * 
      * @return the weight value.
      */
     public Long weight() {
@@ -78,7 +82,7 @@ public final class SecureScoreControlDetailsInner extends ProxyResource {
 
     /**
      * Get the definition property: Information about the security control.
-     *
+     * 
      * @return the definition value.
      */
     public SecureScoreControlDefinitionItemInner definition() {
@@ -87,7 +91,7 @@ public final class SecureScoreControlDetailsInner extends ProxyResource {
 
     /**
      * Set the definition property: Information about the security control.
-     *
+     * 
      * @param definition the definition value to set.
      * @return the SecureScoreControlDetailsInner object itself.
      */
@@ -101,7 +105,7 @@ public final class SecureScoreControlDetailsInner extends ProxyResource {
 
     /**
      * Get the max property: Maximum score available.
-     *
+     * 
      * @return the max value.
      */
     public Integer max() {
@@ -110,7 +114,7 @@ public final class SecureScoreControlDetailsInner extends ProxyResource {
 
     /**
      * Get the current property: Current score.
-     *
+     * 
      * @return the current value.
      */
     public Double current() {
@@ -120,7 +124,7 @@ public final class SecureScoreControlDetailsInner extends ProxyResource {
     /**
      * Get the percentage property: Ratio of the current score divided by the maximum. Rounded to 4 digits after the
      * decimal point.
-     *
+     * 
      * @return the percentage value.
      */
     public Double percentage() {
@@ -129,7 +133,7 @@ public final class SecureScoreControlDetailsInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

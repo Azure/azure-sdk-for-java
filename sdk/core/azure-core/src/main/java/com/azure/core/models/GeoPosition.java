@@ -15,7 +15,18 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a geo position.
+ * <p>Represents a geographic position in GeoJSON format.</p>
+ *
+ * <p>This class encapsulates a geographic position defined by longitude, latitude, and optionally altitude. It
+ * provides methods to access these properties.</p>
+ *
+ * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the geographic position to JSON,
+ * and a {@link #fromJson(JsonReader)} method to deserialize a geographic position from JSON.</p>
+ *
+ * <p>This class is useful when you want to work with a geographic position in a geographic context. For example,
+ * you can use it to represent a location on a map or a point in a geographic dataset.</p>
+ *
+ * @see JsonSerializable
  */
 @Immutable
 public final class GeoPosition implements JsonSerializable<GeoPosition> {
@@ -122,8 +133,10 @@ public final class GeoPosition implements JsonSerializable<GeoPosition> {
         switch (index) {
             case 0:
                 return longitude;
+
             case 1:
                 return latitude;
+
             case 2:
                 if (altitude == null) {
                     throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException("Index out of range: " + index));
@@ -166,9 +179,7 @@ public final class GeoPosition implements JsonSerializable<GeoPosition> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartArray()
-            .writeDouble(longitude)
-            .writeDouble(latitude);
+        jsonWriter.writeStartArray().writeDouble(longitude).writeDouble(latitude);
 
         if (altitude != null) {
             jsonWriter.writeDouble(altitude);

@@ -32,7 +32,7 @@ public final class NetAppResourcesCheckFilePathAvailabilityWithResponseMockTests
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"isAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"lrariaawiu\"}";
+        String responseStr = "{\"isAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"iv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,13 +50,13 @@ public final class NetAppResourcesCheckFilePathAvailabilityWithResponseMockTests
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckAvailabilityResponse response = manager.netAppResources()
-            .checkFilePathAvailabilityWithResponse("nzeyqxtjj",
-                new FilePathAvailabilityRequest().withName("zqlqhyc").withSubnetId("vodggxdbee"),
+            .checkFilePathAvailabilityWithResponse("gaifmvik",
+                new FilePathAvailabilityRequest().withName("bydvkhbejdz").withSubnetId("xcv"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(false, response.isAvailable());
         Assertions.assertEquals(InAvailabilityReasonType.ALREADY_EXISTS, response.reason());
-        Assertions.assertEquals("lrariaawiu", response.message());
+        Assertions.assertEquals("iv", response.message());
     }
 }

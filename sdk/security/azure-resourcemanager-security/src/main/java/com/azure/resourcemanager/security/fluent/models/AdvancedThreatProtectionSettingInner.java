@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Advanced Threat Protection resource. */
+/**
+ * The Advanced Threat Protection resource.
+ */
 @Fluent
 public final class AdvancedThreatProtectionSettingInner extends ProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class AdvancedThreatProtectionSettingInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AdvancedThreatProtectionProperties innerProperties;
 
-    /** Creates an instance of AdvancedThreatProtectionSettingInner class. */
+    /**
+     * Creates an instance of AdvancedThreatProtectionSettingInner class.
+     */
     public AdvancedThreatProtectionSettingInner() {
     }
 
     /**
      * Get the innerProperties property: The Advanced Threat Protection settings.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AdvancedThreatProtectionProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class AdvancedThreatProtectionSettingInner extends ProxyResource {
 
     /**
      * Get the isEnabled property: Indicates whether Advanced Threat Protection is enabled.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -41,7 +45,7 @@ public final class AdvancedThreatProtectionSettingInner extends ProxyResource {
 
     /**
      * Set the isEnabled property: Indicates whether Advanced Threat Protection is enabled.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the AdvancedThreatProtectionSettingInner object itself.
      */
@@ -55,7 +59,7 @@ public final class AdvancedThreatProtectionSettingInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

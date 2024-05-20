@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.AuthenticationDetailsProperties
 public final class AuthenticationDetailsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AuthenticationDetailsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"authenticationType\":\"AuthenticationDetailsProperties\",\"authenticationProvisioningState\":\"Valid\",\"grantedPermissions\":[\"AWS::AWSSecurityHubReadOnlyAccess\",\"AWS::AmazonSSMAutomationRole\",\"AWS::SecurityAudit\"]}")
-                .toObject(AuthenticationDetailsProperties.class);
+        AuthenticationDetailsProperties model = BinaryData.fromString(
+            "{\"authenticationType\":\"AuthenticationDetailsProperties\",\"authenticationProvisioningState\":\"Valid\",\"grantedPermissions\":[\"AWS::SecurityAudit\",\"AWS::SecurityAudit\",\"AWS::AWSSecurityHubReadOnlyAccess\"]}")
+            .toObject(AuthenticationDetailsProperties.class);
     }
 
     @org.junit.jupiter.api.Test

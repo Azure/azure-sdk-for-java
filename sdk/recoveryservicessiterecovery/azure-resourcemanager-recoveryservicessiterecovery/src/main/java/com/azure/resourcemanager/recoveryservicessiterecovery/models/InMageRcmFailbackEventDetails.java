@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Event details for InMageRcmFailback provider. */
+/**
+ * Event details for InMageRcmFailback provider.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcmFailback")
 @Immutable
@@ -44,13 +46,15 @@ public final class InMageRcmFailbackEventDetails extends EventProviderSpecificDe
     @JsonProperty(value = "componentDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String componentDisplayName;
 
-    /** Creates an instance of InMageRcmFailbackEventDetails class. */
+    /**
+     * Creates an instance of InMageRcmFailbackEventDetails class.
+     */
     public InMageRcmFailbackEventDetails() {
     }
 
     /**
      * Get the protectedItemName property: The protected item name.
-     *
+     * 
      * @return the protectedItemName value.
      */
     public String protectedItemName() {
@@ -59,7 +63,7 @@ public final class InMageRcmFailbackEventDetails extends EventProviderSpecificDe
 
     /**
      * Get the vmName property: The protected item name.
-     *
+     * 
      * @return the vmName value.
      */
     public String vmName() {
@@ -68,7 +72,7 @@ public final class InMageRcmFailbackEventDetails extends EventProviderSpecificDe
 
     /**
      * Get the applianceName property: The appliance name.
-     *
+     * 
      * @return the applianceName value.
      */
     public String applianceName() {
@@ -77,7 +81,7 @@ public final class InMageRcmFailbackEventDetails extends EventProviderSpecificDe
 
     /**
      * Get the serverType property: The server type.
-     *
+     * 
      * @return the serverType value.
      */
     public String serverType() {
@@ -86,7 +90,7 @@ public final class InMageRcmFailbackEventDetails extends EventProviderSpecificDe
 
     /**
      * Get the componentDisplayName property: The component display name.
-     *
+     * 
      * @return the componentDisplayName value.
      */
     public String componentDisplayName() {
@@ -95,7 +99,7 @@ public final class InMageRcmFailbackEventDetails extends EventProviderSpecificDe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

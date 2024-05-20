@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Task of the Job. */
+/**
+ * Task of the Job.
+ */
 @Fluent
 public final class AsrTask {
     /*
@@ -86,13 +88,15 @@ public final class AsrTask {
     @JsonProperty(value = "errors")
     private List<JobErrorDetails> errors;
 
-    /** Creates an instance of AsrTask class. */
+    /**
+     * Creates an instance of AsrTask class.
+     */
     public AsrTask() {
     }
 
     /**
      * Get the taskId property: The Id.
-     *
+     * 
      * @return the taskId value.
      */
     public String taskId() {
@@ -101,7 +105,7 @@ public final class AsrTask {
 
     /**
      * Set the taskId property: The Id.
-     *
+     * 
      * @param taskId the taskId value to set.
      * @return the AsrTask object itself.
      */
@@ -112,7 +116,7 @@ public final class AsrTask {
 
     /**
      * Get the name property: The unique Task name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -121,7 +125,7 @@ public final class AsrTask {
 
     /**
      * Set the name property: The unique Task name.
-     *
+     * 
      * @param name the name value to set.
      * @return the AsrTask object itself.
      */
@@ -132,7 +136,7 @@ public final class AsrTask {
 
     /**
      * Get the startTime property: The start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -141,7 +145,7 @@ public final class AsrTask {
 
     /**
      * Set the startTime property: The start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the AsrTask object itself.
      */
@@ -152,7 +156,7 @@ public final class AsrTask {
 
     /**
      * Get the endTime property: The end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -161,7 +165,7 @@ public final class AsrTask {
 
     /**
      * Set the endTime property: The end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the AsrTask object itself.
      */
@@ -172,7 +176,7 @@ public final class AsrTask {
 
     /**
      * Get the allowedActions property: The state/actions applicable on this task.
-     *
+     * 
      * @return the allowedActions value.
      */
     public List<String> allowedActions() {
@@ -181,7 +185,7 @@ public final class AsrTask {
 
     /**
      * Set the allowedActions property: The state/actions applicable on this task.
-     *
+     * 
      * @param allowedActions the allowedActions value to set.
      * @return the AsrTask object itself.
      */
@@ -192,7 +196,7 @@ public final class AsrTask {
 
     /**
      * Get the friendlyName property: The name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -201,7 +205,7 @@ public final class AsrTask {
 
     /**
      * Set the friendlyName property: The name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the AsrTask object itself.
      */
@@ -213,7 +217,7 @@ public final class AsrTask {
     /**
      * Get the state property: The State. It is one of these values - NotStarted, InProgress, Succeeded, Failed,
      * Cancelled, Suspended or Other.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -223,7 +227,7 @@ public final class AsrTask {
     /**
      * Set the state property: The State. It is one of these values - NotStarted, InProgress, Succeeded, Failed,
      * Cancelled, Suspended or Other.
-     *
+     * 
      * @param state the state value to set.
      * @return the AsrTask object itself.
      */
@@ -235,7 +239,7 @@ public final class AsrTask {
     /**
      * Get the stateDescription property: The description of the task state. For example - For Succeeded state,
      * description can be Completed, PartiallySucceeded, CompletedWithInformation or Skipped.
-     *
+     * 
      * @return the stateDescription value.
      */
     public String stateDescription() {
@@ -245,7 +249,7 @@ public final class AsrTask {
     /**
      * Set the stateDescription property: The description of the task state. For example - For Succeeded state,
      * description can be Completed, PartiallySucceeded, CompletedWithInformation or Skipped.
-     *
+     * 
      * @param stateDescription the stateDescription value to set.
      * @return the AsrTask object itself.
      */
@@ -256,7 +260,7 @@ public final class AsrTask {
 
     /**
      * Get the taskType property: The type of task. Details in CustomDetails property depend on this type.
-     *
+     * 
      * @return the taskType value.
      */
     public String taskType() {
@@ -265,7 +269,7 @@ public final class AsrTask {
 
     /**
      * Set the taskType property: The type of task. Details in CustomDetails property depend on this type.
-     *
+     * 
      * @param taskType the taskType value to set.
      * @return the AsrTask object itself.
      */
@@ -276,7 +280,7 @@ public final class AsrTask {
 
     /**
      * Get the customDetails property: The custom task details based on the task type.
-     *
+     * 
      * @return the customDetails value.
      */
     public TaskTypeDetails customDetails() {
@@ -285,7 +289,7 @@ public final class AsrTask {
 
     /**
      * Set the customDetails property: The custom task details based on the task type.
-     *
+     * 
      * @param customDetails the customDetails value to set.
      * @return the AsrTask object itself.
      */
@@ -297,7 +301,7 @@ public final class AsrTask {
     /**
      * Get the groupTaskCustomDetails property: The custom task details based on the task type, if the task type is
      * GroupTaskDetails or one of the types derived from it.
-     *
+     * 
      * @return the groupTaskCustomDetails value.
      */
     public GroupTaskDetails groupTaskCustomDetails() {
@@ -307,7 +311,7 @@ public final class AsrTask {
     /**
      * Set the groupTaskCustomDetails property: The custom task details based on the task type, if the task type is
      * GroupTaskDetails or one of the types derived from it.
-     *
+     * 
      * @param groupTaskCustomDetails the groupTaskCustomDetails value to set.
      * @return the AsrTask object itself.
      */
@@ -318,7 +322,7 @@ public final class AsrTask {
 
     /**
      * Get the errors property: The task error details.
-     *
+     * 
      * @return the errors value.
      */
     public List<JobErrorDetails> errors() {
@@ -327,7 +331,7 @@ public final class AsrTask {
 
     /**
      * Set the errors property: The task error details.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the AsrTask object itself.
      */
@@ -338,7 +342,7 @@ public final class AsrTask {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

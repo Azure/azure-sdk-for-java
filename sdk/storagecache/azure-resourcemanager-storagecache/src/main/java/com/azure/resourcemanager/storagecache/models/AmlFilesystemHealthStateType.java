@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** List of AML file system health states. */
+/**
+ * List of AML file system health states.
+ */
 public final class AmlFilesystemHealthStateType extends ExpandableStringEnum<AmlFilesystemHealthStateType> {
-    /** Static value Unavailable for AmlFilesystemHealthStateType. */
+    /**
+     * Static value Unavailable for AmlFilesystemHealthStateType.
+     */
     public static final AmlFilesystemHealthStateType UNAVAILABLE = fromString("Unavailable");
 
-    /** Static value Available for AmlFilesystemHealthStateType. */
+    /**
+     * Static value Available for AmlFilesystemHealthStateType.
+     */
     public static final AmlFilesystemHealthStateType AVAILABLE = fromString("Available");
 
-    /** Static value Degraded for AmlFilesystemHealthStateType. */
+    /**
+     * Static value Degraded for AmlFilesystemHealthStateType.
+     */
     public static final AmlFilesystemHealthStateType DEGRADED = fromString("Degraded");
 
-    /** Static value Transitioning for AmlFilesystemHealthStateType. */
+    /**
+     * Static value Transitioning for AmlFilesystemHealthStateType.
+     */
     public static final AmlFilesystemHealthStateType TRANSITIONING = fromString("Transitioning");
 
-    /** Static value Maintenance for AmlFilesystemHealthStateType. */
+    /**
+     * Static value Maintenance for AmlFilesystemHealthStateType.
+     */
     public static final AmlFilesystemHealthStateType MAINTENANCE = fromString("Maintenance");
 
     /**
      * Creates a new instance of AmlFilesystemHealthStateType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class AmlFilesystemHealthStateType extends ExpandableStringEnum<Aml
 
     /**
      * Creates or finds a AmlFilesystemHealthStateType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AmlFilesystemHealthStateType.
      */
@@ -47,7 +59,7 @@ public final class AmlFilesystemHealthStateType extends ExpandableStringEnum<Aml
 
     /**
      * Gets known AmlFilesystemHealthStateType values.
-     *
+     * 
      * @return known AmlFilesystemHealthStateType values.
      */
     public static Collection<AmlFilesystemHealthStateType> values() {

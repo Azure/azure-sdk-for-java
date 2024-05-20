@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.TopologyResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TopologyList model. */
+/**
+ * The TopologyList model.
+ */
 @Immutable
 public final class TopologyList {
     /*
@@ -24,13 +26,15 @@ public final class TopologyList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of TopologyList class. */
+    /**
+     * Creates an instance of TopologyList class.
+     */
     public TopologyList() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<TopologyResourceInner> value() {
@@ -39,7 +43,7 @@ public final class TopologyList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class TopologyList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

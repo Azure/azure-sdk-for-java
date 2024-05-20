@@ -53,8 +53,7 @@ public final class TriggerFilterParameters {
     }
 
     /**
-     * Get the parentTriggerName property: The name of the parent TumblingWindowTrigger to get the child rerun
-     * triggers.
+     * Get the parentTriggerName property: The name of the parent TumblingWindowTrigger to get the child rerun triggers.
      * 
      * @return the parentTriggerName value.
      */
@@ -63,8 +62,7 @@ public final class TriggerFilterParameters {
     }
 
     /**
-     * Set the parentTriggerName property: The name of the parent TumblingWindowTrigger to get the child rerun
-     * triggers.
+     * Set the parentTriggerName property: The name of the parent TumblingWindowTrigger to get the child rerun triggers.
      * 
      * @param parentTriggerName the parentTriggerName value to set.
      * @return the TriggerFilterParameters object itself.

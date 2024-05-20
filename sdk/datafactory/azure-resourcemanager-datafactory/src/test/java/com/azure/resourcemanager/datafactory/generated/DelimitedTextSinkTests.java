@@ -17,23 +17,30 @@ public final class DelimitedTextSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DelimitedTextSink model = BinaryData.fromString(
-            "{\"type\":\"DelimitedTextSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datar\",\"disableMetricsCollection\":\"datavbjvvcogupsho\",\"copyBehavior\":\"dataaskyyvdjoorbuuhb\",\"metadata\":[{\"name\":\"datacvtelmdrmasvg\",\"value\":\"datahlbkquhmb\"}],\"\":{\"xsrglxljuyvk\":\"datasmviaasd\",\"xq\":\"datapovzespdip\"}},\"formatSettings\":{\"type\":\"DelimitedTextWriteSettings\",\"quoteAllText\":\"datajomddadwosjxyw\",\"fileExtension\":\"datavilkyhtnriyhdb\",\"maxRowsPerFile\":\"datagsjmcybrpwjenb\",\"fileNamePrefix\":\"datakghrrxauuhd\",\"\":{\"wip\":\"dataizyxoyxnhub\",\"ezzyrp\":\"dataryiv\"}},\"writeBatchSize\":\"dataygfpqxsemezk\",\"writeBatchTimeout\":\"datammowftfrqebr\",\"sinkRetryCount\":\"datapotefekfx\",\"sinkRetryWait\":\"dataj\",\"maxConcurrentConnections\":\"datawidnrd\",\"disableMetricsCollection\":\"datakvhuiadyh\",\"\":{\"eadokuqn\":\"datasypgapfdwhw\",\"kflnjaysrjeevm\":\"datao\"}}")
+            "{\"type\":\"qaq\",\"storeSettings\":{\"type\":\"johwwtlerhpf\",\"maxConcurrentConnections\":\"datarqnjush\",\"disableMetricsCollection\":\"datahtvnqcmrrgmlwgo\",\"copyBehavior\":\"datascsddlcnwbi\",\"metadata\":[{\"name\":\"datangeffrghwd\",\"value\":\"dataowhrrguvdrggucw\"},{\"name\":\"datalmsikl\",\"value\":\"datam\"},{\"name\":\"datacphgimi\",\"value\":\"datahrbs\"}],\"\":{\"qfbgeblp\":\"dataublouelf\",\"swgfjrg\":\"datawckmnpzubzq\"}},\"formatSettings\":{\"type\":\"uop\",\"quoteAllText\":\"dataklfswzsyigxsyxhy\",\"fileExtension\":\"dataczab\",\"maxRowsPerFile\":\"dataeu\",\"fileNamePrefix\":\"datazf\",\"\":{\"sspcutgkm\":\"dataa\"}},\"writeBatchSize\":\"datalnhgisiwzzk\",\"writeBatchTimeout\":\"dataqrngl\",\"sinkRetryCount\":\"datatu\",\"sinkRetryWait\":\"datafwdkpadktsyy\",\"maxConcurrentConnections\":\"dataojrfqtfk\",\"disableMetricsCollection\":\"dataupmdajqpdvvzb\",\"\":{\"mvtqhn\":\"dataxokiffqpwdyzset\",\"cprkqywyb\":\"dataoij\"}}")
             .toObject(DelimitedTextSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DelimitedTextSink model = new DelimitedTextSink().withWriteBatchSize("dataygfpqxsemezk")
-            .withWriteBatchTimeout("datammowftfrqebr").withSinkRetryCount("datapotefekfx").withSinkRetryWait("dataj")
-            .withMaxConcurrentConnections("datawidnrd").withDisableMetricsCollection("datakvhuiadyh")
-            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("datar")
-                .withDisableMetricsCollection("datavbjvvcogupsho").withCopyBehavior("dataaskyyvdjoorbuuhb")
+        DelimitedTextSink model = new DelimitedTextSink().withWriteBatchSize("datalnhgisiwzzk")
+            .withWriteBatchTimeout("dataqrngl")
+            .withSinkRetryCount("datatu")
+            .withSinkRetryWait("datafwdkpadktsyy")
+            .withMaxConcurrentConnections("dataojrfqtfk")
+            .withDisableMetricsCollection("dataupmdajqpdvvzb")
+            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("datarqnjush")
+                .withDisableMetricsCollection("datahtvnqcmrrgmlwgo")
+                .withCopyBehavior("datascsddlcnwbi")
                 .withMetadata(
-                    Arrays.asList(new MetadataItem().withName("datacvtelmdrmasvg").withValue("datahlbkquhmb")))
-                .withAdditionalProperties(mapOf("type", "StoreWriteSettings")))
-            .withFormatSettings(new DelimitedTextWriteSettings().withQuoteAllText("datajomddadwosjxyw")
-                .withFileExtension("datavilkyhtnriyhdb").withMaxRowsPerFile("datagsjmcybrpwjenb")
-                .withFileNamePrefix("datakghrrxauuhd"));
+                    Arrays.asList(new MetadataItem().withName("datangeffrghwd").withValue("dataowhrrguvdrggucw"),
+                        new MetadataItem().withName("datalmsikl").withValue("datam"),
+                        new MetadataItem().withName("datacphgimi").withValue("datahrbs")))
+                .withAdditionalProperties(mapOf("type", "johwwtlerhpf")))
+            .withFormatSettings(new DelimitedTextWriteSettings().withQuoteAllText("dataklfswzsyigxsyxhy")
+                .withFileExtension("dataczab")
+                .withMaxRowsPerFile("dataeu")
+                .withFileNamePrefix("datazf"));
         model = BinaryData.fromObject(model).toObject(DelimitedTextSink.class);
     }
 

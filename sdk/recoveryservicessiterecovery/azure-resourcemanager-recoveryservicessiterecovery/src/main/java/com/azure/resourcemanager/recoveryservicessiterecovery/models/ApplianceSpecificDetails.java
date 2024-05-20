@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Appliance specific details. */
+/**
+ * Appliance specific details.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "instanceType",
     defaultImpl = ApplianceSpecificDetails.class)
 @JsonTypeName("ApplianceSpecificDetails")
-@JsonSubTypes({@JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmApplianceSpecificDetails.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmApplianceSpecificDetails.class) })
 @Immutable
 public class ApplianceSpecificDetails {
-    /** Creates an instance of ApplianceSpecificDetails class. */
+    /**
+     * Creates an instance of ApplianceSpecificDetails class.
+     */
     public ApplianceSpecificDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

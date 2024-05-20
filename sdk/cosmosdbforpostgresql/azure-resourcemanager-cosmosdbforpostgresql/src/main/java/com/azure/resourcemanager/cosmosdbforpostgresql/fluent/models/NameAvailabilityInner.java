@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents cluster name availability. */
+/**
+ * Represents cluster name availability.
+ */
 @Fluent
 public final class NameAvailabilityInner {
     /*
@@ -34,13 +36,15 @@ public final class NameAvailabilityInner {
     @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of NameAvailabilityInner class. */
+    /**
+     * Creates an instance of NameAvailabilityInner class.
+     */
     public NameAvailabilityInner() {
     }
 
     /**
      * Get the message property: Error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -49,7 +53,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Set the message property: Error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the NameAvailabilityInner object itself.
      */
@@ -60,7 +64,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Get the nameAvailable property: Indicates whether the cluster name is available.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -69,7 +73,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Set the nameAvailable property: Indicates whether the cluster name is available.
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the NameAvailabilityInner object itself.
      */
@@ -80,7 +84,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Get the name property: Name of the cluster.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -89,7 +93,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Set the name property: Name of the cluster.
-     *
+     * 
      * @param name the name value to set.
      * @return the NameAvailabilityInner object itself.
      */
@@ -100,7 +104,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Get the type property: Type of the cluster.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -109,7 +113,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Set the type property: Type of the cluster.
-     *
+     * 
      * @param type the type value to set.
      * @return the NameAvailabilityInner object itself.
      */
@@ -120,7 +124,7 @@ public final class NameAvailabilityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

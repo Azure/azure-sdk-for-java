@@ -14,19 +14,16 @@ public final class DatabricksSparkPythonActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabricksSparkPythonActivityTypeProperties model = BinaryData.fromString(
-            "{\"pythonFile\":\"datalstgsmeijgjbev\",\"parameters\":[\"datacsyjxdwvdklgw\",\"dataywal\",\"datafmenbaj\",\"dataeelbcsyaohizfysa\"],\"libraries\":[{\"ddohxvcsoqxydcqp\":\"datapft\"},{\"wt\":\"datawttdanuf\",\"fugikhm\":\"datahcmoccgt\"},{\"dcrdveccmqenfgba\":\"datastkkztexdsnmh\",\"denv\":\"datauuyt\"},{\"y\":\"datalfiigoxohjyvpfis\",\"vmilpgx\":\"dataoymccwvcfayllxvh\"}]}")
+            "{\"pythonFile\":\"dataozdzbhtfmgpio\",\"parameters\":[\"datapbjhhuimgdfoh\",\"dataeeu\",\"datatfavmdp\"],\"libraries\":[{\"paqj\":\"datacvwewognpu\",\"fb\":\"datarqvjwlritsxuxre\"}]}")
             .toObject(DatabricksSparkPythonActivityTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatabricksSparkPythonActivityTypeProperties model
-            = new DatabricksSparkPythonActivityTypeProperties().withPythonFile("datalstgsmeijgjbev")
-                .withParameters(Arrays.asList("datacsyjxdwvdklgw", "dataywal", "datafmenbaj", "dataeelbcsyaohizfysa"))
-                .withLibraries(Arrays.asList(mapOf("ddohxvcsoqxydcqp", "datapft"),
-                    mapOf("wt", "datawttdanuf", "fugikhm", "datahcmoccgt"),
-                    mapOf("dcrdveccmqenfgba", "datastkkztexdsnmh", "denv", "datauuyt"),
-                    mapOf("y", "datalfiigoxohjyvpfis", "vmilpgx", "dataoymccwvcfayllxvh")));
+            = new DatabricksSparkPythonActivityTypeProperties().withPythonFile("dataozdzbhtfmgpio")
+                .withParameters(Arrays.asList("datapbjhhuimgdfoh", "dataeeu", "datatfavmdp"))
+                .withLibraries(Arrays.asList(mapOf("paqj", "datacvwewognpu", "fb", "datarqvjwlritsxuxre")));
         model = BinaryData.fromObject(model).toObject(DatabricksSparkPythonActivityTypeProperties.class);
     }
 

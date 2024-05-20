@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.SecureScoreControlList;
 public final class SecureScoreControlListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecureScoreControlList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"ttgplucfotangcf\",\"healthyResourceCount\":1254839089,\"unhealthyResourceCount\":1077682035,\"notApplicableResourceCount\":809427492,\"weight\":4429427229457258180},\"id\":\"wlmzqwmvtxnjmxmc\",\"name\":\"qudtcvclx\",\"type\":\"npdkv\"},{\"properties\":{\"displayName\":\"buiyji\",\"healthyResourceCount\":874901455,\"unhealthyResourceCount\":203185987,\"notApplicableResourceCount\":1296462428,\"weight\":7170232891344779001},\"id\":\"n\",\"name\":\"gox\",\"type\":\"jiuqhibtozi\"},{\"properties\":{\"displayName\":\"jedmurrxxgewp\",\"healthyResourceCount\":1212082891,\"unhealthyResourceCount\":538601125,\"notApplicableResourceCount\":1264888765,\"weight\":1955127853962585170},\"id\":\"yhlfb\",\"name\":\"gwgcl\",\"type\":\"xoe\"},{\"properties\":{\"displayName\":\"njipnwjfujql\",\"healthyResourceCount\":1462565656,\"unhealthyResourceCount\":1454671377,\"notApplicableResourceCount\":295372470,\"weight\":5131304404617914310},\"id\":\"o\",\"name\":\"yjwpfilkmkkh\",\"type\":\"l\"}],\"nextLink\":\"ndviauogphuartvt\"}")
-                .toObject(SecureScoreControlList.class);
+        SecureScoreControlList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"displayName\":\"smitnsqxtlt\",\"score\":{\"max\":2077569332,\"current\":51.152481752480085,\"percentage\":50.58716494644779},\"healthyResourceCount\":1996640929,\"unhealthyResourceCount\":1459369662,\"notApplicableResourceCount\":935144860,\"weight\":6478606635870380898,\"definition\":{\"properties\":{\"displayName\":\"wfcmfcnr\",\"description\":\"jqmatxjtielnzq\",\"maxScore\":963386262,\"source\":{},\"assessmentDefinitions\":[{},{},{},{}]},\"id\":\"bmtlpqagyno\",\"name\":\"prnzc\",\"type\":\"lin\"}},\"id\":\"ryqxzxa\",\"name\":\"zi\",\"type\":\"mqimiymqru\"},{\"properties\":{\"displayName\":\"hfupetasvvoqsbpk\",\"score\":{\"max\":2045416492,\"current\":2.2060719090562064,\"percentage\":57.06425485450103},\"healthyResourceCount\":1013549160,\"unhealthyResourceCount\":1231523092,\"notApplicableResourceCount\":638487278,\"weight\":7021509875632355591,\"definition\":{\"properties\":{\"displayName\":\"kc\",\"description\":\"gukxrztiochluti\",\"maxScore\":1504152885,\"source\":{},\"assessmentDefinitions\":[{},{}]},\"id\":\"jizcbfzmcrunfhiu\",\"name\":\"nmfbc\",\"type\":\"aqktkrumzu\"}},\"id\":\"dkyzbfvxov\",\"name\":\"kxiuxqggvqr\",\"type\":\"hyhlwcjsqg\"}],\"nextLink\":\"hffbxrq\"}")
+            .toObject(SecureScoreControlList.class);
     }
 
     @org.junit.jupiter.api.Test

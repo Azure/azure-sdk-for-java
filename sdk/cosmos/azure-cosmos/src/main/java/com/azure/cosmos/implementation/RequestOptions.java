@@ -7,6 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
@@ -54,13 +55,16 @@ public class RequestOptions {
     private List<String> excludeRegions;
 
     private Supplier<CosmosDiagnosticsContext> diagnosticsCtxSupplier;
+    private CosmosItemSerializer effectiveItemSerializer;
 
     private final AtomicReference<Runnable> markE2ETimeoutInRequestContextCallbackHook;
 
     private PartitionKeyDefinition partitionKeyDefinition;
 
     public RequestOptions() {
+
         this.markE2ETimeoutInRequestContextCallbackHook = new AtomicReference<>(null);
+        this.effectiveItemSerializer = CosmosItemSerializer.DEFAULT_SERIALIZER;
     }
 
     public RequestOptions(RequestOptions toBeCloned) {
@@ -87,6 +91,7 @@ public class RequestOptions {
         this.endToEndOperationLatencyConfig = toBeCloned.endToEndOperationLatencyConfig;
         this.diagnosticsCtxSupplier = toBeCloned.diagnosticsCtxSupplier;
         this.markE2ETimeoutInRequestContextCallbackHook = new AtomicReference<>(null);
+        this.effectiveItemSerializer= toBeCloned.effectiveItemSerializer;
         this.partitionKeyDefinition = toBeCloned.partitionKeyDefinition;
 
         if (toBeCloned.customOptions != null) {
@@ -538,6 +543,14 @@ public class RequestOptions {
 
     public AtomicReference<Runnable> getMarkE2ETimeoutInRequestContextCallbackHook() {
         return this.markE2ETimeoutInRequestContextCallbackHook;
+    }
+
+    public CosmosItemSerializer getEffectiveItemSerializer() {
+        return this.effectiveItemSerializer;
+    }
+
+    public void setEffectiveItemSerializer(CosmosItemSerializer serializer) {
+        this.effectiveItemSerializer = serializer;
     }
 
     public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {

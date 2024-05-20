@@ -14,20 +14,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RegulatoryComplianceControlListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegulatoryComplianceControlList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"mbzonokix\",\"state\":\"Passed\",\"passedAssessments\":1122267125,\"failedAssessments\":1711524187,\"skippedAssessments\":2101008571},\"id\":\"frl\",\"name\":\"zszrnwoiindfpw\",\"type\":\"jylwbtlhflsj\"}],\"nextLink\":\"hszfjvfb\"}")
-                .toObject(RegulatoryComplianceControlList.class);
-        Assertions.assertEquals(State.PASSED, model.value().get(0).state());
+        RegulatoryComplianceControlList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"vpycanuzbp\",\"state\":\"Failed\",\"passedAssessments\":172271307,\"failedAssessments\":1834539320,\"skippedAssessments\":2051758335},\"id\":\"rnwb\",\"name\":\"ehhseyvjusrts\",\"type\":\"hspkdeemao\"},{\"properties\":{\"description\":\"ag\",\"state\":\"Passed\",\"passedAssessments\":1243858380,\"failedAssessments\":2048736715,\"skippedAssessments\":543207996},\"id\":\"rhahvljuahaquhcd\",\"name\":\"mdua\",\"type\":\"aex\"}],\"nextLink\":\"vfadmws\"}")
+            .toObject(RegulatoryComplianceControlList.class);
+        Assertions.assertEquals(State.FAILED, model.value().get(0).state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegulatoryComplianceControlList model =
-            new RegulatoryComplianceControlList()
-                .withValue(Arrays.asList(new RegulatoryComplianceControlInner().withState(State.PASSED)));
+        RegulatoryComplianceControlList model = new RegulatoryComplianceControlList()
+            .withValue(Arrays.asList(new RegulatoryComplianceControlInner().withState(State.FAILED),
+                new RegulatoryComplianceControlInner().withState(State.PASSED)));
         model = BinaryData.fromObject(model).toObject(RegulatoryComplianceControlList.class);
-        Assertions.assertEquals(State.PASSED, model.value().get(0).state());
+        Assertions.assertEquals(State.FAILED, model.value().get(0).state());
     }
 }

@@ -41,8 +41,8 @@ public class LargePayloadTests {
         LARGE_JSON = "\"" + oneBigString + "\"";
         TOO_LARGE_JSON = "\"" + oneBigString + oneBigString + "\"";
         LARGE_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><bigstring>" + oneBigString + "</bigstring>";
-        TOO_LARGE_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><bigstring>" + oneBigString + oneBigString
-            + "</bigstring>";
+        TOO_LARGE_XML
+            = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><bigstring>" + oneBigString + oneBigString + "</bigstring>";
     }
 
     @Test
@@ -81,11 +81,11 @@ public class LargePayloadTests {
     }
 
     // It seems Jackson doesn't validate this in XML.
-//    @Test
-//    public void tooLargeXmlPayload() {
-//        assertThrows(IOException.class, () -> JacksonAdapter.createDefaultSerializerAdapter()
-//            .deserialize(TOO_LARGE_XML, String.class, SerializerEncoding.XML));
-//    }
+    // @Test
+    // public void tooLargeXmlPayload() {
+    // assertThrows(IOException.class, () -> JacksonAdapter.createDefaultSerializerAdapter()
+    // .deserialize(TOO_LARGE_XML, String.class, SerializerEncoding.XML));
+    // }
 
     @Test
     public void tooLargeJsonPayloadSerializerJackson() {
@@ -96,10 +96,10 @@ public class LargePayloadTests {
     }
 
     // It seems Jackson doesn't validate this in XML.
-//    @Test
-//    public void tooLargeXmlPayloadSerializerJackson() {
-//        assertThrows(IOException.class,
-//            () -> com.azure.core.serializer.json.jackson.JacksonAdapter.defaultSerializerAdapter()
-//                .deserialize(TOO_LARGE_XML, String.class, SerializerEncoding.XML));
-//    }
+    // @Test
+    // public void tooLargeXmlPayloadSerializerJackson() {
+    // assertThrows(IOException.class,
+    // () -> com.azure.core.serializer.json.jackson.JacksonAdapter.defaultSerializerAdapter()
+    // .deserialize(TOO_LARGE_XML, String.class, SerializerEncoding.XML));
+    // }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the parameters for the cache-key query string action. */
+/**
+ * Defines the parameters for the cache-key query string action.
+ */
 @Fluent
 public final class CacheKeyQueryStringActionParameters {
     /*
@@ -29,14 +31,15 @@ public final class CacheKeyQueryStringActionParameters {
     @JsonProperty(value = "queryParameters")
     private String queryParameters;
 
-    /** Creates an instance of CacheKeyQueryStringActionParameters class. */
+    /**
+     * Creates an instance of CacheKeyQueryStringActionParameters class.
+     */
     public CacheKeyQueryStringActionParameters() {
-        typeName = "DeliveryRuleCacheKeyQueryStringBehaviorActionParameters";
     }
 
     /**
      * Get the typeName property: The typeName property.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -45,7 +48,7 @@ public final class CacheKeyQueryStringActionParameters {
 
     /**
      * Set the typeName property: The typeName property.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the CacheKeyQueryStringActionParameters object itself.
      */
@@ -56,7 +59,7 @@ public final class CacheKeyQueryStringActionParameters {
 
     /**
      * Get the queryStringBehavior property: Caching behavior for the requests.
-     *
+     * 
      * @return the queryStringBehavior value.
      */
     public QueryStringBehavior queryStringBehavior() {
@@ -65,7 +68,7 @@ public final class CacheKeyQueryStringActionParameters {
 
     /**
      * Set the queryStringBehavior property: Caching behavior for the requests.
-     *
+     * 
      * @param queryStringBehavior the queryStringBehavior value to set.
      * @return the CacheKeyQueryStringActionParameters object itself.
      */
@@ -76,7 +79,7 @@ public final class CacheKeyQueryStringActionParameters {
 
     /**
      * Get the queryParameters property: query parameters to include or exclude (comma separated).
-     *
+     * 
      * @return the queryParameters value.
      */
     public String queryParameters() {
@@ -85,7 +88,7 @@ public final class CacheKeyQueryStringActionParameters {
 
     /**
      * Set the queryParameters property: query parameters to include or exclude (comma separated).
-     *
+     * 
      * @param queryParameters the queryParameters value to set.
      * @return the CacheKeyQueryStringActionParameters object itself.
      */
@@ -96,15 +99,13 @@ public final class CacheKeyQueryStringActionParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (queryStringBehavior() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property queryStringBehavior in model CacheKeyQueryStringActionParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property queryStringBehavior in model CacheKeyQueryStringActionParameters"));
         }
     }
 

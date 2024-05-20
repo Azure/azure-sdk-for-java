@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.SecureScoreControlDefini
 public final class SecureScoreControlDefinitionItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecureScoreControlDefinitionItemInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"uyturml\",\"description\":\"owolbaui\",\"maxScore\":79221925,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"nw\"},{\"id\":\"gajinnixjawrtmj\"},{\"id\":\"myccx\"},{\"id\":\"hcoxov\"}]},\"id\":\"ekhenl\",\"name\":\"sfnrdtjxt\",\"type\":\"r\"}")
-                .toObject(SecureScoreControlDefinitionItemInner.class);
+        SecureScoreControlDefinitionItemInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"tedousnktjtgrava\",\"description\":\"gfkbebauzlqbtxx\",\"maxScore\":165984446,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{\"id\":\"rt\"},{\"id\":\"kgmeb\"},{\"id\":\"whczzqrhmng\"}]},\"id\":\"be\",\"name\":\"ygisrz\",\"type\":\"nykdi\"}")
+            .toObject(SecureScoreControlDefinitionItemInner.class);
     }
 
     @org.junit.jupiter.api.Test

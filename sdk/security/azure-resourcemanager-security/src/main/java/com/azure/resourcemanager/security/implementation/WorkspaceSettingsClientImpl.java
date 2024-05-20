@@ -34,22 +34,28 @@ import com.azure.resourcemanager.security.fluent.models.WorkspaceSettingInner;
 import com.azure.resourcemanager.security.models.WorkspaceSettingList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkspaceSettingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspaceSettingsClient.
+ */
 public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkspaceSettingsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of WorkspaceSettingsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkspaceSettingsClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy.create(WorkspaceSettingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(WorkspaceSettingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,165 +66,122 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterWorksp")
     public interface WorkspaceSettingsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkspaceSettingList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<WorkspaceSettingList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkspaceSettingInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceSettingName") String workspaceSettingName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<WorkspaceSettingInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("workspaceSettingName") String workspaceSettingName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkspaceSettingInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<WorkspaceSettingInner>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("workspaceSettingName") String workspaceSettingName,
-            @BodyParam("application/json") WorkspaceSettingInner workspaceSetting,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") WorkspaceSettingInner workspaceSetting, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkspaceSettingInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<WorkspaceSettingInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("workspaceSettingName") String workspaceSettingName,
-            @BodyParam("application/json") WorkspaceSettingInner workspaceSetting,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") WorkspaceSettingInner workspaceSetting, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Security/workspaceSettings/{workspaceSettingName}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceSettingName") String workspaceSettingName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("workspaceSettingName") String workspaceSettingName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkspaceSettingList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<WorkspaceSettingList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of workspace settings response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of workspace settings response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkspaceSettingInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<WorkspaceSettingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                accept, context))
+            .<PagedResponse<WorkspaceSettingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of workspace settings response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of workspace settings response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkspaceSettingInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of workspace settings response as paginated response with {@link PagedFlux}.
@@ -231,7 +194,7 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -240,14 +203,14 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkspaceSettingInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of workspace settings response as paginated response with {@link PagedIterable}.
@@ -260,7 +223,7 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -275,27 +238,23 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkspaceSettingInner>> getWithResponseAsync(String workspaceSettingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceSettingName == null) {
             return Mono
@@ -304,44 +263,32 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
         final String apiVersion = "2017-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            workspaceSettingName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                workspaceSettingName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<WorkspaceSettingInner>> getWithResponseAsync(String workspaceSettingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceSettingName == null) {
             return Mono
@@ -350,26 +297,20 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
         final String apiVersion = "2017-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                workspaceSettingName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), workspaceSettingName,
+            accept, context);
     }
 
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configures where to store the OMS agent data for workspaces under a scope on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<WorkspaceSettingInner> getAsync(String workspaceSettingName) {
@@ -379,7 +320,7 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -395,7 +336,7 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
     /**
      * Settings about where we should store your security data and logs. If the result is empty, it means that no
      * custom-workspace configuration was set.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -409,29 +350,25 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
 
     /**
      * creating settings about where we should store your security data and logs.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkspaceSettingInner>> createWithResponseAsync(
-        String workspaceSettingName, WorkspaceSettingInner workspaceSetting) {
+    private Mono<Response<WorkspaceSettingInner>> createWithResponseAsync(String workspaceSettingName,
+        WorkspaceSettingInner workspaceSetting) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceSettingName == null) {
             return Mono
@@ -446,23 +383,14 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
         final String apiVersion = "2017-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            workspaceSettingName,
-                            workspaceSetting,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), workspaceSettingName, workspaceSetting, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * creating settings about where we should store your security data and logs.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
      * @param context The context to associate with this operation.
@@ -470,22 +398,18 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkspaceSettingInner>> createWithResponseAsync(
-        String workspaceSettingName, WorkspaceSettingInner workspaceSetting, Context context) {
+    private Mono<Response<WorkspaceSettingInner>> createWithResponseAsync(String workspaceSettingName,
+        WorkspaceSettingInner workspaceSetting, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceSettingName == null) {
             return Mono
@@ -500,38 +424,31 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
         final String apiVersion = "2017-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                workspaceSettingName,
-                workspaceSetting,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            workspaceSettingName, workspaceSetting, accept, context);
     }
 
     /**
      * creating settings about where we should store your security data and logs.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configures where to store the OMS agent data for workspaces under a scope on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkspaceSettingInner> createAsync(
-        String workspaceSettingName, WorkspaceSettingInner workspaceSetting) {
+    private Mono<WorkspaceSettingInner> createAsync(String workspaceSettingName,
+        WorkspaceSettingInner workspaceSetting) {
         return createWithResponseAsync(workspaceSettingName, workspaceSetting)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * creating settings about where we should store your security data and logs.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
      * @param context The context to associate with this operation.
@@ -541,14 +458,14 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
      * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkspaceSettingInner> createWithResponse(
-        String workspaceSettingName, WorkspaceSettingInner workspaceSetting, Context context) {
+    public Response<WorkspaceSettingInner> createWithResponse(String workspaceSettingName,
+        WorkspaceSettingInner workspaceSetting, Context context) {
         return createWithResponseAsync(workspaceSettingName, workspaceSetting, context).block();
     }
 
     /**
      * creating settings about where we should store your security data and logs.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -563,29 +480,25 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
 
     /**
      * Settings about where we should store your security data and logs.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkspaceSettingInner>> updateWithResponseAsync(
-        String workspaceSettingName, WorkspaceSettingInner workspaceSetting) {
+    private Mono<Response<WorkspaceSettingInner>> updateWithResponseAsync(String workspaceSettingName,
+        WorkspaceSettingInner workspaceSetting) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceSettingName == null) {
             return Mono
@@ -600,23 +513,14 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
         final String apiVersion = "2017-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            workspaceSettingName,
-                            workspaceSetting,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), workspaceSettingName, workspaceSetting, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Settings about where we should store your security data and logs.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
      * @param context The context to associate with this operation.
@@ -624,22 +528,18 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkspaceSettingInner>> updateWithResponseAsync(
-        String workspaceSettingName, WorkspaceSettingInner workspaceSetting, Context context) {
+    private Mono<Response<WorkspaceSettingInner>> updateWithResponseAsync(String workspaceSettingName,
+        WorkspaceSettingInner workspaceSetting, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceSettingName == null) {
             return Mono
@@ -654,38 +554,31 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
         final String apiVersion = "2017-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                workspaceSettingName,
-                workspaceSetting,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            workspaceSettingName, workspaceSetting, accept, context);
     }
 
     /**
      * Settings about where we should store your security data and logs.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configures where to store the OMS agent data for workspaces under a scope on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkspaceSettingInner> updateAsync(
-        String workspaceSettingName, WorkspaceSettingInner workspaceSetting) {
+    private Mono<WorkspaceSettingInner> updateAsync(String workspaceSettingName,
+        WorkspaceSettingInner workspaceSetting) {
         return updateWithResponseAsync(workspaceSettingName, workspaceSetting)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Settings about where we should store your security data and logs.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
      * @param context The context to associate with this operation.
@@ -695,14 +588,14 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
      * @return configures where to store the OMS agent data for workspaces under a scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkspaceSettingInner> updateWithResponse(
-        String workspaceSettingName, WorkspaceSettingInner workspaceSetting, Context context) {
+    public Response<WorkspaceSettingInner> updateWithResponse(String workspaceSettingName,
+        WorkspaceSettingInner workspaceSetting, Context context) {
         return updateWithResponseAsync(workspaceSettingName, workspaceSetting, context).block();
     }
 
     /**
      * Settings about where we should store your security data and logs.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param workspaceSetting Security data setting object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -717,7 +610,7 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
 
     /**
      * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -727,16 +620,12 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String workspaceSettingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceSettingName == null) {
             return Mono
@@ -745,22 +634,14 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
         final String apiVersion = "2017-08-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            workspaceSettingName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), workspaceSettingName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -771,16 +652,12 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String workspaceSettingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceSettingName == null) {
             return Mono
@@ -789,19 +666,13 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
         final String apiVersion = "2017-08-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                workspaceSettingName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            workspaceSettingName, accept, context);
     }
 
     /**
      * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -815,7 +686,7 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
 
     /**
      * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -830,7 +701,7 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
 
     /**
      * Deletes the custom workspace settings for this subscription. new VMs will report to the default workspace.
-     *
+     * 
      * @param workspaceSettingName Name of the security setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -843,14 +714,15 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of workspace settings response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of workspace settings response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkspaceSettingInner>> listNextSinglePageAsync(String nextLink) {
@@ -858,37 +730,28 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<WorkspaceSettingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<WorkspaceSettingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of workspace settings response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of workspace settings response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkspaceSettingInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -896,23 +759,13 @@ public final class WorkspaceSettingsClientImpl implements WorkspaceSettingsClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

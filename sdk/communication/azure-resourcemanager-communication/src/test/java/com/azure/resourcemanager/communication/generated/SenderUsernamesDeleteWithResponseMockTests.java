@@ -45,7 +45,7 @@ public final class SenderUsernamesDeleteWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.senderUsernames().deleteWithResponse("syocogjltdtbnnha", "oocrkvcikhnv", "amqgxqquezikyw", "gxk",
+        manager.senderUsernames().deleteWithResponse("lxyjr", "sag", "fcnihgwq", "pnedgf",
             com.azure.core.util.Context.NONE);
 
     }

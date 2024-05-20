@@ -11,23 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForContainersGcpOfferingNativeCloudConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForContainersGcpOfferingNativeCloudConnection model =
-            BinaryData
-                .fromString(
-                    "{\"serviceAccountEmailAddress\":\"jgazl\",\"workloadIdentityProviderId\":\"bzfcpuoeedwj\"}")
-                .toObject(DefenderForContainersGcpOfferingNativeCloudConnection.class);
-        Assertions.assertEquals("jgazl", model.serviceAccountEmailAddress());
-        Assertions.assertEquals("bzfcpuoeedwj", model.workloadIdentityProviderId());
+        DefenderForContainersGcpOfferingNativeCloudConnection model = BinaryData
+            .fromString("{\"serviceAccountEmailAddress\":\"lzqjimejtgzjxx\",\"workloadIdentityProviderId\":\"e\"}")
+            .toObject(DefenderForContainersGcpOfferingNativeCloudConnection.class);
+        Assertions.assertEquals("lzqjimejtgzjxx", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("e", model.workloadIdentityProviderId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForContainersGcpOfferingNativeCloudConnection model =
-            new DefenderForContainersGcpOfferingNativeCloudConnection()
-                .withServiceAccountEmailAddress("jgazl")
-                .withWorkloadIdentityProviderId("bzfcpuoeedwj");
+        DefenderForContainersGcpOfferingNativeCloudConnection model
+            = new DefenderForContainersGcpOfferingNativeCloudConnection()
+                .withServiceAccountEmailAddress("lzqjimejtgzjxx")
+                .withWorkloadIdentityProviderId("e");
         model = BinaryData.fromObject(model).toObject(DefenderForContainersGcpOfferingNativeCloudConnection.class);
-        Assertions.assertEquals("jgazl", model.serviceAccountEmailAddress());
-        Assertions.assertEquals("bzfcpuoeedwj", model.workloadIdentityProviderId());
+        Assertions.assertEquals("lzqjimejtgzjxx", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("e", model.workloadIdentityProviderId());
     }
 }

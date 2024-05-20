@@ -11,30 +11,29 @@ import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for RedisEnterprise Update. */
+/**
+ * Samples for RedisEnterprise Update.
+ */
 public final class RedisEnterpriseUpdateSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseUpdate.json
+     * x-ms-original-file:
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/RedisEnterpriseUpdate.
+     * json
      */
     /**
      * Sample code: RedisEnterpriseUpdate.
-     *
+     * 
      * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseUpdate(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        Cluster resource =
-            manager
-                .redisEnterprises()
-                .getByResourceGroupWithResponse("rg1", "cache1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withTags(mapOf("tag1", "value1"))
+        Cluster resource = manager.redisEnterprises()
+            .getByResourceGroupWithResponse("rg1", "cache1", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withTags(mapOf("tag1", "value1"))
             .withSku(new Sku().withName(SkuName.ENTERPRISE_FLASH_F300).withCapacity(9))
-            .withMinimumTlsVersion(TlsVersion.ONE_TWO)
-            .apply();
+            .withMinimumTlsVersion(TlsVersion.ONE_TWO).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

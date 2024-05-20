@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Model that represents the execution of a Experiment. */
+/**
+ * Model that represents the execution of a Experiment.
+ */
 @Immutable
 public final class ExperimentExecutionInner {
     /*
@@ -35,13 +37,15 @@ public final class ExperimentExecutionInner {
     @JsonProperty(value = "properties")
     private ExperimentExecutionProperties innerProperties;
 
-    /** Creates an instance of ExperimentExecutionInner class. */
+    /**
+     * Creates an instance of ExperimentExecutionInner class.
+     */
     public ExperimentExecutionInner() {
     }
 
     /**
      * Get the type property: String of the resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -50,7 +54,7 @@ public final class ExperimentExecutionInner {
 
     /**
      * Get the id property: String of the fully qualified resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -59,7 +63,7 @@ public final class ExperimentExecutionInner {
 
     /**
      * Get the name property: String of the resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +72,7 @@ public final class ExperimentExecutionInner {
 
     /**
      * Get the innerProperties property: The properties of experiment execution status.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExperimentExecutionProperties innerProperties() {
@@ -77,7 +81,7 @@ public final class ExperimentExecutionInner {
 
     /**
      * Get the status property: The status of the execution.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -86,7 +90,7 @@ public final class ExperimentExecutionInner {
 
     /**
      * Get the startedAt property: String that represents the start date time.
-     *
+     * 
      * @return the startedAt value.
      */
     public OffsetDateTime startedAt() {
@@ -95,7 +99,7 @@ public final class ExperimentExecutionInner {
 
     /**
      * Get the stoppedAt property: String that represents the stop date time.
-     *
+     * 
      * @return the stoppedAt value.
      */
     public OffsetDateTime stoppedAt() {
@@ -104,7 +108,7 @@ public final class ExperimentExecutionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

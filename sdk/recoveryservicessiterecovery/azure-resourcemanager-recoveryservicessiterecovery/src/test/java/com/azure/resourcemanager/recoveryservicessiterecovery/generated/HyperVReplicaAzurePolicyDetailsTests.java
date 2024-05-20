@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HyperVReplicaAzurePolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HyperVReplicaAzurePolicyDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"HyperVReplicaAzure\",\"recoveryPointHistoryDurationInHours\":779585791,\"applicationConsistentSnapshotFrequencyInHours\":1492620534,\"replicationInterval\":2041507399,\"onlineReplicationStartTime\":\"igjsugswhgs\",\"encryption\":\"dkwwn\",\"activeStorageAccountId\":\"foct\"}")
-                .toObject(HyperVReplicaAzurePolicyDetails.class);
+        HyperVReplicaAzurePolicyDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"HyperVReplicaAzure\",\"recoveryPointHistoryDurationInHours\":779585791,\"applicationConsistentSnapshotFrequencyInHours\":1492620534,\"replicationInterval\":2041507399,\"onlineReplicationStartTime\":\"igjsugswhgs\",\"encryption\":\"dkwwn\",\"activeStorageAccountId\":\"foct\"}")
+            .toObject(HyperVReplicaAzurePolicyDetails.class);
         Assertions.assertEquals(779585791, model.recoveryPointHistoryDurationInHours());
         Assertions.assertEquals(1492620534, model.applicationConsistentSnapshotFrequencyInHours());
         Assertions.assertEquals(2041507399, model.replicationInterval());
@@ -26,14 +24,10 @@ public final class HyperVReplicaAzurePolicyDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaAzurePolicyDetails model =
-            new HyperVReplicaAzurePolicyDetails()
-                .withRecoveryPointHistoryDurationInHours(779585791)
-                .withApplicationConsistentSnapshotFrequencyInHours(1492620534)
-                .withReplicationInterval(2041507399)
-                .withOnlineReplicationStartTime("igjsugswhgs")
-                .withEncryption("dkwwn")
-                .withActiveStorageAccountId("foct");
+        HyperVReplicaAzurePolicyDetails model = new HyperVReplicaAzurePolicyDetails()
+            .withRecoveryPointHistoryDurationInHours(779585791)
+            .withApplicationConsistentSnapshotFrequencyInHours(1492620534).withReplicationInterval(2041507399)
+            .withOnlineReplicationStartTime("igjsugswhgs").withEncryption("dkwwn").withActiveStorageAccountId("foct");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzurePolicyDetails.class);
         Assertions.assertEquals(779585791, model.recoveryPointHistoryDurationInHours());
         Assertions.assertEquals(1492620534, model.applicationConsistentSnapshotFrequencyInHours());

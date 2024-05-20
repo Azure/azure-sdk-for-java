@@ -29,39 +29,26 @@ public final class ConnectedEnvironmentsDaprComponentsListSecretsWithResponseMoc
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"ilrmcaykggnox\",\"value\":\"t\"},{\"name\":\"sxwpndfcpfnznthj\",\"value\":\"kjaosrxuzv\"},{\"name\":\"mktcqiosmgbza\",\"value\":\"xqdlyrtltlapr\"},{\"name\":\"zkatb\",\"value\":\"mznnbsoqeqalarvl\"}]}";
+        String responseStr
+            = "{\"value\":[{\"name\":\"myymvqdbpbhfckdv\",\"value\":\"crcss\"},{\"name\":\"hddubbnqfbl\",\"value\":\"alehpav\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ContainerAppsApiManager manager =
-            ContainerAppsApiManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ContainerAppsApiManager manager = ContainerAppsApiManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DaprSecretsCollection response =
-            manager
-                .connectedEnvironmentsDaprComponents()
-                .listSecretsWithResponse("g", "wtxxpkyjcx", "jxgrytfmp", com.azure.core.util.Context.NONE)
-                .getValue();
+        DaprSecretsCollection response = manager.connectedEnvironmentsDaprComponents()
+            .listSecretsWithResponse("aglt", "xoe", "onql", com.azure.core.util.Context.NONE).getValue();
+
     }
 }

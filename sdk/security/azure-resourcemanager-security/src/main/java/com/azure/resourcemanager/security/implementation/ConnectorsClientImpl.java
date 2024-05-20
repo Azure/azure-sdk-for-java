@@ -33,22 +33,28 @@ import com.azure.resourcemanager.security.fluent.models.ConnectorSettingInner;
 import com.azure.resourcemanager.security.models.ConnectorSettingList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ConnectorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConnectorsClient.
+ */
 public final class ConnectorsClientImpl implements ConnectorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ConnectorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of ConnectorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ConnectorsClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy.create(ConnectorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ConnectorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,153 +65,111 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterConnec")
     public interface ConnectorsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectorSettingList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConnectorSettingList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors/{connectorName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectorSettingInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("connectorName") String connectorName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConnectorSettingInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("connectorName") String connectorName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors/{connectorName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectorSettingInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ConnectorSettingInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("connectorName") String connectorName,
-            @BodyParam("application/json") ConnectorSettingInner connectorSetting,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ConnectorSettingInner connectorSetting, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Security/connectors/{connectorName}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("connectorName") String connectorName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("connectorName") String connectorName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectorSettingList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConnectorSettingList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Cloud accounts connectors of a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return for a subscription, list of all cloud account connectors and their settings along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return for a subscription, list of all cloud account connectors and their settings along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectorSettingInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<ConnectorSettingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                accept, context))
+            .<PagedResponse<ConnectorSettingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Cloud accounts connectors of a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return for a subscription, list of all cloud account connectors and their settings along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return for a subscription, list of all cloud account connectors and their settings along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectorSettingInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Cloud accounts connectors of a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return for a subscription, list of all cloud account connectors and their settings as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectorSettingInner> listAsync() {
@@ -214,27 +178,27 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
 
     /**
      * Cloud accounts connectors of a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return for a subscription, list of all cloud account connectors and their settings as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConnectorSettingInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Cloud accounts connectors of a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return for a subscription, list of all cloud account connectors and their settings as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectorSettingInner> list() {
@@ -243,13 +207,13 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
 
     /**
      * Cloud accounts connectors of a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return for a subscription, list of all cloud account connectors and their settings as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConnectorSettingInner> list(Context context) {
@@ -258,7 +222,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
 
     /**
      * Details of a specific cloud account connector.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -268,16 +232,12 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectorSettingInner>> getWithResponseAsync(String connectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (connectorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
@@ -285,22 +245,14 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
         final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            connectorName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                connectorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Details of a specific cloud account connector.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -311,16 +263,12 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectorSettingInner>> getWithResponseAsync(String connectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (connectorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
@@ -328,14 +276,13 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
         final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), connectorName, accept, context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), connectorName,
+            accept, context);
     }
 
     /**
      * Details of a specific cloud account connector.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -349,7 +296,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
 
     /**
      * Details of a specific cloud account connector.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,7 +311,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
 
     /**
      * Details of a specific cloud account connector.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -379,7 +326,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
     /**
      * Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use either
      * account credentials or role-based authentication. For GCP, use account organization credentials.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @param connectorSetting Settings for the cloud account connector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -388,19 +335,15 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @return the connector setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectorSettingInner>> createOrUpdateWithResponseAsync(
-        String connectorName, ConnectorSettingInner connectorSetting) {
+    private Mono<Response<ConnectorSettingInner>> createOrUpdateWithResponseAsync(String connectorName,
+        ConnectorSettingInner connectorSetting) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (connectorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
@@ -414,24 +357,15 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
         final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            connectorName,
-                            connectorSetting,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), connectorName, connectorSetting, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use either
      * account credentials or role-based authentication. For GCP, use account organization credentials.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @param connectorSetting Settings for the cloud account connector.
      * @param context The context to associate with this operation.
@@ -441,19 +375,15 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @return the connector setting along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectorSettingInner>> createOrUpdateWithResponseAsync(
-        String connectorName, ConnectorSettingInner connectorSetting, Context context) {
+    private Mono<Response<ConnectorSettingInner>> createOrUpdateWithResponseAsync(String connectorName,
+        ConnectorSettingInner connectorSetting, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (connectorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
@@ -467,21 +397,14 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
         final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                connectorName,
-                connectorSetting,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            connectorName, connectorSetting, accept, context);
     }
 
     /**
      * Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use either
      * account credentials or role-based authentication. For GCP, use account organization credentials.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @param connectorSetting Settings for the cloud account connector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -490,8 +413,8 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @return the connector setting on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectorSettingInner> createOrUpdateAsync(
-        String connectorName, ConnectorSettingInner connectorSetting) {
+    private Mono<ConnectorSettingInner> createOrUpdateAsync(String connectorName,
+        ConnectorSettingInner connectorSetting) {
         return createOrUpdateWithResponseAsync(connectorName, connectorSetting)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -499,7 +422,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
     /**
      * Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use either
      * account credentials or role-based authentication. For GCP, use account organization credentials.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @param connectorSetting Settings for the cloud account connector.
      * @param context The context to associate with this operation.
@@ -509,15 +432,15 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
      * @return the connector setting along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectorSettingInner> createOrUpdateWithResponse(
-        String connectorName, ConnectorSettingInner connectorSetting, Context context) {
+    public Response<ConnectorSettingInner> createOrUpdateWithResponse(String connectorName,
+        ConnectorSettingInner connectorSetting, Context context) {
         return createOrUpdateWithResponseAsync(connectorName, connectorSetting, context).block();
     }
 
     /**
      * Create a cloud account connector or update an existing one. Connect to your cloud account. For AWS, use either
      * account credentials or role-based authentication. For GCP, use account organization credentials.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @param connectorSetting Settings for the cloud account connector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -532,7 +455,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
 
     /**
      * Delete a cloud account connector from a subscription.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -542,16 +465,12 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String connectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (connectorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
@@ -559,22 +478,14 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
         final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            connectorName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), connectorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a cloud account connector from a subscription.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -585,16 +496,12 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String connectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (connectorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
@@ -602,14 +509,13 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
         final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), connectorName, accept, context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), connectorName,
+            accept, context);
     }
 
     /**
      * Delete a cloud account connector from a subscription.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -623,7 +529,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
 
     /**
      * Delete a cloud account connector from a subscription.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -638,7 +544,7 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
 
     /**
      * Delete a cloud account connector from a subscription.
-     *
+     * 
      * @param connectorName Name of the cloud account connector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -651,14 +557,15 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return for a subscription, list of all cloud account connectors and their settings along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return for a subscription, list of all cloud account connectors and their settings along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectorSettingInner>> listNextSinglePageAsync(String nextLink) {
@@ -666,37 +573,28 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ConnectorSettingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ConnectorSettingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return for a subscription, list of all cloud account connectors and their settings along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return for a subscription, list of all cloud account connectors and their settings along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConnectorSettingInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -704,23 +602,13 @@ public final class ConnectorsClientImpl implements ConnectorsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

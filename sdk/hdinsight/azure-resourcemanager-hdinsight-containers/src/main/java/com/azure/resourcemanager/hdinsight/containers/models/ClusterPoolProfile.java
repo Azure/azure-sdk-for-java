@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cluster pool profile. */
+/**
+ * Cluster pool profile.
+ */
 @Fluent
 public class ClusterPoolProfile {
     /*
@@ -17,13 +19,15 @@ public class ClusterPoolProfile {
     @JsonProperty(value = "clusterPoolVersion", required = true)
     private String clusterPoolVersion;
 
-    /** Creates an instance of ClusterPoolProfile class. */
+    /**
+     * Creates an instance of ClusterPoolProfile class.
+     */
     public ClusterPoolProfile() {
     }
 
     /**
      * Get the clusterPoolVersion property: Cluster pool version is a 2-part version.
-     *
+     * 
      * @return the clusterPoolVersion value.
      */
     public String clusterPoolVersion() {
@@ -32,7 +36,7 @@ public class ClusterPoolProfile {
 
     /**
      * Set the clusterPoolVersion property: Cluster pool version is a 2-part version.
-     *
+     * 
      * @param clusterPoolVersion the clusterPoolVersion value to set.
      * @return the ClusterPoolProfile object itself.
      */
@@ -43,15 +47,13 @@ public class ClusterPoolProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (clusterPoolVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clusterPoolVersion in model ClusterPoolProfile"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clusterPoolVersion in model ClusterPoolProfile"));
         }
     }
 

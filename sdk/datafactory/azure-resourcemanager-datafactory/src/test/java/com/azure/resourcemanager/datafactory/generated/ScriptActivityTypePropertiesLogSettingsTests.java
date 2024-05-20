@@ -17,23 +17,26 @@ public final class ScriptActivityTypePropertiesLogSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptActivityTypePropertiesLogSettings model = BinaryData.fromString(
-            "{\"logDestination\":\"ActivityOutput\",\"logLocationSettings\":{\"linkedServiceName\":{\"referenceName\":\"fbeott\",\"parameters\":{\"ut\":\"dataonejpjzqb\",\"atfalhnixo\":\"datanlow\"}},\"path\":\"dataqobngjbeihcaxkiv\"}}")
+            "{\"logDestination\":\"ExternalStore\",\"logLocationSettings\":{\"linkedServiceName\":{\"referenceName\":\"jqysfe\",\"parameters\":{\"hfgafznzemisqun\":\"dataiogwckvoxl\",\"uvtbptdeumlfszx\":\"datawosanchr\",\"gp\":\"datarabknkeo\",\"wsnccmunh\":\"datadcrnubntowohtu\"}},\"path\":\"datacsgczv\"}}")
             .toObject(ScriptActivityTypePropertiesLogSettings.class);
-        Assertions.assertEquals(ScriptActivityLogDestination.ACTIVITY_OUTPUT, model.logDestination());
-        Assertions.assertEquals("fbeott", model.logLocationSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals(ScriptActivityLogDestination.EXTERNAL_STORE, model.logDestination());
+        Assertions.assertEquals("jqysfe", model.logLocationSettings().linkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptActivityTypePropertiesLogSettings model = new ScriptActivityTypePropertiesLogSettings()
-            .withLogDestination(ScriptActivityLogDestination.ACTIVITY_OUTPUT)
-            .withLogLocationSettings(new LogLocationSettings()
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("fbeott")
-                    .withParameters(mapOf("ut", "dataonejpjzqb", "atfalhnixo", "datanlow")))
-                .withPath("dataqobngjbeihcaxkiv"));
+        ScriptActivityTypePropertiesLogSettings model
+            = new ScriptActivityTypePropertiesLogSettings()
+                .withLogDestination(ScriptActivityLogDestination.EXTERNAL_STORE)
+                .withLogLocationSettings(
+                    new LogLocationSettings()
+                        .withLinkedServiceName(new LinkedServiceReference().withReferenceName("jqysfe")
+                            .withParameters(mapOf("hfgafznzemisqun", "dataiogwckvoxl", "uvtbptdeumlfszx",
+                                "datawosanchr", "gp", "datarabknkeo", "wsnccmunh", "datadcrnubntowohtu")))
+                        .withPath("datacsgczv"));
         model = BinaryData.fromObject(model).toObject(ScriptActivityTypePropertiesLogSettings.class);
-        Assertions.assertEquals(ScriptActivityLogDestination.ACTIVITY_OUTPUT, model.logDestination());
-        Assertions.assertEquals("fbeott", model.logLocationSettings().linkedServiceName().referenceName());
+        Assertions.assertEquals(ScriptActivityLogDestination.EXTERNAL_STORE, model.logDestination());
+        Assertions.assertEquals("jqysfe", model.logLocationSettings().linkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

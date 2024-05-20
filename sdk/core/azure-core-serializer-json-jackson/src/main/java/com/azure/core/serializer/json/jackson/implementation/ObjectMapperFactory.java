@@ -38,10 +38,10 @@ final class ObjectMapperFactory {
     }
 
     public ObjectMapper createJsonMapper(ObjectMapper innerMapper) {
-        ObjectMapper flatteningMapper = attemptJackson215Mutation(initializeMapperBuilder(JsonMapper.builder())
-            .addModule(FlatteningSerializer.getModule(innerMapper))
-            .addModule(FlatteningDeserializer.getModule(innerMapper))
-            .build());
+        ObjectMapper flatteningMapper = attemptJackson215Mutation(
+            initializeMapperBuilder(JsonMapper.builder()).addModule(FlatteningSerializer.getModule(innerMapper))
+                .addModule(FlatteningDeserializer.getModule(innerMapper))
+                .build());
 
         return attemptJackson215Mutation(initializeMapperBuilder(JsonMapper.builder())
             // Order matters: must register in reverse order of hierarchy
@@ -58,10 +58,10 @@ final class ObjectMapperFactory {
     }
 
     public ObjectMapper createHeaderMapper() {
-        return attemptJackson215Mutation(initializeMapperBuilder(JsonMapper.builder())
-            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
-            .addModule(JacksonJsonProvider.getJsonSerializableDatabindModule())
-            .build());
+        return attemptJackson215Mutation(
+            initializeMapperBuilder(JsonMapper.builder()).enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+                .addModule(JacksonJsonProvider.getJsonSerializableDatabindModule())
+                .build());
     }
 
     private ObjectMapper attemptJackson215Mutation(ObjectMapper objectMapper) {

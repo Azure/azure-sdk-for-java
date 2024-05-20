@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Model class for event details of a HyperVReplica blue E2E event. */
+/**
+ * Model class for event details of a HyperVReplica blue E2E event.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVReplica2012R2")
 @Fluent
@@ -38,13 +40,15 @@ public final class HyperVReplica2012R2EventDetails extends EventProviderSpecific
     @JsonProperty(value = "remoteFabricName")
     private String remoteFabricName;
 
-    /** Creates an instance of HyperVReplica2012R2EventDetails class. */
+    /**
+     * Creates an instance of HyperVReplica2012R2EventDetails class.
+     */
     public HyperVReplica2012R2EventDetails() {
     }
 
     /**
      * Get the containerName property: The container friendly name.
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -53,7 +57,7 @@ public final class HyperVReplica2012R2EventDetails extends EventProviderSpecific
 
     /**
      * Set the containerName property: The container friendly name.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the HyperVReplica2012R2EventDetails object itself.
      */
@@ -64,7 +68,7 @@ public final class HyperVReplica2012R2EventDetails extends EventProviderSpecific
 
     /**
      * Get the fabricName property: The fabric friendly name.
-     *
+     * 
      * @return the fabricName value.
      */
     public String fabricName() {
@@ -73,7 +77,7 @@ public final class HyperVReplica2012R2EventDetails extends EventProviderSpecific
 
     /**
      * Set the fabricName property: The fabric friendly name.
-     *
+     * 
      * @param fabricName the fabricName value to set.
      * @return the HyperVReplica2012R2EventDetails object itself.
      */
@@ -84,7 +88,7 @@ public final class HyperVReplica2012R2EventDetails extends EventProviderSpecific
 
     /**
      * Get the remoteContainerName property: The remote container name.
-     *
+     * 
      * @return the remoteContainerName value.
      */
     public String remoteContainerName() {
@@ -93,7 +97,7 @@ public final class HyperVReplica2012R2EventDetails extends EventProviderSpecific
 
     /**
      * Set the remoteContainerName property: The remote container name.
-     *
+     * 
      * @param remoteContainerName the remoteContainerName value to set.
      * @return the HyperVReplica2012R2EventDetails object itself.
      */
@@ -104,7 +108,7 @@ public final class HyperVReplica2012R2EventDetails extends EventProviderSpecific
 
     /**
      * Get the remoteFabricName property: The remote fabric name.
-     *
+     * 
      * @return the remoteFabricName value.
      */
     public String remoteFabricName() {
@@ -113,7 +117,7 @@ public final class HyperVReplica2012R2EventDetails extends EventProviderSpecific
 
     /**
      * Set the remoteFabricName property: The remote fabric name.
-     *
+     * 
      * @param remoteFabricName the remoteFabricName value to set.
      * @return the HyperVReplica2012R2EventDetails object itself.
      */
@@ -124,7 +128,7 @@ public final class HyperVReplica2012R2EventDetails extends EventProviderSpecific
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

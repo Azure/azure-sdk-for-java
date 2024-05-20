@@ -19,8 +19,8 @@ For Checkstyle the XML report will have the file name, line number, column numbe
 error reported. For Spotbugs the XML will have the file name, line number, linting error message, and linting error
 reported, Spotbugs doesn't report the column number.
 
-.PARAMETER OutputDirectory
-Where the linting report retrieval and processing will be output.
+.PARAMETER StagingDirectory
+The directory where the linting reports will be output.
 
 .PARAMETER SdkDirectory
 An optional SDK directory, such as core, that scopes the linting report searching and processing to the specific SDK
@@ -29,7 +29,7 @@ directory. If this isn't passed all SDK directories will be searched and process
 
 param(
   [Parameter(Mandatory = $true)]
-  [string]$OutputDirectory,
+  [string]$StagingDirectory,
 
   [Parameter(Mandatory = $false)]
   [string]$SdkDirectory
@@ -106,7 +106,7 @@ function WriteSpotbugsProcessedReport($SpotbugsXmlReport, $ReportOutputFolder) {
 Set-Location -ErrorAction Stop -LiteralPath (Join-Path $PSScriptRoot "../../../")
 
 # Always create the output directory
-$OutputDirectory = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutputDirectory)
+$OutputDirectory = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath("$StagingDirectory/linting-report")
 New-Item -Path $OutputDirectory -ItemType Directory | Out-Null
 
 $path = "sdk/*/"
@@ -144,4 +144,13 @@ foreach ($targetFolder in (Get-ChildItem -Path $path -Filter "target" -Directory
   }
 }
 
-[System.IO.Compression.ZipFile]::CreateFromDirectory($OutputDirectory, $OutputDirectory + ".zip")
+if ((Get-ChildItem -Path $OutputDirectory -Directory).Count -eq 0) {
+  exit 0
+}
+
+if (-not (Test-Path "$StagingDirectory/troubleshooting")) {
+  New-Item -ItemType Directory -Path "$StagingDirectory/troubleshooting" | Out-Null
+}
+
+Compress-Archive -Path $OutputDirectory -DestinationPath "$StagingDirectory/troubleshooting/linting-report.zip"
+Write-Host "##vso[task.setvariable variable=HAS_TROUBLESHOOTING]true"

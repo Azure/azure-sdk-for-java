@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Severity of error. */
+/**
+ * Severity of error.
+ */
 public final class Severity extends ExpandableStringEnum<Severity> {
-    /** Static value NONE for Severity. */
+    /**
+     * Static value NONE for Severity.
+     */
     public static final Severity NONE = fromString("NONE");
 
-    /** Static value Warning for Severity. */
+    /**
+     * Static value Warning for Severity.
+     */
     public static final Severity WARNING = fromString("Warning");
 
-    /** Static value Error for Severity. */
+    /**
+     * Static value Error for Severity.
+     */
     public static final Severity ERROR = fromString("Error");
 
-    /** Static value Info for Severity. */
+    /**
+     * Static value Info for Severity.
+     */
     public static final Severity INFO = fromString("Info");
 
     /**
      * Creates a new instance of Severity value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class Severity extends ExpandableStringEnum<Severity> {
 
     /**
      * Creates or finds a Severity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Severity.
      */
@@ -44,7 +54,7 @@ public final class Severity extends ExpandableStringEnum<Severity> {
 
     /**
      * Gets known Severity values.
-     *
+     * 
      * @return known Severity values.
      */
     public static Collection<Severity> values() {

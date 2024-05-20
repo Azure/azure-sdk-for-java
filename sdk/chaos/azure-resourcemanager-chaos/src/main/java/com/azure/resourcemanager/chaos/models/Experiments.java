@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Experiments. */
+/**
+ * Resource collection API of Experiments.
+ */
 public interface Experiments {
     /**
      * Get a list of Experiment resources in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Experiment resources in a subscription as paginated response with {@link PagedIterable}.
@@ -21,9 +23,9 @@ public interface Experiments {
 
     /**
      * Get a list of Experiment resources in a subscription.
-     *
+     * 
      * @param running Optional value that indicates whether to filter results based on if the Experiment is currently
-     *     running. If null, then the results will not be filtered.
+     * running. If null, then the results will not be filtered.
      * @param continuationToken String that sets the continuation token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +37,7 @@ public interface Experiments {
 
     /**
      * Get a list of Experiment resources in a resource group.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,10 +48,10 @@ public interface Experiments {
 
     /**
      * Get a list of Experiment resources in a resource group.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param running Optional value that indicates whether to filter results based on if the Experiment is currently
-     *     running. If null, then the results will not be filtered.
+     * running. If null, then the results will not be filtered.
      * @param continuationToken String that sets the continuation token.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -57,12 +59,12 @@ public interface Experiments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Experiment resources in a resource group as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Experiment> listByResourceGroup(
-        String resourceGroupName, Boolean running, String continuationToken, Context context);
+    PagedIterable<Experiment> listByResourceGroup(String resourceGroupName, Boolean running, String continuationToken,
+        Context context);
 
     /**
      * Delete a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,7 +75,7 @@ public interface Experiments {
 
     /**
      * Delete a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param context The context to associate with this operation.
@@ -85,7 +87,7 @@ public interface Experiments {
 
     /**
      * Get a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param context The context to associate with this operation.
@@ -94,12 +96,12 @@ public interface Experiments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Experiment resource along with {@link Response}.
      */
-    Response<Experiment> getByResourceGroupWithResponse(
-        String resourceGroupName, String experimentName, Context context);
+    Response<Experiment> getByResourceGroupWithResponse(String resourceGroupName, String experimentName,
+        Context context);
 
     /**
      * Get a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -111,7 +113,7 @@ public interface Experiments {
 
     /**
      * Cancel a running Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,7 +124,7 @@ public interface Experiments {
 
     /**
      * Cancel a running Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param context The context to associate with this operation.
@@ -134,7 +136,7 @@ public interface Experiments {
 
     /**
      * Start a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +147,7 @@ public interface Experiments {
 
     /**
      * Start a Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param context The context to associate with this operation.
@@ -157,7 +159,7 @@ public interface Experiments {
 
     /**
      * Get a list of executions of an Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,7 +171,7 @@ public interface Experiments {
 
     /**
      * Get a list of executions of an Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param context The context to associate with this operation.
@@ -178,12 +180,12 @@ public interface Experiments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of executions of an Experiment resource as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ExperimentExecution> listAllExecutions(
-        String resourceGroupName, String experimentName, Context context);
+    PagedIterable<ExperimentExecution> listAllExecutions(String resourceGroupName, String experimentName,
+        Context context);
 
     /**
      * Get an execution of an Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param executionId GUID that represents a Experiment execution detail.
@@ -193,12 +195,12 @@ public interface Experiments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an execution of an Experiment resource along with {@link Response}.
      */
-    Response<ExperimentExecution> getExecutionWithResponse(
-        String resourceGroupName, String experimentName, String executionId, Context context);
+    Response<ExperimentExecution> getExecutionWithResponse(String resourceGroupName, String experimentName,
+        String executionId, Context context);
 
     /**
      * Get an execution of an Experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param executionId GUID that represents a Experiment execution detail.
@@ -211,7 +213,7 @@ public interface Experiments {
 
     /**
      * Execution details of an experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param executionId GUID that represents a Experiment execution detail.
@@ -221,12 +223,12 @@ public interface Experiments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return model that represents the execution details of an Experiment along with {@link Response}.
      */
-    Response<ExperimentExecutionDetails> executionDetailsWithResponse(
-        String resourceGroupName, String experimentName, String executionId, Context context);
+    Response<ExperimentExecutionDetails> executionDetailsWithResponse(String resourceGroupName, String experimentName,
+        String executionId, Context context);
 
     /**
      * Execution details of an experiment resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param experimentName String that represents a Experiment resource name.
      * @param executionId GUID that represents a Experiment execution detail.
@@ -239,7 +241,7 @@ public interface Experiments {
 
     /**
      * Get a Experiment resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -250,7 +252,7 @@ public interface Experiments {
 
     /**
      * Get a Experiment resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,7 +264,7 @@ public interface Experiments {
 
     /**
      * Delete a Experiment resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -272,7 +274,7 @@ public interface Experiments {
 
     /**
      * Delete a Experiment resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,7 +285,7 @@ public interface Experiments {
 
     /**
      * Begins definition for a new Experiment resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Experiment definition.
      */

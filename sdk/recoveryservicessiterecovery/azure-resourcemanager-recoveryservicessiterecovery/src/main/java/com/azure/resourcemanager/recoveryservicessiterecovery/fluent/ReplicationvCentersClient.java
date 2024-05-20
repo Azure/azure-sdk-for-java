@@ -15,13 +15,15 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.VCen
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.AddVCenterRequest;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateVCenterRequest;
 
-/** An instance of this class provides access to all the operations defined in ReplicationvCentersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReplicationvCentersClient.
+ */
 public interface ReplicationvCentersClient {
     /**
      * Gets the list of vCenter registered under a fabric.
-     *
-     * <p>Lists the vCenter servers registered in a fabric.
-     *
+     * 
+     * Lists the vCenter servers registered in a fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -31,14 +33,14 @@ public interface ReplicationvCentersClient {
      * @return collection of vCenter details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VCenterInner> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName);
+    PagedIterable<VCenterInner> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName);
 
     /**
      * Gets the list of vCenter registered under a fabric.
-     *
-     * <p>Lists the vCenter servers registered in a fabric.
-     *
+     * 
+     * Lists the vCenter servers registered in a fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -49,14 +51,14 @@ public interface ReplicationvCentersClient {
      * @return collection of vCenter details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VCenterInner> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName, Context context);
+    PagedIterable<VCenterInner> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName, Context context);
 
     /**
      * Gets the details of a vCenter.
-     *
-     * <p>Gets the details of a registered vCenter server(Add vCenter server).
-     *
+     * 
+     * Gets the details of a registered vCenter server(Add vCenter server).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -68,14 +70,14 @@ public interface ReplicationvCentersClient {
      * @return the details of a registered vCenter server(Add vCenter server) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VCenterInner> getWithResponse(
-        String resourceName, String resourceGroupName, String fabricName, String vcenterName, Context context);
+    Response<VCenterInner> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+        String vcenterName, Context context);
 
     /**
      * Gets the details of a vCenter.
-     *
-     * <p>Gets the details of a registered vCenter server(Add vCenter server).
-     *
+     * 
+     * Gets the details of a registered vCenter server(Add vCenter server).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -90,9 +92,9 @@ public interface ReplicationvCentersClient {
 
     /**
      * Add vCenter.
-     *
-     * <p>The operation to create a vCenter object..
-     *
+     * 
+     * The operation to create a vCenter object..
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -104,18 +106,14 @@ public interface ReplicationvCentersClient {
      * @return the {@link SyncPoller} for polling of vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VCenterInner>, VCenterInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String vcenterName,
-        AddVCenterRequest addVCenterRequest);
+    SyncPoller<PollResult<VCenterInner>, VCenterInner> beginCreate(String resourceName, String resourceGroupName,
+        String fabricName, String vcenterName, AddVCenterRequest addVCenterRequest);
 
     /**
      * Add vCenter.
-     *
-     * <p>The operation to create a vCenter object..
-     *
+     * 
+     * The operation to create a vCenter object..
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -128,19 +126,14 @@ public interface ReplicationvCentersClient {
      * @return the {@link SyncPoller} for polling of vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VCenterInner>, VCenterInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String vcenterName,
-        AddVCenterRequest addVCenterRequest,
-        Context context);
+    SyncPoller<PollResult<VCenterInner>, VCenterInner> beginCreate(String resourceName, String resourceGroupName,
+        String fabricName, String vcenterName, AddVCenterRequest addVCenterRequest, Context context);
 
     /**
      * Add vCenter.
-     *
-     * <p>The operation to create a vCenter object..
-     *
+     * 
+     * The operation to create a vCenter object..
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -152,18 +145,14 @@ public interface ReplicationvCentersClient {
      * @return vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VCenterInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String vcenterName,
+    VCenterInner create(String resourceName, String resourceGroupName, String fabricName, String vcenterName,
         AddVCenterRequest addVCenterRequest);
 
     /**
      * Add vCenter.
-     *
-     * <p>The operation to create a vCenter object..
-     *
+     * 
+     * The operation to create a vCenter object..
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -176,19 +165,14 @@ public interface ReplicationvCentersClient {
      * @return vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VCenterInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String vcenterName,
-        AddVCenterRequest addVCenterRequest,
-        Context context);
+    VCenterInner create(String resourceName, String resourceGroupName, String fabricName, String vcenterName,
+        AddVCenterRequest addVCenterRequest, Context context);
 
     /**
      * Remove vcenter operation.
-     *
-     * <p>The operation to remove(unregister) a registered vCenter server from the vault.
-     *
+     * 
+     * The operation to remove(unregister) a registered vCenter server from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -199,14 +183,14 @@ public interface ReplicationvCentersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName, String resourceGroupName, String fabricName, String vcenterName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName, String fabricName,
+        String vcenterName);
 
     /**
      * Remove vcenter operation.
-     *
-     * <p>The operation to remove(unregister) a registered vCenter server from the vault.
-     *
+     * 
+     * The operation to remove(unregister) a registered vCenter server from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -218,14 +202,14 @@ public interface ReplicationvCentersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName, String resourceGroupName, String fabricName, String vcenterName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName, String fabricName,
+        String vcenterName, Context context);
 
     /**
      * Remove vcenter operation.
-     *
-     * <p>The operation to remove(unregister) a registered vCenter server from the vault.
-     *
+     * 
+     * The operation to remove(unregister) a registered vCenter server from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -239,9 +223,9 @@ public interface ReplicationvCentersClient {
 
     /**
      * Remove vcenter operation.
-     *
-     * <p>The operation to remove(unregister) a registered vCenter server from the vault.
-     *
+     * 
+     * The operation to remove(unregister) a registered vCenter server from the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -256,9 +240,9 @@ public interface ReplicationvCentersClient {
 
     /**
      * Update vCenter operation.
-     *
-     * <p>The operation to update a registered vCenter.
-     *
+     * 
+     * The operation to update a registered vCenter.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -270,18 +254,14 @@ public interface ReplicationvCentersClient {
      * @return the {@link SyncPoller} for polling of vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VCenterInner>, VCenterInner> beginUpdate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String vcenterName,
-        UpdateVCenterRequest updateVCenterRequest);
+    SyncPoller<PollResult<VCenterInner>, VCenterInner> beginUpdate(String resourceName, String resourceGroupName,
+        String fabricName, String vcenterName, UpdateVCenterRequest updateVCenterRequest);
 
     /**
      * Update vCenter operation.
-     *
-     * <p>The operation to update a registered vCenter.
-     *
+     * 
+     * The operation to update a registered vCenter.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -294,19 +274,14 @@ public interface ReplicationvCentersClient {
      * @return the {@link SyncPoller} for polling of vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VCenterInner>, VCenterInner> beginUpdate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String vcenterName,
-        UpdateVCenterRequest updateVCenterRequest,
-        Context context);
+    SyncPoller<PollResult<VCenterInner>, VCenterInner> beginUpdate(String resourceName, String resourceGroupName,
+        String fabricName, String vcenterName, UpdateVCenterRequest updateVCenterRequest, Context context);
 
     /**
      * Update vCenter operation.
-     *
-     * <p>The operation to update a registered vCenter.
-     *
+     * 
+     * The operation to update a registered vCenter.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -318,18 +293,14 @@ public interface ReplicationvCentersClient {
      * @return vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VCenterInner update(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String vcenterName,
+    VCenterInner update(String resourceName, String resourceGroupName, String fabricName, String vcenterName,
         UpdateVCenterRequest updateVCenterRequest);
 
     /**
      * Update vCenter operation.
-     *
-     * <p>The operation to update a registered vCenter.
-     *
+     * 
+     * The operation to update a registered vCenter.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -342,19 +313,14 @@ public interface ReplicationvCentersClient {
      * @return vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VCenterInner update(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String vcenterName,
-        UpdateVCenterRequest updateVCenterRequest,
-        Context context);
+    VCenterInner update(String resourceName, String resourceGroupName, String fabricName, String vcenterName,
+        UpdateVCenterRequest updateVCenterRequest, Context context);
 
     /**
      * Gets the list of vCenter registered under the vault.
-     *
-     * <p>Lists the vCenter servers registered in the vault.
-     *
+     * 
+     * Lists the vCenter servers registered in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -367,9 +333,9 @@ public interface ReplicationvCentersClient {
 
     /**
      * Gets the list of vCenter registered under the vault.
-     *
-     * <p>Lists the vCenter servers registered in the vault.
-     *
+     * 
+     * Lists the vCenter servers registered in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.

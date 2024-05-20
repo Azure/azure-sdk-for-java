@@ -4,12 +4,10 @@
 
 module com.azure.resourcemanager.batch {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.batch;
     exports com.azure.resourcemanager.batch.fluent;
     exports com.azure.resourcemanager.batch.fluent.models;
     exports com.azure.resourcemanager.batch.models;
-
     opens com.azure.resourcemanager.batch.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.batch.models to com.azure.core, com.fasterxml.jackson.databind;
 }

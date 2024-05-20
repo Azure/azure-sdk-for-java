@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NaptConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NaptConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"enabled\":\"Disabled\",\"portRange\":{\"minPort\":1991761310,\"maxPort\":1674535960},\"portReuseHoldTime\":{\"tcp\":14804050,\"udp\":2045600331},\"pinholeLimits\":1132741350,\"pinholeTimeouts\":{\"tcp\":1617618462,\"udp\":1833864756,\"icmp\":1656493513}}")
-                .toObject(NaptConfiguration.class);
+        NaptConfiguration model = BinaryData.fromString(
+            "{\"enabled\":\"Disabled\",\"portRange\":{\"minPort\":1991761310,\"maxPort\":1674535960},\"portReuseHoldTime\":{\"tcp\":14804050,\"udp\":2045600331},\"pinholeLimits\":1132741350,\"pinholeTimeouts\":{\"tcp\":1617618462,\"udp\":1833864756,\"icmp\":1656493513}}")
+            .toObject(NaptConfiguration.class);
         Assertions.assertEquals(NaptEnabled.DISABLED, model.enabled());
         Assertions.assertEquals(1991761310, model.portRange().minPort());
         Assertions.assertEquals(1674535960, model.portRange().maxPort());
@@ -33,14 +31,11 @@ public final class NaptConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NaptConfiguration model =
-            new NaptConfiguration()
-                .withEnabled(NaptEnabled.DISABLED)
-                .withPortRange(new PortRange().withMinPort(1991761310).withMaxPort(1674535960))
-                .withPortReuseHoldTime(new PortReuseHoldTimes().withTcp(14804050).withUdp(2045600331))
-                .withPinholeLimits(1132741350)
-                .withPinholeTimeouts(
-                    new PinholeTimeouts().withTcp(1617618462).withUdp(1833864756).withIcmp(1656493513));
+        NaptConfiguration model = new NaptConfiguration().withEnabled(NaptEnabled.DISABLED)
+            .withPortRange(new PortRange().withMinPort(1991761310).withMaxPort(1674535960))
+            .withPortReuseHoldTime(new PortReuseHoldTimes().withTcp(14804050).withUdp(2045600331))
+            .withPinholeLimits(1132741350)
+            .withPinholeTimeouts(new PinholeTimeouts().withTcp(1617618462).withUdp(1833864756).withIcmp(1656493513));
         model = BinaryData.fromObject(model).toObject(NaptConfiguration.class);
         Assertions.assertEquals(NaptEnabled.DISABLED, model.enabled());
         Assertions.assertEquals(1991761310, model.portRange().minPort());

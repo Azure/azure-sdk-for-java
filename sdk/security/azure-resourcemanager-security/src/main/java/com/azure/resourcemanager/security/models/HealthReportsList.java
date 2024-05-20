@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.HealthReportInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Page of health reports list. */
+/**
+ * Page of health reports list.
+ */
 @Immutable
 public final class HealthReportsList {
     /*
@@ -24,13 +26,15 @@ public final class HealthReportsList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of HealthReportsList class. */
+    /**
+     * Creates an instance of HealthReportsList class.
+     */
     public HealthReportsList() {
     }
 
     /**
      * Get the value property: Collection of health reports in this page.
-     *
+     * 
      * @return the value value.
      */
     public List<HealthReportInner> value() {
@@ -39,7 +43,7 @@ public final class HealthReportsList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class HealthReportsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

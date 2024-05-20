@@ -25,13 +25,15 @@ public final class RequiredAmlFilesystemSubnetsSizeInfo {
     @JsonProperty(value = "sku")
     private SkuName sku;
 
-    /** Creates an instance of RequiredAmlFilesystemSubnetsSizeInfo class. */
+    /**
+     * Creates an instance of RequiredAmlFilesystemSubnetsSizeInfo class.
+     */
     public RequiredAmlFilesystemSubnetsSizeInfo() {
     }
 
     /**
      * Get the storageCapacityTiB property: The size of the AML file system, in TiB.
-     *
+     * 
      * @return the storageCapacityTiB value.
      */
     public Float storageCapacityTiB() {
@@ -40,7 +42,7 @@ public final class RequiredAmlFilesystemSubnetsSizeInfo {
 
     /**
      * Set the storageCapacityTiB property: The size of the AML file system, in TiB.
-     *
+     * 
      * @param storageCapacityTiB the storageCapacityTiB value to set.
      * @return the RequiredAmlFilesystemSubnetsSizeInfo object itself.
      */
@@ -51,7 +53,7 @@ public final class RequiredAmlFilesystemSubnetsSizeInfo {
 
     /**
      * Get the sku property: SKU for the resource.
-     *
+     * 
      * @return the sku value.
      */
     public SkuName sku() {
@@ -60,7 +62,7 @@ public final class RequiredAmlFilesystemSubnetsSizeInfo {
 
     /**
      * Set the sku property: SKU for the resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the RequiredAmlFilesystemSubnetsSizeInfo object itself.
      */
@@ -71,7 +73,7 @@ public final class RequiredAmlFilesystemSubnetsSizeInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

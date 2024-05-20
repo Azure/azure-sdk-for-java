@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.apicenter.fluent.models.ServiceInner;
 import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.apicenter.models.ServiceProperties;
 import com.azure.resourcemanager.apicenter.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"d5d0df07-26af-4baa-92d9-47bdb47df4cd\",\"tenantId\":\"61afb0e5-40b8-41b6-b5f2-f835b8c17c59\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ryffdfdosy\":{\"principalId\":\"356f73d2-54c6-46f0-a527-369175dd5245\",\"clientId\":\"aa470577-53b5-49ee-8603-8a643614b9c7\"},\"paojakhmsbzjh\":{\"principalId\":\"c10a0704-c7b2-414b-af28-c00ed76ecf8e\",\"clientId\":\"6a27b9b8-d17c-40cb-934f-e9f2df2efccf\"},\"evdphlxaol\":{\"principalId\":\"0a2e3c70-446a-4bbd-95bf-7be6cab57a01\",\"clientId\":\"00efb53b-6b97-46dc-a25e-19af51ee25d9\"},\"trg\":{\"principalId\":\"b7da0e44-2f8c-47a5-8c82-8f8b6a90433a\",\"clientId\":\"0921520b-f5ba-4d8c-af40-e6fd9eb5e887\"}}},\"location\":\"bpf\",\"tags\":{\"wzo\":\"inzgvfcj\"},\"id\":\"xjtfelluwfzit\",\"name\":\"np\",\"type\":\"qfpjk\"}")
-                .toObject(ServiceInner.class);
+        ServiceInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"90ab8fdb-221e-43b1-839e-de2c0546a949\",\"tenantId\":\"8b5c622f-d4f0-4d67-b39b-dde9ec8b06e2\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ryffdfdosy\":{\"principalId\":\"d37fd97e-c520-4d37-a9d0-5e8bf75d9b7a\",\"clientId\":\"a8560249-9871-49a1-879e-0a1916755369\"},\"paojakhmsbzjh\":{\"principalId\":\"c4c37c94-4ca9-4272-bf73-87ada01c64c7\",\"clientId\":\"b15bc063-e4f1-432c-a705-387406e56f19\"},\"evdphlxaol\":{\"principalId\":\"bedffab6-0b39-4e6c-b887-11adc65c9144\",\"clientId\":\"88aa154a-b7aa-4337-8560-deb9c37dd9c8\"},\"trg\":{\"principalId\":\"f5358cb3-028a-40f6-b54e-8b7359cc2ddb\",\"clientId\":\"41f3ddc7-bf06-420b-9ef5-4ec71f0e91b9\"}}},\"location\":\"bpf\",\"tags\":{\"wzo\":\"inzgvfcj\"},\"id\":\"xjtfelluwfzit\",\"name\":\"np\",\"type\":\"qfpjk\"}")
+            .toObject(ServiceInner.class);
         Assertions.assertEquals("bpf", model.location());
         Assertions.assertEquals("inzgvfcj", model.tags().get("wzo"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
@@ -28,23 +27,12 @@ public final class ServiceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceInner model =
-            new ServiceInner()
-                .withLocation("bpf")
-                .withTags(mapOf("wzo", "inzgvfcj"))
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "ryffdfdosy",
-                                new UserAssignedIdentity(),
-                                "paojakhmsbzjh",
-                                new UserAssignedIdentity(),
-                                "evdphlxaol",
-                                new UserAssignedIdentity(),
-                                "trg",
-                                new UserAssignedIdentity())));
+        ServiceInner model = new ServiceInner().withLocation("bpf").withTags(mapOf("wzo", "inzgvfcj"))
+            .withProperties(new ServiceProperties())
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("ryffdfdosy", new UserAssignedIdentity(), "paojakhmsbzjh", new UserAssignedIdentity(),
+                        "evdphlxaol", new UserAssignedIdentity(), "trg", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(ServiceInner.class);
         Assertions.assertEquals("bpf", model.location());
         Assertions.assertEquals("inzgvfcj", model.tags().get("wzo"));

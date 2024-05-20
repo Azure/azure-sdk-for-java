@@ -13,23 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForServersGcpOfferingVaAutoProvisioningTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForServersGcpOfferingVaAutoProvisioning model =
-            BinaryData
-                .fromString("{\"enabled\":false,\"configuration\":{\"type\":\"TVM\"}}")
+        DefenderForServersGcpOfferingVaAutoProvisioning model
+            = BinaryData.fromString("{\"enabled\":true,\"configuration\":{\"type\":\"Qualys\"}}")
                 .toObject(DefenderForServersGcpOfferingVaAutoProvisioning.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(Type.TVM, model.configuration().type());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(Type.QUALYS, model.configuration().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForServersGcpOfferingVaAutoProvisioning model =
-            new DefenderForServersGcpOfferingVaAutoProvisioning()
-                .withEnabled(false)
+        DefenderForServersGcpOfferingVaAutoProvisioning model
+            = new DefenderForServersGcpOfferingVaAutoProvisioning().withEnabled(true)
                 .withConfiguration(
-                    new DefenderForServersGcpOfferingVaAutoProvisioningConfiguration().withType(Type.TVM));
+                    new DefenderForServersGcpOfferingVaAutoProvisioningConfiguration().withType(Type.QUALYS));
         model = BinaryData.fromObject(model).toObject(DefenderForServersGcpOfferingVaAutoProvisioning.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(Type.TVM, model.configuration().type());
+        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(Type.QUALYS, model.configuration().type());
     }
 }

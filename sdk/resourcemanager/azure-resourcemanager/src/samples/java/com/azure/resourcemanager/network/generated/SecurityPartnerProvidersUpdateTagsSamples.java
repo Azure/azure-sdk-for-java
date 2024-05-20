@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class SecurityPartnerProvidersUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
      * SecurityPartnerProviderUpdateTags.json
      */
     /**

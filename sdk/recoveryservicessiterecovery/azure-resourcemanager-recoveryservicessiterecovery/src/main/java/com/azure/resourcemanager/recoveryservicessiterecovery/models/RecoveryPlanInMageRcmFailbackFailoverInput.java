@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery plan InMageRcmFailback failover input. */
+/**
+ * Recovery plan InMageRcmFailback failover input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcmFailback")
 @Fluent
@@ -27,13 +29,15 @@ public final class RecoveryPlanInMageRcmFailbackFailoverInput extends RecoveryPl
     @JsonProperty(value = "useMultiVmSyncPoint")
     private String useMultiVmSyncPoint;
 
-    /** Creates an instance of RecoveryPlanInMageRcmFailbackFailoverInput class. */
+    /**
+     * Creates an instance of RecoveryPlanInMageRcmFailbackFailoverInput class.
+     */
     public RecoveryPlanInMageRcmFailbackFailoverInput() {
     }
 
     /**
      * Get the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @return the recoveryPointType value.
      */
     public InMageRcmFailbackRecoveryPointType recoveryPointType() {
@@ -42,12 +46,12 @@ public final class RecoveryPlanInMageRcmFailbackFailoverInput extends RecoveryPl
 
     /**
      * Set the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @param recoveryPointType the recoveryPointType value to set.
      * @return the RecoveryPlanInMageRcmFailbackFailoverInput object itself.
      */
-    public RecoveryPlanInMageRcmFailbackFailoverInput withRecoveryPointType(
-        InMageRcmFailbackRecoveryPointType recoveryPointType) {
+    public RecoveryPlanInMageRcmFailbackFailoverInput
+        withRecoveryPointType(InMageRcmFailbackRecoveryPointType recoveryPointType) {
         this.recoveryPointType = recoveryPointType;
         return this;
     }
@@ -55,7 +59,7 @@ public final class RecoveryPlanInMageRcmFailbackFailoverInput extends RecoveryPl
     /**
      * Get the useMultiVmSyncPoint property: A value indicating whether multi VM sync enabled VMs should use multi VM
      * sync points for failover.
-     *
+     * 
      * @return the useMultiVmSyncPoint value.
      */
     public String useMultiVmSyncPoint() {
@@ -65,7 +69,7 @@ public final class RecoveryPlanInMageRcmFailbackFailoverInput extends RecoveryPl
     /**
      * Set the useMultiVmSyncPoint property: A value indicating whether multi VM sync enabled VMs should use multi VM
      * sync points for failover.
-     *
+     * 
      * @param useMultiVmSyncPoint the useMultiVmSyncPoint value to set.
      * @return the RecoveryPlanInMageRcmFailbackFailoverInput object itself.
      */
@@ -76,18 +80,15 @@ public final class RecoveryPlanInMageRcmFailbackFailoverInput extends RecoveryPl
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (recoveryPointType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryPointType in model"
-                            + " RecoveryPlanInMageRcmFailbackFailoverInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryPointType in model RecoveryPlanInMageRcmFailbackFailoverInput"));
         }
     }
 

@@ -11,26 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationForBatchUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationForBatchUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ldhugjzzdatqxh\",\"properties\":{\"value\":\"geablgphuticndvk\",\"source\":\"zwyiftyhxhur\"}}")
-                .toObject(ConfigurationForBatchUpdate.class);
-        Assertions.assertEquals("ldhugjzzdatqxh", model.name());
-        Assertions.assertEquals("geablgphuticndvk", model.value());
-        Assertions.assertEquals("zwyiftyhxhur", model.source());
+        ConfigurationForBatchUpdate model = BinaryData
+            .fromString("{\"name\":\"uxig\",\"properties\":{\"value\":\"gzjaoyfhrtxilne\",\"source\":\"ujysvle\"}}")
+            .toObject(ConfigurationForBatchUpdate.class);
+        Assertions.assertEquals("uxig", model.name());
+        Assertions.assertEquals("gzjaoyfhrtxilne", model.value());
+        Assertions.assertEquals("ujysvle", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationForBatchUpdate model =
-            new ConfigurationForBatchUpdate()
-                .withName("ldhugjzzdatqxh")
-                .withValue("geablgphuticndvk")
-                .withSource("zwyiftyhxhur");
+        ConfigurationForBatchUpdate model
+            = new ConfigurationForBatchUpdate().withName("uxig").withValue("gzjaoyfhrtxilne").withSource("ujysvle");
         model = BinaryData.fromObject(model).toObject(ConfigurationForBatchUpdate.class);
-        Assertions.assertEquals("ldhugjzzdatqxh", model.name());
-        Assertions.assertEquals("geablgphuticndvk", model.value());
-        Assertions.assertEquals("zwyiftyhxhur", model.source());
+        Assertions.assertEquals("uxig", model.name());
+        Assertions.assertEquals("gzjaoyfhrtxilne", model.value());
+        Assertions.assertEquals("ujysvle", model.source());
     }
 }

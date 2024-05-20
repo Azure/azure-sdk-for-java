@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Recovery plan creation properties. */
+/**
+ * Recovery plan creation properties.
+ */
 @Fluent
 public final class CreateRecoveryPlanInputProperties {
     /*
@@ -42,13 +44,15 @@ public final class CreateRecoveryPlanInputProperties {
     @JsonProperty(value = "providerSpecificInput")
     private List<RecoveryPlanProviderSpecificInput> providerSpecificInput;
 
-    /** Creates an instance of CreateRecoveryPlanInputProperties class. */
+    /**
+     * Creates an instance of CreateRecoveryPlanInputProperties class.
+     */
     public CreateRecoveryPlanInputProperties() {
     }
 
     /**
      * Get the primaryFabricId property: The primary fabric Id.
-     *
+     * 
      * @return the primaryFabricId value.
      */
     public String primaryFabricId() {
@@ -57,7 +61,7 @@ public final class CreateRecoveryPlanInputProperties {
 
     /**
      * Set the primaryFabricId property: The primary fabric Id.
-     *
+     * 
      * @param primaryFabricId the primaryFabricId value to set.
      * @return the CreateRecoveryPlanInputProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class CreateRecoveryPlanInputProperties {
 
     /**
      * Get the recoveryFabricId property: The recovery fabric Id.
-     *
+     * 
      * @return the recoveryFabricId value.
      */
     public String recoveryFabricId() {
@@ -77,7 +81,7 @@ public final class CreateRecoveryPlanInputProperties {
 
     /**
      * Set the recoveryFabricId property: The recovery fabric Id.
-     *
+     * 
      * @param recoveryFabricId the recoveryFabricId value to set.
      * @return the CreateRecoveryPlanInputProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class CreateRecoveryPlanInputProperties {
 
     /**
      * Get the failoverDeploymentModel property: The failover deployment model.
-     *
+     * 
      * @return the failoverDeploymentModel value.
      */
     public FailoverDeploymentModel failoverDeploymentModel() {
@@ -97,19 +101,19 @@ public final class CreateRecoveryPlanInputProperties {
 
     /**
      * Set the failoverDeploymentModel property: The failover deployment model.
-     *
+     * 
      * @param failoverDeploymentModel the failoverDeploymentModel value to set.
      * @return the CreateRecoveryPlanInputProperties object itself.
      */
-    public CreateRecoveryPlanInputProperties withFailoverDeploymentModel(
-        FailoverDeploymentModel failoverDeploymentModel) {
+    public CreateRecoveryPlanInputProperties
+        withFailoverDeploymentModel(FailoverDeploymentModel failoverDeploymentModel) {
         this.failoverDeploymentModel = failoverDeploymentModel;
         return this;
     }
 
     /**
      * Get the groups property: The recovery plan groups.
-     *
+     * 
      * @return the groups value.
      */
     public List<RecoveryPlanGroup> groups() {
@@ -118,7 +122,7 @@ public final class CreateRecoveryPlanInputProperties {
 
     /**
      * Set the groups property: The recovery plan groups.
-     *
+     * 
      * @param groups the groups value to set.
      * @return the CreateRecoveryPlanInputProperties object itself.
      */
@@ -129,7 +133,7 @@ public final class CreateRecoveryPlanInputProperties {
 
     /**
      * Get the providerSpecificInput property: The provider specific input.
-     *
+     * 
      * @return the providerSpecificInput value.
      */
     public List<RecoveryPlanProviderSpecificInput> providerSpecificInput() {
@@ -138,39 +142,33 @@ public final class CreateRecoveryPlanInputProperties {
 
     /**
      * Set the providerSpecificInput property: The provider specific input.
-     *
+     * 
      * @param providerSpecificInput the providerSpecificInput value to set.
      * @return the CreateRecoveryPlanInputProperties object itself.
      */
-    public CreateRecoveryPlanInputProperties withProviderSpecificInput(
-        List<RecoveryPlanProviderSpecificInput> providerSpecificInput) {
+    public CreateRecoveryPlanInputProperties
+        withProviderSpecificInput(List<RecoveryPlanProviderSpecificInput> providerSpecificInput) {
         this.providerSpecificInput = providerSpecificInput;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (primaryFabricId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property primaryFabricId in model CreateRecoveryPlanInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property primaryFabricId in model CreateRecoveryPlanInputProperties"));
         }
         if (recoveryFabricId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryFabricId in model CreateRecoveryPlanInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryFabricId in model CreateRecoveryPlanInputProperties"));
         }
         if (groups() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groups in model CreateRecoveryPlanInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property groups in model CreateRecoveryPlanInputProperties"));
         } else {
             groups().forEach(e -> e.validate());
         }

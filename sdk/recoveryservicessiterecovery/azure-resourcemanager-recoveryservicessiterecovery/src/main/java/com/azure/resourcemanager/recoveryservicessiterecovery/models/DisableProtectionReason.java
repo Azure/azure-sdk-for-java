@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Disable protection reason. It can have values NotSpecified/MigrationComplete. */
+/**
+ * Disable protection reason. It can have values NotSpecified/MigrationComplete.
+ */
 public final class DisableProtectionReason extends ExpandableStringEnum<DisableProtectionReason> {
-    /** Static value NotSpecified for DisableProtectionReason. */
+    /**
+     * Static value NotSpecified for DisableProtectionReason.
+     */
     public static final DisableProtectionReason NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value MigrationComplete for DisableProtectionReason. */
+    /**
+     * Static value MigrationComplete for DisableProtectionReason.
+     */
     public static final DisableProtectionReason MIGRATION_COMPLETE = fromString("MigrationComplete");
 
     /**
      * Creates a new instance of DisableProtectionReason value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class DisableProtectionReason extends ExpandableStringEnum<DisableP
 
     /**
      * Creates or finds a DisableProtectionReason from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DisableProtectionReason.
      */
@@ -38,7 +44,7 @@ public final class DisableProtectionReason extends ExpandableStringEnum<DisableP
 
     /**
      * Gets known DisableProtectionReason values.
-     *
+     * 
      * @return known DisableProtectionReason values.
      */
     public static Collection<DisableProtectionReason> values() {

@@ -14,7 +14,7 @@ import java.util.Map;
 public final class BastionHostsUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/BastionHostPatch.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/BastionHostPatch.json
      */
     /**
      * Sample code: Patch Bastion Host.

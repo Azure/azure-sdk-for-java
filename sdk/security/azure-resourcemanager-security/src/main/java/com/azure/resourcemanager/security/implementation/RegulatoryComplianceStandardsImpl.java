@@ -21,8 +21,7 @@ public final class RegulatoryComplianceStandardsImpl implements RegulatoryCompli
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public RegulatoryComplianceStandardsImpl(
-        RegulatoryComplianceStandardsClient innerClient,
+    public RegulatoryComplianceStandardsImpl(RegulatoryComplianceStandardsClient innerClient,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,23 +29,22 @@ public final class RegulatoryComplianceStandardsImpl implements RegulatoryCompli
 
     public PagedIterable<RegulatoryComplianceStandard> list() {
         PagedIterable<RegulatoryComplianceStandardInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new RegulatoryComplianceStandardImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new RegulatoryComplianceStandardImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RegulatoryComplianceStandard> list(String filter, Context context) {
         PagedIterable<RegulatoryComplianceStandardInner> inner = this.serviceClient().list(filter, context);
-        return Utils.mapPage(inner, inner1 -> new RegulatoryComplianceStandardImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new RegulatoryComplianceStandardImpl(inner1, this.manager()));
     }
 
-    public Response<RegulatoryComplianceStandard> getWithResponse(
-        String regulatoryComplianceStandardName, Context context) {
-        Response<RegulatoryComplianceStandardInner> inner =
-            this.serviceClient().getWithResponse(regulatoryComplianceStandardName, context);
+    public Response<RegulatoryComplianceStandard> getWithResponse(String regulatoryComplianceStandardName,
+        Context context) {
+        Response<RegulatoryComplianceStandardInner> inner
+            = this.serviceClient().getWithResponse(regulatoryComplianceStandardName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RegulatoryComplianceStandardImpl(inner.getValue(), this.manager()));
         } else {
             return null;

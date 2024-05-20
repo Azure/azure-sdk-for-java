@@ -53,9 +53,7 @@ public final class AmqpLoggingUtils {
      */
     public static LoggingEventBuilder addSignalTypeAndResult(LoggingEventBuilder logBuilder, SignalType signalType,
         Sinks.EmitResult result) {
-        return logBuilder
-            .addKeyValue(SIGNAL_TYPE_KEY, signalType)
-            .addKeyValue(EMIT_RESULT_KEY, result);
+        return logBuilder.addKeyValue(SIGNAL_TYPE_KEY, signalType).addKeyValue(EMIT_RESULT_KEY, result);
     }
 
     /**
@@ -112,11 +110,9 @@ public final class AmqpLoggingUtils {
      */
     public static LoggingEventBuilder addShutdownSignal(LoggingEventBuilder logBuilder,
         AmqpShutdownSignal shutdownSignal) {
-        return logBuilder
-            .addKeyValue("isTransient", shutdownSignal.isTransient())
+        return logBuilder.addKeyValue("isTransient", shutdownSignal.isTransient())
             .addKeyValue("isInitiatedByClient", shutdownSignal.isInitiatedByClient())
             // will call toString() when performing logging (if enabled)
             .addKeyValue("shutdownMessage", shutdownSignal);
     }
 }
-

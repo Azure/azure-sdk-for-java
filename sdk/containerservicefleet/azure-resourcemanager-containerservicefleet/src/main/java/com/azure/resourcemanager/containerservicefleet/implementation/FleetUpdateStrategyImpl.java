@@ -78,39 +78,23 @@ public final class FleetUpdateStrategyImpl
     }
 
     public FleetUpdateStrategy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFleetUpdateStrategies()
-                .createOrUpdate(
-                    resourceGroupName,
-                    fleetName,
-                    updateStrategyName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetUpdateStrategies()
+            .createOrUpdate(resourceGroupName, fleetName, updateStrategyName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public FleetUpdateStrategy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFleetUpdateStrategies()
-                .createOrUpdate(
-                    resourceGroupName,
-                    fleetName,
-                    updateStrategyName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetUpdateStrategies()
+            .createOrUpdate(resourceGroupName, fleetName, updateStrategyName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context);
         return this;
     }
 
-    FleetUpdateStrategyImpl(
-        String name, com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager) {
+    FleetUpdateStrategyImpl(String name,
+        com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager) {
         this.innerObject = new FleetUpdateStrategyInner();
         this.serviceManager = serviceManager;
         this.updateStrategyName = name;
@@ -125,64 +109,43 @@ public final class FleetUpdateStrategyImpl
     }
 
     public FleetUpdateStrategy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFleetUpdateStrategies()
-                .createOrUpdate(
-                    resourceGroupName,
-                    fleetName,
-                    updateStrategyName,
-                    this.innerModel(),
-                    updateIfMatch,
-                    updateIfNoneMatch,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetUpdateStrategies()
+            .createOrUpdate(resourceGroupName, fleetName, updateStrategyName, this.innerModel(), updateIfMatch,
+                updateIfNoneMatch, Context.NONE);
         return this;
     }
 
     public FleetUpdateStrategy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFleetUpdateStrategies()
-                .createOrUpdate(
-                    resourceGroupName,
-                    fleetName,
-                    updateStrategyName,
-                    this.innerModel(),
-                    updateIfMatch,
-                    updateIfNoneMatch,
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetUpdateStrategies()
+            .createOrUpdate(resourceGroupName, fleetName, updateStrategyName, this.innerModel(), updateIfMatch,
+                updateIfNoneMatch, context);
         return this;
     }
 
-    FleetUpdateStrategyImpl(
-        FleetUpdateStrategyInner innerObject,
+    FleetUpdateStrategyImpl(FleetUpdateStrategyInner innerObject,
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fleetName = Utils.getValueFromIdByName(innerObject.id(), "fleets");
-        this.updateStrategyName = Utils.getValueFromIdByName(innerObject.id(), "updateStrategies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.fleetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "fleets");
+        this.updateStrategyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "updateStrategies");
     }
 
     public FleetUpdateStrategy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFleetUpdateStrategies()
-                .getWithResponse(resourceGroupName, fleetName, updateStrategyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetUpdateStrategies()
+            .getWithResponse(resourceGroupName, fleetName, updateStrategyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FleetUpdateStrategy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFleetUpdateStrategies()
-                .getWithResponse(resourceGroupName, fleetName, updateStrategyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetUpdateStrategies()
+            .getWithResponse(resourceGroupName, fleetName, updateStrategyName, context)
+            .getValue();
         return this;
     }
 

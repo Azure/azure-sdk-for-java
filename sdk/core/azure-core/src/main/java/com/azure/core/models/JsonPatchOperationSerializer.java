@@ -12,7 +12,24 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.IOException;
 
 /**
- * Handles serialization of a {@link JsonPatchOperation}.
+ * Handles the serialization of a {@link JsonPatchOperation}.
+ *
+ * <p>This class is responsible for converting a {@link JsonPatchOperation} into a JSON representation. It extends the
+ * {@link JsonSerializer} class from the Jackson library and overrides the
+ * {@link #serialize(JsonPatchOperation, JsonGenerator, SerializerProvider)} method to perform the serialization.</p>
+ *
+ * <p>The {@link #getModule()} method returns a {@link SimpleModule} that wraps this serializer, which can be
+ * registered with a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper} to handle the serialization of
+ * {@link JsonPatchOperation} instances.</p>
+ *
+ * <p>This class is useful when you want to serialize a {@link JsonPatchOperation} to JSON. For example, you can use
+ * it when you want to send a JSON Patch document as part of an HTTP request.</p>
+ *
+ * @see JsonPatchOperation
+ * @see JsonSerializer
+ * @see JsonGenerator
+ * @see SerializerProvider
+ * @see SimpleModule
  */
 final class JsonPatchOperationSerializer extends JsonSerializer<JsonPatchOperation> {
     private static final SimpleModule MODULE;

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Model that represents the an action and its status. */
+/**
+ * Model that represents the an action and its status.
+ */
 @Immutable
 public final class ActionStatus {
     /*
@@ -48,13 +50,15 @@ public final class ActionStatus {
     @JsonProperty(value = "targets", access = JsonProperty.Access.WRITE_ONLY)
     private List<ExperimentExecutionActionTargetDetailsProperties> targets;
 
-    /** Creates an instance of ActionStatus class. */
+    /**
+     * Creates an instance of ActionStatus class.
+     */
     public ActionStatus() {
     }
 
     /**
      * Get the actionName property: The name of the action status.
-     *
+     * 
      * @return the actionName value.
      */
     public String actionName() {
@@ -63,7 +67,7 @@ public final class ActionStatus {
 
     /**
      * Get the actionId property: The id of the action status.
-     *
+     * 
      * @return the actionId value.
      */
     public String actionId() {
@@ -72,7 +76,7 @@ public final class ActionStatus {
 
     /**
      * Get the status property: The status of the action.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -81,7 +85,7 @@ public final class ActionStatus {
 
     /**
      * Get the startTime property: String that represents the start time of the action.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -90,7 +94,7 @@ public final class ActionStatus {
 
     /**
      * Get the endTime property: String that represents the end time of the action.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -99,7 +103,7 @@ public final class ActionStatus {
 
     /**
      * Get the targets property: The array of targets.
-     *
+     * 
      * @return the targets value.
      */
     public List<ExperimentExecutionActionTargetDetailsProperties> targets() {
@@ -108,7 +112,7 @@ public final class ActionStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

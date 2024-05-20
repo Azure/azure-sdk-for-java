@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** InMageRcm NIC input. */
+/**
+ * InMageRcm NIC input.
+ */
 @Fluent
 public final class InMageRcmNicInput {
     /*
@@ -53,13 +55,15 @@ public final class InMageRcmNicInput {
     @JsonProperty(value = "testStaticIPAddress")
     private String testStaticIpAddress;
 
-    /** Creates an instance of InMageRcmNicInput class. */
+    /**
+     * Creates an instance of InMageRcmNicInput class.
+     */
     public InMageRcmNicInput() {
     }
 
     /**
      * Get the nicId property: The NIC Id.
-     *
+     * 
      * @return the nicId value.
      */
     public String nicId() {
@@ -68,7 +72,7 @@ public final class InMageRcmNicInput {
 
     /**
      * Set the nicId property: The NIC Id.
-     *
+     * 
      * @param nicId the nicId value to set.
      * @return the InMageRcmNicInput object itself.
      */
@@ -79,7 +83,7 @@ public final class InMageRcmNicInput {
 
     /**
      * Get the isPrimaryNic property: A value indicating whether this is the primary NIC.
-     *
+     * 
      * @return the isPrimaryNic value.
      */
     public String isPrimaryNic() {
@@ -88,7 +92,7 @@ public final class InMageRcmNicInput {
 
     /**
      * Set the isPrimaryNic property: A value indicating whether this is the primary NIC.
-     *
+     * 
      * @param isPrimaryNic the isPrimaryNic value to set.
      * @return the InMageRcmNicInput object itself.
      */
@@ -99,7 +103,7 @@ public final class InMageRcmNicInput {
 
     /**
      * Get the isSelectedForFailover property: A value indicating whether this NIC is selected for failover.
-     *
+     * 
      * @return the isSelectedForFailover value.
      */
     public String isSelectedForFailover() {
@@ -108,7 +112,7 @@ public final class InMageRcmNicInput {
 
     /**
      * Set the isSelectedForFailover property: A value indicating whether this NIC is selected for failover.
-     *
+     * 
      * @param isSelectedForFailover the isSelectedForFailover value to set.
      * @return the InMageRcmNicInput object itself.
      */
@@ -119,7 +123,7 @@ public final class InMageRcmNicInput {
 
     /**
      * Get the targetSubnetName property: Target subnet name.
-     *
+     * 
      * @return the targetSubnetName value.
      */
     public String targetSubnetName() {
@@ -128,7 +132,7 @@ public final class InMageRcmNicInput {
 
     /**
      * Set the targetSubnetName property: Target subnet name.
-     *
+     * 
      * @param targetSubnetName the targetSubnetName value to set.
      * @return the InMageRcmNicInput object itself.
      */
@@ -139,7 +143,7 @@ public final class InMageRcmNicInput {
 
     /**
      * Get the targetStaticIpAddress property: The target static IP address.
-     *
+     * 
      * @return the targetStaticIpAddress value.
      */
     public String targetStaticIpAddress() {
@@ -148,7 +152,7 @@ public final class InMageRcmNicInput {
 
     /**
      * Set the targetStaticIpAddress property: The target static IP address.
-     *
+     * 
      * @param targetStaticIpAddress the targetStaticIpAddress value to set.
      * @return the InMageRcmNicInput object itself.
      */
@@ -159,7 +163,7 @@ public final class InMageRcmNicInput {
 
     /**
      * Get the testSubnetName property: The test subnet name.
-     *
+     * 
      * @return the testSubnetName value.
      */
     public String testSubnetName() {
@@ -168,7 +172,7 @@ public final class InMageRcmNicInput {
 
     /**
      * Set the testSubnetName property: The test subnet name.
-     *
+     * 
      * @param testSubnetName the testSubnetName value to set.
      * @return the InMageRcmNicInput object itself.
      */
@@ -179,7 +183,7 @@ public final class InMageRcmNicInput {
 
     /**
      * Get the testStaticIpAddress property: The test static IP address.
-     *
+     * 
      * @return the testStaticIpAddress value.
      */
     public String testStaticIpAddress() {
@@ -188,7 +192,7 @@ public final class InMageRcmNicInput {
 
     /**
      * Set the testStaticIpAddress property: The test static IP address.
-     *
+     * 
      * @param testStaticIpAddress the testStaticIpAddress value to set.
      * @return the InMageRcmNicInput object itself.
      */
@@ -199,19 +203,17 @@ public final class InMageRcmNicInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (nicId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nicId in model InMageRcmNicInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property nicId in model InMageRcmNicInput"));
         }
         if (isPrimaryNic() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property isPrimaryNic in model InMageRcmNicInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property isPrimaryNic in model InMageRcmNicInput"));
         }
     }
 

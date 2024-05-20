@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.models.TopologySingleResource;
 public final class TopologySingleResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TopologySingleResource model =
-            BinaryData
-                .fromString(
-                    "{\"resourceId\":\"p\",\"severity\":\"pvpbdbzqgqqiheds\",\"recommendationsExist\":false,\"networkZones\":\"hmkyibc\",\"topologyScore\":1158410329,\"location\":\"sgqcwdho\",\"parents\":[{\"resourceId\":\"mcdzsufcohdxbz\"},{\"resourceId\":\"cmuapcvhd\"}],\"children\":[{\"resourceId\":\"qqxeyskon\"}]}")
-                .toObject(TopologySingleResource.class);
+        TopologySingleResource model = BinaryData.fromString(
+            "{\"resourceId\":\"ffcvvyezslpuxgcb\",\"severity\":\"valpnptwt\",\"recommendationsExist\":true,\"networkZones\":\"pazwug\",\"topologyScore\":582469208,\"location\":\"njobfelhldiu\",\"parents\":[{\"resourceId\":\"qlmfaewz\"},{\"resourceId\":\"udjpxpqht\"}],\"children\":[{\"resourceId\":\"mhk\"},{\"resourceId\":\"zsdsuxheqdgcrux\"},{\"resourceId\":\"inymmqgwokmikp\"},{\"resourceId\":\"fbmjxuvji\"}]}")
+            .toObject(TopologySingleResource.class);
     }
 
     @org.junit.jupiter.api.Test

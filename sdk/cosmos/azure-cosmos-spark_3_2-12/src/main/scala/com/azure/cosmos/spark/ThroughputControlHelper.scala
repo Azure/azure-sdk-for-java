@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers
-import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosChangeFeedRequestOptions, CosmosItemRequestOptions, CosmosQueryRequestOptions, PriorityLevel}
+import com.azure.cosmos.implementation.{CosmosQueryRequestOptionsBase, ImplementationBridgeHelpers}
+import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosChangeFeedRequestOptions, CosmosItemRequestOptions, PriorityLevel}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncContainer, ThroughputControlGroupConfigBuilder}
 import org.apache.spark.broadcast.Broadcast
@@ -67,7 +67,7 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
     }
 
     def populateThroughputControlGroupName(
-                                              queryRequestOptions: CosmosQueryRequestOptions,
+                                              queryRequestOptions: CosmosQueryRequestOptionsBase[_],
                                               throughputControlConfigOpt: Option[CosmosThroughputControlConfig]
                                           ): Unit = {
         if (throughputControlConfigOpt.isDefined) {
@@ -222,8 +222,12 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
         val cosmosAuthConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig).authConfig
         cosmosAuthConfig match {
             case _: CosmosMasterKeyAuthConfig => None
-            case _: CosmosAadAuthConfig =>
+            case _: CosmosServicePrincipalAuthConfig =>
                 Some(cacheItem.sparkCatalogClient.readContainerThroughput(cosmosContainerConfig.database, cosmosContainerConfig.container))
+            case _: CosmosManagedIdentityAuthConfig =>
+              Some(cacheItem.sparkCatalogClient.readContainerThroughput(cosmosContainerConfig.database, cosmosContainerConfig.container))
+            case _: CosmosAccessTokenAuthConfig =>
+              Some(cacheItem.sparkCatalogClient.readContainerThroughput(cosmosContainerConfig.database, cosmosContainerConfig.container))
         }
     }
 }

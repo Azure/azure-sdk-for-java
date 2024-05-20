@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Roles. */
+/**
+ * Resource collection API of Roles.
+ */
 public interface Roles {
     /**
      * Gets information about a cluster role.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param roleName The name of the cluster role.
@@ -26,7 +28,7 @@ public interface Roles {
 
     /**
      * Gets information about a cluster role.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param roleName The name of the cluster role.
@@ -39,7 +41,7 @@ public interface Roles {
 
     /**
      * Deletes a cluster role.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param roleName The name of the cluster role.
@@ -51,7 +53,7 @@ public interface Roles {
 
     /**
      * Deletes a cluster role.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param roleName The name of the cluster role.
@@ -64,7 +66,7 @@ public interface Roles {
 
     /**
      * List all the roles in a given cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -76,7 +78,7 @@ public interface Roles {
 
     /**
      * List all the roles in a given cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -89,7 +91,7 @@ public interface Roles {
 
     /**
      * Gets information about a cluster role.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -100,7 +102,7 @@ public interface Roles {
 
     /**
      * Gets information about a cluster role.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -112,7 +114,7 @@ public interface Roles {
 
     /**
      * Deletes a cluster role.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,7 +124,7 @@ public interface Roles {
 
     /**
      * Deletes a cluster role.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -133,7 +135,7 @@ public interface Roles {
 
     /**
      * Begins definition for a new Role resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Role definition.
      */

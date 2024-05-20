@@ -8,31 +8,27 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVRepli
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.PlannedFailoverInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.PlannedFailoverInputProperties;
 
-/** Samples for ReplicationProtectedItems PlannedFailover. */
+/**
+ * Samples for ReplicationProtectedItems PlannedFailover.
+ */
 public final class ReplicationProtectedItemsPlannedFailoverSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_PlannedFailover.json
+     * x-ms-original-file:
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * /ReplicationProtectedItems_PlannedFailover.json
      */
     /**
      * Sample code: Execute planned failover.
-     *
+     * 
      * @param manager Entry point to SiteRecoveryManager.
      */
-    public static void executePlannedFailover(
-        com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager
-            .replicationProtectedItems()
-            .plannedFailover(
-                "vault1",
-                "resourceGroupPS1",
-                "cloud1",
-                "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
-                "f8491e4f-817a-40dd-a90c-af773978c75b",
-                new PlannedFailoverInput()
-                    .withProperties(
-                        new PlannedFailoverInputProperties()
-                            .withFailoverDirection("PrimaryToRecovery")
-                            .withProviderSpecificDetails(new HyperVReplicaAzurePlannedFailoverProviderInput())),
-                com.azure.core.util.Context.NONE);
+    public static void
+        executePlannedFailover(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
+        manager.replicationProtectedItems().plannedFailover("vault1", "resourceGroupPS1", "cloud1",
+            "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b",
+            new PlannedFailoverInput()
+                .withProperties(new PlannedFailoverInputProperties().withFailoverDirection("PrimaryToRecovery")
+                    .withProviderSpecificDetails(new HyperVReplicaAzurePlannedFailoverProviderInput())),
+            com.azure.core.util.Context.NONE);
     }
 }

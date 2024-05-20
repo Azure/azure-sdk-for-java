@@ -4,7 +4,8 @@
 package com.azure.data.tables.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
 
 /**
  * Defines values for {@link TableServiceGeoReplicationStatus}.
@@ -32,7 +33,6 @@ public final class TableServiceGeoReplicationStatus extends ExpandableStringEnum
      */
     @Deprecated
     public TableServiceGeoReplicationStatus() {
-
     }
 
     /**
@@ -42,8 +42,16 @@ public final class TableServiceGeoReplicationStatus extends ExpandableStringEnum
      *
      * @return The corresponding {@link TableServiceGeoReplicationStatus}.
      */
-    @JsonCreator
     public static TableServiceGeoReplicationStatus fromString(String name) {
         return fromString(name, TableServiceGeoReplicationStatus.class);
+    }
+
+    /**
+     * Gets known TableServiceGeoReplicationStatus values.
+     *
+     * @return known TableServiceGeoReplicationStatus values.
+     */
+    public static Collection<TableServiceGeoReplicationStatus> values() {
+        return values(TableServiceGeoReplicationStatus.class);
     }
 }

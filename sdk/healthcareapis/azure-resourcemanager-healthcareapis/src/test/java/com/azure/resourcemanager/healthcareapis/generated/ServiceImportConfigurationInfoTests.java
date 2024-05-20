@@ -22,7 +22,8 @@ public final class ServiceImportConfigurationInfoTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceImportConfigurationInfo model = new ServiceImportConfigurationInfo().withIntegrationDataStore("o")
-            .withInitialImportMode(false).withEnabled(true);
+            .withInitialImportMode(false)
+            .withEnabled(true);
         model = BinaryData.fromObject(model).toObject(ServiceImportConfigurationInfo.class);
         Assertions.assertEquals("o", model.integrationDataStore());
         Assertions.assertEquals(false, model.initialImportMode());

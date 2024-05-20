@@ -17,7 +17,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** describes security alert properties. */
+/**
+ * describes security alert properties.
+ */
 @Fluent
 public final class AlertProperties {
     /*
@@ -27,8 +29,7 @@ public final class AlertProperties {
     private String version;
 
     /*
-     * Unique identifier for the detection logic (all alert instances from the same detection logic will have the same
-     * alertType).
+     * Unique identifier for the detection logic (all alert instances from the same detection logic will have the same alertType).
      */
     @JsonProperty(value = "alertType", access = JsonProperty.Access.WRITE_ONLY)
     private String alertType;
@@ -40,8 +41,7 @@ public final class AlertProperties {
     private String systemAlertId;
 
     /*
-     * The name of Azure Security Center pricing tier which powering this alert. Learn more:
-     * https://docs.microsoft.com/en-us/azure/security-center/security-center-pricing
+     * The name of Azure Security Center pricing tier which powering this alert. Learn more: https://docs.microsoft.com/en-us/azure/security-center/security-center-pricing
      */
     @JsonProperty(value = "productComponentName", access = JsonProperty.Access.WRITE_ONLY)
     private String productComponentName;
@@ -59,15 +59,13 @@ public final class AlertProperties {
     private String description;
 
     /*
-     * The risk level of the threat that was detected. Learn more:
-     * https://docs.microsoft.com/en-us/azure/security-center/security-center-alerts-overview#how-are-alerts-classified.
+     * The risk level of the threat that was detected. Learn more: https://docs.microsoft.com/en-us/azure/security-center/security-center-alerts-overview#how-are-alerts-classified.
      */
     @JsonProperty(value = "severity", access = JsonProperty.Access.WRITE_ONLY)
     private AlertSeverity severity;
 
     /*
-     * The kill chain related intent behind the alert. For list of supported values, and explanations of Azure Security
-     * Center's supported kill chain intents.
+     * The kill chain related intent behind the alert. For list of supported values, and explanations of Azure Security Center's supported kill chain intents.
      */
     @JsonProperty(value = "intent", access = JsonProperty.Access.WRITE_ONLY)
     private Intent intent;
@@ -85,8 +83,7 @@ public final class AlertProperties {
     private OffsetDateTime endTimeUtc;
 
     /*
-     * The resource identifiers that can be used to direct the alert to the right product exposure group (tenant,
-     * workspace, subscription etc.). There can be multiple identifiers of different type per alert.
+     * The resource identifiers that can be used to direct the alert to the right product exposure group (tenant, workspace, subscription etc.). There can be multiple identifiers of different type per alert.
      */
     @JsonProperty(value = "resourceIdentifiers", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceIdentifier> resourceIdentifiers;
@@ -128,8 +125,7 @@ public final class AlertProperties {
     private OffsetDateTime timeGeneratedUtc;
 
     /*
-     * The name of the product which published this alert (Microsoft Sentinel, Microsoft Defender for Identity,
-     * Microsoft Defender for Endpoint, Microsoft Defender for Office, Microsoft Defender for Cloud Apps, and so on).
+     * The name of the product which published this alert (Microsoft Sentinel, Microsoft Defender for Identity, Microsoft Defender for Endpoint, Microsoft Defender for Office, Microsoft Defender for Cloud Apps, and so on).
      */
     @JsonProperty(value = "productName", access = JsonProperty.Access.WRITE_ONLY)
     private String productName;
@@ -147,8 +143,7 @@ public final class AlertProperties {
     private List<AlertEntity> entities;
 
     /*
-     * This field determines whether the alert is an incident (a compound grouping of several alerts) or a single
-     * alert.
+     * This field determines whether the alert is an incident (a compound grouping of several alerts) or a single alert.
      */
     @JsonProperty(value = "isIncident", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isIncident;
@@ -190,13 +185,15 @@ public final class AlertProperties {
     @JsonProperty(value = "supportingEvidence")
     private AlertPropertiesSupportingEvidence supportingEvidence;
 
-    /** Creates an instance of AlertProperties class. */
+    /**
+     * Creates an instance of AlertProperties class.
+     */
     public AlertProperties() {
     }
 
     /**
      * Get the version property: Schema version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -206,7 +203,7 @@ public final class AlertProperties {
     /**
      * Get the alertType property: Unique identifier for the detection logic (all alert instances from the same
      * detection logic will have the same alertType).
-     *
+     * 
      * @return the alertType value.
      */
     public String alertType() {
@@ -215,7 +212,7 @@ public final class AlertProperties {
 
     /**
      * Get the systemAlertId property: Unique identifier for the alert.
-     *
+     * 
      * @return the systemAlertId value.
      */
     public String systemAlertId() {
@@ -225,7 +222,7 @@ public final class AlertProperties {
     /**
      * Get the productComponentName property: The name of Azure Security Center pricing tier which powering this alert.
      * Learn more: https://docs.microsoft.com/en-us/azure/security-center/security-center-pricing.
-     *
+     * 
      * @return the productComponentName value.
      */
     public String productComponentName() {
@@ -234,7 +231,7 @@ public final class AlertProperties {
 
     /**
      * Get the alertDisplayName property: The display name of the alert.
-     *
+     * 
      * @return the alertDisplayName value.
      */
     public String alertDisplayName() {
@@ -243,7 +240,7 @@ public final class AlertProperties {
 
     /**
      * Get the description property: Description of the suspicious activity that was detected.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -253,7 +250,7 @@ public final class AlertProperties {
     /**
      * Get the severity property: The risk level of the threat that was detected. Learn more:
      * https://docs.microsoft.com/en-us/azure/security-center/security-center-alerts-overview#how-are-alerts-classified.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -263,7 +260,7 @@ public final class AlertProperties {
     /**
      * Get the intent property: The kill chain related intent behind the alert. For list of supported values, and
      * explanations of Azure Security Center's supported kill chain intents.
-     *
+     * 
      * @return the intent value.
      */
     public Intent intent() {
@@ -273,7 +270,7 @@ public final class AlertProperties {
     /**
      * Get the startTimeUtc property: The UTC time of the first event or activity included in the alert in ISO8601
      * format.
-     *
+     * 
      * @return the startTimeUtc value.
      */
     public OffsetDateTime startTimeUtc() {
@@ -282,7 +279,7 @@ public final class AlertProperties {
 
     /**
      * Get the endTimeUtc property: The UTC time of the last event or activity included in the alert in ISO8601 format.
-     *
+     * 
      * @return the endTimeUtc value.
      */
     public OffsetDateTime endTimeUtc() {
@@ -293,7 +290,7 @@ public final class AlertProperties {
      * Get the resourceIdentifiers property: The resource identifiers that can be used to direct the alert to the right
      * product exposure group (tenant, workspace, subscription etc.). There can be multiple identifiers of different
      * type per alert.
-     *
+     * 
      * @return the resourceIdentifiers value.
      */
     public List<ResourceIdentifier> resourceIdentifiers() {
@@ -302,7 +299,7 @@ public final class AlertProperties {
 
     /**
      * Get the remediationSteps property: Manual action items to take to remediate the alert.
-     *
+     * 
      * @return the remediationSteps value.
      */
     public List<String> remediationSteps() {
@@ -311,7 +308,7 @@ public final class AlertProperties {
 
     /**
      * Get the vendorName property: The name of the vendor that raises the alert.
-     *
+     * 
      * @return the vendorName value.
      */
     public String vendorName() {
@@ -320,7 +317,7 @@ public final class AlertProperties {
 
     /**
      * Get the status property: The life cycle status of the alert.
-     *
+     * 
      * @return the status value.
      */
     public AlertStatus status() {
@@ -329,7 +326,7 @@ public final class AlertProperties {
 
     /**
      * Get the extendedLinks property: Links related to the alert.
-     *
+     * 
      * @return the extendedLinks value.
      */
     public List<Map<String, String>> extendedLinks() {
@@ -338,7 +335,7 @@ public final class AlertProperties {
 
     /**
      * Get the alertUri property: A direct link to the alert page in Azure Portal.
-     *
+     * 
      * @return the alertUri value.
      */
     public String alertUri() {
@@ -347,7 +344,7 @@ public final class AlertProperties {
 
     /**
      * Get the timeGeneratedUtc property: The UTC time the alert was generated in ISO8601 format.
-     *
+     * 
      * @return the timeGeneratedUtc value.
      */
     public OffsetDateTime timeGeneratedUtc() {
@@ -358,7 +355,7 @@ public final class AlertProperties {
      * Get the productName property: The name of the product which published this alert (Microsoft Sentinel, Microsoft
      * Defender for Identity, Microsoft Defender for Endpoint, Microsoft Defender for Office, Microsoft Defender for
      * Cloud Apps, and so on).
-     *
+     * 
      * @return the productName value.
      */
     public String productName() {
@@ -367,7 +364,7 @@ public final class AlertProperties {
 
     /**
      * Get the processingEndTimeUtc property: The UTC processing end time of the alert in ISO8601 format.
-     *
+     * 
      * @return the processingEndTimeUtc value.
      */
     public OffsetDateTime processingEndTimeUtc() {
@@ -376,7 +373,7 @@ public final class AlertProperties {
 
     /**
      * Get the entities property: A list of entities related to the alert.
-     *
+     * 
      * @return the entities value.
      */
     public List<AlertEntity> entities() {
@@ -386,7 +383,7 @@ public final class AlertProperties {
     /**
      * Get the isIncident property: This field determines whether the alert is an incident (a compound grouping of
      * several alerts) or a single alert.
-     *
+     * 
      * @return the isIncident value.
      */
     public Boolean isIncident() {
@@ -396,7 +393,7 @@ public final class AlertProperties {
     /**
      * Get the correlationKey property: Key for corelating related alerts. Alerts with the same correlation key
      * considered to be related.
-     *
+     * 
      * @return the correlationKey value.
      */
     public String correlationKey() {
@@ -405,7 +402,7 @@ public final class AlertProperties {
 
     /**
      * Get the extendedProperties property: Custom properties for the alert.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
@@ -414,7 +411,7 @@ public final class AlertProperties {
 
     /**
      * Set the extendedProperties property: Custom properties for the alert.
-     *
+     * 
      * @param extendedProperties the extendedProperties value to set.
      * @return the AlertProperties object itself.
      */
@@ -425,7 +422,7 @@ public final class AlertProperties {
 
     /**
      * Get the compromisedEntity property: The display name of the resource most related to this alert.
-     *
+     * 
      * @return the compromisedEntity value.
      */
     public String compromisedEntity() {
@@ -434,7 +431,7 @@ public final class AlertProperties {
 
     /**
      * Get the techniques property: kill chain related techniques behind the alert.
-     *
+     * 
      * @return the techniques value.
      */
     public List<String> techniques() {
@@ -443,7 +440,7 @@ public final class AlertProperties {
 
     /**
      * Get the subTechniques property: Kill chain related sub-techniques behind the alert.
-     *
+     * 
      * @return the subTechniques value.
      */
     public List<String> subTechniques() {
@@ -452,7 +449,7 @@ public final class AlertProperties {
 
     /**
      * Get the supportingEvidence property: Changing set of properties depending on the supportingEvidence type.
-     *
+     * 
      * @return the supportingEvidence value.
      */
     public AlertPropertiesSupportingEvidence supportingEvidence() {
@@ -461,7 +458,7 @@ public final class AlertProperties {
 
     /**
      * Set the supportingEvidence property: Changing set of properties depending on the supportingEvidence type.
-     *
+     * 
      * @param supportingEvidence the supportingEvidence value to set.
      * @return the AlertProperties object itself.
      */
@@ -472,7 +469,7 @@ public final class AlertProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -17,7 +17,7 @@ import java.util.Map;
 public final class OrganizationCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2023-08-22/examples/Organization_Create.json
+     * specification/confluent/resource-manager/Microsoft.Confluent/stable/2024-02-13/examples/Organization_Create.json
      */
     /**
      * Sample code: Organization_Create.

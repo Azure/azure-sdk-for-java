@@ -13,16 +13,19 @@ public final class SftpWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SftpWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"SftpWriteSettings\",\"operationTimeout\":\"datafvxnisoorwfdtj\",\"useTempFileRename\":\"datajwlpcxljzzcdrgtu\",\"maxConcurrentConnections\":\"dataouoca\",\"disableMetricsCollection\":\"dataxvhjrpbnr\",\"copyBehavior\":\"datagelsgnenjtxuu\",\"metadata\":[{\"name\":\"dataqahlby\",\"value\":\"datahb\"}],\"\":{\"lrl\":\"datalmacbwmvphmjyzic\",\"qgjibrxxiaocr\":\"datazcgwnibnd\",\"pugnvhtgwadu\":\"datauhumgw\"}}")
+            "{\"type\":\"rtoxsthjyyiryb\",\"operationTimeout\":\"dataawfwws\",\"useTempFileRename\":\"datakbdozsspfwmf\",\"maxConcurrentConnections\":\"datamkmwdok\",\"disableMetricsCollection\":\"datayilho\",\"copyBehavior\":\"datatdioxgsrhxoyrgv\",\"metadata\":[{\"name\":\"datatmzglbplqhbrar\",\"value\":\"datadepsxufyqcqf\"}],\"\":{\"xgxbgochpxps\":\"dataye\"}}")
             .toObject(SftpWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SftpWriteSettings model = new SftpWriteSettings().withMaxConcurrentConnections("dataouoca")
-            .withDisableMetricsCollection("dataxvhjrpbnr").withCopyBehavior("datagelsgnenjtxuu")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("dataqahlby").withValue("datahb")))
-            .withOperationTimeout("datafvxnisoorwfdtj").withUseTempFileRename("datajwlpcxljzzcdrgtu");
+        SftpWriteSettings model = new SftpWriteSettings().withMaxConcurrentConnections("datamkmwdok")
+            .withDisableMetricsCollection("datayilho")
+            .withCopyBehavior("datatdioxgsrhxoyrgv")
+            .withMetadata(
+                Arrays.asList(new MetadataItem().withName("datatmzglbplqhbrar").withValue("datadepsxufyqcqf")))
+            .withOperationTimeout("dataawfwws")
+            .withUseTempFileRename("datakbdozsspfwmf");
         model = BinaryData.fromObject(model).toObject(SftpWriteSettings.class);
     }
 }

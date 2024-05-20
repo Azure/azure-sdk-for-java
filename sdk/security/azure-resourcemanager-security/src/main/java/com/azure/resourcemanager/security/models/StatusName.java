@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the health report. */
+/**
+ * The status of the health report.
+ */
 public final class StatusName extends ExpandableStringEnum<StatusName> {
-    /** Static value Healthy for StatusName. */
+    /**
+     * Static value Healthy for StatusName.
+     */
     public static final StatusName HEALTHY = fromString("Healthy");
 
-    /** Static value NotHealthy for StatusName. */
+    /**
+     * Static value NotHealthy for StatusName.
+     */
     public static final StatusName NOT_HEALTHY = fromString("NotHealthy");
 
-    /** Static value NotApplicable for StatusName. */
+    /**
+     * Static value NotApplicable for StatusName.
+     */
     public static final StatusName NOT_APPLICABLE = fromString("NotApplicable");
 
     /**
      * Creates a new instance of StatusName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class StatusName extends ExpandableStringEnum<StatusName> {
 
     /**
      * Creates or finds a StatusName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StatusName.
      */
@@ -41,7 +49,7 @@ public final class StatusName extends ExpandableStringEnum<StatusName> {
 
     /**
      * Gets known StatusName values.
-     *
+     * 
      * @return known StatusName values.
      */
     public static Collection<StatusName> values() {

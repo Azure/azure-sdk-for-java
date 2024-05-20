@@ -6,27 +6,54 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure resource identifier. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+/**
+ * Azure resource identifier.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureResourceIdentifier.class,
+    visible = true)
 @JsonTypeName("AzureResource")
 @Immutable
 public final class AzureResourceIdentifier extends ResourceIdentifier {
+    /*
+     * There can be multiple identifiers of different type per alert, this field specify the identifier type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private ResourceIdentifierType type = ResourceIdentifierType.AZURE_RESOURCE;
+
     /*
      * ARM resource identifier for the cloud resource being alerted on
      */
     @JsonProperty(value = "azureResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String azureResourceId;
 
-    /** Creates an instance of AzureResourceIdentifier class. */
+    /**
+     * Creates an instance of AzureResourceIdentifier class.
+     */
     public AzureResourceIdentifier() {
     }
 
     /**
+     * Get the type property: There can be multiple identifiers of different type per alert, this field specify the
+     * identifier type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public ResourceIdentifierType type() {
+        return this.type;
+    }
+
+    /**
      * Get the azureResourceId property: ARM resource identifier for the cloud resource being alerted on.
-     *
+     * 
      * @return the azureResourceId value.
      */
     public String azureResourceId() {
@@ -35,7 +62,7 @@ public final class AzureResourceIdentifier extends ResourceIdentifier {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -17,7 +17,6 @@ import com.azure.search.documents.test.environment.models.HotelTwoDimensional;
 import com.azure.search.documents.test.environment.models.HotelWithArray;
 import com.azure.search.documents.test.environment.models.HotelWithEmptyInSynonymMaps;
 import com.azure.search.documents.test.environment.models.HotelWithIgnoredFields;
-import com.azure.search.documents.test.environment.models.HotelWithUnsupportedField;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -72,6 +71,7 @@ public class FieldBuilderTests {
             SearchFieldDataType.collection(SearchFieldDataType.STRING))
             .setSearchable(true)
             .setKey(false)
+            .setStored(true)
             .setHidden(false)
             .setFilterable(false)
             .setSortable(false)
@@ -126,7 +126,7 @@ public class FieldBuilderTests {
     public void supportedFields() {
         List<SearchField> fields = SearchIndexClient.buildSearchFields(AllSupportedFields.class, null);
 
-        assertEquals(19, fields.size());
+        assertEquals(25, fields.size());
 
         Map<String, SearchFieldDataType> fieldToDataType = fields.stream()
             .collect(Collectors.toMap(SearchField::getName, SearchField::getType));
@@ -150,6 +150,13 @@ public class FieldBuilderTests {
         assertEquals(SearchFieldDataType.collection(SearchFieldDataType.INT32), fieldToDataType.get("intList"));
         assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SINGLE), fieldToDataType.get("floatArray"));
         assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SINGLE), fieldToDataType.get("floatList"));
+        assertEquals(SearchFieldDataType.INT16, fieldToDataType.get("nullableShort"));
+        assertEquals(SearchFieldDataType.INT16, fieldToDataType.get("primitiveShort"));
+        assertEquals(SearchFieldDataType.SBYTE, fieldToDataType.get("nullableByte"));
+        assertEquals(SearchFieldDataType.SBYTE, fieldToDataType.get("primitiveByte"));
+        assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SBYTE), fieldToDataType.get("byteArray"));
+        assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SBYTE), fieldToDataType.get("byteList"));
+
     }
 
     @SuppressWarnings({"unused", "UseOfObsoleteDateTimeApi"})
@@ -268,15 +275,43 @@ public class FieldBuilderTests {
         public Float[] getFloatArray() {
             return floatArray;
         }
-    }
 
-    @Test
-    public void unsupportedFields() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            SearchIndexClient.buildSearchFields(HotelWithUnsupportedField.class, null));
-        assertExceptionMassageAndDataType(exception, null, "is not supported");
-    }
+        // 20. name = 'primitiveShort', OData type = INT16
+        private short primitiveShort;
+        public short getPrimitiveShort() {
+            return primitiveShort;
+        }
 
+        // 21. name = 'nullableShort', OData type = INT16
+        private Short nullableShort;
+        public Short getNullableShort() {
+            return nullableShort;
+        }
+
+        // 22. name = 'primitiveByte', OData type = SBYTE
+        private byte primitiveByte;
+        public byte getPrimitiveByte() {
+            return primitiveByte;
+        }
+
+        // 23. name = 'nullableByte', OData type = SBYTE
+        private Byte nullableByte;
+        public Byte getNullableByte() {
+            return nullableByte;
+        }
+
+        // 24. name = 'byteArray', OData type = COMPLEX
+        private byte[] byteArray;
+        public byte[] getByteArray() {
+            return byteArray;
+        }
+
+        // 25. name = 'byteList', OData type = COMPLEX
+        private List<Byte> byteList;
+        public List<Byte> getByteList() {
+            return byteList;
+        }
+    }
     @Test
     public void validNormalizerField() {
         List<SearchField> fields = SearchIndexClient.buildSearchFields(ValidNormalizer.class, null);
@@ -426,6 +461,7 @@ public class FieldBuilderTests {
         SearchField hotelId = new SearchField("hotelId", SearchFieldDataType.STRING)
             .setKey(true)
             .setSortable(true)
+            .setStored(true)
             .setHidden(false)
             .setSearchable(false)
             .setFacetable(false)
@@ -433,6 +469,7 @@ public class FieldBuilderTests {
         SearchField tags = new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
             .setKey(false)
             .setHidden(false)
+            .setStored(true)
             .setSearchable(true)
             .setSortable(false)
             .setFilterable(false)

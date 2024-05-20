@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityOperatorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityOperatorInner model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"principalId\":\"qcs\",\"tenantId\":\"chkhufm\",\"type\":\"SystemAssigned\"},\"id\":\"mqyjgy\",\"name\":\"zulo\",\"type\":\"saeuzanhsfnhsenw\"}")
-                .toObject(SecurityOperatorInner.class);
+        SecurityOperatorInner model = BinaryData.fromString(
+            "{\"identity\":{\"principalId\":\"zkopb\",\"tenantId\":\"nrfdw\",\"type\":\"SystemAssigned\"},\"id\":\"hhziuief\",\"name\":\"zbhd\",\"type\":\"smlmzqhoftrm\"}")
+            .toObject(SecurityOperatorInner.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityOperatorInner model =
-            new SecurityOperatorInner().withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED));
+        SecurityOperatorInner model
+            = new SecurityOperatorInner().withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED));
         model = BinaryData.fromObject(model).toObject(SecurityOperatorInner.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
     }

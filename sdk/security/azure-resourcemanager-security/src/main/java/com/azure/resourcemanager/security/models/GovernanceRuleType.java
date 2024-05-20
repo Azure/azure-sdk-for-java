@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The rule type of the governance rule, defines the source of the rule e.g. Integrated. */
+/**
+ * The rule type of the governance rule, defines the source of the rule e.g. Integrated.
+ */
 public final class GovernanceRuleType extends ExpandableStringEnum<GovernanceRuleType> {
-    /** Static value Integrated for GovernanceRuleType. */
+    /**
+     * Static value Integrated for GovernanceRuleType.
+     */
     public static final GovernanceRuleType INTEGRATED = fromString("Integrated");
 
-    /** Static value ServiceNow for GovernanceRuleType. */
+    /**
+     * Static value ServiceNow for GovernanceRuleType.
+     */
     public static final GovernanceRuleType SERVICE_NOW = fromString("ServiceNow");
 
     /**
      * Creates a new instance of GovernanceRuleType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class GovernanceRuleType extends ExpandableStringEnum<GovernanceRul
 
     /**
      * Creates or finds a GovernanceRuleType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GovernanceRuleType.
      */
@@ -38,7 +44,7 @@ public final class GovernanceRuleType extends ExpandableStringEnum<GovernanceRul
 
     /**
      * Gets known GovernanceRuleType values.
-     *
+     * 
      * @return known GovernanceRuleType values.
      */
     public static Collection<GovernanceRuleType> values() {

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A2A provider specific settings. */
+/**
+ * A2A provider specific settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -44,13 +46,15 @@ public final class A2AProtectionContainerMappingDetails extends ProtectionContai
     @JsonProperty(value = "jobScheduleName")
     private String jobScheduleName;
 
-    /** Creates an instance of A2AProtectionContainerMappingDetails class. */
+    /**
+     * Creates an instance of A2AProtectionContainerMappingDetails class.
+     */
     public A2AProtectionContainerMappingDetails() {
     }
 
     /**
      * Get the agentAutoUpdateStatus property: A value indicating whether the auto update is enabled.
-     *
+     * 
      * @return the agentAutoUpdateStatus value.
      */
     public AgentAutoUpdateStatus agentAutoUpdateStatus() {
@@ -59,7 +63,7 @@ public final class A2AProtectionContainerMappingDetails extends ProtectionContai
 
     /**
      * Set the agentAutoUpdateStatus property: A value indicating whether the auto update is enabled.
-     *
+     * 
      * @param agentAutoUpdateStatus the agentAutoUpdateStatus value to set.
      * @return the A2AProtectionContainerMappingDetails object itself.
      */
@@ -70,7 +74,7 @@ public final class A2AProtectionContainerMappingDetails extends ProtectionContai
 
     /**
      * Get the automationAccountArmId property: The automation account arm id.
-     *
+     * 
      * @return the automationAccountArmId value.
      */
     public String automationAccountArmId() {
@@ -79,7 +83,7 @@ public final class A2AProtectionContainerMappingDetails extends ProtectionContai
 
     /**
      * Set the automationAccountArmId property: The automation account arm id.
-     *
+     * 
      * @param automationAccountArmId the automationAccountArmId value to set.
      * @return the A2AProtectionContainerMappingDetails object itself.
      */
@@ -91,7 +95,7 @@ public final class A2AProtectionContainerMappingDetails extends ProtectionContai
     /**
      * Get the automationAccountAuthenticationType property: A value indicating the type authentication to use for
      * automation Account.
-     *
+     * 
      * @return the automationAccountAuthenticationType value.
      */
     public AutomationAccountAuthenticationType automationAccountAuthenticationType() {
@@ -101,7 +105,7 @@ public final class A2AProtectionContainerMappingDetails extends ProtectionContai
     /**
      * Set the automationAccountAuthenticationType property: A value indicating the type authentication to use for
      * automation Account.
-     *
+     * 
      * @param automationAccountAuthenticationType the automationAccountAuthenticationType value to set.
      * @return the A2AProtectionContainerMappingDetails object itself.
      */
@@ -113,7 +117,7 @@ public final class A2AProtectionContainerMappingDetails extends ProtectionContai
 
     /**
      * Get the scheduleName property: The schedule arm name.
-     *
+     * 
      * @return the scheduleName value.
      */
     public String scheduleName() {
@@ -122,7 +126,7 @@ public final class A2AProtectionContainerMappingDetails extends ProtectionContai
 
     /**
      * Set the scheduleName property: The schedule arm name.
-     *
+     * 
      * @param scheduleName the scheduleName value to set.
      * @return the A2AProtectionContainerMappingDetails object itself.
      */
@@ -133,7 +137,7 @@ public final class A2AProtectionContainerMappingDetails extends ProtectionContai
 
     /**
      * Get the jobScheduleName property: The job schedule arm name.
-     *
+     * 
      * @return the jobScheduleName value.
      */
     public String jobScheduleName() {
@@ -142,7 +146,7 @@ public final class A2AProtectionContainerMappingDetails extends ProtectionContai
 
     /**
      * Set the jobScheduleName property: The job schedule arm name.
-     *
+     * 
      * @param jobScheduleName the jobScheduleName value to set.
      * @return the A2AProtectionContainerMappingDetails object itself.
      */
@@ -153,7 +157,7 @@ public final class A2AProtectionContainerMappingDetails extends ProtectionContai
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

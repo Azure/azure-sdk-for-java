@@ -12,6 +12,7 @@ import java.time.Duration;
 
 /**
  * The pipeline policy that limits the time allowed between sending a request and receiving the response.
+ * 
  * @deprecated Consider configuring timeouts with {@link com.azure.core.util.HttpClientOptions}.
  */
 @Deprecated

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object that represents a Service resource. */
+/**
+ * Object that represents a Service resource.
+ */
 @Fluent
 public final class ServiceInner {
     /*
@@ -35,13 +37,15 @@ public final class ServiceInner {
     @JsonProperty(value = "properties")
     private ServiceProperties innerProperties;
 
-    /** Creates an instance of ServiceInner class. */
+    /**
+     * Creates an instance of ServiceInner class.
+     */
     public ServiceInner() {
     }
 
     /**
      * Get the id property: Id of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public final class ServiceInner {
 
     /**
      * Get the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +63,7 @@ public final class ServiceInner {
 
     /**
      * Get the type property: Type of the resource 'Microsoft.Support/services'.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -68,7 +72,7 @@ public final class ServiceInner {
 
     /**
      * Get the innerProperties property: Properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServiceProperties innerProperties() {
@@ -77,7 +81,7 @@ public final class ServiceInner {
 
     /**
      * Get the displayName property: Localized name of the Azure service.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -86,7 +90,7 @@ public final class ServiceInner {
 
     /**
      * Set the displayName property: Localized name of the Azure service.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ServiceInner object itself.
      */
@@ -100,7 +104,7 @@ public final class ServiceInner {
 
     /**
      * Get the resourceTypes property: ARM Resource types.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<String> resourceTypes() {
@@ -109,7 +113,7 @@ public final class ServiceInner {
 
     /**
      * Set the resourceTypes property: ARM Resource types.
-     *
+     * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the ServiceInner object itself.
      */
@@ -123,7 +127,7 @@ public final class ServiceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

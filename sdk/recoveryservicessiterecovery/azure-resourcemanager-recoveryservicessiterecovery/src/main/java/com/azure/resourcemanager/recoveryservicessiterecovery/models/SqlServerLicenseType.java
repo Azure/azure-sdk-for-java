@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The SQL Server license type. */
+/**
+ * The SQL Server license type.
+ */
 public final class SqlServerLicenseType extends ExpandableStringEnum<SqlServerLicenseType> {
-    /** Static value NotSpecified for SqlServerLicenseType. */
+    /**
+     * Static value NotSpecified for SqlServerLicenseType.
+     */
     public static final SqlServerLicenseType NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value NoLicenseType for SqlServerLicenseType. */
+    /**
+     * Static value NoLicenseType for SqlServerLicenseType.
+     */
     public static final SqlServerLicenseType NO_LICENSE_TYPE = fromString("NoLicenseType");
 
-    /** Static value PAYG for SqlServerLicenseType. */
+    /**
+     * Static value PAYG for SqlServerLicenseType.
+     */
     public static final SqlServerLicenseType PAYG = fromString("PAYG");
 
-    /** Static value AHUB for SqlServerLicenseType. */
+    /**
+     * Static value AHUB for SqlServerLicenseType.
+     */
     public static final SqlServerLicenseType AHUB = fromString("AHUB");
 
     /**
      * Creates a new instance of SqlServerLicenseType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class SqlServerLicenseType extends ExpandableStringEnum<SqlServerLi
 
     /**
      * Creates or finds a SqlServerLicenseType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SqlServerLicenseType.
      */
@@ -44,7 +54,7 @@ public final class SqlServerLicenseType extends ExpandableStringEnum<SqlServerLi
 
     /**
      * Gets known SqlServerLicenseType values.
-     *
+     * 
      * @return known SqlServerLicenseType values.
      */
     public static Collection<SqlServerLicenseType> values() {

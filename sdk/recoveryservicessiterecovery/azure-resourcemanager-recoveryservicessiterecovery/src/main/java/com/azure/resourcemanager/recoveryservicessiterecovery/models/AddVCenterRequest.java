@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input required to add vCenter. */
+/**
+ * Input required to add vCenter.
+ */
 @Fluent
 public final class AddVCenterRequest {
     /*
@@ -16,13 +18,15 @@ public final class AddVCenterRequest {
     @JsonProperty(value = "properties")
     private AddVCenterRequestProperties properties;
 
-    /** Creates an instance of AddVCenterRequest class. */
+    /**
+     * Creates an instance of AddVCenterRequest class.
+     */
     public AddVCenterRequest() {
     }
 
     /**
      * Get the properties property: The properties of an add vCenter request.
-     *
+     * 
      * @return the properties value.
      */
     public AddVCenterRequestProperties properties() {
@@ -31,7 +35,7 @@ public final class AddVCenterRequest {
 
     /**
      * Set the properties property: The properties of an add vCenter request.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AddVCenterRequest object itself.
      */
@@ -42,7 +46,7 @@ public final class AddVCenterRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

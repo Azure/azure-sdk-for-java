@@ -11,12 +11,14 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -32,12 +34,16 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -48,6 +54,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,6 +65,15 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
     private CosmosAsyncClient clientWithPreferredRegions;
     private CosmosAsyncContainer cosmosAsyncContainer;
     private List<String> preferredRegions;
+
+    @DataProvider(name = "channelAcquisitionExceptionArgProvider")
+    public static Object[][] channelAcquisitionExceptionArgProvider() {
+        return new Object[][]{
+            // OperationType, FaultInjectionOperationType
+            { OperationType.Read, FaultInjectionOperationType.READ_ITEM },
+            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM },
+        };
+    }
 
     @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public ClientRetryPolicyE2ETests(CosmosClientBuilder clientBuilder) {
@@ -242,7 +259,12 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             if (shouldRetryCrossRegion) {
                 try {
                     CosmosDiagnostics cosmosDiagnostics =
-                        this.performDocumentOperation(cosmosAsyncContainer, operationType, newItem).block();
+                        this.performDocumentOperation(
+                            cosmosAsyncContainer,
+                            operationType,
+                            newItem,
+                            (testItem) -> new PartitionKey(testItem.getId())
+                        ).block();
 
                     assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(this.preferredRegions.size());
                     assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(this.preferredRegions)).isTrue();
@@ -251,7 +273,12 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 }
             } else {
                 try {
-                    this.performDocumentOperation(cosmosAsyncContainer, operationType, newItem).block();
+                    this.performDocumentOperation(
+                        cosmosAsyncContainer,
+                        operationType,
+                        newItem,
+                        (testItem) -> new PartitionKey(testItem.getId())
+                    ).block();
                     fail("dataPlaneRequestHttpTimeout() should have failed for operationType " + operationType);
                 } catch (CosmosException e) {
                     System.out.println("dataPlaneRequestHttpTimeout() preferredRegions " + this.preferredRegions.toString() + " " + e.getDiagnostics());
@@ -266,10 +293,108 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         }
     }
 
+    @Test(groups = { "multi-master" }, dataProvider = "channelAcquisitionExceptionArgProvider", timeOut = 8 * TIMEOUT)
+    public void channelAcquisitionExceptionOnWrites(
+        OperationType operationType,
+        FaultInjectionOperationType faultInjectionOperationType) {
+        if (BridgeInternal
+            .getContextClient(this.clientWithPreferredRegions)
+            .getConnectionPolicy()
+            .getConnectionMode() == ConnectionMode.GATEWAY) {
+            throw new SkipException("channelAcquisitionExceptionOnWrites() is only meant for Direct mode");
+        }
+
+        FaultInjectionRule channelAcquisitionExceptionRule = new FaultInjectionRuleBuilder("channelAcquisitionException" + UUID.randomUUID())
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .operationType(faultInjectionOperationType)
+                    .region(this.preferredRegions.get(0))
+                    .build())
+            .result(
+                FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                    .delay(Duration.ofSeconds(2))
+                    .build()
+            )
+            .build();
+
+        DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+        directConnectionConfig.setConnectTimeout(Duration.ofSeconds(1));
+        CosmosAsyncClient testClient = getClientBuilder()
+            .preferredRegions(preferredRegions)
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .endpointDiscoveryEnabled(true)
+            .multipleWriteRegionsEnabled(true)
+            .directMode(directConnectionConfig)
+            .buildAsyncClient();
+        CosmosAsyncContainer testContainer = getSharedSinglePartitionCosmosContainer(testClient);
+        CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(channelAcquisitionExceptionRule)).block();
+
+        try {
+            TestItem createdItem = TestItem.createNewItem();
+            testContainer.createItem(createdItem).block();
+
+            // using a higher concurrency to force channelAcquisitionException to happen
+            AtomicBoolean channelAcquisitionExceptionTriggeredRetryExists = new AtomicBoolean(false);
+            Flux.range(1, 10)
+                .flatMap(index ->
+                    this.performDocumentOperation(
+                        testContainer,
+                        operationType,
+                        createdItem,
+                        (testItem) -> new PartitionKey(testItem.getMypk())))
+                .doOnNext(diagnostics -> {
+                    // since we have only injected connection delay error in one region, so we should only see 2 regions being contacted eventually
+                    assertThat(diagnostics.getContactedRegionNames().size()).isEqualTo(2);
+                    assertThat(diagnostics.getContactedRegionNames().containsAll(this.preferredRegions.subList(0, 2))).isTrue();
+
+                    if (isChannelAcquisitionExceptionTriggeredRegionRetryExists(diagnostics.toString())) {
+                        channelAcquisitionExceptionTriggeredRetryExists.compareAndSet(false, true);
+                    }
+                })
+                .doOnError(throwable -> {
+                    if (throwable instanceof CosmosException) {
+                        fail(
+                            "All the requests should succeeded by retrying on another region. Diagnostics: "
+                                + ((CosmosException)throwable).getDiagnostics());
+                    }
+                })
+                .blockLast();
+
+            assertThat(channelAcquisitionExceptionTriggeredRetryExists.get()).isTrue();
+        } finally {
+            channelAcquisitionExceptionRule.disable();
+
+            if (testClient != null) {
+                cleanUpContainer(testContainer);
+                testClient.close();
+            }
+        }
+    }
+
+    private boolean isChannelAcquisitionExceptionTriggeredRegionRetryExists(String cosmosDiagnostics) {
+        ObjectNode diagnosticsNode;
+        try {
+            diagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        JsonNode responseStatisticsList = diagnosticsNode.get("responseStatisticsList");
+        assertThat(responseStatisticsList.isArray()).isTrue();
+        assertThat(responseStatisticsList.size()).isGreaterThan(2);
+
+        JsonNode lastStoreResultFromFailedRegion = responseStatisticsList.get(responseStatisticsList.size()-2).get("storeResult");
+        assertThat(lastStoreResultFromFailedRegion).isNotNull();
+        JsonNode exceptionMessageNode = lastStoreResultFromFailedRegion.get("exceptionMessage");
+        assertThat(exceptionMessageNode).isNotNull();
+
+        return exceptionMessageNode.asText().contains("ChannelAcquisitionException");
+    }
+
     private Mono<CosmosDiagnostics> performDocumentOperation(
         CosmosAsyncContainer cosmosAsyncContainer,
         OperationType operationType,
-        TestItem createdItem) {
+        TestItem createdItem,
+        Function<TestItem, PartitionKey> extractPartitionKeyFunc) {
         if (operationType == OperationType.Query) {
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
             String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());
@@ -289,7 +414,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                 return cosmosAsyncContainer
                     .readItem(
                         createdItem.getId(),
-                        new PartitionKey(createdItem.getId()),
+                        extractPartitionKeyFunc.apply(createdItem),
                         TestItem.class
                     )
                     .map(itemResponse -> itemResponse.getDiagnostics());
@@ -300,7 +425,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     .replaceItem(
                         createdItem,
                         createdItem.getId(),
-                        new PartitionKey(createdItem.getId()))
+                        extractPartitionKeyFunc.apply(createdItem))
                     .map(itemResponse -> itemResponse.getDiagnostics());
             }
 
@@ -322,7 +447,11 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                         .create()
                         .add("newPath", "newPath");
                 return cosmosAsyncContainer
-                    .patchItem(createdItem.getId(), new PartitionKey(createdItem.getId()), patchOperations, TestItem.class)
+                    .patchItem(
+                        createdItem.getId(),
+                        extractPartitionKeyFunc.apply(createdItem),
+                        patchOperations,
+                        TestItem.class)
                     .map(itemResponse -> itemResponse.getDiagnostics());
             }
         }

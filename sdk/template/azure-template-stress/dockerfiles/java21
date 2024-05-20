@@ -8,13 +8,15 @@ RUN yum -y update
 # Add necessary files to the image
 RUN mkdir /stress
 WORKDIR /stress
+
+ADD ./.vscode /stress/.vscode
 ADD ./sdk/tools /stress/sdk/tools
 ADD ./eng /stress/eng
 ADD ./common /stress/common
 ADD ./sdk/parents /stress/sdk/parents
 ADD ./sdk/template /stress/sdk/template
 
-ARG SKIP_CHECKS="-Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests -Dcodesnippet.skip"
+ARG SKIP_CHECKS="-Dcheckstyle.skip -Dgpg.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip -Djacoco.skip -DskipTests -Dcodesnippet.skip -Dspotless.skip"
 
 # Build dependencies and stress tests
 RUN --mount=type=cache,target=/root/.m2 \

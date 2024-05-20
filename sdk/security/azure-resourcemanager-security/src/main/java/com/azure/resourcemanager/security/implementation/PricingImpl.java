@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.security.implementation;
 
 import com.azure.resourcemanager.security.fluent.models.PricingInner;
+import com.azure.resourcemanager.security.models.Enforce;
 import com.azure.resourcemanager.security.models.Extension;
+import com.azure.resourcemanager.security.models.Inherited;
 import com.azure.resourcemanager.security.models.Pricing;
 import com.azure.resourcemanager.security.models.PricingTier;
+import com.azure.resourcemanager.security.models.ResourcesCoverageStatus;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -51,12 +54,24 @@ public final class PricingImpl implements Pricing {
         return this.innerModel().enablementTime();
     }
 
-    public Boolean deprecated() {
-        return this.innerModel().deprecated();
+    public Enforce enforce() {
+        return this.innerModel().enforce();
     }
 
-    public List<String> replacedBy() {
-        List<String> inner = this.innerModel().replacedBy();
+    public Inherited inherited() {
+        return this.innerModel().inherited();
+    }
+
+    public String inheritedFrom() {
+        return this.innerModel().inheritedFrom();
+    }
+
+    public ResourcesCoverageStatus resourcesCoverageStatus() {
+        return this.innerModel().resourcesCoverageStatus();
+    }
+
+    public List<Extension> extensions() {
+        List<Extension> inner = this.innerModel().extensions();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {
@@ -64,8 +79,12 @@ public final class PricingImpl implements Pricing {
         }
     }
 
-    public List<Extension> extensions() {
-        List<Extension> inner = this.innerModel().extensions();
+    public Boolean deprecated() {
+        return this.innerModel().deprecated();
+    }
+
+    public List<String> replacedBy() {
+        List<String> inner = this.innerModel().replacedBy();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {

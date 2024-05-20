@@ -12,21 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateNetworkMappingInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateNetworkMappingInputProperties model =
-            BinaryData
-                .fromString(
-                    "{\"recoveryFabricName\":\"j\",\"recoveryNetworkId\":\"dpydn\",\"fabricSpecificDetails\":{\"instanceType\":\"FabricSpecificCreateNetworkMappingInput\"}}")
-                .toObject(CreateNetworkMappingInputProperties.class);
+        CreateNetworkMappingInputProperties model = BinaryData.fromString(
+            "{\"recoveryFabricName\":\"j\",\"recoveryNetworkId\":\"dpydn\",\"fabricSpecificDetails\":{\"instanceType\":\"FabricSpecificCreateNetworkMappingInput\"}}")
+            .toObject(CreateNetworkMappingInputProperties.class);
         Assertions.assertEquals("j", model.recoveryFabricName());
         Assertions.assertEquals("dpydn", model.recoveryNetworkId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateNetworkMappingInputProperties model =
-            new CreateNetworkMappingInputProperties()
-                .withRecoveryFabricName("j")
-                .withRecoveryNetworkId("dpydn")
+        CreateNetworkMappingInputProperties model
+            = new CreateNetworkMappingInputProperties().withRecoveryFabricName("j").withRecoveryNetworkId("dpydn")
                 .withFabricSpecificDetails(new FabricSpecificCreateNetworkMappingInput());
         model = BinaryData.fromObject(model).toObject(CreateNetworkMappingInputProperties.class);
         Assertions.assertEquals("j", model.recoveryFabricName());

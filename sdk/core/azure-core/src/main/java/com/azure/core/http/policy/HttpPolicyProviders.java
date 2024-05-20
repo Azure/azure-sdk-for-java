@@ -10,7 +10,38 @@ import java.util.List;
 import java.util.ServiceLoader;
 
 /**
- * This class handles adding SPI plug-able policies to a pipeline automatically.
+ * The {@code HttpPolicyProviders} class is responsible for adding Service Provider Interface (SPI) pluggable policies
+ * to an HTTP pipeline automatically.
+ *
+ * <p>This class is useful when you need to add custom policies to the HTTP pipeline that are loaded using Java's
+ * {@link ServiceLoader}. It provides methods to add policies before and after the retry policy in the pipeline.</p>
+ *
+ * <p><strong>Code sample:</strong></p>
+ *
+ * <p>In this example, an empty list of policies is created. Then, the
+ * {@code HttpPolicyProviders.addBeforeRetryPolicies} method is used to add policies that should be executed before
+ * the retry policy. The {@code HttpPolicyProviders.addAfterRetryPolicies} method is used to add policies that should
+ * be executed after the retry policy. The list of policies can then be used to build an HTTP pipeline.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.HttpPolicyProviders.usage -->
+ * <pre>
+ * List&lt;HttpPipelinePolicy&gt; policies = new ArrayList&lt;&gt;&#40;&#41;;
+ * &#47;&#47; Add policies that should be executed before the retry policy
+ * HttpPolicyProviders.addBeforeRetryPolicies&#40;policies&#41;;
+ * &#47;&#47; Add the retry policy
+ * policies.add&#40;new RetryPolicy&#40;&#41;&#41;;
+ * &#47;&#47; Add policies that should be executed after the retry policy
+ * HttpPolicyProviders.addAfterRetryPolicies&#40;policies&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.HttpPolicyProviders.usage -->
+ *
+ * @see com.azure.core.http.policy
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
+ * @see com.azure.core.http.policy.BeforeRetryPolicyProvider
+ * @see com.azure.core.http.policy.AfterRetryPolicyProvider
  */
 public final class HttpPolicyProviders {
     private static final String INVALID_POLICY = "HttpPipelinePolicy created with %s resulted in a null policy.";

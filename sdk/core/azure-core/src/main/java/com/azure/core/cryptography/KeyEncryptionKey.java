@@ -4,7 +4,8 @@
 package com.azure.core.cryptography;
 
 /**
- * A key which is used to synchronously encrypt, or wrap, another key.
+ * A KeyEncryptionKey defines synchronous methods for encrypting and decrypting keys, also
+ * known as key wrapping and unwrapping. It also supports signing and verifying data using the configured key.
  */
 public interface KeyEncryptionKey {
 
@@ -14,7 +15,7 @@ public interface KeyEncryptionKey {
      * @return The key identifier.
      */
     String getKeyId();
-    
+
     /**
      * Encrypts the specified key using the specified algorithm.
      *
