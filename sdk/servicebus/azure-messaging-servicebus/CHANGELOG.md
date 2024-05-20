@@ -1,6 +1,6 @@
 # Release History
 
-## 7.18.0-beta.1 (Unreleased)
+## 7.18.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 7.18.0-beta.1 (2024-05-15)
+
+### Features Added
+
+- Added the support for batch-delete APIs in Receiver client.
 
 ## 7.17.0 (2024-05-06)
 
