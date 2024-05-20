@@ -5,7 +5,7 @@
     "baseName": {
       "type": "string"
     },
-    "enableMultipleWriteLocations" : {
+    "enableMultipleWriteLocations": {
       "type": "bool",
       "metadata": {
         "description": "Flag to enable or disable multiple write locations on CosmosDB Account"
@@ -44,8 +44,9 @@
         "provisioningState": "Succeeded",
         "failoverPriority": 0,
         "isZoneRedundant": false
-      }],
-      "multiRegionConfiguration": [
+      }
+    ],
+    "multiRegionConfiguration": [
       {
         "locationName": "West Central US",
         "provisioningState": "Succeeded",
@@ -85,7 +86,11 @@
           "maxStalenessPrefix": 100
         },
         "locations": "[variables('locationsConfiguration')]",
-        "capabilities": [],
+        "capabilities": [
+          {
+            "name": "EnableNoSQLVectorSearch"
+          }
+        ],
         "ipRules": []
       }
     },
@@ -112,7 +117,11 @@
           "maxStalenessPrefix": 100
         },
         "locations": "[variables('locationsConfiguration')]",
-        "capabilities": [],
+        "capabilities": [
+          {
+            "name": "EnableNoSQLVectorSearch"
+          }
+        ],
         "ipRules": []
       }
     }

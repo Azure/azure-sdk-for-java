@@ -287,6 +287,8 @@ public class ImplementationBridgeHelpers {
 
             String getRequestContinuation(CosmosQueryRequestOptions options);
 
+            Integer getMaxItemCountForVectorSearch(CosmosQueryRequestOptions options);
+
             void setPartitionKeyDefinition(CosmosQueryRequestOptions options, PartitionKeyDefinition partitionKeyDefinition);
 
             PartitionKeyDefinition getPartitionKeyDefinition(CosmosQueryRequestOptions options);
