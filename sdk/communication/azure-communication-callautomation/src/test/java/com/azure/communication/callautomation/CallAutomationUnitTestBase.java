@@ -15,13 +15,6 @@ import com.azure.communication.callautomation.implementation.models.CallConnecti
 import com.azure.communication.callautomation.implementation.models.CallConnectionStateModelInternal;
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
-import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
-import com.azure.communication.callautomation.models.MediaStreamingOptions;
-import com.azure.communication.callautomation.models.MediaStreamingContentType;
-import com.azure.communication.callautomation.models.MediaStreamingTransport;
-import com.azure.communication.callautomation.models.MediaStreamingSubscription;
-import com.azure.communication.callautomation.models.TranscriptionOptions;
-import com.azure.communication.callautomation.models.TranscriptionTransportType;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -48,26 +41,10 @@ public class CallAutomationUnitTestBase {
     static final String CALL_CALLBACK_URL = "https://REDACTED.com/events";
     static final String CALL_INCOMING_CALL_CONTEXT = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.REDACTED";
     static final String CALL_OPERATION_CONTEXT = "operationContext";
-    static final MediaStreamingSubscription MEDIA_SUBSCRIPTION_ID = new MediaStreamingSubscription();
     static final String DATA_SUBSCRIPTION_ID = "dataSubscriptionId";
     static final String DIALOG_ID = "dialogId";
     static final String BOT_APP_ID = "botAppId";
     static final String ROOM_ID = "roomId";
-
-    static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION = new MediaStreamingOptions(
-        "https://websocket.url.com",
-        MediaStreamingTransport.WEBSOCKET,
-        MediaStreamingContentType.AUDIO,
-        MediaStreamingAudioChannel.MIXED,
-        true
-    );
-
-    static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION = new TranscriptionOptions(
-        "https://websocket.url.com",
-        TranscriptionTransportType.WEBSOCKET,
-        "en-US",
-        true
-    );
 
     public static String generateDownloadResult(String content) {
         return content;
@@ -75,7 +52,7 @@ public class CallAutomationUnitTestBase {
 
     public static String generateCallProperties(String callConnectionId, String serverCallId, String callerId,
                                                 String callerDisplayName, String targetId, String connectionState,
-                                                String subject, String callbackUri, MediaStreamingSubscription mediaStreamingSubscription, String dataSubscriptionId) {
+                                                String subject, String callbackUri, String dataSubscriptionId) {
         CallConnectionPropertiesInternal result = new CallConnectionPropertiesInternal()
             .setCallConnectionId(callConnectionId)
             .setServerCallId(serverCallId)

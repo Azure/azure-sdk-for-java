@@ -18,4 +18,5 @@ public abstract class RecordingStorage {
      * @return the recordingStorageType value.
      */
     public abstract RecordingStorageType getRecordingStorageType();
+
 }

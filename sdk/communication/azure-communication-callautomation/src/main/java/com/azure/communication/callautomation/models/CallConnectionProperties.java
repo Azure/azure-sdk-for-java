@@ -31,8 +31,6 @@ public final class CallConnectionProperties {
     private final List<CommunicationIdentifier> targetParticipants;
     private final CallConnectionState callConnectionState;
     private final String callbackUrl;
-    private final MediaStreamingSubscription mediaStreamingSubscription;
-    private final TranscriptionSubscription transcriptionSubscription;
     private final CommunicationUserIdentifier answeredBy;
     private final String correlationId;
 
@@ -59,8 +57,6 @@ public final class CallConnectionProperties {
         this.targetParticipants = null;
         this.callConnectionState = null;
         this.callbackUrl = null;
-        this.mediaStreamingSubscription = null;
-        this.transcriptionSubscription = null;
         this.answeredBy = null;
         this.correlationId = null;
     }
@@ -79,8 +75,6 @@ public final class CallConnectionProperties {
         this.targetParticipants = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.callbackUrl = callConnectionPropertiesInternal.getCallbackUri();
-        this.mediaStreamingSubscription = null; //#TODO (mediaStreamingSubscription)  callConnectionPropertiesInternal.getMediaStreamingSubscription();
-        this.transcriptionSubscription = null; // #TODO (transcriptionSubscription) callConnectionPropertiesInternal.getTranscriptionSubscription();
         this.answeredBy = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredBy());
         this.correlationId = callConnectionPropertiesInternal.getCorrelationId();
     }
@@ -155,24 +149,6 @@ public final class CallConnectionProperties {
      */
     public String getCallConnectionId() {
         return callConnectionId;
-    }
-
-    /**
-     * Get the MediaStreamingSubscription property: SubscriptionId for media streaming.
-     *
-     * @return the MediaStreamingSubscription value.
-     */
-    public MediaStreamingSubscription getMediaStreamingSubscription() {
-        return mediaStreamingSubscription;
-    }
-
-    /**
-     * Get the TranscriptionSubscription property: SubscriptionId for transcription.
-     *
-     * @return the TranscriptionSubscription value.
-     */
-    public TranscriptionSubscription getTranscriptionSubscription() {
-        return transcriptionSubscription;
     }
 
     /**
