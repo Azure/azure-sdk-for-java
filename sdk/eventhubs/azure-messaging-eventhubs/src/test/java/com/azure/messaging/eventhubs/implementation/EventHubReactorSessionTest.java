@@ -171,17 +171,10 @@ public class EventHubReactorSessionTest {
             Arguments.of(EventPosition.fromEnqueuedTime(enqueuedTime),
                 "amqp.annotation.x-opt-enqueued-time > '1705519331970'"),
 
-            // -1 because replication segment is null.
             Arguments.of(EventPosition.fromSequenceNumber(position),
-                "amqp.annotation.x-opt-sequence-number > '-1:2501'"),
+                "amqp.annotation.x-opt-sequence-number > '-2501'"),
             Arguments.of(EventPosition.fromSequenceNumber(position, true),
-                "amqp.annotation.x-opt-sequence-number >= '-1:2501'"),
-
-            // Passing in a replication segment.
-            Arguments.of(EventPosition.fromSequenceNumber(position, replicationSegment),
-                "amqp.annotation.x-opt-sequence-number > '19:2501'"),
-            Arguments.of(EventPosition.fromSequenceNumber(position, replicationSegment, true),
-                "amqp.annotation.x-opt-sequence-number >= '19:2501'")
+                "amqp.annotation.x-opt-sequence-number >= '2501'")
         );
     }
 

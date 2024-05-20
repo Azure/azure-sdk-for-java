@@ -142,35 +142,6 @@ public final class EventPosition {
     }
 
     /**
-     * Creates a position at the given sequence number with the same replication segment. Replication segments exist
-     * for geo-disaster recovery enabled Event Hub namespaces. The event with the same sequence number will not be
-     * included.  Instead, the next event is returned.
-     *
-     * @param sequenceNumber is the sequence number of the event.
-     * @param replicationSegment the replication segment.
-     * @return An {@link EventPosition} object.
-     */
-    public static EventPosition fromSequenceNumber(long sequenceNumber, int replicationSegment) {
-        return fromSequenceNumber(sequenceNumber, replicationSegment, false);
-    }
-
-    /**
-     * Creates a position at the given sequence number with the same replication segment. Replication segments exist
-     * for geo-disaster recovery enabled Event Hub namespaces.  If {@code isInclusive} is true, the event with the same
-     * sequence number is returned. Otherwise, the next event in the sequence is received.
-     *
-     * @param sequenceNumber is the sequence number of the event.
-     * @param isInclusive If true, the event with the {@code sequenceNumber} and {@code replicationSegment}is included;
-     *     otherwise, the next event will be received.
-     * @param replicationSegment the replication segment.
-     * @return An {@link EventPosition} object.
-     */
-    public static EventPosition fromSequenceNumber(long sequenceNumber, int replicationSegment, boolean isInclusive) {
-        return new EventPosition(isInclusive, null, sequenceNumber, null, replicationSegment);
-    }
-
-
-    /**
      * Gets the boolean value of if the event is included. If true, the event with the {@code sequenceNumber} is
      * included; otherwise, the next event will be received.
      *
