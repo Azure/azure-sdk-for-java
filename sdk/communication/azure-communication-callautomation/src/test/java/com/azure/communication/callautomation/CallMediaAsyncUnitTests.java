@@ -374,45 +374,6 @@ public class CallMediaAsyncUnitTests {
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
-    
-    @Test
-    public void holdWithResponseTest() {
-
-        callMedia = getMockCallMedia(200);
-        HoldOptions options = new HoldOptions(
-            new CommunicationUserIdentifier("id"))
-            .setPlaySourceInfo(new TextSource().setText("audio to play"));
-        StepVerifier.create(
-                callMedia.holdWithResponse(options))
-            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void holdWithResponseNoPromptTest() {
-
-        callMedia = getMockCallMedia(200);
-        HoldOptions options = new HoldOptions(
-            new CommunicationUserIdentifier("id"))
-            .setPlaySourceInfo(new TextSource().setText("audio to play"));
-        StepVerifier.create(
-                callMedia.holdWithResponse(options))
-            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void unholdWithResponseTest() {
-
-        callMedia = getMockCallMedia(200);
-        StepVerifier.create(
-                callMedia.unholdWithResponse(
-                    new CommunicationUserIdentifier("id"),
-                    "operationalContext"
-                ))
-            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
-    }
 
     private CallMediaAsync getMockCallMedia(int expectedStatusCode) {
         CallConnectionAsync callConnection =
@@ -420,61 +381,5 @@ public class CallMediaAsyncUnitTests {
                 Collections.singletonList(new AbstractMap.SimpleEntry<>("", expectedStatusCode)))
             );
         return callConnection.getCallMediaAsync();
-    }
-
-    @Test
-    public void startTranscriptionWithResponse() {
-        callMedia = getMockCallMedia(202);
-        StartTranscriptionOptions options = new StartTranscriptionOptions();
-        options.setOperationContext("operationContext");
-        options.setLocale("en-US");
-        StepVerifier.create(
-                callMedia.startTranscriptionWithResponseAsync(options))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode())
-            )
-            .verifyComplete();
-    }
-    @Test
-    public void stopTranscriptionWithResponse() {
-        callMedia = getMockCallMedia(202);
-        StopTranscriptionOptions options = new StopTranscriptionOptions();
-        options.setOperationContext("operationContext");
-        StepVerifier.create(
-                callMedia.stopTranscriptionWithResponseAsync(options)
-            )
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-    @Test
-    public void updateTranscriptionWithResponse() {
-        callMedia = getMockCallMedia(202);
-        StepVerifier.create(
-                callMedia.updateTranscription("en-US")
-            ).verifyComplete();
-    }
-
-    @Test
-    public void startMediaStreamingWithResponse() {
-        callMedia = getMockCallMedia(202);
-        StartMediaStreamingOptions options = new StartMediaStreamingOptions();
-        options.setOperationCallbackUrl("https://localhost");
-        options.setOperationContext("operationContext");
-        StepVerifier.create(
-                callMedia.startMediaStreamingWithResponseAsync(options))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode())
-            )
-            .verifyComplete();
-    }
-
-    @Test
-    public void stopMediaStreamingWithResponse() {
-        callMedia = getMockCallMedia(202);
-        StopMediaStreamingOptions options = new StopMediaStreamingOptions();
-        options.setOperationCallbackUrl("https://localhost");
-        StepVerifier.create(
-                callMedia.stopMediaStreamingWithResponseAsync(options))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode())
-            )
-            .verifyComplete();
     }
 }

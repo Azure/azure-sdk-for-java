@@ -15,7 +15,6 @@ import com.azure.communication.callautomation.models.events.CancelAddParticipant
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailed;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceived;
-import com.azure.communication.callautomation.models.events.HoldFailed;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.callautomation.models.events.PlayCanceled;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
@@ -26,16 +25,8 @@ import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
-import com.azure.communication.callautomation.models.events.TranscriptionFailed;
-import com.azure.communication.callautomation.models.events.TranscriptionResumed;
-import com.azure.communication.callautomation.models.events.TranscriptionStarted;
-import com.azure.communication.callautomation.models.events.TranscriptionStopped;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
-import com.azure.communication.callautomation.models.events.TranscriptionUpdated;
-import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
-import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
-import com.azure.communication.callautomation.models.events.MediaStreamingFailed;
 import com.azure.communication.callautomation.models.events.ConnectFailed;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.logging.ClientLogger;
@@ -146,24 +137,6 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, CancelAddParticipantSucceeded.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CancelAddParticipantFailed")) {
                 ret = mapper.convertValue(eventData, CancelAddParticipantFailed.class);
-            }   else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStarted")) {
-                ret = mapper.convertValue(eventData, TranscriptionStarted.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionFailed")) {
-                ret = mapper.convertValue(eventData, TranscriptionFailed.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionResumed")) {
-                ret = mapper.convertValue(eventData, TranscriptionResumed.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStopped")) {
-                ret = mapper.convertValue(eventData, TranscriptionStopped.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionUpdated")) {
-                ret = mapper.convertValue(eventData, TranscriptionUpdated.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.HoldFailed")) {
-                ret = mapper.convertValue(eventData, HoldFailed.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.MediaStreamingStarted")) {
-                ret = mapper.convertValue(eventData, MediaStreamingStarted.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.MediaStreamingStopped")) {
-                ret = mapper.convertValue(eventData, MediaStreamingStopped.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.MediaStreamingFailed")) {
-                ret = mapper.convertValue(eventData, MediaStreamingFailed.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.ConnectFailed")) {
                 ret = mapper.convertValue(eventData, ConnectFailed.class);
             }
