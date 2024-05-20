@@ -136,16 +136,11 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         // Sequence number is preferred when geo-replication is enabled.
         // Different from older client library where offset is used first.
         if (eventPosition.getSequenceNumber() != null) {
-            final String replicationSegment = eventPosition.getReplicationSegment() != null
-                ? eventPosition.getReplicationSegment().toString()
-                : DEFAULT_REPLICATION_SEGMENT_STRING;
-            final String position = replicationSegment + ":" + eventPosition.getSequenceNumber();
-
             return String.format(
                 AmqpConstants.AMQP_ANNOTATION_FORMAT,
                 SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
                 isInclusiveFlag,
-                position);
+                eventPosition.getSequenceNumber());
         }
 
         if (eventPosition.getOffset() != null) {
