@@ -7,13 +7,14 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where `StackOverflowError` can happen when using default `ObjectMapper` to serialize `CosmosDiagnostics` - See[PR 40272](https://github.com/Azure/azure-sdk-for-java/pull/40272)
 
 #### Other Changes
 
 ### 4.60.0 (2024-05-19)
 
 #### Features Added
-* Added `cosmosVectorEmbeddingPolicy` in `cosmosContainerProperties` and `vectorIndexes` in `indexPolicy` to support vector search in CosmosDB - See[39379](https://github.com/Azure/azure-sdk-for-java/pull/39379)
+* Added `cosmosVectorEmbeddingPolicy` in `cosmosContainerProperties` and `vectorIndexes` in `indexPolicy` to support vector search in CosmosDB - See[PR 39379](https://github.com/Azure/azure-sdk-for-java/pull/39379)
 * Added support for non-streaming OrderBy query and a query feature `NonStreamingOrderBy` to support Vector Search queries. - See [PR 39897](https://github.com/Azure/azure-sdk-for-java/pull/39897/) 
 * Added the capability to regionally scope session tokens used for operations scoped to a logical partition. - See [PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003)
 
