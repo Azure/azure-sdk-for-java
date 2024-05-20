@@ -153,14 +153,14 @@ public class BlobCheckpointStore implements CheckpointStore {
                 .log(Messages.CHECKPOINT_INFO);
 
             Long sequenceNumber = null;
-            Long offset = null;
+            String offset = null;
             Integer replicationSegment = null;
             if (!CoreUtils.isNullOrEmpty(metadata.get(SEQUENCE_NUMBER))) {
                 sequenceNumber = Long.parseLong(metadata.get(SEQUENCE_NUMBER));
             }
 
             if (!CoreUtils.isNullOrEmpty(metadata.get(OFFSET))) {
-                offset = Long.parseLong(metadata.get(OFFSET));
+                offset = metadata.get(OFFSET);
             }
 
             if (!CoreUtils.isNullOrEmpty(metadata.get(REPLICATION_SEGMENT))) {
