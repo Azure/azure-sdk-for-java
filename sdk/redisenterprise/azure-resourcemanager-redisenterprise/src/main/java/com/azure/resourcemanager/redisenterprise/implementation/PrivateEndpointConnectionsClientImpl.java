@@ -115,7 +115,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Lists all the private endpoint connections associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -153,7 +153,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Lists all the private endpoint connections associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -192,7 +192,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Lists all the private endpoint connections associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -208,7 +208,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Lists all the private endpoint connections associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -226,7 +226,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Lists all the private endpoint connections associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -242,7 +242,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Lists all the private endpoint connections associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -260,7 +260,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Gets the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,7 +303,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Gets the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param context The context to associate with this operation.
@@ -345,7 +345,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Gets the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -365,7 +365,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Gets the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param context The context to associate with this operation.
@@ -385,7 +385,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Gets the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -403,7 +403,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Updates the state of the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param properties The private endpoint connection properties.
@@ -452,7 +452,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Updates the state of the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param properties The private endpoint connection properties.
@@ -500,7 +500,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Updates the state of the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param properties The private endpoint connection properties.
@@ -524,7 +524,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Updates the state of the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param properties The private endpoint connection properties.
@@ -550,7 +550,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Updates the state of the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param properties The private endpoint connection properties.
@@ -571,7 +571,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Updates the state of the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param properties The private endpoint connection properties.
@@ -593,7 +593,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Updates the state of the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param properties The private endpoint connection properties.
@@ -613,7 +613,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Updates the state of the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param properties The private endpoint connection properties.
@@ -634,7 +634,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Updates the state of the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param properties The private endpoint connection properties.
@@ -653,7 +653,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Updates the state of the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param properties The private endpoint connection properties.
@@ -673,7 +673,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Deletes the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -715,7 +715,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Deletes the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param context The context to associate with this operation.
@@ -756,7 +756,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Deletes the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -777,7 +777,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Deletes the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param context The context to associate with this operation.
@@ -800,7 +800,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Deletes the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -818,7 +818,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Deletes the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param context The context to associate with this operation.
@@ -838,7 +838,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Deletes the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -856,7 +856,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Deletes the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param context The context to associate with this operation.
@@ -876,7 +876,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Deletes the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -892,7 +892,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * Deletes the specified private endpoint connection associated with the RedisEnterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
      * resource.
      * @param context The context to associate with this operation.

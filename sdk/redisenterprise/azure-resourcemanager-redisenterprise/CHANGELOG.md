@@ -1,14 +1,44 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
+## 2.1.0-beta.1 (2024-05-20)
+
+- Azure Resource Manager RedisEnterprise client library for Java. This package contains Microsoft Azure SDK for RedisEnterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package tag package-preview-2024-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.ForceLinkParameters` was added
 
-### Bugs Fixed
+* `models.DeferUpgradeSetting` was added
 
-### Other Changes
+#### `models.DatabaseUpdate` was modified
+
+* `redisVersion()` was added
+* `deferUpgrade()` was added
+* `withDeferUpgrade(models.DeferUpgradeSetting)` was added
+
+#### `models.Database$Definition` was modified
+
+* `withDeferUpgrade(models.DeferUpgradeSetting)` was added
+
+#### `models.Database$Update` was modified
+
+* `withDeferUpgrade(models.DeferUpgradeSetting)` was added
+
+#### `models.Database` was modified
+
+* `upgradeDBRedisVersion()` was added
+* `upgradeDBRedisVersion(com.azure.core.util.Context)` was added
+* `forceLinkToReplicationGroup(models.ForceLinkParameters,com.azure.core.util.Context)` was added
+* `redisVersion()` was added
+* `forceLinkToReplicationGroup(models.ForceLinkParameters)` was added
+* `deferUpgrade()` was added
+
+#### `models.Databases` was modified
+
+* `forceLinkToReplicationGroup(java.lang.String,java.lang.String,java.lang.String,models.ForceLinkParameters,com.azure.core.util.Context)` was added
+* `upgradeDBRedisVersion(java.lang.String,java.lang.String,java.lang.String)` was added
+* `upgradeDBRedisVersion(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `forceLinkToReplicationGroup(java.lang.String,java.lang.String,java.lang.String,models.ForceLinkParameters)` was added
 
 ## 2.0.0 (2024-03-14)
 
