@@ -139,7 +139,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
     protected void initializeReadMany(
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap,
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
-        String collectionRid) {
+        DocumentCollection collection) {
         Map<String, String> commonRequestHeaders = createCommonHeadersAsync(this.getFeedOptions(null, null));
 
         for (Map.Entry<PartitionKeyRange, SqlQuerySpec> entry : rangeQueryMap.entrySet()) {
@@ -153,11 +153,13 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                 headers.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
                 headers.put(HttpConstants.HttpHeaders.PAGE_SIZE, Strings.toString(pageSize));
 
+                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().setPartitionKeyDefinition(cosmosQueryRequestOptions, collection.getPartitionKey());
+                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().setCollectionRid(cosmosQueryRequestOptions, collection.getResourceId());
                 return this.createDocumentServiceRequestWithFeedRange(headers,
                     querySpec,
                     null,
                     partitionKeyRange,
-                    collectionRid,
+                    collection.getResourceId(),
                     cosmosQueryRequestOptions.getThroughputControlGroupName());
             };
 
@@ -167,7 +169,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
 
             DocumentProducer<T> dp =
                 createDocumentProducer(
-                    collectionRid,
+                    collection.getResourceId(),
                     null,
                     -1,
                     cosmosQueryRequestOptions,

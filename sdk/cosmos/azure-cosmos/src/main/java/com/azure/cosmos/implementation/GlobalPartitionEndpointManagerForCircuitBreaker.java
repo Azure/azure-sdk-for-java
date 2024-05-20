@@ -47,12 +47,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         checkNotNull(request.requestContext, "requestContext cannot be null!");
 
         PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
-        String resourceId = request.getResourceId();
 
         if (partitionKeyRange == null) {
             return;
         }
 
+        String resourceId = request.getResourceId();
         checkNotNull(resourceId, "resourceId cannot be null!");
 
         logger.info("Handling exception : {}", resourceId);
@@ -507,11 +507,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         }
     }
 
-    private static class PartitionKeyRangeWrapper {
+    public static class PartitionKeyRangeWrapper {
         final PartitionKeyRange partitionKeyRange;
         final String resourceId;
 
-        private PartitionKeyRangeWrapper(PartitionKeyRange partitionKeyRange, String resourceId) {
+        public PartitionKeyRangeWrapper(PartitionKeyRange partitionKeyRange, String resourceId) {
             this.partitionKeyRange = partitionKeyRange;
             this.resourceId = resourceId;
         }
@@ -531,15 +531,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
     }
 
     private enum LocationUnavailabilityStatus {
-        Available(100),
-        FreshUnavailable(200),
-        StaleUnavailable(300);
-
-        private int priority;
-
-        LocationUnavailabilityStatus(int priority) {
-            this.priority = priority;
-        }
+        Available, FreshUnavailable, StaleUnavailable;
     }
 
     private static double getAllowedFailureRatioByStatus(LocationUnavailabilityStatus status) {

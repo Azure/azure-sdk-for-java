@@ -1816,11 +1816,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.requestContext.setExcludeRegions(options.getExcludeRegions());
         }
 
-        if (requestRetryPolicy != null) {
-            requestRetryPolicy.onBeforeSendRequest(request);
-        }
-
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+
         if (serializationDiagnosticsContext != null) {
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
@@ -1829,13 +1826,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.requestContext.setExcludeRegions(options.getExcludeRegions());
         }
 
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
-            this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+        request.requestContext.setPointOperationContext(new PointOperationContext(new AtomicBoolean(false), false));
 
-        return collectionObs.map((Utils.ValueHolder<DocumentCollection> collectionValueHolder) -> {
-            addBatchHeaders(request, serverBatchRequest, collectionValueHolder.v);
-            return request;
-        });
+        return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request)
+            .flatMap(documentCollectionValueHolder -> this.partitionKeyRangeCache.tryLookupAsync(null, documentCollectionValueHolder.v.getResourceId(), null, null)
+                .flatMap(collectionRoutingMapValueHolder -> {
+
+                    addBatchHeaders(request, serverBatchRequest, documentCollectionValueHolder.v);
+
+                    if (Configs.isPartitionLevelCircuitBreakerEnabled() && options != null) {
+                        options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                        addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v);
+                    }
+
+                    if (requestRetryPolicy != null) {
+                        requestRetryPolicy.onBeforeSendRequest(request);
+                    }
+
+                    return Mono.just(request);
+                }));
     }
 
     private RxDocumentServiceRequest addBatchHeaders(RxDocumentServiceRequest request,
@@ -3458,7 +3467,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 sqlQuery,
                 rangeQueryMap,
                 options,
-                collection.getResourceId(),
+                collection,
                 parentResourceLink,
                 activityId,
                 klass,
@@ -4126,7 +4135,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                          RequestOptions options,
                                                          boolean disableAutomaticIdGeneration) {
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
-        return ObservableHelper.inlineIfPossibleAsObs(() -> executeBatchRequestInternal(collectionLink, serverBatchRequest, options, documentClientRetryPolicy, disableAutomaticIdGeneration), documentClientRetryPolicy);
+        AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
+        return handleRegionFeedbackForPointOperation(ObservableHelper
+            .inlineIfPossibleAsObs(() -> executeBatchRequestInternal(
+                collectionLink, serverBatchRequest, options, documentClientRetryPolicy, disableAutomaticIdGeneration, requestReference), documentClientRetryPolicy), requestReference);
     }
 
     private Mono<StoredProcedureResponse> executeStoredProcedureInternal(String storedProcedureLink,
@@ -4170,14 +4182,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                          ServerBatchRequest serverBatchRequest,
                                                                          RequestOptions options,
                                                                          DocumentClientRetryPolicy requestRetryPolicy,
-                                                                         boolean disableAutomaticIdGeneration) {
+                                                                         boolean disableAutomaticIdGeneration,
+                                                                         AtomicReference<RxDocumentServiceRequest> requestReference) {
 
         try {
             logger.debug("Executing a Batch request with number of operations {}", serverBatchRequest.getOperations().size());
 
             Mono<RxDocumentServiceRequest> requestObs = getBatchDocumentRequest(requestRetryPolicy, collectionLink, serverBatchRequest, options, disableAutomaticIdGeneration);
+
             Mono<RxDocumentServiceResponse> responseObservable =
-                requestObs.flatMap(request -> create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options)));
+                requestObs.flatMap(request -> {
+                    requestReference.set(request);
+                    return create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
+                });
 
             return responseObservable
                 .map(serviceResponse -> BatchResponseParser.fromDocumentServiceResponse(serviceResponse, serverBatchRequest, true));
@@ -6032,7 +6049,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             false,
             initialExcludedRegions);
 
-        Set<PartitionKeyRange> partitionKeyRangesWithSuccess = ConcurrentHashMap.newKeySet();
+        Map<GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper, GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess = new ConcurrentHashMap<>();
 
         if (orderedApplicableRegionsForSpeculation.size() < 2) {
             // There is at most one applicable region - no hedging possible

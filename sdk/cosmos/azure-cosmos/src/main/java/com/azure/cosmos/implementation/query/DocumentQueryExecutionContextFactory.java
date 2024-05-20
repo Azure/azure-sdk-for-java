@@ -419,7 +419,7 @@ public class DocumentQueryExecutionContextFactory {
     public static <T> Flux<? extends IDocumentQueryExecutionContext<T>> createReadManyQueryAsync(
         DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient queryClient, String collectionResourceId, SqlQuerySpec sqlQuery,
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap, CosmosQueryRequestOptions cosmosQueryRequestOptions,
-        String resourceId, String collectionLink, UUID activityId, Class<T> klass,
+        DocumentCollection collection, String collectionLink, UUID activityId, Class<T> klass,
         ResourceType resourceTypeEnum,
         final AtomicBoolean isQueryCancelledOnTimeout) {
 
@@ -429,7 +429,7 @@ public class DocumentQueryExecutionContextFactory {
             sqlQuery,
             rangeQueryMap,
             cosmosQueryRequestOptions,
-            resourceId,
+            collection,
             collectionLink,
             activityId,
             klass,

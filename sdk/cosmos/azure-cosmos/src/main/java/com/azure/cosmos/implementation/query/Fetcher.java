@@ -176,7 +176,7 @@ abstract class Fetcher<T> {
 
                 if (request.getResourceType() == ResourceType.Document) {
                     FeedOperationContext feedOperationContext = request.requestContext.getFeedOperationContext();
-                    feedOperationContext.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRange);
+                    feedOperationContext.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId());
                 }
             })
             .doOnError(throwable -> completed.set(true))
@@ -198,7 +198,7 @@ abstract class Fetcher<T> {
                     FeedOperationContext feedOperationContext = request.requestContext.getFeedOperationContext();
 
                     if (feedOperationContext.isThresholdBasedAvailabilityStrategyEnabled()) {
-                        if (!feedOperationContext.getIsRequestHedged() && feedOperationContext.hasPartitionKeyRangeSeenSuccess(request.requestContext.resolvedPartitionKeyRange)) {
+                        if (!feedOperationContext.getIsRequestHedged() && feedOperationContext.hasPartitionKeyRangeSeenSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId())) {
 
                             if (this.globalEndpointManager != null && this.globalPartitionEndpointManagerForCircuitBreaker != null) {
                                 this.tryMarkPartitionKeyRangeAsUnavailable(request);

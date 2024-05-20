@@ -121,6 +121,7 @@ implements IDocumentQueryExecutionContext<T> {
                                                ? this.createQueryDocumentServiceRequest(requestHeaders, querySpec)
                                                : this.createReadFeedDocumentServiceRequest(requestHeaders);
         request.requestContext.resolvedCollectionRid = collectionRid;
+        request.setResourceId(collectionRid);
         request.throughputControlGroupName = throughputControlGroupName;
 
         if (partitionKeyInternal != null) {
