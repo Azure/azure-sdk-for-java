@@ -15,7 +15,7 @@ import java.util.Objects;
 @Fluent
 public final class StartRecordingOptions {
     /**
-     * Either a {@link GroupCallLocator} or {@link ServerCallLocator} {@link RoomCallLocator} for locating the call.
+     * Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      */
     private final CallLocator callLocator;
 
@@ -197,7 +197,7 @@ public final class StartRecordingOptions {
      * @param recordingStorage the recording storage for call recording
      * @return the StartRecordingOptions object itself.
      */
-    public StartRecordingOptions setExternalStorage(RecordingStorage recordingStorage) {
+    public StartRecordingOptions setRecordingStorage(RecordingStorage recordingStorage) {
         this.recordingStorage = recordingStorage;
         return this;
     }
