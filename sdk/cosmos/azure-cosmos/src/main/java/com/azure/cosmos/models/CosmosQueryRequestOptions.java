@@ -632,48 +632,27 @@ public class CosmosQueryRequestOptions {
 
                 @Override
                 public void setPartitionKeyDefinition(CosmosQueryRequestOptions options, PartitionKeyDefinition partitionKeyDefinition) {
-                    options.setPartitionKeyDefinition(partitionKeyDefinition);
+                    options.actualRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
                 }
 
                 @Override
                 public PartitionKeyDefinition getPartitionKeyDefinition(CosmosQueryRequestOptions options) {
-                    return options.getPartitionKeyDefinition();
+                    return options.actualRequestOptions.getPartitionKeyDefinition();
                 }
 
                 @Override
                 public void setCollectionRid(CosmosQueryRequestOptions options, String collectionRid) {
-                    options.setCollectionRid(collectionRid);
+                    options.actualRequestOptions.setCollectionRid(collectionRid);
                 }
 
                 @Override
                 public String getCollectionRid(CosmosQueryRequestOptions options) {
-                    return options.getCollectionRid();
-                }
-
-                @Override
-                public void setPkRangesWithSuccessfulRequests(CosmosQueryRequestOptions options, Set<PartitionKeyRange> pkRangesWithSuccessfulRequests) {
-                    options.setPkRangesWithSuccessfulRequests(pkRangesWithSuccessfulRequests);
-                }
-
-                @Override
-                public Set<PartitionKeyRange> getPkRangesWithSuccessfulRequests(CosmosQueryRequestOptions options) {
-                    return options.getPkRangesWithSuccessfulRequests();
+                    return options.actualRequestOptions.getCollectionRid();
                 }
 
                 @Override
                 public Integer getMaxItemCountForVectorSearch(CosmosQueryRequestOptions options) {
                     return options.getMaxItemCountForVectorSearch();
-                }
-
-                @Override
-                public void setPartitionKeyDefinition(CosmosQueryRequestOptions options, PartitionKeyDefinition partitionKeyDefinition) {
-                    options.setPartitionKeyDefinition(partitionKeyDefinition);
-                }
-
-                @Override
-                public PartitionKeyDefinition getPartitionKeyDefinition(CosmosQueryRequestOptions options) {
-                    return options.getPartitionKeyDefinition();
-
                 }
             });
     }

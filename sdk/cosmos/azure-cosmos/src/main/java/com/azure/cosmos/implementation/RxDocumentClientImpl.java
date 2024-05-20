@@ -109,7 +109,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -540,7 +539,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig = isRegionScopedSessionCapturingEnabled;
 
             this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
-            this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.globalPartitionEndpointManagerForCircuitBreaker = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManager);
 
             ((GlobalPartitionEndpointManagerForCircuitBreaker) this.globalPartitionEndpointManagerForCircuitBreaker).init();
@@ -576,7 +574,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
        return diagnostics;
     }
-    private void initializeGatewayConfigurationReader() {
+    private DatabaseAccount initializeGatewayConfigurationReader() {
         this.gatewayConfigurationReader = new GatewayServiceConfigurationReader(this.globalEndpointManager);
         DatabaseAccount databaseAccount = this.globalEndpointManager.getLatestDatabaseAccount();
         //Database account should not be null here,
@@ -603,9 +601,44 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
-
+        return databaseAccount;
         // TODO: add support for openAsync
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
+    }
+
+    private void resetSessionContainerIfNeeded(DatabaseAccount databaseAccount) {
+        boolean isRegionScopingOfSessionTokensPossible = this.isRegionScopingOfSessionTokensPossible(databaseAccount, this.useMultipleWriteLocations, this.isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig);
+
+        if (isRegionScopingOfSessionTokensPossible) {
+            this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), this.sessionCapturingDisabled, this.globalEndpointManager);
+            this.diagnosticsClientConfig.withRegionScopedSessionContainerOptions((RegionScopedSessionContainer) this.sessionContainer);
+        }
+    }
+
+    private boolean isRegionScopingOfSessionTokensPossible(DatabaseAccount databaseAccount, boolean useMultipleWriteLocations, boolean isRegionScopedSessionCapturingEnabled) {
+
+        if (!isRegionScopedSessionCapturingEnabled) {
+            return false;
+        }
+
+        if (!useMultipleWriteLocations) {
+            return false;
+        }
+
+        Iterable<DatabaseAccountLocation> readableLocationsIterable = databaseAccount.getReadableLocations();
+        Iterator<DatabaseAccountLocation> readableLocationsIterator = readableLocationsIterable.iterator();
+
+        while (readableLocationsIterator.hasNext()) {
+            DatabaseAccountLocation readableLocation = readableLocationsIterator.next();
+
+            String normalizedReadableRegion = readableLocation.getName().toLowerCase(Locale.ROOT).trim().replace(" ", "");
+
+            if (RegionNameToRegionIdMap.getRegionId(normalizedReadableRegion) == -1) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private void updateGatewayProxy() {
@@ -613,6 +646,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         (this.gatewayProxy).setCollectionCache(this.collectionCache);
         (this.gatewayProxy).setPartitionKeyRangeCache(this.partitionKeyRangeCache);
         (this.gatewayProxy).setUseMultipleWriteLocations(this.useMultipleWriteLocations);
+        (this.gatewayProxy).setSessionContainer(this.sessionContainer);
     }
 
     public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
@@ -631,11 +665,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.userAgentContainer,
                 this.globalEndpointManager,
                 this.reactorHttpClient,
-                this.apiType);
-
                 this.apiType,
                 this.globalPartitionEndpointManagerForCircuitBreaker);
+
             this.globalEndpointManager.init();
+
             DatabaseAccount databaseAccountSnapshot = this.initializeGatewayConfigurationReader();
             this.resetSessionContainerIfNeeded(databaseAccountSnapshot);
 
@@ -675,7 +709,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     this,
                     this.connectionPolicy.getPreferredRegions());
             clientTelemetry.init().thenEmpty((publisher) -> {
-                logger.info(
+                logger.warn(
                     "Initialized DocumentClient [{}] with machineId[{}]"
                         + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}]",
                     clientId,
@@ -877,7 +911,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Database, OperationType.Create);
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(database);
+            ByteBuffer byteBuffer = database.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1013,7 +1047,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options == null) {
             return null;
         }
-        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getOperationContext(options);
+        return qryOptAccessor.getImpl(options).getOperationContextAndListenerTuple();
     }
 
     private OperationContextAndListenerTuple getOperationContextAndListenerTuple(RequestOptions options) {
@@ -1046,7 +1080,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosQueryRequestOptions nonNullQueryOptions = state.getQueryOptions();
 
         UUID correlationActivityIdOfRequestOptions = qryOptAccessor
-            .getCorrelationActivityId(nonNullQueryOptions);
+            .getImpl(nonNullQueryOptions)
+            .getCorrelationActivityId();
         UUID correlationActivityId = correlationActivityIdOfRequestOptions != null ?
             correlationActivityIdOfRequestOptions : randomUuid();
 
@@ -1283,7 +1318,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Create);
 
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(collection);
+            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1304,7 +1339,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return this.create(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)).map(response -> toResourceResponse(response, DocumentCollection.class))
                        .doOnNext(resourceResponse -> {
                     // set the session token
-                    this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
+                    this.sessionContainer.setSessionToken(
+                        request,
+                        resourceResponse.getResource().getResourceId(),
                         getAltLink(resourceResponse.getResource()),
                         resourceResponse.getResponseHeaders());
                 });
@@ -1334,7 +1371,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String path = Utils.joinPath(collection.getSelfLink(), null);
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Replace);
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(collection);
+            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1358,7 +1395,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .doOnNext(resourceResponse -> {
                     if (resourceResponse.getResource() != null) {
                         // set the session token
-                        this.sessionContainer.setSessionToken(resourceResponse.getResource().getResourceId(),
+                        this.sessionContainer.setSessionToken(
+                            request,
+                            resourceResponse.getResource().getResourceId(),
                             getAltLink(resourceResponse.getResource()),
                             resourceResponse.getResponseHeaders());
                     }
@@ -1521,7 +1560,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         for (int i = 0; i < objectArray.size(); ++i) {
             Object object = objectArray.get(i);
             if (object instanceof JsonSerializable) {
-                stringArray[i] = ModelBridgeInternal.toJsonFromJsonSerializable((JsonSerializable) object);
+                stringArray[i] = ((JsonSerializable) object).toJson();
             } else {
 
                 // POJO, ObjectNode, number, STRING or Boolean
@@ -1651,7 +1690,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     headers.put(HttpConstants.HttpHeaders.OFFER_THROUGHPUT, String.valueOf(offer.getThroughput()));
                 } else if (offer.getOfferAutoScaleSettings() != null) {
                     headers.put(HttpConstants.HttpHeaders.OFFER_AUTOPILOT_SETTINGS,
-                        ModelBridgeInternal.toJsonFromJsonSerializable(offer.getOfferAutoScaleSettings()));
+                        offer.getOfferAutoScaleSettings().toJson());
                 }
             }
         }
@@ -1755,6 +1794,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         request.setPartitionKeyInternal(partitionKeyInternal);
+        request.setPartitionKeyDefinition(partitionKeyDefinition);
         request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
     }
 
@@ -1778,7 +1818,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null) {
             trackingId = options.getTrackingId();
         }
-        ByteBuffer content = InternalObjectNode.serializeJsonToByteBuffer(document, mapper, trackingId);
+        ByteBuffer content = InternalObjectNode.serializeJsonToByteBuffer(document, options.getEffectiveItemSerializer(), trackingId);
         Instant serializationEndTimeUTC = Instant.now();
 
         SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
@@ -1909,6 +1949,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         request.getHeaders().put(HttpConstants.HttpHeaders.IS_BATCH_ATOMIC, String.valueOf(serverBatchRequest.isAtomicBatch()));
         request.getHeaders().put(HttpConstants.HttpHeaders.SHOULD_BATCH_CONTINUE_ON_ERROR, String.valueOf(serverBatchRequest.isShouldContinueOnError()));
 
+        request.setPartitionKeyDefinition(collection.getPartitionKey());
         request.setNumberOfItemsInBatchRequest(serverBatchRequest.getOperations().size());
 
         return request;
@@ -3601,7 +3642,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             BridgeInternal.getClientSideRequestStatics(cosmosException.getDiagnostics())));
                 } else {
                     CosmosItemResponse<T> cosmosItemResponse =
-                        ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, effectiveItemDeserializer);
+                        itemResponseAccessor.createCosmosItemResponse(resourceResponse, klass, effectiveItemSerializer);
+
                     feedResponse = ModelBridgeInternal.createFeedResponse(
                             Arrays.asList(cosmosItemResponse.getItem()),
                             cosmosItemResponse.getResponseHeaders());
@@ -3623,22 +3665,33 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return queryDocuments(collectionLink, new SqlQuerySpec(query), state, classOfT);
     }
 
-    private <T> ItemDeserializer getEffectiveItemDeserializer(
-            CosmosQueryRequestOptions queryRequestOptions,
-            Class<T> klass) {
-
-        Function<JsonNode, T> factoryMethod = queryRequestOptions == null ?
-                null :
-                ImplementationBridgeHelpers
-                        .CosmosQueryRequestOptionsHelper
-                        .getCosmosQueryRequestOptionsAccessor()
-                        .getItemFactoryMethod(queryRequestOptions, klass);
-
-        if (factoryMethod == null) {
-            return this.itemDeserializer; // using default itemDeserializer
+    @Override
+    public CosmosItemSerializer getEffectiveItemSerializer(CosmosItemSerializer requestOptionsItemSerializer) {
+        if (requestOptionsItemSerializer != null) {
+            return requestOptionsItemSerializer;
         }
 
-        return new ItemDeserializer.JsonDeserializer(factoryMethod);
+        if (this.defaultCustomSerializer != null) {
+            return this.defaultCustomSerializer;
+        }
+
+        return CosmosItemSerializer.DEFAULT_SERIALIZER;
+    }
+
+    private <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosQueryRequestOptions queryRequestOptions) {
+
+        CosmosItemSerializer requestOptionsItemSerializer =
+            queryRequestOptions != null ? queryRequestOptions.getCustomItemSerializer() :  null;
+
+        return this.getEffectiveItemSerializer(requestOptionsItemSerializer);
+    }
+
+    private <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosItemRequestOptions itemRequestOptions) {
+
+        CosmosItemSerializer requestOptionsItemSerializer =
+            itemRequestOptions != null ? itemRequestOptions.getCustomItemSerializer() :  null;
+
+        return this.getEffectiveItemSerializer(requestOptionsItemSerializer);
     }
 
     private IDocumentQueryClient documentQueryClientImpl(RxDocumentClientImpl rxDocumentClientImpl, OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -3711,6 +3764,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     req,
                     feedOperation
                 );
+            }
+
+            @Override
+            public <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosQueryRequestOptions queryRequestOptions) {
+                return RxDocumentClientImpl.this.getEffectiveItemSerializer(queryRequestOptions);
             }
 
             @Override
@@ -5299,12 +5357,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    public Object getSession() {
+    public ISessionContainer getSession() {
         return this.sessionContainer;
     }
 
-    public void setSession(Object sessionContainer) {
-        this.sessionContainer = (SessionContainer) sessionContainer;
+    public void setSession(ISessionContainer sessionContainer) {
+        this.sessionContainer = sessionContainer;
     }
 
     @Override
@@ -5444,12 +5502,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.warn("Already shutdown!");
         }
     }
-
-    @Override
-    public ItemDeserializer getItemDeserializer() {
-        return this.itemDeserializer;
-    }
-
     @Override
     public synchronized void enableThroughputControlGroup(ThroughputControlGroupInternal group, Mono<Integer> throughputQueryMono) {
         checkNotNull(group, "Throughput control group can not be null");

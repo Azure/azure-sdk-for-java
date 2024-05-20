@@ -4,21 +4,20 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
-import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKind;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.api.Assertions;
 import org.testng.SkipException;
@@ -775,17 +774,17 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             RequestOptions option = new RequestOptions();
             option.setSessionToken(sessionToken);
             option.setPartitionKey(new PartitionKey(2));
-            writeClient.readDocument(childResource2.getResource().getSelfLink(), option).block();
+            writeClient.readDocument(childResource2.getResource().getSelfLink(), option, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId())).block();
 
             option = new RequestOptions();
             option.setSessionToken(StringUtils.EMPTY);
             option.setPartitionKey(new PartitionKey(1));
-            writeClient.readDocument(childResource1.getResource().getSelfLink(), option).block();
+            writeClient.readDocument(childResource1.getResource().getSelfLink(), option, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId())).block();
 
             option = new RequestOptions();
             option.setSessionToken(sessionToken);
             option.setPartitionKey(new PartitionKey(1));
-            Mono<ResourceResponse<Document>> readObservable = writeClient.readDocument(childResource1.getResource().getSelfLink(), option);
+            Mono<ResourceResponse<Document>> readObservable = writeClient.readDocument(childResource1.getResource().getSelfLink(), option, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
             FailureValidator failureValidator =
                     new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
             validateFailure(readObservable, failureValidator);

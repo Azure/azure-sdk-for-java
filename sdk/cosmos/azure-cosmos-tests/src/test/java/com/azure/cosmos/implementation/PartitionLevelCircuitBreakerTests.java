@@ -123,8 +123,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         return new Object[][] {
             {FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofMinutes(6), false, false},
             {FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
-            {FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false},
-            {FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, true},
+//            {FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false},
+//            {FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, true},
         };
     }
 

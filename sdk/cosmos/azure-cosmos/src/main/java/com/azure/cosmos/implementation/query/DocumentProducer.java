@@ -206,19 +206,10 @@ class DocumentProducer<T> {
                         pageSize,
                         Paginator.getPreFetchCount(cosmosQueryRequestOptions, top, pageSize),
                         qryOptionsAccessor.getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
-                        qryOptionsAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions)
+                        qryOptionsAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
+                    client.getGlobalEndpointManager(),
+                    client.getGlobalPartitionEndpointManagerForCircuitBreaker()
                 )
-                        ImplementationBridgeHelpers
-                            .CosmosQueryRequestOptionsHelper
-                            .getCosmosQueryRequestOptionsAccessor()
-                            .getOperationContext(cosmosQueryRequestOptions),
-                        ImplementationBridgeHelpers
-                            .CosmosQueryRequestOptionsHelper
-                            .getCosmosQueryRequestOptionsAccessor()
-                            .getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
-                        client.getGlobalEndpointManager(),
-                        client.getGlobalPartitionEndpointManagerForCircuitBreaker()
-                    )
                 .map(rsp -> {
                     this.lastResponseContinuationToken = rsp.getContinuationToken();
                     this.fetchExecutionRangeAccumulator.endFetchRange(rsp.getActivityId(),
@@ -286,7 +277,7 @@ class DocumentProducer<T> {
                                         + " last continuation token is [{}]. - Context: {}",
                                     feedRange,
                                     partitionKeyRangesValueHolder.v.stream()
-                                        .map(ModelBridgeInternal::toJsonFromJsonSerializable)
+                                        .map(JsonSerializable::toJson)
                                         .collect(Collectors.joining(", ")),
                                     lastResponseContinuationToken,
                                     this.operationContextTextProvider.get());

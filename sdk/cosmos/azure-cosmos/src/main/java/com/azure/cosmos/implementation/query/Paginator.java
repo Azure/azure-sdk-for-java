@@ -58,7 +58,9 @@ public class Paginator {
             maxPageSize,
             getPreFetchCount(cosmosQueryRequestOptions, top, maxPageSize),
             qryOptAccessor.getImpl(cosmosQueryRequestOptions).getOperationContextAndListenerTuple(),
-            qryOptAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions));
+            qryOptAccessor.getCancelledRequestDiagnosticsTracker(cosmosQueryRequestOptions),
+            globalEndpointManager,
+            globalPartitionEndpointManagerForCircuitBreaker);
     }
 
     public static <T> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(

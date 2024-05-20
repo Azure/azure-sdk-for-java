@@ -52,7 +52,6 @@ public class StoreClient implements IStoreClient {
     private final DiagnosticsClientContext diagnosticsClientContext;
     private final Logger logger = LoggerFactory.getLogger(StoreClient.class);
     private final GatewayServiceConfigurationReader serviceConfigurationReader;
-
     private final ISessionContainer sessionContainer;
     private final IAddressResolver addressResolver;
     private final ReplicatedResourceClient replicatedResourceClient;
@@ -84,6 +83,7 @@ public class StoreClient implements IStoreClient {
             sessionRetryOptions);
 
         addressResolver.setOpenConnectionsProcessor(this.transportClient.getProactiveOpenConnectionsProcessor());
+        this.addressResolver = addressResolver;
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
@@ -191,6 +191,13 @@ public class StoreClient implements IStoreClient {
         RxDocumentServiceResponse rxDocumentServiceResponse =
             new RxDocumentServiceResponse(this.diagnosticsClientContext, storeResponse);
         rxDocumentServiceResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
+
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker = addressResolver.getGlobalPartitionEndpointManagerForCircuitBreaker();
+
+        if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+            globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request);
+        }
+
         return rxDocumentServiceResponse;
     }
 
