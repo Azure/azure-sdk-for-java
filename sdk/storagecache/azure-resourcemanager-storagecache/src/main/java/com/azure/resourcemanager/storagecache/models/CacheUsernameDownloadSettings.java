@@ -25,15 +25,13 @@ public final class CacheUsernameDownloadSettings {
     private UsernameSource usernameSource;
 
     /*
-     * The URI of the file containing group information (in /etc/group file format). This field must be populated when
-     * 'usernameSource' is set to 'File'.
+     * The URI of the file containing group information (in /etc/group file format). This field must be populated when 'usernameSource' is set to 'File'.
      */
     @JsonProperty(value = "groupFileURI")
     private String groupFileUri;
 
     /*
-     * The URI of the file containing user information (in /etc/passwd file format). This field must be populated when
-     * 'usernameSource' is set to 'File'.
+     * The URI of the file containing user information (in /etc/passwd file format). This field must be populated when 'usernameSource' is set to 'File'.
      */
     @JsonProperty(value = "userFileURI")
     private String userFileUri;
@@ -57,22 +55,19 @@ public final class CacheUsernameDownloadSettings {
     private Boolean encryptLdapConnection;
 
     /*
-     * Determines if the certificates must be validated by a certificate authority. When true, caCertificateURI must be
-     * provided.
+     * Determines if the certificates must be validated by a certificate authority. When true, caCertificateURI must be provided.
      */
     @JsonProperty(value = "requireValidCertificate")
     private Boolean requireValidCertificate;
 
     /*
-     * Determines if the certificate should be automatically downloaded. This applies to 'caCertificateURI' only if
-     * 'requireValidCertificate' is true.
+     * Determines if the certificate should be automatically downloaded. This applies to 'caCertificateURI' only if 'requireValidCertificate' is true.
      */
     @JsonProperty(value = "autoDownloadCertificate")
     private Boolean autoDownloadCertificate;
 
     /*
-     * The URI of the CA certificate to validate the LDAP secure connection. This field must be populated when
-     * 'requireValidCertificate' is set to true.
+     * The URI of the CA certificate to validate the LDAP secure connection. This field must be populated when 'requireValidCertificate' is set to true.
      */
     @JsonProperty(value = "caCertificateURI")
     private String caCertificateUri;
@@ -116,8 +111,7 @@ public final class CacheUsernameDownloadSettings {
     }
 
     /**
-     * Get the usernameSource property: This setting determines how the cache gets username and group names for
-     * clients.
+     * Get the usernameSource property: This setting determines how the cache gets username and group names for clients.
      * 
      * @return the usernameSource value.
      */
@@ -126,8 +120,7 @@ public final class CacheUsernameDownloadSettings {
     }
 
     /**
-     * Set the usernameSource property: This setting determines how the cache gets username and group names for
-     * clients.
+     * Set the usernameSource property: This setting determines how the cache gets username and group names for clients.
      * 
      * @param usernameSource the usernameSource value to set.
      * @return the CacheUsernameDownloadSettings object itself.
@@ -138,8 +131,8 @@ public final class CacheUsernameDownloadSettings {
     }
 
     /**
-     * Get the groupFileUri property: The URI of the file containing group information (in /etc/group file format).
-     * This field must be populated when 'usernameSource' is set to 'File'.
+     * Get the groupFileUri property: The URI of the file containing group information (in /etc/group file format). This
+     * field must be populated when 'usernameSource' is set to 'File'.
      * 
      * @return the groupFileUri value.
      */
@@ -148,8 +141,8 @@ public final class CacheUsernameDownloadSettings {
     }
 
     /**
-     * Set the groupFileUri property: The URI of the file containing group information (in /etc/group file format).
-     * This field must be populated when 'usernameSource' is set to 'File'.
+     * Set the groupFileUri property: The URI of the file containing group information (in /etc/group file format). This
+     * field must be populated when 'usernameSource' is set to 'File'.
      * 
      * @param groupFileUri the groupFileUri value to set.
      * @return the CacheUsernameDownloadSettings object itself.
