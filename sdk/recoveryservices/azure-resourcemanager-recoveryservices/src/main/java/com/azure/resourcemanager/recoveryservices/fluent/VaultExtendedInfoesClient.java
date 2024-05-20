@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultExtendedInfoResourceInner;
 
-/** An instance of this class provides access to all the operations defined in VaultExtendedInfoesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VaultExtendedInfoesClient.
+ */
 public interface VaultExtendedInfoesClient {
     /**
      * Get the vault extended info.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
@@ -24,12 +26,12 @@ public interface VaultExtendedInfoesClient {
      * @return the vault extended info along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VaultExtendedInfoResourceInner> getWithResponse(
-        String resourceGroupName, String vaultName, Context context);
+    Response<VaultExtendedInfoResourceInner> getWithResponse(String resourceGroupName, String vaultName,
+        Context context);
 
     /**
      * Get the vault extended info.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,7 +44,7 @@ public interface VaultExtendedInfoesClient {
 
     /**
      * Create vault extended info.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
@@ -53,15 +55,12 @@ public interface VaultExtendedInfoesClient {
      * @return vault extended information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VaultExtendedInfoResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        VaultExtendedInfoResourceInner resourceExtendedInfoDetails,
-        Context context);
+    Response<VaultExtendedInfoResourceInner> createOrUpdateWithResponse(String resourceGroupName, String vaultName,
+        VaultExtendedInfoResourceInner resourceExtendedInfoDetails, Context context);
 
     /**
      * Create vault extended info.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
@@ -71,12 +70,12 @@ public interface VaultExtendedInfoesClient {
      * @return vault extended information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VaultExtendedInfoResourceInner createOrUpdate(
-        String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails);
+    VaultExtendedInfoResourceInner createOrUpdate(String resourceGroupName, String vaultName,
+        VaultExtendedInfoResourceInner resourceExtendedInfoDetails);
 
     /**
      * Update vault extended info.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
@@ -87,15 +86,12 @@ public interface VaultExtendedInfoesClient {
      * @return vault extended information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VaultExtendedInfoResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        VaultExtendedInfoResourceInner resourceExtendedInfoDetails,
-        Context context);
+    Response<VaultExtendedInfoResourceInner> updateWithResponse(String resourceGroupName, String vaultName,
+        VaultExtendedInfoResourceInner resourceExtendedInfoDetails, Context context);
 
     /**
      * Update vault extended info.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param resourceExtendedInfoDetails Details of ResourceExtendedInfo.
@@ -105,6 +101,6 @@ public interface VaultExtendedInfoesClient {
      * @return vault extended information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VaultExtendedInfoResourceInner update(
-        String resourceGroupName, String vaultName, VaultExtendedInfoResourceInner resourceExtendedInfoDetails);
+    VaultExtendedInfoResourceInner update(String resourceGroupName, String vaultName,
+        VaultExtendedInfoResourceInner resourceExtendedInfoDetails);
 }

@@ -14,40 +14,24 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientDiscoveryForPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientDiscoveryForProperties model =
-            BinaryData
-                .fromString(
-                    "{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"oxgvclt\",\"displayName\":\"sncghkjeszz\",\"blobDuration\":\"ijhtxf\"},{\"name\":\"xbf\",\"displayName\":\"xnehmpvec\",\"blobDuration\":\"odebfqkkrbmpu\"},{\"name\":\"riwflzlfb\",\"displayName\":\"puz\",\"blobDuration\":\"ispnqzahmgkbrp\"}]}}")
-                .toObject(ClientDiscoveryForProperties.class);
-        Assertions.assertEquals("oxgvclt", model.serviceSpecification().logSpecifications().get(0).name());
-        Assertions.assertEquals("sncghkjeszz", model.serviceSpecification().logSpecifications().get(0).displayName());
-        Assertions.assertEquals("ijhtxf", model.serviceSpecification().logSpecifications().get(0).blobDuration());
+        ClientDiscoveryForProperties model = BinaryData.fromString(
+            "{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"cukoklyaxuconu\",\"displayName\":\"zf\",\"blobDuration\":\"eyp\"}]}}")
+            .toObject(ClientDiscoveryForProperties.class);
+        Assertions.assertEquals("cukoklyaxuconu", model.serviceSpecification().logSpecifications().get(0).name());
+        Assertions.assertEquals("zf", model.serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions.assertEquals("eyp", model.serviceSpecification().logSpecifications().get(0).blobDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientDiscoveryForProperties model =
-            new ClientDiscoveryForProperties()
-                .withServiceSpecification(
-                    new ClientDiscoveryForServiceSpecification()
-                        .withLogSpecifications(
-                            Arrays
-                                .asList(
-                                    new ClientDiscoveryForLogSpecification()
-                                        .withName("oxgvclt")
-                                        .withDisplayName("sncghkjeszz")
-                                        .withBlobDuration("ijhtxf"),
-                                    new ClientDiscoveryForLogSpecification()
-                                        .withName("xbf")
-                                        .withDisplayName("xnehmpvec")
-                                        .withBlobDuration("odebfqkkrbmpu"),
-                                    new ClientDiscoveryForLogSpecification()
-                                        .withName("riwflzlfb")
-                                        .withDisplayName("puz")
-                                        .withBlobDuration("ispnqzahmgkbrp"))));
+        ClientDiscoveryForProperties model
+            = new ClientDiscoveryForProperties().withServiceSpecification(new ClientDiscoveryForServiceSpecification()
+                .withLogSpecifications(Arrays.asList(new ClientDiscoveryForLogSpecification().withName("cukoklyaxuconu")
+                    .withDisplayName("zf")
+                    .withBlobDuration("eyp"))));
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryForProperties.class);
-        Assertions.assertEquals("oxgvclt", model.serviceSpecification().logSpecifications().get(0).name());
-        Assertions.assertEquals("sncghkjeszz", model.serviceSpecification().logSpecifications().get(0).displayName());
-        Assertions.assertEquals("ijhtxf", model.serviceSpecification().logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("cukoklyaxuconu", model.serviceSpecification().logSpecifications().get(0).name());
+        Assertions.assertEquals("zf", model.serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions.assertEquals("eyp", model.serviceSpecification().logSpecifications().get(0).blobDuration());
     }
 }
