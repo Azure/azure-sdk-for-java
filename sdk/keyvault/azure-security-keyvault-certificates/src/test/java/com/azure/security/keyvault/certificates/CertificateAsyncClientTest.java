@@ -873,7 +873,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         importCertificateRunner((importCertificateOptions) ->
             StepVerifier.create(certificateAsyncClient.importCertificate(importCertificateOptions))
                 .assertNext(importedCertificate -> {
-                    assertTrue("db1497bc2c82b365c5c7c73f611513ee117790a9"
+                    assertTrue("73b4319cdf38e0797084535d9c02fd04d4b2b2e6"
                         .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintAsString()));
                     assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
@@ -881,8 +881,10 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
                     X509Certificate x509Certificate = assertDoesNotThrow(
                         () -> loadCerToX509Certificate(importedCertificate.getCer()));
 
-                    assertEquals("CN=KeyVaultTest", x509Certificate.getSubjectX500Principal().getName());
-                    assertEquals("CN=KeyVaultTest", x509Certificate.getIssuerX500Principal().getName());
+                    assertTrue(x509Certificate.getSubjectX500Principal().getName()
+                        .contains("CN=Test,OU=Test,O=Contoso,L=Redmond,ST=WA,C=US"));
+                    assertTrue(x509Certificate.getIssuerX500Principal().getName()
+                        .contains("CN=Test,OU=Test,O=Contoso,L=Redmond,ST=WA,C=US"));
                 })
                 .verifyComplete());
     }

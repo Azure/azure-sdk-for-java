@@ -195,8 +195,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             {
                 // self link
                 ResourceResponse<DocumentCollection> collection = writeClient.createCollection(createdDatabase.getSelfLink(), getCollectionDefinition(), null).block();
-                String globalSessionToken1 = ((SessionContainer) writeClient.getSession()).getSessionToken(collection.getResource().getSelfLink());
-                String globalSessionToken2 = ((SessionContainer) writeClient.getSession()).getSessionToken(BridgeInternal.getAltLink(collection.getResource()));
+                String globalSessionToken1 = writeClient.getSession().getSessionToken(collection.getResource().getSelfLink());
+                String globalSessionToken2 = writeClient.getSession().getSessionToken(BridgeInternal.getAltLink(collection.getResource()));
                 System.out.println("BridgeInternal.getAltLink(collection.getResource()) " + BridgeInternal.getAltLink(collection.getResource()));
                 assertThat(collection.getSessionToken()).isEqualTo(globalSessionToken1);
                 assertThat(collection.getSessionToken()).isEqualTo(globalSessionToken2);
@@ -210,8 +210,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 // name link
                 ResourceResponse<DocumentCollection> collection = writeClient.createCollection(BridgeInternal.getAltLink(createdDatabase), getCollectionDefinition(), null).block();
 
-                String globalSessionToken1 = ((SessionContainer) writeClient.getSession()).getSessionToken(collection.getResource().getSelfLink());
-                String globalSessionToken2 = ((SessionContainer) writeClient.getSession()).getSessionToken(BridgeInternal.getAltLink(collection.getResource()));
+                String globalSessionToken1 = writeClient.getSession().getSessionToken(collection.getResource().getSelfLink());
+                String globalSessionToken2 = writeClient.getSession().getSessionToken(BridgeInternal.getAltLink(collection.getResource()));
                 assertThat(collection.getSessionToken()).isEqualTo(globalSessionToken1);
                 //assertThat(collection.getSessionToken()).isEqualTo(globalSessionToken2);
 
@@ -228,8 +228,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 ResourceResponse<Document> document = writeClient.createDocument(BridgeInternal.getAltLink(coll),
                                                                                  document2, null, false)
                         .block();
-                String globalSessionToken1 = ((SessionContainer) writeClient.getSession()).getSessionToken(coll.getSelfLink());
-                String globalSessionToken2 = ((SessionContainer) writeClient.getSession()).getSessionToken(BridgeInternal.getAltLink(coll));
+                String globalSessionToken1 = writeClient.getSession().getSessionToken(coll.getSelfLink());
+                String globalSessionToken2 = writeClient.getSession().getSessionToken(BridgeInternal.getAltLink(coll));
 
                 Assertions.assertThat(globalSessionToken1.indexOf(document.getSessionToken())).isNotNegative();
                 Assertions.assertThat(globalSessionToken2.indexOf(document.getSessionToken())).isNotNegative();
@@ -242,8 +242,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 ResourceResponse<Document> document = writeClient.createDocument(BridgeInternal.getAltLink(coll),
                                                                                  document2, null, false)
                         .block();
-                String globalSessionToken1 = ((SessionContainer) writeClient.getSession()).getSessionToken(coll.getSelfLink());
-                String globalSessionToken2 = ((SessionContainer) writeClient.getSession()).getSessionToken(BridgeInternal.getAltLink(coll));
+                String globalSessionToken1 = writeClient.getSession().getSessionToken(coll.getSelfLink());
+                String globalSessionToken2 = writeClient.getSession().getSessionToken(BridgeInternal.getAltLink(coll));
 
                 Assertions.assertThat(globalSessionToken1.indexOf(document.getSessionToken())).isNotNegative();
                 Assertions.assertThat(globalSessionToken2.indexOf(document.getSessionToken())).isNotNegative();
@@ -381,7 +381,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         return readLagging;
     }
 
-    void validateSessionContainerAfterCollectionDeletion(boolean useGateway) throws Exception {
+    void validateSessionContainerAfterCollectionDeletion(boolean useGateway, boolean isRegionScopedSessionContainerEnabled) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -395,6 +395,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -406,6 +407,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -444,8 +446,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             }
             // verify the client2 has the same token.
             {
-                String token1 = ((SessionContainer) client2.getSession()).getSessionToken(BridgeInternal.getAltLink(collection));
-                String token2 = ((SessionContainer) client2.getSession()).getSessionToken(collection.getSelfLink());
+                String token1 = getGlobalSessionToken(client2, collection, true, isRegionScopedSessionContainerEnabled);
+                String token2 = getGlobalSessionToken(client2, collection, false, isRegionScopedSessionContainerEnabled);
                 assertThat(token1).isEqualTo(token2);
             }
 
@@ -457,9 +459,9 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             collectionDefinition.setId(collectionId);
             DocumentCollection collectionSameName = createCollection(client2, createdDatabase.getId(), collectionDefinition);
             String documentId1 = "Generation2-" + 0;
-            Document databaseDefinition2 = getDocumentDefinition();
-            databaseDefinition2.setId(documentId1);
-            Document createdDocument = client1.createDocument(collectionSameName.getSelfLink(), databaseDefinition2, null, true).block().getResource();
+            Document documentDefinition2 = getDocumentDefinition();
+            documentDefinition2.setId(documentId1);
+            Document createdDocument = client1.createDocument(collectionSameName.getSelfLink(), documentDefinition2, null, true).block().getResource();
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.setPartitionKey(new PartitionKey(createdDocument.get("mypk")));
             ResourceResponseValidator<Document> successValidator = new ResourceResponseValidator.Builder<Document>()
@@ -468,14 +470,14 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             Mono<ResourceResponse<Document>> readObservable = client1.readDocument(createdDocument.getSelfLink(), requestOptions);
             validateSuccess(readObservable, successValidator);
             {
-                String token1 = ((SessionContainer) client1.getSession()).getSessionToken(BridgeInternal.getAltLink(collectionSameName));
-                String token2 = ((SessionContainer) client1.getSession()).getSessionToken(collectionSameName.getSelfLink());
+                String token1 = getGlobalSessionToken(client1, collectionSameName, true, isRegionScopedSessionContainerEnabled);
+                String token2 = getGlobalSessionToken(client1, collectionSameName, false, isRegionScopedSessionContainerEnabled);
                 assertThat(token1).isEqualTo(token2);
             }
 
             {
                 // Client2 read using getName link should fail with higher LSN.
-                String token = ((SessionContainer) client1.getSession()).getSessionToken(collectionSameName.getSelfLink());
+                String token = getGlobalSessionToken(client1, collectionSameName, false, isRegionScopedSessionContainerEnabled);
                 // artificially bump to higher LSN
                 String higherLsnToken = this.getDifferentLSNToken(token, 2000);
                 RequestOptions requestOptions1 = new RequestOptions();
@@ -488,8 +490,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             // this will trigger client2 to clear the token
             {
                 // verify token by altlink is gone!
-                String token1 = ((SessionContainer) client2.getSession()).getSessionToken(BridgeInternal.getAltLink(collectionSameName));
-                String token2 = ((SessionContainer) client2.getSession()).getSessionToken(collection.getSelfLink());
+                String token1 = getGlobalSessionToken(client2, collectionSameName, true, isRegionScopedSessionContainerEnabled);
+                String token2 = getGlobalSessionToken(client2, collection, false, isRegionScopedSessionContainerEnabled);
                 assertThat(token1).isEmpty();
                 //assertThat(token2).isNotEmpty(); In java both SelfLink and AltLink token remain in sync.
             }
@@ -511,8 +513,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                 validateSuccess(readObservable, successValidator);
 
                 client1.deleteCollection(collectionSameName.getSelfLink(), null).block();
-                String token1 = ((SessionContainer) client2.getSession()).getSessionToken(BridgeInternal.getAltLink(collectionSameName));
-                String token2 = ((SessionContainer) client2.getSession()).getSessionToken(collectionSameName.getSelfLink());
+                String token1 = getGlobalSessionToken(client2, collectionSameName, true, isRegionScopedSessionContainerEnabled);
+                String token2 = getGlobalSessionToken(client2, collectionSameName, false, isRegionScopedSessionContainerEnabled);
                 // currently we can't delete the token from Altlink when deleting using selflink
                 assertThat(token1).isNotEmpty();
                 //assertThat(token2).isEmpty(); In java both SelfLink and AltLink token remain in sync.
@@ -524,7 +526,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
     }
 
-    void validateSessionTokenWithPreConditionFailure(boolean useGateway) throws Exception {
+    void validateSessionTokenWithPreConditionFailureBase(boolean useGateway, boolean isRegionScopedSessionContainerEnabled) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -538,6 +540,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -549,6 +552,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -569,7 +573,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                     documentResponse.getResource(), requestOptions1, true);
             FailureValidator failureValidator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.PRECONDITION_FAILED).build();
             validateFailure(preConditionFailureResponseObservable, failureValidator);
-            assertThat(isSessionEqual(((SessionContainer) validationClient.getSession()), (SessionContainer) writeClient.getSession())).isTrue();
+            assertThat(isSessionEqual(validationClient.getSession(), writeClient.getSession())).isTrue();
 
         } finally {
             safeClose(writeClient);
@@ -577,7 +581,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         }
     }
 
-    void validateSessionTokenWithDocumentNotFoundException(boolean useGateway) throws Exception {
+    void validateSessionTokenWithDocumentNotFoundExceptionBase(boolean useGateway, boolean isRegionScopedSessionCapturingEnabled) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -591,6 +595,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -602,6 +607,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -618,14 +624,14 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             // try to read a non existent document in the same partition that we previously wrote to
             Mono<ResourceResponse<Document>> readObservable = validationClient.readDocument(BridgeInternal.getAltLink(documentResponse.getResource()) + "dummy", requestOptions);
             validateFailure(readObservable, failureValidator);
-            assertThat(isSessionEqual(((SessionContainer) validationClient.getSession()), (SessionContainer) writeClient.getSession())).isTrue();
+            assertThat(isSessionEqual(validationClient.getSession(), writeClient.getSession())).isTrue();
         } finally {
             safeClose(writeClient);
             safeClose(validationClient);
         }
     }
 
-    void validateSessionTokenWithExpectedException(boolean useGateway) throws Exception {
+    void validateSessionTokenWithExpectedExceptionBase(boolean useGateway, boolean isRegionScopedSessionCapturingEnabled) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -639,6 +645,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -658,13 +665,12 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             Mono<ResourceResponse<Document>> readObservable = writeClient.readDocument(BridgeInternal.getAltLink(documentResponse.getResource()),
                     requestOptions);
             validateFailure(readObservable, failureValidator);
-
         } finally {
             safeClose(writeClient);
         }
     }
 
-    void validateSessionTokenWithConflictException(boolean useGateway) {
+    void validateSessionTokenWithConflictExceptionBase(boolean useGateway, boolean isRegionScopedSessionCapturingEnabled) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -678,6 +684,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -689,6 +696,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -703,13 +711,14 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                     documentDefinition, null,
                     true);
             validateFailure(conflictDocumentResponse, failureValidator);
+            assertThat(isSessionEqual(validationClient.getSession(), writeClient.getSession())).isTrue();
         } finally {
             safeClose(writeClient);
             safeClose(validationClient);
         }
     }
 
-    void validateSessionTokenMultiPartitionCollection(boolean useGateway) throws Exception {
+    void validateSessionTokenMultiPartitionCollectionBase(boolean useGateway, boolean isRegionScopedSessionCapturingEnabled) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -723,6 +732,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -743,17 +753,18 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             logger.info("Created {} child resource", childResource1.getResource().getResourceId());
             assertThat(childResource1.getSessionToken()).isNotNull();
             assertThat(childResource1.getSessionToken().contains(":")).isTrue();
-            String globalSessionToken1 = ((SessionContainer) writeClient.getSession()).getSessionToken(createdCollection.getSelfLink());
-            assertThat(globalSessionToken1.contains(childResource1.getSessionToken()));
+            String globalSessionToken1 = writeClient.getSession().getSessionToken(createdCollection.getSelfLink());
+            assertThat(globalSessionToken1.contains(childResource1.getSessionToken())).isTrue();
 
             // Document to lock pause/resume clients
             Document document2 = new Document();
             document2.setId("test" + UUID.randomUUID().toString());
             document2.set("mypk", 2, CosmosItemSerializer.DEFAULT_SERIALIZER);
             ResourceResponse<Document> childResource2 = writeClient.createDocument(createdCollection.getSelfLink(), document2, null, true).block();
+            assertThat(childResource2).isNotNull();
             assertThat(childResource2.getSessionToken()).isNotNull();
             assertThat(childResource2.getSessionToken().contains(":")).isTrue();
-            String globalSessionToken2 = ((SessionContainer) writeClient.getSession()).getSessionToken(createdCollection.getSelfLink());
+            String globalSessionToken2 = writeClient.getSession().getSessionToken(createdCollection.getSelfLink());
             logger.info("globalsessiontoken2 {}, childtoken1 {}, childtoken2 {}", globalSessionToken2, childResource1.getSessionToken(), childResource2.getSessionToken());
             assertThat(globalSessionToken2.contains(childResource2.getSessionToken())).isTrue();
 
@@ -784,17 +795,17 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                     new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
             validateFailure(readObservable, failureValidator);
 
-            assertThat(((SessionContainer) writeClient.getSession()).getSessionToken(createdCollection.getSelfLink())).isEqualTo
-                    (((SessionContainer) writeClient.getSession()).getSessionToken(BridgeInternal.getAltLink(createdCollection)));
+            assertThat(writeClient.getSession().getSessionToken(createdCollection.getSelfLink())).isEqualTo
+                    (writeClient.getSession().getSessionToken(BridgeInternal.getAltLink(createdCollection)));
 
-            assertThat(((SessionContainer) writeClient.getSession()).getSessionToken("asdfasdf")).isEmpty();
-            assertThat(((SessionContainer) writeClient.getSession()).getSessionToken(createdDatabase.getSelfLink())).isEmpty();
+            assertThat(writeClient.getSession().getSessionToken("asdfasdf")).isEmpty();
+            assertThat(writeClient.getSession().getSessionToken(createdDatabase.getSelfLink())).isEmpty();
         } finally {
             safeClose(writeClient);
         }
     }
 
-    void validateSessionTokenFromCollectionReplaceIsServerToken(boolean useGateway) {
+    void validateSessionTokenFromCollectionReplaceIsServerTokenBase(boolean useGateway, boolean isRegionScopedSessionCapturingEnabled) {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -808,6 +819,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -819,25 +831,45 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             requestOptions.setPartitionKey(new PartitionKey(doc.get("mypk")));
             Document doc1 = client1.readDocument(BridgeInternal.getAltLink(doc), requestOptions).block().getResource();
 
-            String token1 = ((SessionContainer) client1.getSession()).getSessionToken(createdCollection.getSelfLink());
+            String token1 = client1.getSession().getSessionToken(createdCollection.getSelfLink());
             client2 = (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
                     .withServiceEndpoint(TestConfigurations.HOST)
                     .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withContentResponseOnWriteEnabled(true)
+                    .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                     .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
                     .build();
             client2.replaceCollection(createdCollection, null).block();
-            String token2 = ((SessionContainer) client2.getSession()).getSessionToken(createdCollection.getSelfLink());
+            String token2 = client2.getSession().getSessionToken(createdCollection.getSelfLink());
 
             logger.info("Token after document and after collection replace {} = {}", token1, token2);
         } finally {
             safeClose(client1);
             safeClose(client2);
         }
+    }
+
+    private static String getGlobalSessionToken(RxDocumentClientImpl client, DocumentCollection collection, boolean useAltLink, boolean isRegionScopedSessionTokenCapturingEnabled) {
+
+        if (isRegionScopedSessionTokenCapturingEnabled) {
+
+            if (useAltLink) {
+                return client.getSession().getSessionToken(collection.getAltLink());
+            } else {
+                return client.getSession().getSessionToken(collection.getSelfLink());
+            }
+        } else {
+            if (useAltLink) {
+                return client.getSession().getSessionToken(collection.getAltLink());
+            } else {
+                return client.getSession().getSessionToken(collection.getSelfLink());
+            }
+        }
+
     }
 
     @AfterClass(groups = {"direct"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -887,6 +919,18 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         return doc;
     }
 
+    private boolean isSessionEqual(ISessionContainer sessionContainer1, ISessionContainer sessionContainer2) throws Exception {
+
+        if (sessionContainer1 instanceof SessionContainer && sessionContainer2 instanceof SessionContainer) {
+            return isSessionEqual((SessionContainer) sessionContainer1, (SessionContainer) sessionContainer2);
+        } else if (sessionContainer1 instanceof RegionScopedSessionContainer && sessionContainer2 instanceof RegionScopedSessionContainer) {
+            return isSessionEqual((RegionScopedSessionContainer) sessionContainer1, (RegionScopedSessionContainer) sessionContainer2);
+        }
+
+        logger.warn("The session containers are not of type SessionContainer / RegionScopedSessionContainer");
+        return false;
+    }
+
     @SuppressWarnings({"unchecked", "rawtypes"})
     private boolean isSessionEqual(SessionContainer sessionContainer1, SessionContainer sessionContainer2) throws Exception {
         if (sessionContainer1 == null) {
@@ -933,6 +977,77 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         for (String collectionName : collectionNameToCollectionResourceId1.keySet()) {
             if (!collectionNameToCollectionResourceId1.get(collectionName).equals(collectionNameToCollectionResourceId2.get(collectionName))) {
                 return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isSessionEqual(RegionScopedSessionContainer regionScopedSessionContainer1, RegionScopedSessionContainer regionScopedSessionContainer2) throws NoSuchFieldException, IllegalAccessException {
+        if (regionScopedSessionContainer1 == null) {
+            return false;
+        }
+
+        if (regionScopedSessionContainer2 == null) {
+            return false;
+        }
+
+        if (regionScopedSessionContainer1 == regionScopedSessionContainer2) {
+            return true;
+        }
+
+        Field fieldCollectionResourceIdToRegionScopedSessionTokens1 = RegionScopedSessionContainer.class.getDeclaredField("collectionResourceIdToPartitionScopedRegionLevelProgress");
+        Field fieldCollectionNameToCollectionResourceId1 = RegionScopedSessionContainer.class.getDeclaredField("collectionNameToCollectionResourceId");
+        Field fieldPkRangeIdToRegionLevelProgress = PartitionScopedRegionLevelProgress.class.getDeclaredField("partitionKeyRangeIdToRegionLevelProgress");
+
+        fieldCollectionResourceIdToRegionScopedSessionTokens1.setAccessible(true);
+        fieldCollectionNameToCollectionResourceId1.setAccessible(true);
+        fieldPkRangeIdToRegionLevelProgress.setAccessible(true);
+
+        ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress> collectionResourceIdToSessionTokens1 =
+            (ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress>) fieldCollectionResourceIdToRegionScopedSessionTokens1.get(regionScopedSessionContainer1);
+        ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId1 = (ConcurrentHashMap<String, Long>) fieldCollectionNameToCollectionResourceId1.get(regionScopedSessionContainer1);
+
+
+        Field fieldCollectionResourceIdToRegionScopedSessionTokens2 = RegionScopedSessionContainer.class.getDeclaredField("collectionResourceIdToPartitionScopedRegionLevelProgress");
+        Field fieldCollectionNameToCollectionResourceId2 = RegionScopedSessionContainer.class.getDeclaredField("collectionNameToCollectionResourceId");
+        fieldCollectionResourceIdToRegionScopedSessionTokens2.setAccessible(true);
+        fieldCollectionNameToCollectionResourceId2.setAccessible(true);
+        ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress> collectionResourceIdToSessionTokens2 =
+            (ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress>) fieldCollectionResourceIdToRegionScopedSessionTokens2.get(regionScopedSessionContainer2);
+        ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId2 = (ConcurrentHashMap<String, Long>) fieldCollectionNameToCollectionResourceId2.get(regionScopedSessionContainer2);
+
+        if (collectionResourceIdToSessionTokens1.size() != collectionResourceIdToSessionTokens2.size() ||
+            collectionNameToCollectionResourceId1.size() != collectionNameToCollectionResourceId2.size()) {
+            return false;
+        }
+
+        // get keys, and compare entries
+        for (String collectionName : collectionNameToCollectionResourceId1.keySet()) {
+            PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress1 = collectionResourceIdToSessionTokens1.get(collectionNameToCollectionResourceId1.get(collectionName));
+            PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress2 = collectionResourceIdToSessionTokens2.get(collectionNameToCollectionResourceId1.get(collectionName));
+
+            ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>> pkRangeIdToRegionLevelProgressMappings1 = (ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>>) fieldPkRangeIdToRegionLevelProgress.get(partitionScopedRegionLevelProgress1);
+            ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>> pkRangeIdToRegionLevelProgressMappings2 = (ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>>) fieldPkRangeIdToRegionLevelProgress.get(partitionScopedRegionLevelProgress2);
+
+            for (String pkRangeId : pkRangeIdToRegionLevelProgressMappings1.keySet()) {
+                ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress> regionToProgressMappings1 = pkRangeIdToRegionLevelProgressMappings1.get(pkRangeId);
+                ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress> regionToProgressMappings2 = pkRangeIdToRegionLevelProgressMappings2.get(pkRangeId);
+
+                for (String regionOrProgressScope : regionToProgressMappings1.keySet()) {
+                    PartitionScopedRegionLevelProgress.RegionLevelProgress regionLevelProgress1 = regionToProgressMappings1.get(regionOrProgressScope);
+                    PartitionScopedRegionLevelProgress.RegionLevelProgress regionLevelProgress2 = regionToProgressMappings2.get(regionOrProgressScope);
+
+                    if (regionLevelProgress1 != null && regionLevelProgress2 == null
+                        || regionLevelProgress1 == null && regionLevelProgress2 != null) {
+                        return false;
+                    }
+
+                    if (regionLevelProgress1 != null && regionLevelProgress2 != null) {
+
+                        return regionLevelProgress1.equals(regionLevelProgress2);
+                    }
+                }
             }
         }
 

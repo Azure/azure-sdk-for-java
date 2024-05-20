@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SkipTargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkipTarget model
-            = BinaryData.fromString("{\"type\":\"Member\",\"name\":\"twwrqp\"}").toObject(SkipTarget.class);
+        SkipTarget model = BinaryData.fromString("{\"type\":\"Member\",\"name\":\"cxgod\"}").toObject(SkipTarget.class);
         Assertions.assertEquals(TargetType.MEMBER, model.type());
-        Assertions.assertEquals("twwrqp", model.name());
+        Assertions.assertEquals("cxgod", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkipTarget model = new SkipTarget().withType(TargetType.MEMBER).withName("twwrqp");
+        SkipTarget model = new SkipTarget().withType(TargetType.MEMBER).withName("cxgod");
         model = BinaryData.fromObject(model).toObject(SkipTarget.class);
         Assertions.assertEquals(TargetType.MEMBER, model.type());
-        Assertions.assertEquals("twwrqp", model.name());
+        Assertions.assertEquals("cxgod", model.name());
     }
 }

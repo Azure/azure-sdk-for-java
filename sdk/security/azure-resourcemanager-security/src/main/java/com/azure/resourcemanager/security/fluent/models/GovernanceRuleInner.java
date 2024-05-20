@@ -238,8 +238,7 @@ public final class GovernanceRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management
-     * scopes).
+     * Get the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management scopes).
      * 
      * @return the excludedScopes value.
      */
@@ -248,8 +247,7 @@ public final class GovernanceRuleInner extends ProxyResource {
     }
 
     /**
-     * Set the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management
-     * scopes).
+     * Set the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management scopes).
      * 
      * @param excludedScopes the excludedScopes value to set.
      * @return the GovernanceRuleInner object itself.
@@ -311,8 +309,8 @@ public final class GovernanceRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the ownerSource property: The owner source for the governance rule - e.g. Manually by user@contoso.com - see
-     * example.
+     * Get the ownerSource property: The owner source for the governance rule - e.g. Manually by user&#064;contoso.com -
+     * see example.
      * 
      * @return the ownerSource value.
      */
@@ -321,8 +319,8 @@ public final class GovernanceRuleInner extends ProxyResource {
     }
 
     /**
-     * Set the ownerSource property: The owner source for the governance rule - e.g. Manually by user@contoso.com - see
-     * example.
+     * Set the ownerSource property: The owner source for the governance rule - e.g. Manually by user&#064;contoso.com -
+     * see example.
      * 
      * @param ownerSource the ownerSource value to set.
      * @return the GovernanceRuleInner object itself.

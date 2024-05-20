@@ -35,8 +35,14 @@ public final class ReclassifyExceptionAction extends ExceptionAction {
     private Map<String, RouterValue> labelsToUpsert;
 
     /** Creates an instance of ReclassifyExceptionAction class. */
-    public ReclassifyExceptionAction() {
-        this.kind = ExceptionActionKind.RECLASSIFY;
+    public ReclassifyExceptionAction() {}
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public ExceptionActionKind getKind() {
+        return ExceptionActionKind.RECLASSIFY;
     }
 
     /**

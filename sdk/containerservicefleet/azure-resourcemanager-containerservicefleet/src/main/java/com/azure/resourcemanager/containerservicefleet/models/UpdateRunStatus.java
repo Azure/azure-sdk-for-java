@@ -26,8 +26,7 @@ public final class UpdateRunStatus {
     private List<UpdateStageStatus> stages;
 
     /*
-     * The node image upgrade specs for the update run. It is only set in update run when `NodeImageSelection.type` is
-     * `Consistent`.
+     * The node image upgrade specs for the update run. It is only set in update run when `NodeImageSelection.type` is `Consistent`.
      */
     @JsonProperty(value = "nodeImageSelection", access = JsonProperty.Access.WRITE_ONLY)
     private NodeImageSelectionStatus nodeImageSelection;

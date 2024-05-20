@@ -169,6 +169,14 @@ stages:
                     parameters:
                       ArtifactName: ${{parameters.ArtifactName}}-javadevfeed-$(System.JobAttempt)
                       ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                  - template: /eng/common/pipelines/templates/steps/create-apireview.yml
+                    parameters:
+                      ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                      Artifacts: ${{parameters.Artifacts}}
+                      ConfigFileDir: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/PackageInfo
+                      MarkPackageAsShipped: true
+                      ArtifactName: ${{parameters.ArtifactName}}-signed
+                      SourceRootPath: $(Pipeline.Workspace)/azure-sdk-for-java
 
         - deployment: UpdatePackageVersion
           displayName: "Update Package Version"
@@ -239,8 +247,6 @@ stages:
 
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
-            - name: DocValidationImageId
-              value: azuresdkimages.azurecr.io/javarefautocr:latest
 
           strategy:
             runOnce:
@@ -261,6 +267,8 @@ stages:
 
                   - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
 
+                  - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
+
                   - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                     parameters:
                       PackageInfoLocations:
@@ -274,7 +282,6 @@ stages:
                       SparseCheckoutPaths:
                         - docs-ref-services/
                         - metadata/
-                      DocValidationImageId: "$(DocValidationImageId)"
 
         - deployment: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
@@ -305,7 +312,6 @@ stages:
                       - template: /eng/common/pipelines/templates/steps/publish-blobs.yml
                         parameters:
                           FolderForUpload: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}'
-                          BlobSASKey: '$(azure-sdk-docs-prod-sas)'
                           BlobName: '$(azure-sdk-docs-prod-blob-name)'
                           TargetLanguage: 'java'
                           ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}

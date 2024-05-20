@@ -9,9 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class FleetMembersCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-02-02-preview/
-     * examples/FleetMembers_Create.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2024-04-01/examples/FleetMembers_Create.json
      */
     /**
      * Sample code: Creates a FleetMember resource with a long running operation.
@@ -20,8 +18,11 @@ public final class FleetMembersCreateSamples {
      */
     public static void createsAFleetMemberResourceWithALongRunningOperation(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleetMembers().define("member-1").withExistingFleet("rg1", "fleet1").withClusterResourceId(
-            "/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster-1")
+        manager.fleetMembers()
+            .define("member-1")
+            .withExistingFleet("rg1", "fleet1")
+            .withClusterResourceId(
+                "/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster-1")
             .create();
     }
 }

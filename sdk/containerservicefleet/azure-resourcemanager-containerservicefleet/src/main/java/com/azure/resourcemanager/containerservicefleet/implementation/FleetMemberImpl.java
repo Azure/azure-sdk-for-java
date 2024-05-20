@@ -81,14 +81,18 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
     }
 
     public FleetMember create() {
-        this.innerObject = serviceManager.serviceClient().getFleetMembers().create(resourceGroupName, fleetName,
-            fleetMemberName, this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetMembers()
+            .create(resourceGroupName, fleetName, fleetMemberName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                Context.NONE);
         return this;
     }
 
     public FleetMember create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFleetMembers().create(resourceGroupName, fleetName,
-            fleetMemberName, this.innerModel(), createIfMatch, createIfNoneMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetMembers()
+            .create(resourceGroupName, fleetName, fleetMemberName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                context);
         return this;
     }
 
@@ -108,14 +112,16 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
     }
 
     public FleetMember apply() {
-        this.innerObject = serviceManager.serviceClient().getFleetMembers().update(resourceGroupName, fleetName,
-            fleetMemberName, updateProperties, updateIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetMembers()
+            .update(resourceGroupName, fleetName, fleetMemberName, updateProperties, updateIfMatch, Context.NONE);
         return this;
     }
 
     public FleetMember apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFleetMembers().update(resourceGroupName, fleetName,
-            fleetMemberName, updateProperties, updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetMembers()
+            .update(resourceGroupName, fleetName, fleetMemberName, updateProperties, updateIfMatch, context);
         return this;
     }
 
@@ -129,14 +135,18 @@ public final class FleetMemberImpl implements FleetMember, FleetMember.Definitio
     }
 
     public FleetMember refresh() {
-        this.innerObject = serviceManager.serviceClient().getFleetMembers()
-            .getWithResponse(resourceGroupName, fleetName, fleetMemberName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetMembers()
+            .getWithResponse(resourceGroupName, fleetName, fleetMemberName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FleetMember refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFleetMembers()
-            .getWithResponse(resourceGroupName, fleetName, fleetMemberName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFleetMembers()
+            .getWithResponse(resourceGroupName, fleetName, fleetMemberName, context)
+            .getValue();
         return this;
     }
 

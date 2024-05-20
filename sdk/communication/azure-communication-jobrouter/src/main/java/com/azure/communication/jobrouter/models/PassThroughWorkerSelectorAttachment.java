@@ -51,7 +51,14 @@ public final class PassThroughWorkerSelectorAttachment extends WorkerSelectorAtt
             @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
         this.key = key;
         this.labelOperator = labelOperator;
-        this.kind = WorkerSelectorAttachmentKind.PASS_THROUGH;
+    }
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public WorkerSelectorAttachmentKind getKind() {
+        return WorkerSelectorAttachmentKind.PASS_THROUGH;
     }
 
     /**

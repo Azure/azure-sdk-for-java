@@ -117,7 +117,7 @@ public class FaultInjectionServerErrorResultInternal {
 
             case READ_SESSION_NOT_AVAILABLE:
 
-                final String badSessionToken = "1:1#1#1=1#1=1";
+                final String badSessionToken = partitionKeyRangeId + ":" + "1#1#1=1#1=1";
 
                 responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE));

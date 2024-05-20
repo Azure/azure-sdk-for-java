@@ -80,8 +80,8 @@ public final class FleetMemberListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model FleetMemberListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model FleetMemberListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

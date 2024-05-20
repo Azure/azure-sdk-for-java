@@ -62,8 +62,7 @@ public final class ApiCollectionProperties {
     private Long numberOfExternalApiEndpoints;
 
     /*
-     * The number of API endpoints in this API collection which are exposing sensitive data in their requests and/or
-     * responses.
+     * The number of API endpoints in this API collection which are exposing sensitive data in their requests and/or responses.
      */
     @JsonProperty(value = "numberOfApiEndpointsWithSensitiveDataExposed", access = JsonProperty.Access.WRITE_ONLY)
     private Long numberOfApiEndpointsWithSensitiveDataExposed;
@@ -137,8 +136,8 @@ public final class ApiCollectionProperties {
     }
 
     /**
-     * Get the numberOfUnauthenticatedApiEndpoints property: The number of API endpoints in this API collection that
-     * are unauthenticated.
+     * Get the numberOfUnauthenticatedApiEndpoints property: The number of API endpoints in this API collection that are
+     * unauthenticated.
      * 
      * @return the numberOfUnauthenticatedApiEndpoints value.
      */
@@ -157,8 +156,8 @@ public final class ApiCollectionProperties {
     }
 
     /**
-     * Get the numberOfApiEndpointsWithSensitiveDataExposed property: The number of API endpoints in this API
-     * collection which are exposing sensitive data in their requests and/or responses.
+     * Get the numberOfApiEndpointsWithSensitiveDataExposed property: The number of API endpoints in this API collection
+     * which are exposing sensitive data in their requests and/or responses.
      * 
      * @return the numberOfApiEndpointsWithSensitiveDataExposed value.
      */

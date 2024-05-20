@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,7 +20,8 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
     public void canCRUDRoleAssignment() throws Exception {
         String roleAssignmentName = generateRandomUuid();
         String spName = generateRandomResourceName("sp", 20);
-
+        // Disable `$.appId` sanitizer for this test
+        interceptorManager.removeSanitizers(Arrays.asList("AZSDK3432"));
         ServicePrincipal sp =
             authorizationManager.servicePrincipals().define(spName).withNewApplication().create();
 

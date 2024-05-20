@@ -20,7 +20,7 @@ from generate_data import (
 )
 from generate_utils import (
     compare_with_maven_package,
-    compile_package,
+    compile_arm_package,
     generate,
     get_and_update_service_from_api_specs,
     get_suffix_from_api_specs,
@@ -215,7 +215,7 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
             tag = tag,
         )
         if succeeded:
-            compile_package(sdk_root, module)
+            compile_arm_package(sdk_root, module)
 
         packages.append({
             'packageName':
@@ -294,7 +294,7 @@ def main():
     )
 
     if succeeded:
-        succeeded = compile_package(sdk_root, module)
+        succeeded = compile_arm_package(sdk_root, module)
         if succeeded:
             compare_with_maven_package(sdk_root, service, stable_version,
                                     current_version, module)

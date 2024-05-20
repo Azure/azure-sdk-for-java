@@ -14,11 +14,14 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
 public class CommunicationMessagesTestBase extends TestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(CommunicationMessagesTestBase.class);
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING_CPM",
@@ -101,7 +104,7 @@ public class CommunicationMessagesTestBase extends TestProxyTestBase {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
 
                 // Should sanitize printed reponse url
-                System.out.println("MS-CV header for request "
+                LOGGER.log(LogLevel.VERBOSE, () -> "MS-CV header for request "
                     + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                 return Mono.just(bufferedResponse);
             });
