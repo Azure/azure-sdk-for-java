@@ -79,16 +79,6 @@ public final class TransferCallToParticipantOptions {
         this.targetParticipant = targetParticipant;
         this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
     }
-
-    /**
-     * Constructor
-     *
-     * @param targetParticipant {@link MicrosoftTeamsAppIdentifier} contains information for TransferTarget(to whom the call is transferred).
-     */
-    public TransferCallToParticipantOptions(MicrosoftTeamsAppIdentifier targetParticipant) {
-        this.targetParticipant = targetParticipant;
-        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
-    }
     
     /**
      * Get the operationContext.
@@ -164,26 +154,6 @@ public final class TransferCallToParticipantOptions {
      */
     public TransferCallToParticipantOptions setOperationCallbackUrl(String operationCallbackUrl) {
         this.operationCallbackUrl = operationCallbackUrl;
-        return this;
-    }
-    
-     /**
-     * Get the sourceCallerIdNumber.
-     *
-     * @return the sourceCallerIdNumber
-     */
-    public PhoneNumberIdentifier getSourceCallerIdNumber() {
-        return sourceCallerIdNumber;
-    }
-    
-    /**
-     * Set the sourceCallerIdNumber.
-     *
-     * @param sourceCallerIdNumber the sourceCallerIdNumber to set
-     * @return the TransferCallToParticipantOptions object itself.
-     */
-    public TransferCallToParticipantOptions setSourceCallerIdNumber(PhoneNumberIdentifier sourceCallerIdNumber) {
-        this.sourceCallerIdNumber = sourceCallerIdNumber;
         return this;
     }
 }

@@ -19,7 +19,7 @@ public final class SendDtmfTonesFailed extends CallAutomationEventBase {
     /**
      * Constructor for SendDtmfTonesFailed
      */
-    public SendDtmfTonesFailed() {
+    private SendDtmfTonesFailed() {
         resultInformation = null;
     }
 
