@@ -188,6 +188,7 @@ public final class ResourceManagerUtils {
                     break;
                 } else if (endpoint.getKey().equals(AzureEnvironment.Endpoint.STORAGE.identifier())) {
                     resource = "https://storage.azure.com";
+                    break;
                 }
             }
         }

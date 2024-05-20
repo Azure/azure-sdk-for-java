@@ -5,9 +5,12 @@ package com.azure.resourcemanager.storage;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.Region;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.models.RoleAssignment;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.BlobContainer;
 import com.azure.resourcemanager.storage.models.BlobContainers;
 import com.azure.resourcemanager.storage.models.PublicAccess;
@@ -18,7 +21,9 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import reactor.util.retry.Retry;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -133,12 +138,29 @@ public class StorageBlobContainersTests extends StorageManagementTest {
                 .create();
 
         // assign data-plane blob role
-        msiManager.authorizationManager().roleAssignments()
+        RoleAssignment roleAssignment = msiManager.authorizationManager().roleAssignments()
             .define(UUID.randomUUID().toString())
             .forUser(userName)
             .withBuiltInRole(BuiltInRole.STORAGE_BLOB_DATA_CONTRIBUTOR)
             .withScope(blobContainer.id())
             .create();
+
+        // let the role assignment propagate
+        msiManager.authorizationManager().roleAssignments().getByIdAsync(roleAssignment.id())
+            .retryWhen(Retry
+                // 10 + 20 = 30 seconds
+                .backoff(2, ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10)))
+                .filter(throwable -> {
+                    boolean resourceNotFoundException = false;
+                    if (throwable instanceof ManagementException exception) {
+                        if (exception.getResponse().getStatusCode() == 404) {
+                            resourceNotFoundException = true;
+                        }
+                    }
+                    return resourceNotFoundException;
+                })
+                // do not convert to RetryExhaustedException
+                .onRetryExhaustedThrow((spec, signal) -> signal.failure()));
 
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
             .pipeline(storageManager.httpPipeline())
