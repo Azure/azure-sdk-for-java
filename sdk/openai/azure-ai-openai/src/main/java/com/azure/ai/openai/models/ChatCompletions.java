@@ -115,7 +115,8 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
     }
 
     /*
-     * Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made that
+     * Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made
+     * that
      * might impact determinism.
      */
     @Generated

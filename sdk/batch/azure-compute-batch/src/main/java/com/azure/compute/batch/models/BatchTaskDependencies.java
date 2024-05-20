@@ -21,13 +21,17 @@ import java.util.List;
 public final class BatchTaskDependencies implements JsonSerializable<BatchTaskDependencies> {
 
     /*
-     * The list of Task IDs that this Task depends on. All Tasks in this list must complete successfully before the dependent Task can be scheduled. The taskIds collection is limited to 64000 characters total (i.e. the combined length of all Task IDs). If the taskIds collection exceeds the maximum length, the Add Task request fails with error code TaskDependencyListTooLong. In this case consider using Task ID ranges instead.
+     * The list of Task IDs that this Task depends on. All Tasks in this list must complete successfully before the
+     * dependent Task can be scheduled. The taskIds collection is limited to 64000 characters total (i.e. the combined
+     * length of all Task IDs). If the taskIds collection exceeds the maximum length, the Add Task request fails with
+     * error code TaskDependencyListTooLong. In this case consider using Task ID ranges instead.
      */
     @Generated
     private List<String> taskIds;
 
     /*
-     * The list of Task ID ranges that this Task depends on. All Tasks in all ranges must complete successfully before the dependent Task can be scheduled.
+     * The list of Task ID ranges that this Task depends on. All Tasks in all ranges must complete successfully before
+     * the dependent Task can be scheduled.
      */
     @Generated
     private List<BatchTaskIdRange> taskIdRanges;

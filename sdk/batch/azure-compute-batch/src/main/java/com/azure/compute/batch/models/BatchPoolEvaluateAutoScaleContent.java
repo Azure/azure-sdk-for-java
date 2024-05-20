@@ -18,7 +18,10 @@ import java.io.IOException;
 public final class BatchPoolEvaluateAutoScaleContent implements JsonSerializable<BatchPoolEvaluateAutoScaleContent> {
 
     /*
-     * The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results
+     * calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a
+     * Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure
+     * Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      */
     @Generated
     private final String autoScaleFormula;

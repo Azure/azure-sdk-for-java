@@ -32,7 +32,9 @@ public final class ChatTokenLogProbabilityResult implements JsonSerializable<Cha
     private final double logprob;
 
     /*
-     * A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be null if there is no bytes representation for the token.
+     * A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters
+     * are represented by multiple tokens and their byte representations must be combined to generate the correct text
+     * representation. Can be null if there is no bytes representation for the token.
      */
     @Generated
     private final List<Integer> bytes;

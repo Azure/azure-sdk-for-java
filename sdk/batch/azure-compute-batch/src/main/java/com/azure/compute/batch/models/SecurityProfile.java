@@ -18,19 +18,23 @@ import java.io.IOException;
 public final class SecurityProfile implements JsonSerializable<SecurityProfile> {
 
     /*
-     * This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at host itself.
+     * This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine
+     * or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at
+     * host itself.
      */
     @Generated
     private final boolean encryptionAtHost;
 
     /*
-     * Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable UefiSettings.
+     * Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable
+     * UefiSettings.
      */
     @Generated
     private final SecurityTypes securityType;
 
     /*
-     * Specifies the security settings like secure boot and vTPM used while creating the virtual machine. Specifies the security settings like secure boot and vTPM used while creating the virtual machine.
+     * Specifies the security settings like secure boot and vTPM used while creating the virtual machine. Specifies the
+     * security settings like secure boot and vTPM used while creating the virtual machine.
      */
     @Generated
     private final UefiSettings uefiSettings;

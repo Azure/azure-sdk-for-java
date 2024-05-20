@@ -19,13 +19,15 @@ import java.io.IOException;
 public final class UserIdentity implements JsonSerializable<UserIdentity> {
 
     /*
-     * The name of the user identity under which the Task is run. The userName and autoUser properties are mutually exclusive; you must specify one but not both.
+     * The name of the user identity under which the Task is run. The userName and autoUser properties are mutually
+     * exclusive; you must specify one but not both.
      */
     @Generated
     private String username;
 
     /*
-     * The auto user under which the Task is run. The userName and autoUser properties are mutually exclusive; you must specify one but not both.
+     * The auto user under which the Task is run. The userName and autoUser properties are mutually exclusive; you must
+     * specify one but not both.
      */
     @Generated
     private AutoUserSpecification autoUser;

@@ -19,19 +19,22 @@ import java.util.List;
 public final class BatchJobScheduleUpdateContent implements JsonSerializable<BatchJobScheduleUpdateContent> {
 
     /*
-     * The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted by daylight saving time. If you do not specify this element, the existing schedule is left unchanged.
+     * The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted
+     * by daylight saving time. If you do not specify this element, the existing schedule is left unchanged.
      */
     @Generated
     private BatchJobScheduleConfiguration schedule;
 
     /*
-     * The details of the Jobs to be created on this schedule. Updates affect only Jobs that are started after the update has taken place. Any currently active Job continues with the older specification.
+     * The details of the Jobs to be created on this schedule. Updates affect only Jobs that are started after the
+     * update has taken place. Any currently active Job continues with the older specification.
      */
     @Generated
     private BatchJobSpecification jobSpecification;
 
     /*
-     * A list of name-value pairs associated with the Job Schedule as metadata. If you do not specify this element, existing metadata is left unchanged.
+     * A list of name-value pairs associated with the Job Schedule as metadata. If you do not specify this element,
+     * existing metadata is left unchanged.
      */
     @Generated
     private List<MetadataItem> metadata;
