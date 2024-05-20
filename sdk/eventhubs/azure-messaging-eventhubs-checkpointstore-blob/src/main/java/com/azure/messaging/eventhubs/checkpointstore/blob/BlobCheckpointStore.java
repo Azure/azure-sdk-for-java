@@ -164,7 +164,7 @@ public class BlobCheckpointStore implements CheckpointStore {
             }
 
             if (!CoreUtils.isNullOrEmpty(metadata.get(REPLICATION_SEGMENT))) {
-                replicationSegment = Integer.parseInt(metadata.get(OFFSET));
+                replicationSegment = Integer.parseInt(metadata.get(REPLICATION_SEGMENT));
             }
 
             Checkpoint checkpoint = new Checkpoint()
