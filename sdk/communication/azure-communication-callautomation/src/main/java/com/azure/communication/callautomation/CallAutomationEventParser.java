@@ -20,6 +20,7 @@ import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.callautomation.models.events.PlayCanceled;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
 import com.azure.communication.callautomation.models.events.PlayFailed;
+import com.azure.communication.callautomation.models.events.PlayStarted;
 import com.azure.communication.callautomation.models.events.RecognizeCanceled;
 import com.azure.communication.callautomation.models.events.RecognizeCompleted;
 import com.azure.communication.callautomation.models.events.RecognizeFailed;
@@ -115,6 +116,8 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, ParticipantsUpdated.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.RecordingStateChanged")) {
                 ret = mapper.convertValue(eventData, RecordingStateChanged.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.PlayStarted")) {
+                ret = mapper.convertValue(eventData, PlayStarted.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayCompleted")) {
                 ret = mapper.convertValue(eventData, PlayCompleted.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.PlayFailed")) {
