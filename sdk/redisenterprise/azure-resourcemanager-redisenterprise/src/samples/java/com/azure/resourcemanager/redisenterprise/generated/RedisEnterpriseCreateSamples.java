@@ -23,9 +23,7 @@ import java.util.Map;
  */
 public final class RedisEnterpriseCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2023-11-01/examples/RedisEnterpriseCreate.
-     * json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-03-01-preview/examples/RedisEnterpriseCreate.json
      */
     /**
      * Sample code: RedisEnterpriseCreate.
@@ -33,9 +31,13 @@ public final class RedisEnterpriseCreateSamples {
      * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseCreate(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.redisEnterprises().define("cache1").withRegion("West US").withExistingResourceGroup("rg1")
+        manager.redisEnterprises()
+            .define("cache1")
+            .withRegion("West US")
+            .withExistingResourceGroup("rg1")
             .withSku(new Sku().withName(SkuName.ENTERPRISE_FLASH_F300).withCapacity(3))
-            .withTags(mapOf("tag1", "value1")).withZones(Arrays.asList("1", "2", "3"))
+            .withTags(mapOf("tag1", "value1"))
+            .withZones(Arrays.asList("1", "2", "3"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/your-subscription/resourceGroups/your-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/your-identity",

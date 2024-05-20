@@ -54,8 +54,9 @@ public final class RegenerateKeyParameters {
      */
     public void validate() {
         if (keyType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property keyType in model RegenerateKeyParameters"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property keyType in model RegenerateKeyParameters"));
         }
     }
 

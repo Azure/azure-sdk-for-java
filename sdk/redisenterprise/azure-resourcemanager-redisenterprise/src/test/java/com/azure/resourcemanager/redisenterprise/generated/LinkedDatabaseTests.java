@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedDatabaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedDatabase model = BinaryData.fromString("{\"id\":\"kftutqxlngxlefg\",\"state\":\"LinkFailed\"}")
-            .toObject(LinkedDatabase.class);
-        Assertions.assertEquals("kftutqxlngxlefg", model.id());
+        LinkedDatabase model
+            = BinaryData.fromString("{\"id\":\"fbowskanyk\",\"state\":\"Linked\"}").toObject(LinkedDatabase.class);
+        Assertions.assertEquals("fbowskanyk", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedDatabase model = new LinkedDatabase().withId("kftutqxlngxlefg");
+        LinkedDatabase model = new LinkedDatabase().withId("fbowskanyk");
         model = BinaryData.fromObject(model).toObject(LinkedDatabase.class);
-        Assertions.assertEquals("kftutqxlngxlefg", model.id());
+        Assertions.assertEquals("fbowskanyk", model.id());
     }
 }
