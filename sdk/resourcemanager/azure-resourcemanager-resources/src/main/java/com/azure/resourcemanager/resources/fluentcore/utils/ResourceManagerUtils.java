@@ -186,6 +186,8 @@ public final class ResourceManagerUtils {
                     resource = String.format("https://%s/", endpoint.getValue().replaceAll("^\\.*", ""));
                     resource = removeTrailingSlash(resource);
                     break;
+                } else if (endpoint.getKey().equals(AzureEnvironment.Endpoint.STORAGE.identifier())) {
+                    resource = "https://storage.azure.com";
                 }
             }
         }
