@@ -5,10 +5,12 @@
 package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.nginx.fluent.models.NginxDeploymentScalingPropertiesAutoScaleSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /**
- * The NginxDeploymentScalingProperties model.
+ * Information on how the deployment will be scaled.
  */
 @Fluent
 public final class NginxDeploymentScalingProperties {
@@ -17,6 +19,12 @@ public final class NginxDeploymentScalingProperties {
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
+
+    /*
+     * The settings for enabling automatic scaling of the deployment. If this field is specified, 'scale.capacity' must be empty.
+     */
+    @JsonProperty(value = "autoScaleSettings")
+    private NginxDeploymentScalingPropertiesAutoScaleSettings innerAutoScaleSettings;
 
     /**
      * Creates an instance of NginxDeploymentScalingProperties class.
@@ -45,10 +53,46 @@ public final class NginxDeploymentScalingProperties {
     }
 
     /**
+     * Get the innerAutoScaleSettings property: The settings for enabling automatic scaling of the deployment. If this
+     * field is specified, 'scale.capacity' must be empty.
+     * 
+     * @return the innerAutoScaleSettings value.
+     */
+    private NginxDeploymentScalingPropertiesAutoScaleSettings innerAutoScaleSettings() {
+        return this.innerAutoScaleSettings;
+    }
+
+    /**
+     * Get the profiles property: The profiles property.
+     * 
+     * @return the profiles value.
+     */
+    public List<ScaleProfile> profiles() {
+        return this.innerAutoScaleSettings() == null ? null : this.innerAutoScaleSettings().profiles();
+    }
+
+    /**
+     * Set the profiles property: The profiles property.
+     * 
+     * @param profiles the profiles value to set.
+     * @return the NginxDeploymentScalingProperties object itself.
+     */
+    public NginxDeploymentScalingProperties withProfiles(List<ScaleProfile> profiles) {
+        if (this.innerAutoScaleSettings() == null) {
+            this.innerAutoScaleSettings = new NginxDeploymentScalingPropertiesAutoScaleSettings();
+        }
+        this.innerAutoScaleSettings().withProfiles(profiles);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerAutoScaleSettings() != null) {
+            innerAutoScaleSettings().validate();
+        }
     }
 }

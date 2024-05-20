@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import reactor.core.publisher.Flux;
 
-final class Utils {
-    private Utils() {
+final class ResourceManagerUtils {
+    private ResourceManagerUtils() {
     }
 
     static String getValueFromIdByName(String id, String name) {
@@ -41,7 +41,6 @@ final class Utils {
             }
         }
         return null;
-
     }
 
     static String getValueFromIdByParameterName(String id, String pathTemplate, String parameterName) {
@@ -75,7 +74,6 @@ final class Utils {
             }
         }
         return null;
-
     }
 
     static <T, S> PagedIterable<S> mapPage(PagedIterable<T> pageIterable, Function<T, S> mapper) {
