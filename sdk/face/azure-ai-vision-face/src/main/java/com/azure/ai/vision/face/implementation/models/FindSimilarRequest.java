@@ -17,7 +17,8 @@ import java.util.List;
 public final class FindSimilarRequest {
 
     /*
-     * faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call.
+     * faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this faceId is not
+     * persisted and will expire 24 hours after the detection call.
      */
     @Generated
     @JsonProperty(value = "faceId")
@@ -38,7 +39,8 @@ public final class FindSimilarRequest {
     private FindSimilarMatchMode mode;
 
     /*
-     * An array of candidate faceIds. All of them are created by "Detect" and the faceIds will expire 24 hours after the detection call. The number of faceIds is limited to 1000.
+     * An array of candidate faceIds. All of them are created by "Detect" and the faceIds will expire 24 hours after the
+     * detection call. The number of faceIds is limited to 1000.
      */
     @Generated
     @JsonProperty(value = "faceIds")

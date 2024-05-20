@@ -112,8 +112,10 @@ public final class ChatChoice implements JsonSerializable<ChatChoice> {
     private ChatFinishDetails finishDetails;
 
     /*
-     * Represents the output results of Azure OpenAI enhancements to chat completions, as configured via the matching input
-     * provided in the request. This supplementary information is only available when using Azure OpenAI and only when the
+     * Represents the output results of Azure OpenAI enhancements to chat completions, as configured via the matching
+     * input
+     * provided in the request. This supplementary information is only available when using Azure OpenAI and only when
+     * the
      * request is configured to use enhancements.
      */
     @Generated

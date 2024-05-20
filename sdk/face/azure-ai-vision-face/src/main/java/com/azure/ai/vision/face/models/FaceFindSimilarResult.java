@@ -22,14 +22,16 @@ public final class FaceFindSimilarResult {
     private final double confidence;
 
     /*
-     * faceId of candidate face when find by faceIds. faceId is created by "Detect" and will expire 24 hours after the detection call.
+     * faceId of candidate face when find by faceIds. faceId is created by "Detect" and will expire 24 hours after the
+     * detection call.
      */
     @Generated
     @JsonProperty(value = "faceId")
     private String faceId;
 
     /*
-     * persistedFaceId of candidate face when find by faceListId or largeFaceListId. persistedFaceId in face list/large face list is persisted and will not expire.
+     * persistedFaceId of candidate face when find by faceListId or largeFaceListId. persistedFaceId in face list/large
+     * face list is persisted and will not expire.
      */
     @Generated
     @JsonProperty(value = "persistedFaceId")

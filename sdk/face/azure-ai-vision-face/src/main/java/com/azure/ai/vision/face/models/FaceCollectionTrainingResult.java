@@ -23,21 +23,24 @@ public final class FaceCollectionTrainingResult {
     private final FaceOperationStatus status;
 
     /*
-     * A combined UTC date and time string that describes the created time of the person group, large person group or large face list.
+     * A combined UTC date and time string that describes the created time of the person group, large person group or
+     * large face list.
      */
     @Generated
     @JsonProperty(value = "createdDateTime")
     private final OffsetDateTime createdDateTime;
 
     /*
-     * A combined UTC date and time string that describes the last modify time of the person group, large person group or large face list, could be null value when the group is not successfully trained.
+     * A combined UTC date and time string that describes the last modify time of the person group, large person group
+     * or large face list, could be null value when the group is not successfully trained.
      */
     @Generated
     @JsonProperty(value = "lastActionDateTime")
     private final OffsetDateTime lastActionDateTime;
 
     /*
-     * A combined UTC date and time string that describes the last successful training time of the person group, large person group or large face list.
+     * A combined UTC date and time string that describes the last successful training time of the person group, large
+     * person group or large face list.
      */
     @Generated
     @JsonProperty(value = "lastSuccessfulTrainingDateTime")

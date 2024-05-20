@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter;
 @Immutable
 public final class AnalyzeResultOperation implements JsonSerializable<AnalyzeResultOperation> {
     /*
-     * Operation status.  notStarted, running, succeeded, or failed
+     * Operation status. notStarted, running, succeeded, or failed
      */
     @Generated
     private final OperationStatus status;

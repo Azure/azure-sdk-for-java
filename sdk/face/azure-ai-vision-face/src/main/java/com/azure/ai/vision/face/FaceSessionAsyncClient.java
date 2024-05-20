@@ -454,7 +454,8 @@ public final class FaceSessionAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> createLivenessWithVerifySessionWithVerifyImageWithResponse(
         BinaryData createLivenessWithVerifySessionContent, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation 'createLivenessWithVerifySessionWithVerifyImage' is 'multipart/form-data'
+        // Protocol API requires serialization of parts with content-disposition and data, as operation
+        // 'createLivenessWithVerifySessionWithVerifyImage' is 'multipart/form-data'
         return this.serviceClient.createLivenessWithVerifySessionWithVerifyImageWithResponseAsync(
             createLivenessWithVerifySessionContent, requestOptions);
     }

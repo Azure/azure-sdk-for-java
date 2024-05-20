@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class AddFaceResult {
 
     /*
-     * Persisted Face ID of the added face, which is persisted and will not expire. Different from faceId which is created in "Detect" and will expire in 24 hours after the detection call.
+     * Persisted Face ID of the added face, which is persisted and will not expire. Different from faceId which is
+     * created in "Detect" and will expire in 24 hours after the detection call.
      */
     @Generated
     @JsonProperty(value = "persistedFaceId")

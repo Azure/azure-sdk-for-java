@@ -454,8 +454,8 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     /*
      * Controls how the model responds to function calls. "none" means the model does not call a function,
      * and responds to the end-user. "auto" means the model can pick between an end-user or calling a function.
-     *  Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
-     *  "none" is the default when no functions are present. "auto" is the default if functions are present.
+     * Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
+     * "none" is the default when no functions are present. "auto" is the default if functions are present.
      */
     @Generated
     private BinaryData functionCall;
@@ -541,8 +541,8 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     }
 
     /*
-     *   The configuration entries for Azure OpenAI chat extensions that use them.
-     *   This additional specification is only compatible with Azure OpenAI.
+     * The configuration entries for Azure OpenAI chat extensions that use them.
+     * This additional specification is only compatible with Azure OpenAI.
      */
     @Generated
     private List<AzureChatExtensionConfiguration> dataSources;
@@ -579,7 +579,8 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
 
     /*
      * If specified, the system will make a best effort to sample deterministically such that repeated requests with the
-     * same seed and parameters should return the same result. Determinism is not guaranteed, and you should refer to the
+     * same seed and parameters should return the same result. Determinism is not guaranteed, and you should refer to
+     * the
      * system_fingerprint response parameter to monitor changes in the backend."
      */
     @Generated
@@ -730,13 +731,16 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     }
 
     /*
-     * Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each output token returned in the `content` of `message`. This option is currently not available on the `gpt-4-vision-preview` model.
+     * Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each
+     * output token returned in the `content` of `message`. This option is currently not available on the
+     * `gpt-4-vision-preview` model.
      */
     @Generated
     private Boolean logprobs;
 
     /*
-     * An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, each with an associated log probability. `logprobs` must be set to `true` if this parameter is used.
+     * An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, each
+     * with an associated log probability. `logprobs` must be set to `true` if this parameter is used.
      */
     @Generated
     private Integer topLogprobs;

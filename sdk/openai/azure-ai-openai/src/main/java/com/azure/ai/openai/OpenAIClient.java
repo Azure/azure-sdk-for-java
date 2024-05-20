@@ -1103,7 +1103,8 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> getAudioTranscriptionAsResponseObjectWithResponse(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation 'getAudioTranscriptionAsResponseObject' is 'multipart/form-data'
+        // Protocol API requires serialization of parts with content-disposition and data, as operation
+        // 'getAudioTranscriptionAsResponseObject' is 'multipart/form-data'
         return this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponse(deploymentOrModelName,
             audioTranscriptionOptions, requestOptions);
     }
@@ -1131,7 +1132,8 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation 'getAudioTranscriptionAsPlainText' is 'multipart/form-data'
+        // Protocol API requires serialization of parts with content-disposition and data, as operation
+        // 'getAudioTranscriptionAsPlainText' is 'multipart/form-data'
         return this.serviceClient.getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
             audioTranscriptionOptions, requestOptions);
     }
@@ -1180,7 +1182,8 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> getAudioTranslationAsResponseObjectWithResponse(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation 'getAudioTranslationAsResponseObject' is 'multipart/form-data'
+        // Protocol API requires serialization of parts with content-disposition and data, as operation
+        // 'getAudioTranslationAsResponseObject' is 'multipart/form-data'
         return this.serviceClient.getAudioTranslationAsResponseObjectWithResponse(deploymentOrModelName,
             audioTranslationOptions, requestOptions);
     }
@@ -1208,7 +1211,8 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation 'getAudioTranslationAsPlainText' is 'multipart/form-data'
+        // Protocol API requires serialization of parts with content-disposition and data, as operation
+        // 'getAudioTranslationAsPlainText' is 'multipart/form-data'
         return this.serviceClient.getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
             audioTranslationOptions, requestOptions);
     }

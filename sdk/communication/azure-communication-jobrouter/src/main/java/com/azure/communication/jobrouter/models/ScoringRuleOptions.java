@@ -20,7 +20,9 @@ public final class ScoringRuleOptions {
     private Integer batchSize;
 
     /*
-     * List of extra parameters from a job that will be sent as part of the payload to scoring rule. If not set, a job's labels (sent in the payload as `job`) and a job's worker selectors (sent in the payload as `selectors`) are added to the payload of the scoring rule by default. Note: Worker labels are always sent with scoring payload.
+     * List of extra parameters from a job that will be sent as part of the payload to scoring rule. If not set, a job's
+     * labels (sent in the payload as `job`) and a job's worker selectors (sent in the payload as `selectors`) are added
+     * to the payload of the scoring rule by default. Note: Worker labels are always sent with scoring payload.
      */
     @JsonProperty(value = "scoringParameters")
     private List<ScoringRuleParameterSelector> scoringParameters;
@@ -106,7 +108,9 @@ public final class ScoringRuleOptions {
     }
 
     /*
-     * If set to true, will score workers in batches, and the parameter name of the worker labels will be sent as `workers`. By default, set to false and the parameter name for the worker labels will be sent as `worker`. Note: If enabled, use 'batchSize' to set batch size.
+     * If set to true, will score workers in batches, and the parameter name of the worker labels will be sent as
+     * `workers`. By default, set to false and the parameter name for the worker labels will be sent as `worker`. Note:
+     * If enabled, use 'batchSize' to set batch size.
      */
     @JsonProperty(value = "isBatchScoringEnabled")
     private Boolean isBatchScoringEnabled;
