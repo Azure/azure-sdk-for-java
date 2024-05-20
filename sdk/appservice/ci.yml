@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/appservice/ci.yml
+      - sdk/appservice/azure-resourcemanager-appservice-generated/
+    exclude:
+      - sdk/appservice/pom.xml
+      - sdk/appservice/azure-resourcemanager-appservice-generated/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/appservice/ci.yml
+      - sdk/appservice/azure-resourcemanager-appservice-generated/
+    exclude:
+      - sdk/appservice/pom.xml
+      - sdk/appservice/azure-resourcemanager-appservice-generated/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerappservicegenerated
+    displayName: azure-resourcemanager-appservice-generated
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: appservice
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-appservice-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerappservicegenerated
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerappservicegenerated }}
