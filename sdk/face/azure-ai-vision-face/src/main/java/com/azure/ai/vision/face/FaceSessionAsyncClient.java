@@ -70,7 +70,7 @@ public final class FaceSessionAsyncClient {
      * 
      * <pre>{@code
      * {
-     *     livenessOperationMode: String(Passive) (Required)
+     *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
      *     deviceCorrelationIdSetInClient: Boolean (Optional)
      *     deviceCorrelationId: String (Optional)
@@ -357,7 +357,7 @@ public final class FaceSessionAsyncClient {
      * 
      * <pre>{@code
      * {
-     *     livenessOperationMode: String(Passive) (Required)
+     *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
      *     deviceCorrelationIdSetInClient: Boolean (Optional)
      *     deviceCorrelationId: String (Optional)
