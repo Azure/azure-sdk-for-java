@@ -32,9 +32,9 @@ public class LastEnqueuedEventProperties {
      * @param retrievalTime The date and time that the information was retrieved. {@code null} if the information
      *     has not been retrieved, yet.
      */
-    public LastEnqueuedEventProperties(Long lastSequenceNumber, String lastOffset, Instant lastEnqueuedTime,
+    public LastEnqueuedEventProperties(Long lastSequenceNumber, Long lastOffset, Instant lastEnqueuedTime,
         Instant retrievalTime) {
-        this(lastSequenceNumber, lastOffset, lastEnqueuedTime, retrievalTime, DEFAULT_REPLICATION_SEGMENT);
+        this(lastSequenceNumber, String.valueOf(lastOffset), lastEnqueuedTime, retrievalTime, DEFAULT_REPLICATION_SEGMENT);
     }
 
     /**
@@ -52,7 +52,7 @@ public class LastEnqueuedEventProperties {
      *     geo-disaster recovery is not enabled.
      */
     public LastEnqueuedEventProperties(Long lastSequenceNumber, String lastOffset, Instant lastEnqueuedTime,
-                                       Instant retrievalTime, Integer lastEnqueuedReplicationSegment) {
+        Instant retrievalTime, Integer lastEnqueuedReplicationSegment) {
         this.lastSequenceNumber = lastSequenceNumber;
         this.lastOffset = lastOffset;
         this.lastEnqueuedTime = lastEnqueuedTime;
