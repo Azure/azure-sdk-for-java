@@ -400,7 +400,7 @@ public final class CosmosClientTelemetryConfig {
     
     /**
      * Enables printing query in db.statement attribute and diagnostic logs. By default, query is not printed.
-     * Users have the option to enable printing parameterized or both parameterized and non-parameterized queries, 
+     * Users have the option to enable printing parameterized or all queries, 
      * but has to beware that customer data may be shown when the later option is chosen
      * It's the user's responsibility to sanitize the queries if necessary.
      * @param showQueryOptions the options for printing none, parameterized or all of the query statements

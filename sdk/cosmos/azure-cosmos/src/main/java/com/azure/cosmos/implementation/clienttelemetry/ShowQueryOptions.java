@@ -19,7 +19,7 @@ public enum ShowQueryOptions {
 	/**
 	 *  Print both parameterized and non parameterized query.
 	 */
-	PARAMETERIZED_AND_NON_PARAMETERIZED("ParameterizedAndNonParameterized");
+	ALL("All");
     
     private static Map<String, ShowQueryOptions> showQueryOptionsHashMap = new HashMap<>();
     

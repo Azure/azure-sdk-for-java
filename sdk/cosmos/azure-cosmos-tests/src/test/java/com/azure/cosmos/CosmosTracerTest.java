@@ -176,9 +176,9 @@ public class CosmosTracerTest extends TestSuiteBase {
             new Object[] { false, true, ShowQueryOptions.NONE, true, 0.99999999 },
             new Object[] { false, true, ShowQueryOptions.NONE, true, 0d },
             
-            new Object[] { false, true, ShowQueryOptions.PARAMETERIZED_AND_NON_PARAMETERIZED, true, 1d },
-            new Object[] { false, false, ShowQueryOptions.PARAMETERIZED_AND_NON_PARAMETERIZED, true, 1d },
-            new Object[] { false, false, ShowQueryOptions.PARAMETERIZED_AND_NON_PARAMETERIZED, false, 1d },
+            new Object[] { false, true, ShowQueryOptions.ALL, true, 1d },
+            new Object[] { false, false, ShowQueryOptions.ALL, true, 1d },
+            new Object[] { false, false, ShowQueryOptions.ALL, false, 1d },
 
             new Object[] { false, true, ShowQueryOptions.PARAMETERIZED_ONLY, true, 1d },
             new Object[] { false, false, ShowQueryOptions.PARAMETERIZED_ONLY, true, 1d },
@@ -783,6 +783,27 @@ public class CosmosTracerTest extends TestSuiteBase {
             
             samplingRate);
         mockTracer.reset();
+        
+        feedItemResponse = cosmosAsyncContainer
+                .queryItems(query, ObjectNode.class)
+                .byPage()
+                .blockFirst();
+            assertThat(feedItemResponse).isNotNull();
+            verifyTracerAttributes(
+                mockTracer,
+                "queryItems." + cosmosAsyncContainer.getId(),
+                cosmosAsyncDatabase.getId(),
+                cosmosAsyncContainer.getId(),
+                feedItemResponse.getCosmosDiagnostics(),
+                null,
+                useLegacyTracing,
+                enableRequestLevelTracing,
+                showQueryOptions,
+                query,
+                forceThresholdViolations,
+                null,
+                samplingRate);
+        mockTracer.reset();
 
         queryRequestOptions = new CosmosQueryRequestOptions();
         query = "select * from c";
@@ -843,7 +864,26 @@ public class CosmosTracerTest extends TestSuiteBase {
                 null,
                 samplingRate);
         mockTracer.reset();
-            
+        
+        feedItemResponse = cosmosAsyncContainer.queryItems(querySpec, ObjectNode.class)
+                .byPage()
+                .blockFirst();
+        assertThat(feedItemResponse).isNotNull();
+        verifyTracerAttributes(
+                mockTracer,
+                "queryItems." + cosmosAsyncContainer.getId(),
+                cosmosAsyncDatabase.getId(),
+                cosmosAsyncContainer.getId(),
+                feedItemResponse.getCosmosDiagnostics(),
+                null,
+                useLegacyTracing,
+                enableRequestLevelTracing,
+                showQueryOptions,
+                query,
+                forceThresholdViolations,
+                null,
+                samplingRate);
+        mockTracer.reset();   
     }
 
     @Test(groups = { "fast", "simple" }, dataProvider = "traceTestCaseProvider", timeOut = TIMEOUT)
@@ -1405,7 +1445,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             
             String dbStatement = (String) attributes.get("db.statement");
 
-            if (ShowQueryOptions.PARAMETERIZED_AND_NON_PARAMETERIZED.equals(showQueryOptions)) {
+            if (ShowQueryOptions.ALL.equals(showQueryOptions)) {
                 assertThat(attributes.get("db.statement")).isNotNull();
                 assertThat(attributes.get("db.statement")).isEqualTo(queryStatement);
             } else if (ShowQueryOptions.PARAMETERIZED_ONLY.equals(showQueryOptions)

@@ -712,7 +712,7 @@ public class CosmosAsyncContainer {
      * error.
      */
     public <T> CosmosPagedFlux<T> queryItems(String query, Class<T> classType) {
-        return queryItemsInternal(new SqlQuerySpec(query), new CosmosQueryRequestOptions(), classType);
+        return queryItemsInternal(new SqlQuerySpec(query), new CosmosQueryRequestOptions(), classType, false);
     }
 
     /**
@@ -881,7 +881,7 @@ public class CosmosAsyncContainer {
             options = new CosmosQueryRequestOptions();
         }
 
-        return queryItemsInternal(new SqlQuerySpec(query), options, classType);
+        return queryItemsInternal(new SqlQuerySpec(query), options, classType, false);
     }
 
     /**
@@ -917,7 +917,7 @@ public class CosmosAsyncContainer {
      * error.
      */
     public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, Class<T> classType) {
-        return queryItemsInternal(querySpec, new CosmosQueryRequestOptions(), classType);
+        return queryItemsInternal(querySpec, new CosmosQueryRequestOptions(), classType, true);
     }
 
     /**
@@ -939,11 +939,11 @@ public class CosmosAsyncContainer {
             options = new CosmosQueryRequestOptions();
         }
 
-        return queryItemsInternal(querySpec, options, classType);
+        return queryItemsInternal(querySpec, options, classType, true);
     }
 
     <T> CosmosPagedFlux<T> queryItemsInternal(
-        SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
+        SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType, boolean isParameterized) {
         if (cosmosQueryRequestOptions != null) {
             if (cosmosQueryRequestOptions.getPartitionKey() != null && cosmosQueryRequestOptions
                                                                            .getFeedRange() != null) {
@@ -951,11 +951,11 @@ public class CosmosAsyncContainer {
                                                        "allowed");
             }
         }
-        return UtilBridgeInternal.createCosmosPagedFlux(queryItemsInternalFunc(sqlQuerySpec, cosmosQueryRequestOptions, classType));
+        return UtilBridgeInternal.createCosmosPagedFlux(queryItemsInternalFunc(sqlQuerySpec, cosmosQueryRequestOptions, classType, isParameterized));
     }
 
     <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryItemsInternalFunc(
-        SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType) {
+        SqlQuerySpec sqlQuerySpec, CosmosQueryRequestOptions cosmosQueryRequestOptions, Class<T> classType, boolean isParameterized) {
         CosmosAsyncClient client = this.getDatabase().getClient();
         CosmosQueryRequestOptions options =
             cosmosQueryRequestOptions != null ? cosmosQueryRequestOptions : new CosmosQueryRequestOptions();
@@ -965,12 +965,10 @@ public class CosmosAsyncContainer {
             
             ShowQueryOptions showQueryOptions = clientTelemetryConfigAccessor.showQueryOptions(client.getClientTelemetryConfig());
 
-            if (ShowQueryOptions.PARAMETERIZED_ONLY.equals(showQueryOptions)
-                    && sqlQuerySpec.getParameters() != null
-                    && sqlQuerySpec.getParameters().size() > 0) {
+            if(ShowQueryOptions.PARAMETERIZED_ONLY.equals(showQueryOptions) && isParameterized) {
 
                     pagedFluxOptions.setQueryText(sqlQuerySpec.getQueryText());
-            } else if (ShowQueryOptions.PARAMETERIZED_AND_NON_PARAMETERIZED.equals(showQueryOptions)) {
+            } else if (ShowQueryOptions.ALL.equals(showQueryOptions)) {
 
                     pagedFluxOptions.setQueryText(sqlQuerySpec.getQueryText());
             }
@@ -2847,7 +2845,7 @@ public class CosmosAsyncContainer {
                     CosmosQueryRequestOptions cosmosQueryRequestOptions,
                     Class<T> classType) {
 
-                    return cosmosAsyncContainer.queryItemsInternalFunc(sqlQuerySpec, cosmosQueryRequestOptions, classType);
+                    return cosmosAsyncContainer.queryItemsInternalFunc(sqlQuerySpec, cosmosQueryRequestOptions, classType, true);
                 }
 
                 @Override
