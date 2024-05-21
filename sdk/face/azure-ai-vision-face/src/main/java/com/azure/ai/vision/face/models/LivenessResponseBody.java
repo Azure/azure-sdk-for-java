@@ -47,6 +47,8 @@ public final class LivenessResponseBody {
     private LivenessWithVerifyOutputs verifyResult;
 
     /*
+     * The response body of detect liveness API call.
+     * 
      * Additional properties
      */
     @Generated
@@ -102,7 +104,9 @@ public final class LivenessResponseBody {
     }
 
     /**
-     * Get the additionalProperties property: Additional properties.
+     * Get the additionalProperties property: The response body of detect liveness API call.
+     *
+     * Additional properties.
      *
      * @return the additionalProperties value.
      */

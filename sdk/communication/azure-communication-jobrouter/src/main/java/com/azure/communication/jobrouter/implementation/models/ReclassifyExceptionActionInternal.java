@@ -32,7 +32,8 @@ public final class ReclassifyExceptionActionInternal extends ExceptionActionInte
     private String classificationPolicyId;
 
     /*
-     * Dictionary containing the labels to update (or add if not existing) in key-value pairs.  Values must be primitive values - number, string, boolean.
+     * Dictionary containing the labels to update (or add if not existing) in key-value pairs. Values must be primitive
+     * values - number, string, boolean.
      */
     @Generated
     @JsonProperty(value = "labelsToUpsert")

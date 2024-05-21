@@ -30,31 +30,36 @@ public final class AzureBlobFileSystemConfiguration implements JsonSerializable<
     private final String containerName;
 
     /*
-     * The Azure Storage Account key. This property is mutually exclusive with both sasKey and identity; exactly one must be specified.
+     * The Azure Storage Account key. This property is mutually exclusive with both sasKey and identity; exactly one
+     * must be specified.
      */
     @Generated
     private String accountKey;
 
     /*
-     * The Azure Storage SAS token. This property is mutually exclusive with both accountKey and identity; exactly one must be specified.
+     * The Azure Storage SAS token. This property is mutually exclusive with both accountKey and identity; exactly one
+     * must be specified.
      */
     @Generated
     private String sasKey;
 
     /*
-     * Additional command line options to pass to the mount command. These are 'net use' options in Windows and 'mount' options in Linux.
+     * Additional command line options to pass to the mount command. These are 'net use' options in Windows and 'mount'
+     * options in Linux.
      */
     @Generated
     private String blobfuseOptions;
 
     /*
-     * The relative path on the compute node where the file system will be mounted. All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
+     * The relative path on the compute node where the file system will be mounted. All file systems are mounted
+     * relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
      */
     @Generated
     private final String relativeMountPath;
 
     /*
-     * The reference to the user assigned identity to use to access containerName. This property is mutually exclusive with both accountKey and sasKey; exactly one must be specified.
+     * The reference to the user assigned identity to use to access containerName. This property is mutually exclusive
+     * with both accountKey and sasKey; exactly one must be specified.
      */
     @Generated
     private BatchNodeIdentityReference identityReference;

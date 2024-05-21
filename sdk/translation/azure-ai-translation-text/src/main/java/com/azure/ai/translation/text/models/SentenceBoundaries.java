@@ -16,7 +16,7 @@ import java.util.List;
 public final class SentenceBoundaries {
 
     /*
-     * An integer array representing the lengths of the sentences in the input text. 
+     * An integer array representing the lengths of the sentences in the input text.
      * The length of the array is the number of sentences, and the values are the length of each sentence.
      */
     @Generated
@@ -24,7 +24,7 @@ public final class SentenceBoundaries {
     private final List<Integer> sourceSentencesLengths;
 
     /*
-     * An integer array representing the lengths of the sentences in the translated text. 
+     * An integer array representing the lengths of the sentences in the translated text.
      * The length of the array is the number of sentences, and the values are the length of each sentence.
      */
     @Generated

@@ -22,7 +22,8 @@ public final class VerifyFromLargePersonGroupRequest {
     private final String faceId;
 
     /*
-     * Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in "Create Large Person Group".
+     * Using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created
+     * in "Create Large Person Group".
      */
     @Generated
     @JsonProperty(value = "largePersonGroupId")

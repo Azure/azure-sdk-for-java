@@ -20,7 +20,9 @@ import java.util.List;
 public final class AuthenticationTokenSettings implements JsonSerializable<AuthenticationTokenSettings> {
 
     /*
-     * The Batch resources to which the token grants access. The authentication token grants access to a limited set of Batch service operations. Currently the only supported value for the access property is 'job', which grants access to all operations related to the Job which contains the Task.
+     * The Batch resources to which the token grants access. The authentication token grants access to a limited set of
+     * Batch service operations. Currently the only supported value for the access property is 'job', which grants
+     * access to all operations related to the Job which contains the Task.
      */
     @Generated
     private List<AccessScope> access;

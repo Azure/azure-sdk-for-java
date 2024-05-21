@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class FindSimilarFromLargeFaceListRequest {
 
     /*
-     * faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this faceId is not persisted and will expire 24 hours after the detection call.
+     * faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this faceId is not
+     * persisted and will expire 24 hours after the detection call.
      */
     @Generated
     @JsonProperty(value = "faceId")
@@ -37,7 +38,8 @@ public final class FindSimilarFromLargeFaceListRequest {
     private FindSimilarMatchMode mode;
 
     /*
-     * An existing user-specified unique candidate Large Face List, created in "Create Large Face List". Large Face List contains a set of persistedFaceIds which are persisted and will never expire.
+     * An existing user-specified unique candidate Large Face List, created in "Create Large Face List". Large Face List
+     * contains a set of persistedFaceIds which are persisted and will never expire.
      */
     @Generated
     @JsonProperty(value = "largeFaceListId")

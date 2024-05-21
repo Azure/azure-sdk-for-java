@@ -19,25 +19,33 @@ import java.util.List;
 public final class OutputFileBlobContainerDestination implements JsonSerializable<OutputFileBlobContainerDestination> {
 
     /*
-     * The destination blob or virtual directory within the Azure Storage container. If filePattern refers to a specific file (i.e. contains no wildcards), then path is the name of the blob to which to upload that file. If filePattern contains one or more wildcards (and therefore may match multiple files), then path is the name of the blob virtual directory (which is prepended to each blob name) to which to upload the file(s). If omitted, file(s) are uploaded to the root of the container with a blob name matching their file name.
+     * The destination blob or virtual directory within the Azure Storage container. If filePattern refers to a specific
+     * file (i.e. contains no wildcards), then path is the name of the blob to which to upload that file. If filePattern
+     * contains one or more wildcards (and therefore may match multiple files), then path is the name of the blob
+     * virtual directory (which is prepended to each blob name) to which to upload the file(s). If omitted, file(s) are
+     * uploaded to the root of the container with a blob name matching their file name.
      */
     @Generated
     private String path;
 
     /*
-     * The URL of the container within Azure Blob Storage to which to upload the file(s). If not using a managed identity, the URL must include a Shared Access Signature (SAS) granting write permissions to the container.
+     * The URL of the container within Azure Blob Storage to which to upload the file(s). If not using a managed
+     * identity, the URL must include a Shared Access Signature (SAS) granting write permissions to the container.
      */
     @Generated
     private final String containerUrl;
 
     /*
-     * The reference to the user assigned identity to use to access Azure Blob Storage specified by containerUrl. The identity must have write access to the Azure Blob Storage container.
+     * The reference to the user assigned identity to use to access Azure Blob Storage specified by containerUrl. The
+     * identity must have write access to the Azure Blob Storage container.
      */
     @Generated
     private BatchNodeIdentityReference identityReference;
 
     /*
-     * A list of name-value pairs for headers to be used in uploading output files. These headers will be specified when uploading files to Azure Storage. Official document on allowed headers when uploading blobs: https://docs.microsoft.com/en-us/rest/api/storageservices/put-blob#request-headers-all-blob-types.
+     * A list of name-value pairs for headers to be used in uploading output files. These headers will be specified when
+     * uploading files to Azure Storage. Official document on allowed headers when uploading blobs:
+     * https://docs.microsoft.com/en-us/rest/api/storageservices/put-blob#request-headers-all-blob-types.
      */
     @Generated
     private List<HttpHeader> uploadHeaders;

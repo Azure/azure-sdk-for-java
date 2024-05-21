@@ -20,7 +20,10 @@ import java.time.format.DateTimeFormatter;
 public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskExecutionInfo> {
 
     /*
-     * The time at which the Task started running. 'Running' corresponds to the running state, so if the Task specifies resource files or Packages, then the start time reflects the time at which the Task started downloading or deploying these. If the Task has been restarted or retried, this is the most recent time at which the Task started running. This property is present only for Tasks that are in the running or completed state.
+     * The time at which the Task started running. 'Running' corresponds to the running state, so if the Task specifies
+     * resource files or Packages, then the start time reflects the time at which the Task started downloading or
+     * deploying these. If the Task has been restarted or retried, this is the most recent time at which the Task
+     * started running. This property is present only for Tasks that are in the running or completed state.
      */
     @Generated
     private OffsetDateTime startTime;
@@ -32,49 +35,65 @@ public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskE
     private OffsetDateTime endTime;
 
     /*
-     * The exit code of the program specified on the Task command line. This property is set only if the Task is in the completed state. In general, the exit code for a process reflects the specific convention implemented by the application developer for that process. If you use the exit code value to make decisions in your code, be sure that you know the exit code convention used by the application process. However, if the Batch service terminates the Task (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
+     * The exit code of the program specified on the Task command line. This property is set only if the Task is in the
+     * completed state. In general, the exit code for a process reflects the specific convention implemented by the
+     * application developer for that process. If you use the exit code value to make decisions in your code, be sure
+     * that you know the exit code convention used by the application process. However, if the Batch service terminates
+     * the Task (due to timeout, or user termination via the API) you may see an operating system-defined exit code.
      */
     @Generated
     private Integer exitCode;
 
     /*
-     * Information about the container under which the Task is executing. This property is set only if the Task runs in a container context.
+     * Information about the container under which the Task is executing. This property is set only if the Task runs in
+     * a container context.
      */
     @Generated
     private BatchTaskContainerExecutionInfo containerInfo;
 
     /*
-     * Information describing the Task failure, if any. This property is set only if the Task is in the completed state and encountered a failure.
+     * Information describing the Task failure, if any. This property is set only if the Task is in the completed state
+     * and encountered a failure.
      */
     @Generated
     private BatchTaskFailureInfo failureInfo;
 
     /*
-     * The number of times the Task has been retried by the Batch service. Task application failures (non-zero exit code) are retried, pre-processing errors (the Task could not be run) and file upload errors are not retried. The Batch service will retry the Task up to the limit specified by the constraints.
+     * The number of times the Task has been retried by the Batch service. Task application failures (non-zero exit
+     * code) are retried, pre-processing errors (the Task could not be run) and file upload errors are not retried. The
+     * Batch service will retry the Task up to the limit specified by the constraints.
      */
     @Generated
     private final int retryCount;
 
     /*
-     * The most recent time at which a retry of the Task started running. This element is present only if the Task was retried (i.e. retryCount is nonzero). If present, this is typically the same as startTime, but may be different if the Task has been restarted for reasons other than retry; for example, if the Compute Node was rebooted during a retry, then the startTime is updated but the lastRetryTime is not.
+     * The most recent time at which a retry of the Task started running. This element is present only if the Task was
+     * retried (i.e. retryCount is nonzero). If present, this is typically the same as startTime, but may be different
+     * if the Task has been restarted for reasons other than retry; for example, if the Compute Node was rebooted during
+     * a retry, then the startTime is updated but the lastRetryTime is not.
      */
     @Generated
     private OffsetDateTime lastRetryTime;
 
     /*
-     * The number of times the Task has been requeued by the Batch service as the result of a user request. When the user removes Compute Nodes from a Pool (by resizing/shrinking the pool) or when the Job is being disabled, the user can specify that running Tasks on the Compute Nodes be requeued for execution. This count tracks how many times the Task has been requeued for these reasons.
+     * The number of times the Task has been requeued by the Batch service as the result of a user request. When the
+     * user removes Compute Nodes from a Pool (by resizing/shrinking the pool) or when the Job is being disabled, the
+     * user can specify that running Tasks on the Compute Nodes be requeued for execution. This count tracks how many
+     * times the Task has been requeued for these reasons.
      */
     @Generated
     private final int requeueCount;
 
     /*
-     * The most recent time at which the Task has been requeued by the Batch service as the result of a user request. This property is set only if the requeueCount is nonzero.
+     * The most recent time at which the Task has been requeued by the Batch service as the result of a user request.
+     * This property is set only if the requeueCount is nonzero.
      */
     @Generated
     private OffsetDateTime lastRequeueTime;
 
     /*
-     * The result of the Task execution. If the value is 'failed', then the details of the failure can be found in the failureInfo property.
+     * The result of the Task execution. If the value is 'failed', then the details of the failure can be found in the
+     * failureInfo property.
      */
     @Generated
     private BatchTaskExecutionResult result;

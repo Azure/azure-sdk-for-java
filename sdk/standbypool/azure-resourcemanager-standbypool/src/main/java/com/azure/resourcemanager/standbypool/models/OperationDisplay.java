@@ -13,19 +13,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class OperationDisplay {
     /*
-     * The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft Compute".
+     * The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or
+     * "Microsoft Compute".
      */
     @JsonProperty(value = "provider")
     private String provider;
 
     /*
-     * The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job Schedule Collections".
+     * The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or
+     * "Job Schedule Collections".
      */
     @JsonProperty(value = "resource")
     private String resource;
 
     /*
-     * The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual Machine", "Restart Virtual Machine".
+     * The concise, localized friendly name for the operation; suitable for dropdowns. E.g.
+     * "Create or Update Virtual Machine", "Restart Virtual Machine".
      */
     @JsonProperty(value = "operation")
     private String operation;

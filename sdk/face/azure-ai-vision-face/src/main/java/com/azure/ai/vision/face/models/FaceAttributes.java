@@ -99,7 +99,8 @@ public final class FaceAttributes {
     private MaskProperties mask;
 
     /*
-     * Properties describing the overall image quality regarding whether the image being used in the detection is of sufficient quality to attempt face recognition on.
+     * Properties describing the overall image quality regarding whether the image being used in the detection is of
+     * sufficient quality to attempt face recognition on.
      */
     @Generated
     @JsonProperty(value = "qualityForRecognition")

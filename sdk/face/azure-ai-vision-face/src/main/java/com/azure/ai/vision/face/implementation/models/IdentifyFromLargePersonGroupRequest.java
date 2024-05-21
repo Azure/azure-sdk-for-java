@@ -16,14 +16,16 @@ import java.util.List;
 public final class IdentifyFromLargePersonGroupRequest {
 
     /*
-     * Array of query faces faceIds, created by the "Detect". Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * Array of query faces faceIds, created by the "Detect". Each of the faces are identified independently. The valid
+     * number of faceIds is between [1, 10].
      */
     @Generated
     @JsonProperty(value = "faceIds")
     private final List<String> faceIds;
 
     /*
-     * largePersonGroupId of the target Large Person Group, created by "Create Large Person Group". Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     * largePersonGroupId of the target Large Person Group, created by "Create Large Person Group". Parameter
+     * personGroupId and largePersonGroupId should not be provided at the same time.
      */
     @Generated
     @JsonProperty(value = "largePersonGroupId")
@@ -37,7 +39,9 @@ public final class IdentifyFromLargePersonGroupRequest {
     private Integer maxNumOfCandidatesReturned;
 
     /*
-     * Customized identification confidence threshold, in the range of [0, 1]. Advanced user can tweak this value to override default internal threshold for better precision on their scenario data. Note there is no guarantee of this threshold value working on other data and after algorithm updates.
+     * Customized identification confidence threshold, in the range of [0, 1]. Advanced user can tweak this value to
+     * override default internal threshold for better precision on their scenario data. Note there is no guarantee of
+     * this threshold value working on other data and after algorithm updates.
      */
     @Generated
     @JsonProperty(value = "confidenceThreshold")

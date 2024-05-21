@@ -26,13 +26,15 @@ public final class AutoScaleRun implements JsonSerializable<AutoScaleRun> {
     private final OffsetDateTime timestamp;
 
     /*
-     * The final values of all variables used in the evaluation of the autoscale formula. Each variable value is returned in the form $variable=value, and variables are separated by semicolons.
+     * The final values of all variables used in the evaluation of the autoscale formula. Each variable value is
+     * returned in the form $variable=value, and variables are separated by semicolons.
      */
     @Generated
     private String results;
 
     /*
-     * Details of the error encountered evaluating the autoscale formula on the Pool, if the evaluation was unsuccessful.
+     * Details of the error encountered evaluating the autoscale formula on the Pool, if the evaluation was
+     * unsuccessful.
      */
     @Generated
     private AutoScaleRunError error;

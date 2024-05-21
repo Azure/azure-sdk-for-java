@@ -23,7 +23,8 @@ public final class FaceIdentificationResult {
     private final String faceId;
 
     /*
-     * Identified person candidates for that face (ranked by confidence). Array size should be no larger than input maxNumOfCandidatesReturned. If no person is identified, will return an empty array.
+     * Identified person candidates for that face (ranked by confidence). Array size should be no larger than input
+     * maxNumOfCandidatesReturned. If no person is identified, will return an empty array.
      */
     @Generated
     @JsonProperty(value = "candidates")
