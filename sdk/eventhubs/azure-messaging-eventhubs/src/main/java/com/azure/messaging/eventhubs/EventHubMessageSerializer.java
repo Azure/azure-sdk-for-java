@@ -36,7 +36,6 @@ import java.util.Objects;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET;
 import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER;
@@ -50,6 +49,8 @@ import static com.azure.messaging.eventhubs.implementation.ManagementChannel.MAN
 class EventHubMessageSerializer implements MessageSerializer {
     private static final Encoder ENCODER = new EncoderImpl(new DecoderImpl());
     private static final ClientLogger LOGGER = new ClientLogger(EventHubMessageSerializer.class);
+
+    static final String REPLICATION_SEGMENT_ANNOTATION_NAME = "x-opt-sequence-number-epoch";
 
     /**
      * Gets the serialized size of the AMQP message.
@@ -227,18 +228,14 @@ class EventHubMessageSerializer implements MessageSerializer {
         final long sequenceNumber = getAsLong(messageAnnotations, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
 
         // It is an optional value. Possible that there is no replication segment.
-        final Integer replicationSegment = (Integer) messageAnnotations.get(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue());
+        final Integer replicationSegment = (Integer) messageAnnotations.get(REPLICATION_SEGMENT_ANNOTATION_NAME);
 
         // Put the properly converted time back into the dictionary.
         messageAnnotations.put(OFFSET_ANNOTATION_NAME.getValue(), offset);
         messageAnnotations.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
         messageAnnotations.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
 
-        messageAnnotations.put(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), replicationSegment);
-
-        LOGGER.atInfo()
-            .addKeyValue("replicationSegment", replicationSegment)
-            .log("Adding to messageAnnotations: " + REPLICATION_SEGMENT_ANNOTATION_NAME.getValue());
+        messageAnnotations.put(REPLICATION_SEGMENT_ANNOTATION_NAME, replicationSegment);
 
         final SystemProperties systemProperties = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime,
             sequenceNumber, partitionKey, replicationSegment);

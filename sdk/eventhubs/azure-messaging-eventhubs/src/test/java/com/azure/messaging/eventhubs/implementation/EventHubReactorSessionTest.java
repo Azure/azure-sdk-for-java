@@ -93,7 +93,7 @@ public class EventHubReactorSessionTest {
         final Instant instant = Instant.ofEpochSecond(1704836768);
 
         // -1 because replication segment is null.
-        final String expected = "amqp.annotation.x-opt-sequence-number > '-1:" + sequenceNumber + "'";
+        final String expected = "amqp.annotation.x-opt-sequence-number > '" + sequenceNumber + "'";
 
         when(eventPosition.getSequenceNumber()).thenReturn(sequenceNumber);
         when(eventPosition.getOffset()).thenReturn(offset);
@@ -126,7 +126,7 @@ public class EventHubReactorSessionTest {
 
         // amqp.annotation.x-opt-sequence
         final String expected = "amqp.annotation.x-opt-sequence-number " + includesDisplay + " '"
-            + replicationSegment + ":" + sequenceNumber + "'";
+            +  sequenceNumber + "'";
 
         when(eventPosition.getSequenceNumber()).thenReturn(sequenceNumber);
         when(eventPosition.getOffset()).thenReturn(offset);
@@ -172,7 +172,7 @@ public class EventHubReactorSessionTest {
                 "amqp.annotation.x-opt-enqueued-time > '1705519331970'"),
 
             Arguments.of(EventPosition.fromSequenceNumber(position),
-                "amqp.annotation.x-opt-sequence-number > '-2501'"),
+                "amqp.annotation.x-opt-sequence-number > '2501'"),
             Arguments.of(EventPosition.fromSequenceNumber(position, true),
                 "amqp.annotation.x-opt-sequence-number >= '2501'")
         );
