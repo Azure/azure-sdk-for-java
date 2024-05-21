@@ -155,7 +155,7 @@ public class EventProcessorClientBuilderTest {
     @Test
     public void initialOffsetProviderSetMoreThanOne() {
         Map<String, EventPosition> eventPositionMap = new HashMap<>();
-        Function<String, EventPosition> eventPositionFunction = id -> EventPosition.fromOffset(20L);
+        Function<String, EventPosition> eventPositionFunction = id -> EventPosition.fromOffset("20L");
         EventProcessorClientBuilder builder = new EventProcessorClientBuilder()
             .connectionString(CORRECT_CONNECTION_STRING)
             .consumerGroup("consumer-group")
@@ -191,7 +191,7 @@ public class EventProcessorClientBuilderTest {
     public void initialEventPositionProvider() {
         // Arrange
         String partitionId = "1";
-        EventPosition expected = EventPosition.fromOffset(222L);
+        EventPosition expected = EventPosition.fromOffset("222L");
         Function<String, EventPosition> eventPositionFunction = id -> id.equals(partitionId)
             ? expected
             : EventPosition.earliest();
@@ -234,7 +234,7 @@ public class EventProcessorClientBuilderTest {
     public void initialEventPositionMap() {
         // Arrange
         String partitionId = "1";
-        EventPosition expected = EventPosition.fromOffset(222L);
+        EventPosition expected = EventPosition.fromOffset("222L");
         Map<String, EventPosition> eventPositionMap = new HashMap<>();
         eventPositionMap.put(partitionId, expected);
 

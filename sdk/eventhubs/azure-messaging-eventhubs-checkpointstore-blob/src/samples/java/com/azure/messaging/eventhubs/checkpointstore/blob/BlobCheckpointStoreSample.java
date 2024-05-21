@@ -44,7 +44,7 @@ public class BlobCheckpointStoreSample {
             .setEventHubName("abc")
             .setPartitionId("0")
             .setSequenceNumber(2L)
-            .setOffset(250L);
+            .setOffset("250L");
         blobCheckpointStore.updateCheckpoint(checkpoint)
             .subscribe(etag -> System.out.println(etag), error -> System.out
                 .println(error.getMessage()));

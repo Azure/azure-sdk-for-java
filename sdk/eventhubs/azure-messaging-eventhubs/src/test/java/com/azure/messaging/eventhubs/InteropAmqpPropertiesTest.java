@@ -241,7 +241,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         assertNotNull(partitionProperties);
 
         // Get the partition information, so we can start fetching after the last offset.
-        final long lastOffset = Long.parseLong(partitionProperties.getLastEnqueuedOffset());
+        final String lastOffset = partitionProperties.getLastEnqueuedOffset();
         final SendOptions options = new SendOptions().setPartitionId(partitionId);
 
         LOGGER.info("Last offset: {}", partitionProperties.getLastEnqueuedOffset());
