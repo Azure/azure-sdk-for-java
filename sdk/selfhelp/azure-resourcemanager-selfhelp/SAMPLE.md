@@ -186,7 +186,8 @@ public final class DiscoverySolutionNlpSubscriptionScopePostSamples {
     public static void
         discoverySolutionsUsingIssueSummaryAndServiceId(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
         manager.discoverySolutionNlpSubscriptionScopes()
-            .postWithResponse(new DiscoveryNlpRequest().withIssueSummary("how to retrieve certs from deleted keyvault.")
+            .postWithResponse("0d0fcd2e-c4fd-4349-8497-200edb3923c6", new DiscoveryNlpRequest()
+                .withIssueSummary("how to retrieve certs from deleted keyvault.")
                 .withResourceId(
                     "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read")
                 .withServiceId("0d0fcd2e-c4fd-4349-8497-200edb39s3ca"), com.azure.core.util.Context.NONE);
