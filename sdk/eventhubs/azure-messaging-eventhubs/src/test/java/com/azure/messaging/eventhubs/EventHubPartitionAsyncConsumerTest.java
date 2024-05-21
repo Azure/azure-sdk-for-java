@@ -44,6 +44,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import static com.azure.messaging.eventhubs.EventHubMessageSerializer.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
@@ -124,10 +125,10 @@ class EventHubPartitionAsyncConsumerTest {
 
         final EventData event1 = new EventData("Foo");
         final EventData event2 = new EventData("Bar");
-        final LastEnqueuedEventProperties last1 = new LastEnqueuedEventProperties(10L, 15L,
-            Instant.ofEpochMilli(1243454), Instant.ofEpochMilli(1240004));
-        final LastEnqueuedEventProperties last2 = new LastEnqueuedEventProperties(1005L, 154L,
-            Instant.ofEpochMilli(8796254), Instant.ofEpochMilli(8795200));
+        final LastEnqueuedEventProperties last1 = new LastEnqueuedEventProperties(10L, "15L",
+            Instant.ofEpochMilli(1243454), Instant.ofEpochMilli(1240004), 3);
+        final LastEnqueuedEventProperties last2 = new LastEnqueuedEventProperties(1005L, "154L",
+            Instant.ofEpochMilli(8796254), Instant.ofEpochMilli(8795200), 10);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message1), eq(LastEnqueuedEventProperties.class))).thenReturn(last1);
@@ -172,8 +173,8 @@ class EventHubPartitionAsyncConsumerTest {
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
-        final Long secondOffset = 54L;
-        final Long lastOffset = 65L;
+        final String secondOffset = "54";
+        final String lastOffset = "65";
         final AmqpAnnotatedMessage annotatedMessage1 = new AmqpAnnotatedMessage(
             AmqpMessageBody.fromData("Foo".getBytes(StandardCharsets.UTF_8)));
         final AmqpAnnotatedMessage annotatedMessage2 = new AmqpAnnotatedMessage(
@@ -182,11 +183,11 @@ class EventHubPartitionAsyncConsumerTest {
             AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
 
         final EventData event1 = new EventData(annotatedMessage1,
-            getSystemProperties(annotatedMessage1, 25L, 14L), Context.NONE);
+            getSystemProperties(annotatedMessage1, "24", 14L, null), Context.NONE);
         final EventData event2 = new EventData(annotatedMessage2,
-            getSystemProperties(annotatedMessage1, secondOffset, 21L), Context.NONE);
+            getSystemProperties(annotatedMessage2, secondOffset, 21L, 10L), Context.NONE);
         final EventData event3 = new EventData(annotatedMessage3,
-            getSystemProperties(annotatedMessage1, lastOffset, 53L), Context.NONE);
+            getSystemProperties(annotatedMessage3, lastOffset, 53L, null), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -214,7 +215,7 @@ class EventHubPartitionAsyncConsumerTest {
         // Assert that we have the current offset.
         final EventPosition firstPosition = currentPosition.get().get();
         Assertions.assertNotNull(firstPosition);
-        Assertions.assertEquals(secondOffset, Long.parseLong(firstPosition.getOffset()));
+        Assertions.assertEquals(secondOffset, firstPosition.getOffset());
         Assertions.assertFalse(firstPosition.isInclusive());
 
         StepVerifier.create(consumer.receive())
@@ -238,8 +239,8 @@ class EventHubPartitionAsyncConsumerTest {
             CONSUMER_GROUP, PARTITION_ID, currentPosition, false);
 
         final Message message3 = mock(Message.class);
-        final long secondOffset = 54L;
-        final long lastOffset = 65L;
+        final String secondOffset = "54L";
+        final String lastOffset = "65L";
         final AmqpAnnotatedMessage annotatedMessage1 = new AmqpAnnotatedMessage(
             AmqpMessageBody.fromData("Foo".getBytes(StandardCharsets.UTF_8)));
         final AmqpAnnotatedMessage annotatedMessage2 = new AmqpAnnotatedMessage(
@@ -248,11 +249,11 @@ class EventHubPartitionAsyncConsumerTest {
             AmqpMessageBody.fromData("Baz".getBytes(StandardCharsets.UTF_8)));
 
         final EventData event1 = new EventData(annotatedMessage1,
-            getSystemProperties(annotatedMessage1, 25L, 14L), Context.NONE);
+            getSystemProperties(annotatedMessage1, "25", 14L, null), Context.NONE);
         final EventData event2 = new EventData(annotatedMessage2,
-            getSystemProperties(annotatedMessage2, secondOffset, 21L), Context.NONE);
+            getSystemProperties(annotatedMessage2, secondOffset, 21L, 2L), Context.NONE);
         final EventData event3 = new EventData(annotatedMessage3,
-            getSystemProperties(annotatedMessage3, lastOffset, 53L), Context.NONE);
+            getSystemProperties(annotatedMessage3, lastOffset, 53L, null), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -330,8 +331,8 @@ class EventHubPartitionAsyncConsumerTest {
         }, FluxSink.OverflowStrategy.BUFFER);
     }
 
-    private static SystemProperties getSystemProperties(AmqpAnnotatedMessage amqpAnnotatedMessage, long offset,
-        long sequenceNumber) {
+    private static SystemProperties getSystemProperties(AmqpAnnotatedMessage amqpAnnotatedMessage, String offset,
+        long sequenceNumber, Long replicationSegment) {
 
         amqpAnnotatedMessage.getMessageAnnotations()
             .put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
@@ -339,7 +340,9 @@ class EventHubPartitionAsyncConsumerTest {
             .put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
         amqpAnnotatedMessage.getMessageAnnotations()
             .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), TEST_DATE);
+        amqpAnnotatedMessage.getMessageAnnotations()
+            .put(REPLICATION_SEGMENT_ANNOTATION_NAME, replicationSegment);
 
-        return new SystemProperties(amqpAnnotatedMessage, offset, TEST_DATE, sequenceNumber, null);
+        return new SystemProperties(amqpAnnotatedMessage, offset, TEST_DATE, sequenceNumber, null, null);
     }
 }

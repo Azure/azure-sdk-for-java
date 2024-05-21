@@ -30,6 +30,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATI
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.messaging.eventhubs.EventHubMessageSerializer.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -41,11 +42,12 @@ public final class TestUtils {
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
-    static final Long OFFSET = 1534L;
+    static final String OFFSET = "1534L";
     static final String PARTITION_KEY = "a-partition-key";
     static final Long SEQUENCE_NUMBER = 1025L;
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
     static final Boolean OTHER_SYSTEM_PROPERTY_VALUE = Boolean.TRUE;
+    static final Integer REPLICATION_SEGMENT = 33;
     static final Map<String, Object> APPLICATION_PROPERTIES = new HashMap<>();
 
     // An application property key used to identify that the request belongs to a test set.
@@ -88,8 +90,11 @@ public final class TestUtils {
     static Message getMessage(byte[] contents, String messageTrackingValue, Map<String, String> additionalProperties) {
         final Message message = getMessage(contents, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
 
-        message.getMessageAnnotations().getValue()
-            .put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
+        Map<Symbol, Object> value = message.getMessageAnnotations().getValue();
+        value.put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
+
+        // Add replication segment and see if it persists.
+        value.put(Symbol.getSymbol(REPLICATION_SEGMENT_ANNOTATION_NAME), REPLICATION_SEGMENT);
 
         Map<String, Object> applicationProperties = new HashMap<>(APPLICATION_PROPERTIES);
 
@@ -109,7 +114,7 @@ public final class TestUtils {
     /**
      * Creates a message with the required system properties set.
      */
-    static Message getMessage(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
+    static Message getMessage(byte[] contents, Long sequenceNumber, String offsetNumber, Date enqueuedTime) {
         final Map<Symbol, Object> systemProperties = new HashMap<>();
         systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), offsetNumber);
         systemProperties.put(getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME), enqueuedTime);
@@ -134,7 +139,7 @@ public final class TestUtils {
     /**
      * Creates an EventData with the received properties set.
      */
-    public static EventData getEventData(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
+    public static EventData getEventData(byte[] contents, Long sequenceNumber, String offsetNumber, Date enqueuedTime) {
         final Message message = getMessage(contents, sequenceNumber, offsetNumber, enqueuedTime);
         return MESSAGE_SERIALIZER.deserialize(message, EventData.class);
     }

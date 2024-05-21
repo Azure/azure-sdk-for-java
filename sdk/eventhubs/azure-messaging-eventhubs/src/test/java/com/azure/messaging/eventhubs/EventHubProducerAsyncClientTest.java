@@ -461,7 +461,7 @@ class EventHubProducerAsyncClientTest {
 
         EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{"0"});
         PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0",
-            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false);
+            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false, null, null);
         EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
         when(connection.getManagementNode()).thenReturn(Mono.just(managementNode));
         when(managementNode.getEventHubProperties()).thenReturn(Mono.just(ehProperties));
@@ -517,9 +517,9 @@ class EventHubProducerAsyncClientTest {
             false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
         final EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{"0"});
-        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0",
-            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false);
-        EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
+        final PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0",
+            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false, 5, 10);
+        final EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
 
         AtomicInteger tryCount = new AtomicInteger();
         when(connection.getManagementNode()).thenAnswer(invocation -> {
@@ -552,6 +552,8 @@ class EventHubProducerAsyncClientTest {
             .verify(DEFAULT_TIMEOUT);
 
         assertEquals(3, tryCount.get());
+
+        managementNode.close();
     }
 
     /**
@@ -1565,7 +1567,7 @@ class EventHubProducerAsyncClientTest {
         receivedMessage.setApplicationProperties(new ApplicationProperties(Collections.singletonMap("foo", "bar")));
 
         Map<Symbol, Object> annotations = new HashMap<>();
-        annotations.put(Symbol.getSymbol(OFFSET_ANNOTATION_NAME.getValue()), Instant.now().toEpochMilli());
+        annotations.put(Symbol.getSymbol(OFFSET_ANNOTATION_NAME.getValue()), Instant.now().toString());
         annotations.put(Symbol.getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), Instant.now());
         annotations.put(Symbol.getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), 100L);
         receivedMessage.setMessageAnnotations(new MessageAnnotations(annotations));

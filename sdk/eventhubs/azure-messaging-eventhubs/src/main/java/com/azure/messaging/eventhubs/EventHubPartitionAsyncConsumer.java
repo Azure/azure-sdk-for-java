@@ -40,7 +40,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     private final Flux<PartitionEvent> emitterProcessor;
     private final EventPosition initialPosition;
 
-    private volatile Long currentOffset;
+    private volatile String currentOffset;
 
     EventHubPartitionAsyncConsumer(AmqpReceiveLinkProcessor amqpReceiveLinkProcessor,
         MessageSerializer messageSerializer, String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
@@ -57,11 +57,11 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
         this.trackLastEnqueuedEventProperties = trackLastEnqueuedEventProperties;
 
         if (trackLastEnqueuedEventProperties) {
-            lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null));
+            lastEnqueuedEventProperties.set(new LastEnqueuedEventProperties(null, null, null, null, null));
         }
 
         currentEventPosition.set(() -> {
-            final Long offset = currentOffset;
+            final String offset = currentOffset;
             return offset == null
                 ? initialPosition
                 : EventPosition.fromOffset(offset);
@@ -71,7 +71,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
             .map(this::onMessageReceived)
             .doOnNext(event -> {
                 // Keep track of the last position so if the link goes down, we don't start from the original location.
-                final Long offset = event.getData().getOffset();
+                final String offset = event.getData().getOffset();
                 if (offset != null) {
                     currentOffset = offset;
                 } else {
@@ -131,7 +131,9 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
             if (enqueuedEventProperties != null) {
                 final LastEnqueuedEventProperties updated = new LastEnqueuedEventProperties(
                     enqueuedEventProperties.getSequenceNumber(), enqueuedEventProperties.getOffset(),
-                    enqueuedEventProperties.getEnqueuedTime(), enqueuedEventProperties.getRetrievalTime());
+                    enqueuedEventProperties.getEnqueuedTime(), enqueuedEventProperties.getRetrievalTime(),
+                    enqueuedEventProperties.getReplicationSegment());
+
                 lastEnqueuedEventProperties.set(updated);
             }
         }

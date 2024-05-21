@@ -46,7 +46,7 @@ public class MetricsHelperTests {
             .setConsumerGroup("cg")
             .setPartitionId("0")
             .setSequenceNumber(2L)
-            .setOffset(100L);
+            .setOffset("100L");
 
         Meter meter = mock(Meter.class);
         when(meter.isEnabled()).thenReturn(false);
@@ -75,7 +75,7 @@ public class MetricsHelperTests {
             .setConsumerGroup("cg")
             .setPartitionId("0")
             .setSequenceNumber(2L)
-            .setOffset(100L);
+            .setOffset("100L");
 
         Meter meter = mock(Meter.class);
         TestMeterProvider testProvider = new TestMeterProvider((lib, ver, opts) -> meter);
@@ -95,7 +95,7 @@ public class MetricsHelperTests {
             .setConsumerGroup("cg")
             .setPartitionId("0")
             .setSequenceNumber(2L)
-            .setOffset(100L);
+            .setOffset("100L");
 
         TestMeter meter = new TestMeter();
         TestMeterProvider testProvider = new TestMeterProvider((lib, ver, opts) -> {
@@ -136,7 +136,7 @@ public class MetricsHelperTests {
             .setConsumerGroup("cg")
             .setPartitionId("0")
             .setSequenceNumber(2L)
-            .setOffset(100L);
+            .setOffset("100L");
 
         TestMeter meter = new TestMeter();
         Instant startTime = Instant.now().minus(1, ChronoUnit.SECONDS);
@@ -159,7 +159,7 @@ public class MetricsHelperTests {
             .setEventHubName("eh")
             .setConsumerGroup("cg")
             .setPartitionId("0")
-            .setOffset(100L);
+            .setOffset("100L");
 
         TestMeter meter = new TestMeter();
         Instant startTime = Instant.now();
@@ -184,7 +184,7 @@ public class MetricsHelperTests {
                     .setConsumerGroup("cg")
                     .setPartitionId(String.valueOf(n))
                     .setSequenceNumber((long) n)
-                    .setOffset(100L))
+                .setOffset("100L"))
             .collect(Collectors.toList());
 
         MetricsHelper helper = new MetricsHelper(new MetricsOptions(), new TestMeterProvider((lib, ver, opts) -> meter));
@@ -222,7 +222,7 @@ public class MetricsHelperTests {
             .setConsumerGroup("cg")
             .setPartitionId("0")
             .setSequenceNumber(2L)
-            .setOffset(100L);
+            .setOffset("100L");
 
         Checkpoint checkpoint2 = new Checkpoint()
             .setFullyQualifiedNamespace("ns")
@@ -230,7 +230,7 @@ public class MetricsHelperTests {
             .setConsumerGroup("cg")
             .setPartitionId("0")
             .setSequenceNumber(42L)
-            .setOffset(100L);
+            .setOffset("100L");
 
         TestMeter meter = new TestMeter();
         MetricsHelper helper = new MetricsHelper(new MetricsOptions(), new TestMeterProvider((lib, ver, opts) -> meter));
@@ -260,7 +260,7 @@ public class MetricsHelperTests {
             .setConsumerGroup("cg")
             .setPartitionId("0")
             .setSequenceNumber(2L)
-            .setOffset(100L);
+            .setOffset("100L");
 
         Checkpoint checkpoint2 = new Checkpoint()
             .setFullyQualifiedNamespace("ns")
@@ -268,7 +268,7 @@ public class MetricsHelperTests {
             .setConsumerGroup("cg")
             .setPartitionId("0")
             .setSequenceNumber(42L)
-            .setOffset(100L);
+            .setOffset("100L");
 
         TestMeter meter = new TestMeter();
         MetricsHelper helper = new MetricsHelper(new MetricsOptions(), new TestMeterProvider((lib, ver, opts) -> meter));

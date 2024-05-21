@@ -28,6 +28,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PUBLISHER_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.messaging.eventhubs.EventHubMessageSerializer.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -59,6 +60,7 @@ public class EventData extends MessageContent {
         properties.add(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
         properties.add(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
         properties.add(PUBLISHER_ANNOTATION_NAME.getValue());
+        properties.add(REPLICATION_SEGMENT_ANNOTATION_NAME);
 
         RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(properties);
     }
@@ -292,7 +294,7 @@ public class EventData extends MessageContent {
      * @return The offset within the Event Hub partition of the received event. {@code null} if the {@link EventData}
      *     was not received from Event Hubs service.
      */
-    public Long getOffset() {
+    public String getOffset() {
         return systemProperties.getOffset();
     }
 
@@ -415,6 +417,15 @@ public class EventData extends MessageContent {
 
         annotatedMessage.getProperties().setMessageId(id);
         return this;
+    }
+
+    /**
+     * Gets the replication segment for the event.
+     *
+     * @return The replication segment.  -1 or null if geo-disaster recovery is not enabled.
+     */
+    public Integer getReplicationSegment() {
+        return systemProperties.getReplicationSegment();
     }
 
     /**
