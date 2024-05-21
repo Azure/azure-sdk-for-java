@@ -196,7 +196,7 @@ public class BlobCheckpointStoreTests {
                 assertEquals(eventHubName, checkpoint.getEventHubName());
                 assertEquals(consumerGroup, checkpoint.getConsumerGroup());
                 assertEquals(1L, checkpoint.getSequenceNumber());
-                assertEquals(230L, checkpoint.getOffset());
+                assertEquals("230L", checkpoint.getOffset());
             }).verifyComplete();
     }
 
@@ -234,7 +234,7 @@ public class BlobCheckpointStoreTests {
             .setPartitionId(partitionId)
             .setReplicationSegment(16)
             .setSequenceNumber(2L)
-            .setOffset(100L);
+            .setOffset("100L");
 
         final BlobItem blobItem = getCheckpointBlobItem("230", "1", blobName);
         final PagedFlux<BlobItem> response = new PagedFlux<>(() -> Mono.just(
@@ -293,7 +293,7 @@ public class BlobCheckpointStoreTests {
             .setConsumerGroup("cg")
             .setPartitionId("0")
             .setSequenceNumber(2L)
-            .setOffset(100L);
+            .setOffset("100L");
         final String legacyPrefix = getLegacyPrefix(checkpoint.getFullyQualifiedNamespace(),
             checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
         final String blobName = legacyPrefix + CHECKPOINT_PATH + checkpoint.getPartitionId();
@@ -441,7 +441,7 @@ public class BlobCheckpointStoreTests {
             .setConsumerGroup("cg")
             .setPartitionId("0")
             .setSequenceNumber(2L)
-            .setOffset(100L);
+            .setOffset("100L");
 
         when(blobContainerAsyncClient.getBlobAsyncClient("ns/eh/cg/checkpoint/0")).thenReturn(blobAsyncClient);
         when(blobAsyncClient.exists()).thenReturn(Mono.just(true));
