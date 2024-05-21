@@ -60,22 +60,6 @@ class AzureServiceBusProcessorClientConfigurationTests {
     }
 
     @Test
-    void noEntityTypeProvidedShouldNotConfigure() {
-        contextRunner
-            .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
-            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
-            .withPropertyValues(
-                "spring.cloud.azure.servicebus.entity-name=test-queue",
-                "spring.cloud.azure.servicebus.processor.entity-name=test-queue"
-            )
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
-                assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.NoneSessionProcessorClientConfiguration.class);
-                assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.SessionProcessorClientConfiguration.class);
-            });
-    }
-
-    @Test
     void noEntityNameProvidedShouldNotConfigure() {
         contextRunner
             .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
@@ -96,7 +80,59 @@ class AzureServiceBusProcessorClientConfigurationTests {
                 "spring.cloud.azure.servicebus.processor.entity-name=test-topic",
                 "spring.cloud.azure.servicebus.processor.entity-type=topic"
             )
-            .run(context -> assertThrows(IllegalStateException.class, () -> context.getBean(AzureServiceBusProcessorClientConfiguration.class)));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.class));
+    }
+
+    @Test
+    void noSubscriptionNameShouldConfigureForQueue() {
+        ServiceBusClientBuilder serviceBusClientBuilder = new ServiceBusClientBuilder();
+        serviceBusClientBuilder.connectionString(String.format(CONNECTION_STRING_FORMAT, "test-namespace"));
+
+        contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.entity-type=queue"
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
+            .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
+            .run(context -> assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class));
+    }
+
+    @Test
+    void noSubscriptionNameShouldNotConfigureForTopic() {
+        ServiceBusClientBuilder serviceBusClientBuilder = new ServiceBusClientBuilder();
+        serviceBusClientBuilder.connectionString(String.format(CONNECTION_STRING_FORMAT, "test-namespace"));
+
+        contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.entity-name=test-topic",
+                "spring.cloud.azure.servicebus.entity-type=topic"
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
+            .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
+            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.class));
+    }
+
+    @Test
+    void subscriptionNameShouldConfigureForTopic() {
+        ServiceBusClientBuilder serviceBusClientBuilder = new ServiceBusClientBuilder();
+        serviceBusClientBuilder.connectionString(String.format(CONNECTION_STRING_FORMAT, "test-namespace"));
+
+        contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.entity-name=test-topic",
+                "spring.cloud.azure.servicebus.entity-type=topic",
+                "spring.cloud.azure.servicebus.processor.subscription-name=test-sub"
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
+            .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
+            .run(context -> assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class));
     }
 
     @Test
