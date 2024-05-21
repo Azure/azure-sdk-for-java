@@ -213,8 +213,8 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             previous.getRetrievalTime(), current.getRetrievalTime()));
 
         final int comparedSequenceNumber = previous.getSequenceNumber().compareTo(current.getSequenceNumber());
-        Assertions.assertTrue(comparedSequenceNumber <= 0, String.format("Expected previous '%d' sequence " +
-                "number to be before or equal to current '%d'.",
+        Assertions.assertTrue(comparedSequenceNumber <= 0, String.format("Expected previous '%d' sequence "
+                + "number to be before or equal to current '%d'.",
             previous.getSequenceNumber(), current.getSequenceNumber()));
     }
 
