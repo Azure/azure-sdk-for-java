@@ -68,6 +68,21 @@ public class ConnectionHandler extends Handler {
     private final ConnectionOptions connectionOptions;
     private final SslPeerDetails peerDetails;
     private final AmqpMetricsProvider metricProvider;
+    private final boolean enableSsl;
+
+    /**
+     * Creates a handler that handles proton-j's connection events without using SSL.
+     *
+     * @param connectionId Identifier for this connection.
+     * @param connectionOptions Options used when creating the AMQP connection.
+     * @param metricProvider The AMQP metrics provider.
+     * @throws NullPointerException if {@code connectionOptions}, {@code peerDetails}, or {@code metricProvider} is
+     * null.
+     */
+    public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
+        AmqpMetricsProvider metricProvider) {
+        this(connectionId, connectionOptions, null, metricProvider, false);
+    }
 
     /**
      * Creates a handler that handles proton-j's connection events.
@@ -81,6 +96,11 @@ public class ConnectionHandler extends Handler {
      */
     public ConnectionHandler(final String connectionId, final ConnectionOptions connectionOptions,
         SslPeerDetails peerDetails, AmqpMetricsProvider metricProvider) {
+        this(connectionId, connectionOptions, peerDetails, metricProvider, true);
+    }
+
+    ConnectionHandler(String connectionId, ConnectionOptions connectionOptions, SslPeerDetails peerDetails,
+        AmqpMetricsProvider metricProvider, boolean enableSsl) {
         super(connectionId,
             Objects.requireNonNull(connectionOptions, "'connectionOptions' cannot be null.").getHostname());
         add(new Handshaker());
@@ -100,8 +120,14 @@ public class ConnectionHandler extends Handler {
 
         this.connectionProperties.put(USER_AGENT.toString(), userAgent);
 
-        this.peerDetails = Objects.requireNonNull(peerDetails, "'peerDetails' cannot be null.");
+        if (enableSsl) {
+            this.peerDetails = Objects.requireNonNull(peerDetails, "'peerDetails' cannot be null.");
+        } else {
+            this.peerDetails = peerDetails;
+        }
+
         this.metricProvider = Objects.requireNonNull(metricProvider, "'metricProvider' cannot be null.");
+        this.enableSsl = enableSsl;
     }
 
     /**
@@ -143,6 +169,10 @@ public class ConnectionHandler extends Handler {
         // Refer to http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#doc-doc-idle-time-out
         transport.setIdleTimeout(CONNECTION_IDLE_TIMEOUT);
 
+        if (!enableSsl) {
+            return;
+        }
+
         final SslDomain sslDomain = Proton.sslDomain();
         sslDomain.init(SslDomain.Mode.CLIENT);
 
@@ -177,8 +207,8 @@ public class ConnectionHandler extends Handler {
             logger.warning("'{}' is not secure.", verifyMode);
             sslDomain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
         } else {
-            throw logger
-                .logExceptionAsError(new UnsupportedOperationException("verifyMode is not supported: " + verifyMode));
+            throw logger.logExceptionAsError(
+                new UnsupportedOperationException("verifyMode is not supported: " + verifyMode));
         }
 
         transport.ssl(sslDomain);
