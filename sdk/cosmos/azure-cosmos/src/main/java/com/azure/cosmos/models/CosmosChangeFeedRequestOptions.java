@@ -52,6 +52,8 @@ public final class CosmosChangeFeedRequestOptions {
     private CosmosDiagnosticsThresholds thresholds;
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
+    private String collectionRid;
+    private PartitionKeyDefinition partitionKeyDefinition;
 
     CosmosChangeFeedRequestOptions(CosmosChangeFeedRequestOptions topBeCloned) {
         this.continuationState = topBeCloned.continuationState;
@@ -625,6 +627,22 @@ public final class CosmosChangeFeedRequestOptions {
             HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
     }
 
+    public String getCollectionRid() {
+        return collectionRid;
+    }
+
+    public void setCollectionRid(String collectionRid) {
+        this.collectionRid = collectionRid;
+    }
+
+    public PartitionKeyDefinition getPartitionKeyDefinition() {
+        return partitionKeyDefinition;
+    }
+
+    public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.partitionKeyDefinition = partitionKeyDefinition;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -683,6 +701,26 @@ public final class CosmosChangeFeedRequestOptions {
                 @Override
                 public CosmosChangeFeedRequestOptions clone(CosmosChangeFeedRequestOptions toBeCloned) {
                     return new CosmosChangeFeedRequestOptions(toBeCloned);
+                }
+
+                @Override
+                public String getCollectionRid(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                    return changeFeedRequestOptions.getCollectionRid();
+                }
+
+                @Override
+                public void setCollectionRid(CosmosChangeFeedRequestOptions changeFeedRequestOptions, String collectionRid) {
+                    changeFeedRequestOptions.setCollectionRid(collectionRid);
+                }
+
+                @Override
+                public PartitionKeyDefinition getPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+                    return changeFeedRequestOptions.getPartitionKeyDefinition();
+                }
+
+                @Override
+                public void setPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions, PartitionKeyDefinition partitionKeyDefinition) {
+                    changeFeedRequestOptions.setPartitionKeyDefinition(partitionKeyDefinition);
                 }
             });
     }

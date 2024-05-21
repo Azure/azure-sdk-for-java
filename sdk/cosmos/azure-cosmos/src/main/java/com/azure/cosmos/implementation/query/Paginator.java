@@ -6,7 +6,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -22,7 +21,6 @@ import reactor.util.concurrent.Queues;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -111,7 +109,8 @@ public class Paginator {
                 top,
                 maxPageSize,
                 isSplitHandlingDisabled,
-                operationContext),
+                operationContext
+            ),
             preFetchCount);
     }
 

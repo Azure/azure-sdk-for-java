@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
 public class DocumentServiceRequestContext implements Cloneable {
     public volatile boolean forceAddressRefresh;
@@ -61,6 +62,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     private PointOperationContext pointOperationContext;
 
     private FeedOperationContext feedOperationContext;
+    private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
 
     public DocumentServiceRequestContext() {}
 
@@ -213,6 +215,14 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     public Set<String> getSessionTokenEvaluationResults() {
         return sessionTokenEvaluationResults;
+    }
+
+    public Supplier<DocumentClientRetryPolicy> getClientRetryPolicySupplier() {
+        return clientRetryPolicySupplier;
+    }
+
+    public void setClientRetryPolicySupplier(Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier) {
+        this.clientRetryPolicySupplier = clientRetryPolicySupplier;
     }
 }
 

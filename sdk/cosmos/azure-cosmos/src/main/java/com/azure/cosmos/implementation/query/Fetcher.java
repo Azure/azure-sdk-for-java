@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.FeedOperationContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
@@ -174,7 +175,7 @@ abstract class Fetcher<T> {
             .doOnNext(response -> {
                 completed.set(true);
 
-                if (request.getResourceType() == ResourceType.Document) {
+                if (request.getResourceType() == ResourceType.Document && Configs.isPartitionLevelCircuitBreakerEnabled()) {
                     FeedOperationContext feedOperationContext = request.requestContext.getFeedOperationContext();
                     feedOperationContext.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId());
                 }
@@ -193,7 +194,7 @@ abstract class Fetcher<T> {
                     return;
                 }
 
-                if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+                if (request.getResourceType() == ResourceType.Document && Configs.isPartitionLevelCircuitBreakerEnabled()) {
 
                     FeedOperationContext feedOperationContext = request.requestContext.getFeedOperationContext();
 

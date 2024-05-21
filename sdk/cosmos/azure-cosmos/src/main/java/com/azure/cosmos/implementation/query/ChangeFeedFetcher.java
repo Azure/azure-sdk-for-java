@@ -89,8 +89,10 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 requestOptionProperties,
                 retryPolicyInstance.getRetryContext(),
                 () -> this.getOperationContextText());
+
             this.createRequestFunc = () -> {
                 RxDocumentServiceRequest request = createRequestFunc.get();
+                request.requestContext.setClientRetryPolicySupplier(() -> this.feedRangeContinuationFeedRangeGoneRetryPolicy);
                 this.feedRangeContinuationFeedRangeGoneRetryPolicy.onBeforeSendRequest(request);
                 return request;
             };

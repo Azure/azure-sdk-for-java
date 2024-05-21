@@ -375,6 +375,14 @@ public class ImplementationBridgeHelpers {
             CosmosChangeFeedRequestOptions createForProcessingFromContinuation(String continuation, FeedRange targetRange, String continuationLsn);
 
             CosmosChangeFeedRequestOptions clone(CosmosChangeFeedRequestOptions toBeCloned);
+
+            String getCollectionRid(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+
+            void setCollectionRid(CosmosChangeFeedRequestOptions changeFeedRequestOptions, String collectionRid);
+
+            PartitionKeyDefinition getPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+
+            void setPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions, PartitionKeyDefinition partitionKeyDefinition);
         }
     }
 

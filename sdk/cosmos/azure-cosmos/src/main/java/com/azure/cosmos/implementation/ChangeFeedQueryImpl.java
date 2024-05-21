@@ -18,6 +18,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -28,6 +29,9 @@ class ChangeFeedQueryImpl<T> {
     private final static
     ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor feedResponseAccessor =
         ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
+
+    private final static ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor changeFeedRequestOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
 
     private static final int INITIAL_TOP_VALUE = -1;
 
@@ -110,7 +114,7 @@ class ChangeFeedQueryImpl<T> {
                 .CosmosChangeFeedRequestOptionsHelper
                 .getCosmosChangeFeedRequestOptionsAccessor()
                 .getOperationContext(this.options)
-            );
+        );
     }
 
     private RxDocumentServiceRequest createDocumentServiceRequest() {
@@ -139,6 +143,7 @@ class ChangeFeedQueryImpl<T> {
 
         if (request.requestContext != null) {
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
+            request.requestContext.setFeedOperationContext(new FeedOperationContext(new ConcurrentHashMap<>(), false));
         }
 
         return request;
@@ -146,7 +151,34 @@ class ChangeFeedQueryImpl<T> {
 
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         if (this.operationContextAndListener == null) {
-            return client.readFeed(request)
+            return Mono.just(request)
+                .flatMap(req -> client.populateHeadersAsync(req, RequestVerb.GET))
+                .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req)
+                    .flatMap(documentCollectionValueHolder -> {
+
+                        checkNotNull(documentCollectionValueHolder, "documentCollectionValueHolder cannot be null!");
+                        checkNotNull(documentCollectionValueHolder.v, "documentCollectionValueHolder.v cannot be null!");
+
+                        return client.getPartitionKeyRangeCache().tryLookupAsync(null, documentCollectionValueHolder.v.getResourceId(), null, null)
+                            .flatMap(collectionRoutingMapValueHolder -> {
+
+                                checkNotNull(collectionRoutingMapValueHolder, "collectionRoutingMapValueHolder cannot be null!");
+                                checkNotNull(collectionRoutingMapValueHolder.v, "collectionRoutingMapValueHolder.v cannot be null!");
+
+                                changeFeedRequestOptionsAccessor.setPartitionKeyDefinition(options, documentCollectionValueHolder.v.getPartitionKey());
+                                changeFeedRequestOptionsAccessor.setCollectionRid(options, documentCollectionValueHolder.v.getResourceId());
+
+                                client.addPartitionLevelUnavailableRegionsForChangeFeedRequest(req, options, collectionRoutingMapValueHolder.v);
+
+                                if (req.requestContext.getClientRetryPolicySupplier() != null) {
+                                    DocumentClientRetryPolicy documentClientRetryPolicy = req.requestContext.getClientRetryPolicySupplier().get();
+                                    documentClientRetryPolicy.onBeforeSendRequest(req);
+                                }
+
+                                return Mono.just(req);
+                            });
+                    }))
+                .flatMap(client::readFeed)
                 .map(rsp -> feedResponseAccessor.createChangeFeedResponse(rsp, this.itemSerializer, klass));
         } else {
             final OperationListener listener = operationContextAndListener.getOperationListener();
@@ -156,7 +188,33 @@ class ChangeFeedQueryImpl<T> {
                 .put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, operationContext.getCorrelationActivityId());
             listener.requestListener(operationContext, request);
 
-            return client.readFeed(request)
+            return Mono.just(request)
+                .flatMap(req -> client.populateHeadersAsync(req, RequestVerb.GET))
+                .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req)
+                    .flatMap(documentCollectionValueHolder -> {
+
+                        checkNotNull(documentCollectionValueHolder, "documentCollectionValueHolder cannot be null!");
+                        checkNotNull(documentCollectionValueHolder.v, "documentCollectionValueHolder.v cannot be null!");
+
+                        return client.getPartitionKeyRangeCache().tryLookupAsync(null, documentCollectionValueHolder.v.getResourceId(), null, null)
+                            .flatMap(collectionRoutingMapValueHolder -> {
+
+                                checkNotNull(collectionRoutingMapValueHolder, "collectionRoutingMapValueHolder cannot be null!");
+                                checkNotNull(collectionRoutingMapValueHolder.v, "collectionRoutingMapValueHolder.v cannot be null!");
+
+                                changeFeedRequestOptionsAccessor.setPartitionKeyDefinition(options, documentCollectionValueHolder.v.getPartitionKey());
+                                changeFeedRequestOptionsAccessor.setCollectionRid(options, documentCollectionValueHolder.v.getResourceId());
+
+                                client.addPartitionLevelUnavailableRegionsForChangeFeedRequest(req, options, collectionRoutingMapValueHolder.v);
+
+                                if (req.requestContext.getClientRetryPolicySupplier() != null) {
+                                    DocumentClientRetryPolicy documentClientRetryPolicy = req.requestContext.getClientRetryPolicySupplier().get();
+                                    documentClientRetryPolicy.onBeforeSendRequest(req);
+                                }
+
+                                return Mono.just(req);
+                            });
+                    })).flatMap(client::readFeed)
                          .map(rsp -> {
                              listener.responseListener(operationContext, rsp);
 

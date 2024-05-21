@@ -1961,7 +1961,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @param httpMethod http method
      * @return Mono, which on subscription will populate the headers in the request passed in the argument.
      */
-    private Mono<RxDocumentServiceRequest> populateHeadersAsync(RxDocumentServiceRequest request, RequestVerb httpMethod) {
+    public Mono<RxDocumentServiceRequest> populateHeadersAsync(RxDocumentServiceRequest request, RequestVerb httpMethod) {
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null
             || this.cosmosAuthorizationTokenResolver != null || this.credential != null) {
@@ -5689,7 +5689,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return new UUID(msb, lsb);
     }
 
-    private void addPartitionLevelUnavailableRegionsForRequest(
+    public void addPartitionLevelUnavailableRegionsForRequest(
         RxDocumentServiceRequest request,
         RequestOptions options,
         CollectionRoutingMap collectionRoutingMap) {
@@ -5714,7 +5714,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private void addPartitionLevelUnavailableRegionsForFeedRequest(
+    public void addPartitionLevelUnavailableRegionsForFeedRequest(
         RxDocumentServiceRequest request,
         CosmosQueryRequestOptions options,
         CollectionRoutingMap collectionRoutingMap) {
@@ -5727,6 +5727,32 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
         } else if (request.getPartitionKeyInternal() != null) {
             String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(request.getPartitionKeyInternal(), ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getPartitionKeyDefinition(options));
+            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+        }
+
+        checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+
+        if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+            checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+            List<URI> unavailableLocationsForPartition = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableLocationEndpointsForPartitionKeyRange(request.getResourceId(), resolvedPartitionKeyRange);
+            List<String> unavailableRegionsForPartition = unavailableLocationsForPartition.stream().map(unavailableLocationForPartition -> this.globalEndpointManager.getRegionName(unavailableLocationForPartition, request.getOperationType())).collect(Collectors.toList());
+
+            request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+        }
+    }
+
+    public void addPartitionLevelUnavailableRegionsForChangeFeedRequest(
+        RxDocumentServiceRequest request,
+        CosmosChangeFeedRequestOptions options,
+        CollectionRoutingMap collectionRoutingMap) {
+        checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
+
+        PartitionKeyRange resolvedPartitionKeyRange = null;
+
+        if (request.getPartitionKeyRangeIdentity() != null) {
+            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+        } else if (request.getPartitionKeyInternal() != null) {
+            String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(request.getPartitionKeyInternal(), ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor().getPartitionKeyDefinition(options));
             resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
         }
 
