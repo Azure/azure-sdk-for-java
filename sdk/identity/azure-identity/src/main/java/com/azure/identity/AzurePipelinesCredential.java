@@ -12,6 +12,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
 import com.azure.identity.implementation.ClientAssertionCredentialHelper;
 import com.azure.identity.implementation.IdentityClientBase;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -40,7 +41,7 @@ public class AzurePipelinesCredential implements TokenCredential {
                 HttpRequest request = new HttpRequest(HttpMethod.POST, url);
                 request.setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + systemAccessToken);
                 request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
-                try (HttpResponse response = pipeline.sendSync(request, null)) {
+                try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
                     return response.getBodyAsString().block();
                 }
             } catch (IOException e) {
