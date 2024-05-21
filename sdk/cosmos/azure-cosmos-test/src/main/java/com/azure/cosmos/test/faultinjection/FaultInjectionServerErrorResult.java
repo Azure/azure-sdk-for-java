@@ -73,7 +73,9 @@ public final class FaultInjectionServerErrorResult implements IFaultInjectionRes
      * Default value is 1.0 or 100%
      * @return the apply percentage.
      */
-    public double getInjectionRate() { return this.injectionRate; }
+    public double getInjectionRate() {
+        return this.injectionRate;
+    }
 
     @Override
     public String toString() {

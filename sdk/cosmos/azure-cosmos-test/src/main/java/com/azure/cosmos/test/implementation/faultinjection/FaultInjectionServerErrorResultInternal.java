@@ -67,7 +67,9 @@ public class FaultInjectionServerErrorResultInternal {
         return this.suppressServiceRequests;
     }
 
-    public double getInjectionRate() { return this.injectionRate; }
+    public double getInjectionRate() {
+        return this.injectionRate;
+    }
 
     public boolean isApplicable(String ruleId, RxDocumentServiceRequest request) {
         return this.times == null || request.faultInjectionRequestContext.getFaultInjectionRuleApplyCount(ruleId) < this.times;
