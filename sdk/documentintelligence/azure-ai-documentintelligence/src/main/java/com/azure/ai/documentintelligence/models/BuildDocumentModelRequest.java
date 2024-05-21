@@ -37,14 +37,14 @@ public final class BuildDocumentModelRequest implements JsonSerializable<BuildDo
     private final DocumentBuildMode buildMode;
 
     /*
-     * Azure Blob Storage location containing the training data.  Either
+     * Azure Blob Storage location containing the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
      */
     @Generated
     private AzureBlobContentSource azureBlobSource;
 
     /*
-     * Azure Blob Storage file list specifying the training data.  Either
+     * Azure Blob Storage file list specifying the training data. Either
      * azureBlobSource or azureBlobFileListSource must be specified.
      */
     @Generated

@@ -22,7 +22,8 @@ public final class VerifyFromPersonGroupRequest {
     private final String faceId;
 
     /*
-     * Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in "Create Person Group".
+     * Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in
+     * "Create Person Group".
      */
     @Generated
     @JsonProperty(value = "personGroupId")

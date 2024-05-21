@@ -30,7 +30,10 @@ public final class CreatePersonGroupRequest {
     private String userData;
 
     /*
-     * The 'recognitionModel' associated with this face list. Supported 'recognitionModel' values include 'recognition_01', 'recognition_02, 'recognition_03', and 'recognition_04'. The default value is 'recognition_01'. 'recognition_04' is recommended since its accuracy is improved on faces wearing masks compared with 'recognition_03', and its overall accuracy is improved compared with 'recognition_01' and 'recognition_02'.
+     * The 'recognitionModel' associated with this face list. Supported 'recognitionModel' values include
+     * 'recognition_01', 'recognition_02, 'recognition_03', and 'recognition_04'. The default value is 'recognition_01'.
+     * 'recognition_04' is recommended since its accuracy is improved on faces wearing masks compared with
+     * 'recognition_03', and its overall accuracy is improved compared with 'recognition_01' and 'recognition_02'.
      */
     @Generated
     @JsonProperty(value = "recognitionModel")

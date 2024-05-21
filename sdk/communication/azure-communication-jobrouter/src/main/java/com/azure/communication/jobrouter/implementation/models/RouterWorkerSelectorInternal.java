@@ -32,7 +32,8 @@ public final class RouterWorkerSelectorInternal {
     private final LabelOperator labelOperator;
 
     /*
-     * The value to compare against the actual label value with the given operator. Values must be primitive values - number, string, boolean.
+     * The value to compare against the actual label value with the given operator. Values must be primitive values -
+     * number, string, boolean.
      */
     @Generated
     @JsonProperty(value = "value")

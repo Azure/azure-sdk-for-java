@@ -39,13 +39,17 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
     private String url;
 
     /*
-     * The ETag of the Job Schedule. This is an opaque string. You can use it to detect whether the Job Schedule has changed between requests. In particular, you can be pass the ETag with an Update Job Schedule request to specify that your changes should take effect only if nobody else has modified the schedule in the meantime.
+     * The ETag of the Job Schedule. This is an opaque string. You can use it to detect whether the Job Schedule has
+     * changed between requests. In particular, you can be pass the ETag with an Update Job Schedule request to specify
+     * that your changes should take effect only if nobody else has modified the schedule in the meantime.
      */
     @Generated
     private String eTag;
 
     /*
-     * The last modified time of the Job Schedule. This is the last time at which the schedule level data, such as the Job specification or recurrence information, changed. It does not factor in job-level changes such as new Jobs being created or Jobs changing state.
+     * The last modified time of the Job Schedule. This is the last time at which the schedule level data, such as the
+     * Job specification or recurrence information, changed. It does not factor in job-level changes such as new Jobs
+     * being created or Jobs changing state.
      */
     @Generated
     private OffsetDateTime lastModified;
@@ -69,19 +73,22 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
     private OffsetDateTime stateTransitionTime;
 
     /*
-     * The previous state of the Job Schedule. This property is not present if the Job Schedule is in its initial active state.
+     * The previous state of the Job Schedule. This property is not present if the Job Schedule is in its initial active
+     * state.
      */
     @Generated
     private BatchJobScheduleState previousState;
 
     /*
-     * The time at which the Job Schedule entered its previous state. This property is not present if the Job Schedule is in its initial active state.
+     * The time at which the Job Schedule entered its previous state. This property is not present if the Job Schedule
+     * is in its initial active state.
      */
     @Generated
     private OffsetDateTime previousStateTransitionTime;
 
     /*
-     * The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted by daylight saving time.
+     * The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted
+     * by daylight saving time.
      */
     @Generated
     private BatchJobScheduleConfiguration schedule;
@@ -99,13 +106,15 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
     private BatchJobScheduleExecutionInfo executionInfo;
 
     /*
-     * A list of name-value pairs associated with the schedule as metadata. The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
+     * A list of name-value pairs associated with the schedule as metadata. The Batch service does not assign any
+     * meaning to metadata; it is solely for the use of user code.
      */
     @Generated
     private List<MetadataItem> metadata;
 
     /*
-     * The lifetime resource usage statistics for the Job Schedule. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
+     * The lifetime resource usage statistics for the Job Schedule. The statistics may not be immediately available. The
+     * Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
      */
     @Generated
     private BatchJobScheduleStatistics stats;

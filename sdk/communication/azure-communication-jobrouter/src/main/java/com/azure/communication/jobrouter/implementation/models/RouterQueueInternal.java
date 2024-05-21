@@ -43,7 +43,8 @@ public final class RouterQueueInternal {
     private String distributionPolicyId;
 
     /*
-     * A set of key/value pairs that are identifying attributes used by the rules engines to make decisions. Values must be primitive values - number, string, boolean.
+     * A set of key/value pairs that are identifying attributes used by the rules engines to make decisions. Values must
+     * be primitive values - number, string, boolean.
      */
     @Generated
     @JsonProperty(value = "labels")

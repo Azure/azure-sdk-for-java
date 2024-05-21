@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added new Azure region `Region.ISRAEL_CENTRAL`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

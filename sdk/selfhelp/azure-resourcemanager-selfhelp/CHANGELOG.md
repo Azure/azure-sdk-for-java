@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.4 (Unreleased)
+## 1.1.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.4 (2024-05-21)
+
+- Azure Resource Manager Self Help client library for Java. This package contains Microsoft Azure SDK for Self Help Management SDK. Help RP provider. Package tag package-2024-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.DiscoverySolutionNlpSubscriptionScopes` was modified
+
+* `post()` was removed
+* `postWithResponse(models.DiscoveryNlpRequest,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+#### `models.DiscoverySolutionNlpSubscriptionScopes` was modified
+
+* `postWithResponse(java.lang.String,models.DiscoveryNlpRequest,com.azure.core.util.Context)` was added
+* `post(java.lang.String)` was added
 
 ## 1.1.0-beta.3 (2024-04-23)
 

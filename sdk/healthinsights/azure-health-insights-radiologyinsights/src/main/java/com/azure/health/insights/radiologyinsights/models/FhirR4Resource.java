@@ -57,6 +57,10 @@ public class FhirR4Resource {
     private String language;
 
     /*
+     * Resource is the ancestor of DomainResource from which most resources are derived. Bundle, Parameters, and Binary
+     * extend Resource directly.
+     * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html
+     * 
      * Additional properties
      */
     @Generated
@@ -173,7 +177,11 @@ public class FhirR4Resource {
     }
 
     /**
-     * Get the additionalProperties property: Additional properties.
+     * Get the additionalProperties property: Resource is the ancestor of DomainResource from which most resources are
+     * derived. Bundle, Parameters, and Binary extend Resource directly.
+     * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html
+     *
+     * Additional properties.
      *
      * @return the additionalProperties value.
      */
@@ -184,7 +192,11 @@ public class FhirR4Resource {
     }
 
     /**
-     * Set the additionalProperties property: Additional properties.
+     * Set the additionalProperties property: Resource is the ancestor of DomainResource from which most resources are
+     * derived. Bundle, Parameters, and Binary extend Resource directly.
+     * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html
+     *
+     * Additional properties.
      *
      * @param additionalProperties the additionalProperties value to set.
      * @return the FhirR4Resource object itself.

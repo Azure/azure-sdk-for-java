@@ -22,13 +22,17 @@ import java.util.Map;
 public final class BatchPool implements JsonSerializable<BatchPool> {
 
     /*
-     * A string that uniquely identifies the Pool within the Account. The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
+     * A string that uniquely identifies the Pool within the Account. The ID can contain any combination of alphanumeric
+     * characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is
+     * case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by
+     * case).
      */
     @Generated
     private String id;
 
     /*
-     * The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
+     * The display name for the Pool. The display name need not be unique and can contain any Unicode characters up to a
+     * maximum length of 1024.
      */
     @Generated
     private String displayName;
@@ -40,13 +44,17 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     private String url;
 
     /*
-     * The ETag of the Pool. This is an opaque string. You can use it to detect whether the Pool has changed between requests. In particular, you can be pass the ETag when updating a Pool to specify that your changes should take effect only if nobody else has modified the Pool in the meantime.
+     * The ETag of the Pool. This is an opaque string. You can use it to detect whether the Pool has changed between
+     * requests. In particular, you can be pass the ETag when updating a Pool to specify that your changes should take
+     * effect only if nobody else has modified the Pool in the meantime.
      */
     @Generated
     private String eTag;
 
     /*
-     * The last modified time of the Pool. This is the last time at which the Pool level data, such as the targetDedicatedNodes or enableAutoscale settings, changed. It does not factor in node-level changes such as a Compute Node changing state.
+     * The last modified time of the Pool. This is the last time at which the Pool level data, such as the
+     * targetDedicatedNodes or enableAutoscale settings, changed. It does not factor in node-level changes such as a
+     * Compute Node changing state.
      */
     @Generated
     private OffsetDateTime lastModified;
@@ -82,7 +90,9 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     private OffsetDateTime allocationStateTransitionTime;
 
     /*
-     * The size of virtual machines in the Pool. All virtual machines in a Pool are the same size. For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+     * The size of virtual machines in the Pool. All virtual machines in a Pool are the same size. For information about
+     * available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool
+     * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
      */
     @Generated
     private String vmSize;
@@ -94,13 +104,15 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /*
-     * The timeout for allocation of Compute Nodes to the Pool. This is the timeout for the most recent resize operation. (The initial sizing when the Pool is created counts as a resize.) The default value is 15 minutes.
+     * The timeout for allocation of Compute Nodes to the Pool. This is the timeout for the most recent resize
+     * operation. (The initial sizing when the Pool is created counts as a resize.) The default value is 15 minutes.
      */
     @Generated
     private Duration resizeTimeout;
 
     /*
-     * A list of errors encountered while performing the last resize on the Pool. This property is set only if one or more errors occurred during the last Pool resize, and only when the Pool allocationState is Steady.
+     * A list of errors encountered while performing the last resize on the Pool. This property is set only if one or
+     * more errors occurred during the last Pool resize, and only when the Pool allocationState is Steady.
      */
     @Generated
     private List<ResizeError> resizeErrors;
@@ -112,7 +124,8 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     private Integer currentDedicatedNodes;
 
     /*
-     * The number of Spot/Low-priority Compute Nodes currently in the Pool. Spot/Low-priority Compute Nodes which have been preempted are included in this count.
+     * The number of Spot/Low-priority Compute Nodes currently in the Pool. Spot/Low-priority Compute Nodes which have
+     * been preempted are included in this count.
      */
     @Generated
     private Integer currentLowPriorityNodes;
@@ -130,31 +143,38 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     private Integer targetLowPriorityNodes;
 
     /*
-     * Whether the Pool size should automatically adjust over time. If false, at least one of targetDedicatedNodes and targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the Pool automatically resizes according to the formula. The default value is false.
+     * Whether the Pool size should automatically adjust over time. If false, at least one of targetDedicatedNodes and
+     * targetLowPriorityNodes must be specified. If true, the autoScaleFormula property is required and the Pool
+     * automatically resizes according to the formula. The default value is false.
      */
     @Generated
     private Boolean enableAutoScale;
 
     /*
-     * A formula for the desired number of Compute Nodes in the Pool. This property is set only if the Pool automatically scales, i.e. enableAutoScale is true.
+     * A formula for the desired number of Compute Nodes in the Pool. This property is set only if the Pool
+     * automatically scales, i.e. enableAutoScale is true.
      */
     @Generated
     private String autoScaleFormula;
 
     /*
-     * The time interval at which to automatically adjust the Pool size according to the autoscale formula. This property is set only if the Pool automatically scales, i.e. enableAutoScale is true.
+     * The time interval at which to automatically adjust the Pool size according to the autoscale formula. This
+     * property is set only if the Pool automatically scales, i.e. enableAutoScale is true.
      */
     @Generated
     private Duration autoScaleEvaluationInterval;
 
     /*
-     * The results and errors from the last execution of the autoscale formula. This property is set only if the Pool automatically scales, i.e. enableAutoScale is true.
+     * The results and errors from the last execution of the autoscale formula. This property is set only if the Pool
+     * automatically scales, i.e. enableAutoScale is true.
      */
     @Generated
     private AutoScaleRun autoScaleRun;
 
     /*
-     * Whether the Pool permits direct communication between Compute Nodes. This imposes restrictions on which Compute Nodes can be assigned to the Pool. Specifying this value can reduce the chance of the requested number of Compute Nodes to be allocated in the Pool.
+     * Whether the Pool permits direct communication between Compute Nodes. This imposes restrictions on which Compute
+     * Nodes can be assigned to the Pool. Specifying this value can reduce the chance of the requested number of Compute
+     * Nodes to be allocated in the Pool.
      */
     @Generated
     private Boolean enableInterNodeCommunication;
@@ -172,13 +192,17 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     private BatchStartTask startTask;
 
     /*
-     * The list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any given Pool.
+     * The list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all
+     * new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted
+     * or reimaged. There is a maximum of 10 Package references on any given Pool.
      */
     @Generated
     private List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
-     * The number of task slots that can be used to run concurrent tasks on a single compute node in the pool. The default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
+     * The number of task slots that can be used to run concurrent tasks on a single compute node in the pool. The
+     * default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or
+     * 256.
      */
     @Generated
     private Integer taskSlotsPerNode;
@@ -202,7 +226,10 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     private List<MetadataItem> metadata;
 
     /*
-     * Utilization and resource usage statistics for the entire lifetime of the Pool. This property is populated only if the CloudPool was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
+     * Utilization and resource usage statistics for the entire lifetime of the Pool. This property is populated only if
+     * the CloudPool was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The
+     * statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The
+     * typical delay is about 30 minutes.
      */
     @Generated
     private BatchPoolStatistics stats;
@@ -214,7 +241,10 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     private List<MountConfiguration> mountConfiguration;
 
     /*
-     * The identity of the Batch pool, if configured. The list of user identities associated with the Batch pool. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * The identity of the Batch pool, if configured. The list of user identities associated with the Batch pool. The
+     * user identity dictionary key references will be ARM resource ids in the form:
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
     @Generated
     private BatchPoolIdentity identity;
@@ -626,7 +656,10 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     }
 
     /*
-     * The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This property can only be specified when the Batch account was created with the poolAllocationMode property set to 'UserSubscription'.
+     * The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch
+     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
+     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
+     * 'UserSubscription'.
      */
     @Generated
     private Map<String, String> resourceTags;

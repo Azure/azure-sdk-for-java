@@ -15,14 +15,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class CreateLivenessWithVerifySessionResult {
 
     /*
-     * The unique session ID of the created session. It will expire 48 hours after it was created or may be deleted sooner using the corresponding Session DELETE operation.
+     * The unique session ID of the created session. It will expire 48 hours after it was created or may be deleted
+     * sooner using the corresponding Session DELETE operation.
      */
     @Generated
     @JsonProperty(value = "sessionId")
     private final String sessionId;
 
     /*
-     * Bearer token to provide authentication for the Vision SDK running on a client application. This Bearer token has limited permissions to perform only the required action and expires after the TTL time. It is also auditable.
+     * Bearer token to provide authentication for the Vision SDK running on a client application. This Bearer token has
+     * limited permissions to perform only the required action and expires after the TTL time. It is also auditable.
      */
     @Generated
     @JsonProperty(value = "authToken")

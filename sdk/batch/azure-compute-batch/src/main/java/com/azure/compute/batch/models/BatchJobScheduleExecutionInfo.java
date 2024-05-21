@@ -21,13 +21,16 @@ import java.time.format.DateTimeFormatter;
 public final class BatchJobScheduleExecutionInfo implements JsonSerializable<BatchJobScheduleExecutionInfo> {
 
     /*
-     * The next time at which a Job will be created under this schedule. This property is meaningful only if the schedule is in the active state when the time comes around. For example, if the schedule is disabled, no Job will be created at nextRunTime unless the Job is enabled before then.
+     * The next time at which a Job will be created under this schedule. This property is meaningful only if the
+     * schedule is in the active state when the time comes around. For example, if the schedule is disabled, no Job will
+     * be created at nextRunTime unless the Job is enabled before then.
      */
     @Generated
     private OffsetDateTime nextRunTime;
 
     /*
-     * Information about the most recent Job under the Job Schedule. This property is present only if the at least one Job has run under the schedule.
+     * Information about the most recent Job under the Job Schedule. This property is present only if the at least one
+     * Job has run under the schedule.
      */
     @Generated
     private RecentBatchJob recentJob;
