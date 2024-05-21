@@ -1,14 +1,16 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2024-05-21)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Adds support for persisting replication segment in `Checkpoint`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.16.0` to version `5.19.0-beta.1`.
 
 ## 1.0.0-beta.2 (2023-09-22)
 

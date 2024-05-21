@@ -1,6 +1,6 @@
 # Release History
 
-## 5.19.0-beta.1 (Unreleased)
+## 5.19.0-beta.1 (2024-05-21)
 
 ### Features Added
 
@@ -11,14 +11,11 @@
 
 ### Breaking Changes
 
-- `EventData.getOffset()`, `CheckpointStore.getOffset()`, `EventData.getOffset(), and `LastEnqueuedEventProperties.getOffset()` are changed from `Long` to `String`.
+- `EventData.getOffset()`, `CheckpointStore.getOffset()`, `EventData.getOffset()`, and `LastEnqueuedEventProperties.getOffset()` are changed from `Long` to `String`.
 
 ### Bugs Fixed
 
 - Fixed issue where creating EventProcessorClient instances using the same EventProcessorClientBuilder instance could result in incorrect properties. ([#29875](https://github.com/Azure/azure-sdk-for-java/issues/29875))
-
-### Other Changes
-
 
 ## 5.18.3 (2024-04-23)
 
