@@ -18,7 +18,23 @@ import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.azure.identity.implementation.util.ValidationUtil;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.aad.msal4j.*;
+import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
+import com.microsoft.aad.msal4j.AppTokenProviderParameters;
+import com.microsoft.aad.msal4j.ClaimsRequest;
+import com.microsoft.aad.msal4j.ClientCredentialFactory;
+import com.microsoft.aad.msal4j.ClientCredentialParameters;
+import com.microsoft.aad.msal4j.ConfidentialClientApplication;
+import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.IAccount;
+import com.microsoft.aad.msal4j.IAuthenticationResult;
+import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
+import com.microsoft.aad.msal4j.PublicClientApplication;
+import com.microsoft.aad.msal4j.RefreshTokenParameters;
+import com.microsoft.aad.msal4j.SilentParameters;
+import com.microsoft.aad.msal4j.TokenProviderResult;
+import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import com.sun.jna.Platform;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -565,9 +581,16 @@ public class IdentityClient extends IdentityClientBase {
 
     public Mono<AccessToken> authenticateWithManagedIdentityMsalClient(TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes()) + "/";
+
+        return Mono.fromSupplier(() -> options.isChained() && options.getManagedIdentityType().equals(ManagedIdentityType.VM))
+            .flatMap(shouldProbe -> shouldProbe ? checkIMDSAvailable(getImdsEndpoint()) : Mono.just(true))
+            .flatMap(ignored ->  getTokenFromMsalMIClient(resource));
+    }
+
+    private Mono<AccessToken> getTokenFromMsalMIClient(String resource) {
         return managedIdentityMsalApplicationAccessor.getValue()
             .flatMap(managedIdentityApplication -> Mono.fromFuture(() -> {
-                com.microsoft.aad.msal4j.ManagedIdentityParameters.ManagedIdentityParametersBuilder builder =
+                    com.microsoft.aad.msal4j.ManagedIdentityParameters.ManagedIdentityParametersBuilder builder =
                         com.microsoft.aad.msal4j.ManagedIdentityParameters.builder(resource);
                     try {
                         return managedIdentityApplication.acquireTokenForManagedIdentity(builder.build());
@@ -1194,8 +1217,7 @@ public class IdentityClient extends IdentityClientBase {
             return Mono.error(exception);
         }
 
-        String endpoint = TRAILING_FORWARD_SLASHES.matcher(options.getImdsAuthorityHost()).replaceAll("")
-            + IdentityConstants.DEFAULT_IMDS_TOKENPATH;
+        String endpoint = getImdsEndpoint();
 
         return checkIMDSAvailable(endpoint).flatMap(available -> Mono.fromCallable(() -> {
             int retry = 1;
@@ -1277,6 +1299,11 @@ public class IdentityClient extends IdentityClientBase {
                     String.format("MSI: Failed to acquire tokens after retrying %s times",
                     options.getMaxRetry())));
         }));
+    }
+
+    private String getImdsEndpoint() {
+        return TRAILING_FORWARD_SLASHES.matcher(options.getImdsAuthorityHost()).replaceAll("")
+            + IdentityConstants.DEFAULT_IMDS_TOKENPATH;
     }
 
     int getRetryTimeoutInMs(int retry) {

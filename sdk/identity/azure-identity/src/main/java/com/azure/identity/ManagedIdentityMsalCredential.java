@@ -7,7 +7,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.IdentityClient;
-import com.azure.identity.implementation.IdentityClientBuilder;
 import reactor.core.publisher.Mono;
 
 /**

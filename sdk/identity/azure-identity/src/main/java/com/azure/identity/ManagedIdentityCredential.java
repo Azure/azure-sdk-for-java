@@ -122,7 +122,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
          * Pod Identity V2 (AksExchangeToken): AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_FEDERATED_TOKEN_FILE
          * IMDS/Pod Identity V1: No variables set.
          */
-
         if (configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
                 && configuration.get(AZURE_FEDERATED_TOKEN_FILE) != null) {
             String clientIdentifier = clientId == null
@@ -172,6 +171,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
                     .build());
             }
         } else {
+            identityClientOptions.setManagedIdentityType(getManagedIdentityEnv(configuration));
             managedIdentityServiceCredential = new ManagedIdentityMsalCredential(clientId, clientBuilder.build());
         }
         LoggingUtil.logAvailableEnvironmentVariables(LOGGER, configuration);
@@ -231,6 +231,29 @@ public final class ManagedIdentityCredential implements TokenCredential {
                     managedIdentityServiceCredential.getEnvironment()))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
             .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClientOptions, request, error));
+    }
+
+    ManagedIdentityType getManagedIdentityEnv(Configuration configuration) {
+        if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
+            return ManagedIdentityType.APP_SERVICE;
+        } else if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
+            if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
+                if (configuration.get(PROPERTY_IDENTITY_SERVER_THUMBPRINT) != null) {
+                    return ManagedIdentityType.SERVICE_FABRIC;
+                } else {
+                    return ManagedIdentityType.APP_SERVICE;
+                }
+            } else if (configuration.get(PROPERTY_IMDS_ENDPOINT) != null) {
+                return ManagedIdentityType.ARC;
+            } else {
+                return ManagedIdentityType.VM;
+            }
+        } else if (configuration.contains(Configuration.PROPERTY_AZURE_TENANT_ID)
+            && configuration.get(AZURE_FEDERATED_TOKEN_FILE) != null) {
+            return ManagedIdentityType.AKS;
+        } else {
+            return ManagedIdentityType.VM;
+        }
     }
 }
 
