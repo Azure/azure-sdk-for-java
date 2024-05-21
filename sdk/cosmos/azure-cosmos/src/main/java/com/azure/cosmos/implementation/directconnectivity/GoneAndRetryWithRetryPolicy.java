@@ -194,8 +194,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             Duration timeout;
             boolean forceRefreshAddressCache;
 
-            bookmarkException(this.request, exception);
-
             if (isNonRetryableException(exception)) {
                 logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
                     exception);
@@ -312,19 +310,6 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             this.request.forceNameCacheRefresh = true;
 
             return Pair.of(null, false);
-        }
-
-        private static boolean bookmarkException(RxDocumentServiceRequest request, Exception exception) {
-
-            if (exception instanceof CosmosException) {
-                CosmosException cosmosException = Utils.as(exception, CosmosException.class);
-
-                if (request.requestContext == null) {
-                    return false;
-                }
-            }
-
-            return false;
         }
     }
 

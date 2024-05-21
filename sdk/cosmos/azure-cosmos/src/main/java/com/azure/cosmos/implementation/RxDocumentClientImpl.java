@@ -541,7 +541,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
             this.globalPartitionEndpointManagerForCircuitBreaker = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManager);
 
-            ((GlobalPartitionEndpointManagerForCircuitBreaker) this.globalPartitionEndpointManagerForCircuitBreaker).init();
+            this.globalPartitionEndpointManagerForCircuitBreaker.init();
 
             this.retryPolicy = new RetryPolicy(
                 this,
