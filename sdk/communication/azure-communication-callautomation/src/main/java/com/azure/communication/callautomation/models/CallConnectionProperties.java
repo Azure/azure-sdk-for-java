@@ -35,6 +35,7 @@ public final class CallConnectionProperties {
     private final TranscriptionSubscription transcriptionSubscription;
     private final CommunicationUserIdentifier answeredBy;
     private final String correlationId;
+    private final PhoneNumberIdentifier answeredFor;
 
     static {
         CallConnectionPropertiesConstructorProxy.setAccessor(
@@ -63,6 +64,7 @@ public final class CallConnectionProperties {
         this.transcriptionSubscription = null;
         this.answeredBy = null;
         this.correlationId = null;
+        this.answeredFor = null;
     }
 
     /**
@@ -83,6 +85,7 @@ public final class CallConnectionProperties {
         this.transcriptionSubscription = null; // #TODO (transcriptionSubscription) callConnectionPropertiesInternal.getTranscriptionSubscription();
         this.answeredBy = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredBy());
         this.correlationId = callConnectionPropertiesInternal.getCorrelationId();
+        this.answeredFor = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredFor());
     }
 
     /**
@@ -189,5 +192,15 @@ public final class CallConnectionProperties {
      */
     public String getCorrelationId() {
         return correlationId;
+    }
+
+     /**
+     * Get the answeredFor property: Identity of the original Pstn target of an incoming Call. Only populated when the
+     * original target is a Pstn number.
+     * 
+     * @return the answeredFor value.
+     */
+    public PhoneNumberIdentifier getAnsweredFor() {
+        return answeredFor;
     }
 }
