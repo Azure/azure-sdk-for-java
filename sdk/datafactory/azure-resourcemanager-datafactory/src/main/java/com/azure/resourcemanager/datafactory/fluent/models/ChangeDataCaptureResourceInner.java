@@ -304,8 +304,9 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model ChangeDataCaptureResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ChangeDataCaptureResourceInner"));
         } else {
             innerProperties().validate();
         }

@@ -12,7 +12,7 @@ variables:
 - name: MAVEN_OPTS
   value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
 - name: NodeVersion
-  value: '16.x'
+  value: '18.x'
 
 steps:
 - bash: |

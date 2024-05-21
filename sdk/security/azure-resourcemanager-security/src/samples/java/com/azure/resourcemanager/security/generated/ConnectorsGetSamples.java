@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class ConnectorsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/
-     * GetConnectorSubscription_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/GetConnectorSubscription_example.json
      */
     /**
      * Sample code: Details of a specific cloud account connector.

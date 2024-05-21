@@ -10,11 +10,9 @@ import com.azure.resourcemanager.frontdoor.models.ManagedRuleGroupDefinition;
 public final class ManagedRuleGroupDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedRuleGroupDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"ruleGroupName\":\"ckwhds\",\"description\":\"fiyipjxsqwpgrj\",\"rules\":[{\"ruleId\":\"rcjxvsnbyxqabn\",\"defaultState\":\"Disabled\",\"defaultAction\":\"Log\",\"description\":\"shurzafbljjgpbto\"},{\"ruleId\":\"jmkljavbqidtqajz\",\"defaultState\":\"Disabled\",\"defaultAction\":\"Redirect\",\"description\":\"dj\"},{\"ruleId\":\"lkhbz\",\"defaultState\":\"Enabled\",\"defaultAction\":\"AnomalyScoring\",\"description\":\"gqexzlocxs\"},{\"ruleId\":\"aierhhb\",\"defaultState\":\"Disabled\",\"defaultAction\":\"Redirect\",\"description\":\"majtjaod\"}]}")
-                .toObject(ManagedRuleGroupDefinition.class);
+        ManagedRuleGroupDefinition model = BinaryData.fromString(
+            "{\"ruleGroupName\":\"vwhheunmmqhgyx\",\"description\":\"onocukok\",\"rules\":[{\"ruleId\":\"uconuqszfkbey\",\"defaultState\":\"Enabled\",\"defaultAction\":\"JSChallenge\",\"description\":\"mwvvjektcxsenhw\"},{\"ruleId\":\"s\",\"defaultState\":\"Enabled\",\"defaultAction\":\"Block\",\"description\":\"v\"}]}")
+            .toObject(ManagedRuleGroupDefinition.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -38,23 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FleetUpdateStrategiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FleetUpdateStrategiesClient.
+ */
 public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrategiesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FleetUpdateStrategiesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ContainerServiceFleetManagementClientImpl client;
 
     /**
      * Initializes an instance of FleetUpdateStrategiesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FleetUpdateStrategiesClientImpl(ContainerServiceFleetManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(FleetUpdateStrategiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(FleetUpdateStrategiesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,105 +70,77 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceFlee")
     public interface FleetUpdateStrategiesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FleetUpdateStrategyListResult>> listByFleet(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("fleetName") String fleetName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<FleetUpdateStrategyListResult>> listByFleet(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fleetName") String fleetName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<FleetUpdateStrategyInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fleetName") String fleetName,
+            @PathParam("updateStrategyName") String updateStrategyName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FleetUpdateStrategyInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("fleetName") String fleetName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @PathParam("fleetName") String fleetName,
             @PathParam("updateStrategyName") String updateStrategyName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") FleetUpdateStrategyInner resource, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("If-None-Match") String ifNoneMatch,
-            @PathParam("fleetName") String fleetName,
-            @PathParam("updateStrategyName") String updateStrategyName,
-            @BodyParam("application/json") FleetUpdateStrategyInner resource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("If-Match") String ifMatch,
+            @PathParam("fleetName") String fleetName, @PathParam("updateStrategyName") String updateStrategyName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateStrategies/{updateStrategyName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("If-Match") String ifMatch,
-            @PathParam("fleetName") String fleetName,
-            @PathParam("updateStrategyName") String updateStrategyName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FleetUpdateStrategyListResult>> listByFleetNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List FleetUpdateStrategy resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FleetUpdateStrategy list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FleetUpdateStrategyInner>> listByFleetSinglePageAsync(
-        String resourceGroupName, String fleetName) {
+    private Mono<PagedResponse<FleetUpdateStrategyInner>> listByFleetSinglePageAsync(String resourceGroupName,
+        String fleetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -174,32 +151,16 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByFleet(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            fleetName,
-                            accept,
-                            context))
-            .<PagedResponse<FleetUpdateStrategyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByFleet(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, fleetName, accept, context))
+            .<PagedResponse<FleetUpdateStrategyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List FleetUpdateStrategy resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param context The context to associate with this operation.
@@ -207,22 +168,18 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FleetUpdateStrategy list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FleetUpdateStrategyInner>> listByFleetSinglePageAsync(
-        String resourceGroupName, String fleetName, Context context) {
+    private Mono<PagedResponse<FleetUpdateStrategyInner>> listByFleetSinglePageAsync(String resourceGroupName,
+        String fleetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -234,28 +191,15 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByFleet(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                fleetName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByFleet(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, fleetName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List FleetUpdateStrategy resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,14 +209,13 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FleetUpdateStrategyInner> listByFleetAsync(String resourceGroupName, String fleetName) {
-        return new PagedFlux<>(
-            () -> listByFleetSinglePageAsync(resourceGroupName, fleetName),
+        return new PagedFlux<>(() -> listByFleetSinglePageAsync(resourceGroupName, fleetName),
             nextLink -> listByFleetNextSinglePageAsync(nextLink));
     }
 
     /**
      * List FleetUpdateStrategy resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param context The context to associate with this operation.
@@ -282,16 +225,15 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return the response of a FleetUpdateStrategy list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FleetUpdateStrategyInner> listByFleetAsync(
-        String resourceGroupName, String fleetName, Context context) {
-        return new PagedFlux<>(
-            () -> listByFleetSinglePageAsync(resourceGroupName, fleetName, context),
+    private PagedFlux<FleetUpdateStrategyInner> listByFleetAsync(String resourceGroupName, String fleetName,
+        Context context) {
+        return new PagedFlux<>(() -> listByFleetSinglePageAsync(resourceGroupName, fleetName, context),
             nextLink -> listByFleetNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List FleetUpdateStrategy resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -306,7 +248,7 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
 
     /**
      * List FleetUpdateStrategy resources by Fleet.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param context The context to associate with this operation.
@@ -316,14 +258,14 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return the response of a FleetUpdateStrategy list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FleetUpdateStrategyInner> listByFleet(
-        String resourceGroupName, String fleetName, Context context) {
+    public PagedIterable<FleetUpdateStrategyInner> listByFleet(String resourceGroupName, String fleetName,
+        Context context) {
         return new PagedIterable<>(listByFleetAsync(resourceGroupName, fleetName, context));
     }
 
     /**
      * Get a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -333,19 +275,15 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return a FleetUpdateStrategy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FleetUpdateStrategyInner>> getWithResponseAsync(
-        String resourceGroupName, String fleetName, String updateStrategyName) {
+    private Mono<Response<FleetUpdateStrategyInner>> getWithResponseAsync(String resourceGroupName, String fleetName,
+        String updateStrategyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -360,24 +298,14 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            fleetName,
-                            updateStrategyName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, fleetName, updateStrategyName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -388,19 +316,15 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return a FleetUpdateStrategy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FleetUpdateStrategyInner>> getWithResponseAsync(
-        String resourceGroupName, String fleetName, String updateStrategyName, Context context) {
+    private Mono<Response<FleetUpdateStrategyInner>> getWithResponseAsync(String resourceGroupName, String fleetName,
+        String updateStrategyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -415,21 +339,13 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                fleetName,
-                updateStrategyName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, fleetName, updateStrategyName, accept, context);
     }
 
     /**
      * Get a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -439,15 +355,15 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return a FleetUpdateStrategy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FleetUpdateStrategyInner> getAsync(
-        String resourceGroupName, String fleetName, String updateStrategyName) {
+    private Mono<FleetUpdateStrategyInner> getAsync(String resourceGroupName, String fleetName,
+        String updateStrategyName) {
         return getWithResponseAsync(resourceGroupName, fleetName, updateStrategyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -458,14 +374,14 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return a FleetUpdateStrategy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FleetUpdateStrategyInner> getWithResponse(
-        String resourceGroupName, String fleetName, String updateStrategyName, Context context) {
+    public Response<FleetUpdateStrategyInner> getWithResponse(String resourceGroupName, String fleetName,
+        String updateStrategyName, Context context) {
         return getWithResponseAsync(resourceGroupName, fleetName, updateStrategyName, context).block();
     }
 
     /**
      * Get a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -481,7 +397,7 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -491,28 +407,19 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a multi-stage process to perform update operations across members of a Fleet along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return defines a multi-stage process to perform update operations across members of a Fleet along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String fleetName,
-        String updateStrategyName,
-        FleetUpdateStrategyInner resource,
-        String ifMatch,
-        String ifNoneMatch) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String fleetName,
+        String updateStrategyName, FleetUpdateStrategyInner resource, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -532,27 +439,15 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            ifMatch,
-                            ifNoneMatch,
-                            fleetName,
-                            updateStrategyName,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, fleetName, updateStrategyName,
+                resource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -563,29 +458,20 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines a multi-stage process to perform update operations across members of a Fleet along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return defines a multi-stage process to perform update operations across members of a Fleet along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String fleetName,
-        String updateStrategyName,
-        FleetUpdateStrategyInner resource,
-        String ifMatch,
-        String ifNoneMatch,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String fleetName,
+        String updateStrategyName, FleetUpdateStrategyInner resource, String ifMatch, String ifNoneMatch,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -605,24 +491,14 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                ifMatch,
-                ifNoneMatch,
-                fleetName,
-                updateStrategyName,
-                resource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, ifMatch, ifNoneMatch, fleetName, updateStrategyName,
+            resource, accept, context);
     }
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -633,32 +509,22 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of defines a multi-stage process to perform update operations across
-     *     members of a Fleet.
+     * members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FleetUpdateStrategyInner>, FleetUpdateStrategyInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String fleetName,
-        String updateStrategyName,
-        FleetUpdateStrategyInner resource,
-        String ifMatch,
-        String ifNoneMatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch);
-        return this
-            .client
-            .<FleetUpdateStrategyInner, FleetUpdateStrategyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FleetUpdateStrategyInner.class,
-                FleetUpdateStrategyInner.class,
-                this.client.getContext());
+        String resourceGroupName, String fleetName, String updateStrategyName, FleetUpdateStrategyInner resource,
+        String ifMatch, String ifNoneMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, fleetName,
+            updateStrategyName, resource, ifMatch, ifNoneMatch);
+        return this.client.<FleetUpdateStrategyInner, FleetUpdateStrategyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), FleetUpdateStrategyInner.class, FleetUpdateStrategyInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -667,29 +533,23 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of defines a multi-stage process to perform update operations across
-     *     members of a Fleet.
+     * members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FleetUpdateStrategyInner>, FleetUpdateStrategyInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String fleetName, String updateStrategyName, FleetUpdateStrategyInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch);
-        return this
-            .client
-            .<FleetUpdateStrategyInner, FleetUpdateStrategyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FleetUpdateStrategyInner.class,
-                FleetUpdateStrategyInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, fleetName,
+            updateStrategyName, resource, ifMatch, ifNoneMatch);
+        return this.client.<FleetUpdateStrategyInner, FleetUpdateStrategyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), FleetUpdateStrategyInner.class, FleetUpdateStrategyInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -701,34 +561,22 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of defines a multi-stage process to perform update operations across
-     *     members of a Fleet.
+     * members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FleetUpdateStrategyInner>, FleetUpdateStrategyInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String fleetName,
-        String updateStrategyName,
-        FleetUpdateStrategyInner resource,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
+        String resourceGroupName, String fleetName, String updateStrategyName, FleetUpdateStrategyInner resource,
+        String ifMatch, String ifNoneMatch, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch, context);
-        return this
-            .client
-            .<FleetUpdateStrategyInner, FleetUpdateStrategyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FleetUpdateStrategyInner.class,
-                FleetUpdateStrategyInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, fleetName,
+            updateStrategyName, resource, ifMatch, ifNoneMatch, context);
+        return this.client.<FleetUpdateStrategyInner, FleetUpdateStrategyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), FleetUpdateStrategyInner.class, FleetUpdateStrategyInner.class, context);
     }
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -737,7 +585,7 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of defines a multi-stage process to perform update operations across
-     *     members of a Fleet.
+     * members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FleetUpdateStrategyInner>, FleetUpdateStrategyInner> beginCreateOrUpdate(
@@ -751,7 +599,7 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -763,26 +611,21 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of defines a multi-stage process to perform update operations across
-     *     members of a Fleet.
+     * members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FleetUpdateStrategyInner>, FleetUpdateStrategyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String fleetName,
-        String updateStrategyName,
-        FleetUpdateStrategyInner resource,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context) {
+        String resourceGroupName, String fleetName, String updateStrategyName, FleetUpdateStrategyInner resource,
+        String ifMatch, String ifNoneMatch, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch, context)
+            .beginCreateOrUpdateAsync(resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -793,25 +636,18 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines a multi-stage process to perform update operations across members of a Fleet on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FleetUpdateStrategyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String fleetName,
-        String updateStrategyName,
-        FleetUpdateStrategyInner resource,
-        String ifMatch,
-        String ifNoneMatch) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<FleetUpdateStrategyInner> createOrUpdateAsync(String resourceGroupName, String fleetName,
+        String updateStrategyName, FleetUpdateStrategyInner resource, String ifMatch, String ifNoneMatch) {
+        return beginCreateOrUpdateAsync(resourceGroupName, fleetName, updateStrategyName, resource, ifMatch,
+            ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -820,22 +656,20 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines a multi-stage process to perform update operations across members of a Fleet on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FleetUpdateStrategyInner> createOrUpdateAsync(
-        String resourceGroupName, String fleetName, String updateStrategyName, FleetUpdateStrategyInner resource) {
+    private Mono<FleetUpdateStrategyInner> createOrUpdateAsync(String resourceGroupName, String fleetName,
+        String updateStrategyName, FleetUpdateStrategyInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, fleetName, updateStrategyName, resource, ifMatch,
+            ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -847,26 +681,19 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines a multi-stage process to perform update operations across members of a Fleet on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FleetUpdateStrategyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String fleetName,
-        String updateStrategyName,
-        FleetUpdateStrategyInner resource,
-        String ifMatch,
-        String ifNoneMatch,
+    private Mono<FleetUpdateStrategyInner> createOrUpdateAsync(String resourceGroupName, String fleetName,
+        String updateStrategyName, FleetUpdateStrategyInner resource, String ifMatch, String ifNoneMatch,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, fleetName, updateStrategyName, resource, ifMatch,
+            ifNoneMatch, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -877,8 +704,8 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return defines a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FleetUpdateStrategyInner createOrUpdate(
-        String resourceGroupName, String fleetName, String updateStrategyName, FleetUpdateStrategyInner resource) {
+    public FleetUpdateStrategyInner createOrUpdate(String resourceGroupName, String fleetName,
+        String updateStrategyName, FleetUpdateStrategyInner resource) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         return createOrUpdateAsync(resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch)
@@ -887,7 +714,7 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
 
     /**
      * Create a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -901,22 +728,16 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return defines a multi-stage process to perform update operations across members of a Fleet.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FleetUpdateStrategyInner createOrUpdate(
-        String resourceGroupName,
-        String fleetName,
-        String updateStrategyName,
-        FleetUpdateStrategyInner resource,
-        String ifMatch,
-        String ifNoneMatch,
+    public FleetUpdateStrategyInner createOrUpdate(String resourceGroupName, String fleetName,
+        String updateStrategyName, FleetUpdateStrategyInner resource, String ifMatch, String ifNoneMatch,
         Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch, context)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch,
+            context).block();
     }
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -927,19 +748,15 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String fleetName, String updateStrategyName, String ifMatch) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String fleetName,
+        String updateStrategyName, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -954,25 +771,15 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            ifMatch,
-                            fleetName,
-                            updateStrategyName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, ifMatch, fleetName, updateStrategyName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -984,19 +791,15 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String fleetName, String updateStrategyName, String ifMatch, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String fleetName,
+        String updateStrategyName, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1011,22 +814,13 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                ifMatch,
-                fleetName,
-                updateStrategyName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, ifMatch, fleetName, updateStrategyName, accept, context);
     }
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -1037,19 +831,17 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String fleetName, String updateStrategyName, String ifMatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String fleetName,
+        String updateStrategyName, String ifMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -1059,20 +851,18 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String fleetName, String updateStrategyName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String fleetName,
+        String updateStrategyName) {
         final String ifMatch = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -1084,19 +874,18 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String fleetName, String updateStrategyName, String ifMatch, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String fleetName,
+        String updateStrategyName, String ifMatch, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -1106,15 +895,15 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String fleetName, String updateStrategyName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
+        String updateStrategyName) {
         final String ifMatch = null;
         return this.beginDeleteAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch).getSyncPoller();
     }
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -1126,16 +915,15 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String fleetName, String updateStrategyName, String ifMatch, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String fleetName,
+        String updateStrategyName, String ifMatch, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch, context)
             .getSyncPoller();
     }
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -1146,16 +934,15 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String fleetName, String updateStrategyName, String ifMatch) {
-        return beginDeleteAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String fleetName, String updateStrategyName,
+        String ifMatch) {
+        return beginDeleteAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -1167,14 +954,13 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String fleetName, String updateStrategyName) {
         final String ifMatch = null;
-        return beginDeleteAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch)
-            .last()
+        return beginDeleteAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -1186,16 +972,15 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String fleetName, String updateStrategyName, String ifMatch, Context context) {
-        return beginDeleteAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String fleetName, String updateStrategyName,
+        String ifMatch, Context context) {
+        return beginDeleteAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -1211,7 +996,7 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
 
     /**
      * Delete a FleetUpdateStrategy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fleetName The name of the Fleet resource.
      * @param updateStrategyName The name of the UpdateStrategy resource.
@@ -1222,21 +1007,22 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String fleetName, String updateStrategyName, String ifMatch, Context context) {
+    public void delete(String resourceGroupName, String fleetName, String updateStrategyName, String ifMatch,
+        Context context) {
         deleteAsync(resourceGroupName, fleetName, updateStrategyName, ifMatch, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FleetUpdateStrategy list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FleetUpdateStrategyInner>> listByFleetNextSinglePageAsync(String nextLink) {
@@ -1244,62 +1030,44 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFleetNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FleetUpdateStrategyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<FleetUpdateStrategyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FleetUpdateStrategy list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FleetUpdateStrategyInner>> listByFleetNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<FleetUpdateStrategyInner>> listByFleetNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByFleetNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByFleetNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

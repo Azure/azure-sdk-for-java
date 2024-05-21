@@ -15,6 +15,14 @@ public final class LongestIdleMode extends DistributionMode {
     /** Creates an instance of LongestIdleMode class. */
     public LongestIdleMode() {}
 
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public DistributionModeKind getKind() {
+        return DistributionModeKind.LONGEST_IDLE;
+    }
+
     /** {@inheritDoc} */
     @Override
     public LongestIdleMode setMinConcurrentOffers(Integer minConcurrentOffers) {

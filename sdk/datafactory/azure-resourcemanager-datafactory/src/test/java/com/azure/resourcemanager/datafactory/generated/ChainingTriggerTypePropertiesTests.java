@@ -13,23 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ChainingTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChainingTriggerTypeProperties model = BinaryData
-            .fromString(
-                "{\"dependsOn\":[{\"referenceName\":\"twd\",\"name\":\"tpxwgttpxb\"}],\"runDimension\":\"ihzxxnd\"}")
+        ChainingTriggerTypeProperties model = BinaryData.fromString(
+            "{\"dependsOn\":[{\"referenceName\":\"vb\",\"name\":\"yedrkgrtda\"},{\"referenceName\":\"lito\",\"name\":\"tarefexkbmodbpc\"},{\"referenceName\":\"uyhhzcj\",\"name\":\"ijwkcllo\"},{\"referenceName\":\"jshfcuzzujcib\",\"name\":\"fkxiixnxx\"}],\"runDimension\":\"vyizya\"}")
             .toObject(ChainingTriggerTypeProperties.class);
-        Assertions.assertEquals("twd", model.dependsOn().get(0).referenceName());
-        Assertions.assertEquals("tpxwgttpxb", model.dependsOn().get(0).name());
-        Assertions.assertEquals("ihzxxnd", model.runDimension());
+        Assertions.assertEquals("vb", model.dependsOn().get(0).referenceName());
+        Assertions.assertEquals("yedrkgrtda", model.dependsOn().get(0).name());
+        Assertions.assertEquals("vyizya", model.runDimension());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ChainingTriggerTypeProperties model = new ChainingTriggerTypeProperties()
-            .withDependsOn(Arrays.asList(new PipelineReference().withReferenceName("twd").withName("tpxwgttpxb")))
-            .withRunDimension("ihzxxnd");
+            .withDependsOn(Arrays.asList(new PipelineReference().withReferenceName("vb").withName("yedrkgrtda"),
+                new PipelineReference().withReferenceName("lito").withName("tarefexkbmodbpc"),
+                new PipelineReference().withReferenceName("uyhhzcj").withName("ijwkcllo"),
+                new PipelineReference().withReferenceName("jshfcuzzujcib").withName("fkxiixnxx")))
+            .withRunDimension("vyizya");
         model = BinaryData.fromObject(model).toObject(ChainingTriggerTypeProperties.class);
-        Assertions.assertEquals("twd", model.dependsOn().get(0).referenceName());
-        Assertions.assertEquals("tpxwgttpxb", model.dependsOn().get(0).name());
-        Assertions.assertEquals("ihzxxnd", model.runDimension());
+        Assertions.assertEquals("vb", model.dependsOn().get(0).referenceName());
+        Assertions.assertEquals("yedrkgrtda", model.dependsOn().get(0).name());
+        Assertions.assertEquals("vyizya", model.runDimension());
     }
 }

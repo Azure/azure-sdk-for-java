@@ -21,8 +21,7 @@ public final class AdaptiveNetworkHardeningEnforceRequest {
     private List<Rule> rules;
 
     /*
-     * The Azure resource IDs of the effective network security groups that will be updated with the created security
-     * rules from the Adaptive Network Hardening rules
+     * The Azure resource IDs of the effective network security groups that will be updated with the created security rules from the Adaptive Network Hardening rules
      */
     @JsonProperty(value = "networkSecurityGroups", required = true)
     private List<String> networkSecurityGroups;
@@ -54,8 +53,8 @@ public final class AdaptiveNetworkHardeningEnforceRequest {
     }
 
     /**
-     * Get the networkSecurityGroups property: The Azure resource IDs of the effective network security groups that
-     * will be updated with the created security rules from the Adaptive Network Hardening rules.
+     * Get the networkSecurityGroups property: The Azure resource IDs of the effective network security groups that will
+     * be updated with the created security rules from the Adaptive Network Hardening rules.
      * 
      * @return the networkSecurityGroups value.
      */
@@ -64,8 +63,8 @@ public final class AdaptiveNetworkHardeningEnforceRequest {
     }
 
     /**
-     * Set the networkSecurityGroups property: The Azure resource IDs of the effective network security groups that
-     * will be updated with the created security rules from the Adaptive Network Hardening rules.
+     * Set the networkSecurityGroups property: The Azure resource IDs of the effective network security groups that will
+     * be updated with the created security rules from the Adaptive Network Hardening rules.
      * 
      * @param networkSecurityGroups the networkSecurityGroups value to set.
      * @return the AdaptiveNetworkHardeningEnforceRequest object itself.
@@ -82,14 +81,16 @@ public final class AdaptiveNetworkHardeningEnforceRequest {
      */
     public void validate() {
         if (rules() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property rules in model AdaptiveNetworkHardeningEnforceRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rules in model AdaptiveNetworkHardeningEnforceRequest"));
         } else {
             rules().forEach(e -> e.validate());
         }
         if (networkSecurityGroups() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkSecurityGroups in model AdaptiveNetworkHardeningEnforceRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkSecurityGroups in model AdaptiveNetworkHardeningEnforceRequest"));
         }
     }
 

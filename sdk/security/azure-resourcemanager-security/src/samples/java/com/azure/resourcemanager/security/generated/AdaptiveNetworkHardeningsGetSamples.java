@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AdaptiveNetworkHardeningsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AdaptiveNetworkHardenings/
-     * GetAdaptiveNetworkHardening_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/AdaptiveNetworkHardenings/GetAdaptiveNetworkHardening_example.json
      */
     /**
      * Sample code: Get a single Adaptive Network Hardening resource.
@@ -20,7 +18,8 @@ public final class AdaptiveNetworkHardeningsGetSamples {
      */
     public static void
         getASingleAdaptiveNetworkHardeningResource(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.adaptiveNetworkHardenings().getWithResponse("rg1", "Microsoft.Compute", "virtualMachines", "vm1",
-            "default", com.azure.core.util.Context.NONE);
+        manager.adaptiveNetworkHardenings()
+            .getWithResponse("rg1", "Microsoft.Compute", "virtualMachines", "vm1", "default",
+                com.azure.core.util.Context.NONE);
     }
 }

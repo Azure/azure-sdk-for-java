@@ -22,8 +22,7 @@ public final class AzureADAdministratorsImpl implements AzureADAdministrators {
 
     private final com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager;
 
-    public AzureADAdministratorsImpl(
-        AzureADAdministratorsClient innerClient,
+    public AzureADAdministratorsImpl(AzureADAdministratorsClient innerClient,
         com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -33,20 +32,17 @@ public final class AzureADAdministratorsImpl implements AzureADAdministrators {
         this.serviceClient().delete(resourceGroupName, serverName, administratorName);
     }
 
-    public void delete(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
+    public void delete(String resourceGroupName, String serverName, AdministratorName administratorName,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, serverName, administratorName, context);
     }
 
-    public Response<AzureADAdministrator> getWithResponse(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
-        Response<AzureADAdministratorInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, administratorName, context);
+    public Response<AzureADAdministrator> getWithResponse(String resourceGroupName, String serverName,
+        AdministratorName administratorName, Context context) {
+        Response<AzureADAdministratorInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, administratorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AzureADAdministratorImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -63,129 +59,93 @@ public final class AzureADAdministratorsImpl implements AzureADAdministrators {
     }
 
     public PagedIterable<AzureADAdministrator> listByServer(String resourceGroupName, String serverName) {
-        PagedIterable<AzureADAdministratorInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName);
-        return Utils.mapPage(inner, inner1 -> new AzureADAdministratorImpl(inner1, this.manager()));
+        PagedIterable<AzureADAdministratorInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureADAdministratorImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AzureADAdministrator> listByServer(
-        String resourceGroupName, String serverName, Context context) {
-        PagedIterable<AzureADAdministratorInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return Utils.mapPage(inner, inner1 -> new AzureADAdministratorImpl(inner1, this.manager()));
+    public PagedIterable<AzureADAdministrator> listByServer(String resourceGroupName, String serverName,
+        Context context) {
+        PagedIterable<AzureADAdministratorInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureADAdministratorImpl(inner1, this.manager()));
     }
 
     public AzureADAdministrator getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
+        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
         }
-        String administratorNameLocal = Utils.getValueFromIdByName(id, "administrators");
+        String administratorNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "administrators");
         if (administratorNameLocal == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'administrators'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'administrators'.", id)));
         }
         AdministratorName administratorName = AdministratorName.fromString(administratorNameLocal);
         return this.getWithResponse(resourceGroupName, serverName, administratorName, Context.NONE).getValue();
     }
 
     public Response<AzureADAdministrator> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
+        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
         }
-        String administratorNameLocal = Utils.getValueFromIdByName(id, "administrators");
+        String administratorNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "administrators");
         if (administratorNameLocal == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'administrators'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'administrators'.", id)));
         }
         AdministratorName administratorName = AdministratorName.fromString(administratorNameLocal);
         return this.getWithResponse(resourceGroupName, serverName, administratorName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
+        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
         }
-        String administratorNameLocal = Utils.getValueFromIdByName(id, "administrators");
+        String administratorNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "administrators");
         if (administratorNameLocal == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'administrators'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'administrators'.", id)));
         }
         AdministratorName administratorName = AdministratorName.fromString(administratorNameLocal);
         this.delete(resourceGroupName, serverName, administratorName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serverName = Utils.getValueFromIdByName(id, "flexibleServers");
+        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
         if (serverName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
         }
-        String administratorNameLocal = Utils.getValueFromIdByName(id, "administrators");
+        String administratorNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "administrators");
         if (administratorNameLocal == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'administrators'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'administrators'.", id)));
         }
         AdministratorName administratorName = AdministratorName.fromString(administratorNameLocal);
         this.delete(resourceGroupName, serverName, administratorName, context);

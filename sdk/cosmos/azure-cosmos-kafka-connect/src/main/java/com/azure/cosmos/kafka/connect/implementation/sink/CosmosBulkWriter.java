@@ -10,15 +10,18 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
+import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosSchedulers;
-import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlHelper;
+import com.azure.cosmos.kafka.connect.implementation.sink.patch.KafkaCosmosPatchHelper;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
+import com.azure.cosmos.models.CosmosBulkPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import org.apache.kafka.connect.sink.ErrantRecordReporter;
 import org.slf4j.Logger;
@@ -171,6 +174,9 @@ public class CosmosBulkWriter extends CosmosWriterBase {
                         String itemDeleteEtag = getEtag(sinkOperation.getSinkRecord().value());
                         cosmosItemOperation = this.getDeleteItemOperation(sinkOperation, partitionKeyDefinition, itemDeleteEtag);
                         break;
+                    case ITEM_PATCH:
+                        cosmosItemOperation = this.getPatchItemOperation(sinkOperation, partitionKeyDefinition);
+                        break;
                     default:
                         return Mono.error(new IllegalArgumentException(this.writeConfig.getItemWriteStrategy() + " is not supported"));
                 }
@@ -231,6 +237,31 @@ public class CosmosBulkWriter extends CosmosWriterBase {
             this.getPartitionKeyValue(sinkOperation.getSinkRecord().value(), partitionKeyDefinition),
             itemRequestOptions,
             sinkOperation);
+    }
+
+    private CosmosItemOperation getPatchItemOperation(
+        SinkOperation sinkOperation,
+        PartitionKeyDefinition partitionKeyDefinition) {
+
+        CosmosBulkPatchItemRequestOptions patchItemRequestOptions = new CosmosBulkPatchItemRequestOptions();
+        if (StringUtils.isNotEmpty(this.writeConfig.getCosmosPatchConfig().getFilter())) {
+            patchItemRequestOptions.setFilterPredicate(this.writeConfig.getCosmosPatchConfig().getFilter());
+        }
+
+        String itemId = this.getId(sinkOperation.getSinkRecord().value());
+        CosmosPatchOperations cosmosPatchOperations = KafkaCosmosPatchHelper.createCosmosPatchOperations(
+            itemId,
+            partitionKeyDefinition,
+            sinkOperation.getSinkRecord(),
+            this.writeConfig.getCosmosPatchConfig());
+
+        return CosmosBulkOperations
+            .getPatchItemOperation(
+                itemId,
+                this.getPartitionKeyValue(sinkOperation.getSinkRecord().value(), partitionKeyDefinition),
+                cosmosPatchOperations,
+                patchItemRequestOptions,
+                sinkOperation);
     }
 
     private Mono<Void> scheduleRetry(

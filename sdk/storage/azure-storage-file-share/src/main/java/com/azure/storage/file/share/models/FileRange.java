@@ -5,31 +5,38 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** An Azure Storage file range. */
-@JacksonXmlRootElement(localName = "Range")
+/**
+ * An Azure Storage file range.
+ */
 @Fluent
-public final class FileRange {
+public final class FileRange implements XmlSerializable<FileRange> {
     /*
      * Start of the range.
      */
-    @JsonProperty(value = "Start", required = true)
     private long start;
 
     /*
      * End of the range.
      */
-    @JsonProperty(value = "End", required = true)
     private long end;
 
-    /** Creates an instance of FileRange class. */
-    public FileRange() {}
+    /**
+     * Creates an instance of FileRange class.
+     */
+    public FileRange() {
+    }
 
     /**
      * Get the start property: Start of the range.
-     *
+     * 
      * @return the start value.
      */
     public long getStart() {
@@ -38,7 +45,7 @@ public final class FileRange {
 
     /**
      * Set the start property: Start of the range.
-     *
+     * 
      * @param start the start value to set.
      * @return the FileRange object itself.
      */
@@ -49,7 +56,7 @@ public final class FileRange {
 
     /**
      * Get the end property: End of the range.
-     *
+     * 
      * @return the end value.
      */
     public long getEnd() {
@@ -58,12 +65,70 @@ public final class FileRange {
 
     /**
      * Set the end property: End of the range.
-     *
+     * 
      * @param end the end value to set.
      * @return the FileRange object itself.
      */
     public FileRange setEnd(long end) {
         this.end = end;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Range" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeLongElement("Start", this.start);
+        xmlWriter.writeLongElement("End", this.end);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of FileRange from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of FileRange if the XmlReader was pointing to an instance of it, or null if it was pointing
+     * to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the FileRange.
+     */
+    public static FileRange fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of FileRange from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of FileRange if the XmlReader was pointing to an instance of it, or null if it was pointing
+     * to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the FileRange.
+     */
+    public static FileRange fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Range" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            FileRange deserializedFileRange = new FileRange();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("Start".equals(elementName.getLocalPart())) {
+                    deserializedFileRange.start = reader.getLongElement();
+                } else if ("End".equals(elementName.getLocalPart())) {
+                    deserializedFileRange.end = reader.getLongElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedFileRange;
+        });
     }
 }

@@ -12,18 +12,19 @@ public final class AwAssumeRoleAuthenticationDetailsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AwAssumeRoleAuthenticationDetailsProperties model = BinaryData.fromString(
-            "{\"authenticationType\":\"awsAssumeRole\",\"accountId\":\"ae\",\"awsAssumeRoleArn\":\"scflwtjdtlri\",\"awsExternalId\":\"fooy\",\"authenticationProvisioningState\":\"Invalid\",\"grantedPermissions\":[\"AWS::SecurityAudit\",\"GCP::Security Center Admin Viewer\"]}")
+            "{\"authenticationType\":\"awsAssumeRole\",\"accountId\":\"said\",\"awsAssumeRoleArn\":\"zsaaoqdsgptotxjq\",\"awsExternalId\":\"ia\",\"authenticationProvisioningState\":\"Expired\",\"grantedPermissions\":[\"AWS::SecurityAudit\"]}")
             .toObject(AwAssumeRoleAuthenticationDetailsProperties.class);
-        Assertions.assertEquals("scflwtjdtlri", model.awsAssumeRoleArn());
-        Assertions.assertEquals("fooy", model.awsExternalId());
+        Assertions.assertEquals("zsaaoqdsgptotxjq", model.awsAssumeRoleArn());
+        Assertions.assertEquals("ia", model.awsExternalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AwAssumeRoleAuthenticationDetailsProperties model = new AwAssumeRoleAuthenticationDetailsProperties()
-            .withAwsAssumeRoleArn("scflwtjdtlri").withAwsExternalId("fooy");
+        AwAssumeRoleAuthenticationDetailsProperties model
+            = new AwAssumeRoleAuthenticationDetailsProperties().withAwsAssumeRoleArn("zsaaoqdsgptotxjq")
+                .withAwsExternalId("ia");
         model = BinaryData.fromObject(model).toObject(AwAssumeRoleAuthenticationDetailsProperties.class);
-        Assertions.assertEquals("scflwtjdtlri", model.awsAssumeRoleArn());
-        Assertions.assertEquals("fooy", model.awsExternalId());
+        Assertions.assertEquals("zsaaoqdsgptotxjq", model.awsAssumeRoleArn());
+        Assertions.assertEquals("ia", model.awsExternalId());
     }
 }

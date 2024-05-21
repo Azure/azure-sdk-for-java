@@ -11,12 +11,14 @@ import com.azure.resourcemanager.confidentialledger.models.LedgerProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Confidential Ledger. Contains the properties of Confidential Ledger Resource. */
+/**
+ * Confidential Ledger. Contains the properties of Confidential Ledger Resource.
+ */
 @Fluent
 public final class ConfidentialLedgerInner extends Resource {
     /*
      * LedgerProperties
-     *
+     * 
      * Properties of Confidential Ledger Resource.
      */
     @JsonProperty(value = "properties")
@@ -28,15 +30,17 @@ public final class ConfidentialLedgerInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ConfidentialLedgerInner class. */
+    /**
+     * Creates an instance of ConfidentialLedgerInner class.
+     */
     public ConfidentialLedgerInner() {
     }
 
     /**
      * Get the properties property: LedgerProperties
-     *
-     * <p>Properties of Confidential Ledger Resource.
-     *
+     * 
+     * Properties of Confidential Ledger Resource.
+     * 
      * @return the properties value.
      */
     public LedgerProperties properties() {
@@ -45,9 +49,9 @@ public final class ConfidentialLedgerInner extends Resource {
 
     /**
      * Set the properties property: LedgerProperties
-     *
-     * <p>Properties of Confidential Ledger Resource.
-     *
+     * 
+     * Properties of Confidential Ledger Resource.
+     * 
      * @param properties the properties value to set.
      * @return the ConfidentialLedgerInner object itself.
      */
@@ -58,21 +62,25 @@ public final class ConfidentialLedgerInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConfidentialLedgerInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ConfidentialLedgerInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -81,7 +89,7 @@ public final class ConfidentialLedgerInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

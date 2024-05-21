@@ -28,19 +28,20 @@ public final class UpdateStage {
     private List<UpdateGroup> groups;
 
     /*
-     * The time in seconds to wait at the end of this stage before starting the next one. Defaults to 0 seconds if
-     * unspecified.
+     * The time in seconds to wait at the end of this stage before starting the next one. Defaults to 0 seconds if unspecified.
      */
     @JsonProperty(value = "afterStageWaitInSeconds")
     private Integer afterStageWaitInSeconds;
 
-    /** Creates an instance of UpdateStage class. */
+    /**
+     * Creates an instance of UpdateStage class.
+     */
     public UpdateStage() {
     }
 
     /**
      * Get the name property: The name of the stage. Must be unique within the UpdateRun.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +50,7 @@ public final class UpdateStage {
 
     /**
      * Set the name property: The name of the stage. Must be unique within the UpdateRun.
-     *
+     * 
      * @param name the name value to set.
      * @return the UpdateStage object itself.
      */
@@ -61,7 +62,7 @@ public final class UpdateStage {
     /**
      * Get the groups property: Defines the groups to be executed in parallel in this stage. Duplicate groups are not
      * allowed. Min size: 1.
-     *
+     * 
      * @return the groups value.
      */
     public List<UpdateGroup> groups() {
@@ -71,7 +72,7 @@ public final class UpdateStage {
     /**
      * Set the groups property: Defines the groups to be executed in parallel in this stage. Duplicate groups are not
      * allowed. Min size: 1.
-     *
+     * 
      * @param groups the groups value to set.
      * @return the UpdateStage object itself.
      */
@@ -83,7 +84,7 @@ public final class UpdateStage {
     /**
      * Get the afterStageWaitInSeconds property: The time in seconds to wait at the end of this stage before starting
      * the next one. Defaults to 0 seconds if unspecified.
-     *
+     * 
      * @return the afterStageWaitInSeconds value.
      */
     public Integer afterStageWaitInSeconds() {
@@ -93,7 +94,7 @@ public final class UpdateStage {
     /**
      * Set the afterStageWaitInSeconds property: The time in seconds to wait at the end of this stage before starting
      * the next one. Defaults to 0 seconds if unspecified.
-     *
+     * 
      * @param afterStageWaitInSeconds the afterStageWaitInSeconds value to set.
      * @return the UpdateStage object itself.
      */
@@ -104,14 +105,13 @@ public final class UpdateStage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model UpdateStage"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model UpdateStage"));
         }
         if (groups() != null) {
             groups().forEach(e -> e.validate());

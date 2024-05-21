@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
@@ -85,13 +86,13 @@ public class DCountDocumentQueryExecutionContext
                        Document result = new Document();
                        if (Strings.isNullOrEmpty(info.getDCountAlias())) {
                            if (info.hasSelectValue()) {
-                               result.set(Constants.Properties.VALUE, count);
+                               result.set(Constants.Properties.VALUE, count, CosmosItemSerializer.DEFAULT_SERIALIZER);
                            } else {
                                // Setting $1 as the key to be consistent with service results
-                               result.set("$1", count);
+                               result.set("$1", count, CosmosItemSerializer.DEFAULT_SERIALIZER);
                            }
                        } else {
-                           result.set(info.getDCountAlias(), count);
+                           result.set(info.getDCountAlias(), count, CosmosItemSerializer.DEFAULT_SERIALIZER);
                        }
                        headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
                        FeedResponse<Document> frp =

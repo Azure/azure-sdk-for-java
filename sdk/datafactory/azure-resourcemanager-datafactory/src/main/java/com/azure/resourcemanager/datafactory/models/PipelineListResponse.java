@@ -80,8 +80,8 @@ public final class PipelineListResponse {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model PipelineListResponse"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model PipelineListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -14,18 +14,19 @@ public final class VirtualEndpointResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualEndpointResourceInner model = BinaryData.fromString(
-            "{\"id\":\"gcyztsfmznbae\",\"name\":\"hchqnrnrpx\",\"type\":\"uwrykqgaifmvikl\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"ejd\",\"nxcvds\",\"hnjivo\"],\"virtualEndpoints\":[\"novqfzge\",\"jdftuljltd\",\"ceamtm\",\"zuo\"]}}")
+            "{\"id\":\"qntcypsxjvfoimwk\",\"name\":\"ircizjxvy\",\"type\":\"ceacvlhvygdy\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"nawjslbiwkojgcy\",\"tsf\",\"z\"],\"virtualEndpoints\":[\"eqphchqnrnr\",\"x\",\"huwrykqgaifm\"]}}")
             .toObject(VirtualEndpointResourceInner.class);
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, model.endpointType());
-        Assertions.assertEquals("ejd", model.members().get(0));
+        Assertions.assertEquals("nawjslbiwkojgcy", model.members().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualEndpointResourceInner model = new VirtualEndpointResourceInner()
-            .withEndpointType(VirtualEndpointType.READ_WRITE).withMembers(Arrays.asList("ejd", "nxcvds", "hnjivo"));
+        VirtualEndpointResourceInner model
+            = new VirtualEndpointResourceInner().withEndpointType(VirtualEndpointType.READ_WRITE)
+                .withMembers(Arrays.asList("nawjslbiwkojgcy", "tsf", "z"));
         model = BinaryData.fromObject(model).toObject(VirtualEndpointResourceInner.class);
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, model.endpointType());
-        Assertions.assertEquals("ejd", model.members().get(0));
+        Assertions.assertEquals("nawjslbiwkojgcy", model.members().get(0));
     }
 }

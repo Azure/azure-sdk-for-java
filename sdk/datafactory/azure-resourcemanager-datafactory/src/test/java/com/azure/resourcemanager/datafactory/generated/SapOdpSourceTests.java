@@ -11,17 +11,22 @@ public final class SapOdpSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapOdpSource model = BinaryData.fromString(
-            "{\"type\":\"SapOdpSource\",\"extractionMode\":\"datax\",\"subscriberProcess\":\"datanrurtnwbjj\",\"selection\":\"dataupckhfbmdemohlsh\",\"projection\":\"dataaoofltb\",\"queryTimeout\":\"datayvmwaejxzkqcm\",\"additionalColumns\":\"datacf\",\"sourceRetryCount\":\"dataxyrtqegabsfjrj\",\"sourceRetryWait\":\"dataq\",\"maxConcurrentConnections\":\"datagorvgdibepg\",\"disableMetricsCollection\":\"databijoehhqwwsgqzi\",\"\":{\"buxqtokckxfkft\":\"dataetwjssyazm\",\"btbogxlyve\":\"datakbyruheawucmqfu\",\"tsfi\":\"datavxjgu\"}}")
+            "{\"type\":\"l\",\"extractionMode\":\"dataau\",\"subscriberProcess\":\"datacl\",\"selection\":\"dataaoidjhoykgtyvrn\",\"projection\":\"datakiree\",\"queryTimeout\":\"datah\",\"additionalColumns\":\"datavndg\",\"sourceRetryCount\":\"dataa\",\"sourceRetryWait\":\"datasipfwlyei\",\"maxConcurrentConnections\":\"datadp\",\"disableMetricsCollection\":\"dataqteirrjjmvr\",\"\":{\"auytqdkgaxl\":\"datapopwxxdgzhnpxbu\",\"xqrokw\":\"dataafwsu\"}}")
             .toObject(SapOdpSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapOdpSource model = new SapOdpSource().withSourceRetryCount("dataxyrtqegabsfjrj").withSourceRetryWait("dataq")
-            .withMaxConcurrentConnections("datagorvgdibepg").withDisableMetricsCollection("databijoehhqwwsgqzi")
-            .withQueryTimeout("datayvmwaejxzkqcm").withAdditionalColumns("datacf").withExtractionMode("datax")
-            .withSubscriberProcess("datanrurtnwbjj").withSelection("dataupckhfbmdemohlsh")
-            .withProjection("dataaoofltb");
+        SapOdpSource model = new SapOdpSource().withSourceRetryCount("dataa")
+            .withSourceRetryWait("datasipfwlyei")
+            .withMaxConcurrentConnections("datadp")
+            .withDisableMetricsCollection("dataqteirrjjmvr")
+            .withQueryTimeout("datah")
+            .withAdditionalColumns("datavndg")
+            .withExtractionMode("dataau")
+            .withSubscriberProcess("datacl")
+            .withSelection("dataaoidjhoykgtyvrn")
+            .withProjection("datakiree");
         model = BinaryData.fromObject(model).toObject(SapOdpSource.class);
     }
 }

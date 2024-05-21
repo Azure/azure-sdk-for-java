@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines contents of a web application rule. */
+/**
+ * Defines contents of a web application rule.
+ */
 @Fluent
 public final class CustomRule {
     /*
@@ -49,6 +51,12 @@ public final class CustomRule {
     private Integer rateLimitThreshold;
 
     /*
+     * Describes the list of variables to group the rate limit requests
+     */
+    @JsonProperty(value = "groupBy")
+    private List<GroupByVariable> groupBy;
+
+    /*
      * List of match conditions.
      */
     @JsonProperty(value = "matchConditions", required = true)
@@ -60,13 +68,15 @@ public final class CustomRule {
     @JsonProperty(value = "action", required = true)
     private ActionType action;
 
-    /** Creates an instance of CustomRule class. */
+    /**
+     * Creates an instance of CustomRule class.
+     */
     public CustomRule() {
     }
 
     /**
      * Get the name property: Describes the name of the rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -75,7 +85,7 @@ public final class CustomRule {
 
     /**
      * Set the name property: Describes the name of the rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the CustomRule object itself.
      */
@@ -87,7 +97,7 @@ public final class CustomRule {
     /**
      * Get the priority property: Describes priority of the rule. Rules with a lower value will be evaluated before
      * rules with a higher value.
-     *
+     * 
      * @return the priority value.
      */
     public int priority() {
@@ -97,7 +107,7 @@ public final class CustomRule {
     /**
      * Set the priority property: Describes priority of the rule. Rules with a lower value will be evaluated before
      * rules with a higher value.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the CustomRule object itself.
      */
@@ -109,7 +119,7 @@ public final class CustomRule {
     /**
      * Get the enabledState property: Describes if the custom rule is in enabled or disabled state. Defaults to Enabled
      * if not specified.
-     *
+     * 
      * @return the enabledState value.
      */
     public CustomRuleEnabledState enabledState() {
@@ -119,7 +129,7 @@ public final class CustomRule {
     /**
      * Set the enabledState property: Describes if the custom rule is in enabled or disabled state. Defaults to Enabled
      * if not specified.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the CustomRule object itself.
      */
@@ -130,7 +140,7 @@ public final class CustomRule {
 
     /**
      * Get the ruleType property: Describes type of rule.
-     *
+     * 
      * @return the ruleType value.
      */
     public RuleType ruleType() {
@@ -139,7 +149,7 @@ public final class CustomRule {
 
     /**
      * Set the ruleType property: Describes type of rule.
-     *
+     * 
      * @param ruleType the ruleType value to set.
      * @return the CustomRule object itself.
      */
@@ -150,7 +160,7 @@ public final class CustomRule {
 
     /**
      * Get the rateLimitDurationInMinutes property: Time window for resetting the rate limit count. Default is 1 minute.
-     *
+     * 
      * @return the rateLimitDurationInMinutes value.
      */
     public Integer rateLimitDurationInMinutes() {
@@ -159,7 +169,7 @@ public final class CustomRule {
 
     /**
      * Set the rateLimitDurationInMinutes property: Time window for resetting the rate limit count. Default is 1 minute.
-     *
+     * 
      * @param rateLimitDurationInMinutes the rateLimitDurationInMinutes value to set.
      * @return the CustomRule object itself.
      */
@@ -170,7 +180,7 @@ public final class CustomRule {
 
     /**
      * Get the rateLimitThreshold property: Number of allowed requests per client within the time window.
-     *
+     * 
      * @return the rateLimitThreshold value.
      */
     public Integer rateLimitThreshold() {
@@ -179,7 +189,7 @@ public final class CustomRule {
 
     /**
      * Set the rateLimitThreshold property: Number of allowed requests per client within the time window.
-     *
+     * 
      * @param rateLimitThreshold the rateLimitThreshold value to set.
      * @return the CustomRule object itself.
      */
@@ -189,8 +199,28 @@ public final class CustomRule {
     }
 
     /**
+     * Get the groupBy property: Describes the list of variables to group the rate limit requests.
+     * 
+     * @return the groupBy value.
+     */
+    public List<GroupByVariable> groupBy() {
+        return this.groupBy;
+    }
+
+    /**
+     * Set the groupBy property: Describes the list of variables to group the rate limit requests.
+     * 
+     * @param groupBy the groupBy value to set.
+     * @return the CustomRule object itself.
+     */
+    public CustomRule withGroupBy(List<GroupByVariable> groupBy) {
+        this.groupBy = groupBy;
+        return this;
+    }
+
+    /**
      * Get the matchConditions property: List of match conditions.
-     *
+     * 
      * @return the matchConditions value.
      */
     public List<MatchCondition> matchConditions() {
@@ -199,7 +229,7 @@ public final class CustomRule {
 
     /**
      * Set the matchConditions property: List of match conditions.
-     *
+     * 
      * @param matchConditions the matchConditions value to set.
      * @return the CustomRule object itself.
      */
@@ -210,7 +240,7 @@ public final class CustomRule {
 
     /**
      * Get the action property: Describes what action to be applied when rule matches.
-     *
+     * 
      * @return the action value.
      */
     public ActionType action() {
@@ -219,7 +249,7 @@ public final class CustomRule {
 
     /**
      * Set the action property: Describes what action to be applied when rule matches.
-     *
+     * 
      * @param action the action value to set.
      * @return the CustomRule object itself.
      */
@@ -230,26 +260,26 @@ public final class CustomRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ruleType in model CustomRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property ruleType in model CustomRule"));
+        }
+        if (groupBy() != null) {
+            groupBy().forEach(e -> e.validate());
         }
         if (matchConditions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property matchConditions in model CustomRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property matchConditions in model CustomRule"));
         } else {
             matchConditions().forEach(e -> e.validate());
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model CustomRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property action in model CustomRule"));
         }
     }
 

@@ -33,11 +33,6 @@ public final class OfferingType extends ExpandableStringEnum<OfferingType> {
     public static final OfferingType DEFENDER_FOR_DATABASES_AWS = fromString("DefenderForDatabasesAws");
 
     /**
-     * Static value InformationProtectionAws for OfferingType.
-     */
-    public static final OfferingType INFORMATION_PROTECTION_AWS = fromString("InformationProtectionAws");
-
-    /**
      * Static value CspmMonitorGcp for OfferingType.
      */
     public static final OfferingType CSPM_MONITOR_GCP = fromString("CspmMonitorGcp");
@@ -78,24 +73,9 @@ public final class OfferingType extends ExpandableStringEnum<OfferingType> {
     public static final OfferingType DEFENDER_CSPM_GCP = fromString("DefenderCspmGcp");
 
     /**
-     * Static value DefenderForDevOpsGithub for OfferingType.
-     */
-    public static final OfferingType DEFENDER_FOR_DEV_OPS_GITHUB = fromString("DefenderForDevOpsGithub");
-
-    /**
-     * Static value DefenderForDevOpsAzureDevOps for OfferingType.
-     */
-    public static final OfferingType DEFENDER_FOR_DEV_OPS_AZURE_DEV_OPS = fromString("DefenderForDevOpsAzureDevOps");
-
-    /**
      * Static value CspmMonitorGitLab for OfferingType.
      */
     public static final OfferingType CSPM_MONITOR_GIT_LAB = fromString("CspmMonitorGitLab");
-
-    /**
-     * Static value DefenderForDevOpsGitLab for OfferingType.
-     */
-    public static final OfferingType DEFENDER_FOR_DEV_OPS_GIT_LAB = fromString("DefenderForDevOpsGitLab");
 
     /**
      * Creates a new instance of OfferingType value.

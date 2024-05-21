@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AdaptiveApplicationControlsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ApplicationWhitelistings/
-     * GetAdaptiveApplicationControlsGroup_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/ApplicationWhitelistings/GetAdaptiveApplicationControlsGroup_example.json
      */
     /**
      * Sample code: Gets a configured application control VM/server group.
@@ -20,7 +18,7 @@ public final class AdaptiveApplicationControlsGetSamples {
      */
     public static void
         getsAConfiguredApplicationControlVMServerGroup(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.adaptiveApplicationControls().getWithResponse("centralus", "ERELGROUP1",
-            com.azure.core.util.Context.NONE);
+        manager.adaptiveApplicationControls()
+            .getWithResponse("centralus", "ERELGROUP1", com.azure.core.util.Context.NONE);
     }
 }

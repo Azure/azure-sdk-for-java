@@ -2159,7 +2159,8 @@ public final class EntityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> importBusinessMetadataWithResponse(BinaryData businessMetadataOptions,
         RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation 'importBusinessMetadata' is 'multipart/form-data'
+        // Protocol API requires serialization of parts with content-disposition and data, as operation
+        // 'importBusinessMetadata' is 'multipart/form-data'
         return this.serviceClient.importBusinessMetadataWithResponse(businessMetadataOptions, requestOptions);
     }
 

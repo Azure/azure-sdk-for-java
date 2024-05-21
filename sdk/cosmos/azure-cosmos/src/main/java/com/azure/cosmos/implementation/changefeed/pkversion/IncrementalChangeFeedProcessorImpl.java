@@ -427,7 +427,7 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
             this.collectionId
         );
 
-        Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
+        Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, leaseStoreManager, this.sleepTime, ChangeFeedMode.INCREMENTAL);
 
         FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager = this.getFeedRangeThroughputControlConfigManager();
 

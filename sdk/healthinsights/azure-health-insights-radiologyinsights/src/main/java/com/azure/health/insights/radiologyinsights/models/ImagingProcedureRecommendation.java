@@ -25,7 +25,7 @@ import java.util.List;
 public final class ImagingProcedureRecommendation extends ProcedureRecommendation {
 
     /*
-     * Procedure type : generic.
+     * The kind property.
      */
     @Generated
     @JsonTypeId
@@ -59,7 +59,7 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
     }
 
     /**
-     * Get the kind property: Procedure type : generic.
+     * Get the kind property: The kind property.
      *
      * @return the kind value.
      */

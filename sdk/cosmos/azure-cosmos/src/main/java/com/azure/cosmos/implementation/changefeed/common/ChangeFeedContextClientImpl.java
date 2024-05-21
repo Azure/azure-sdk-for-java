@@ -164,10 +164,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                         .map(response -> {
                             List<T> results = response.getResults()
                                                              .stream()
-                                                             .map(document ->
-                                                                 ModelBridgeInternal.toObjectFromJsonSerializable(
-                                                                     document,
-                                                                     klass))
+                                                             .map(document -> document.toObject(klass))
                                                              .collect(Collectors.toList());
                             return BridgeInternal.toFeedResponsePage(
                                 results,

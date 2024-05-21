@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The ESU eligibility. */
+/**
+ * The ESU eligibility.
+ */
 public final class EsuEligibility extends ExpandableStringEnum<EsuEligibility> {
-    /** Static value Eligible for EsuEligibility. */
+    /**
+     * Static value Eligible for EsuEligibility.
+     */
     public static final EsuEligibility ELIGIBLE = fromString("Eligible");
 
-    /** Static value Ineligible for EsuEligibility. */
+    /**
+     * Static value Ineligible for EsuEligibility.
+     */
     public static final EsuEligibility INELIGIBLE = fromString("Ineligible");
 
-    /** Static value Unknown for EsuEligibility. */
+    /**
+     * Static value Unknown for EsuEligibility.
+     */
     public static final EsuEligibility UNKNOWN = fromString("Unknown");
 
     /**
      * Creates a new instance of EsuEligibility value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class EsuEligibility extends ExpandableStringEnum<EsuEligibility> {
 
     /**
      * Creates or finds a EsuEligibility from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EsuEligibility.
      */
@@ -41,7 +49,7 @@ public final class EsuEligibility extends ExpandableStringEnum<EsuEligibility> {
 
     /**
      * Gets known EsuEligibility values.
-     *
+     * 
      * @return known EsuEligibility values.
      */
     public static Collection<EsuEligibility> values() {

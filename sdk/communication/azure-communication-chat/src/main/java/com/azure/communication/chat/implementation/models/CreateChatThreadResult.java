@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the create chat thread operation. */
+/**
+ * Result of the create chat thread operation.
+ */
 @Fluent
 public final class CreateChatThreadResult {
     /*
@@ -24,8 +26,14 @@ public final class CreateChatThreadResult {
     private List<CommunicationError> invalidParticipants;
 
     /**
+     * Creates an instance of CreateChatThreadResult class.
+     */
+    public CreateChatThreadResult() {
+    }
+
+    /**
      * Get the chatThread property: Chat thread.
-     *
+     * 
      * @return the chatThread value.
      */
     public ChatThreadProperties getChatThread() {
@@ -34,7 +42,7 @@ public final class CreateChatThreadResult {
 
     /**
      * Set the chatThread property: Chat thread.
-     *
+     * 
      * @param chatThread the chatThread value to set.
      * @return the CreateChatThreadResult object itself.
      */
@@ -45,7 +53,7 @@ public final class CreateChatThreadResult {
 
     /**
      * Get the invalidParticipants property: The participants that failed to be added to the chat thread.
-     *
+     * 
      * @return the invalidParticipants value.
      */
     public List<CommunicationError> getInvalidParticipants() {

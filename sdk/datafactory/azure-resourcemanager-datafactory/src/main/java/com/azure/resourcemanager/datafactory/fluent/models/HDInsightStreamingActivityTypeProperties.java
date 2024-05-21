@@ -348,24 +348,29 @@ public final class HDInsightStreamingActivityTypeProperties {
             storageLinkedServices().forEach(e -> e.validate());
         }
         if (mapper() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property mapper in model HDInsightStreamingActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property mapper in model HDInsightStreamingActivityTypeProperties"));
         }
         if (reducer() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property reducer in model HDInsightStreamingActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property reducer in model HDInsightStreamingActivityTypeProperties"));
         }
         if (input() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property input in model HDInsightStreamingActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property input in model HDInsightStreamingActivityTypeProperties"));
         }
         if (output() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property output in model HDInsightStreamingActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property output in model HDInsightStreamingActivityTypeProperties"));
         }
         if (filePaths() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property filePaths in model HDInsightStreamingActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property filePaths in model HDInsightStreamingActivityTypeProperties"));
         }
         if (fileLinkedService() != null) {
             fileLinkedService().validate();

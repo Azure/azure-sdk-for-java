@@ -12,18 +12,18 @@ public final class CreateDataFlowDebugSessionResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CreateDataFlowDebugSessionResponseInner model
-            = BinaryData.fromString("{\"status\":\"zvd\",\"sessionId\":\"zdix\"}")
+            = BinaryData.fromString("{\"status\":\"ruunzzjgehkf\",\"sessionId\":\"m\"}")
                 .toObject(CreateDataFlowDebugSessionResponseInner.class);
-        Assertions.assertEquals("zvd", model.status());
-        Assertions.assertEquals("zdix", model.sessionId());
+        Assertions.assertEquals("ruunzzjgehkf", model.status());
+        Assertions.assertEquals("m", model.sessionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CreateDataFlowDebugSessionResponseInner model
-            = new CreateDataFlowDebugSessionResponseInner().withStatus("zvd").withSessionId("zdix");
+            = new CreateDataFlowDebugSessionResponseInner().withStatus("ruunzzjgehkf").withSessionId("m");
         model = BinaryData.fromObject(model).toObject(CreateDataFlowDebugSessionResponseInner.class);
-        Assertions.assertEquals("zvd", model.status());
-        Assertions.assertEquals("zdix", model.sessionId());
+        Assertions.assertEquals("ruunzzjgehkf", model.status());
+        Assertions.assertEquals("m", model.sessionId());
     }
 }

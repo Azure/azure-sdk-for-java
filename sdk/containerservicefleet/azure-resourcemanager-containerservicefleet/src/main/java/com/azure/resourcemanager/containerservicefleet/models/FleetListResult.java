@@ -10,7 +10,9 @@ import com.azure.resourcemanager.containerservicefleet.fluent.models.FleetInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a Fleet list operation. */
+/**
+ * The response of a Fleet list operation.
+ */
 @Fluent
 public final class FleetListResult {
     /*
@@ -25,13 +27,15 @@ public final class FleetListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of FleetListResult class. */
+    /**
+     * Creates an instance of FleetListResult class.
+     */
     public FleetListResult() {
     }
 
     /**
      * Get the value property: The Fleet items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<FleetInner> value() {
@@ -40,7 +44,7 @@ public final class FleetListResult {
 
     /**
      * Set the value property: The Fleet items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the FleetListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class FleetListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class FleetListResult {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the FleetListResult object itself.
      */
@@ -71,14 +75,13 @@ public final class FleetListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model FleetListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model FleetListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

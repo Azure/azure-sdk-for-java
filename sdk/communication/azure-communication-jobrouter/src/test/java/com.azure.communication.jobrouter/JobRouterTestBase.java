@@ -57,6 +57,10 @@ class JobRouterTestBase extends TestProxyTestBase {
             .endpoint(connectionString.getEndpoint())
             .pipeline(httpPipeline)
             .buildClient();
+        // Disable `$..etag` sanitizer
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3490"));
+        }
         return jobRouterAdministrationClient;
     }
 
@@ -67,6 +71,10 @@ class JobRouterTestBase extends TestProxyTestBase {
             .endpoint(connectionString.getEndpoint())
             .pipeline(httpPipeline)
             .buildAsyncClient();
+        // Disable `$..etag` sanitizer
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3490"));
+        }
         return jobRouterAdministrationAsyncClient;
     }
 
@@ -151,7 +159,7 @@ class JobRouterTestBase extends TestProxyTestBase {
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
             id,
-            Duration.ofSeconds(10),
+            Duration.ofSeconds(100),
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)
@@ -168,8 +176,7 @@ class JobRouterTestBase extends TestProxyTestBase {
             .setRequestedWorkerSelectors(
                 new ArrayList<RouterWorkerSelector>() {
                     {
-                        new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN)
-                            .setValue(new RouterValue(10));
+                        new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN, new RouterValue(10));
                     }
                 }
             );

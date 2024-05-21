@@ -10,8 +10,8 @@ import com.azure.resourcemanager.frontdoor.models.RouteConfiguration;
 public final class RouteConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RouteConfiguration model =
-            BinaryData.fromString("{\"@odata.type\":\"RouteConfiguration\"}").toObject(RouteConfiguration.class);
+        RouteConfiguration model
+            = BinaryData.fromString("{\"@odata.type\":\"jorwkqnyhgbij\"}").toObject(RouteConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test

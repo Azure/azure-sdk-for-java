@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
@@ -35,6 +36,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @Tag("integration")
 class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSenderAsyncClientIntegrationTest.class);
+    
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusReceiverAsyncClient receiver;
     private final AtomicInteger messagesPending = new AtomicInteger();
@@ -358,17 +361,17 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 .verify(TIMEOUT);
             StepVerifier.create(receiver.receiveMessages().take(total))
                 .assertNext(receivedMessage -> {
-                    System.out.println("1");
+                    LOGGER.log(LogLevel.VERBOSE, () -> "1");
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
                 })
                 .assertNext(receivedMessage -> {
-                    System.out.println("2");
+                    LOGGER.log(LogLevel.VERBOSE, () -> "2");
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
                 })
                 .assertNext(receivedMessage -> {
-                    System.out.println("3");
+                    LOGGER.log(LogLevel.VERBOSE, () -> "3");
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     messagesPending.decrementAndGet();
                 })

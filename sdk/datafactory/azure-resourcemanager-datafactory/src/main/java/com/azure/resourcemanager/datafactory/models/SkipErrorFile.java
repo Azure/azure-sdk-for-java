@@ -13,15 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SkipErrorFile {
     /*
-     * Skip if file is deleted by other client during copy. Default is true. Type: boolean (or Expression with
-     * resultType boolean).
+     * Skip if file is deleted by other client during copy. Default is true. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "fileMissing")
     private Object fileMissing;
 
     /*
-     * Skip if source/sink file changed by other concurrent write. Default is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * Skip if source/sink file changed by other concurrent write. Default is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "dataInconsistency")
     private Object dataInconsistency;
@@ -33,8 +31,8 @@ public final class SkipErrorFile {
     }
 
     /**
-     * Get the fileMissing property: Skip if file is deleted by other client during copy. Default is true. Type:
-     * boolean (or Expression with resultType boolean).
+     * Get the fileMissing property: Skip if file is deleted by other client during copy. Default is true. Type: boolean
+     * (or Expression with resultType boolean).
      * 
      * @return the fileMissing value.
      */
@@ -43,8 +41,8 @@ public final class SkipErrorFile {
     }
 
     /**
-     * Set the fileMissing property: Skip if file is deleted by other client during copy. Default is true. Type:
-     * boolean (or Expression with resultType boolean).
+     * Set the fileMissing property: Skip if file is deleted by other client during copy. Default is true. Type: boolean
+     * (or Expression with resultType boolean).
      * 
      * @param fileMissing the fileMissing value to set.
      * @return the SkipErrorFile object itself.
@@ -55,8 +53,8 @@ public final class SkipErrorFile {
     }
 
     /**
-     * Get the dataInconsistency property: Skip if source/sink file changed by other concurrent write. Default is
-     * false. Type: boolean (or Expression with resultType boolean).
+     * Get the dataInconsistency property: Skip if source/sink file changed by other concurrent write. Default is false.
+     * Type: boolean (or Expression with resultType boolean).
      * 
      * @return the dataInconsistency value.
      */
@@ -65,8 +63,8 @@ public final class SkipErrorFile {
     }
 
     /**
-     * Set the dataInconsistency property: Skip if source/sink file changed by other concurrent write. Default is
-     * false. Type: boolean (or Expression with resultType boolean).
+     * Set the dataInconsistency property: Skip if source/sink file changed by other concurrent write. Default is false.
+     * Type: boolean (or Expression with resultType boolean).
      * 
      * @param dataInconsistency the dataInconsistency value to set.
      * @return the SkipErrorFile object itself.

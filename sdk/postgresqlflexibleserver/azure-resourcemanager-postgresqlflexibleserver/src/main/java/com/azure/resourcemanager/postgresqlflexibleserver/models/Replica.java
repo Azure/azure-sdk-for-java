@@ -25,8 +25,7 @@ public final class Replica {
     private Integer capacity;
 
     /*
-     * Gets the replication state of a replica server. This property is returned only for replicas api call. Supported
-     * values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring
+     * Gets the replication state of a replica server. This property is returned only for replicas api call. Supported values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring
      */
     @JsonProperty(value = "replicationState", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationState replicationState;
@@ -79,8 +78,8 @@ public final class Replica {
     }
 
     /**
-     * Get the replicationState property: Gets the replication state of a replica server. This property is returned
-     * only for replicas api call. Supported values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring.
+     * Get the replicationState property: Gets the replication state of a replica server. This property is returned only
+     * for replicas api call. Supported values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring.
      * 
      * @return the replicationState value.
      */

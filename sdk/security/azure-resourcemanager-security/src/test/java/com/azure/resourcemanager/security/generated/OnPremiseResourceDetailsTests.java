@@ -12,22 +12,24 @@ public final class OnPremiseResourceDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OnPremiseResourceDetails model = BinaryData.fromString(
-            "{\"source\":\"OnPremise\",\"workspaceId\":\"gloiovsl\",\"vmuuid\":\"ivqsuvwtenb\",\"sourceComputerId\":\"pijpkhc\",\"machineName\":\"oa\"}")
+            "{\"source\":\"OnPremise\",\"workspaceId\":\"vfwjlo\",\"vmuuid\":\"zekfsrmauklajv\",\"sourceComputerId\":\"foc\",\"machineName\":\"hapejov\"}")
             .toObject(OnPremiseResourceDetails.class);
-        Assertions.assertEquals("gloiovsl", model.workspaceId());
-        Assertions.assertEquals("ivqsuvwtenb", model.vmuuid());
-        Assertions.assertEquals("pijpkhc", model.sourceComputerId());
-        Assertions.assertEquals("oa", model.machineName());
+        Assertions.assertEquals("vfwjlo", model.workspaceId());
+        Assertions.assertEquals("zekfsrmauklajv", model.vmuuid());
+        Assertions.assertEquals("foc", model.sourceComputerId());
+        Assertions.assertEquals("hapejov", model.machineName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OnPremiseResourceDetails model = new OnPremiseResourceDetails().withWorkspaceId("gloiovsl")
-            .withVmuuid("ivqsuvwtenb").withSourceComputerId("pijpkhc").withMachineName("oa");
+        OnPremiseResourceDetails model = new OnPremiseResourceDetails().withWorkspaceId("vfwjlo")
+            .withVmuuid("zekfsrmauklajv")
+            .withSourceComputerId("foc")
+            .withMachineName("hapejov");
         model = BinaryData.fromObject(model).toObject(OnPremiseResourceDetails.class);
-        Assertions.assertEquals("gloiovsl", model.workspaceId());
-        Assertions.assertEquals("ivqsuvwtenb", model.vmuuid());
-        Assertions.assertEquals("pijpkhc", model.sourceComputerId());
-        Assertions.assertEquals("oa", model.machineName());
+        Assertions.assertEquals("vfwjlo", model.workspaceId());
+        Assertions.assertEquals("zekfsrmauklajv", model.vmuuid());
+        Assertions.assertEquals("foc", model.sourceComputerId());
+        Assertions.assertEquals("hapejov", model.machineName());
     }
 }

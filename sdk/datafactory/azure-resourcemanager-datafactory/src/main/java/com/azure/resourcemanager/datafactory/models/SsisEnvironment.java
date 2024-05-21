@@ -6,6 +6,7 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,17 @@ import java.util.List;
 /**
  * Ssis environment.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SsisEnvironment.class, visible = true)
 @JsonTypeName("Environment")
 @Fluent
 public final class SsisEnvironment extends SsisObjectMetadata {
+    /*
+     * Type of metadata.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private SsisObjectMetadataType type = SsisObjectMetadataType.ENVIRONMENT;
+
     /*
      * Folder id which contains environment.
      */
@@ -33,6 +41,16 @@ public final class SsisEnvironment extends SsisObjectMetadata {
      * Creates an instance of SsisEnvironment class.
      */
     public SsisEnvironment() {
+    }
+
+    /**
+     * Get the type property: Type of metadata.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public SsisObjectMetadataType type() {
+        return this.type;
     }
 
     /**

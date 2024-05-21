@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.selfhelp.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -24,10 +25,14 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.selfhelp.fluent.CheckNameAvailabilitiesClient;
 import com.azure.resourcemanager.selfhelp.fluent.DiagnosticsClient;
+import com.azure.resourcemanager.selfhelp.fluent.DiscoverySolutionNlpSubscriptionScopesClient;
+import com.azure.resourcemanager.selfhelp.fluent.DiscoverySolutionNlpTenantScopesClient;
 import com.azure.resourcemanager.selfhelp.fluent.DiscoverySolutionsClient;
 import com.azure.resourcemanager.selfhelp.fluent.HelpRP;
 import com.azure.resourcemanager.selfhelp.fluent.OperationsClient;
+import com.azure.resourcemanager.selfhelp.fluent.SimplifiedSolutionsClient;
 import com.azure.resourcemanager.selfhelp.fluent.SolutionOperationsClient;
+import com.azure.resourcemanager.selfhelp.fluent.SolutionSelfHelpsClient;
 import com.azure.resourcemanager.selfhelp.fluent.TroubleshootersClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -184,6 +189,20 @@ public final class HelpRPImpl implements HelpRP {
     }
 
     /**
+     * The SimplifiedSolutionsClient object to access its operations.
+     */
+    private final SimplifiedSolutionsClient simplifiedSolutions;
+
+    /**
+     * Gets the SimplifiedSolutionsClient object to access its operations.
+     * 
+     * @return the SimplifiedSolutionsClient object.
+     */
+    public SimplifiedSolutionsClient getSimplifiedSolutions() {
+        return this.simplifiedSolutions;
+    }
+
+    /**
      * The TroubleshootersClient object to access its operations.
      */
     private final TroubleshootersClient troubleshooters;
@@ -195,6 +214,48 @@ public final class HelpRPImpl implements HelpRP {
      */
     public TroubleshootersClient getTroubleshooters() {
         return this.troubleshooters;
+    }
+
+    /**
+     * The SolutionSelfHelpsClient object to access its operations.
+     */
+    private final SolutionSelfHelpsClient solutionSelfHelps;
+
+    /**
+     * Gets the SolutionSelfHelpsClient object to access its operations.
+     * 
+     * @return the SolutionSelfHelpsClient object.
+     */
+    public SolutionSelfHelpsClient getSolutionSelfHelps() {
+        return this.solutionSelfHelps;
+    }
+
+    /**
+     * The DiscoverySolutionNlpTenantScopesClient object to access its operations.
+     */
+    private final DiscoverySolutionNlpTenantScopesClient discoverySolutionNlpTenantScopes;
+
+    /**
+     * Gets the DiscoverySolutionNlpTenantScopesClient object to access its operations.
+     * 
+     * @return the DiscoverySolutionNlpTenantScopesClient object.
+     */
+    public DiscoverySolutionNlpTenantScopesClient getDiscoverySolutionNlpTenantScopes() {
+        return this.discoverySolutionNlpTenantScopes;
+    }
+
+    /**
+     * The DiscoverySolutionNlpSubscriptionScopesClient object to access its operations.
+     */
+    private final DiscoverySolutionNlpSubscriptionScopesClient discoverySolutionNlpSubscriptionScopes;
+
+    /**
+     * Gets the DiscoverySolutionNlpSubscriptionScopesClient object to access its operations.
+     * 
+     * @return the DiscoverySolutionNlpSubscriptionScopesClient object.
+     */
+    public DiscoverySolutionNlpSubscriptionScopesClient getDiscoverySolutionNlpSubscriptionScopes() {
+        return this.discoverySolutionNlpSubscriptionScopes;
     }
 
     /**
@@ -212,13 +273,17 @@ public final class HelpRPImpl implements HelpRP {
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-09-01-preview";
+        this.apiVersion = "2024-03-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.checkNameAvailabilities = new CheckNameAvailabilitiesClientImpl(this);
         this.diagnostics = new DiagnosticsClientImpl(this);
         this.discoverySolutions = new DiscoverySolutionsClientImpl(this);
         this.solutionOperations = new SolutionOperationsClientImpl(this);
+        this.simplifiedSolutions = new SimplifiedSolutionsClientImpl(this);
         this.troubleshooters = new TroubleshootersClientImpl(this);
+        this.solutionSelfHelps = new SolutionSelfHelpsClientImpl(this);
+        this.discoverySolutionNlpTenantScopes = new DiscoverySolutionNlpTenantScopesClientImpl(this);
+        this.discoverySolutionNlpSubscriptionScopes = new DiscoverySolutionNlpSubscriptionScopesClientImpl(this);
     }
 
     /**
@@ -281,8 +346,8 @@ public final class HelpRPImpl implements HelpRP {
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -323,7 +388,7 @@ public final class HelpRPImpl implements HelpRP {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

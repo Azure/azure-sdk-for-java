@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The status of a UpdateRun. */
+/**
+ * The status of a UpdateRun.
+ */
 @Immutable
 public final class UpdateRunStatus {
     /*
@@ -24,19 +26,20 @@ public final class UpdateRunStatus {
     private List<UpdateStageStatus> stages;
 
     /*
-     * The node image upgrade specs for the update run. It is only set in update run when `NodeImageSelection.type` is
-     * `Consistent`.
+     * The node image upgrade specs for the update run. It is only set in update run when `NodeImageSelection.type` is `Consistent`.
      */
     @JsonProperty(value = "nodeImageSelection", access = JsonProperty.Access.WRITE_ONLY)
     private NodeImageSelectionStatus nodeImageSelection;
 
-    /** Creates an instance of UpdateRunStatus class. */
+    /**
+     * Creates an instance of UpdateRunStatus class.
+     */
     public UpdateRunStatus() {
     }
 
     /**
      * Get the status property: The status of the UpdateRun.
-     *
+     * 
      * @return the status value.
      */
     public UpdateStatus status() {
@@ -45,7 +48,7 @@ public final class UpdateRunStatus {
 
     /**
      * Get the stages property: The stages composing an update run. Stages are run sequentially withing an UpdateRun.
-     *
+     * 
      * @return the stages value.
      */
     public List<UpdateStageStatus> stages() {
@@ -55,7 +58,7 @@ public final class UpdateRunStatus {
     /**
      * Get the nodeImageSelection property: The node image upgrade specs for the update run. It is only set in update
      * run when `NodeImageSelection.type` is `Consistent`.
-     *
+     * 
      * @return the nodeImageSelection value.
      */
     public NodeImageSelectionStatus nodeImageSelection() {
@@ -64,7 +67,7 @@ public final class UpdateRunStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

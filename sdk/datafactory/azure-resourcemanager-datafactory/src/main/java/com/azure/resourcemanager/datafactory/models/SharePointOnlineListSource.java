@@ -6,26 +6,36 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity source for sharePoint online list source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SharePointOnlineListSource.class,
+    visible = true)
 @JsonTypeName("SharePointOnlineListSource")
 @Fluent
 public final class SharePointOnlineListSource extends CopySource {
     /*
-     * The OData query to filter the data in SharePoint Online list. For example, "$top=1". Type: string (or Expression
-     * with resultType string).
+     * Copy source type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SharePointOnlineListSource";
+
+    /*
+     * The OData query to filter the data in SharePoint Online list. For example, "$top=1". Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
 
     /*
-     * The wait time to get a response from SharePoint Online. Default value is 5 minutes (00:05:00). Type: string (or
-     * Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * The wait time to get a response from SharePoint Online. Default value is 5 minutes (00:05:00). Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
@@ -34,6 +44,16 @@ public final class SharePointOnlineListSource extends CopySource {
      * Creates an instance of SharePointOnlineListSource class.
      */
     public SharePointOnlineListSource() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

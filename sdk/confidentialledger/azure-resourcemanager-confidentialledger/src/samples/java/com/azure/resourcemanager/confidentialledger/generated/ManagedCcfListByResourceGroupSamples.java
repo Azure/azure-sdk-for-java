@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.confidentialledger.generated;
 
-/** Samples for ManagedCcf ListByResourceGroup. */
+/**
+ * Samples for ManagedCcf ListByResourceGroup.
+ */
 public final class ManagedCcfListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ManagedCCF_List.json
+     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-06-28-preview/examples/ManagedCCF_List.json
      */
     /**
      * Sample code: ManagedCCFList.
-     *
+     * 
      * @param manager Entry point to ConfidentialLedgerManager.
      */
     public static void managedCCFList(com.azure.resourcemanager.confidentialledger.ConfidentialLedgerManager manager) {

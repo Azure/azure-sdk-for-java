@@ -1,6 +1,16 @@
 # Release History
 
-## 2.38.0-beta.1 (Unreleased)
+## 2.39.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.38.0 (2024-04-16)
 
 ### Features Added
 
@@ -11,9 +21,13 @@
 
 ### Breaking Changes
 
-### Bugs Fixed
+- `nodeSelector` is removed from `IstioEgressGateway` class.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-02-01`.
 
 ## 2.37.0 (2024-03-22)
 

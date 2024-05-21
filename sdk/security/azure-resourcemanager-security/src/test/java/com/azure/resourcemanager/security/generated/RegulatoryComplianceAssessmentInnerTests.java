@@ -13,15 +13,15 @@ public final class RegulatoryComplianceAssessmentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegulatoryComplianceAssessmentInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"rhzo\",\"assessmentType\":\"i\",\"assessmentDetailsLink\":\"rq\",\"state\":\"Failed\",\"passedResources\":1263304744,\"failedResources\":2064087160,\"skippedResources\":898647722,\"unsupportedResources\":575673761},\"id\":\"dtmhrkwofyyvoqa\",\"name\":\"piexpbtgiw\",\"type\":\"wo\"}")
+            "{\"properties\":{\"description\":\"gxhnisk\",\"assessmentType\":\"bkpyc\",\"assessmentDetailsLink\":\"lwn\",\"state\":\"Skipped\",\"passedResources\":1205583230,\"failedResources\":1922459268,\"skippedResources\":2043748556,\"unsupportedResources\":1020918643},\"id\":\"l\",\"name\":\"zbtd\",\"type\":\"xujznbmpowu\"}")
             .toObject(RegulatoryComplianceAssessmentInner.class);
-        Assertions.assertEquals(State.FAILED, model.state());
+        Assertions.assertEquals(State.SKIPPED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegulatoryComplianceAssessmentInner model = new RegulatoryComplianceAssessmentInner().withState(State.FAILED);
+        RegulatoryComplianceAssessmentInner model = new RegulatoryComplianceAssessmentInner().withState(State.SKIPPED);
         model = BinaryData.fromObject(model).toObject(RegulatoryComplianceAssessmentInner.class);
-        Assertions.assertEquals(State.FAILED, model.state());
+        Assertions.assertEquals(State.SKIPPED, model.state());
     }
 }

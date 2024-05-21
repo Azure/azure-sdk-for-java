@@ -10,11 +10,9 @@ import com.azure.resourcemanager.hybridcompute.models.AvailablePatchCountByClass
 public final class AvailablePatchCountByClassificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailablePatchCountByClassification model =
-            BinaryData
-                .fromString(
-                    "{\"security\":2012409691,\"critical\":752212445,\"definition\":2022325764,\"updateRollup\":1803945661,\"featurePack\":1492267323,\"servicePack\":920557084,\"tools\":223779123,\"updates\":1058497011,\"other\":842863771}")
-                .toObject(AvailablePatchCountByClassification.class);
+        AvailablePatchCountByClassification model = BinaryData.fromString(
+            "{\"security\":1857239406,\"critical\":1149857481,\"definition\":525052628,\"updateRollup\":1405653076,\"featurePack\":1012286032,\"servicePack\":858824887,\"tools\":751467546,\"updates\":2035107412,\"other\":1122692891}")
+            .toObject(AvailablePatchCountByClassification.class);
     }
 
     @org.junit.jupiter.api.Test

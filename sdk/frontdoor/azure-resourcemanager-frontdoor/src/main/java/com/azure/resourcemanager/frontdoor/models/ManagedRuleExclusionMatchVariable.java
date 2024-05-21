@@ -8,28 +8,40 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The variable type to be excluded. */
+/**
+ * The variable type to be excluded.
+ */
 public final class ManagedRuleExclusionMatchVariable extends ExpandableStringEnum<ManagedRuleExclusionMatchVariable> {
-    /** Static value RequestHeaderNames for ManagedRuleExclusionMatchVariable. */
+    /**
+     * Static value RequestHeaderNames for ManagedRuleExclusionMatchVariable.
+     */
     public static final ManagedRuleExclusionMatchVariable REQUEST_HEADER_NAMES = fromString("RequestHeaderNames");
 
-    /** Static value RequestCookieNames for ManagedRuleExclusionMatchVariable. */
+    /**
+     * Static value RequestCookieNames for ManagedRuleExclusionMatchVariable.
+     */
     public static final ManagedRuleExclusionMatchVariable REQUEST_COOKIE_NAMES = fromString("RequestCookieNames");
 
-    /** Static value QueryStringArgNames for ManagedRuleExclusionMatchVariable. */
+    /**
+     * Static value QueryStringArgNames for ManagedRuleExclusionMatchVariable.
+     */
     public static final ManagedRuleExclusionMatchVariable QUERY_STRING_ARG_NAMES = fromString("QueryStringArgNames");
 
-    /** Static value RequestBodyPostArgNames for ManagedRuleExclusionMatchVariable. */
-    public static final ManagedRuleExclusionMatchVariable REQUEST_BODY_POST_ARG_NAMES =
-        fromString("RequestBodyPostArgNames");
+    /**
+     * Static value RequestBodyPostArgNames for ManagedRuleExclusionMatchVariable.
+     */
+    public static final ManagedRuleExclusionMatchVariable REQUEST_BODY_POST_ARG_NAMES
+        = fromString("RequestBodyPostArgNames");
 
-    /** Static value RequestBodyJsonArgNames for ManagedRuleExclusionMatchVariable. */
-    public static final ManagedRuleExclusionMatchVariable REQUEST_BODY_JSON_ARG_NAMES =
-        fromString("RequestBodyJsonArgNames");
+    /**
+     * Static value RequestBodyJsonArgNames for ManagedRuleExclusionMatchVariable.
+     */
+    public static final ManagedRuleExclusionMatchVariable REQUEST_BODY_JSON_ARG_NAMES
+        = fromString("RequestBodyJsonArgNames");
 
     /**
      * Creates a new instance of ManagedRuleExclusionMatchVariable value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -38,7 +50,7 @@ public final class ManagedRuleExclusionMatchVariable extends ExpandableStringEnu
 
     /**
      * Creates or finds a ManagedRuleExclusionMatchVariable from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedRuleExclusionMatchVariable.
      */
@@ -49,7 +61,7 @@ public final class ManagedRuleExclusionMatchVariable extends ExpandableStringEnu
 
     /**
      * Gets known ManagedRuleExclusionMatchVariable values.
-     *
+     * 
      * @return known ManagedRuleExclusionMatchVariable values.
      */
     public static Collection<ManagedRuleExclusionMatchVariable> values() {

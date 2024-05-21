@@ -5,29 +5,30 @@
 package com.azure.monitor.query.implementation.metricsdefinitions.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Represents collection of metric definitions.
  */
 @Immutable
-public final class SubscriptionScopeMetricDefinitionCollection {
+public final class SubscriptionScopeMetricDefinitionCollection
+    implements JsonSerializable<SubscriptionScopeMetricDefinitionCollection> {
     /*
      * The values for the metric definitions.
      */
-    @JsonProperty(value = "value", required = true)
-    private List<SubscriptionScopeMetricDefinition> value;
+    private final List<SubscriptionScopeMetricDefinition> value;
 
     /**
      * Creates an instance of SubscriptionScopeMetricDefinitionCollection class.
      * 
      * @param value the value value to set.
      */
-    @JsonCreator
-    public SubscriptionScopeMetricDefinitionCollection(
-        @JsonProperty(value = "value", required = true) List<SubscriptionScopeMetricDefinition> value) {
+    public SubscriptionScopeMetricDefinitionCollection(List<SubscriptionScopeMetricDefinition> value) {
         this.value = value;
     }
 
@@ -38,5 +39,43 @@ public final class SubscriptionScopeMetricDefinitionCollection {
      */
     public List<SubscriptionScopeMetricDefinition> getValue() {
         return this.value;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionScopeMetricDefinitionCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionScopeMetricDefinitionCollection if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SubscriptionScopeMetricDefinitionCollection.
+     */
+    public static SubscriptionScopeMetricDefinitionCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean valueFound = false;
+            List<SubscriptionScopeMetricDefinition> value = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    value = reader.readArray(reader1 -> SubscriptionScopeMetricDefinition.fromJson(reader1));
+                    valueFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (valueFound) {
+                return new SubscriptionScopeMetricDefinitionCollection(value);
+            }
+            throw new IllegalStateException("Missing required property: value");
+        });
     }
 }

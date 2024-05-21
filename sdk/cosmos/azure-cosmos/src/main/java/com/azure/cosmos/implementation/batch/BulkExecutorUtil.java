@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.batch;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -36,13 +37,18 @@ import static com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper
 
 final class BulkExecutorUtil {
 
-    static ServerOperationBatchRequest createBatchRequest(List<CosmosItemOperation> operations, String partitionKeyRangeId, int maxMicroBatchPayloadSizeInBytes) {
+    static ServerOperationBatchRequest createBatchRequest(
+        List<CosmosItemOperation> operations,
+        String partitionKeyRangeId,
+        int maxMicroBatchPayloadSizeInBytes,
+        CosmosItemSerializer clientItemSerializer) {
 
         return PartitionKeyRangeServerBatchRequest.createBatchRequest(
             partitionKeyRangeId,
             operations,
             maxMicroBatchPayloadSizeInBytes,
-            Math.min(operations.size(), BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST));
+            Math.min(operations.size(), BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST),
+            clientItemSerializer);
     }
 
     static void setRetryPolicyForBulk(

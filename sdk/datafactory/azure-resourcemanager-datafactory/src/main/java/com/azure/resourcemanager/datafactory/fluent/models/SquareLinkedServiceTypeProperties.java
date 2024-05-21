@@ -14,8 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SquareLinkedServiceTypeProperties {
     /*
-     * Properties used to connect to Square. It is mutually exclusive with any other properties in the linked service.
-     * Type: object.
+     * Properties used to connect to Square. It is mutually exclusive with any other properties in the linked service. Type: object.
      */
     @JsonProperty(value = "connectionProperties")
     private Object connectionProperties;
@@ -51,8 +50,7 @@ public final class SquareLinkedServiceTypeProperties {
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
-     * connecting over SSL. The default value is true.
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
@@ -64,8 +62,7 @@ public final class SquareLinkedServiceTypeProperties {
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
@@ -225,8 +222,8 @@ public final class SquareLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
      * 
      * @return the usePeerVerification value.
      */
@@ -235,8 +232,8 @@ public final class SquareLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
+     * SSL. The default value is true.
      * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the SquareLinkedServiceTypeProperties object itself.
@@ -247,8 +244,8 @@ public final class SquareLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -257,8 +254,8 @@ public final class SquareLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SquareLinkedServiceTypeProperties object itself.

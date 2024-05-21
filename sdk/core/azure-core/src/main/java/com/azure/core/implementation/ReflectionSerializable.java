@@ -192,12 +192,14 @@ public final class ReflectionSerializable {
         for (Method method : bodyContentClass.getDeclaredMethods()) {
             if (method.getName().equals("fromXml")
                 && (method.getModifiers() & Modifier.STATIC) != 0
-                && method.getParameterCount() == 1
-                && method.getParameterTypes()[0].equals(XmlReader.class)) {
+                && method.getParameterCount() == 2
+                && method.getParameterTypes()[0].equals(XmlReader.class)
+                && method.getParameterTypes()[1].equals(String.class)) {
                 hasFromXml = true;
             } else if (method.getName().equals("toXml")
-                && method.getParameterCount() == 1
-                && method.getParameterTypes()[0].equals(XmlWriter.class)) {
+                && method.getParameterCount() == 2
+                && method.getParameterTypes()[0].equals(XmlWriter.class)
+                && method.getParameterTypes()[1].equals(String.class)) {
                 hasToXml = true;
             }
 

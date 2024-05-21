@@ -6,17 +6,29 @@ package com.azure.resourcemanager.frontdoor.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.frontdoor.FrontDoorManager;
+import com.azure.resourcemanager.frontdoor.fluent.models.FrontendEndpointInner;
+import com.azure.resourcemanager.frontdoor.models.Backend;
+import com.azure.resourcemanager.frontdoor.models.BackendPool;
 import com.azure.resourcemanager.frontdoor.models.BackendPoolsSettings;
 import com.azure.resourcemanager.frontdoor.models.EnforceCertificateNameCheckEnabledState;
 import com.azure.resourcemanager.frontdoor.models.FrontDoor;
 import com.azure.resourcemanager.frontdoor.models.FrontDoorEnabledState;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.frontdoor.models.FrontDoorHealthProbeMethod;
+import com.azure.resourcemanager.frontdoor.models.FrontDoorProtocol;
+import com.azure.resourcemanager.frontdoor.models.FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink;
+import com.azure.resourcemanager.frontdoor.models.HealthProbeEnabled;
+import com.azure.resourcemanager.frontdoor.models.HealthProbeSettingsModel;
+import com.azure.resourcemanager.frontdoor.models.LoadBalancingSettingsModel;
+import com.azure.resourcemanager.frontdoor.models.RouteConfiguration;
+import com.azure.resourcemanager.frontdoor.models.RoutingRule;
+import com.azure.resourcemanager.frontdoor.models.RoutingRuleEnabledState;
+import com.azure.resourcemanager.frontdoor.models.RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink;
+import com.azure.resourcemanager.frontdoor.models.SessionAffinityEnabledState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -24,87 +36,133 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class FrontDoorsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"resourceState\":\"Enabling\",\"provisioningState\":\"Succeeded\",\"cname\":\"vibidmhmwffpl\",\"frontdoorId\":\"u\",\"rulesEngines\":[{\"properties\":{\"resourceState\":\"Migrating\",\"rules\":[{\"name\":\"rv\",\"priority\":1253377600,\"action\":{}},{\"name\":\"yoxoy\",\"priority\":1338373008,\"action\":{}}]},\"id\":\"k\",\"name\":\"haim\",\"type\":\"oir\"}],\"extendedProperties\":{\"mfsvbpav\":\"oshbragapyy\",\"kuma\":\"opfppdbwnupgah\",\"hqepvufhbzehewh\":\"jcaacfdmmcpugm\",\"eaclgschorimk\":\"qhnlbqnbld\"},\"friendlyName\":\"r\",\"routingRules\":[{\"properties\":{\"resourceState\":\"Creating\",\"frontendEndpoints\":[{},{},{}],\"acceptedProtocols\":[\"Https\",\"Https\"],\"patternsToMatch\":[\"yfcaabeolhbhlvbm\"],\"enabledState\":\"Enabled\",\"routeConfiguration\":{\"@odata.type\":\"RouteConfiguration\"},\"rulesEngine\":{},\"webApplicationFirewallPolicyLink\":{}},\"name\":\"tkcudfbsfarfsiow\",\"type\":\"jxnqp\",\"id\":\"gf\"}],\"loadBalancingSettings\":[{\"properties\":{\"resourceState\":\"Deleting\",\"sampleSize\":1864942425,\"successfulSamplesRequired\":1720247463,\"additionalLatencyMilliseconds\":1191381707},\"name\":\"aoaf\",\"type\":\"uqvoxmycjimryv\",\"id\":\"cwwp\"},{\"properties\":{\"resourceState\":\"Enabling\",\"sampleSize\":1119182836,\"successfulSamplesRequired\":886481009,\"additionalLatencyMilliseconds\":1162604826},\"name\":\"wefohecbvo\",\"type\":\"ndyqleal\",\"id\":\"lmtkhlowkxx\"},{\"properties\":{\"resourceState\":\"Migrating\",\"sampleSize\":319899198,\"successfulSamplesRequired\":379923539,\"additionalLatencyMilliseconds\":2077612863},\"name\":\"zfhotlh\",\"type\":\"cyychunsjlp\",\"id\":\"twszhvvuic\"}],\"healthProbeSettings\":[{\"properties\":{\"resourceState\":\"Enabling\",\"path\":\"hwrbfdpyflubh\",\"protocol\":\"Http\",\"intervalInSeconds\":213573747,\"healthProbeMethod\":\"HEAD\",\"enabledState\":\"Enabled\"},\"name\":\"lw\",\"type\":\"memhooclutnpq\",\"id\":\"mczjkm\"},{\"properties\":{\"resourceState\":\"Migrating\",\"path\":\"jxsglhsr\",\"protocol\":\"Https\",\"intervalInSeconds\":1324312845,\"healthProbeMethod\":\"GET\",\"enabledState\":\"Disabled\"},\"name\":\"zudnigrfiho\",\"type\":\"e\",\"id\":\"pxuzzjg\"},{\"properties\":{\"resourceState\":\"Disabling\",\"path\":\"yhqotoihiqakydi\",\"protocol\":\"Https\",\"intervalInSeconds\":7484371,\"healthProbeMethod\":\"HEAD\",\"enabledState\":\"Enabled\"},\"name\":\"tvhcs\",\"type\":\"daqaxsi\",\"id\":\"etgbebjfulb\"},{\"properties\":{\"resourceState\":\"Deleting\",\"path\":\"dlpnfpubn\",\"protocol\":\"Https\",\"intervalInSeconds\":2030589108,\"healthProbeMethod\":\"HEAD\",\"enabledState\":\"Enabled\"},\"name\":\"owsaaelcattcjuh\",\"type\":\"rvkmjcwmjvlgfggc\",\"id\":\"yylizrz\"}],\"backendPools\":[{\"properties\":{\"resourceState\":\"Disabled\",\"backends\":[{}],\"loadBalancingSettings\":{},\"healthProbeSettings\":{}},\"name\":\"lvt\",\"type\":\"agb\",\"id\":\"dqlvhukoveof\"},{\"properties\":{\"resourceState\":\"Enabling\",\"backends\":[{}],\"loadBalancingSettings\":{},\"healthProbeSettings\":{}},\"name\":\"mvl\",\"type\":\"z\",\"id\":\"blkujrllfojuidjp\"}],\"frontendEndpoints\":[{\"properties\":{\"resourceState\":\"Creating\",\"customHttpsProvisioningState\":\"Disabling\",\"customHttpsProvisioningSubstate\":\"DomainControlValidationRequestApproved\",\"customHttpsConfiguration\":{\"certificateSource\":\"AzureKeyVault\",\"protocolType\":\"ServerNameIndication\",\"minimumTlsVersion\":\"1.2\"},\"hostName\":\"vtzejetjklnti\",\"sessionAffinityEnabledState\":\"Enabled\",\"sessionAffinityTtlSeconds\":37175805,\"webApplicationFirewallPolicyLink\":{}},\"name\":\"bqzolxr\",\"type\":\"hqjwtrhtgvg\",\"id\":\"c\"},{\"properties\":{\"resourceState\":\"Migrated\",\"customHttpsProvisioningState\":\"Disabled\",\"customHttpsProvisioningSubstate\":\"DomainControlValidationRequestTimedOut\",\"customHttpsConfiguration\":{\"certificateSource\":\"AzureKeyVault\",\"protocolType\":\"ServerNameIndication\",\"minimumTlsVersion\":\"1.2\"},\"hostName\":\"rokcdxfzzzwyjaf\",\"sessionAffinityEnabledState\":\"Enabled\",\"sessionAffinityTtlSeconds\":880747778,\"webApplicationFirewallPolicyLink\":{}},\"name\":\"nuchlgmltxdwhmo\",\"type\":\"sgzv\",\"id\":\"snnjzfpafolpym\"},{\"properties\":{\"resourceState\":\"Disabling\",\"customHttpsProvisioningState\":\"Enabled\",\"customHttpsProvisioningSubstate\":\"PendingDomainControlValidationREquestApproval\",\"customHttpsConfiguration\":{\"certificateSource\":\"AzureKeyVault\",\"protocolType\":\"ServerNameIndication\",\"minimumTlsVersion\":\"1.0\"},\"hostName\":\"htvdula\",\"sessionAffinityEnabledState\":\"Enabled\",\"sessionAffinityTtlSeconds\":1390786576,\"webApplicationFirewallPolicyLink\":{}},\"name\":\"csrlzknmzl\",\"type\":\"rupdwvnphcnzq\",\"id\":\"jhmqrhvthla\"}],\"backendPoolsSettings\":{\"enforceCertificateNameCheck\":\"Enabled\",\"sendRecvTimeoutSeconds\":1795425186},\"enabledState\":\"Disabled\"},\"location\":\"zzhz\",\"tags\":{\"b\":\"etlgydlhqvlnnpx\",\"gjekglklby\":\"fiqgeaar\",\"hj\":\"lidwcwvmzegjon\"},\"id\":\"rwgdnqzbrfks\",\"name\":\"zhzmtksjci\",\"type\":\"digsxcdgl\"}";
 
-        String responseStr =
-            "{\"properties\":{\"resourceState\":\"Deleting\",\"provisioningState\":\"Succeeded\",\"cname\":\"szqujizdvoq\",\"frontdoorId\":\"ibyowbblgyavutp\",\"rulesEngines\":[],\"extendedProperties\":{\"xkcgxxlxsffgcvi\":\"oismsksbpimlqol\"},\"friendlyName\":\"zdwlvwlyoupfgfb\",\"routingRules\":[],\"loadBalancingSettings\":[],\"healthProbeSettings\":[],\"backendPools\":[],\"frontendEndpoints\":[],\"backendPoolsSettings\":{\"enforceCertificateNameCheck\":\"Enabled\",\"sendRecvTimeoutSeconds\":610597873},\"enabledState\":\"Disabled\"},\"location\":\"fttsttk\",\"tags\":{\"ctxtgzukxi\":\"hbq\",\"xrxc\":\"mmqtgqqqxhr\",\"azivjlfrqttbajl\":\"juisavokqdzf\",\"kqqfk\":\"atnwxyiopi\"},\"id\":\"vscx\",\"name\":\"dmligovibrxk\",\"type\":\"mloazuru\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        FrontDoorManager manager = FrontDoorManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        FrontDoor response = manager.frontDoors()
+            .define("ic")
+            .withRegion("bannovvoxczytp")
+            .withExistingResourceGroup("qfecjxeygtuhx")
+            .withTags(mapOf("uuxvnsasbcry", "wvroevytlyokrrr", "izrxklob", "o", "vevfxz", "xnazpmkml",
+                "bzxliohrdddtfgxq", "pj"))
+            .withFriendlyName("ejwabmdujtmvco")
+            .withRoutingRules(Arrays.asList(
+                new RoutingRule().withId("xfz")
+                    .withName("kbusqo")
+                    .withFrontendEndpoints(Arrays.asList(new SubResource(), new SubResource()))
+                    .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTPS))
+                    .withPatternsToMatch(Arrays.asList("kyqltqsrogt", "wkffdjkt", "ysidfvclgl"))
+                    .withEnabledState(RoutingRuleEnabledState.DISABLED)
+                    .withRouteConfiguration(new RouteConfiguration())
+                    .withRulesEngine(new SubResource())
+                    .withWebApplicationFirewallPolicyLink(
+                        new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink()),
+                new RoutingRule().withId("htvs")
+                    .withName("axpunjqikczvv")
+                    .withFrontendEndpoints(Arrays.asList(new SubResource(), new SubResource()))
+                    .withAcceptedProtocols(Arrays.asList(FrontDoorProtocol.HTTPS, FrontDoorProtocol.HTTPS,
+                        FrontDoorProtocol.HTTPS, FrontDoorProtocol.HTTP))
+                    .withPatternsToMatch(Arrays.asList("nuygbqeqqekewvnq", "cdlguauc"))
+                    .withEnabledState(RoutingRuleEnabledState.DISABLED)
+                    .withRouteConfiguration(new RouteConfiguration())
+                    .withRulesEngine(new SubResource())
+                    .withWebApplicationFirewallPolicyLink(
+                        new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink())))
+            .withLoadBalancingSettings(Arrays.asList(
+                new LoadBalancingSettingsModel().withId("yuel")
+                    .withName("xypruuuy")
+                    .withSampleSize(233628942)
+                    .withSuccessfulSamplesRequired(689120218)
+                    .withAdditionalLatencyMilliseconds(87413829),
+                new LoadBalancingSettingsModel().withId("tb")
+                    .withName("gagflnlgmtrwah")
+                    .withSampleSize(296095442)
+                    .withSuccessfulSamplesRequired(1833939931)
+                    .withAdditionalLatencyMilliseconds(834158684),
+                new LoadBalancingSettingsModel().withId("hjnhgwydyynfsvk")
+                    .withName("qfusuckzm")
+                    .withSampleSize(190540230)
+                    .withSuccessfulSamplesRequired(95734174)
+                    .withAdditionalLatencyMilliseconds(1977196134)))
+            .withHealthProbeSettings(Arrays.asList(new HealthProbeSettingsModel().withId("xhpdulontacnpqwt")
+                .withName("hnmgbroux")
+                .withPath("narfdlpukhpyrn")
+                .withProtocol(FrontDoorProtocol.HTTP)
+                .withIntervalInSeconds(1539061935)
+                .withHealthProbeMethod(FrontDoorHealthProbeMethod.HEAD)
+                .withEnabledState(HealthProbeEnabled.DISABLED)))
+            .withBackendPools(Arrays.asList(
+                new BackendPool().withId("fqkfuarenl")
+                    .withName("yoogw")
+                    .withBackends(Arrays.asList(new Backend(), new Backend()))
+                    .withLoadBalancingSettings(new SubResource())
+                    .withHealthProbeSettings(new SubResource()),
+                new BackendPool().withId("oslc")
+                    .withName("afvvk")
+                    .withBackends(Arrays.asList(new Backend(), new Backend(), new Backend(), new Backend()))
+                    .withLoadBalancingSettings(new SubResource())
+                    .withHealthProbeSettings(new SubResource())))
+            .withFrontendEndpoints(Arrays.asList(new FrontendEndpointInner().withId("dmflhuytx")
+                .withName("db")
+                .withHostname("czngnbdxxe")
+                .withSessionAffinityEnabledState(SessionAffinityEnabledState.DISABLED)
+                .withSessionAffinityTtlSeconds(1912464572)
+                .withWebApplicationFirewallPolicyLink(
+                    new FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink())))
+            .withBackendPoolsSettings(new BackendPoolsSettings()
+                .withEnforceCertificateNameCheck(EnforceCertificateNameCheckEnabledState.ENABLED)
+                .withSendRecvTimeoutSeconds(1703929659))
+            .withEnabledState(FrontDoorEnabledState.DISABLED)
+            .create();
 
-        FrontDoorManager manager =
-            FrontDoorManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        FrontDoor response =
-            manager
-                .frontDoors()
-                .define("coebjvewzcj")
-                .withRegion("lvnuuepzlrph")
-                .withExistingResourceGroup("rjfut")
-                .withTags(
-                    mapOf(
-                        "vmnnrw",
-                        "oldweyuqdu",
-                        "wjhhgdnhxmsivf",
-                        "biorktal",
-                        "zaofjchvcyy",
-                        "miloxggdufiqndie",
-                        "gdotcubiipuipwo",
-                        "s"))
-                .withFriendlyName("jcrxgibbdaxcon")
-                .withRoutingRules(Arrays.asList())
-                .withLoadBalancingSettings(Arrays.asList())
-                .withHealthProbeSettings(Arrays.asList())
-                .withBackendPools(Arrays.asList())
-                .withFrontendEndpoints(Arrays.asList())
-                .withBackendPoolsSettings(
-                    new BackendPoolsSettings()
-                        .withEnforceCertificateNameCheck(EnforceCertificateNameCheckEnabledState.ENABLED)
-                        .withSendRecvTimeoutSeconds(1406759128))
-                .withEnabledState(FrontDoorEnabledState.DISABLED)
-                .create();
-
-        Assertions.assertEquals("fttsttk", response.location());
-        Assertions.assertEquals("hbq", response.tags().get("ctxtgzukxi"));
-        Assertions.assertEquals("zdwlvwlyoupfgfb", response.friendlyName());
-        Assertions
-            .assertEquals(
-                EnforceCertificateNameCheckEnabledState.ENABLED,
-                response.backendPoolsSettings().enforceCertificateNameCheck());
-        Assertions.assertEquals(610597873, response.backendPoolsSettings().sendRecvTimeoutSeconds());
+        Assertions.assertEquals("zzhz", response.location());
+        Assertions.assertEquals("etlgydlhqvlnnpx", response.tags().get("b"));
+        Assertions.assertEquals("r", response.friendlyName());
+        Assertions.assertEquals("gf", response.routingRules().get(0).id());
+        Assertions.assertEquals("tkcudfbsfarfsiow", response.routingRules().get(0).name());
+        Assertions.assertEquals(FrontDoorProtocol.HTTPS, response.routingRules().get(0).acceptedProtocols().get(0));
+        Assertions.assertEquals("yfcaabeolhbhlvbm", response.routingRules().get(0).patternsToMatch().get(0));
+        Assertions.assertEquals(RoutingRuleEnabledState.ENABLED, response.routingRules().get(0).enabledState());
+        Assertions.assertEquals("cwwp", response.loadBalancingSettings().get(0).id());
+        Assertions.assertEquals("aoaf", response.loadBalancingSettings().get(0).name());
+        Assertions.assertEquals(1864942425, response.loadBalancingSettings().get(0).sampleSize());
+        Assertions.assertEquals(1720247463, response.loadBalancingSettings().get(0).successfulSamplesRequired());
+        Assertions.assertEquals(1191381707, response.loadBalancingSettings().get(0).additionalLatencyMilliseconds());
+        Assertions.assertEquals("mczjkm", response.healthProbeSettings().get(0).id());
+        Assertions.assertEquals("lw", response.healthProbeSettings().get(0).name());
+        Assertions.assertEquals("hwrbfdpyflubh", response.healthProbeSettings().get(0).path());
+        Assertions.assertEquals(FrontDoorProtocol.HTTP, response.healthProbeSettings().get(0).protocol());
+        Assertions.assertEquals(213573747, response.healthProbeSettings().get(0).intervalInSeconds());
+        Assertions.assertEquals(FrontDoorHealthProbeMethod.HEAD,
+            response.healthProbeSettings().get(0).healthProbeMethod());
+        Assertions.assertEquals(HealthProbeEnabled.ENABLED, response.healthProbeSettings().get(0).enabledState());
+        Assertions.assertEquals("dqlvhukoveof", response.backendPools().get(0).id());
+        Assertions.assertEquals("lvt", response.backendPools().get(0).name());
+        Assertions.assertEquals("c", response.frontendEndpoints().get(0).id());
+        Assertions.assertEquals("bqzolxr", response.frontendEndpoints().get(0).name());
+        Assertions.assertEquals("vtzejetjklnti", response.frontendEndpoints().get(0).hostname());
+        Assertions.assertEquals(SessionAffinityEnabledState.ENABLED,
+            response.frontendEndpoints().get(0).sessionAffinityEnabledState());
+        Assertions.assertEquals(37175805, response.frontendEndpoints().get(0).sessionAffinityTtlSeconds());
+        Assertions.assertEquals(EnforceCertificateNameCheckEnabledState.ENABLED,
+            response.backendPoolsSettings().enforceCertificateNameCheck());
+        Assertions.assertEquals(1795425186, response.backendPoolsSettings().sendRecvTimeoutSeconds());
         Assertions.assertEquals(FrontDoorEnabledState.DISABLED, response.enabledState());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

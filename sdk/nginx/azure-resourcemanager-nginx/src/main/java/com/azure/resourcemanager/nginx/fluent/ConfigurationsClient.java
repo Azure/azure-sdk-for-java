@@ -11,7 +11,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.nginx.fluent.models.AnalysisResultInner;
 import com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationInner;
+import com.azure.resourcemanager.nginx.models.AnalysisCreate;
 
 /**
  * An instance of this class provides access to all the operations defined in ConfigurationsClient.
@@ -205,4 +207,37 @@ public interface ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String deploymentName, String configurationName, Context context);
+
+    /**
+     * Analyze an NGINX configuration without applying it to the NGINXaaS deployment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted NGINX deployment.
+     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
+     * NGINX conf.
+     * @param body The NGINX configuration to analyze.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for an analysis request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AnalysisResultInner> analysisWithResponse(String resourceGroupName, String deploymentName,
+        String configurationName, AnalysisCreate body, Context context);
+
+    /**
+     * Analyze an NGINX configuration without applying it to the NGINXaaS deployment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted NGINX deployment.
+     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
+     * NGINX conf.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for an analysis request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AnalysisResultInner analysis(String resourceGroupName, String deploymentName, String configurationName);
 }

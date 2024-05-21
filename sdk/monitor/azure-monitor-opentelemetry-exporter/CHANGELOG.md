@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.22 (Unreleased)
+## 1.0.0-beta.23 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.22 (2024-05-09)
+
+### Bugs Fixed
+- [Fix _OTELRESOURCE_ custom metrics with default resources](https://github.com/Azure/azure-sdk-for-java/pull/39380)
+
+### Other Changes
+- [Update OpenTelemetry to 2.3.0](https://github.com/Azure/azure-sdk-for-java/pull/39843)
+- [Add attach type to sdkVersion](https://github.com/Azure/azure-sdk-for-java/pull/39883)
+- [Emit stable HTTP OTel metrics](https://github.com/Azure/azure-sdk-for-java/pull/39960)
 
 ## 1.0.0-beta.21 (2024-03-11)
 

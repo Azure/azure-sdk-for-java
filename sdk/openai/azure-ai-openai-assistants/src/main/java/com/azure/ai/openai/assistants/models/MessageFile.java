@@ -5,8 +5,11 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -15,35 +18,31 @@ import java.time.ZoneOffset;
  * Information about a file attached to an assistant thread message.
  */
 @Immutable
-public final class MessageFile {
+public final class MessageFile implements JsonSerializable<MessageFile> {
 
     /*
      * The identifier, which can be referenced in API endpoints.
      */
     @Generated
-    @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * The object type, which is always 'thread.message.file'.
      */
     @Generated
-    @JsonProperty(value = "object")
-    private String object = "thread.message.file";
+    private final String object = "thread.message.file";
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
      */
     @Generated
-    @JsonProperty(value = "created_at")
-    private long createdAt;
+    private final long createdAt;
 
     /*
      * The ID of the message that this file is attached to.
      */
     @Generated
-    @JsonProperty(value = "message_id")
-    private String messageId;
+    private final String messageId;
 
     /**
      * Creates an instance of MessageFile class.
@@ -55,15 +54,12 @@ public final class MessageFile {
     @Generated
     private MessageFile(String id, OffsetDateTime createdAt, String messageId) {
         this.id = id;
-        this.createdAt = createdAt.toEpochSecond();
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
         this.messageId = messageId;
-    }
-
-    @Generated
-    @JsonCreator
-    private MessageFile(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
-        @JsonProperty(value = "message_id") String messageId) {
-        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), messageId);
     }
 
     /**
@@ -104,5 +100,51 @@ public final class MessageFile {
     @Generated
     public String getMessageId() {
         return this.messageId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeLongField("created_at", this.createdAt);
+        jsonWriter.writeStringField("message_id", this.messageId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageFile from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageFile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MessageFile.
+     */
+    @Generated
+    public static MessageFile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            OffsetDateTime createdAt = null;
+            String messageId = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("created_at".equals(fieldName)) {
+                    createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
+                } else if ("message_id".equals(fieldName)) {
+                    messageId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new MessageFile(id, createdAt, messageId);
+        });
     }
 }

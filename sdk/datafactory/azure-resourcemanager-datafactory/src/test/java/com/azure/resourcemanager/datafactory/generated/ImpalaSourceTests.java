@@ -11,15 +11,19 @@ public final class ImpalaSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImpalaSource model = BinaryData.fromString(
-            "{\"type\":\"ImpalaSource\",\"query\":\"databrcdumkqhatckom\",\"queryTimeout\":\"datafjs\",\"additionalColumns\":\"datavzvkddaeiepvjr\",\"sourceRetryCount\":\"dataksx\",\"sourceRetryWait\":\"datakb\",\"maxConcurrentConnections\":\"datauawokrhhj\",\"disableMetricsCollection\":\"datahrmuwvs\",\"\":{\"imgg\":\"datauosidtxmbnm\"}}")
+            "{\"type\":\"bedvvmrtnmgabfz\",\"query\":\"datajlmstakgrebecxuu\",\"queryTimeout\":\"datawrv\",\"additionalColumns\":\"datajxkttx\",\"sourceRetryCount\":\"dataiihylzwzhlbpmp\",\"sourceRetryWait\":\"datath\",\"maxConcurrentConnections\":\"datanbnamtvooa\",\"disableMetricsCollection\":\"dataefx\",\"\":{\"ywi\":\"datavjctytytyrvtuxv\",\"kfqznvahpxdg\":\"datammmgbynvoytdt\",\"xfwwvmygcfaztoi\":\"datahowxcptx\",\"ytv\":\"dataszjrihcamg\"}}")
             .toObject(ImpalaSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImpalaSource model = new ImpalaSource().withSourceRetryCount("dataksx").withSourceRetryWait("datakb")
-            .withMaxConcurrentConnections("datauawokrhhj").withDisableMetricsCollection("datahrmuwvs")
-            .withQueryTimeout("datafjs").withAdditionalColumns("datavzvkddaeiepvjr").withQuery("databrcdumkqhatckom");
+        ImpalaSource model = new ImpalaSource().withSourceRetryCount("dataiihylzwzhlbpmp")
+            .withSourceRetryWait("datath")
+            .withMaxConcurrentConnections("datanbnamtvooa")
+            .withDisableMetricsCollection("dataefx")
+            .withQueryTimeout("datawrv")
+            .withAdditionalColumns("datajxkttx")
+            .withQuery("datajlmstakgrebecxuu");
         model = BinaryData.fromObject(model).toObject(ImpalaSource.class);
     }
 }

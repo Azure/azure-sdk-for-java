@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the operating system settings for the hybrid machine. */
+/**
+ * Specifies the operating system settings for the hybrid machine.
+ */
 @Fluent
 public final class OSProfile {
     /*
@@ -28,13 +30,15 @@ public final class OSProfile {
     @JsonProperty(value = "linuxConfiguration")
     private OSProfileLinuxConfiguration linuxConfiguration;
 
-    /** Creates an instance of OSProfile class. */
+    /**
+     * Creates an instance of OSProfile class.
+     */
     public OSProfile() {
     }
 
     /**
      * Get the computerName property: Specifies the host OS name of the hybrid machine.
-     *
+     * 
      * @return the computerName value.
      */
     public String computerName() {
@@ -43,7 +47,7 @@ public final class OSProfile {
 
     /**
      * Get the windowsConfiguration property: Specifies the windows configuration for update management.
-     *
+     * 
      * @return the windowsConfiguration value.
      */
     public OSProfileWindowsConfiguration windowsConfiguration() {
@@ -52,7 +56,7 @@ public final class OSProfile {
 
     /**
      * Set the windowsConfiguration property: Specifies the windows configuration for update management.
-     *
+     * 
      * @param windowsConfiguration the windowsConfiguration value to set.
      * @return the OSProfile object itself.
      */
@@ -63,7 +67,7 @@ public final class OSProfile {
 
     /**
      * Get the linuxConfiguration property: Specifies the linux configuration for update management.
-     *
+     * 
      * @return the linuxConfiguration value.
      */
     public OSProfileLinuxConfiguration linuxConfiguration() {
@@ -72,7 +76,7 @@ public final class OSProfile {
 
     /**
      * Set the linuxConfiguration property: Specifies the linux configuration for update management.
-     *
+     * 
      * @param linuxConfiguration the linuxConfiguration value to set.
      * @return the OSProfile object itself.
      */
@@ -83,7 +87,7 @@ public final class OSProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

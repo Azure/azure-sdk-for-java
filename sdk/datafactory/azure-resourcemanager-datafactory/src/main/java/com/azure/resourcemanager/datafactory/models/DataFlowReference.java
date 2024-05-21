@@ -172,12 +172,13 @@ public final class DataFlowReference {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model DataFlowReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model DataFlowReference"));
         }
         if (referenceName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property referenceName in model DataFlowReference"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property referenceName in model DataFlowReference"));
         }
     }
 

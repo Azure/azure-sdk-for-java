@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.HttpLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,17 @@ import java.util.Map;
 /**
  * Linked service for an HTTP source.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = HttpLinkedService.class, visible = true)
 @JsonTypeName("HttpServer")
 @Fluent
 public final class HttpLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "HttpServer";
+
     /*
      * Properties specific to this linked service type.
      */
@@ -30,6 +38,16 @@ public final class HttpLinkedService extends LinkedService {
      * Creates an instance of HttpLinkedService class.
      */
     public HttpLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -202,8 +220,8 @@ public final class HttpLinkedService extends LinkedService {
 
     /**
      * Get the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
-     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password
-     * should be specified. Type: string (or Expression with resultType string).
+     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
+     * be specified. Type: string (or Expression with resultType string).
      * 
      * @return the embeddedCertData value.
      */
@@ -213,8 +231,8 @@ public final class HttpLinkedService extends LinkedService {
 
     /**
      * Set the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
-     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password
-     * should be specified. Type: string (or Expression with resultType string).
+     * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
+     * be specified. Type: string (or Expression with resultType string).
      * 
      * @param embeddedCertData the embeddedCertData value to set.
      * @return the HttpLinkedService object itself.
@@ -255,8 +273,8 @@ public final class HttpLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -265,8 +283,8 @@ public final class HttpLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HttpLinkedService object itself.
@@ -286,7 +304,8 @@ public final class HttpLinkedService extends LinkedService {
      * @return the enableServerCertificateValidation value.
      */
     public Object enableServerCertificateValidation() {
-        return this.innerTypeProperties() == null ? null
+        return this.innerTypeProperties() == null
+            ? null
             : this.innerTypeProperties().enableServerCertificateValidation();
     }
 
@@ -314,8 +333,9 @@ public final class HttpLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model HttpLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model HttpLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

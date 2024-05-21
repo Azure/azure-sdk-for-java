@@ -4,7 +4,6 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -17,11 +16,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class RoundRobinMode extends DistributionMode {
 
     /** Creates an instance of RoundRobinMode class. */
-    @Generated
     public RoundRobinMode() {}
 
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public DistributionModeKind getKind() {
+        return DistributionModeKind.ROUND_ROBIN;
+    }
+
     /** {@inheritDoc} */
-    @Generated
     @Override
     public RoundRobinMode setMinConcurrentOffers(Integer minConcurrentOffers) {
         super.setMinConcurrentOffers(minConcurrentOffers);
@@ -29,7 +34,6 @@ public final class RoundRobinMode extends DistributionMode {
     }
 
     /** {@inheritDoc} */
-    @Generated
     @Override
     public RoundRobinMode setMaxConcurrentOffers(Integer maxConcurrentOffers) {
         super.setMaxConcurrentOffers(maxConcurrentOffers);
@@ -37,7 +41,6 @@ public final class RoundRobinMode extends DistributionMode {
     }
 
     /** {@inheritDoc} */
-    @Generated
     @Override
     public RoundRobinMode setBypassSelectors(Boolean bypassSelectors) {
         super.setBypassSelectors(bypassSelectors);

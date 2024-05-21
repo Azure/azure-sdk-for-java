@@ -1,0 +1,221 @@
+matrix:
+  scenarios:
+    # this test downloads 1KB (1024 bytes), small file, no chunking
+    downloadtofilesmall:
+      testScenario: downloadtofile
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test downloads 1KB (1024 bytes), small file, no chunking with async client
+    downloadtofileasync:
+      testScenario: downloadtofile
+      sync: false
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test downloads 50MB (1024 * 1024 * 50), large file requiring multiple requests
+    downloadtofilelarge:
+      testScenario: downloadtofile
+      sync: true
+      sizeBytes: "52428800"
+      parallel: 10
+      faults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # this test downloads 1KB (1024 bytes), no chunking
+    downloadsmall:
+      testScenario: download
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test downloads 1KB (1024 bytes), no chunking with async client
+    downloadsmallasync:
+      testScenario: download
+      sync: false
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+#   this test downloads 50MB (1024 * 1024 * 50), requiring multiple requests
+    downloadlarge:
+      testScenario: download
+      sync: true
+      sizeBytes: "52428800"
+      parallel: 10
+      faults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+#   this test downloads 1KB (1024 bytes) to open input stream, no chunking
+    inputstreamsmall:
+      testScenario: openinputstream
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+#   this test downloads 50MB (1024 * 1024 * 50) to open input stream requiring multiple requests
+    inputstreamlarge:
+      testScenario: openinputstream
+      sync: true
+      sizeBytes: "52428800"
+      parallel: 10
+      faults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+#   this test downloads 1KB (1024 bytes) to seekablebytechannel, no chunking
+    bytechannelreadsmall:
+      testScenario: fileseekablebytechannelread
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+#   this test downloads 50MB (1024 * 1024 * 50) to seekablebytechannel requiring multiple requests
+    bytechannelreadlarge:
+      testScenario: fileseekablebytechannelread
+      sync: true
+      sizeBytes: "52428800"
+      parallel: 10
+      faults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes), small stream, no chunking
+    uploadsmall:
+      testScenario: upload
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 25MB (1024 * 1024 * 25), large stream requiring multiple requests
+    uploadlarge:
+      testScenario: upload
+      sync: true
+      sizeBytes: "26214400"
+      parallel: 10
+      faults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes), small file, no chunking
+    uploadfromfilesmall:
+      testScenario: uploadfromfile
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 50MB (1024 * 1024 * 50), large file requiring multiple requests
+    uploadfromfilelarge:
+      testScenario: uploadfromfile
+      sync: true
+      sizeBytes: "52428800"
+      parallel: 25
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes), small range of bytes from stream, no chunking
+    uploadrangesmall:
+      testScenario: uploadrange
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 4MB (1024 * 1024 * 4 bytes), large range of bytes from stream requiring multiple requests
+    uploadrangelarge:
+      testScenario: uploadrange
+      sync: true
+      sizeBytes: "4194304"
+      parallel: 25
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes), small range of bytes from url, no chunking
+    uploadrangeurlsmall:
+      testScenario: uploadrangefromurl
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 4MB (1024 * 1024 * 4 bytes), large range of bytes from url requiring multiple requests
+    uploadrangeurllarge:
+      testScenario: uploadrangefromurl
+      sync: true
+      sizeBytes: "4194304"
+      parallel: 25
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes) to file output stream, no chunking
+    outputstreamsmall:
+      testScenario: fileoutputstream
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 2MB (1024 * 1024 * 2) to file output stream requiring multiple requests
+    outputstreamlarge:
+      testScenario: fileoutputstream
+      sync: true
+      sizeBytes: "2097152"
+      parallel: 10
+      faults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # this test writes 1KB (1024 bytes) to file seekable byte channel, no chunking
+    bytechannelwritesmall:
+      testScenario: fileseekablebytechannelwrite
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test writes 50MB (1024 * 1024 * 50) to file seekable byte channel requiring multiple requests
+    bytechannelwritelarge:
+      testScenario: fileseekablebytechannelwrite
+      sync: true
+      sizeBytes: "52428800"
+      parallel: 25
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."

@@ -1,0 +1,56 @@
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.java-clientcore-http") -}}
+{{- define "stress.java-clientcore-http" -}}
+metadata:
+  labels:
+    testName: "{{ .Release.Name }}"
+spec:
+  containers:
+    # simple and fast .NET Core HTTP server to run tests against
+    # When writing real stress test, you probably won't need it and would use corresponding Azure Service.
+    - name: server
+      image: stresspgs7b6dif73rup6.azurecr.io/stress/simplehttpserver
+      imagePullPolicy: Always
+      command: ['sh', '-c']
+      args:
+        - |
+          set -a &&
+          export ASPNETCORE_URLS="http://localhost:8080;https://localhost:8081" &&
+          export Test__DurationInSec={{ mul ( add .Stress.testDurationMin 1) 60 }} &&
+          dotnet /app/simple-server.dll
+      resources:
+        limits:
+          memory: "400Mi"
+          cpu: "2"
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+    - name: test
+      image: {{ .Stress.imageTag }}
+      imagePullPolicy: Always
+      command: ['sh', '-c']
+      args:
+        - |
+          set -a &&
+          source $ENV_FILE &&
+          java \
+          -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
+          -Dotel.traces.sampler=traceidratio \
+          -Dotel.traces.sampler.arg=0.00001 \
+          -Dhttp.maxConnections=100 \
+          -Dhttp.keepAlive=true \
+          -XX:InitialRAMPercentage=75.0 \
+          -XX:MaxRAMPercentage=75.0 \
+          -jar /app/http-stress-1.0.0-beta.1-jar-with-dependencies.jar \
+          {{ .Stress.testScenario }} \
+          --parallel {{ .Stress.concurrency }} \
+          --duration {{ mul .Stress.testDurationMin 60 }} \
+          --endpoint https://localhost:8081 \
+          {{ if ne .Stress.httpClient "default" }}--http-client {{ .Stress.httpClient }}{{ end }} \
+          --sync \
+          --warmup 0
+      # add your test parameters here
+      resources:
+        # make sure to configure resource limits for your test
+        limits:
+          memory: "1Gi"
+          cpu: "1"
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+{{- end -}}

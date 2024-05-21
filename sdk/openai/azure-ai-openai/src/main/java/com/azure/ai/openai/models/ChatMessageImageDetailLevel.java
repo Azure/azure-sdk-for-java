@@ -5,7 +5,6 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -50,7 +49,6 @@ public final class ChatMessageImageDetailLevel extends ExpandableStringEnum<Chat
      * @return the corresponding ChatMessageImageDetailLevel.
      */
     @Generated
-    @JsonCreator
     public static ChatMessageImageDetailLevel fromString(String name) {
         return fromString(name, ChatMessageImageDetailLevel.class);
     }

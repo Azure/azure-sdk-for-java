@@ -22,8 +22,7 @@ public final class JsonFieldWithDefault {
     private String sourceField;
 
     /*
-     * The default value to be used for mapping when a SourceField is not provided or if there's no property with the
-     * specified name in the published JSON event payload.
+     * The default value to be used for mapping when a SourceField is not provided or if there's no property with the specified name in the published JSON event payload.
      */
     @JsonProperty(value = "defaultValue")
     private String defaultValue;

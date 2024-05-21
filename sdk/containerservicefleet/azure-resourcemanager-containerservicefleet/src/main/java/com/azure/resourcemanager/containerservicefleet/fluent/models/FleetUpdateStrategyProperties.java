@@ -10,7 +10,9 @@ import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrateg
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStrategy;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of the UpdateStrategy. */
+/**
+ * The properties of the UpdateStrategy.
+ */
 @Fluent
 public final class FleetUpdateStrategyProperties {
     /*
@@ -25,13 +27,15 @@ public final class FleetUpdateStrategyProperties {
     @JsonProperty(value = "strategy", required = true)
     private UpdateRunStrategy strategy;
 
-    /** Creates an instance of FleetUpdateStrategyProperties class. */
+    /**
+     * Creates an instance of FleetUpdateStrategyProperties class.
+     */
     public FleetUpdateStrategyProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the UpdateStrategy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public FleetUpdateStrategyProvisioningState provisioningState() {
@@ -40,7 +44,7 @@ public final class FleetUpdateStrategyProperties {
 
     /**
      * Get the strategy property: Defines the update sequence of the clusters.
-     *
+     * 
      * @return the strategy value.
      */
     public UpdateRunStrategy strategy() {
@@ -49,7 +53,7 @@ public final class FleetUpdateStrategyProperties {
 
     /**
      * Set the strategy property: Defines the update sequence of the clusters.
-     *
+     * 
      * @param strategy the strategy value to set.
      * @return the FleetUpdateStrategyProperties object itself.
      */
@@ -60,15 +64,14 @@ public final class FleetUpdateStrategyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (strategy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property strategy in model FleetUpdateStrategyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property strategy in model FleetUpdateStrategyProperties"));
         } else {
             strategy().validate();
         }

@@ -79,12 +79,14 @@ public final class JitNetworkAccessPolicyInitiateVirtualMachine {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property id in model JitNetworkAccessPolicyInitiateVirtualMachine"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property id in model JitNetworkAccessPolicyInitiateVirtualMachine"));
         }
         if (ports() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property ports in model JitNetworkAccessPolicyInitiateVirtualMachine"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ports in model JitNetworkAccessPolicyInitiateVirtualMachine"));
         } else {
             ports().forEach(e -> e.validate());
         }

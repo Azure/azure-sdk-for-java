@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The environment type for partial update. Properties not provided in the update request will not be changed. */
+/**
+ * The environment type for partial update. Properties not provided in the update request will not be changed.
+ */
 @Fluent
 public final class EnvironmentTypeUpdate {
     /*
@@ -26,13 +28,15 @@ public final class EnvironmentTypeUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of EnvironmentTypeUpdate class. */
+    /**
+     * Creates an instance of EnvironmentTypeUpdate class.
+     */
     public EnvironmentTypeUpdate() {
     }
 
     /**
      * Get the innerProperties property: Properties of an environment type to be updated.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EnvironmentTypeUpdateProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class EnvironmentTypeUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -50,7 +54,7 @@ public final class EnvironmentTypeUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the EnvironmentTypeUpdate object itself.
      */
@@ -61,7 +65,7 @@ public final class EnvironmentTypeUpdate {
 
     /**
      * Get the displayName property: The display name of the environment type.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -70,7 +74,7 @@ public final class EnvironmentTypeUpdate {
 
     /**
      * Set the displayName property: The display name of the environment type.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the EnvironmentTypeUpdate object itself.
      */
@@ -84,7 +88,7 @@ public final class EnvironmentTypeUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

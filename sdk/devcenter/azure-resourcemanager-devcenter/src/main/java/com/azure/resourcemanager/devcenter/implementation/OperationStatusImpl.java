@@ -17,14 +17,18 @@ public final class OperationStatusImpl implements OperationStatus {
 
     private final com.azure.resourcemanager.devcenter.DevCenterManager serviceManager;
 
-    OperationStatusImpl(
-        OperationStatusInner innerObject, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    OperationStatusImpl(OperationStatusInner innerObject,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
 
     public String id() {
         return this.innerModel().id();
+    }
+
+    public String resourceId() {
+        return this.innerModel().resourceId();
     }
 
     public String name() {
@@ -58,10 +62,6 @@ public final class OperationStatusImpl implements OperationStatus {
 
     public ManagementError error() {
         return this.innerModel().error();
-    }
-
-    public String resourceId() {
-        return this.innerModel().resourceId();
     }
 
     public Object properties() {

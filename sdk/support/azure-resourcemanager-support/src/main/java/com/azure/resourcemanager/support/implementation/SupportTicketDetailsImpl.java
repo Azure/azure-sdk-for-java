@@ -167,8 +167,9 @@ public final class SupportTicketDetailsImpl
     private UpdateSupportTicket updateUpdateSupportTicket;
 
     public SupportTicketDetails create() {
-        this.innerObject = serviceManager.serviceClient().getSupportTickets().create(supportTicketName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSupportTickets()
+            .create(supportTicketName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -190,14 +191,18 @@ public final class SupportTicketDetailsImpl
     }
 
     public SupportTicketDetails apply() {
-        this.innerObject = serviceManager.serviceClient().getSupportTickets()
-            .updateWithResponse(supportTicketName, updateUpdateSupportTicket, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSupportTickets()
+            .updateWithResponse(supportTicketName, updateUpdateSupportTicket, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SupportTicketDetails apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSupportTickets()
-            .updateWithResponse(supportTicketName, updateUpdateSupportTicket, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSupportTickets()
+            .updateWithResponse(supportTicketName, updateUpdateSupportTicket, context)
+            .getValue();
         return this;
     }
 
@@ -209,19 +214,16 @@ public final class SupportTicketDetailsImpl
     }
 
     public SupportTicketDetails refresh() {
-        this.innerObject = serviceManager.serviceClient().getSupportTickets()
-            .getWithResponse(supportTicketName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSupportTickets()
+            .getWithResponse(supportTicketName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SupportTicketDetails refresh(Context context) {
         this.innerObject
             = serviceManager.serviceClient().getSupportTickets().getWithResponse(supportTicketName, context).getValue();
-        return this;
-    }
-
-    public SupportTicketDetailsImpl withSupportTicketId(String supportTicketId) {
-        this.innerModel().withSupportTicketId(supportTicketId);
         return this;
     }
 
@@ -245,16 +247,6 @@ public final class SupportTicketDetailsImpl
         }
     }
 
-    public SupportTicketDetailsImpl withEnrollmentId(String enrollmentId) {
-        this.innerModel().withEnrollmentId(enrollmentId);
-        return this;
-    }
-
-    public SupportTicketDetailsImpl withRequire24X7Response(Boolean require24X7Response) {
-        this.innerModel().withRequire24X7Response(require24X7Response);
-        return this;
-    }
-
     public SupportTicketDetailsImpl withAdvancedDiagnosticConsent(Consent advancedDiagnosticConsent) {
         if (isInCreateMode()) {
             this.innerModel().withAdvancedDiagnosticConsent(advancedDiagnosticConsent);
@@ -265,6 +257,36 @@ public final class SupportTicketDetailsImpl
         }
     }
 
+    public SupportTicketDetailsImpl withContactDetails(ContactProfile contactDetails) {
+        this.innerModel().withContactDetails(contactDetails);
+        return this;
+    }
+
+    public SupportTicketDetailsImpl withTitle(String title) {
+        this.innerModel().withTitle(title);
+        return this;
+    }
+
+    public SupportTicketDetailsImpl withServiceId(String serviceId) {
+        this.innerModel().withServiceId(serviceId);
+        return this;
+    }
+
+    public SupportTicketDetailsImpl withSupportTicketId(String supportTicketId) {
+        this.innerModel().withSupportTicketId(supportTicketId);
+        return this;
+    }
+
+    public SupportTicketDetailsImpl withEnrollmentId(String enrollmentId) {
+        this.innerModel().withEnrollmentId(enrollmentId);
+        return this;
+    }
+
+    public SupportTicketDetailsImpl withRequire24X7Response(Boolean require24X7Response) {
+        this.innerModel().withRequire24X7Response(require24X7Response);
+        return this;
+    }
+
     public SupportTicketDetailsImpl withProblemScopingQuestions(String problemScopingQuestions) {
         this.innerModel().withProblemScopingQuestions(problemScopingQuestions);
         return this;
@@ -272,11 +294,6 @@ public final class SupportTicketDetailsImpl
 
     public SupportTicketDetailsImpl withSupportPlanId(String supportPlanId) {
         this.innerModel().withSupportPlanId(supportPlanId);
-        return this;
-    }
-
-    public SupportTicketDetailsImpl withContactDetails(ContactProfile contactDetails) {
-        this.innerModel().withContactDetails(contactDetails);
         return this;
     }
 
@@ -290,18 +307,8 @@ public final class SupportTicketDetailsImpl
         return this;
     }
 
-    public SupportTicketDetailsImpl withTitle(String title) {
-        this.innerModel().withTitle(title);
-        return this;
-    }
-
     public SupportTicketDetailsImpl withProblemStartTime(OffsetDateTime problemStartTime) {
         this.innerModel().withProblemStartTime(problemStartTime);
-        return this;
-    }
-
-    public SupportTicketDetailsImpl withServiceId(String serviceId) {
-        this.innerModel().withServiceId(serviceId);
         return this;
     }
 

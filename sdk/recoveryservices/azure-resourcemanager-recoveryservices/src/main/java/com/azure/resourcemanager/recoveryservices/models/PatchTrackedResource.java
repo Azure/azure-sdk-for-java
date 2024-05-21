@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Tracked resource with location. */
+/**
+ * Tracked resource with location.
+ */
 @Fluent
 public class PatchTrackedResource extends ProxyResource {
     /*
@@ -32,13 +34,15 @@ public class PatchTrackedResource extends ProxyResource {
     @JsonProperty(value = "etag")
     private String etag;
 
-    /** Creates an instance of PatchTrackedResource class. */
+    /**
+     * Creates an instance of PatchTrackedResource class.
+     */
     public PatchTrackedResource() {
     }
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -47,7 +51,7 @@ public class PatchTrackedResource extends ProxyResource {
 
     /**
      * Set the location property: Resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the PatchTrackedResource object itself.
      */
@@ -58,7 +62,7 @@ public class PatchTrackedResource extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -67,7 +71,7 @@ public class PatchTrackedResource extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PatchTrackedResource object itself.
      */
@@ -78,7 +82,7 @@ public class PatchTrackedResource extends ProxyResource {
 
     /**
      * Get the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -87,7 +91,7 @@ public class PatchTrackedResource extends ProxyResource {
 
     /**
      * Set the etag property: Optional ETag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the PatchTrackedResource object itself.
      */
@@ -98,7 +102,7 @@ public class PatchTrackedResource extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

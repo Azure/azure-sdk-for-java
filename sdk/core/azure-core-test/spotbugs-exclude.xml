@@ -126,6 +126,10 @@
         <Class name="com.azure.core.test.models.TestProxyRecordingOptions$ProxyTransport" />
         <Method name="setCertificates" />
       </And>
+      <And>
+        <Class name="com.azure.core.test.TestBase" />
+        <Method name="setupTest" />
+      </And>
     </Or>
   </Match>
 

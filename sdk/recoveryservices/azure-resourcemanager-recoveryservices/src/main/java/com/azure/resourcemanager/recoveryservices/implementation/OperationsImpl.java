@@ -19,8 +19,7 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient,
+    public OperationsImpl(OperationsClient innerClient,
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,14 @@ public final class OperationsImpl implements Operations {
 
     public PagedIterable<ClientDiscoveryValueForSingleApi> list() {
         PagedIterable<ClientDiscoveryValueForSingleApiInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ClientDiscoveryValueForSingleApi> list(Context context) {
         PagedIterable<ClientDiscoveryValueForSingleApiInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ClientDiscoveryValueForSingleApiImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

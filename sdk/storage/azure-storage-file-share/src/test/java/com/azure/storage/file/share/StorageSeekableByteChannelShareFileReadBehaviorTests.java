@@ -6,6 +6,7 @@ package com.azure.storage.file.share;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.Context;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
@@ -73,7 +74,8 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
     public void readCallsToClientCorrectly(int offset, ShareRequestConditions conditions) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(Constants.KB);
         AtomicInteger downloadCallCount = new AtomicInteger(0);
-        ShareFileClient client = new ShareFileClient(null) {
+        ShareFileClient client = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false,
+            false), "testshare", "testpath", null, null, null, null) {
             @Override
             public ShareFileDownloadResponse downloadWithResponse(OutputStream stream, ShareFileDownloadOptions options,
                 Duration timeout, Context context) {

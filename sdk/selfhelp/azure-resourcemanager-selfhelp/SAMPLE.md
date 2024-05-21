@@ -14,15 +14,33 @@
 
 - [List](#discoverysolution_list)
 
+## DiscoverySolutionNlpSubscriptionScope
+
+- [Post](#discoverysolutionnlpsubscriptionscope_post)
+
+## DiscoverySolutionNlpTenantScope
+
+- [Post](#discoverysolutionnlptenantscope_post)
+
 ## Operations
 
 - [List](#operations_list)
+
+## SimplifiedSolutions
+
+- [Create](#simplifiedsolutions_create)
+- [Get](#simplifiedsolutions_get)
 
 ## SolutionOperation
 
 - [Create](#solutionoperation_create)
 - [Get](#solutionoperation_get)
 - [Update](#solutionoperation_update)
+- [WarmUp](#solutionoperation_warmup)
+
+## SolutionSelfHelp
+
+- [Get](#solutionselfhelp_get)
 
 ## Troubleshooters
 
@@ -41,27 +59,35 @@ import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilityRequest;
  */
 public final class CheckNameAvailabilityPostSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
      */
     /**
      * Sample code: Example when name is not available for a Diagnostic resource.
      * 
      * @param manager Entry point to SelfHelpManager.
      */
-    public static void exampleWhenNameIsNotAvailableForADiagnosticResource(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.checkNameAvailabilities().postWithResponse("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6", new CheckNameAvailabilityRequest().withName("sampleName").withType("Microsoft.Help/diagnostics"), com.azure.core.util.Context.NONE);
+    public static void exampleWhenNameIsNotAvailableForADiagnosticResource(
+        com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
+        manager.checkNameAvailabilities()
+            .postWithResponse("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6",
+                new CheckNameAvailabilityRequest().withName("sampleName").withType("Microsoft.Help/diagnostics"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
      */
     /**
      * Sample code: Example when name is available for a Diagnostic resource.
      * 
      * @param manager Entry point to SelfHelpManager.
      */
-    public static void exampleWhenNameIsAvailableForADiagnosticResource(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.checkNameAvailabilities().postWithResponse("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6", new CheckNameAvailabilityRequest().withName("sampleName").withType("Microsoft.Help/diagnostics"), com.azure.core.util.Context.NONE);
+    public static void
+        exampleWhenNameIsAvailableForADiagnosticResource(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
+        manager.checkNameAvailabilities()
+            .postWithResponse("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6",
+                new CheckNameAvailabilityRequest().withName("sampleName").withType("Microsoft.Help/diagnostics"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -69,23 +95,25 @@ public final class CheckNameAvailabilityPostSamples {
 ### Diagnostics_Create
 
 ```java
-import com.azure.resourcemanager.selfhelp.models.DiagnosticInvocation;
-import java.util.Arrays;
-
 /**
  * Samples for Diagnostics Create.
  */
 public final class DiagnosticsCreateSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/CreateDiagnosticForKeyVaultResource.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/CreateDiagnosticForKeyVaultResource.json
      */
     /**
      * Sample code: Creates a Diagnostic for a KeyVault resource.
      * 
      * @param manager Entry point to SelfHelpManager.
      */
-    public static void createsADiagnosticForAKeyVaultResource(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.diagnostics().define("VMNotWorkingInsight").withExistingScope("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read").withInsights(Arrays.asList(new DiagnosticInvocation().withSolutionId("SampleSolutionId1"), new DiagnosticInvocation().withSolutionId("SampleSolutionId2"))).create();
+    public static void
+        createsADiagnosticForAKeyVaultResource(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
+        manager.diagnostics()
+            .define("VMNotWorkingInsight")
+            .withExistingScope(
+                "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read")
+            .create();
     }
 }
 ```
@@ -98,7 +126,7 @@ public final class DiagnosticsCreateSamples {
  */
 public final class DiagnosticsGetSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/GetDiagnosticForKeyVaultResource.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/GetDiagnosticForKeyVaultResource.json
      */
     /**
      * Sample code: Gets a Diagnostic for a KeyVault resource.
@@ -106,7 +134,10 @@ public final class DiagnosticsGetSamples {
      * @param manager Entry point to SelfHelpManager.
      */
     public static void getsADiagnosticForAKeyVaultResource(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.diagnostics().getWithResponse("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read", "VMNotWorkingInsight", com.azure.core.util.Context.NONE);
+        manager.diagnostics()
+            .getWithResponse(
+                "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read",
+                "VMNotWorkingInsight", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -119,27 +150,73 @@ public final class DiagnosticsGetSamples {
  */
 public final class DiscoverySolutionListSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/ListDiscoverySolutionsAtResourceScope.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/ListDiscoverySolutionsAtTenantScope.json
      */
     /**
      * Sample code: List DiscoverySolutions at resource scope.
      * 
      * @param manager Entry point to SelfHelpManager.
      */
-    public static void listDiscoverySolutionsAtResourceScope(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.discoverySolutions().list("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read", "ProblemClassificationId eq 'SampleProblemClassificationId1'", null, com.azure.core.util.Context.NONE);
+    public static void
+        listDiscoverySolutionsAtResourceScope(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
+        manager.discoverySolutions()
+            .list("ProblemClassificationId eq 'SampleProblemClassificationId1'", null,
+                com.azure.core.util.Context.NONE);
     }
+}
+```
 
+### DiscoverySolutionNlpSubscriptionScope_Post
+
+```java
+import com.azure.resourcemanager.selfhelp.models.DiscoveryNlpRequest;
+
+/**
+ * Samples for DiscoverySolutionNlpSubscriptionScope Post.
+ */
+public final class DiscoverySolutionNlpSubscriptionScopePostSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/ListDiscoverySolutionsAtSubscriptionScope.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/DiscoverSolutionsAtSubscriptionScope.json
      */
     /**
-     * Sample code: List DiscoverySolutions at subscription scope.
+     * Sample code: Discovery Solutions using issue summary and service id.
      * 
      * @param manager Entry point to SelfHelpManager.
      */
-    public static void listDiscoverySolutionsAtSubscriptionScope(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.discoverySolutions().list("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6", "ProblemClassificationId eq 'SampleProblemClassificationId1'", null, com.azure.core.util.Context.NONE);
+    public static void
+        discoverySolutionsUsingIssueSummaryAndServiceId(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
+        manager.discoverySolutionNlpSubscriptionScopes()
+            .postWithResponse("0d0fcd2e-c4fd-4349-8497-200edb3923c6", new DiscoveryNlpRequest()
+                .withIssueSummary("how to retrieve certs from deleted keyvault.")
+                .withResourceId(
+                    "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourceGroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read")
+                .withServiceId("0d0fcd2e-c4fd-4349-8497-200edb39s3ca"), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### DiscoverySolutionNlpTenantScope_Post
+
+```java
+import com.azure.resourcemanager.selfhelp.models.DiscoveryNlpRequest;
+
+/**
+ * Samples for DiscoverySolutionNlpTenantScope Post.
+ */
+public final class DiscoverySolutionNlpTenantScopePostSamples {
+    /*
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/DiscoverSolutionsAtTenantScope.json
+     */
+    /**
+     * Sample code: Discovery Solutions using issue summary and service id.
+     * 
+     * @param manager Entry point to SelfHelpManager.
+     */
+    public static void
+        discoverySolutionsUsingIssueSummaryAndServiceId(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
+        manager.discoverySolutionNlpTenantScopes()
+            .postWithResponse(new DiscoveryNlpRequest().withIssueSummary("how to retrieve certs from deleted keyvault.")
+                .withServiceId("0d0fcd2e-c4fd-4349-8497-200edb39s3ca"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -152,7 +229,7 @@ public final class DiscoverySolutionListSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/ListOperations.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/ListOperations.json
      */
     /**
      * Sample code: List All Operations.
@@ -165,20 +242,18 @@ public final class OperationsListSamples {
 }
 ```
 
-### SolutionOperation_Create
+### SimplifiedSolutions_Create
 
 ```java
-import com.azure.resourcemanager.selfhelp.models.Name;
-import com.azure.resourcemanager.selfhelp.models.TriggerCriterion;
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Samples for SolutionOperation Create.
+ * Samples for SimplifiedSolutions Create.
  */
-public final class SolutionOperationCreateSamples {
+public final class SimplifiedSolutionsCreateSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Solution_Create.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/SimplifiedSolutions_Create.json
      */
     /**
      * Sample code: Solution_Create.
@@ -186,7 +261,97 @@ public final class SolutionOperationCreateSamples {
      * @param manager Entry point to SelfHelpManager.
      */
     public static void solutionCreate(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.solutionOperations().define("SolutionResourceName1").withExistingScope("subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp").withTriggerCriteria(Arrays.asList(new TriggerCriterion().withName(Name.SOLUTION_ID).withValue("SolutionId1"))).create();
+        manager.simplifiedSolutions()
+            .define("simplifiedSolutionsResourceName1")
+            .withExistingScope(
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp")
+            .withSolutionId("sampleSolutionId")
+            .withParameters(mapOf("resourceUri",
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp"))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### SimplifiedSolutions_Get
+
+```java
+/**
+ * Samples for SimplifiedSolutions Get.
+ */
+public final class SimplifiedSolutionsGetSamples {
+    /*
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/SimplifiedSolutions_Get.json
+     */
+    /**
+     * Sample code: Solution_Get.
+     * 
+     * @param manager Entry point to SelfHelpManager.
+     */
+    public static void solutionGet(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
+        manager.simplifiedSolutions()
+            .getWithResponse(
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp",
+                "simplifiedSolutionsResourceName1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SolutionOperation_Create
+
+```java
+import com.azure.resourcemanager.selfhelp.models.Name;
+import com.azure.resourcemanager.selfhelp.models.TriggerCriterion;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for SolutionOperation Create.
+ */
+public final class SolutionOperationCreateSamples {
+    /*
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_Create.json
+     */
+    /**
+     * Sample code: Solution_Create.
+     * 
+     * @param manager Entry point to SelfHelpManager.
+     */
+    public static void solutionCreate(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
+        manager.solutionOperations()
+            .define("SolutionResourceName1")
+            .withExistingScope(
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp")
+            .withTriggerCriteria(
+                Arrays.asList(new TriggerCriterion().withName(Name.SOLUTION_ID).withValue("SolutionId1")))
+            .withParameters(mapOf("resourceUri",
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp"))
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```
@@ -199,7 +364,7 @@ public final class SolutionOperationCreateSamples {
  */
 public final class SolutionOperationGetSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Solution_Get.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_Get.json
      */
     /**
      * Sample code: Solution_Get.
@@ -207,7 +372,10 @@ public final class SolutionOperationGetSamples {
      * @param manager Entry point to SelfHelpManager.
      */
     public static void solutionGet(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.solutionOperations().getWithResponse("subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp", "SolutionResource1", com.azure.core.util.Context.NONE);
+        manager.solutionOperations()
+            .getWithResponse(
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp",
+                "SolutionResource1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -215,18 +383,14 @@ public final class SolutionOperationGetSamples {
 ### SolutionOperation_Update
 
 ```java
-import com.azure.resourcemanager.selfhelp.models.Name;
 import com.azure.resourcemanager.selfhelp.models.SolutionResource;
-import com.azure.resourcemanager.selfhelp.models.TriggerCriterion;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 /**
  * Samples for SolutionOperation Update.
  */
 public final class SolutionOperationUpdateSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Solution_Update.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_Update.json
      */
     /**
      * Sample code: Solution_Update.
@@ -234,8 +398,58 @@ public final class SolutionOperationUpdateSamples {
      * @param manager Entry point to SelfHelpManager.
      */
     public static void solutionUpdate(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        SolutionResource resource = manager.solutionOperations().getWithResponse("subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp", "SolutionResourceName1", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTriggerCriteria(Arrays.asList(new TriggerCriterion().withName(Name.REPLACEMENT_KEY).withValue("<!--12345678-BBBb-cCCCC-0000-123456789012-->"))).apply();
+        SolutionResource resource = manager.solutionOperations()
+            .getWithResponse(
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp",
+                "SolutionResourceName1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
+    }
+}
+```
+
+### SolutionOperation_WarmUp
+
+```java
+
+/**
+ * Samples for SolutionOperation WarmUp.
+ */
+public final class SolutionOperationWarmUpSamples {
+    /*
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Solution_WarmUp.json
+     */
+    /**
+     * Sample code: Solution_WarmUp.
+     * 
+     * @param manager Entry point to SelfHelpManager.
+     */
+    public static void solutionWarmUp(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
+        manager.solutionOperations()
+            .warmUpWithResponse(
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp",
+                "SolutionResourceName1", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SolutionSelfHelp_Get
+
+```java
+/**
+ * Samples for SolutionSelfHelp Get.
+ */
+public final class SolutionSelfHelpGetSamples {
+    /*
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/SelfHelpSolution_Get.json
+     */
+    /**
+     * Sample code: Solution_Get.
+     * 
+     * @param manager Entry point to SelfHelpManager.
+     */
+    public static void solutionGet(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
+        manager.solutionSelfHelps().getWithResponse("SolutionId1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -247,14 +461,13 @@ import com.azure.resourcemanager.selfhelp.models.ContinueRequestBody;
 import com.azure.resourcemanager.selfhelp.models.QuestionType;
 import com.azure.resourcemanager.selfhelp.models.TroubleshooterResponse;
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 /**
  * Samples for Troubleshooters ContinueMethod.
  */
 public final class TroubleshootersContinueMethodSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Troubleshooter_Continue.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Continue.json
      */
     /**
      * Sample code: Troubleshooter_Continue.
@@ -262,7 +475,15 @@ public final class TroubleshootersContinueMethodSamples {
      * @param manager Entry point to SelfHelpManager.
      */
     public static void troubleshooterContinue(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.troubleshooters().continueMethodWithResponse("subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp", "abf168ed-1b54-454a-86f6-e4b62253d3b1", new ContinueRequestBody().withStepId("SampleStepId").withResponses(Arrays.asList(new TroubleshooterResponse().withQuestionId("SampleQuestionId").withQuestionType(QuestionType.fromString("Text")).withResponse("Connection exception"))), com.azure.core.util.Context.NONE);
+        manager.troubleshooters()
+            .continueMethodWithResponse(
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp",
+                "abf168ed-1b54-454a-86f6-e4b62253d3b1",
+                new ContinueRequestBody().withStepId("SampleStepId")
+                    .withResponses(Arrays.asList(new TroubleshooterResponse().withQuestionId("SampleQuestionId")
+                        .withQuestionType(QuestionType.fromString("Text"))
+                        .withResponse("Connection exception"))),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -278,7 +499,7 @@ import java.util.Map;
  */
 public final class TroubleshootersCreateSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Troubleshooter_Create.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Create.json
      */
     /**
      * Sample code: Troubleshooters_Create.
@@ -286,7 +507,14 @@ public final class TroubleshootersCreateSamples {
      * @param manager Entry point to SelfHelpManager.
      */
     public static void troubleshootersCreate(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.troubleshooters().define("abf168ed-1b54-454a-86f6-e4b62253d3b1").withExistingScope("subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp").withSolutionId("SampleTroubleshooterSolutionId").withParameters(mapOf("ResourceURI", "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp")).create();
+        manager.troubleshooters()
+            .define("abf168ed-1b54-454a-86f6-e4b62253d3b1")
+            .withExistingScope(
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp")
+            .withSolutionId("SampleTroubleshooterSolutionId")
+            .withParameters(mapOf("ResourceURI",
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp"))
+            .create();
     }
 
     // Use "Map.of" if available
@@ -311,7 +539,7 @@ public final class TroubleshootersCreateSamples {
  */
 public final class TroubleshootersEndSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Troubleshooter_End.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_End.json
      */
     /**
      * Sample code: Troubleshooters_End.
@@ -319,7 +547,10 @@ public final class TroubleshootersEndSamples {
      * @param manager Entry point to SelfHelpManager.
      */
     public static void troubleshootersEnd(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.troubleshooters().endWithResponse("subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp", "abf168ed-1b54-454a-86f6-e4b62253d3b1", com.azure.core.util.Context.NONE);
+        manager.troubleshooters()
+            .endWithResponse(
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp",
+                "abf168ed-1b54-454a-86f6-e4b62253d3b1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -332,7 +563,7 @@ public final class TroubleshootersEndSamples {
  */
 public final class TroubleshootersGetSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Troubleshooter_Get.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Get.json
      */
     /**
      * Sample code: Troubleshooters_Get.
@@ -340,7 +571,10 @@ public final class TroubleshootersGetSamples {
      * @param manager Entry point to SelfHelpManager.
      */
     public static void troubleshootersGet(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.troubleshooters().getWithResponse("subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp", "abf168ed-1b54-454a-86f6-e4b62253d3b1", com.azure.core.util.Context.NONE);
+        manager.troubleshooters()
+            .getWithResponse(
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp",
+                "abf168ed-1b54-454a-86f6-e4b62253d3b1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -353,7 +587,7 @@ public final class TroubleshootersGetSamples {
  */
 public final class TroubleshootersRestartSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Troubleshooter_Restart.json
+     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2024-03-01-preview/examples/Troubleshooter_Restart.json
      */
     /**
      * Sample code: Troubleshooters_Restart.
@@ -361,7 +595,10 @@ public final class TroubleshootersRestartSamples {
      * @param manager Entry point to SelfHelpManager.
      */
     public static void troubleshootersRestart(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager.troubleshooters().restartWithResponse("subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp", "abf168ed-1b54-454a-86f6-e4b62253d3b1", com.azure.core.util.Context.NONE);
+        manager.troubleshooters()
+            .restartWithResponse(
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp",
+                "abf168ed-1b54-454a-86f6-e4b62253d3b1", com.azure.core.util.Context.NONE);
     }
 }
 ```

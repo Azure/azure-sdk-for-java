@@ -14,6 +14,7 @@ import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlotBasic;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appservice.models.PythonVersion;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
@@ -169,5 +170,34 @@ public class FunctionDeploymentSlotsTests extends AppServiceTest {
         slot1.update()
             .withPublicDockerHubImage("wordpress")
             .apply();
+    }
+
+    @Test
+    public void canCreateAndUpdatePublicNetworkAccess() {
+        FunctionApp functionApp = appServiceManager.functionApps().define(webappName1)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withNewLinuxAppServicePlan(PricingTier.STANDARD_S1)
+            .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
+            .withHttpsOnly(true)
+            .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
+            .create();
+
+        FunctionDeploymentSlot slot = functionApp.deploymentSlots()
+            .define("slot1")
+            .withConfigurationFromParent()
+            .disablePublicNetworkAccess()
+            .create();
+
+        slot.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, slot.publicNetworkAccess());
+
+        slot.update().enablePublicNetworkAccess().apply();
+        slot.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, slot.publicNetworkAccess());
+
+        slot.update().disablePublicNetworkAccess().apply();
+        slot.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, slot.publicNetworkAccess());
     }
 }
