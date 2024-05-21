@@ -14,7 +14,6 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.servicebus.ServiceBusTestUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AzureServiceBusConsumerClientConfigurationTests {
 
@@ -94,9 +93,7 @@ class AzureServiceBusConsumerClientConfigurationTests {
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureServiceBusConsumerClientConfiguration.class);
-            });
+            .run(context -> assertThat(context).hasSingleBean(AzureServiceBusConsumerClientConfiguration.class));
     }
 
     @Test
@@ -111,9 +108,7 @@ class AzureServiceBusConsumerClientConfigurationTests {
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
-            .run(context -> {
-                    assertThat(context).doesNotHaveBean(AzureServiceBusConsumerClientConfiguration.class);
-                });
+            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusConsumerClientConfiguration.class));
     }
 
     @Test
@@ -129,9 +124,7 @@ class AzureServiceBusConsumerClientConfigurationTests {
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureServiceBusConsumerClientConfiguration.class);
-            });
+            .run(context -> assertThat(context).hasSingleBean(AzureServiceBusConsumerClientConfiguration.class));
     }
 
     @Test

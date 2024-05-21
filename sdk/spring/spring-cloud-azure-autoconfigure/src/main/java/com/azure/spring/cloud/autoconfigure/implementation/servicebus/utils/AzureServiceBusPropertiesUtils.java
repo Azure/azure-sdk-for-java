@@ -8,15 +8,17 @@ import org.springframework.core.env.Environment;
 
 public final class AzureServiceBusPropertiesUtils {
 
-    private AzureServiceBusPropertiesUtils() {}
+    private AzureServiceBusPropertiesUtils() {
+    }
 
     public static String getServiceBusProperties(ConditionContext context, String... names) {
         Environment environment = context.getEnvironment();
         String property = null;
         for (String name : names) {
             property = environment.getProperty("spring.cloud.azure.servicebus." + name);
-            if (property != null)
+            if (property != null) {
                 break;
+            }
         }
         return property;
     }

@@ -18,7 +18,6 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.servicebus.ServiceBusTestUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
 class AzureServiceBusProcessorClientConfigurationTests {
@@ -97,9 +96,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
             .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
             .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
-            });
+            .run(context -> assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class));
     }
 
     @Test
@@ -116,9 +113,7 @@ class AzureServiceBusProcessorClientConfigurationTests {
             .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
             .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
-            .run(context -> {
-                assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.class);
-            });
+            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.class));
     }
 
     @Test
@@ -136,10 +131,9 @@ class AzureServiceBusProcessorClientConfigurationTests {
             .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
             .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
-            });
+            .run(context -> assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class));
     }
+
     @Test
     void queueNameAndMessageProcessorProvidedShouldConfigure() {
         ServiceBusClientBuilder serviceBusClientBuilder = new ServiceBusClientBuilder();
