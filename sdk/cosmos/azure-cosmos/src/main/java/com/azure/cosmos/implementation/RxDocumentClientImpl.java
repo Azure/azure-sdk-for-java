@@ -2337,10 +2337,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         if (pointOperationContext.isThresholdBasedAvailabilityStrategyEnabled()) {
 
                             if (!pointOperationContext.getIsRequestHedged() && pointOperationContext.getHasOperationSeenSuccess()) {
-                                this.tryMarkPartitionKeyRangeAsUnavailableForRegion(failedRequest);
+                                this.handleLocationExceptionForPartitionKeyRange(failedRequest);
                             }
                         } else {
-                            this.tryMarkPartitionKeyRangeAsUnavailableForRegion(failedRequest);
+                            this.handleLocationExceptionForPartitionKeyRange(failedRequest);
                         }
                     }
                 }
@@ -2354,10 +2354,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     if (pointOperationContext.isThresholdBasedAvailabilityStrategyEnabled()) {
 
                         if (!pointOperationContext.getIsRequestHedged() && pointOperationContext.getHasOperationSeenSuccess()) {
-                            this.tryMarkPartitionKeyRangeAsUnavailableForRegion(failedRequest);
+                            this.handleLocationExceptionForPartitionKeyRange(failedRequest);
                         }
                     } else {
-                        this.tryMarkPartitionKeyRangeAsUnavailableForRegion(failedRequest);
+                        this.handleLocationExceptionForPartitionKeyRange(failedRequest);
                     }
                 }
             });
@@ -6308,12 +6308,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             });
     }
 
-    private void tryMarkPartitionKeyRangeAsUnavailableForRegion(RxDocumentServiceRequest failedRequest) {
+    private void handleLocationExceptionForPartitionKeyRange(RxDocumentServiceRequest failedRequest) {
 
-        URI firstContactedLocationEndpoint = diagnosticsAccessor.getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
+        URI firstContactedLocationEndpoint = diagnosticsAccessor
+            .getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
 
         if (firstContactedLocationEndpoint != null) {
-            this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
+            this.globalPartitionEndpointManagerForCircuitBreaker
+                .handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
         }
     }
 
