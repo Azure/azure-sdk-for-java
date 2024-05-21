@@ -24,6 +24,7 @@ import com.azure.communication.callautomation.models.StopTranscriptionOptions;
 import com.azure.communication.callautomation.models.StartMediaStreamingOptions;
 import com.azure.communication.callautomation.models.StopMediaStreamingOptions;
 import com.azure.communication.callautomation.models.TextSource;
+import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.VoiceKind;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.api.BeforeEach;
@@ -278,7 +279,33 @@ public class CallMediaAsyncUnitTests {
             .verifyComplete();
     }
 
+    @Test
+    public void recognizeWithResponseWithTextSourceDtmfOptionsPlayPrompts() {
+        List<PlaySource> playPrompts = new ArrayList<PlaySource>();
+        playPrompts.add(new TextSource().setText("test"));
+        playPrompts.add(new FileSource().setUrl("test"));
+        playPrompts.add(new SsmlSource().setSsmlText("<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><voice name=\"en-US-JennyNeural\">No input recieved and recognition timed out, Disconnecting the call. Played through SSML. Thank you!</voice></speak>"));
+        CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"), 5);
 
+        recognizeOptions.setInterToneTimeout(Duration.ofSeconds(3));
+        List<DtmfTone> stopDtmfTones = new ArrayList<>();
+        stopDtmfTones.add(DtmfTone.ZERO);
+        stopDtmfTones.add(DtmfTone.ONE);
+        stopDtmfTones.add(DtmfTone.TWO);
+        recognizeOptions.setRecognizeInputType(RecognizeInputType.DTMF);
+        recognizeOptions.setStopTones(stopDtmfTones);
+        recognizeOptions.setPlayPrompts(playPrompts);
+        recognizeOptions.setInterruptCallMediaOperation(true);
+        recognizeOptions.setStopCurrentOperations(true);
+        recognizeOptions.setOperationContext("operationContext");
+        recognizeOptions.setInterruptPrompt(true);
+        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+
+        StepVerifier.create(
+                callMedia.startRecognizingWithResponse(recognizeOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
 
     @Test
     public void recognizeWithResponseWithFileSourceChoiceOptions() {
@@ -294,6 +321,37 @@ public class CallMediaAsyncUnitTests {
 
         recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
         recognizeOptions.setPlayPrompt(new FileSource().setUrl("abc"));
+        recognizeOptions.setInterruptCallMediaOperation(true);
+        recognizeOptions.setStopCurrentOperations(true);
+        recognizeOptions.setOperationContext("operationContext");
+        recognizeOptions.setInterruptPrompt(true);
+        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+        recognizeOptions.setSpeechLanguage("en-US");
+        recognizeOptions.setSpeechModelEndpointId("customModelEndpointId");
+
+        StepVerifier.create(
+                callMedia.startRecognizingWithResponse(recognizeOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void recognizeWithResponseWithFileSourceChoiceOptionsPlayPrompts() {
+        List<PlaySource> playPrompts = new ArrayList<PlaySource>();
+        playPrompts.add(new TextSource().setText("test"));
+        playPrompts.add(new FileSource().setUrl("test"));
+        playPrompts.add(new SsmlSource().setSsmlText("<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><voice name=\"en-US-JennyNeural\">No input recieved and recognition timed out, Disconnecting the call. Played through SSML. Thank you!</voice></speak>"));
+        RecognitionChoice recognizeChoice1 = new RecognitionChoice();
+        RecognitionChoice recognizeChoice2 = new RecognitionChoice();
+        recognizeChoice1.setTone(DtmfTone.ZERO);
+        recognizeChoice2.setTone(DtmfTone.SIX);
+        List<RecognitionChoice> recognizeChoices = new ArrayList<>(
+            Arrays.asList(recognizeChoice1, recognizeChoice2)
+        );
+        CallMediaRecognizeChoiceOptions recognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
+
+        recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
+        recognizeOptions.setPlayPrompts(playPrompts);
         recognizeOptions.setInterruptCallMediaOperation(true);
         recognizeOptions.setStopCurrentOperations(true);
         recognizeOptions.setOperationContext("operationContext");
@@ -336,6 +394,35 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
+    public void recognizeWithResponseTextChoiceOptionsPlayPrompts() {
+        List<PlaySource> playPrompts = new ArrayList<PlaySource>();
+        playPrompts.add(new TextSource().setText("test"));
+        playPrompts.add(new FileSource().setUrl("test"));
+        playPrompts.add(new SsmlSource().setSsmlText("<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><voice name=\"en-US-JennyNeural\">No input recieved and recognition timed out, Disconnecting the call. Played through SSML. Thank you!</voice></speak>"));        RecognitionChoice recognizeChoice1 = new RecognitionChoice();
+        RecognitionChoice recognizeChoice2 = new RecognitionChoice();
+        recognizeChoice1.setTone(DtmfTone.ZERO);
+        recognizeChoice2.setTone(DtmfTone.THREE);
+        List<RecognitionChoice> recognizeChoices = new ArrayList<>(
+            Arrays.asList(recognizeChoice1, recognizeChoice2)
+        );
+        CallMediaRecognizeChoiceOptions recognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
+
+        recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
+        recognizeOptions.setPlayPrompts(playPrompts);
+        recognizeOptions.setInterruptCallMediaOperation(true);
+        recognizeOptions.setStopCurrentOperations(true);
+        recognizeOptions.setOperationContext("operationContext");
+        recognizeOptions.setInterruptPrompt(true);
+        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+        recognizeOptions.setSpeechLanguage("en-US");
+
+        StepVerifier.create(
+                callMedia.startRecognizingWithResponse(recognizeOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
     public void recognizeWithResponseTextSpeechOptions() {
 
         CallMediaRecognizeSpeechOptions recognizeOptions = new CallMediaRecognizeSpeechOptions(new CommunicationUserIdentifier("id"), Duration.ofMillis(1000));
@@ -356,12 +443,58 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
+    public void recognizeWithResponseTextSpeechOptionsPlayPrompts() {
+        List<PlaySource> playPrompts = new ArrayList<PlaySource>();
+        playPrompts.add(new TextSource().setText("test"));
+        playPrompts.add(new FileSource().setUrl("test"));
+        playPrompts.add(new SsmlSource().setSsmlText("<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><voice name=\"en-US-JennyNeural\">No input recieved and recognition timed out, Disconnecting the call. Played through SSML. Thank you!</voice></speak>"));
+        CallMediaRecognizeSpeechOptions recognizeOptions = new CallMediaRecognizeSpeechOptions(new CommunicationUserIdentifier("id"), Duration.ofMillis(1000));
+
+        recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH);
+        recognizeOptions.setPlayPrompts(playPrompts);
+        recognizeOptions.setInterruptCallMediaOperation(true);
+        recognizeOptions.setStopCurrentOperations(true);
+        recognizeOptions.setOperationContext("operationContext");
+        recognizeOptions.setInterruptPrompt(true);
+        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+        recognizeOptions.setSpeechModelEndpointId("customModelEndpointId");
+
+        StepVerifier.create(
+                callMedia.startRecognizingWithResponse(recognizeOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
     public void recognizeWithResponseTextSpeechOrDtmfOptions() {
 
         CallMediaRecognizeSpeechOrDtmfOptions recognizeOptions = new CallMediaRecognizeSpeechOrDtmfOptions(new CommunicationUserIdentifier("id"), 6, Duration.ofMillis(1000));
 
         recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH_OR_DTMF);
         recognizeOptions.setPlayPrompt(new SsmlSource().setSsmlText("<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><voice name=\"en-US-JennyNeural\">No input recieved and recognition timed out, Disconnecting the call. Played through SSML. Thank you!</voice></speak>"));
+        recognizeOptions.setInterruptCallMediaOperation(true);
+        recognizeOptions.setStopCurrentOperations(true);
+        recognizeOptions.setOperationContext("operationContext");
+        recognizeOptions.setInterruptPrompt(true);
+        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
+        recognizeOptions.setSpeechModelEndpointId("customModelEndpointId");
+
+        StepVerifier.create(
+                callMedia.startRecognizingWithResponse(recognizeOptions))
+            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void recognizeWithResponseTextSpeechOrDtmfOptionsPlayPrompts() {
+        List<PlaySource> playPrompts = new ArrayList<PlaySource>();
+        playPrompts.add(new TextSource().setText("test"));
+        playPrompts.add(new FileSource().setUrl("test"));
+        playPrompts.add(new SsmlSource().setSsmlText("<speak version=\"1.0\" xmlns=\"http://www.w3.org/2001/10/synthesis\" xml:lang=\"en-US\"><voice name=\"en-US-JennyNeural\">No input recieved and recognition timed out, Disconnecting the call. Played through SSML. Thank you!</voice></speak>"));
+        CallMediaRecognizeSpeechOrDtmfOptions recognizeOptions = new CallMediaRecognizeSpeechOrDtmfOptions(new CommunicationUserIdentifier("id"), 6, Duration.ofMillis(1000));
+
+        recognizeOptions.setRecognizeInputType(RecognizeInputType.SPEECH_OR_DTMF);
+        recognizeOptions.setPlayPrompts(playPrompts);
         recognizeOptions.setInterruptCallMediaOperation(true);
         recognizeOptions.setStopCurrentOperations(true);
         recognizeOptions.setOperationContext("operationContext");

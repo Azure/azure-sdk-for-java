@@ -437,10 +437,13 @@ public final class CallMediaAsync {
 
         PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 
+        List<PlaySourceInternal> playSourcesInternal = getListPlaySourceInternalFromRecognizeOptions(recognizeOptions);
+
         RecognizeRequest recognizeRequest = new RecognizeRequest()
             .setRecognizeInputType(RecognizeInputTypeInternal.fromString(recognizeOptions.getRecognizeInputType().toString()))
             .setInterruptCallMediaOperation(recognizeOptions.isInterruptCallMediaOperation())
             .setPlayPrompt(playSourceInternal)
+            .setPlayPrompts(playSourcesInternal)
             .setRecognizeOptions(recognizeOptionsInternal)
             .setOperationContext(recognizeOptions.getOperationContext())
             .setOperationCallbackUri(recognizeOptions.getOperationCallbackUrl());
@@ -472,10 +475,13 @@ public final class CallMediaAsync {
 
         PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 
+        List<PlaySourceInternal> playSourcesInternal = getListPlaySourceInternalFromRecognizeOptions(recognizeOptions);
+
         RecognizeRequest recognizeRequest = new RecognizeRequest()
             .setRecognizeInputType(RecognizeInputTypeInternal.fromString(choiceRecognizeOptions.getRecognizeInputType().toString()))
             .setInterruptCallMediaOperation(choiceRecognizeOptions.isInterruptCallMediaOperation())
             .setPlayPrompt(playSourceInternal)
+            .setPlayPrompts(playSourcesInternal)
             .setRecognizeOptions(recognizeOptionsInternal)
             .setOperationContext(recognizeOptions.getOperationContext())
             .setOperationCallbackUri(recognizeOptions.getOperationCallbackUrl());
@@ -510,10 +516,13 @@ public final class CallMediaAsync {
 
         PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 
+        List<PlaySourceInternal> playSourcesInternal = getListPlaySourceInternalFromRecognizeOptions(recognizeOptions);
+
         RecognizeRequest recognizeRequest = new RecognizeRequest()
             .setRecognizeInputType(RecognizeInputTypeInternal.fromString(speechRecognizeOptions.getRecognizeInputType().toString()))
             .setInterruptCallMediaOperation(speechRecognizeOptions.isInterruptCallMediaOperation())
             .setPlayPrompt(playSourceInternal)
+            .setPlayPrompts(playSourcesInternal)
             .setRecognizeOptions(recognizeOptionsInternal)
             .setOperationContext(recognizeOptions.getOperationContext())
             .setOperationCallbackUri(recognizeOptions.getOperationCallbackUrl());
@@ -552,10 +561,13 @@ public final class CallMediaAsync {
 
         PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
 
+        List<PlaySourceInternal> playSourcesInternal = getListPlaySourceInternalFromRecognizeOptions(recognizeOptions);
+
         RecognizeRequest recognizeRequest = new RecognizeRequest()
             .setRecognizeInputType(RecognizeInputTypeInternal.fromString(speechOrDtmfRecognizeOptions.getRecognizeInputType().toString()))
             .setInterruptCallMediaOperation(speechOrDtmfRecognizeOptions.isInterruptCallMediaOperation())
             .setPlayPrompt(playSourceInternal)
+            .setPlayPrompts(playSourcesInternal)
             .setRecognizeOptions(recognizeOptionsInternal)
             .setOperationContext(recognizeOptions.getOperationContext())
             .setOperationCallbackUri(recognizeOptions.getOperationCallbackUrl());
@@ -585,6 +597,18 @@ public final class CallMediaAsync {
             playSourceInternal = convertPlaySourceToPlaySourceInternal(playSource);
         }
         return playSourceInternal;
+    }
+
+    private List<PlaySourceInternal> getListPlaySourceInternalFromRecognizeOptions(CallMediaRecognizeOptions recognizeOptions) {
+        List<PlaySourceInternal> playSourcesInternal = new ArrayList<>();
+        if (recognizeOptions.getPlayPrompts() != null) {
+            for (PlaySource playSource : recognizeOptions.getPlayPrompts()) {
+                if (playSource != null) {
+                    playSourcesInternal.add(convertPlaySourceToPlaySourceInternal(playSource));
+                }
+            }
+        }
+        return playSourcesInternal;
     }
 
     /**
