@@ -101,14 +101,25 @@ public final class EventPosition {
      * @return An {@link EventPosition} object.
      */
     public static EventPosition fromOffset(long offset) {
-        return fromOffset(String.valueOf(offset), false);
+        return fromOffset(String.valueOf(offset));
     }
 
     /**
      * Creates a position to an event in the partition at the provided offset. If {@code isInclusive} is true, the event
      * with the same offset is returned. Otherwise, the next event is received.
      *
-     * @param offset The offset of an event with respect to its relative position in the
+     * @param offset The offset of an event with respect to its relative position in the stream.
+     * @return An {@link EventPosition} object.
+     */
+    public static EventPosition fromOffset(String offset) {
+        return fromOffset(offset, false);
+    }
+
+    /**
+     * Creates a position to an event in the partition at the provided offset. If {@code isInclusive} is true, the event
+     * with the same offset is returned. Otherwise, the next event is received.
+     *
+     * @param offset The offset of an event with respect to its relative position in the stream.
      * @param isInclusive If true, the event with the {@code offset} is included; otherwise, the next event will be
      *     received.
      * @return An {@link EventPosition} object.
