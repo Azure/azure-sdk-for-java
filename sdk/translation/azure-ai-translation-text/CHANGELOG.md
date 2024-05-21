@@ -16,6 +16,7 @@
 - `getProj` method renamed to `getProjections`.
 - `Translation` class renamed to `TranslationText`.
 - `getScore` method renamed to `getConfidence`.
+
 ### Other Changes
 
 #### Dependency Updates
