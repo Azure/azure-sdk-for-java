@@ -60,12 +60,14 @@ public class UserAgentSuffixTest extends TestSuiteBase {
         assertThat(response.getStatusCode()).isEqualTo(200);
         assertThat(response.getProperties()).isNotNull();
         assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
+        assertThat(response.getDiagnostics()).isNotNull();
+        assertThat(response.getDiagnostics().getUserAgent()).endsWith("TestUserAgent");
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void UserAgentSuffixWithSpecialCharacter() {
         CosmosClient clientWithUserAgentSuffix = getClientBuilder()
-            .userAgentSuffix("TéstUserAgent")
+            .userAgentSuffix("TéstUserAgent's")
             .buildClient();
 
         CosmosContainerResponse response =
@@ -75,5 +77,7 @@ public class UserAgentSuffixTest extends TestSuiteBase {
         assertThat(response.getStatusCode()).isEqualTo(200);
         assertThat(response.getProperties()).isNotNull();
         assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
+        assertThat(response.getDiagnostics()).isNotNull();
+        assertThat(response.getDiagnostics().getUserAgent()).endsWith("TestUserAgent's");
     }
 }
