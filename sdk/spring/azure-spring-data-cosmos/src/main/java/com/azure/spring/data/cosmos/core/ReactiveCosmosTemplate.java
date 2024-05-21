@@ -445,7 +445,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         final Class<T> domainType = (Class<T>) objectToSave.getClass();
         markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
-        List<String> transientFields = mappingCosmosConverter.getTransientFields(objectToSave);
+        List<String> transientFields = mappingCosmosConverter.getTransientFields(objectToSave, null);
         Map<Field, Object> transientFieldValuesMap = new HashMap<>();
         JsonNode originalItem;
         if (!transientFields.isEmpty()) {
@@ -515,7 +515,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Flux<CosmosItemOperation> cosmosItemOperationsFlux = entities.map(entity -> {
             markAuditedIfConfigured(entity);
             generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
-            List<String> transientFields = mappingCosmosConverter.getTransientFields(entity);
+            List<String> transientFields = mappingCosmosConverter.getTransientFields(entity, entityInformation);
             JsonNode originalItem;
             if (!transientFields.isEmpty()) {
                 originalItem = mappingCosmosConverter.writeJsonNode(entity, transientFields);
@@ -650,7 +650,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         containerName = getContainerNameOverride(containerName);
         final Class<T> domainType = (Class<T>) object.getClass();
         markAuditedIfConfigured(object);
-        List<String> transientFields = mappingCosmosConverter.getTransientFields(object);
+        List<String> transientFields = mappingCosmosConverter.getTransientFields(object, null);
         Map<Field, Object> transientFieldValuesMap = new HashMap<>();
         JsonNode originalItem;
         if (!transientFields.isEmpty()) {

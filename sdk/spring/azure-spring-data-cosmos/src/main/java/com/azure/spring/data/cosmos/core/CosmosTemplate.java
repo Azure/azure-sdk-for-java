@@ -222,7 +222,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
 
-        List<String> transientFields = mappingCosmosConverter.getTransientFields(objectToSave);
+        List<String> transientFields = mappingCosmosConverter.getTransientFields(objectToSave, null);
         Map<Field, Object> transientFieldValuesMap = new HashMap<>();
         JsonNode originalItem;
         if (!transientFields.isEmpty()) {
@@ -275,7 +275,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         entities.forEach(entity -> {
             markAuditedIfConfigured(entity);
             generateIdIfNullAndAutoGenerationEnabled(entity, domainType);
-            List<String> transientFields = mappingCosmosConverter.getTransientFields(entity);
+            List<String> transientFields = mappingCosmosConverter.getTransientFields(entity, information);
             JsonNode originalItem;
             if (!transientFields.isEmpty()) {
                 originalItem = mappingCosmosConverter.writeJsonNode(entity, transientFields);
@@ -510,7 +510,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.notNull(object, "Upsert object should not be null");
         containerName = getContainerName(object.getClass());
         markAuditedIfConfigured(object);
-        List<String> transientFields = mappingCosmosConverter.getTransientFields(object);
+        List<String> transientFields = mappingCosmosConverter.getTransientFields(object, null);
         Map<Field, Object> transientFieldValuesMap = new HashMap<>();
         JsonNode originalItem;
         if (!transientFields.isEmpty()) {
@@ -659,8 +659,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
     @Override
     public CosmosContainerProperties createContainerIfNotExists(CosmosEntityInformation<?, ?> information) {
-
-        information.getTransientFields();
 
         final CosmosContainerResponse response = createDatabaseIfNotExists()
             .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)

@@ -223,14 +223,18 @@ public class MappingCosmosConverter
      * To get transient fields
      * @param <T> type of source entity
      * @param objectToSave must not be {@literal null}
+     * @param entityInfo entity information
      * @return List
      */
 
-    public <T> List<String> getTransientFields(T objectToSave) {
+    public <T> List<String> getTransientFields(T objectToSave, CosmosEntityInformation<T, ?> entityInfo) {
         @SuppressWarnings("unchecked")
         Class<T> domainType = (Class<T>) objectToSave.getClass();
-        @SuppressWarnings("unchecked")
-        CosmosEntityInformation<T, Object> entityInfo = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
+        if (entityInfo == null) {
+            @SuppressWarnings("unchecked")
+            CosmosEntityInformation<T, ?> entityInformation = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
+            entityInfo = entityInformation;
+        }
         return entityInfo.getTransientFields();
     }
 
