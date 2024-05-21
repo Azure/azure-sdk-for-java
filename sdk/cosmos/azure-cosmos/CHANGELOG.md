@@ -7,7 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed an issue where `StackOverflowError` can happen when using default `ObjectMapper` to serialize `CosmosDiagnostics` - See[PR 40272](https://github.com/Azure/azure-sdk-for-java/pull/40272)
+* Fixed a rare issue causing `StackOverflowError` when `RntbdRequestRecord` expires and tries to serialize `CosmosException` using default Jackson Object Mapper - See[PR 40272](https://github.com/Azure/azure-sdk-for-java/pull/40272)
 
 #### Other Changes
 
