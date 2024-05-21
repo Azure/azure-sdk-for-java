@@ -42,8 +42,7 @@ public class TimeWindowUtils {
     }
 
     public static int convertToWeekDayNumber(String str) {
-        final String strUpperCase = str.toUpperCase();
-        return DayOfWeek.valueOf(strUpperCase).getValue() % 7;
+        return DayOfWeek.valueOf(str.toUpperCase()).getValue() % 7;
     }
 
     public static int convertToWeekDayNumber(DayOfWeek dateTime) {
