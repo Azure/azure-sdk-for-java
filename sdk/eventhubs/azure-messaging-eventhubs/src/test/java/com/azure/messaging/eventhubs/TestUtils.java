@@ -29,8 +29,8 @@ import java.util.stream.IntStream;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.messaging.eventhubs.EventHubMessageSerializer.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
@@ -94,7 +94,7 @@ public final class TestUtils {
         value.put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
 
         // Add replication segment and see if it persists.
-        value.put(Symbol.getSymbol(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue()), REPLICATION_SEGMENT);
+        value.put(Symbol.getSymbol(REPLICATION_SEGMENT_ANNOTATION_NAME), REPLICATION_SEGMENT);
 
         Map<String, Object> applicationProperties = new HashMap<>(APPLICATION_PROPERTIES);
 

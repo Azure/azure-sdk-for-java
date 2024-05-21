@@ -44,6 +44,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import static com.azure.messaging.eventhubs.EventHubMessageSerializer.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.same;
@@ -340,7 +341,7 @@ class EventHubPartitionAsyncConsumerTest {
         amqpAnnotatedMessage.getMessageAnnotations()
             .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), TEST_DATE);
         amqpAnnotatedMessage.getMessageAnnotations()
-            .put(AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), replicationSegment);
+            .put(REPLICATION_SEGMENT_ANNOTATION_NAME, replicationSegment);
 
         return new SystemProperties(amqpAnnotatedMessage, offset, TEST_DATE, sequenceNumber, null, null);
     }

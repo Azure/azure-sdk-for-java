@@ -20,8 +20,8 @@ import java.util.Map;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.messaging.eventhubs.EventHubMessageSerializer.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.APPLICATION_PROPERTIES;
 import static com.azure.messaging.eventhubs.TestUtils.ENQUEUED_TIME;
 import static com.azure.messaging.eventhubs.TestUtils.OFFSET;
@@ -82,7 +82,7 @@ public class EventHubMessageSerializerTest {
         systemPropertiesMap.put(OFFSET_ANNOTATION_NAME.getValue(), OFFSET);
         systemPropertiesMap.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), ENQUEUED_TIME);
         systemPropertiesMap.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), SEQUENCE_NUMBER);
-        systemPropertiesMap.put(REPLICATION_SEGMENT_ANNOTATION_NAME.getValue(), REPLICATION_SEGMENT);
+        systemPropertiesMap.put(REPLICATION_SEGMENT_ANNOTATION_NAME, REPLICATION_SEGMENT);
 
         final Message message = getMessage("hello-world".getBytes(UTF_8));
 
