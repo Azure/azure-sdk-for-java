@@ -195,7 +195,7 @@ public class CallMediaUnitTests {
             );
         callMedia = callConnection.getCallMedia();
         HoldOptions options = new HoldOptions(new CommunicationUserIdentifier("id"))
-            .setPlaySourceInfo(new TextSource().setText("audio to play"));
+            .setPlaySource(new TextSource().setText("audio to play"));
         Response<Void> response = callMedia.holdWithResponse(options, null);
         assertEquals(response.getStatusCode(), 200);
     }
