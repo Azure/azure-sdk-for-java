@@ -82,6 +82,6 @@ public final class FaultInjectionServerErrorResult implements IFaultInjectionRes
             this.serverErrorType,
             this.times,
             this.delay,
-            this.injectionRate*100);
+            this.injectionRate * 100);
     }
 }
