@@ -6,78 +6,48 @@ package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.avs.AvsManager;
 import com.azure.resourcemanager.avs.models.Datastore;
 import com.azure.resourcemanager.avs.models.DiskPoolVolume;
+import com.azure.resourcemanager.avs.models.ElasticSanVolume;
 import com.azure.resourcemanager.avs.models.MountOptionEnum;
 import com.azure.resourcemanager.avs.models.NetAppVolume;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DatastoresCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"netAppVolume\":{\"id\":\"ieekpndzaa\"},\"diskPoolVolume\":{\"targetId\":\"udqmeqwigpibudq\",\"lunName\":\"yxeb\",\"mountOption\":\"MOUNT\",\"path\":\"mzznrtffyaqitmhh\"},\"elasticSanVolume\":{\"targetId\":\"oqaqhvseufuq\"},\"status\":\"Inaccessible\"},\"id\":\"dlcgqlsismjqfr\",\"name\":\"dgamquhiosrsj\",\"type\":\"ivfcdisyirnx\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"netAppVolume\":{\"id\":\"xmysuxswqrntv\"},\"diskPoolVolume\":{\"targetId\":\"ijpstte\",\"lunName\":\"oqq\",\"mountOption\":\"MOUNT\",\"path\":\"yufmhruncuwmq\"},\"status\":\"DeadOrError\"},\"id\":\"cdqzhlctddu\",\"name\":\"qn\",\"type\":\"yfp\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AvsManager manager = AvsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Datastore response = manager.datastores()
+            .define("cjmeislstvasy")
+            .withExistingCluster("ankjpdnjzh", "joylh", "lmuoyxprimrsopte")
+            .withNetAppVolume(new NetAppVolume().withId("aumweoohguufu"))
+            .withDiskPoolVolume(new DiskPoolVolume().withTargetId("oyjathwtzol")
+                .withLunName("a")
+                .withMountOption(MountOptionEnum.MOUNT))
+            .withElasticSanVolume(new ElasticSanVolume().withTargetId("scjpahlxv"))
+            .create();
 
-        AvsManager manager =
-            AvsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Datastore response =
-            manager
-                .datastores()
-                .define("bbelawumuaslzk")
-                .withExistingCluster("boldforobwj", "vizbfhfo", "vacqpbtuodxesz")
-                .withNetAppVolume(new NetAppVolume().withId("ycqucwyh"))
-                .withDiskPoolVolume(
-                    new DiskPoolVolume()
-                        .withTargetId("nomdrkywuhpsv")
-                        .withLunName("uurutlwexxwlalni")
-                        .withMountOption(MountOptionEnum.ATTACH))
-                .create();
-
-        Assertions.assertEquals("xmysuxswqrntv", response.netAppVolume().id());
-        Assertions.assertEquals("ijpstte", response.diskPoolVolume().targetId());
-        Assertions.assertEquals("oqq", response.diskPoolVolume().lunName());
+        Assertions.assertEquals("ieekpndzaa", response.netAppVolume().id());
+        Assertions.assertEquals("udqmeqwigpibudq", response.diskPoolVolume().targetId());
+        Assertions.assertEquals("yxeb", response.diskPoolVolume().lunName());
         Assertions.assertEquals(MountOptionEnum.MOUNT, response.diskPoolVolume().mountOption());
+        Assertions.assertEquals("oqaqhvseufuq", response.elasticSanVolume().targetId());
     }
 }

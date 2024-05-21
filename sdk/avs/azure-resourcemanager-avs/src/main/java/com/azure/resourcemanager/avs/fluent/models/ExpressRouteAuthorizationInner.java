@@ -4,27 +4,38 @@
 
 package com.azure.resourcemanager.avs.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.avs.models.ExpressRouteAuthorizationProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ExpressRoute Circuit Authorization. */
-@Immutable
+/**
+ * ExpressRoute Circuit Authorization.
+ */
+@Fluent
 public final class ExpressRouteAuthorizationInner extends ProxyResource {
     /*
-     * The properties of an ExpressRoute Circuit Authorization resource
+     * The resource-specific properties for this resource.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties")
     private ExpressRouteAuthorizationProperties innerProperties;
 
-    /** Creates an instance of ExpressRouteAuthorizationInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of ExpressRouteAuthorizationInner class.
+     */
     public ExpressRouteAuthorizationInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of an ExpressRoute Circuit Authorization resource.
-     *
+     * Get the innerProperties property: The resource-specific properties for this resource.
+     * 
      * @return the innerProperties value.
      */
     private ExpressRouteAuthorizationProperties innerProperties() {
@@ -32,8 +43,17 @@ public final class ExpressRouteAuthorizationInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the provisioningState property: The state of the ExpressRoute Circuit Authorization provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ExpressRouteAuthorizationProvisioningState provisioningState() {
@@ -42,7 +62,7 @@ public final class ExpressRouteAuthorizationInner extends ProxyResource {
 
     /**
      * Get the expressRouteAuthorizationId property: The ID of the ExpressRoute Circuit Authorization.
-     *
+     * 
      * @return the expressRouteAuthorizationId value.
      */
     public String expressRouteAuthorizationId() {
@@ -51,7 +71,7 @@ public final class ExpressRouteAuthorizationInner extends ProxyResource {
 
     /**
      * Get the expressRouteAuthorizationKey property: The key of the ExpressRoute Circuit Authorization.
-     *
+     * 
      * @return the expressRouteAuthorizationKey value.
      */
     public String expressRouteAuthorizationKey() {
@@ -60,7 +80,7 @@ public final class ExpressRouteAuthorizationInner extends ProxyResource {
 
     /**
      * Get the expressRouteId property: The ID of the ExpressRoute Circuit.
-     *
+     * 
      * @return the expressRouteId value.
      */
     public String expressRouteId() {
@@ -69,7 +89,7 @@ public final class ExpressRouteAuthorizationInner extends ProxyResource {
 
     /**
      * Set the expressRouteId property: The ID of the ExpressRoute Circuit.
-     *
+     * 
      * @param expressRouteId the expressRouteId value to set.
      * @return the ExpressRouteAuthorizationInner object itself.
      */
@@ -83,7 +103,7 @@ public final class ExpressRouteAuthorizationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkloadNetworkVMGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadNetworkVMGroupProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"zfoqouicybxar\",\"members\":[\"zuf\",\"x\",\"iqopidoamciod\",\"khazxkhnzbonlwn\"],\"status\":\"FAILURE\",\"provisioningState\":\"Updating\",\"revision\":8928756986200818231}")
-                .toObject(WorkloadNetworkVMGroupProperties.class);
-        Assertions.assertEquals("zfoqouicybxar", model.displayName());
-        Assertions.assertEquals("zuf", model.members().get(0));
-        Assertions.assertEquals(8928756986200818231L, model.revision());
+        WorkloadNetworkVMGroupProperties model = BinaryData.fromString(
+            "{\"displayName\":\"fnhtbaxkgxyw\",\"members\":[\"pyklyhpluodpvru\",\"dlgzibthostgkt\"],\"status\":\"SUCCESS\",\"provisioningState\":\"Building\",\"revision\":1369973813944721664}")
+            .toObject(WorkloadNetworkVMGroupProperties.class);
+        Assertions.assertEquals("fnhtbaxkgxyw", model.displayName());
+        Assertions.assertEquals("pyklyhpluodpvru", model.members().get(0));
+        Assertions.assertEquals(1369973813944721664L, model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadNetworkVMGroupProperties model =
-            new WorkloadNetworkVMGroupProperties()
-                .withDisplayName("zfoqouicybxar")
-                .withMembers(Arrays.asList("zuf", "x", "iqopidoamciod", "khazxkhnzbonlwn"))
-                .withRevision(8928756986200818231L);
+        WorkloadNetworkVMGroupProperties model = new WorkloadNetworkVMGroupProperties().withDisplayName("fnhtbaxkgxyw")
+            .withMembers(Arrays.asList("pyklyhpluodpvru", "dlgzibthostgkt"))
+            .withRevision(1369973813944721664L);
         model = BinaryData.fromObject(model).toObject(WorkloadNetworkVMGroupProperties.class);
-        Assertions.assertEquals("zfoqouicybxar", model.displayName());
-        Assertions.assertEquals("zuf", model.members().get(0));
-        Assertions.assertEquals(8928756986200818231L, model.revision());
+        Assertions.assertEquals("fnhtbaxkgxyw", model.displayName());
+        Assertions.assertEquals("pyklyhpluodpvru", model.members().get(0));
+        Assertions.assertEquals(1369973813944721664L, model.revision());
     }
 }

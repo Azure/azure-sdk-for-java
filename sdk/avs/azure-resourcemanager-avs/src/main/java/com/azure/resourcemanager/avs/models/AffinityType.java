@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Placement policy affinity type. */
+/**
+ * Affinity type.
+ */
 public final class AffinityType extends ExpandableStringEnum<AffinityType> {
-    /** Static value Affinity for AffinityType. */
+    /**
+     * Static value Affinity for AffinityType.
+     */
     public static final AffinityType AFFINITY = fromString("Affinity");
 
-    /** Static value AntiAffinity for AffinityType. */
+    /**
+     * Static value AntiAffinity for AffinityType.
+     */
     public static final AffinityType ANTI_AFFINITY = fromString("AntiAffinity");
 
     /**
      * Creates a new instance of AffinityType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class AffinityType extends ExpandableStringEnum<AffinityType> {
 
     /**
      * Creates or finds a AffinityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AffinityType.
      */
@@ -38,7 +44,7 @@ public final class AffinityType extends ExpandableStringEnum<AffinityType> {
 
     /**
      * Gets known AffinityType values.
-     *
+     * 
      * @return known AffinityType values.
      */
     public static Collection<AffinityType> values() {

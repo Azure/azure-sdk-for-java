@@ -11,7 +11,9 @@ import com.azure.resourcemanager.avs.models.PlacementPolicyState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties of a placement policy resource that may be updated. */
+/**
+ * The properties of a placement policy resource that may be updated.
+ */
 @Fluent
 public final class PlacementPolicyUpdateProperties {
     /*
@@ -44,13 +46,15 @@ public final class PlacementPolicyUpdateProperties {
     @JsonProperty(value = "azureHybridBenefitType")
     private AzureHybridBenefitType azureHybridBenefitType;
 
-    /** Creates an instance of PlacementPolicyUpdateProperties class. */
+    /**
+     * Creates an instance of PlacementPolicyUpdateProperties class.
+     */
     public PlacementPolicyUpdateProperties() {
     }
 
     /**
      * Get the state property: Whether the placement policy is enabled or disabled.
-     *
+     * 
      * @return the state value.
      */
     public PlacementPolicyState state() {
@@ -59,7 +63,7 @@ public final class PlacementPolicyUpdateProperties {
 
     /**
      * Set the state property: Whether the placement policy is enabled or disabled.
-     *
+     * 
      * @param state the state value to set.
      * @return the PlacementPolicyUpdateProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class PlacementPolicyUpdateProperties {
 
     /**
      * Get the vmMembers property: Virtual machine members list.
-     *
+     * 
      * @return the vmMembers value.
      */
     public List<String> vmMembers() {
@@ -79,7 +83,7 @@ public final class PlacementPolicyUpdateProperties {
 
     /**
      * Set the vmMembers property: Virtual machine members list.
-     *
+     * 
      * @param vmMembers the vmMembers value to set.
      * @return the PlacementPolicyUpdateProperties object itself.
      */
@@ -90,7 +94,7 @@ public final class PlacementPolicyUpdateProperties {
 
     /**
      * Get the hostMembers property: Host members list.
-     *
+     * 
      * @return the hostMembers value.
      */
     public List<String> hostMembers() {
@@ -99,7 +103,7 @@ public final class PlacementPolicyUpdateProperties {
 
     /**
      * Set the hostMembers property: Host members list.
-     *
+     * 
      * @param hostMembers the hostMembers value to set.
      * @return the PlacementPolicyUpdateProperties object itself.
      */
@@ -110,7 +114,7 @@ public final class PlacementPolicyUpdateProperties {
 
     /**
      * Get the affinityStrength property: vm-host placement policy affinity strength (should/must).
-     *
+     * 
      * @return the affinityStrength value.
      */
     public AffinityStrength affinityStrength() {
@@ -119,7 +123,7 @@ public final class PlacementPolicyUpdateProperties {
 
     /**
      * Set the affinityStrength property: vm-host placement policy affinity strength (should/must).
-     *
+     * 
      * @param affinityStrength the affinityStrength value to set.
      * @return the PlacementPolicyUpdateProperties object itself.
      */
@@ -130,7 +134,7 @@ public final class PlacementPolicyUpdateProperties {
 
     /**
      * Get the azureHybridBenefitType property: placement policy azure hybrid benefit opt-in type.
-     *
+     * 
      * @return the azureHybridBenefitType value.
      */
     public AzureHybridBenefitType azureHybridBenefitType() {
@@ -139,7 +143,7 @@ public final class PlacementPolicyUpdateProperties {
 
     /**
      * Set the azureHybridBenefitType property: placement policy azure hybrid benefit opt-in type.
-     *
+     * 
      * @param azureHybridBenefitType the azureHybridBenefitType value to set.
      * @return the PlacementPolicyUpdateProperties object itself.
      */
@@ -150,7 +154,7 @@ public final class PlacementPolicyUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

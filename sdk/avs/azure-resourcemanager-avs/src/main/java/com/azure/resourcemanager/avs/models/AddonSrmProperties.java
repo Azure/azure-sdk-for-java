@@ -6,27 +6,53 @@ package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The properties of a Site Recovery Manager (SRM) addon. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "addonType")
+/**
+ * The properties of a Site Recovery Manager (SRM) addon.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "addonType",
+    defaultImpl = AddonSrmProperties.class,
+    visible = true)
 @JsonTypeName("SRM")
 @Fluent
 public final class AddonSrmProperties extends AddonProperties {
+    /*
+     * Addon type
+     */
+    @JsonTypeId
+    @JsonProperty(value = "addonType", required = true)
+    private AddonType addonType = AddonType.SRM;
+
     /*
      * The Site Recovery Manager (SRM) license
      */
     @JsonProperty(value = "licenseKey")
     private String licenseKey;
 
-    /** Creates an instance of AddonSrmProperties class. */
+    /**
+     * Creates an instance of AddonSrmProperties class.
+     */
     public AddonSrmProperties() {
     }
 
     /**
+     * Get the addonType property: Addon type.
+     * 
+     * @return the addonType value.
+     */
+    @Override
+    public AddonType addonType() {
+        return this.addonType;
+    }
+
+    /**
      * Get the licenseKey property: The Site Recovery Manager (SRM) license.
-     *
+     * 
      * @return the licenseKey value.
      */
     public String licenseKey() {
@@ -35,7 +61,7 @@ public final class AddonSrmProperties extends AddonProperties {
 
     /**
      * Set the licenseKey property: The Site Recovery Manager (SRM) license.
-     *
+     * 
      * @param licenseKey the licenseKey value to set.
      * @return the AddonSrmProperties object itself.
      */
@@ -46,7 +72,7 @@ public final class AddonSrmProperties extends AddonProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

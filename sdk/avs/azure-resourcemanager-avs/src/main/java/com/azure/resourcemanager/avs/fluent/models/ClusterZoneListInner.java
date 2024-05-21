@@ -9,7 +9,9 @@ import com.azure.resourcemanager.avs.models.ClusterZone;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of all zones and associated hosts for a cluster. */
+/**
+ * List of all zones and associated hosts for a cluster.
+ */
 @Fluent
 public final class ClusterZoneListInner {
     /*
@@ -18,13 +20,15 @@ public final class ClusterZoneListInner {
     @JsonProperty(value = "zones")
     private List<ClusterZone> zones;
 
-    /** Creates an instance of ClusterZoneListInner class. */
+    /**
+     * Creates an instance of ClusterZoneListInner class.
+     */
     public ClusterZoneListInner() {
     }
 
     /**
      * Get the zones property: Zone and associated hosts info.
-     *
+     * 
      * @return the zones value.
      */
     public List<ClusterZone> zones() {
@@ -33,7 +37,7 @@ public final class ClusterZoneListInner {
 
     /**
      * Set the zones property: Zone and associated hosts info.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the ClusterZoneListInner object itself.
      */
@@ -44,7 +48,7 @@ public final class ClusterZoneListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

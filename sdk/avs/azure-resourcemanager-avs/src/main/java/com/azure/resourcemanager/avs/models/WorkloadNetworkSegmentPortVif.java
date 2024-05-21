@@ -7,7 +7,9 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Ports and any VIF attached to segment. */
+/**
+ * Ports and any VIF attached to segment.
+ */
 @Fluent
 public final class WorkloadNetworkSegmentPortVif {
     /*
@@ -16,13 +18,15 @@ public final class WorkloadNetworkSegmentPortVif {
     @JsonProperty(value = "portName")
     private String portName;
 
-    /** Creates an instance of WorkloadNetworkSegmentPortVif class. */
+    /**
+     * Creates an instance of WorkloadNetworkSegmentPortVif class.
+     */
     public WorkloadNetworkSegmentPortVif() {
     }
 
     /**
      * Get the portName property: Name of port or VIF attached to segment.
-     *
+     * 
      * @return the portName value.
      */
     public String portName() {
@@ -31,7 +35,7 @@ public final class WorkloadNetworkSegmentPortVif {
 
     /**
      * Set the portName property: Name of port or VIF attached to segment.
-     *
+     * 
      * @param portName the portName value to set.
      * @return the WorkloadNetworkSegmentPortVif object itself.
      */
@@ -42,7 +46,7 @@ public final class WorkloadNetworkSegmentPortVif {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

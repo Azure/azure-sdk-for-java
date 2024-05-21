@@ -5,28 +5,28 @@
 package com.azure.resourcemanager.avs.generated;
 
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcp;
-import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpServer;
+import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpServerUpdate;
 
-/** Samples for WorkloadNetworks UpdateDhcp. */
+/**
+ * Samples for WorkloadNetworks UpdateDhcp.
+ */
 public final class WorkloadNetworksUpdateDhcpSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-03-01/examples/WorkloadNetworks_UpdateDhcpConfigurations.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/WorkloadNetworks_UpdateDhcp.json
      */
     /**
      * Sample code: WorkloadNetworks_UpdateDhcp.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksUpdateDhcp(com.azure.resourcemanager.avs.AvsManager manager) {
-        WorkloadNetworkDhcp resource =
-            manager
-                .workloadNetworks()
-                .getDhcpWithResponse("group1", "dhcp1", "cloud1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withProperties(
-                new WorkloadNetworkDhcpServer().withRevision(1L).withServerAddress("40.1.5.1/24").withLeaseTime(86400L))
+        WorkloadNetworkDhcp resource = manager.workloadNetworks()
+            .getDhcpWithResponse("group1", "dhcp1", "cloud1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new WorkloadNetworkDhcpServerUpdate().withRevision(1L)
+                .withServerAddress("40.1.5.1/24")
+                .withLeaseTime(86400))
             .apply();
     }
 }

@@ -8,30 +8,44 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state. */
+/**
+ * Workload Network Port Mirroring provisioning state.
+ */
 public final class WorkloadNetworkPortMirroringProvisioningState
     extends ExpandableStringEnum<WorkloadNetworkPortMirroringProvisioningState> {
-    /** Static value Succeeded for WorkloadNetworkPortMirroringProvisioningState. */
+    /**
+     * Static value Succeeded for WorkloadNetworkPortMirroringProvisioningState.
+     */
     public static final WorkloadNetworkPortMirroringProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for WorkloadNetworkPortMirroringProvisioningState. */
+    /**
+     * Static value Failed for WorkloadNetworkPortMirroringProvisioningState.
+     */
     public static final WorkloadNetworkPortMirroringProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Building for WorkloadNetworkPortMirroringProvisioningState. */
-    public static final WorkloadNetworkPortMirroringProvisioningState BUILDING = fromString("Building");
-
-    /** Static value Deleting for WorkloadNetworkPortMirroringProvisioningState. */
-    public static final WorkloadNetworkPortMirroringProvisioningState DELETING = fromString("Deleting");
-
-    /** Static value Updating for WorkloadNetworkPortMirroringProvisioningState. */
-    public static final WorkloadNetworkPortMirroringProvisioningState UPDATING = fromString("Updating");
-
-    /** Static value Canceled for WorkloadNetworkPortMirroringProvisioningState. */
+    /**
+     * Static value Canceled for WorkloadNetworkPortMirroringProvisioningState.
+     */
     public static final WorkloadNetworkPortMirroringProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Static value Building for WorkloadNetworkPortMirroringProvisioningState.
+     */
+    public static final WorkloadNetworkPortMirroringProvisioningState BUILDING = fromString("Building");
+
+    /**
+     * Static value Deleting for WorkloadNetworkPortMirroringProvisioningState.
+     */
+    public static final WorkloadNetworkPortMirroringProvisioningState DELETING = fromString("Deleting");
+
+    /**
+     * Static value Updating for WorkloadNetworkPortMirroringProvisioningState.
+     */
+    public static final WorkloadNetworkPortMirroringProvisioningState UPDATING = fromString("Updating");
+
+    /**
      * Creates a new instance of WorkloadNetworkPortMirroringProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,7 +54,7 @@ public final class WorkloadNetworkPortMirroringProvisioningState
 
     /**
      * Creates or finds a WorkloadNetworkPortMirroringProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkloadNetworkPortMirroringProvisioningState.
      */
@@ -51,7 +65,7 @@ public final class WorkloadNetworkPortMirroringProvisioningState
 
     /**
      * Gets known WorkloadNetworkPortMirroringProvisioningState values.
-     *
+     * 
      * @return known WorkloadNetworkPortMirroringProvisioningState values.
      */
     public static Collection<WorkloadNetworkPortMirroringProvisioningState> values() {

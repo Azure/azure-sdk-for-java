@@ -7,23 +7,33 @@ package com.azure.resourcemanager.avs.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Base class for WorkloadNetworkDhcpServer and WorkloadNetworkDhcpRelay to inherit from. */
+/**
+ * Base class for WorkloadNetworkDhcpServer and WorkloadNetworkDhcpRelay to
+ * inherit from.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "dhcpType",
-    defaultImpl = WorkloadNetworkDhcpEntity.class)
+    defaultImpl = WorkloadNetworkDhcpEntity.class,
+    visible = true)
 @JsonTypeName("WorkloadNetworkDhcpEntity")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "SERVER", value = WorkloadNetworkDhcpServer.class),
-    @JsonSubTypes.Type(name = "RELAY", value = WorkloadNetworkDhcpRelay.class)
-})
+    @JsonSubTypes.Type(name = "RELAY", value = WorkloadNetworkDhcpRelay.class),
+    @JsonSubTypes.Type(name = "SERVER", value = WorkloadNetworkDhcpServer.class) })
 @Fluent
 public class WorkloadNetworkDhcpEntity {
+    /*
+     * Type of DHCP: SERVER or RELAY.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "dhcpType", required = true)
+    private DhcpTypeEnum dhcpType;
+
     /*
      * Display name of the DHCP entity.
      */
@@ -48,13 +58,25 @@ public class WorkloadNetworkDhcpEntity {
     @JsonProperty(value = "revision")
     private Long revision;
 
-    /** Creates an instance of WorkloadNetworkDhcpEntity class. */
+    /**
+     * Creates an instance of WorkloadNetworkDhcpEntity class.
+     */
     public WorkloadNetworkDhcpEntity() {
+        this.dhcpType = DhcpTypeEnum.fromString("WorkloadNetworkDhcpEntity");
+    }
+
+    /**
+     * Get the dhcpType property: Type of DHCP: SERVER or RELAY.
+     * 
+     * @return the dhcpType value.
+     */
+    public DhcpTypeEnum dhcpType() {
+        return this.dhcpType;
     }
 
     /**
      * Get the displayName property: Display name of the DHCP entity.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -63,7 +85,7 @@ public class WorkloadNetworkDhcpEntity {
 
     /**
      * Set the displayName property: Display name of the DHCP entity.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WorkloadNetworkDhcpEntity object itself.
      */
@@ -74,7 +96,7 @@ public class WorkloadNetworkDhcpEntity {
 
     /**
      * Get the segments property: NSX Segments consuming DHCP.
-     *
+     * 
      * @return the segments value.
      */
     public List<String> segments() {
@@ -83,7 +105,7 @@ public class WorkloadNetworkDhcpEntity {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkloadNetworkDhcpProvisioningState provisioningState() {
@@ -92,7 +114,7 @@ public class WorkloadNetworkDhcpEntity {
 
     /**
      * Get the revision property: NSX revision number.
-     *
+     * 
      * @return the revision value.
      */
     public Long revision() {
@@ -101,7 +123,7 @@ public class WorkloadNetworkDhcpEntity {
 
     /**
      * Set the revision property: NSX revision number.
-     *
+     * 
      * @param revision the revision value to set.
      * @return the WorkloadNetworkDhcpEntity object itself.
      */
@@ -112,7 +134,7 @@ public class WorkloadNetworkDhcpEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
