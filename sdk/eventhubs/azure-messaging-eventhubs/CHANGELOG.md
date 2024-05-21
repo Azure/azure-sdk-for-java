@@ -6,7 +6,8 @@
 
 - Added support for Geo Disaster recovery.
 - Added `EventData.getReplicationSegment()`.
-- Added getBeginningEnqueuedReplicationSegment` and `getLastEnqueuedReplicationSegment` to `PartitionProperties`.
+- Added `getBeginningEnqueuedReplicationSegment()` and `getLastEnqueuedReplicationSegment()` to `PartitionProperties`.
+- Added `getReplicationSegment()` into `LastEnqueuedEventProperties`.
 
 ### Breaking Changes
 
