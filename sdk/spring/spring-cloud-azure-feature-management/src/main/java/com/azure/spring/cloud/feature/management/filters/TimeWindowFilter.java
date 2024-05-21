@@ -74,11 +74,11 @@ public final class TimeWindowFilter implements FeatureFilter {
             return now.isAfter(settings.getStart()) && now.isBefore(settings.getEnd());
         }
 
-        final Duration timeWindowSpan = Duration.between(settings.getStart(), settings.getEnd());
+        final Duration activeDuration = Duration.between(settings.getStart(), settings.getEnd());
         ZonedDateTime closestRecurrence = RecurrenceCachedService.getClosestTime(settings, now);
 
         // Recalculate the closest recurrence if we have passed the cached time window.
-        if (now.isAfter(closestRecurrence.plus(timeWindowSpan))) {
+        if (now.isAfter(closestRecurrence.plus(activeDuration))) {
             closestRecurrence = RecurrenceCachedService.updateClosestTime(settings, now);
         }
 
@@ -86,7 +86,7 @@ public final class TimeWindowFilter implements FeatureFilter {
             return false;
         }
 
-        return now.isBefore(closestRecurrence.plus(timeWindowSpan));
+        return now.isBefore(closestRecurrence.plus(activeDuration));
     }
 
     private void updateValueFromMapToList(Map<String, Object> parameters, String key) {
