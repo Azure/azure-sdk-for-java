@@ -18,7 +18,6 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static com.azure.spring.cloud.autoconfigure.servicebus.ServiceBusTestUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 
 class AzureServiceBusProcessorClientConfigurationTests {
