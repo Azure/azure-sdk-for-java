@@ -208,14 +208,14 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             + "time.");
 
         final int compared = previous.getRetrievalTime().compareTo(current.getRetrievalTime());
-        final int comparedSequenceNumber = previous.getOffset().compareTo(current.getOffset());
         Assertions.assertTrue(compared <= 0, String.format("Expected retrieval time previous '%s' to be before or "
                 + "equal to current '%s'",
             previous.getRetrievalTime(), current.getRetrievalTime()));
 
-        Assertions.assertTrue(comparedSequenceNumber <= 0, String.format("Expected offset previous '%s' to be before "
-                + "or equal to current '%s'",
-            previous.getRetrievalTime(), current.getRetrievalTime()));
+        final int comparedSequenceNumber = previous.getSequenceNumber().compareTo(current.getSequenceNumber());
+        Assertions.assertTrue(comparedSequenceNumber <= 0, String.format("Expected previous '%d' sequence " +
+                "number to be before or equal to current '%d'.",
+            previous.getSequenceNumber(), current.getSequenceNumber()));
     }
 
     /**
