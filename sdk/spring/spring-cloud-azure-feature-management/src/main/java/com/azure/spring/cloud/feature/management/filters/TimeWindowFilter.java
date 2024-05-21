@@ -64,28 +64,29 @@ public final class TimeWindowFilter implements FeatureFilter {
             return false;
         }
 
-        if ((settings.getStart() == null || now.isAfter(settings.getStart()))
-            && (settings.getEnd() == null || now.isBefore(settings.getEnd()))) {
-            return true;
+        if (settings.getStart() == null) {
+            return now.isBefore(settings.getEnd());
+        }
+        if (settings.getEnd() == null) {
+            return now.isAfter(settings.getStart());
+        }
+        if (settings.getRecurrence() == null) {
+            return now.isAfter(settings.getStart()) && now.isBefore(settings.getEnd());
         }
 
-        if (settings.getRecurrence() != null) {
-            final Duration timeWindowSpan = Duration.between(settings.getStart(), settings.getEnd());
-            ZonedDateTime closestRecurrence = RecurrenceCachedService.getClosestTime(settings, now);
+        final Duration timeWindowSpan = Duration.between(settings.getStart(), settings.getEnd());
+        ZonedDateTime closestRecurrence = RecurrenceCachedService.getClosestTime(settings, now);
 
-            // Recalculate the closest recurrence if we have passed the cached time window.
-            if (now.isAfter(closestRecurrence.plus(timeWindowSpan))) {
-                closestRecurrence = RecurrenceCachedService.updateClosestTime(settings, now);
-            }
-
-            if (closestRecurrence == null || now.isBefore(closestRecurrence)) {
-                return false;
-            }
-
-            return now.isBefore(closestRecurrence.plus(timeWindowSpan));
+        // Recalculate the closest recurrence if we have passed the cached time window.
+        if (now.isAfter(closestRecurrence.plus(timeWindowSpan))) {
+            closestRecurrence = RecurrenceCachedService.updateClosestTime(settings, now);
         }
 
-        return false;
+        if (closestRecurrence == null || now.isBefore(closestRecurrence)) {
+            return false;
+        }
+
+        return now.isBefore(closestRecurrence.plus(timeWindowSpan));
     }
 
     private void updateValueFromMapToList(Map<String, Object> parameters, String key) {
