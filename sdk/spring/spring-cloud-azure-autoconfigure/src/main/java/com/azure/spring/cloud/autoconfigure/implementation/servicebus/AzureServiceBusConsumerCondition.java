@@ -24,9 +24,11 @@ class AzureServiceBusConsumerCondition extends SpringBootCondition {
         if ("topic".equalsIgnoreCase(entityType)) {
             if (consumerSubscriptionName != null) {
                 return ConditionOutcome.match();
+            } else {
+                return ConditionOutcome.noMatch("spring.cloud.azure.servicebus.consumer.subscription-name is missing/wrong.");
             }
         }
 
-        return ConditionOutcome.noMatch("spring.cloud.azure.servicebus.consumer.subscription-name is missing/wrong.");
+        return ConditionOutcome.noMatch("Entity type should be queue/topic.");
     }
 }

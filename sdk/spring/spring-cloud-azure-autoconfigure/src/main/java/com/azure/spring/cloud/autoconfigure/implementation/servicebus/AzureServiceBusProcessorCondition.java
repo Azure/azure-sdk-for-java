@@ -24,9 +24,11 @@ class AzureServiceBusProcessorCondition extends SpringBootCondition {
         if ("topic".equalsIgnoreCase(entityType)) {
             if (processorSubscriptionName != null) {
                 return ConditionOutcome.match();
+            } else {
+                return ConditionOutcome.noMatch("spring.cloud.azure.servicebus.processor.subscription-name is missing/wrong.");
             }
         }
 
-        return ConditionOutcome.noMatch("spring.cloud.azure.servicebus.processor.subscription-name is missing/wrong.");
+        return ConditionOutcome.noMatch("Entity type should be queue/topic.");
     }
 }
