@@ -25,7 +25,7 @@ class AzureServiceBusProcessorCondition extends SpringBootCondition {
             if (processorSubscriptionName != null) {
                 return ConditionOutcome.match();
             } else {
-                return ConditionOutcome.noMatch("spring.cloud.azure.servicebus.processor.subscription-name is missing/wrong.");
+                return ConditionOutcome.noMatch("spring.cloud.azure.servicebus.processor.subscription-name is missing.");
             }
         }
 

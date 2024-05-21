@@ -263,7 +263,7 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
     }
 
     @Test
-    void noSubscriptionNameShouldNotConfigure() {
+    void processorSubscriptionNameShouldConfigureProcessorClient() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.namespace=test-namespace",
