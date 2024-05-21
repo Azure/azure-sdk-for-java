@@ -490,15 +490,6 @@
           "newArchive": "com.azure:azure-messaging-eventhubs:jar:5.19.0-beta.1"
         },
         {
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter void com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties::<init>(java.lang.Long, ===java.lang.Long===, java.time.Instant, java.time.Instant)",
-          "new": "parameter void com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties::<init>(java.lang.Long, ===java.lang.String===, java.time.Instant, java.time.Instant)",
-          "parameterIndex": 1,
-          "justification": "Known breaking change for beta release of Event Hubs to support Geo-DR. Changing offset from Long to String.",
-          "oldArchive": "com.azure:azure-messaging-eventhubs:jar:5.18.3",
-          "newArchive": "com.azure:azure-messaging-eventhubs:jar:5.19.0-beta.1"
-        },
-        {
           "regex": false,
           "code": "java.method.returnTypeChanged",
           "old": "method java.lang.Long com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties::getOffset()",
