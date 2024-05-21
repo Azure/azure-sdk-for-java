@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.implementation.timewindow;
 
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.Recurrence;
+import com.azure.spring.cloud.feature.management.implementation.models.Recurrence;
 
 import java.time.ZonedDateTime;
 

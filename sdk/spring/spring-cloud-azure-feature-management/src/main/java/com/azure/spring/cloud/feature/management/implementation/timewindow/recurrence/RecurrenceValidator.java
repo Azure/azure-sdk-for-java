@@ -3,6 +3,10 @@
 
 package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence;
 
+import com.azure.spring.cloud.feature.management.implementation.models.Recurrence;
+import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePattern;
+import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePatternType;
+import com.azure.spring.cloud.feature.management.implementation.models.RecurrenceRangeType;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowUtils;
 
