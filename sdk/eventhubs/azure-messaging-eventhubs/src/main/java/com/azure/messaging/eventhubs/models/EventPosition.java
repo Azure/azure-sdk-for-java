@@ -100,8 +100,8 @@ public final class EventPosition {
      * @param offset The offset of the event within that partition.
      * @return An {@link EventPosition} object.
      */
-    public static EventPosition fromOffset(String offset) {
-        return fromOffset(offset, false);
+    public static EventPosition fromOffset(long offset) {
+        return fromOffset(String.valueOf(offset), false);
     }
 
     /**
