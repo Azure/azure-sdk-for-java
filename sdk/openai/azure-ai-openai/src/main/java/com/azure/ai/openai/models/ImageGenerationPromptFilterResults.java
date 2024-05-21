@@ -151,6 +151,7 @@ public final class ImageGenerationPromptFilterResults implements JsonSerializabl
         jsonWriter.writeJsonField("self_harm", this.selfHarm);
         jsonWriter.writeJsonField("profanity", this.profanity);
         jsonWriter.writeJsonField("jailbreak", this.jailbreak);
+        jsonWriter.writeJsonField("custom_blocklists", this.customBlocklists);
         return jsonWriter.writeEndObject();
     }
 
@@ -184,11 +185,31 @@ public final class ImageGenerationPromptFilterResults implements JsonSerializabl
                 } else if ("jailbreak".equals(fieldName)) {
                     deserializedImageGenerationPromptFilterResults.jailbreak
                         = ContentFilterDetectionResult.fromJson(reader);
+                } else if ("custom_blocklists".equals(fieldName)) {
+                    deserializedImageGenerationPromptFilterResults.customBlocklists
+                        = ContentFilterDetailedResults.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedImageGenerationPromptFilterResults;
         });
+    }
+
+    /*
+     * Information about customer block lists and if something was detected the associated list ID.
+     */
+    @Generated
+    private ContentFilterDetailedResults customBlocklists;
+
+    /**
+     * Get the customBlocklists property: Information about customer block lists and if something was detected the
+     * associated list ID.
+     *
+     * @return the customBlocklists value.
+     */
+    @Generated
+    public ContentFilterDetailedResults getCustomBlocklists() {
+        return this.customBlocklists;
     }
 }
