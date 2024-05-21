@@ -80,4 +80,38 @@ public class UserAgentSuffixTest extends TestSuiteBase {
         assertThat(response.getDiagnostics()).isNotNull();
         assertThat(response.getDiagnostics().getUserAgent()).endsWith("TestUserAgent's");
     }
+
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
+    public void UserAgentSuffixWithUnicodeCharacter() {
+        CosmosClient clientWithUserAgentSuffix = getClientBuilder()
+            .userAgentSuffix("UnicodeChar鱀InUserAgent")
+            .buildClient();
+
+        CosmosContainerResponse response =
+            clientWithUserAgentSuffix.getDatabase(this.databaseName).getContainer(this.containerName).read();
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(200);
+        assertThat(response.getProperties()).isNotNull();
+        assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
+        assertThat(response.getDiagnostics()).isNotNull();
+        assertThat(response.getDiagnostics().getUserAgent()).endsWith("UnicodeChar_InUserAgent");
+    }
+
+    @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
+    public void UserAgentSuffixWithWhitespaceAndAsciiSpecialChars() {
+        CosmosClient clientWithUserAgentSuffix = getClientBuilder()
+            .userAgentSuffix("UserAgent with space$%_^()*&")
+            .buildClient();
+
+        CosmosContainerResponse response =
+            clientWithUserAgentSuffix.getDatabase(this.databaseName).getContainer(this.containerName).read();
+
+        assertThat(response).isNotNull();
+        assertThat(response.getStatusCode()).isEqualTo(200);
+        assertThat(response.getProperties()).isNotNull();
+        assertThat(response.getProperties().getId()).isEqualTo(this.containerName);
+        assertThat(response.getDiagnostics()).isNotNull();
+        assertThat(response.getDiagnostics().getUserAgent()).endsWith("UserAgent with space$%_^()*&");
+    }
 }
