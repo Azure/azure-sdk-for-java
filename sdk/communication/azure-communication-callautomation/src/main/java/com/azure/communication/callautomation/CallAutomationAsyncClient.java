@@ -30,13 +30,13 @@ import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
-import com.azure.communication.callautomation.models.ConnectOptions;
+import com.azure.communication.callautomation.models.ConnectCallOptions;
 import com.azure.communication.callautomation.models.CallLocator;
 import com.azure.communication.callautomation.models.CallLocatorKind;
 import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.RoomCallLocator;
-import com.azure.communication.callautomation.models.ConnectResult;
+import com.azure.communication.callautomation.models.ConnectCallResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -392,8 +392,8 @@ public final class CallAutomationAsyncClient {
      * @return Result of connect request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConnectResult> connect(CallLocator callLocator, String callbackUrl) {
-        return connectWithResponse(new ConnectOptions(callLocator, callbackUrl))
+    public Mono<ConnectCallResult> connectCall(CallLocator callLocator, String callbackUrl) {
+        return connectCallWithResponse(new ConnectCallOptions(callLocator, callbackUrl))
             .flatMap(FluxUtil::toMono);
     }
 
@@ -406,16 +406,16 @@ public final class CallAutomationAsyncClient {
      * @return Response with result of connect.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ConnectResult>> connectWithResponse(ConnectOptions connectOptions) {
-        return withContext(context -> connectWithResponseInternal(connectOptions, context));
+    public Mono<Response<ConnectCallResult>> connectCallWithResponse(ConnectCallOptions connectCallOptions) {
+        return withContext(context -> connectCallWithResponseInternal(connectCallOptions, context));
     }
 
-    Mono<Response<ConnectResult>> connectWithResponseInternal(ConnectOptions connectOptions,
+    Mono<Response<ConnectCallResult>> connectCallWithResponseInternal(ConnectCallOptions connectCallOptions,
                                                                     Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
-            CallLocator callLocator = connectOptions.getCallLocator();
+            CallLocator callLocator = connectCallOptions.getCallLocator();
             CallLocatorInternal callLocatorInternal = new CallLocatorInternal()
                 .setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
 
@@ -430,16 +430,16 @@ public final class CallAutomationAsyncClient {
             }
 
             ConnectRequestInternal request = new ConnectRequestInternal()
-                .setCallbackUri(connectOptions.getCallbackUrl())
+                .setCallbackUri(connectCallOptions.getCallbackUrl())
                 .setCallLocator(callLocatorInternal);
 
-            if (connectOptions.getOperationContext() != null) {
-                request.setOperationContext(connectOptions.getOperationContext());
+            if (connectCallOptions.getOperationContext() != null) {
+                request.setOperationContext(connectCallOptions.getOperationContext());
             }
 
-            if (connectOptions.getCallIntelligenceOptions() != null && connectOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
+            if (connectCallOptions.getCallIntelligenceOptions() != null && connectCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
                 CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
-                callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(connectOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
+                callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(connectCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
                 request.setCallIntelligenceOptions(callIntelligenceOptionsInternal);
             }
 
@@ -450,7 +450,7 @@ public final class CallAutomationAsyncClient {
                     try {
                         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
                         return new SimpleResponse<>(response,
-                            new ConnectResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
+                            new ConnectCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
                                 new CallConnection(callConnectionAsync), callConnectionAsync));
                     } catch (URISyntaxException e) {
                         throw logger.logExceptionAsError(new RuntimeException(e));

@@ -14,13 +14,18 @@ public final class GroupCallLocator extends CallLocator {
      */
     private final String groupCallId;
 
+    /*
+     * Defines the kind of call locator
+     */
+    private CallLocatorKind kind;
+
     /**
      * Group call locator
      *
      * @param groupCallId Specify the group call id.
      */
     public GroupCallLocator(String groupCallId) {
-        super(CallLocatorKind.GROUP_CALL_LOCATOR);
+        this.kind = CallLocatorKind.GROUP_CALL_LOCATOR;
         this.groupCallId = groupCallId;
     }
 
@@ -31,5 +36,14 @@ public final class GroupCallLocator extends CallLocator {
      */
     public String getGroupCallId() {
         return this.groupCallId;
+    }
+
+    /**
+     * Get the kind property: The call locator kind.
+     *
+     * @return the kind value.
+     */
+    public CallLocatorKind getKind() {
+        return this.kind;
     }
 }

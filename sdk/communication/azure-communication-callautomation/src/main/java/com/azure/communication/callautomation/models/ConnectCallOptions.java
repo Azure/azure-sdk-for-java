@@ -4,12 +4,10 @@
 package com.azure.communication.callautomation.models;
 import com.azure.core.annotation.Fluent;
 
-/**
- * The options for creating a call.
- */
+/** The options for creating a call. */
 
 @Fluent
-public final class ConnectOptions {
+public final class ConnectCallOptions {
      /**
      * Either a {@link GroupCallLocator} or {@link ServerCallLocator} or {@link RoomCallLocator} for locating the call.
      */
@@ -31,11 +29,11 @@ public final class ConnectOptions {
     private CallIntelligenceOptions callIntelligenceOptions;
 
     /**
-     * Creates a new instance of ConnectOptions
+     * Creates a new instance of ConnectCallOptions
      * @param callLocator - The CallLocator
      * @param callbackUrl - The CallbackUrl
      */
-    public ConnectOptions(CallLocator callLocator, String callbackUrl) {
+    public ConnectCallOptions(CallLocator callLocator, String callbackUrl) {
         this.callLocator = callLocator;
         this.callbackUrl = callbackUrl;
     }
@@ -80,9 +78,9 @@ public final class ConnectOptions {
      * Set the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
      *
      * @param callIntelligenceOptions the cognitiveServicesEndpoint value to set.
-     * @return the ConnectOptions object itself.
+     * @return the ConnectCallOptions object itself.
      */
-    public ConnectOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
+    public ConnectCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
         return this;
     }
@@ -91,9 +89,9 @@ public final class ConnectOptions {
      * Sets the operation context.
      *
      * @param operationContext Operation Context
-     * @return The ConnectOptions object.
+     * @return The ConnectCallOptions object.
      */
-    public ConnectOptions setOperationContext(String operationContext) {
+    public ConnectCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }

@@ -7,11 +7,9 @@ import com.azure.communication.callautomation.CallConnection;
 import com.azure.communication.callautomation.CallConnectionAsync;
 import com.azure.core.annotation.Immutable;
 
-/**
- * The result of connect request.
- */
+/** The result of connect request. */
 @Immutable
-public final class ConnectResult extends CallResult {
+public final class ConnectCallResult extends CallResult {
     /**
      * Constructor
      *
@@ -19,7 +17,7 @@ public final class ConnectResult extends CallResult {
      * @param callConnection The callConnection
      * @param callConnectionAsync The callConnectionAsync
      */
-    public ConnectResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection, CallConnectionAsync callConnectionAsync) {
+    public ConnectCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection, CallConnectionAsync callConnectionAsync) {
         super(callConnectionProperties, callConnection, callConnectionAsync);
     }
 }

@@ -11,9 +11,9 @@ import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
-import com.azure.communication.callautomation.models.ConnectOptions;
+import com.azure.communication.callautomation.models.ConnectCallOptions;
 import com.azure.communication.callautomation.models.RoomCallLocator;
-import com.azure.communication.callautomation.models.ConnectResult;
+import com.azure.communication.callautomation.models.ConnectCallResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
@@ -162,7 +162,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
                     CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, DATA_SUBSCRIPTION_ID), 200)
             ))
         );
-        ConnectResult result = callAutomationClient.connect(new RoomCallLocator(ROOM_ID), CALL_CALLBACK_URL);
+        ConnectCallResult result = callAutomationClient.connectCall(new RoomCallLocator(ROOM_ID), CALL_CALLBACK_URL);
         assertNotNull(result);
     }
 
@@ -174,8 +174,8 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
                     CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, DATA_SUBSCRIPTION_ID), 200)
             ))
         );
-        ConnectOptions connectOptions = new ConnectOptions(new RoomCallLocator(ROOM_ID), CALL_CALLBACK_URL);
-        Response<ConnectResult> result = callAutomationClient.connectWithResponse(connectOptions, Context.NONE);
+        ConnectCallOptions connectOptions = new ConnectCallOptions(new RoomCallLocator(ROOM_ID), CALL_CALLBACK_URL);
+        Response<ConnectCallResult> result = callAutomationClient.connectCallWithResponse(connectOptions, Context.NONE);
         assertNotNull(result);
     }
 }
