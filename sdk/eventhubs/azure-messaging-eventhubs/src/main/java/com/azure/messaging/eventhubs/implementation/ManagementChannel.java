@@ -47,6 +47,9 @@ public class ManagementChannel implements EventHubManagementNode {
     public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC = "last_enqueued_time_utc";
     public static final String MANAGEMENT_RESULT_RUNTIME_INFO_RETRIEVAL_TIME_UTC = "runtime_info_retrieval_time_utc";
     public static final String MANAGEMENT_RESULT_PARTITION_IS_EMPTY = "is_partition_empty";
+    public static final String MANAGEMENT_RESULT_BEGINNING_SEQUENCE_NUMBER_EPOCH = "begin_sequence_number_epoch";
+    public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH
+        = "last_enqueued_sequence_number_epoch";
 
     // Well-known keys for management plane service requests.
     private static final String MANAGEMENT_ENTITY_TYPE_KEY = "type";

@@ -10,6 +10,7 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -268,7 +269,18 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
         final EventData expectedEvent = receivedEvents[4];
 
         // Choose the offset before it, so we get that event back.
-        final EventPosition position = EventPosition.fromOffset(expectedEvent.getOffset() - 1);
+        Long parsedOffset;
+        try {
+            parsedOffset = Long.valueOf(expectedEvent.getOffset());
+        } catch (NumberFormatException e) {
+            parsedOffset = null;
+        }
+
+        Assumptions.assumeTrue(parsedOffset != null,
+            "Cannot perform test if offset is not numerical because we have to subtract from it.");
+
+        final String offsetToGet = String.valueOf(parsedOffset - 1);
+        final EventPosition position = EventPosition.fromOffset(offsetToGet);
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), position)

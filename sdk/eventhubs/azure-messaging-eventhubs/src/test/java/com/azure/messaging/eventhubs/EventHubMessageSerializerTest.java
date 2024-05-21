@@ -21,12 +21,14 @@ import java.util.Map;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.messaging.eventhubs.EventHubMessageSerializer.REPLICATION_SEGMENT_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.APPLICATION_PROPERTIES;
 import static com.azure.messaging.eventhubs.TestUtils.ENQUEUED_TIME;
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_ID;
 import static com.azure.messaging.eventhubs.TestUtils.OFFSET;
 import static com.azure.messaging.eventhubs.TestUtils.OTHER_SYSTEM_PROPERTY;
 import static com.azure.messaging.eventhubs.TestUtils.PARTITION_KEY;
+import static com.azure.messaging.eventhubs.TestUtils.REPLICATION_SEGMENT;
 import static com.azure.messaging.eventhubs.TestUtils.SEQUENCE_NUMBER;
 import static com.azure.messaging.eventhubs.TestUtils.getMessage;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -76,10 +78,12 @@ public class EventHubMessageSerializerTest {
     @Test
     public void deserializeEventData() {
         // Arrange
+        // Expected system properties.
         final Map<String, Object> systemPropertiesMap = new HashMap<>();
         systemPropertiesMap.put(OFFSET_ANNOTATION_NAME.getValue(), OFFSET);
         systemPropertiesMap.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), ENQUEUED_TIME);
         systemPropertiesMap.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), SEQUENCE_NUMBER);
+        systemPropertiesMap.put(REPLICATION_SEGMENT_ANNOTATION_NAME, REPLICATION_SEGMENT);
 
         final String messageId = "the-message-id";
         final Message message = getMessage("hello-world".getBytes(UTF_8), messageId);
@@ -93,12 +97,13 @@ public class EventHubMessageSerializerTest {
         Assertions.assertEquals(OFFSET, eventData.getOffset());
         Assertions.assertEquals(PARTITION_KEY, eventData.getPartitionKey());
         Assertions.assertEquals(SEQUENCE_NUMBER, eventData.getSequenceNumber());
+        Assertions.assertEquals(REPLICATION_SEGMENT, eventData.getReplicationSegment());
 
         final Map<String, Object> actualSystemProperties = eventData.getSystemProperties();
         systemPropertiesMap.forEach((key, value) -> {
             final boolean containsKey = actualSystemProperties.containsKey(key);
             final Object actualValue = actualSystemProperties.get(key);
-            Assertions.assertTrue(containsKey);
+            Assertions.assertTrue(containsKey, "Key not found. " + key);
             Assertions.assertEquals(value, actualValue);
         });
 
@@ -141,6 +146,8 @@ public class EventHubMessageSerializerTest {
         final Date lastEnqueuedTimeAsDate = new Date(1569275540L);
         final Instant lastEnqueuedTime = lastEnqueuedTimeAsDate.toInstant();
         final boolean isEmpty = true;
+        final Integer beginningReplicationSegment = 8;
+        final Integer lastEnqueuedReplicationSegment = 10;
 
         final Map<String, Object> values = new HashMap<>();
         values.put(ManagementChannel.MANAGEMENT_ENTITY_NAME_KEY, eventHubName);
@@ -150,6 +157,9 @@ public class EventHubMessageSerializerTest {
         values.put(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET, lastEnqueuedOffset);
         values.put(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC, lastEnqueuedTimeAsDate);
         values.put(ManagementChannel.MANAGEMENT_RESULT_PARTITION_IS_EMPTY, isEmpty);
+        values.put(ManagementChannel.MANAGEMENT_RESULT_BEGINNING_SEQUENCE_NUMBER_EPOCH, beginningReplicationSegment);
+        values.put(ManagementChannel.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER_EPOCH,
+            lastEnqueuedReplicationSegment);
 
         final AmqpValue amqpValue = new AmqpValue(values);
 
@@ -168,6 +178,9 @@ public class EventHubMessageSerializerTest {
         Assertions.assertEquals(lastEnqueuedOffset, partitionProperties.getLastEnqueuedOffset());
         Assertions.assertEquals(lastEnqueuedTime, partitionProperties.getLastEnqueuedTime());
         Assertions.assertEquals(isEmpty, partitionProperties.isEmpty());
+        Assertions.assertEquals(beginningReplicationSegment, partitionProperties.getBeginningReplicationSegment());
+        Assertions.assertEquals(lastEnqueuedReplicationSegment,
+            partitionProperties.getLastEnqueuedReplicationSegment());
     }
 
     /**

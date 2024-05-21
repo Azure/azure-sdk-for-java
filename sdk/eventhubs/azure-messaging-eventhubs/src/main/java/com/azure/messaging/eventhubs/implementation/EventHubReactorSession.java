@@ -40,6 +40,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION
 import static com.azure.core.amqp.implementation.AmqpConstants.CLIENT_IDENTIFIER;
 import static com.azure.core.amqp.implementation.AmqpConstants.CLIENT_RECEIVER_IDENTIFIER;
 import static com.azure.core.amqp.implementation.AmqpConstants.VENDOR;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.DEFAULT_REPLICATION_SEGMENT;
 
 /**
  * An AMQP session for Event Hubs.
@@ -48,6 +49,9 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
     private static final Symbol EPOCH = Symbol.valueOf(VENDOR + ":epoch");
     private static final Symbol ENABLE_RECEIVER_RUNTIME_METRIC_NAME
         = Symbol.valueOf(VENDOR + ":enable-receiver-runtime-metric");
+    private static final Symbol GEO_REPLICATION = Symbol.valueOf(VENDOR + ":georeplication");
+
+    private static final String DEFAULT_REPLICATION_SEGMENT_STRING = String.valueOf(DEFAULT_REPLICATION_SEGMENT);
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubReactorSession.class);
     private final boolean isV2;
@@ -110,9 +114,10 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         }
         properties.put(CLIENT_RECEIVER_IDENTIFIER, clientIdentifier);
 
+        // Regardless of whether they are tracking event properties, want to advertise geo-replication support.
         final Symbol[] desiredCapabilities = options.getTrackLastEnqueuedEventProperties()
-            ? new Symbol[] { ENABLE_RECEIVER_RUNTIME_METRIC_NAME }
-            : null;
+            ? new Symbol[] { ENABLE_RECEIVER_RUNTIME_METRIC_NAME, GEO_REPLICATION }
+            : new Symbol[] { GEO_REPLICATION };
 
         final ConsumerFactory consumerFactory;
         if (isV2) {
@@ -126,18 +131,23 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
             SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND, consumerFactory);
     }
 
-    private String getExpression(EventPosition eventPosition) {
+    /**
+     * Gets the receiver filter based on {@code eventPosition}.
+     */
+    static String getExpression(EventPosition eventPosition) {
         final String isInclusiveFlag = eventPosition.isInclusive() ? "=" : "";
 
         // order of preference
-        if (eventPosition.getOffset() != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(),
-                isInclusiveFlag, eventPosition.getOffset());
-        }
-
+        // Sequence number is preferred when geo-replication is enabled.
+        // Different from older client library where offset is used first.
         if (eventPosition.getSequenceNumber() != null) {
             return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(),
                 isInclusiveFlag, eventPosition.getSequenceNumber());
+        }
+
+        if (eventPosition.getOffset() != null) {
+            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(),
+                isInclusiveFlag, eventPosition.getOffset());
         }
 
         if (eventPosition.getEnqueuedDateTime() != null) {

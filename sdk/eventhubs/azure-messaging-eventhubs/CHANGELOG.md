@@ -4,7 +4,14 @@
 
 ### Features Added
 
+- Added support for Geo Disaster recovery.
+- Added `EventData.getReplicationSegment()`.
+- Added `getBeginningEnqueuedReplicationSegment()` and `getLastEnqueuedReplicationSegment()` to `PartitionProperties`.
+- Added `getReplicationSegment()` into `LastEnqueuedEventProperties`.
+
 ### Breaking Changes
+
+- `EventData.getOffset()`, `CheckpointStore.getOffset()`, `EventData.getOffset(), and `LastEnqueuedEventProperties.getOffset()` are changed from `Long` to `String`.
 
 ### Bugs Fixed
 

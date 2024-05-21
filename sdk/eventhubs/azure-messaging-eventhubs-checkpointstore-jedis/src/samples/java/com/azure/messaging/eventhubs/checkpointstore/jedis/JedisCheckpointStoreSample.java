@@ -70,7 +70,7 @@ public class JedisCheckpointStoreSample {
             .setConsumerGroup(CONSUMER_GROUP)
             .setPartitionId("0")
             .setSequenceNumber(2L)
-            .setOffset(250L);
+            .setOffset("250L");
 
         checkpointStore.updateCheckpoint(checkpoint).block(TIMEOUT);
 

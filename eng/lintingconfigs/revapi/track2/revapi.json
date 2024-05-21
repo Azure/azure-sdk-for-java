@@ -761,8 +761,42 @@
           "code": "java.method.removed",
           "old": "method com.azure.resourcemanager.search.models.CheckNameAvailabilityInput com.azure.resourcemanager.search.models.CheckNameAvailabilityInput::withType(java.lang.String)",
           "justification": "Bug fix. type property is a constant."
+        },
+        {
+          "regex": false,
+          "code": "java.method.returnTypeChanged",
+          "old": "method java.lang.Long com.azure.messaging.eventhubs.EventData::getOffset()",
+          "new": "method java.lang.String com.azure.messaging.eventhubs.EventData::getOffset()",
+          "justification": "Known breaking change for release of Event Hubs to support Geo-DR. Changing offset from Long to String.",
+          "oldArchive": "com.azure:azure-messaging-eventhubs:jar:5.20.5",
+          "newArchive": "com.azure:azure-messaging-eventhubs:jar:5.21.0-beta.2"
+        },
+        {
+          "code": "java.method.returnTypeChanged",
+          "old": "method java.lang.Long com.azure.messaging.eventhubs.models.Checkpoint::getOffset()",
+          "new": "method java.lang.String com.azure.messaging.eventhubs.models.Checkpoint::getOffset()",
+          "justification": "Known breaking change for release of Event Hubs to support Geo-DR. Changing offset from Long to String.",
+          "oldArchive": "com.azure:azure-messaging-eventhubs:jar:5.20.5",
+          "newArchive": "com.azure:azure-messaging-eventhubs:jar:5.21.0-beta.2"
+        },
+        {
+          "code": "java.method.parameterTypeChanged",
+          "old": "parameter com.azure.messaging.eventhubs.models.Checkpoint com.azure.messaging.eventhubs.models.Checkpoint::setOffset(===java.lang.Long===)",
+          "new": "parameter com.azure.messaging.eventhubs.models.Checkpoint com.azure.messaging.eventhubs.models.Checkpoint::setOffset(===java.lang.String===)",
+          "justification": "Known breaking change for release of Event Hubs to support Geo-DR. Changing offset from Long to String.",
+          "oldArchive": "com.azure:azure-messaging-eventhubs:jar:5.20.5",
+          "newArchive": "com.azure:azure-messaging-eventhubs:jar:5.21.0-beta.2"
+        },
+        {
+          "regex": false,
+          "code": "java.method.returnTypeChanged",
+          "old": "method java.lang.Long com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties::getOffset()",
+          "new": "method java.lang.String com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties::getOffset()",
+          "justification": "Known breaking change for release of Event Hubs to support Geo-DR. Changing offset from Long to String.",
+          "oldArchive": "com.azure:azure-messaging-eventhubs:jar:5.20.5",
+          "newArchive": "com.azure:azure-messaging-eventhubs:jar:5.21.0-beta.2"
         }
-      ]
+     ]
     }
   }
 ]

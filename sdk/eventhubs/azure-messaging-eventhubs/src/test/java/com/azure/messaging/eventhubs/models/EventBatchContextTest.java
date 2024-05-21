@@ -26,8 +26,8 @@ import static org.mockito.Mockito.when;
 class EventBatchContextTest {
     private final PartitionContext partitionContext
         = new PartitionContext("TEST_NAMESPACE", "TEST_EVENT_HUB", "TEST_DEFAULT_GROUP", "TEST_TEST_ID");
-    private final LastEnqueuedEventProperties lastEnqueuedEventProperties = new LastEnqueuedEventProperties(1035L, 100L,
-        Instant.ofEpochSecond(1608315301L), Instant.ofEpochSecond(1609315301L));
+    private final LastEnqueuedEventProperties lastEnqueuedEventProperties = new LastEnqueuedEventProperties(1035L,
+        "100L", Instant.ofEpochSecond(1608315301L), Instant.ofEpochSecond(1609315301L), null);
     private final List<EventData> events = new ArrayList<>();
 
     @Mock
@@ -82,7 +82,7 @@ class EventBatchContextTest {
         events.add(eventData2);
 
         final Long sequenceNumber = 10L;
-        final Long offset = 15L;
+        final String offset = "15L";
         when(eventData2.getSequenceNumber()).thenReturn(sequenceNumber);
         when(eventData2.getOffset()).thenReturn(offset);
 

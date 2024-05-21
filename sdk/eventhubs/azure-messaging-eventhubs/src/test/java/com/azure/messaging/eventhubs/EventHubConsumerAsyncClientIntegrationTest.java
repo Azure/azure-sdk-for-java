@@ -167,7 +167,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         // Act & Assert
         try (EventHubConsumerAsyncClient consumer = builder.buildAsyncConsumerClient()) {
             final AtomicReference<LastEnqueuedEventProperties> lastViewed
-                = new AtomicReference<>(new LastEnqueuedEventProperties(null, null, null, null));
+                = new AtomicReference<>(new LastEnqueuedEventProperties(null, null, null, null, null));
 
             StepVerifier.create(consumer.receiveFromPartition(partitionId, EventPosition.latest(), options).take(10))
                 .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), true))
@@ -200,14 +200,14 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
             "This is not the first event, should have a retrieval " + "time.");
 
         final int compared = previous.getRetrievalTime().compareTo(current.getRetrievalTime());
-        final int comparedSequenceNumber = previous.getOffset().compareTo(current.getOffset());
         Assertions.assertTrue(compared <= 0,
             String.format("Expected retrieval time previous '%s' to be before or " + "equal to current '%s'",
                 previous.getRetrievalTime(), current.getRetrievalTime()));
 
+        final int comparedSequenceNumber = previous.getSequenceNumber().compareTo(current.getSequenceNumber());
         Assertions.assertTrue(comparedSequenceNumber <= 0,
-            String.format("Expected offset previous '%s' to be before " + "or equal to current '%s'",
-                previous.getRetrievalTime(), current.getRetrievalTime()));
+            String.format("Expected previous '%d' sequence " + "number to be before or equal to current '%d'.",
+                previous.getSequenceNumber(), current.getSequenceNumber()));
     }
 
     /**
@@ -339,7 +339,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         final EventHubConsumerAsyncClient consumer = toClose(builder.prefetchCount(1).buildAsyncConsumerClient());
 
         final AtomicReference<LastEnqueuedEventProperties> lastViewed
-            = new AtomicReference<>(new LastEnqueuedEventProperties(null, null, null, null));
+            = new AtomicReference<>(new LastEnqueuedEventProperties(null, null, null, null, null));
 
         // Act & Assert
         try {

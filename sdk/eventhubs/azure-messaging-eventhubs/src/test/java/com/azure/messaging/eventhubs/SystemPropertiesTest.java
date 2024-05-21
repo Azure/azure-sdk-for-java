@@ -35,8 +35,9 @@ public class SystemPropertiesTest {
     private final byte[] data = "hello-world".getBytes(StandardCharsets.UTF_8);
     private final String partitionKey = "my-partition-key";
     private final Instant enqueuedTime = Instant.ofEpochSecond(1625810878);
-    private final long offset = 102L;
+    private final String offset = "102L";
     private final long sequenceNumber = 12345L;
+    private final Integer replicationSegment = 110;
 
     private AmqpAnnotatedMessage message;
 
@@ -78,6 +79,7 @@ public class SystemPropertiesTest {
         messageAnnotations.put(OFFSET_ANNOTATION_NAME.getValue(), offset);
         messageAnnotations.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
         messageAnnotations.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
+        messageAnnotations.put(EventHubMessageSerializer.REPLICATION_SEGMENT_ANNOTATION_NAME, replicationSegment);
         messageAnnotations.put("foo", "bar");
         messageAnnotations.put("baz", 1L);
     }
@@ -106,7 +108,7 @@ public class SystemPropertiesTest {
     public void cannotModifyProperties() {
         // Act
         final SystemProperties properties
-            = new SystemProperties(message, offset, enqueuedTime, sequenceNumber, partitionKey);
+            = new SystemProperties(message, offset, enqueuedTime, sequenceNumber, partitionKey, replicationSegment);
         final HashMap<String, Object> testMap = new HashMap<>();
         testMap.put("one", 1L);
         testMap.put("two", 2);
@@ -116,6 +118,7 @@ public class SystemPropertiesTest {
         assertEquals(sequenceNumber, properties.getSequenceNumber());
         assertEquals(offset, properties.getOffset());
         assertEquals(partitionKey, properties.getPartitionKey());
+        assertEquals(replicationSegment, properties.getReplicationSegment());
 
         assertThrows(UnsupportedOperationException.class, () -> properties.put("foo", "bar"));
         assertThrows(UnsupportedOperationException.class, () -> properties.putAll(testMap));
@@ -130,6 +133,12 @@ public class SystemPropertiesTest {
             () -> properties.replaceAll((key, value) -> "replaced " + value));
         assertThrows(UnsupportedOperationException.class,
             () -> properties.replace(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber, "baz"));
+        assertThrows(UnsupportedOperationException.class, () -> properties
+            .replace(EventHubMessageSerializer.REPLICATION_SEGMENT_ANNOTATION_NAME, replicationSegment, 13L));
+
+        // Shouldn't allow us to remove keys.
+        assertThrows(UnsupportedOperationException.class, () -> properties
+            .replace(EventHubMessageSerializer.REPLICATION_SEGMENT_ANNOTATION_NAME, replicationSegment, null));
 
         assertThrows(UnsupportedOperationException.class,
             () -> properties.computeIfAbsent("test", (key) -> "new value"));
@@ -148,7 +157,7 @@ public class SystemPropertiesTest {
     public void queryProperties() {
         // Act
         final SystemProperties properties
-            = new SystemProperties(message, offset, enqueuedTime, sequenceNumber, partitionKey);
+            = new SystemProperties(message, offset, enqueuedTime, sequenceNumber, partitionKey, null);
 
         // Assert
         assertEquals(enqueuedTime, properties.getEnqueuedTime());

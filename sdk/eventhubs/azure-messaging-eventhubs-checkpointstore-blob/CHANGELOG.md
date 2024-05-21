@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Adds support for persisting replication segment in `Checkpoint`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

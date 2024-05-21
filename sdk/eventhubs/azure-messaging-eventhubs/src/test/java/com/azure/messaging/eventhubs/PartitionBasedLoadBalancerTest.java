@@ -121,7 +121,7 @@ public class PartitionBasedLoadBalancerTest {
         final byte[] contents = "Hello, world".getBytes(StandardCharsets.UTF_8);
         eventDataList = new ArrayList<>();
         IntStream.range(0, 25).forEach(index -> {
-            final EventData eventData = getEventData(contents, (long) index, (long) index, enqueuedTime);
+            final EventData eventData = getEventData(contents, (long) index, String.valueOf(index), enqueuedTime);
             eventDataList.add(eventData);
         });
 
@@ -851,7 +851,7 @@ public class PartitionBasedLoadBalancerTest {
     /**
      * Creates an EventData with the received properties set.
      */
-    private EventData getEventData(byte[] contents, Long sequenceNumber, Long offsetNumber, Date enqueuedTime) {
+    private EventData getEventData(byte[] contents, Long sequenceNumber, String offsetNumber, Date enqueuedTime) {
         final Message message = getMessage(contents, "messageId", sequenceNumber, offsetNumber, enqueuedTime);
         return MESSAGE_SERIALIZER.deserialize(message, EventData.class);
     }

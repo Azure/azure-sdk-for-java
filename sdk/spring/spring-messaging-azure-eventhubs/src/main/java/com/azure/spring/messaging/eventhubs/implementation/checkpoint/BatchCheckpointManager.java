@@ -35,12 +35,12 @@ class BatchCheckpointManager extends EventCheckpointManager {
         return LOGGER;
     }
 
-    void logCheckpointFail(String consumerGroup, String partitionId, Long offset, Throwable t) {
+    void logCheckpointFail(String consumerGroup, String partitionId, String offset, Throwable t) {
         getLogger().warn(String
             .format(CHECKPOINT_FAIL_MSG, consumerGroup, offset, partitionId), t);
     }
 
-    void logCheckpointSuccess(String consumerGroup, String partitionId, Long offset) {
+    void logCheckpointSuccess(String consumerGroup, String partitionId, String offset) {
         if (getLogger().isDebugEnabled()) {
             getLogger().debug(String
                 .format(CHECKPOINT_SUCCESS_MSG, consumerGroup, offset, partitionId));
@@ -53,7 +53,7 @@ class BatchCheckpointManager extends EventCheckpointManager {
         if (lastEvent == null) {
             return;
         }
-        Long offset = lastEvent.getOffset();
+        String offset = lastEvent.getOffset();
         String partitionId = context.getPartitionContext().getPartitionId();
         String consumerGroup = context.getPartitionContext().getConsumerGroup();
         context.updateCheckpointAsync()
