@@ -377,6 +377,12 @@
           "justification": "Modifies the type of changeFeedMetaData from ChangeFeedMetaData to JsonNode."
         },
         {
+          "code": "java.annotation.added",
+          "old" : "method com.azure.cosmos.CosmosDiagnosticsContext com.azure.cosmos.CosmosDiagnostics::getDiagnosticsContext()",
+          "new" : "method com.azure.cosmos.CosmosDiagnosticsContext com.azure.cosmos.CosmosDiagnostics::getDiagnosticsContext()",
+          "justification": "Ignore CosmosDiagnosticsContext in CosmosDiagnostics to avoid stackoverflow error."
+        },
+        {
           "regex": true,
           "code": "java\\.annotation\\.added",
           "old": ".*? com\\.azure\\.communication\\.jobrouter\\.models.*",
