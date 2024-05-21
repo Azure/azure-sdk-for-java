@@ -126,15 +126,15 @@ public class RecurrenceEvaluator {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
         final int interval = pattern.getInterval();
         final ZonedDateTime firstDayOfFirstWeek = settings.getStart().minusDays(
-            TimeWindowUtils.passingDaysOfWeek(settings.getStart().getDayOfWeek(), pattern.getFirstDayOfWeek()));
+            TimeWindowUtils.daysPassedWeekStart(settings.getStart().getDayOfWeek(), pattern.getFirstDayOfWeek()));
 
         final long numberOfInterval = Duration.between(firstDayOfFirstWeek, now).toSeconds()
             / Duration.ofDays((long) interval * RecurrenceConstants.DAYS_PER_WEEK).toSeconds();
         final ZonedDateTime firstDayOfMostRecentOccurrence = firstDayOfFirstWeek.plusDays(
             numberOfInterval * (interval * RecurrenceConstants.DAYS_PER_WEEK));
         final List<DayOfWeek> sortedDaysOfWeek = TimeWindowUtils.sortDaysOfWeek(pattern.getDaysOfWeek(), pattern.getFirstDayOfWeek());
-        final int maxDayOffset = TimeWindowUtils.passingDaysOfWeek(sortedDaysOfWeek.get(sortedDaysOfWeek.size() - 1), pattern.getFirstDayOfWeek());
-        final int minDayOffset = TimeWindowUtils.passingDaysOfWeek(sortedDaysOfWeek.get(0), pattern.getFirstDayOfWeek());
+        final int maxDayOffset = TimeWindowUtils.daysPassedWeekStart(sortedDaysOfWeek.get(sortedDaysOfWeek.size() - 1), pattern.getFirstDayOfWeek());
+        final int minDayOffset = TimeWindowUtils.daysPassedWeekStart(sortedDaysOfWeek.get(0), pattern.getFirstDayOfWeek());
         ZonedDateTime mostRecentOccurrence = null;
         int numberOfOccurrences = (int) (numberOfInterval * sortedDaysOfWeek.size()
             - (sortedDaysOfWeek.indexOf(settings.getStart().getDayOfWeek())));
@@ -160,7 +160,7 @@ public class RecurrenceEvaluator {
 
             for (int i = sortedDaysOfWeek.indexOf(dayWithMinOffset.getDayOfWeek()) + 1; i < sortedDaysOfWeek.size(); i++) {
                 dayWithMinOffset = firstDayOfMostRecentOccurrence.plusDays(
-                    TimeWindowUtils.passingDaysOfWeek(sortedDaysOfWeek.get(i), pattern.getFirstDayOfWeek()));
+                    TimeWindowUtils.daysPassedWeekStart(sortedDaysOfWeek.get(i), pattern.getFirstDayOfWeek()));
                 if (now.isBefore(dayWithMinOffset)) {
                     break;
                 }
@@ -222,10 +222,10 @@ public class RecurrenceEvaluator {
 
         if (i < sortedDaysOfWeek.size()) {
             return prevOccurrence.plusDays(
-                TimeWindowUtils.passingDaysOfWeek(sortedDaysOfWeek.get(i), prevOccurrence.getDayOfWeek().toString()));
+                TimeWindowUtils.daysPassedWeekStart(sortedDaysOfWeek.get(i), prevOccurrence.getDayOfWeek().toString()));
         }
         return prevOccurrence.plusDays(pattern.getInterval() * RecurrenceConstants.DAYS_PER_WEEK
-            - TimeWindowUtils.passingDaysOfWeek(prevOccurrence.getDayOfWeek(), sortedDaysOfWeek.get(0).toString()));
+            - TimeWindowUtils.daysPassedWeekStart(prevOccurrence.getDayOfWeek(), sortedDaysOfWeek.get(0).toString()));
     }
 
     private class OccurrenceInfo {

@@ -26,12 +26,18 @@ public class TimeWindowUtils {
         }
     }
 
-    public static int passingDaysOfWeek(DayOfWeek today, String firstDayOfWeek) {
-        int remainingDays = (convertToWeekDayNumber(today) - convertToWeekDayNumber(firstDayOfWeek));
-        if (remainingDays < 0) {
-            return remainingDays + RecurrenceConstants.DAYS_PER_WEEK;
+    /**
+     * Calculate the number of days that have passed since the start of the week
+     * @param today DayOfWeek enum of today
+     * @param firstDayOfWeek the start day of the week
+     * @return the number of days passed
+     * */
+    public static int daysPassedWeekStart(DayOfWeek today, String firstDayOfWeek) {
+        int passedDays = (convertToWeekDayNumber(today) - convertToWeekDayNumber(firstDayOfWeek));
+        if (passedDays < 0) {
+            return passedDays + RecurrenceConstants.DAYS_PER_WEEK;
         } else {
-            return remainingDays;
+            return passedDays;
         }
     }
 
