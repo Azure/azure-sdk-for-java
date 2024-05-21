@@ -95,25 +95,29 @@ public final class AssetUpdateProperties {
     private Map<String, Object> attributes;
 
     /*
-     * Protocol-specific default configuration for all data points. Each data point can have its own configuration that overrides the default settings here. This assumes that each asset instance has one protocol.
+     * Protocol-specific default configuration for all data points. Each data point can have its own configuration that
+     * overrides the default settings here. This assumes that each asset instance has one protocol.
      */
     @JsonProperty(value = "defaultDataPointsConfiguration")
     private String defaultDataPointsConfiguration;
 
     /*
-     * Protocol-specific default configuration for all events. Each event can have its own configuration that overrides the default settings here. This assumes that each asset instance has one protocol.
+     * Protocol-specific default configuration for all events. Each event can have its own configuration that overrides
+     * the default settings here. This assumes that each asset instance has one protocol.
      */
     @JsonProperty(value = "defaultEventsConfiguration")
     private String defaultEventsConfiguration;
 
     /*
-     * Array of data points that are part of the asset. Each data point can reference an asset type capability and have per-data point configuration. See below for more details for the definition of the dataPoints element.
+     * Array of data points that are part of the asset. Each data point can reference an asset type capability and have
+     * per-data point configuration. See below for more details for the definition of the dataPoints element.
      */
     @JsonProperty(value = "dataPoints")
     private List<DataPoint> dataPoints;
 
     /*
-     * Array of events that are part of the asset. Each event can reference an asset type capability and have per-event configuration. See below for more details about the definition of the events element.
+     * Array of events that are part of the asset. Each event can reference an asset type capability and have per-event
+     * configuration. See below for more details about the definition of the events element.
      */
     @JsonProperty(value = "events")
     private List<Event> events;

@@ -16,7 +16,8 @@ import java.util.List;
 public final class IdentifyFromPersonDirectoryRequest {
 
     /*
-     * Array of query faces faceIds, created by the "Detect". Each of the faces are identified independently. The valid number of faceIds is between [1, 10].
+     * Array of query faces faceIds, created by the "Detect". Each of the faces are identified independently. The valid
+     * number of faceIds is between [1, 10].
      */
     @Generated
     @JsonProperty(value = "faceIds")
@@ -37,7 +38,9 @@ public final class IdentifyFromPersonDirectoryRequest {
     private Integer maxNumOfCandidatesReturned;
 
     /*
-     * Customized identification confidence threshold, in the range of [0, 1]. Advanced user can tweak this value to override default internal threshold for better precision on their scenario data. Note there is no guarantee of this threshold value working on other data and after algorithm updates.
+     * Customized identification confidence threshold, in the range of [0, 1]. Advanced user can tweak this value to
+     * override default internal threshold for better precision on their scenario data. Note there is no guarantee of
+     * this threshold value working on other data and after algorithm updates.
      */
     @Generated
     @JsonProperty(value = "confidenceThreshold")

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Vault extended information. */
+/**
+ * Vault extended information.
+ */
 @Fluent
 public final class VaultExtendedInfo {
     /*
@@ -34,13 +36,15 @@ public final class VaultExtendedInfo {
     @JsonProperty(value = "algorithm")
     private String algorithm;
 
-    /** Creates an instance of VaultExtendedInfo class. */
+    /**
+     * Creates an instance of VaultExtendedInfo class.
+     */
     public VaultExtendedInfo() {
     }
 
     /**
      * Get the integrityKey property: Integrity key.
-     *
+     * 
      * @return the integrityKey value.
      */
     public String integrityKey() {
@@ -49,7 +53,7 @@ public final class VaultExtendedInfo {
 
     /**
      * Set the integrityKey property: Integrity key.
-     *
+     * 
      * @param integrityKey the integrityKey value to set.
      * @return the VaultExtendedInfo object itself.
      */
@@ -60,7 +64,7 @@ public final class VaultExtendedInfo {
 
     /**
      * Get the encryptionKey property: Encryption key.
-     *
+     * 
      * @return the encryptionKey value.
      */
     public String encryptionKey() {
@@ -69,7 +73,7 @@ public final class VaultExtendedInfo {
 
     /**
      * Set the encryptionKey property: Encryption key.
-     *
+     * 
      * @param encryptionKey the encryptionKey value to set.
      * @return the VaultExtendedInfo object itself.
      */
@@ -80,7 +84,7 @@ public final class VaultExtendedInfo {
 
     /**
      * Get the encryptionKeyThumbprint property: Encryption key thumbprint.
-     *
+     * 
      * @return the encryptionKeyThumbprint value.
      */
     public String encryptionKeyThumbprint() {
@@ -89,7 +93,7 @@ public final class VaultExtendedInfo {
 
     /**
      * Set the encryptionKeyThumbprint property: Encryption key thumbprint.
-     *
+     * 
      * @param encryptionKeyThumbprint the encryptionKeyThumbprint value to set.
      * @return the VaultExtendedInfo object itself.
      */
@@ -100,7 +104,7 @@ public final class VaultExtendedInfo {
 
     /**
      * Get the algorithm property: Algorithm for Vault ExtendedInfo.
-     *
+     * 
      * @return the algorithm value.
      */
     public String algorithm() {
@@ -109,7 +113,7 @@ public final class VaultExtendedInfo {
 
     /**
      * Set the algorithm property: Algorithm for Vault ExtendedInfo.
-     *
+     * 
      * @param algorithm the algorithm value to set.
      * @return the VaultExtendedInfo object itself.
      */
@@ -120,7 +124,7 @@ public final class VaultExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

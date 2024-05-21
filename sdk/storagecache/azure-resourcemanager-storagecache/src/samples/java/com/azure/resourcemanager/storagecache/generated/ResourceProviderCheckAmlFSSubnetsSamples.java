@@ -12,9 +12,7 @@ import com.azure.resourcemanager.storagecache.models.SkuName;
  */
 public final class ResourceProviderCheckAmlFSSubnetsSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
-     * checkAmlFSSubnets.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/checkAmlFSSubnets.json
      */
     /**
      * Sample code: checkAmlFSSubnets.
@@ -22,9 +20,10 @@ public final class ResourceProviderCheckAmlFSSubnetsSamples {
      * @param manager Entry point to StorageCacheManager.
      */
     public static void checkAmlFSSubnets(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
-        manager.resourceProviders().checkAmlFSSubnetsWithResponse(new AmlFilesystemSubnetInfo().withFilesystemSubnet(
-            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/fsSub")
-            .withStorageCapacityTiB(16.0F).withSku(new SkuName().withName("AMLFS-Durable-Premium-125")),
-            com.azure.core.util.Context.NONE);
+        manager.resourceProviders()
+            .checkAmlFSSubnetsWithResponse(new AmlFilesystemSubnetInfo().withFilesystemSubnet(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/fsSub")
+                .withStorageCapacityTiB(16.0F)
+                .withSku(new SkuName().withName("AMLFS-Durable-Premium-125")), com.azure.core.util.Context.NONE);
     }
 }

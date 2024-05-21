@@ -29,7 +29,8 @@ public final class LargeFaceList {
     private String userData;
 
     /*
-     * Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds.
+     * Name of recognition model. Recognition model is used when the face features are extracted and associated with
+     * detected faceIds.
      */
     @Generated
     @JsonProperty(value = "recognitionModel")

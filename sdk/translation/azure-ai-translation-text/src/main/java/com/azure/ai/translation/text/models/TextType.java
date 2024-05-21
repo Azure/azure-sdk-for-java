@@ -14,13 +14,13 @@ import java.util.Collection;
 public final class TextType extends ExpandableStringEnum<TextType> {
 
     /**
-     * Static value Plain for TextType.
+     * Plain text.
      */
     @Generated
     public static final TextType PLAIN = fromString("Plain");
 
     /**
-     * Static value Html for TextType.
+     * HTML-encoded text.
      */
     @Generated
     public static final TextType HTML = fromString("Html");

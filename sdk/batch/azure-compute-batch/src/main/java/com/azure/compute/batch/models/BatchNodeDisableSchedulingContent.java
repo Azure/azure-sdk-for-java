@@ -18,7 +18,8 @@ import java.io.IOException;
 public final class BatchNodeDisableSchedulingContent implements JsonSerializable<BatchNodeDisableSchedulingContent> {
 
     /*
-     * What to do with currently running Tasks when disabling Task scheduling on the Compute Node. The default value is requeue.
+     * What to do with currently running Tasks when disabling Task scheduling on the Compute Node. The default value is
+     * requeue.
      */
     @Generated
     private BatchNodeDisableSchedulingOption nodeDisableSchedulingOption;

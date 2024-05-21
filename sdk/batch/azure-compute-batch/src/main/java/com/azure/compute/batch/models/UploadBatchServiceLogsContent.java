@@ -20,25 +20,35 @@ import java.time.format.DateTimeFormatter;
 public final class UploadBatchServiceLogsContent implements JsonSerializable<UploadBatchServiceLogsContent> {
 
     /*
-     * The URL of the container within Azure Blob Storage to which to upload the Batch Service log file(s). If a user assigned managed identity is not being used, the URL must include a Shared Access Signature (SAS) granting write permissions to the container. The SAS duration must allow enough time for the upload to finish. The start time for SAS is optional and recommended to not be specified.
+     * The URL of the container within Azure Blob Storage to which to upload the Batch Service log file(s). If a user
+     * assigned managed identity is not being used, the URL must include a Shared Access Signature (SAS) granting write
+     * permissions to the container. The SAS duration must allow enough time for the upload to finish. The start time
+     * for SAS is optional and recommended to not be specified.
      */
     @Generated
     private final String containerUrl;
 
     /*
-     * The start of the time range from which to upload Batch Service log file(s). Any log file containing a log message in the time range will be uploaded. This means that the operation might retrieve more logs than have been requested since the entire log file is always uploaded, but the operation should not retrieve fewer logs than have been requested.
+     * The start of the time range from which to upload Batch Service log file(s). Any log file containing a log message
+     * in the time range will be uploaded. This means that the operation might retrieve more logs than have been
+     * requested since the entire log file is always uploaded, but the operation should not retrieve fewer logs than
+     * have been requested.
      */
     @Generated
     private final OffsetDateTime startTime;
 
     /*
-     * The end of the time range from which to upload Batch Service log file(s). Any log file containing a log message in the time range will be uploaded. This means that the operation might retrieve more logs than have been requested since the entire log file is always uploaded, but the operation should not retrieve fewer logs than have been requested. If omitted, the default is to upload all logs available after the startTime.
+     * The end of the time range from which to upload Batch Service log file(s). Any log file containing a log message
+     * in the time range will be uploaded. This means that the operation might retrieve more logs than have been
+     * requested since the entire log file is always uploaded, but the operation should not retrieve fewer logs than
+     * have been requested. If omitted, the default is to upload all logs available after the startTime.
      */
     @Generated
     private OffsetDateTime endTime;
 
     /*
-     * The reference to the user assigned identity to use to access Azure Blob Storage specified by containerUrl. The identity must have write access to the Azure Blob Storage container.
+     * The reference to the user assigned identity to use to access Azure Blob Storage specified by containerUrl. The
+     * identity must have write access to the Azure Blob Storage container.
      */
     @Generated
     private BatchNodeIdentityReference identityReference;

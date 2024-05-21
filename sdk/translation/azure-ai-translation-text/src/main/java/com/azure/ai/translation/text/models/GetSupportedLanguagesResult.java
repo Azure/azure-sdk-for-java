@@ -12,7 +12,7 @@ import java.util.Map;
  * Response for the languages API.
  */
 @Immutable
-public final class GetLanguagesResult {
+public final class GetSupportedLanguagesResult {
 
     /*
      * Languages that support translate API.
@@ -36,10 +36,10 @@ public final class GetLanguagesResult {
     private Map<String, SourceDictionaryLanguage> dictionary;
 
     /**
-     * Creates an instance of GetLanguagesResult class.
+     * Creates an instance of GetSupportedLanguagesResult class.
      */
     @Generated
-    private GetLanguagesResult() {
+    private GetSupportedLanguagesResult() {
     }
 
     /**

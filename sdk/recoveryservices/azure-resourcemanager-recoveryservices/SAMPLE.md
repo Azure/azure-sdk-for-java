@@ -53,14 +53,16 @@
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/ListOperations.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/ListOperations.json
      */
     /**
      * Sample code: ListOperations.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void listOperations(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
@@ -72,20 +74,21 @@ public final class OperationsListSamples {
 ### PrivateLinkResourcesOperation_Get
 
 ```java
-/** Samples for PrivateLinkResourcesOperation Get. */
+/**
+ * Samples for PrivateLinkResourcesOperation Get.
+ */
 public final class PrivateLinkResourcesOperationGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/GetPrivateLinkResources.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/GetPrivateLinkResources.json
      */
     /**
      * Sample code: Get PrivateLinkResource.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
-    public static void getPrivateLinkResource(
-        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .privateLinkResourcesOperations()
+    public static void
+        getPrivateLinkResource(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.privateLinkResourcesOperations()
             .getWithResponse("petesting", "pemsi-ecy-rsv2", "backupResource", com.azure.core.util.Context.NONE);
     }
 }
@@ -94,18 +97,20 @@ public final class PrivateLinkResourcesOperationGetSamples {
 ### PrivateLinkResourcesOperation_List
 
 ```java
-/** Samples for PrivateLinkResourcesOperation List. */
+/**
+ * Samples for PrivateLinkResourcesOperation List.
+ */
 public final class PrivateLinkResourcesOperationListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/ListPrivateLinkResources.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/ListPrivateLinkResources.json
      */
     /**
      * Sample code: List PrivateLinkResources.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
-    public static void listPrivateLinkResources(
-        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+    public static void
+        listPrivateLinkResources(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
         manager.privateLinkResourcesOperations().list("petesting", "pemsi-ecy-rsv2", com.azure.core.util.Context.NONE);
     }
 }
@@ -120,31 +125,26 @@ import com.azure.resourcemanager.recoveryservices.models.ResourceCapabilities;
 import com.azure.resourcemanager.recoveryservices.models.VaultSubResourceType;
 import java.util.Arrays;
 
-/** Samples for RecoveryServices Capabilities. */
+/**
+ * Samples for RecoveryServices Capabilities.
+ */
 public final class RecoveryServicesCapabilitiesSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/Capabilities.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Capabilities.json
      */
     /**
      * Sample code: Capabilities for Microsoft.RecoveryServices/Vaults.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void capabilitiesForMicrosoftRecoveryServicesVaults(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .recoveryServices()
-            .capabilitiesWithResponse(
-                "westus",
-                new ResourceCapabilities()
-                    .withType("Microsoft.RecoveryServices/Vaults")
-                    .withProperties(
-                        new CapabilitiesProperties()
-                            .withDnsZones(
-                                Arrays
-                                    .asList(
-                                        new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP),
-                                        new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY)))),
+        manager.recoveryServices()
+            .capabilitiesWithResponse("westus",
+                new ResourceCapabilities().withType("Microsoft.RecoveryServices/Vaults")
+                    .withProperties(new CapabilitiesProperties()
+                        .withDnsZones(Arrays.asList(new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP),
+                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY)))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -155,48 +155,42 @@ public final class RecoveryServicesCapabilitiesSamples {
 ```java
 import com.azure.resourcemanager.recoveryservices.models.CheckNameAvailabilityParameters;
 
-/** Samples for RecoveryServices CheckNameAvailability. */
+/**
+ * Samples for RecoveryServices CheckNameAvailability.
+ */
 public final class RecoveryServicesCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/CheckNameAvailability_Available.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/CheckNameAvailability_Available.json
      */
     /**
      * Sample code: Availability status of Resource Name when no resource with same name, type and subscription exists,
      * nor has been deleted within last 24 hours.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void
         availabilityStatusOfResourceNameWhenNoResourceWithSameNameTypeAndSubscriptionExistsNorHasBeenDeletedWithinLast24Hours(
             com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .recoveryServices()
-            .checkNameAvailabilityWithResponse(
-                "resGroupFoo",
-                "westus",
-                new CheckNameAvailabilityParameters()
-                    .withType("Microsoft.RecoveryServices/Vaults")
+        manager.recoveryServices()
+            .checkNameAvailabilityWithResponse("resGroupFoo", "westus",
+                new CheckNameAvailabilityParameters().withType("Microsoft.RecoveryServices/Vaults")
                     .withName("swaggerExample"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/CheckNameAvailability_NotAvailable.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/CheckNameAvailability_NotAvailable.json
      */
     /**
      * Sample code: Availability status of Resource Name when resource with same name, type and subscription exists.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void availabilityStatusOfResourceNameWhenResourceWithSameNameTypeAndSubscriptionExists(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .recoveryServices()
-            .checkNameAvailabilityWithResponse(
-                "resGroupBar",
-                "westus",
-                new CheckNameAvailabilityParameters()
-                    .withType("Microsoft.RecoveryServices/Vaults")
+        manager.recoveryServices()
+            .checkNameAvailabilityWithResponse("resGroupBar", "westus",
+                new CheckNameAvailabilityParameters().withType("Microsoft.RecoveryServices/Vaults")
                     .withName("swaggerExample2"),
                 com.azure.core.util.Context.NONE);
     }
@@ -206,20 +200,21 @@ public final class RecoveryServicesCheckNameAvailabilitySamples {
 ### RegisteredIdentities_Delete
 
 ```java
-/** Samples for RegisteredIdentities Delete. */
+/**
+ * Samples for RegisteredIdentities Delete.
+ */
 public final class RegisteredIdentitiesDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/DeleteRegisteredIdentities.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/DeleteRegisteredIdentities.json
      */
     /**
      * Sample code: Delete registered Identity.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
-    public static void deleteRegisteredIdentity(
-        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .registeredIdentities()
+    public static void
+        deleteRegisteredIdentity(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.registeredIdentities()
             .deleteWithResponse("BCDRIbzRG", "BCDRIbzVault", "dpmcontainer01", com.azure.core.util.Context.NONE);
     }
 }
@@ -228,18 +223,20 @@ public final class RegisteredIdentitiesDeleteSamples {
 ### ReplicationUsages_List
 
 ```java
-/** Samples for ReplicationUsages List. */
+/**
+ * Samples for ReplicationUsages List.
+ */
 public final class ReplicationUsagesListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/ListReplicationUsages.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/ListReplicationUsages.json
      */
     /**
      * Sample code: Gets Replication usages of vault.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
-    public static void getsReplicationUsagesOfVault(
-        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+    public static void
+        getsReplicationUsagesOfVault(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
         manager.replicationUsages().list("avrai7517RG1", "avrai7517Vault1", com.azure.core.util.Context.NONE);
     }
 }
@@ -248,22 +245,21 @@ public final class ReplicationUsagesListSamples {
 ### ResourceProvider_GetOperationResult
 
 ```java
-/** Samples for ResourceProvider GetOperationResult. */
+/**
+ * Samples for ResourceProvider GetOperationResult.
+ */
 public final class ResourceProviderGetOperationResultSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/GetOperationResult.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/GetOperationResult.json
      */
     /**
      * Sample code: Get Operation Result.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void getOperationResult(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .resourceProviders()
-            .getOperationResultWithResponse(
-                "HelloWorld",
-                "swaggerExample",
+        manager.resourceProviders()
+            .getOperationResultWithResponse("HelloWorld", "swaggerExample",
                 "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==",
                 com.azure.core.util.Context.NONE);
     }
@@ -273,22 +269,21 @@ public final class ResourceProviderGetOperationResultSamples {
 ### ResourceProvider_GetOperationStatus
 
 ```java
-/** Samples for ResourceProvider GetOperationStatus. */
+/**
+ * Samples for ResourceProvider GetOperationStatus.
+ */
 public final class ResourceProviderGetOperationStatusSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/GetOperationStatus.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/GetOperationStatus.json
      */
     /**
      * Sample code: Get Operation Status.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void getOperationStatus(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .resourceProviders()
-            .getOperationStatusWithResponse(
-                "HelloWorld",
-                "swaggerExample",
+        manager.resourceProviders()
+            .getOperationStatusWithResponse("HelloWorld", "swaggerExample",
                 "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==",
                 com.azure.core.util.Context.NONE);
     }
@@ -298,19 +293,20 @@ public final class ResourceProviderGetOperationStatusSamples {
 ### Usages_ListByVaults
 
 ```java
-/** Samples for Usages ListByVaults. */
+/**
+ * Samples for Usages ListByVaults.
+ */
 public final class UsagesListByVaultsSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/ListUsages.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/ListUsages.json
      */
     /**
      * Sample code: Gets vault usages.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void getsVaultUsages(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .usages()
+        manager.usages()
             .listByVaults("Default-RecoveryServices-ResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
@@ -322,28 +318,27 @@ public final class UsagesListByVaultsSamples {
 import com.azure.resourcemanager.recoveryservices.models.AuthType;
 import com.azure.resourcemanager.recoveryservices.models.RawCertificateData;
 
-/** Samples for VaultCertificates Create. */
+/**
+ * Samples for VaultCertificates Create.
+ */
 public final class VaultCertificatesCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PUTVaultCred.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVaultCred.json
      */
     /**
      * Sample code: Download vault credential file.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
-    public static void downloadVaultCredentialFile(
-        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaultCertificates()
+    public static void
+        downloadVaultCredentialFile(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaultCertificates()
             .define("BCDRIbzVault77777777-d41f-4550-9f70-7708a3a2283b-12-18-2017-vaultcredentials")
             .withExistingVault("BCDRIbzRG", "BCDRIbzVault")
-            .withProperties(
-                new RawCertificateData()
-                    .withAuthType(AuthType.AAD)
-                    .withCertificate(
-                        "TUlJRE5EQ0NBaHlnQXdJQkFnSVFDYUxFKzVTSlNVeWdncDM0VS9HUm9qQU5CZ2txaGtpRzl3MEJBUXNGQURBWE1SVXdFd1lEVlFRREV3eGhiV05vWVc1a2JpNWpiMjB3SGhjTk1qSXhNREkwTVRJd05qRTRXaGNOTWpNeE1ESTBNVEl4TmpFNFdqQVhNUlV3RXdZRFZRUURFd3hoYldOb1lXNWtiaTVqYjIwd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUN4cFpwS293a2p4VU9VWkpLT2JvdGdPWXkzaW9UVkxMMmZyaW9nZVN1Qm5IMWw3aVdQWW9kUHRoWS8yVmh6ZFVUckNXL25pNUh3b0JHYzZMMHF6UGlBWXpHek94RmpMQjZjdFNkbm9nL1A4eEV2OGE0cnJWZlBZdS9INStoTGx3N0RubXlTNWs4TU9sSVhUemVWNkxZV2I2RWlpTFppc0k1R3lLU1liemNaQmJKdnhLTVdGdHRCV08xZUwzUWNUejlpb1VGQzVnRlFKQzg3YXFkeDR1Wk9WYzRLM3Ixb09sTFBKdmRLN25YU3VWci9ZOC80ZHhCdDJZUTRia0hjM2EzcUNBbTZrV0QzamRiajhCZmhlWWNVNjFFZ3llVFV2MlI4dzRubWJqVXZxRW05cDZtTG4xMTdEWWpQTHNFODVTL0FpQmF0dkNhQ3hCZ0lxb1N1blBOUkFnTUJBQUdqZkRCNk1BNEdBMVVkRHdFQi93UUVBd0lGb0RBSkJnTlZIUk1FQWpBQU1CMEdBMVVkSlFRV01CUUdDQ3NHQVFVRkJ3TUJCZ2dyQmdFRkJRY0RBakFmQmdOVkhTTUVHREFXZ0JRR1NZcDJMUTJwOE5wMHUzRThJZDdRUjRTQXBqQWRCZ05WSFE0RUZnUVVCa21LZGkwTnFmRGFkTHR4UENIZTBFZUVnS1l3RFFZSktvWklodmNOQVFFTEJRQURnZ0VCQUp2ZG9yRmJ4cExZaUhYRHpnR001WmxMWTRDZE1LYW5BdzVDZDNFVnhDbkhtT05ISnpLRmpzdHZjdUN1TDZ2S1ptci9abm5ENXNLUnE0d0xnTXV6dlNXNGtQTXlWeENrYzdVYnNZSWJCSXNIUDl3cUNmcUY5aG5LSE9YZFJJV2tBVXhnbmYxSlpLZjR1NlpTSzZ3dExaME9VT0c5Mmd3SlB2eW5PVmJoeWpqczdQTVpONEw1djZyeHJkRWp0WG5sYzIvRDlnS0NOTFhFZHdRM0dzS05ZTGZvYy9DT3JmbEIrRHVPSThrVzM0WmxzYlFHelgyQ3ArWVVlSDNrQlBjY3RpUWNURHFQcW5YS0NNMTJ6MGZDTjVpNXRkRlUrM0VzemZBQkpiOEZpU2ZCWFF1UUZRRDNDTDkraVdjZXhrMmxQako2akZIbHZtak9XbTdjQllHZlc4ST0="
-                            .getBytes()))
+            .withProperties(new RawCertificateData().withAuthType(AuthType.AAD)
+                .withCertificate(
+                    "TUlJRE5EQ0NBaHlnQXdJQkFnSVFDYUxFKzVTSlNVeWdncDM0VS9HUm9qQU5CZ2txaGtpRzl3MEJBUXNGQURBWE1SVXdFd1lEVlFRREV3eGhiV05vWVc1a2JpNWpiMjB3SGhjTk1qSXhNREkwTVRJd05qRTRXaGNOTWpNeE1ESTBNVEl4TmpFNFdqQVhNUlV3RXdZRFZRUURFd3hoYldOb1lXNWtiaTVqYjIwd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUUN4cFpwS293a2p4VU9VWkpLT2JvdGdPWXkzaW9UVkxMMmZyaW9nZVN1Qm5IMWw3aVdQWW9kUHRoWS8yVmh6ZFVUckNXL25pNUh3b0JHYzZMMHF6UGlBWXpHek94RmpMQjZjdFNkbm9nL1A4eEV2OGE0cnJWZlBZdS9INStoTGx3N0RubXlTNWs4TU9sSVhUemVWNkxZV2I2RWlpTFppc0k1R3lLU1liemNaQmJKdnhLTVdGdHRCV08xZUwzUWNUejlpb1VGQzVnRlFKQzg3YXFkeDR1Wk9WYzRLM3Ixb09sTFBKdmRLN25YU3VWci9ZOC80ZHhCdDJZUTRia0hjM2EzcUNBbTZrV0QzamRiajhCZmhlWWNVNjFFZ3llVFV2MlI4dzRubWJqVXZxRW05cDZtTG4xMTdEWWpQTHNFODVTL0FpQmF0dkNhQ3hCZ0lxb1N1blBOUkFnTUJBQUdqZkRCNk1BNEdBMVVkRHdFQi93UUVBd0lGb0RBSkJnTlZIUk1FQWpBQU1CMEdBMVVkSlFRV01CUUdDQ3NHQVFVRkJ3TUJCZ2dyQmdFRkJRY0RBakFmQmdOVkhTTUVHREFXZ0JRR1NZcDJMUTJwOE5wMHUzRThJZDdRUjRTQXBqQWRCZ05WSFE0RUZnUVVCa21LZGkwTnFmRGFkTHR4UENIZTBFZUVnS1l3RFFZSktvWklodmNOQVFFTEJRQURnZ0VCQUp2ZG9yRmJ4cExZaUhYRHpnR001WmxMWTRDZE1LYW5BdzVDZDNFVnhDbkhtT05ISnpLRmpzdHZjdUN1TDZ2S1ptci9abm5ENXNLUnE0d0xnTXV6dlNXNGtQTXlWeENrYzdVYnNZSWJCSXNIUDl3cUNmcUY5aG5LSE9YZFJJV2tBVXhnbmYxSlpLZjR1NlpTSzZ3dExaME9VT0c5Mmd3SlB2eW5PVmJoeWpqczdQTVpONEw1djZyeHJkRWp0WG5sYzIvRDlnS0NOTFhFZHdRM0dzS05ZTGZvYy9DT3JmbEIrRHVPSThrVzM0WmxzYlFHelgyQ3ArWVVlSDNrQlBjY3RpUWNURHFQcW5YS0NNMTJ6MGZDTjVpNXRkRlUrM0VzemZBQkpiOEZpU2ZCWFF1UUZRRDNDTDkraVdjZXhrMmxQako2akZIbHZtak9XbTdjQllHZlc4ST0="
+                        .getBytes()))
             .create();
     }
 }
@@ -352,22 +347,24 @@ public final class VaultCertificatesCreateSamples {
 ### VaultExtendedInfo_CreateOrUpdate
 
 ```java
-/** Samples for VaultExtendedInfo CreateOrUpdate. */
+
+/**
+ * Samples for VaultExtendedInfo CreateOrUpdate.
+ */
 public final class VaultExtendedInfoCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/UpdateVaultExtendedInfo.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/UpdateVaultExtendedInfo.json
      */
     /**
      * Sample code: Put ExtendedInfo of Resource.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
-    public static void putExtendedInfoOfResource(
-        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaultExtendedInfoes()
-            .createOrUpdateWithResponse(
-                "Default-RecoveryServices-ResourceGroup", "swaggerExample", null, com.azure.core.util.Context.NONE);
+    public static void
+        putExtendedInfoOfResource(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaultExtendedInfoes()
+            .createOrUpdateWithResponse("Default-RecoveryServices-ResourceGroup", "swaggerExample", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -375,22 +372,23 @@ public final class VaultExtendedInfoCreateOrUpdateSamples {
 ### VaultExtendedInfo_Get
 
 ```java
-/** Samples for VaultExtendedInfo Get. */
+/**
+ * Samples for VaultExtendedInfo Get.
+ */
 public final class VaultExtendedInfoGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/GETVaultExtendedInfo.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/GETVaultExtendedInfo.json
      */
     /**
      * Sample code: Get ExtendedInfo of Resource.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
-    public static void getExtendedInfoOfResource(
-        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaultExtendedInfoes()
-            .getWithResponse(
-                "Default-RecoveryServices-ResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+    public static void
+        getExtendedInfoOfResource(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaultExtendedInfoes()
+            .getWithResponse("Default-RecoveryServices-ResourceGroup", "swaggerExample",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -398,22 +396,24 @@ public final class VaultExtendedInfoGetSamples {
 ### VaultExtendedInfo_Update
 
 ```java
-/** Samples for VaultExtendedInfo Update. */
+
+/**
+ * Samples for VaultExtendedInfo Update.
+ */
 public final class VaultExtendedInfoUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/UpdateVaultExtendedInfo.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/UpdateVaultExtendedInfo.json
      */
     /**
      * Sample code: PATCH ExtendedInfo of Resource.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
-    public static void pATCHExtendedInfoOfResource(
-        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaultExtendedInfoes()
-            .updateWithResponse(
-                "Default-RecoveryServices-ResourceGroup", "swaggerExample", null, com.azure.core.util.Context.NONE);
+    public static void
+        pATCHExtendedInfoOfResource(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaultExtendedInfoes()
+            .updateWithResponse("Default-RecoveryServices-ResourceGroup", "swaggerExample", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -426,6 +426,7 @@ import com.azure.resourcemanager.recoveryservices.models.AzureMonitorAlertSettin
 import com.azure.resourcemanager.recoveryservices.models.ClassicAlertSettings;
 import com.azure.resourcemanager.recoveryservices.models.CmkKekIdentity;
 import com.azure.resourcemanager.recoveryservices.models.CmkKeyVaultProperties;
+import com.azure.resourcemanager.recoveryservices.models.CrossRegionRestore;
 import com.azure.resourcemanager.recoveryservices.models.IdentityData;
 import com.azure.resourcemanager.recoveryservices.models.InfrastructureEncryptionState;
 import com.azure.resourcemanager.recoveryservices.models.MonitoringSettings;
@@ -433,63 +434,58 @@ import com.azure.resourcemanager.recoveryservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.recoveryservices.models.ResourceIdentityType;
 import com.azure.resourcemanager.recoveryservices.models.Sku;
 import com.azure.resourcemanager.recoveryservices.models.SkuName;
+import com.azure.resourcemanager.recoveryservices.models.StandardTierStorageRedundancy;
 import com.azure.resourcemanager.recoveryservices.models.UserIdentity;
 import com.azure.resourcemanager.recoveryservices.models.VaultProperties;
 import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesEncryption;
+import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesRedundancySettings;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Vaults CreateOrUpdate. */
+/**
+ * Samples for Vaults CreateOrUpdate.
+ */
 public final class VaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PUTVault_WithCMK.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_WithCMK.json
      */
     /**
      * Sample code: Create or Update Vault with CustomerManagedKeys.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void createOrUpdateVaultWithCustomerManagedKeys(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaults()
+        manager.vaults()
             .define("swaggerExample")
             .withRegion("West US")
             .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
-            .withIdentity(
-                new IdentityData()
-                    .withType(ResourceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
-                            new UserIdentity())))
-            .withProperties(
-                new VaultProperties()
-                    .withEncryption(
-                        new VaultPropertiesEncryption()
-                            .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))
-                            .withKekIdentity(
-                                new CmkKekIdentity()
-                                    .withUserAssignedIdentity(
-                                        "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"))
-                            .withInfrastructureEncryption(InfrastructureEncryptionState.ENABLED))
-                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
+                    new UserIdentity())))
+            .withProperties(new VaultProperties().withEncryption(new VaultPropertiesEncryption()
+                .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))
+                .withKekIdentity(new CmkKekIdentity().withUserAssignedIdentity(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"))
+                .withInfrastructureEncryption(InfrastructureEncryptionState.ENABLED))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
             .withSku(new Sku().withName(SkuName.STANDARD))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PUTVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault.json
      */
     /**
      * Sample code: Create or Update Recovery Services vault.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void createOrUpdateRecoveryServicesVault(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaults()
+        manager.vaults()
             .define("swaggerExample")
             .withRegion("West US")
             .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
@@ -500,57 +496,105 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PUTVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_ResourceGuardEnabled.json
+     */
+    /**
+     * Sample code: Create or Update Vault performing critical operation With MUA.
+     * 
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void createOrUpdateVaultPerformingCriticalOperationWithMUA(
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaults()
+            .define("swaggerExample")
+            .withRegion("West US")
+            .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
+                    new UserIdentity())))
+            .withProperties(new VaultProperties().withEncryption(new VaultPropertiesEncryption()
+                .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))
+                .withKekIdentity(new CmkKekIdentity().withUserAssignedIdentity(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"))
+                .withInfrastructureEncryption(InfrastructureEncryptionState.ENABLED))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withResourceGuardOperationRequests(Arrays.asList(
+                    "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourcegroups/ankurResourceGuard1/providers/Microsoft.DataProtection/resourceGuards/ResourceGuard38-1/modifyEncryptionSettings/default")))
+            .withSku(new Sku().withName(SkuName.STANDARD))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Create or Update Vault with User Assigned Identity.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void createOrUpdateVaultWithUserAssignedIdentity(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaults()
+        manager.vaults()
             .define("swaggerExample")
             .withRegion("West US")
             .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
-            .withIdentity(
-                new IdentityData()
-                    .withType(ResourceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
-                            new UserIdentity())))
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
+                    new UserIdentity())))
             .withProperties(new VaultProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
             .withSku(new Sku().withName(SkuName.STANDARD))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PUTVault_WithMonitoringSettings.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_WithMonitoringSettings.json
      */
     /**
      * Sample code: Create or Update Vault With Monitoring Setting.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void createOrUpdateVaultWithMonitoringSetting(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaults()
+        manager.vaults()
             .define("swaggerExample")
             .withRegion("West US")
             .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
             .withIdentity(new IdentityData().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-            .withProperties(
-                new VaultProperties()
-                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                    .withMonitoringSettings(
-                        new MonitoringSettings()
-                            .withAzureMonitorAlertSettings(
-                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED))
-                            .withClassicAlertSettings(
-                                new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.DISABLED))))
+            .withProperties(new VaultProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withMonitoringSettings(new MonitoringSettings()
+                    .withAzureMonitorAlertSettings(
+                        new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)
+                            .withAlertsForAllReplicationIssues(AlertsState.ENABLED)
+                            .withAlertsForAllFailoverIssues(AlertsState.DISABLED))
+                    .withClassicAlertSettings(
+                        new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.DISABLED)
+                            .withEmailNotificationsForSiteRecovery(AlertsState.ENABLED))))
+            .withSku(new Sku().withName(SkuName.STANDARD))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_WithRedundancySettings.json
+     */
+    /**
+     * Sample code: Create or Update Vault With Redundancy Setting.
+     * 
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void createOrUpdateVaultWithRedundancySetting(
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaults()
+            .define("swaggerExample")
+            .withRegion("West US")
+            .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withProperties(new VaultProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withRedundancySettings(new VaultPropertiesRedundancySettings()
+                    .withStandardTierStorageRedundancy(StandardTierStorageRedundancy.GEO_REDUNDANT)
+                    .withCrossRegionRestore(CrossRegionRestore.ENABLED)))
             .withSku(new Sku().withName(SkuName.STANDARD))
             .create();
     }
@@ -572,22 +616,22 @@ public final class VaultsCreateOrUpdateSamples {
 ### Vaults_Delete
 
 ```java
-/** Samples for Vaults Delete. */
+/**
+ * Samples for Vaults Delete.
+ */
 public final class VaultsDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/DeleteVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/DeleteVault.json
      */
     /**
      * Sample code: Delete Recovery Services Vault.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
-    public static void deleteRecoveryServicesVault(
-        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaults()
-            .deleteByResourceGroupWithResponse(
-                "Default-RecoveryServices-ResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+    public static void
+        deleteRecoveryServicesVault(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaults()
+            .delete("Default-RecoveryServices-ResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -595,22 +639,23 @@ public final class VaultsDeleteSamples {
 ### Vaults_GetByResourceGroup
 
 ```java
-/** Samples for Vaults GetByResourceGroup. */
+/**
+ * Samples for Vaults GetByResourceGroup.
+ */
 public final class VaultsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/GETVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/GETVault.json
      */
     /**
      * Sample code: Get Recovery Services Resource.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
-    public static void getRecoveryServicesResource(
-        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaults()
-            .getByResourceGroupWithResponse(
-                "Default-RecoveryServices-ResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
+    public static void
+        getRecoveryServicesResource(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaults()
+            .getByResourceGroupWithResponse("Default-RecoveryServices-ResourceGroup", "swaggerExample",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -618,14 +663,16 @@ public final class VaultsGetByResourceGroupSamples {
 ### Vaults_List
 
 ```java
-/** Samples for Vaults List. */
+/**
+ * Samples for Vaults List.
+ */
 public final class VaultsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/ListBySubscriptionIds.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/ListBySubscriptionIds.json
      */
     /**
      * Sample code: List of Recovery Services Resources in SubscriptionId.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void listOfRecoveryServicesResourcesInSubscriptionId(
@@ -638,20 +685,21 @@ public final class VaultsListSamples {
 ### Vaults_ListByResourceGroup
 
 ```java
-/** Samples for Vaults ListByResourceGroup. */
+/**
+ * Samples for Vaults ListByResourceGroup.
+ */
 public final class VaultsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/ListResources.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/ListResources.json
      */
     /**
      * Sample code: List of Recovery Services Resources in ResourceGroup.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void listOfRecoveryServicesResourcesInResourceGroup(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaults()
+        manager.vaults()
             .listByResourceGroup("Default-RecoveryServices-ResourceGroup", com.azure.core.util.Context.NONE);
     }
 }
@@ -665,188 +713,176 @@ import com.azure.resourcemanager.recoveryservices.models.AzureMonitorAlertSettin
 import com.azure.resourcemanager.recoveryservices.models.ClassicAlertSettings;
 import com.azure.resourcemanager.recoveryservices.models.CmkKekIdentity;
 import com.azure.resourcemanager.recoveryservices.models.CmkKeyVaultProperties;
+import com.azure.resourcemanager.recoveryservices.models.CrossRegionRestore;
 import com.azure.resourcemanager.recoveryservices.models.IdentityData;
 import com.azure.resourcemanager.recoveryservices.models.InfrastructureEncryptionState;
 import com.azure.resourcemanager.recoveryservices.models.MonitoringSettings;
 import com.azure.resourcemanager.recoveryservices.models.ResourceIdentityType;
+import com.azure.resourcemanager.recoveryservices.models.StandardTierStorageRedundancy;
 import com.azure.resourcemanager.recoveryservices.models.UserIdentity;
 import com.azure.resourcemanager.recoveryservices.models.Vault;
 import com.azure.resourcemanager.recoveryservices.models.VaultProperties;
 import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesEncryption;
+import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesRedundancySettings;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Vaults Update. */
+/**
+ * Samples for Vaults Update.
+ */
 public final class VaultsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PATCHVault_WithMonitoringSettings.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithMonitoringSettings.json
      */
     /**
      * Sample code: Update Vault With Monitoring Setting.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
-    public static void updateVaultWithMonitoringSetting(
-        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        Vault resource =
-            manager
-                .vaults()
-                .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+    public static void
+        updateVaultWithMonitoringSetting(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("PatchKey", "fakeTokenPlaceholder"))
-            .withProperties(
-                new VaultProperties()
-                    .withMonitoringSettings(
-                        new MonitoringSettings()
-                            .withAzureMonitorAlertSettings(
-                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED))
-                            .withClassicAlertSettings(
-                                new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.DISABLED))))
+            .withProperties(new VaultProperties().withMonitoringSettings(new MonitoringSettings()
+                .withAzureMonitorAlertSettings(
+                    new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)
+                        .withAlertsForAllReplicationIssues(AlertsState.ENABLED)
+                        .withAlertsForAllFailoverIssues(AlertsState.DISABLED))
+                .withClassicAlertSettings(
+                    new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.DISABLED)
+                        .withEmailNotificationsForSiteRecovery(AlertsState.ENABLED))))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PATCHVault_WithCMK.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithCMK.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void updateResourceWithCustomerManagedKeys(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        Vault resource =
-            manager
-                .vaults()
-                .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("PatchKey", "fakeTokenPlaceholder"))
-            .withProperties(
-                new VaultProperties()
-                    .withEncryption(
-                        new VaultPropertiesEncryption()
-                            .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))
-                            .withKekIdentity(
-                                new CmkKekIdentity()
-                                    .withUserAssignedIdentity(
-                                        "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"))
-                            .withInfrastructureEncryption(InfrastructureEncryptionState.ENABLED)))
-            .withIdentity(
-                new IdentityData()
-                    .withType(ResourceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
-                            new UserIdentity())))
+            .withProperties(new VaultProperties().withEncryption(new VaultPropertiesEncryption()
+                .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))
+                .withKekIdentity(new CmkKekIdentity().withUserAssignedIdentity(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"))
+                .withInfrastructureEncryption(InfrastructureEncryptionState.ENABLED)))
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
+                    new UserIdentity())))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PatchVault_WithCMK2.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PatchVault_WithCMK2.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys2.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void updateResourceWithCustomerManagedKeys2(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        Vault resource =
-            manager
-                .vaults()
-                .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("PatchKey", "fakeTokenPlaceholder"))
-            .withProperties(
-                new VaultProperties()
-                    .withEncryption(
-                        new VaultPropertiesEncryption()
-                            .withKekIdentity(new CmkKekIdentity().withUseSystemAssignedIdentity(true))))
+            .withProperties(new VaultProperties().withEncryption(new VaultPropertiesEncryption()
+                .withKekIdentity(new CmkKekIdentity().withUseSystemAssignedIdentity(true))))
             .withIdentity(new IdentityData().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PATCHVault_WithCMK3.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithCMK3.json
      */
     /**
      * Sample code: Update Resource With CustomerManagedKeys3.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void updateResourceWithCustomerManagedKeys3(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        Vault resource =
-            manager
-                .vaults()
-                .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("PatchKey", "fakeTokenPlaceholder"))
-            .withProperties(
-                new VaultProperties()
-                    .withEncryption(
-                        new VaultPropertiesEncryption()
-                            .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))))
-            .withIdentity(
-                new IdentityData()
-                    .withType(ResourceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
-                            new UserIdentity())))
+            .withProperties(new VaultProperties().withEncryption(new VaultPropertiesEncryption()
+                .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))))
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
+                    new UserIdentity())))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PATCHVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault.json
      */
     /**
      * Sample code: Update Resource.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void updateResource(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        Vault resource =
-            manager
-                .vaults()
-                .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
-                .getValue();
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("PatchKey", "fakeTokenPlaceholder")).apply();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PATCHVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithRedundancySettings.json
+     */
+    /**
+     * Sample code: Update Vault With Redundancy Setting.
+     * 
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void
+        updateVaultWithRedundancySetting(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new VaultProperties().withRedundancySettings(new VaultPropertiesRedundancySettings()
+                .withStandardTierStorageRedundancy(StandardTierStorageRedundancy.GEO_REDUNDANT)
+                .withCrossRegionRestore(CrossRegionRestore.ENABLED)))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PATCHVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Update Resource With User Assigned Identity.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void updateResourceWithUserAssignedIdentity(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        Vault resource =
-            manager
-                .vaults()
-                .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Vault resource = manager.vaults()
+            .getByResourceGroupWithResponse("HelloWorld", "swaggerExample", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("PatchKey", "fakeTokenPlaceholder"))
-            .withIdentity(
-                new IdentityData()
-                    .withType(ResourceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
-                            new UserIdentity())))
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
+                    new UserIdentity())))
             .apply();
     }
 

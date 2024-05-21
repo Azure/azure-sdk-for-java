@@ -18,7 +18,9 @@ import java.io.IOException;
 public final class OnYourDataEndpointVectorizationSource extends OnYourDataVectorizationSource {
 
     /*
-     * Specifies the resource endpoint URL from which embeddings should be retrieved. It should be in the format of https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/embeddings. The api-version query parameter is not allowed.
+     * Specifies the resource endpoint URL from which embeddings should be retrieved. It should be in the format of
+     * https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/embeddings. The api-version
+     * query parameter is not allowed.
      */
     @Generated
     private final String endpoint;

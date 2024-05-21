@@ -40,7 +40,9 @@ public final class BatchSupportedImage implements JsonSerializable<BatchSupporte
     private final OSType osType;
 
     /*
-     * The capabilities or features which the Image supports. Not every capability of the Image is listed. Capabilities in this list are considered of special interest and are generally related to integration with other features in the Azure Batch service.
+     * The capabilities or features which the Image supports. Not every capability of the Image is listed. Capabilities
+     * in this list are considered of special interest and are generally related to integration with other features in
+     * the Azure Batch service.
      */
     @Generated
     private List<String> capabilities;
@@ -52,7 +54,8 @@ public final class BatchSupportedImage implements JsonSerializable<BatchSupporte
     private OffsetDateTime batchSupportEndOfLife;
 
     /*
-     * Whether the Azure Batch service actively verifies that the Image is compatible with the associated Compute Node agent SKU.
+     * Whether the Azure Batch service actively verifies that the Image is compatible with the associated Compute Node
+     * agent SKU.
      */
     @Generated
     private final ImageVerificationType verificationType;

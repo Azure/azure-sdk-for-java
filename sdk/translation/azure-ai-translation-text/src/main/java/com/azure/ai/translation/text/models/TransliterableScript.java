@@ -13,14 +13,7 @@ import java.util.List;
  * Script definition with list of script into which given script can be translitered.
  */
 @Immutable
-public final class TransliterableScript extends CommonScriptModel {
-
-    /*
-     * List of scripts available to convert text to.
-     */
-    @Generated
-    @JsonProperty(value = "toScripts")
-    private final List<CommonScriptModel> toScripts;
+public final class TransliterableScript extends LanguageScript {
 
     /**
      * Creates an instance of TransliterableScript class.
@@ -28,25 +21,33 @@ public final class TransliterableScript extends CommonScriptModel {
      * @param code the code value to set.
      * @param name the name value to set.
      * @param nativeName the nativeName value to set.
-     * @param dir the dir value to set.
-     * @param toScripts the toScripts value to set.
+     * @param directionality the directionality value to set.
+     * @param targetLanguageScripts the targetLanguageScripts value to set.
      */
     @Generated
     @JsonCreator
     private TransliterableScript(@JsonProperty(value = "code") String code, @JsonProperty(value = "name") String name,
-        @JsonProperty(value = "nativeName") String nativeName, @JsonProperty(value = "dir") String dir,
-        @JsonProperty(value = "toScripts") List<CommonScriptModel> toScripts) {
-        super(code, name, nativeName, dir);
-        this.toScripts = toScripts;
+        @JsonProperty(value = "nativeName") String nativeName,
+        @JsonProperty(value = "dir") LanguageDirectionality directionality,
+        @JsonProperty(value = "toScripts") List<LanguageScript> targetLanguageScripts) {
+        super(code, name, nativeName, directionality);
+        this.targetLanguageScripts = targetLanguageScripts;
     }
 
     /**
-     * Get the toScripts property: List of scripts available to convert text to.
+     * Get the targetLanguageScripts property: List of scripts available to convert text to.
      *
-     * @return the toScripts value.
+     * @return the targetLanguageScripts value.
      */
     @Generated
-    public List<CommonScriptModel> getToScripts() {
-        return this.toScripts;
+    public List<LanguageScript> getTargetLanguageScripts() {
+        return this.targetLanguageScripts;
     }
+
+    /*
+     * List of scripts available to convert text to.
+     */
+    @Generated
+    @JsonProperty(value = "toScripts")
+    private final List<LanguageScript> targetLanguageScripts;
 }

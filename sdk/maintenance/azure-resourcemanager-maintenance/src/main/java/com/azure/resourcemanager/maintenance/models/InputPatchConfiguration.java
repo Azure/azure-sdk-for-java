@@ -7,12 +7,13 @@ package com.azure.resourcemanager.maintenance.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input configuration for a patch run. */
+/**
+ * Input configuration for a patch run.
+ */
 @Fluent
 public final class InputPatchConfiguration {
     /*
-     * Possible reboot preference as defined by the user based on which it would be decided to reboot the machine or
-     * not after the patch operation is completed.
+     * Possible reboot preference as defined by the user based on which it would be decided to reboot the machine or not after the patch operation is completed.
      */
     @JsonProperty(value = "rebootSetting")
     private RebootOptions rebootSetting;
@@ -29,14 +30,16 @@ public final class InputPatchConfiguration {
     @JsonProperty(value = "linuxParameters")
     private InputLinuxParameters linuxParameters;
 
-    /** Creates an instance of InputPatchConfiguration class. */
+    /**
+     * Creates an instance of InputPatchConfiguration class.
+     */
     public InputPatchConfiguration() {
     }
 
     /**
      * Get the rebootSetting property: Possible reboot preference as defined by the user based on which it would be
      * decided to reboot the machine or not after the patch operation is completed.
-     *
+     * 
      * @return the rebootSetting value.
      */
     public RebootOptions rebootSetting() {
@@ -46,7 +49,7 @@ public final class InputPatchConfiguration {
     /**
      * Set the rebootSetting property: Possible reboot preference as defined by the user based on which it would be
      * decided to reboot the machine or not after the patch operation is completed.
-     *
+     * 
      * @param rebootSetting the rebootSetting value to set.
      * @return the InputPatchConfiguration object itself.
      */
@@ -58,7 +61,7 @@ public final class InputPatchConfiguration {
     /**
      * Get the windowsParameters property: Input parameters specific to patching a Windows machine. For Linux machines,
      * do not pass this property.
-     *
+     * 
      * @return the windowsParameters value.
      */
     public InputWindowsParameters windowsParameters() {
@@ -68,7 +71,7 @@ public final class InputPatchConfiguration {
     /**
      * Set the windowsParameters property: Input parameters specific to patching a Windows machine. For Linux machines,
      * do not pass this property.
-     *
+     * 
      * @param windowsParameters the windowsParameters value to set.
      * @return the InputPatchConfiguration object itself.
      */
@@ -80,7 +83,7 @@ public final class InputPatchConfiguration {
     /**
      * Get the linuxParameters property: Input parameters specific to patching Linux machine. For Windows machines, do
      * not pass this property.
-     *
+     * 
      * @return the linuxParameters value.
      */
     public InputLinuxParameters linuxParameters() {
@@ -90,7 +93,7 @@ public final class InputPatchConfiguration {
     /**
      * Set the linuxParameters property: Input parameters specific to patching Linux machine. For Windows machines, do
      * not pass this property.
-     *
+     * 
      * @param linuxParameters the linuxParameters value to set.
      * @return the InputPatchConfiguration object itself.
      */
@@ -101,7 +104,7 @@ public final class InputPatchConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

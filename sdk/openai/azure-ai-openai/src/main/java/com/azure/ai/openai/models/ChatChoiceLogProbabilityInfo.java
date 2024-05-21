@@ -13,13 +13,14 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Log probability information for a choice, as requested via 'logprobs' and 'top_logprobs'.
+ * The ChatChoiceLogProbabilityInfo model.
  */
 @Immutable
 public final class ChatChoiceLogProbabilityInfo implements JsonSerializable<ChatChoiceLogProbabilityInfo> {
 
     /*
-     * The list of log probability information entries for the choice's message content tokens, as requested via the 'logprobs' option.
+     * The list of log probability information entries for the choice's message content tokens, as requested via the
+     * 'logprobs' option.
      */
     @Generated
     private final List<ChatTokenLogProbabilityResult> content;

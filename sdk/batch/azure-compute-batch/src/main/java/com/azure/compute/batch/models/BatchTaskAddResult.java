@@ -32,7 +32,9 @@ public final class BatchTaskAddResult implements JsonSerializable<BatchTaskAddRe
     private final String taskId;
 
     /*
-     * The ETag of the Task, if the Task was successfully added. You can use this to detect whether the Task has changed between requests. In particular, you can be pass the ETag with an Update Task request to specify that your changes should take effect only if nobody else has modified the Job in the meantime.
+     * The ETag of the Task, if the Task was successfully added. You can use this to detect whether the Task has changed
+     * between requests. In particular, you can be pass the ETag with an Update Task request to specify that your
+     * changes should take effect only if nobody else has modified the Job in the meantime.
      */
     @Generated
     private String eTag;

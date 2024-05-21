@@ -9,6 +9,7 @@ import com.azure.resourcemanager.recoveryservices.models.AzureMonitorAlertSettin
 import com.azure.resourcemanager.recoveryservices.models.ClassicAlertSettings;
 import com.azure.resourcemanager.recoveryservices.models.CmkKekIdentity;
 import com.azure.resourcemanager.recoveryservices.models.CmkKeyVaultProperties;
+import com.azure.resourcemanager.recoveryservices.models.CrossRegionRestore;
 import com.azure.resourcemanager.recoveryservices.models.IdentityData;
 import com.azure.resourcemanager.recoveryservices.models.InfrastructureEncryptionState;
 import com.azure.resourcemanager.recoveryservices.models.MonitoringSettings;
@@ -16,63 +17,58 @@ import com.azure.resourcemanager.recoveryservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.recoveryservices.models.ResourceIdentityType;
 import com.azure.resourcemanager.recoveryservices.models.Sku;
 import com.azure.resourcemanager.recoveryservices.models.SkuName;
+import com.azure.resourcemanager.recoveryservices.models.StandardTierStorageRedundancy;
 import com.azure.resourcemanager.recoveryservices.models.UserIdentity;
 import com.azure.resourcemanager.recoveryservices.models.VaultProperties;
 import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesEncryption;
+import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesRedundancySettings;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Vaults CreateOrUpdate. */
+/**
+ * Samples for Vaults CreateOrUpdate.
+ */
 public final class VaultsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PUTVault_WithCMK.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_WithCMK.json
      */
     /**
      * Sample code: Create or Update Vault with CustomerManagedKeys.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void createOrUpdateVaultWithCustomerManagedKeys(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaults()
+        manager.vaults()
             .define("swaggerExample")
             .withRegion("West US")
             .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
-            .withIdentity(
-                new IdentityData()
-                    .withType(ResourceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
-                            new UserIdentity())))
-            .withProperties(
-                new VaultProperties()
-                    .withEncryption(
-                        new VaultPropertiesEncryption()
-                            .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))
-                            .withKekIdentity(
-                                new CmkKekIdentity()
-                                    .withUserAssignedIdentity(
-                                        "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"))
-                            .withInfrastructureEncryption(InfrastructureEncryptionState.ENABLED))
-                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
+                    new UserIdentity())))
+            .withProperties(new VaultProperties().withEncryption(new VaultPropertiesEncryption()
+                .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))
+                .withKekIdentity(new CmkKekIdentity().withUserAssignedIdentity(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"))
+                .withInfrastructureEncryption(InfrastructureEncryptionState.ENABLED))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
             .withSku(new Sku().withName(SkuName.STANDARD))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PUTVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault.json
      */
     /**
      * Sample code: Create or Update Recovery Services vault.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void createOrUpdateRecoveryServicesVault(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaults()
+        manager.vaults()
             .define("swaggerExample")
             .withRegion("West US")
             .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
@@ -83,57 +79,105 @@ public final class VaultsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PUTVault_WithUserAssignedIdentity.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_ResourceGuardEnabled.json
+     */
+    /**
+     * Sample code: Create or Update Vault performing critical operation With MUA.
+     * 
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void createOrUpdateVaultPerformingCriticalOperationWithMUA(
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaults()
+            .define("swaggerExample")
+            .withRegion("West US")
+            .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
+                    new UserIdentity())))
+            .withProperties(new VaultProperties().withEncryption(new VaultPropertiesEncryption()
+                .withKeyVaultProperties(new CmkKeyVaultProperties().withKeyUri("fakeTokenPlaceholder"))
+                .withKekIdentity(new CmkKekIdentity().withUserAssignedIdentity(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi"))
+                .withInfrastructureEncryption(InfrastructureEncryptionState.ENABLED))
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withResourceGuardOperationRequests(Arrays.asList(
+                    "/subscriptions/38304e13-357e-405e-9e9a-220351dcce8c/resourcegroups/ankurResourceGuard1/providers/Microsoft.DataProtection/resourceGuards/ResourceGuard38-1/modifyEncryptionSettings/default")))
+            .withSku(new Sku().withName(SkuName.STANDARD))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_WithUserAssignedIdentity.json
      */
     /**
      * Sample code: Create or Update Vault with User Assigned Identity.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void createOrUpdateVaultWithUserAssignedIdentity(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaults()
+        manager.vaults()
             .define("swaggerExample")
             .withRegion("West US")
             .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
-            .withIdentity(
-                new IdentityData()
-                    .withType(ResourceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
-                            new UserIdentity())))
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/85bf5e8c-3084-4f42-add2-746ebb7e97b2/resourcegroups/defaultrg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/examplemsi",
+                    new UserIdentity())))
             .withProperties(new VaultProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED))
             .withSku(new Sku().withName(SkuName.STANDARD))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/PUTVault_WithMonitoringSettings.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_WithMonitoringSettings.json
      */
     /**
      * Sample code: Create or Update Vault With Monitoring Setting.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void createOrUpdateVaultWithMonitoringSetting(
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaults()
+        manager.vaults()
             .define("swaggerExample")
             .withRegion("West US")
             .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
             .withIdentity(new IdentityData().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-            .withProperties(
-                new VaultProperties()
-                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                    .withMonitoringSettings(
-                        new MonitoringSettings()
-                            .withAzureMonitorAlertSettings(
-                                new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED))
-                            .withClassicAlertSettings(
-                                new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.DISABLED))))
+            .withProperties(new VaultProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withMonitoringSettings(new MonitoringSettings()
+                    .withAzureMonitorAlertSettings(
+                        new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)
+                            .withAlertsForAllReplicationIssues(AlertsState.ENABLED)
+                            .withAlertsForAllFailoverIssues(AlertsState.DISABLED))
+                    .withClassicAlertSettings(
+                        new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.DISABLED)
+                            .withEmailNotificationsForSiteRecovery(AlertsState.ENABLED))))
+            .withSku(new Sku().withName(SkuName.STANDARD))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/PUTVault_WithRedundancySettings.json
+     */
+    /**
+     * Sample code: Create or Update Vault With Redundancy Setting.
+     * 
+     * @param manager Entry point to RecoveryServicesManager.
+     */
+    public static void createOrUpdateVaultWithRedundancySetting(
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaults()
+            .define("swaggerExample")
+            .withRegion("West US")
+            .withExistingResourceGroup("Default-RecoveryServices-ResourceGroup")
+            .withIdentity(new IdentityData().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withProperties(new VaultProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withRedundancySettings(new VaultPropertiesRedundancySettings()
+                    .withStandardTierStorageRedundancy(StandardTierStorageRedundancy.GEO_REDUNDANT)
+                    .withCrossRegionRestore(CrossRegionRestore.ENABLED)))
             .withSku(new Sku().withName(SkuName.STANDARD))
             .create();
     }

@@ -20,31 +20,45 @@ import java.time.Duration;
 public final class RollingUpgradePolicy implements JsonSerializable<RollingUpgradePolicy> {
 
     /*
-     * Allow VMSS to ignore AZ boundaries when constructing upgrade batches. Take into consideration the Update Domain and maxBatchInstancePercent to determine the batch size. This field is able to be set to true or false only when using NodePlacementConfiguration as Zonal.
+     * Allow VMSS to ignore AZ boundaries when constructing upgrade batches. Take into consideration the Update Domain
+     * and maxBatchInstancePercent to determine the batch size. This field is able to be set to true or false only when
+     * using NodePlacementConfiguration as Zonal.
      */
     @Generated
     private Boolean enableCrossZoneUpgrade;
 
     /*
-     * The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in previous or future batches can cause the percentage of instances in a batch to decrease to ensure higher reliability. The value of this field should be between 5 and 100, inclusive. If both maxBatchInstancePercent and maxUnhealthyInstancePercent are assigned with value, the value of maxBatchInstancePercent should not be more than maxUnhealthyInstancePercent.
+     * The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling
+     * upgrade in one batch. As this is a maximum, unhealthy instances in previous or future batches can cause the
+     * percentage of instances in a batch to decrease to ensure higher reliability. The value of this field should be
+     * between 5 and 100, inclusive. If both maxBatchInstancePercent and maxUnhealthyInstancePercent are assigned with
+     * value, the value of maxBatchInstancePercent should not be more than maxUnhealthyInstancePercent.
      */
     @Generated
     private Integer maxBatchInstancePercent;
 
     /*
-     * The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch. The value of this field should be between 5 and 100, inclusive. If both maxBatchInstancePercent and maxUnhealthyInstancePercent are assigned with value, the value of maxBatchInstancePercent should not be more than maxUnhealthyInstancePercent.
+     * The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously
+     * unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine
+     * health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch. The
+     * value of this field should be between 5 and 100, inclusive. If both maxBatchInstancePercent and
+     * maxUnhealthyInstancePercent are assigned with value, the value of maxBatchInstancePercent should not be more than
+     * maxUnhealthyInstancePercent.
      */
     @Generated
     private Integer maxUnhealthyInstancePercent;
 
     /*
-     * The maximum percentage of upgraded virtual machine instances that can be found to be in an unhealthy state. This check will happen after each batch is upgraded. If this percentage is ever exceeded, the rolling update aborts. The value of this field should be between 0 and 100, inclusive.
+     * The maximum percentage of upgraded virtual machine instances that can be found to be in an unhealthy state. This
+     * check will happen after each batch is upgraded. If this percentage is ever exceeded, the rolling update aborts.
+     * The value of this field should be between 0 and 100, inclusive.
      */
     @Generated
     private Integer maxUnhealthyUpgradedInstancePercent;
 
     /*
-     * The wait time between completing the update for all virtual machines in one batch and starting the next batch. The time duration should be specified in ISO 8601 format..
+     * The wait time between completing the update for all virtual machines in one batch and starting the next batch.
+     * The time duration should be specified in ISO 8601 format..
      */
     @Generated
     private Duration pauseTimeBetweenBatches;

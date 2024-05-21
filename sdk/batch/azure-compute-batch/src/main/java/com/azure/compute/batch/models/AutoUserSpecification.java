@@ -18,7 +18,9 @@ import java.io.IOException;
 public final class AutoUserSpecification implements JsonSerializable<AutoUserSpecification> {
 
     /*
-     * The scope for the auto user. The default value is pool. If the pool is running Windows, a value of Task should be specified if stricter isolation between tasks is required, such as if the task mutates the registry in a way which could impact other tasks.
+     * The scope for the auto user. The default value is pool. If the pool is running Windows, a value of Task should be
+     * specified if stricter isolation between tasks is required, such as if the task mutates the registry in a way
+     * which could impact other tasks.
      */
     @Generated
     private AutoUserScope scope;

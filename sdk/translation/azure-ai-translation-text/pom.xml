@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-translation-text</artifactId>
-  <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-ai-translation-text;current} -->
+  <version>1.0.0</version> <!-- {x-version-update;com.azure:azure-ai-translation-text;current} -->
 
   <name>Microsoft Azure client library for Text Translation</name>
   <description>This package contains Microsoft Azure Text Translation client library.</description>
@@ -48,11 +48,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
       <version>1.49.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.50</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>

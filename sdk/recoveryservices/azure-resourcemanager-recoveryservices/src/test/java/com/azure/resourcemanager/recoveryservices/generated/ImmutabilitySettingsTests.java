@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ImmutabilitySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImmutabilitySettings model =
-            BinaryData.fromString("{\"state\":\"Unlocked\"}").toObject(ImmutabilitySettings.class);
-        Assertions.assertEquals(ImmutabilityState.UNLOCKED, model.state());
+        ImmutabilitySettings model
+            = BinaryData.fromString("{\"state\":\"Disabled\"}").toObject(ImmutabilitySettings.class);
+        Assertions.assertEquals(ImmutabilityState.DISABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImmutabilitySettings model = new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED);
+        ImmutabilitySettings model = new ImmutabilitySettings().withState(ImmutabilityState.DISABLED);
         model = BinaryData.fromObject(model).toObject(ImmutabilitySettings.class);
-        Assertions.assertEquals(ImmutabilityState.UNLOCKED, model.state());
+        Assertions.assertEquals(ImmutabilityState.DISABLED, model.state());
     }
 }
