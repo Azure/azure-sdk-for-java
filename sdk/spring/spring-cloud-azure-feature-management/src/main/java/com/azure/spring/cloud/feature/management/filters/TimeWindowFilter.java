@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
+import com.azure.spring.cloud.feature.management.implementation.FeatureFilterUtils;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceCachedService;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
@@ -14,7 +15,6 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.Collection;
 import java.util.Map;
 
 import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
@@ -50,7 +50,7 @@ public final class TimeWindowFilter implements FeatureFilter {
             final Map<String, Object> recurrenceParameters = (Map<String, Object>) recurrenceObject;
             final Object patternObj = recurrenceParameters.get(RecurrenceConstants.RECURRENCE_PATTERN);
             if (patternObj != null) {
-                updateValueFromMapToList((Map<String, Object>) patternObj, RecurrenceConstants.RECURRENCE_PATTERN_DAYS_OF_WEEK);
+                FeatureFilterUtils.updateValueFromMapToList((Map<String, Object>) patternObj, RecurrenceConstants.RECURRENCE_PATTERN_DAYS_OF_WEEK);
             }
         }
 
@@ -87,13 +87,5 @@ public final class TimeWindowFilter implements FeatureFilter {
         }
 
         return now.isBefore(closestRecurrence.plus(activeDuration));
-    }
-
-    private void updateValueFromMapToList(Map<String, Object> parameters, String key) {
-        Object objectMap = parameters.get(key);
-        if (objectMap instanceof Map) {
-            Collection<Object> toType = ((Map<String, Object>) objectMap).values();
-            parameters.put(key, toType);
-        }
     }
 }

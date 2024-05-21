@@ -7,13 +7,13 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+import com.azure.spring.cloud.feature.management.implementation.FeatureFilterUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -84,7 +84,7 @@ public class TargetingFilter implements FeatureFilter {
 
     /**
      * Filter for targeting a user/group/percentage of users.
-     * 
+     *
      * @param contextAccessor Accessor for identifying the current user/group when evaluating
      */
     public TargetingFilter(TargetingContextAccessor contextAccessor) {
@@ -94,7 +94,7 @@ public class TargetingFilter implements FeatureFilter {
 
     /**
      * `Microsoft.TargetingFilter` evaluates a user/group/overall rollout of a feature.
-     * 
+     *
      * @param contextAccessor Context for evaluating the users/groups.
      * @param options enables customization of the filter.
      */
@@ -126,8 +126,8 @@ public class TargetingFilter implements FeatureFilter {
             parameters = (Map<String, Object>) audienceObject;
         }
 
-        updateValueFromMapToList(parameters, USERS);
-        updateValueFromMapToList(parameters, GROUPS);
+        FeatureFilterUtils.updateValueFromMapToList(parameters, USERS);
+        FeatureFilterUtils.updateValueFromMapToList(parameters, GROUPS);
 
         Audience audience;
         String exclusionValue = getKeyCase(parameters, EXCLUSION_CAMEL);
@@ -234,7 +234,7 @@ public class TargetingFilter implements FeatureFilter {
 
     /**
      * Computes the percentage that the contextId falls into.
-     * 
+     *
      * @param contextId Id of the context being targeted
      * @return the bucket value of the context id
      * @throws TargetingException Unable to create hash of target context
@@ -265,8 +265,8 @@ public class TargetingFilter implements FeatureFilter {
 
     /**
      * Validates the settings of a targeting filter.
-     * 
-     * @param settings targeting filter settings
+     *
+     * @param audience targeting filter settings
      * @throws TargetingException when a required parameter is missing or percentage value is greater than 100.
      */
     void validateSettings(Audience audience) {
@@ -303,7 +303,7 @@ public class TargetingFilter implements FeatureFilter {
 
     /**
      * Checks if two strings are equal, ignores case if configured to.
-     * 
+     *
      * @param s1 string to compare
      * @param s2 string to compare
      * @return true if the strings are equal
@@ -313,22 +313,5 @@ public class TargetingFilter implements FeatureFilter {
             return s1.equalsIgnoreCase(s2);
         }
         return s1.equals(s2);
-    }
-
-    /**
-     * Looks at the given key in the parameters and coverts it to a list if it is currently a map. Used for updating
-     * fields in the targeting filter.
-     * 
-     * @param <T> Type of object inside of parameters for the given key
-     * @param parameters map of generic objects
-     * @param key key of object int the parameters map
-     */
-    @SuppressWarnings("unchecked")
-    private void updateValueFromMapToList(Map<String, Object> parameters, String key) {
-        Object objectMap = parameters.get(key);
-        if (objectMap instanceof Map) {
-            Collection<Object> toType = ((Map<String, Object>) objectMap).values();
-            parameters.put(key, toType);
-        }
     }
 }
