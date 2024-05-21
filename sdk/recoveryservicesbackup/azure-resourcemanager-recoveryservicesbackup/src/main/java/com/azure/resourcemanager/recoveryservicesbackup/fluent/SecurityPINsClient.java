@@ -20,6 +20,7 @@ public interface SecurityPINsClient {
      * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param parameters security pin request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,7 +30,7 @@ public interface SecurityPINsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TokenInformationInner> getWithResponse(String vaultName, String resourceGroupName,
-        SecurityPinBase parameters, Context context);
+        String xMsAuthorizationAuxiliary, SecurityPinBase parameters, Context context);
 
     /**
      * Get the security PIN.

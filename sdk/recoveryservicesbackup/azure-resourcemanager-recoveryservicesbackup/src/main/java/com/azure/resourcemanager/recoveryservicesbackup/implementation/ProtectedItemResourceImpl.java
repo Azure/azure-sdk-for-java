@@ -81,6 +81,10 @@ public final class ProtectedItemResourceImpl
 
     private String protectedItemName;
 
+    private String createXMsAuthorizationAuxiliary;
+
+    private String updateXMsAuthorizationAuxiliary;
+
     public ProtectedItemResourceImpl withExistingProtectionContainer(String vaultName, String resourceGroupName,
         String fabricName, String containerName) {
         this.vaultName = vaultName;
@@ -91,15 +95,20 @@ public final class ProtectedItemResourceImpl
     }
 
     public ProtectedItemResource create() {
-        this.innerObject = serviceManager.serviceClient().getProtectedItems().createOrUpdateWithResponse(vaultName,
-            resourceGroupName, fabricName, containerName, protectedItemName, this.innerModel(), Context.NONE)
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectedItems()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+                this.innerModel(), createXMsAuthorizationAuxiliary, Context.NONE)
             .getValue();
         return this;
     }
 
     public ProtectedItemResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getProtectedItems().createOrUpdateWithResponse(vaultName,
-            resourceGroupName, fabricName, containerName, protectedItemName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectedItems()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+                this.innerModel(), createXMsAuthorizationAuxiliary, context)
+            .getValue();
         return this;
     }
 
@@ -108,22 +117,29 @@ public final class ProtectedItemResourceImpl
         this.innerObject = new ProtectedItemResourceInner();
         this.serviceManager = serviceManager;
         this.protectedItemName = name;
+        this.createXMsAuthorizationAuxiliary = null;
     }
 
     public ProtectedItemResourceImpl update() {
+        this.updateXMsAuthorizationAuxiliary = null;
         return this;
     }
 
     public ProtectedItemResource apply() {
-        this.innerObject = serviceManager.serviceClient().getProtectedItems().createOrUpdateWithResponse(vaultName,
-            resourceGroupName, fabricName, containerName, protectedItemName, this.innerModel(), Context.NONE)
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectedItems()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+                this.innerModel(), updateXMsAuthorizationAuxiliary, Context.NONE)
             .getValue();
         return this;
     }
 
     public ProtectedItemResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getProtectedItems().createOrUpdateWithResponse(vaultName,
-            resourceGroupName, fabricName, containerName, protectedItemName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectedItems()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+                this.innerModel(), updateXMsAuthorizationAuxiliary, context)
+            .getValue();
         return this;
     }
 
@@ -140,15 +156,21 @@ public final class ProtectedItemResourceImpl
 
     public ProtectedItemResource refresh() {
         String localFilter = null;
-        this.innerObject = serviceManager.serviceClient().getProtectedItems().getWithResponse(vaultName,
-            resourceGroupName, fabricName, containerName, protectedItemName, localFilter, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectedItems()
+            .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, localFilter,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProtectedItemResource refresh(Context context) {
         String localFilter = null;
-        this.innerObject = serviceManager.serviceClient().getProtectedItems().getWithResponse(vaultName,
-            resourceGroupName, fabricName, containerName, protectedItemName, localFilter, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectedItems()
+            .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, localFilter,
+                context)
+            .getValue();
         return this;
     }
 
@@ -175,5 +197,19 @@ public final class ProtectedItemResourceImpl
     public ProtectedItemResourceImpl withEtag(String etag) {
         this.innerModel().withEtag(etag);
         return this;
+    }
+
+    public ProtectedItemResourceImpl withXMsAuthorizationAuxiliary(String xMsAuthorizationAuxiliary) {
+        if (isInCreateMode()) {
+            this.createXMsAuthorizationAuxiliary = xMsAuthorizationAuxiliary;
+            return this;
+        } else {
+            this.updateXMsAuthorizationAuxiliary = xMsAuthorizationAuxiliary;
+            return this;
+        }
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

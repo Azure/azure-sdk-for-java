@@ -149,8 +149,8 @@ public interface ProtectedItemResource {
          * The stage of the ProtectedItemResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithProperties, DefinitionStages.WithEtag {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties,
+            DefinitionStages.WithEtag, DefinitionStages.WithXMsAuthorizationAuxiliary {
             /**
              * Executes the create request.
              * 
@@ -205,6 +205,19 @@ public interface ProtectedItemResource {
              */
             WithCreate withEtag(String etag);
         }
+
+        /**
+         * The stage of the ProtectedItemResource definition allowing to specify xMsAuthorizationAuxiliary.
+         */
+        interface WithXMsAuthorizationAuxiliary {
+            /**
+             * Specifies the xMsAuthorizationAuxiliary property: The xMsAuthorizationAuxiliary parameter.
+             * 
+             * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+             * @return the next definition stage.
+             */
+            WithCreate withXMsAuthorizationAuxiliary(String xMsAuthorizationAuxiliary);
+        }
     }
 
     /**
@@ -217,7 +230,8 @@ public interface ProtectedItemResource {
     /**
      * The template for ProtectedItemResource update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithEtag {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithEtag,
+        UpdateStages.WithXMsAuthorizationAuxiliary {
         /**
          * Executes the update request.
          * 
@@ -275,6 +289,19 @@ public interface ProtectedItemResource {
              * @return the next definition stage.
              */
             Update withEtag(String etag);
+        }
+
+        /**
+         * The stage of the ProtectedItemResource update allowing to specify xMsAuthorizationAuxiliary.
+         */
+        interface WithXMsAuthorizationAuxiliary {
+            /**
+             * Specifies the xMsAuthorizationAuxiliary property: The xMsAuthorizationAuxiliary parameter.
+             * 
+             * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+             * @return the next definition stage.
+             */
+            Update withXMsAuthorizationAuxiliary(String xMsAuthorizationAuxiliary);
         }
     }
 

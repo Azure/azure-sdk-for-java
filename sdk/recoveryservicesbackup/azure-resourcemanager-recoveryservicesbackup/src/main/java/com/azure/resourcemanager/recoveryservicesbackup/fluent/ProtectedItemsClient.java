@@ -64,6 +64,7 @@ public interface ProtectedItemsClient {
      * @param containerName Container name associated with the backup item.
      * @param protectedItemName Item name to be backed up.
      * @param parameters resource backed up item.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -73,7 +74,7 @@ public interface ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ProtectedItemResourceInner> createOrUpdateWithResponse(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, ProtectedItemResourceInner parameters,
-        Context context);
+        String xMsAuthorizationAuxiliary, Context context);
 
     /**
      * Enables backup of an item or to modifies the backup policy information of an already backed up item. This is an

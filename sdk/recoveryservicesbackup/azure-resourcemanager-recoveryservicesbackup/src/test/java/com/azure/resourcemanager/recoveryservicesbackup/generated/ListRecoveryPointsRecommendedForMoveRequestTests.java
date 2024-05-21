@@ -21,8 +21,9 @@ public final class ListRecoveryPointsRecommendedForMoveRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListRecoveryPointsRecommendedForMoveRequest model = new ListRecoveryPointsRecommendedForMoveRequest()
-            .withObjectType("elvezrypq").withExcludedRPList(Arrays.asList("eokerqwkyhkobopg"));
+        ListRecoveryPointsRecommendedForMoveRequest model
+            = new ListRecoveryPointsRecommendedForMoveRequest().withObjectType("elvezrypq")
+                .withExcludedRPList(Arrays.asList("eokerqwkyhkobopg"));
         model = BinaryData.fromObject(model).toObject(ListRecoveryPointsRecommendedForMoveRequest.class);
         Assertions.assertEquals("elvezrypq", model.objectType());
         Assertions.assertEquals("eokerqwkyhkobopg", model.excludedRPList().get(0));

@@ -67,6 +67,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
             @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("x-ms-authorization-auxiliary") String xMsAuthorizationAuxiliary,
             @BodyParam("application/json") SecurityPinBase parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -76,6 +77,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param parameters security pin request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -84,7 +86,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TokenInformationInner>> getWithResponseAsync(String vaultName, String resourceGroupName,
-        SecurityPinBase parameters) {
+        String xMsAuthorizationAuxiliary, SecurityPinBase parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -106,7 +108,8 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
-                resourceGroupName, this.client.getSubscriptionId(), parameters, accept, context))
+                resourceGroupName, this.client.getSubscriptionId(), xMsAuthorizationAuxiliary, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -115,6 +118,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param parameters security pin request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,7 +128,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TokenInformationInner>> getWithResponseAsync(String vaultName, String resourceGroupName,
-        SecurityPinBase parameters, Context context) {
+        String xMsAuthorizationAuxiliary, SecurityPinBase parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -146,7 +150,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
-            this.client.getSubscriptionId(), parameters, accept, context);
+            this.client.getSubscriptionId(), xMsAuthorizationAuxiliary, parameters, accept, context);
     }
 
     /**
@@ -161,8 +165,9 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TokenInformationInner> getAsync(String vaultName, String resourceGroupName) {
+        final String xMsAuthorizationAuxiliary = null;
         final SecurityPinBase parameters = null;
-        return getWithResponseAsync(vaultName, resourceGroupName, parameters)
+        return getWithResponseAsync(vaultName, resourceGroupName, xMsAuthorizationAuxiliary, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -171,6 +176,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param parameters security pin request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,8 +186,9 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TokenInformationInner> getWithResponse(String vaultName, String resourceGroupName,
-        SecurityPinBase parameters, Context context) {
-        return getWithResponseAsync(vaultName, resourceGroupName, parameters, context).block();
+        String xMsAuthorizationAuxiliary, SecurityPinBase parameters, Context context) {
+        return getWithResponseAsync(vaultName, resourceGroupName, xMsAuthorizationAuxiliary, parameters, context)
+            .block();
     }
 
     /**
@@ -196,7 +203,9 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TokenInformationInner get(String vaultName, String resourceGroupName) {
+        final String xMsAuthorizationAuxiliary = null;
         final SecurityPinBase parameters = null;
-        return getWithResponse(vaultName, resourceGroupName, parameters, Context.NONE).getValue();
+        return getWithResponse(vaultName, resourceGroupName, xMsAuthorizationAuxiliary, parameters, Context.NONE)
+            .getValue();
     }
 }

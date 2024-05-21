@@ -48,9 +48,9 @@ public final class BackupResourceVaultConfigsImpl implements BackupResourceVault
     }
 
     public Response<BackupResourceVaultConfigResource> updateWithResponse(String vaultName, String resourceGroupName,
-        BackupResourceVaultConfigResourceInner parameters, Context context) {
-        Response<BackupResourceVaultConfigResourceInner> inner
-            = this.serviceClient().updateWithResponse(vaultName, resourceGroupName, parameters, context);
+        BackupResourceVaultConfigResourceInner parameters, String xMsAuthorizationAuxiliary, Context context) {
+        Response<BackupResourceVaultConfigResourceInner> inner = this.serviceClient()
+            .updateWithResponse(vaultName, resourceGroupName, parameters, xMsAuthorizationAuxiliary, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BackupResourceVaultConfigResourceImpl(inner.getValue(), this.manager()));
@@ -71,9 +71,9 @@ public final class BackupResourceVaultConfigsImpl implements BackupResourceVault
     }
 
     public Response<BackupResourceVaultConfigResource> putWithResponse(String vaultName, String resourceGroupName,
-        BackupResourceVaultConfigResourceInner parameters, Context context) {
-        Response<BackupResourceVaultConfigResourceInner> inner
-            = this.serviceClient().putWithResponse(vaultName, resourceGroupName, parameters, context);
+        BackupResourceVaultConfigResourceInner parameters, String xMsAuthorizationAuxiliary, Context context) {
+        Response<BackupResourceVaultConfigResourceInner> inner = this.serviceClient()
+            .putWithResponse(vaultName, resourceGroupName, parameters, xMsAuthorizationAuxiliary, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BackupResourceVaultConfigResourceImpl(inner.getValue(), this.manager()));

@@ -77,6 +77,10 @@ public final class ProtectionPolicyResourceImpl
 
     private String policyName;
 
+    private String createXMsAuthorizationAuxiliary;
+
+    private String updateXMsAuthorizationAuxiliary;
+
     public ProtectionPolicyResourceImpl withExistingVault(String vaultName, String resourceGroupName) {
         this.vaultName = vaultName;
         this.resourceGroupName = resourceGroupName;
@@ -84,15 +88,19 @@ public final class ProtectionPolicyResourceImpl
     }
 
     public ProtectionPolicyResource create() {
-        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
-            .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), Context.NONE)
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionPolicies()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(),
+                createXMsAuthorizationAuxiliary, Context.NONE)
             .getValue();
         return this;
     }
 
     public ProtectionPolicyResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
-            .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), context)
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionPolicies()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(),
+                createXMsAuthorizationAuxiliary, context)
             .getValue();
         return this;
     }
@@ -102,22 +110,28 @@ public final class ProtectionPolicyResourceImpl
         this.innerObject = new ProtectionPolicyResourceInner();
         this.serviceManager = serviceManager;
         this.policyName = name;
+        this.createXMsAuthorizationAuxiliary = null;
     }
 
     public ProtectionPolicyResourceImpl update() {
+        this.updateXMsAuthorizationAuxiliary = null;
         return this;
     }
 
     public ProtectionPolicyResource apply() {
-        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
-            .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), Context.NONE)
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionPolicies()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(),
+                updateXMsAuthorizationAuxiliary, Context.NONE)
             .getValue();
         return this;
     }
 
     public ProtectionPolicyResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
-            .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), context)
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionPolicies()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(),
+                updateXMsAuthorizationAuxiliary, context)
             .getValue();
         return this;
     }
@@ -132,14 +146,18 @@ public final class ProtectionPolicyResourceImpl
     }
 
     public ProtectionPolicyResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
-            .getWithResponse(vaultName, resourceGroupName, policyName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionPolicies()
+            .getWithResponse(vaultName, resourceGroupName, policyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProtectionPolicyResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
-            .getWithResponse(vaultName, resourceGroupName, policyName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionPolicies()
+            .getWithResponse(vaultName, resourceGroupName, policyName, context)
+            .getValue();
         return this;
     }
 
@@ -166,5 +184,19 @@ public final class ProtectionPolicyResourceImpl
     public ProtectionPolicyResourceImpl withEtag(String etag) {
         this.innerModel().withEtag(etag);
         return this;
+    }
+
+    public ProtectionPolicyResourceImpl withXMsAuthorizationAuxiliary(String xMsAuthorizationAuxiliary) {
+        if (isInCreateMode()) {
+            this.createXMsAuthorizationAuxiliary = xMsAuthorizationAuxiliary;
+            return this;
+        } else {
+            this.updateXMsAuthorizationAuxiliary = xMsAuthorizationAuxiliary;
+            return this;
+        }
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

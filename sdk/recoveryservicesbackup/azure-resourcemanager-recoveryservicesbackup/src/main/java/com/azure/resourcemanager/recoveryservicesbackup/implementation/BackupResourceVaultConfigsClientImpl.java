@@ -77,6 +77,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
             @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("x-ms-authorization-auxiliary") String xMsAuthorizationAuxiliary,
             @BodyParam("application/json") BackupResourceVaultConfigResourceInner parameters,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -88,6 +89,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
             @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("x-ms-authorization-auxiliary") String xMsAuthorizationAuxiliary,
             @BodyParam("application/json") BackupResourceVaultConfigResourceInner parameters,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -217,6 +219,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource config request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -225,7 +228,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupResourceVaultConfigResourceInner>> updateWithResponseAsync(String vaultName,
-        String resourceGroupName, BackupResourceVaultConfigResourceInner parameters) {
+        String resourceGroupName, BackupResourceVaultConfigResourceInner parameters, String xMsAuthorizationAuxiliary) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -249,7 +252,8 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
-                resourceGroupName, this.client.getSubscriptionId(), parameters, accept, context))
+                resourceGroupName, this.client.getSubscriptionId(), xMsAuthorizationAuxiliary, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -259,6 +263,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource config request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -268,7 +273,8 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupResourceVaultConfigResourceInner>> updateWithResponseAsync(String vaultName,
-        String resourceGroupName, BackupResourceVaultConfigResourceInner parameters, Context context) {
+        String resourceGroupName, BackupResourceVaultConfigResourceInner parameters, String xMsAuthorizationAuxiliary,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -292,7 +298,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
-            this.client.getSubscriptionId(), parameters, accept, context);
+            this.client.getSubscriptionId(), xMsAuthorizationAuxiliary, parameters, accept, context);
     }
 
     /**
@@ -309,7 +315,8 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupResourceVaultConfigResourceInner> updateAsync(String vaultName, String resourceGroupName,
         BackupResourceVaultConfigResourceInner parameters) {
-        return updateWithResponseAsync(vaultName, resourceGroupName, parameters)
+        final String xMsAuthorizationAuxiliary = null;
+        return updateWithResponseAsync(vaultName, resourceGroupName, parameters, xMsAuthorizationAuxiliary)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -319,6 +326,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource config request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -327,8 +335,10 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupResourceVaultConfigResourceInner> updateWithResponse(String vaultName,
-        String resourceGroupName, BackupResourceVaultConfigResourceInner parameters, Context context) {
-        return updateWithResponseAsync(vaultName, resourceGroupName, parameters, context).block();
+        String resourceGroupName, BackupResourceVaultConfigResourceInner parameters, String xMsAuthorizationAuxiliary,
+        Context context) {
+        return updateWithResponseAsync(vaultName, resourceGroupName, parameters, xMsAuthorizationAuxiliary, context)
+            .block();
     }
 
     /**
@@ -345,7 +355,9 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupResourceVaultConfigResourceInner update(String vaultName, String resourceGroupName,
         BackupResourceVaultConfigResourceInner parameters) {
-        return updateWithResponse(vaultName, resourceGroupName, parameters, Context.NONE).getValue();
+        final String xMsAuthorizationAuxiliary = null;
+        return updateWithResponse(vaultName, resourceGroupName, parameters, xMsAuthorizationAuxiliary, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -354,6 +366,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource config request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -362,7 +375,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupResourceVaultConfigResourceInner>> putWithResponseAsync(String vaultName,
-        String resourceGroupName, BackupResourceVaultConfigResourceInner parameters) {
+        String resourceGroupName, BackupResourceVaultConfigResourceInner parameters, String xMsAuthorizationAuxiliary) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -386,7 +399,8 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.put(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
-                resourceGroupName, this.client.getSubscriptionId(), parameters, accept, context))
+                resourceGroupName, this.client.getSubscriptionId(), xMsAuthorizationAuxiliary, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -396,6 +410,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource config request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -405,7 +420,8 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BackupResourceVaultConfigResourceInner>> putWithResponseAsync(String vaultName,
-        String resourceGroupName, BackupResourceVaultConfigResourceInner parameters, Context context) {
+        String resourceGroupName, BackupResourceVaultConfigResourceInner parameters, String xMsAuthorizationAuxiliary,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -429,7 +445,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.put(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
-            this.client.getSubscriptionId(), parameters, accept, context);
+            this.client.getSubscriptionId(), xMsAuthorizationAuxiliary, parameters, accept, context);
     }
 
     /**
@@ -446,7 +462,8 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BackupResourceVaultConfigResourceInner> putAsync(String vaultName, String resourceGroupName,
         BackupResourceVaultConfigResourceInner parameters) {
-        return putWithResponseAsync(vaultName, resourceGroupName, parameters)
+        final String xMsAuthorizationAuxiliary = null;
+        return putWithResponseAsync(vaultName, resourceGroupName, parameters, xMsAuthorizationAuxiliary)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -456,6 +473,7 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource config request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -464,8 +482,9 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupResourceVaultConfigResourceInner> putWithResponse(String vaultName, String resourceGroupName,
-        BackupResourceVaultConfigResourceInner parameters, Context context) {
-        return putWithResponseAsync(vaultName, resourceGroupName, parameters, context).block();
+        BackupResourceVaultConfigResourceInner parameters, String xMsAuthorizationAuxiliary, Context context) {
+        return putWithResponseAsync(vaultName, resourceGroupName, parameters, xMsAuthorizationAuxiliary, context)
+            .block();
     }
 
     /**
@@ -482,6 +501,8 @@ public final class BackupResourceVaultConfigsClientImpl implements BackupResourc
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupResourceVaultConfigResourceInner put(String vaultName, String resourceGroupName,
         BackupResourceVaultConfigResourceInner parameters) {
-        return putWithResponse(vaultName, resourceGroupName, parameters, Context.NONE).getValue();
+        final String xMsAuthorizationAuxiliary = null;
+        return putWithResponse(vaultName, resourceGroupName, parameters, xMsAuthorizationAuxiliary, Context.NONE)
+            .getValue();
     }
 }

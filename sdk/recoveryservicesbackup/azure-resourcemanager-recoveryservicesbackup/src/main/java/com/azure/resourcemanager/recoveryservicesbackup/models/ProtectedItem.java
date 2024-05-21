@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -17,9 +18,9 @@ import java.util.List;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "protectedItemType",
-    defaultImpl = ProtectedItem.class)
+    defaultImpl = ProtectedItem.class,
+    visible = true)
 @JsonTypeName("ProtectedItem")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureFileShareProtectedItem", value = AzureFileshareProtectedItem.class),
@@ -31,6 +32,13 @@ import java.util.List;
     @JsonSubTypes.Type(name = "MabFileFolderProtectedItem", value = MabFileFolderProtectedItem.class) })
 @Fluent
 public class ProtectedItem {
+    /*
+     * backup item type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "protectedItemType", required = true)
+    private String protectedItemType;
+
     /*
      * Type of backup management for the backed up item.
      */
@@ -143,6 +151,16 @@ public class ProtectedItem {
      * Creates an instance of ProtectedItem class.
      */
     public ProtectedItem() {
+        this.protectedItemType = "ProtectedItem";
+    }
+
+    /**
+     * Get the protectedItemType property: backup item type.
+     * 
+     * @return the protectedItemType value.
+     */
+    public String protectedItemType() {
+        return this.protectedItemType;
     }
 
     /**
@@ -266,8 +284,8 @@ public class ProtectedItem {
     }
 
     /**
-     * Get the createMode property: Create mode to indicate recovery of existing soft deleted data source or creation
-     * of new data source.
+     * Get the createMode property: Create mode to indicate recovery of existing soft deleted data source or creation of
+     * new data source.
      * 
      * @return the createMode value.
      */
@@ -276,8 +294,8 @@ public class ProtectedItem {
     }
 
     /**
-     * Set the createMode property: Create mode to indicate recovery of existing soft deleted data source or creation
-     * of new data source.
+     * Set the createMode property: Create mode to indicate recovery of existing soft deleted data source or creation of
+     * new data source.
      * 
      * @param createMode the createMode value to set.
      * @return the ProtectedItem object itself.

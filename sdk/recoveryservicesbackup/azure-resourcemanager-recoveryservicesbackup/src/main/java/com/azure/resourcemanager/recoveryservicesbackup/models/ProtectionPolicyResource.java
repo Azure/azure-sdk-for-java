@@ -147,8 +147,8 @@ public interface ProtectionPolicyResource {
          * The stage of the ProtectionPolicyResource definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithProperties, DefinitionStages.WithEtag {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties,
+            DefinitionStages.WithEtag, DefinitionStages.WithXMsAuthorizationAuxiliary {
             /**
              * Executes the create request.
              * 
@@ -203,6 +203,19 @@ public interface ProtectionPolicyResource {
              */
             WithCreate withEtag(String etag);
         }
+
+        /**
+         * The stage of the ProtectionPolicyResource definition allowing to specify xMsAuthorizationAuxiliary.
+         */
+        interface WithXMsAuthorizationAuxiliary {
+            /**
+             * Specifies the xMsAuthorizationAuxiliary property: The xMsAuthorizationAuxiliary parameter.
+             * 
+             * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+             * @return the next definition stage.
+             */
+            WithCreate withXMsAuthorizationAuxiliary(String xMsAuthorizationAuxiliary);
+        }
     }
 
     /**
@@ -215,7 +228,8 @@ public interface ProtectionPolicyResource {
     /**
      * The template for ProtectionPolicyResource update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithEtag {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties, UpdateStages.WithEtag,
+        UpdateStages.WithXMsAuthorizationAuxiliary {
         /**
          * Executes the update request.
          * 
@@ -273,6 +287,19 @@ public interface ProtectionPolicyResource {
              * @return the next definition stage.
              */
             Update withEtag(String etag);
+        }
+
+        /**
+         * The stage of the ProtectionPolicyResource update allowing to specify xMsAuthorizationAuxiliary.
+         */
+        interface WithXMsAuthorizationAuxiliary {
+            /**
+             * Specifies the xMsAuthorizationAuxiliary property: The xMsAuthorizationAuxiliary parameter.
+             * 
+             * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+             * @return the next definition stage.
+             */
+            Update withXMsAuthorizationAuxiliary(String xMsAuthorizationAuxiliary);
         }
     }
 

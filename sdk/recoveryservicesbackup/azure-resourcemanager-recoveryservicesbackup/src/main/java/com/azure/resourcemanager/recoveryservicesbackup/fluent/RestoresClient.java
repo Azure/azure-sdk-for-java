@@ -48,6 +48,7 @@ public interface RestoresClient {
      * @param protectedItemName Backed up item to be restored.
      * @param recoveryPointId Recovery point ID which represents the backed up data to be restored.
      * @param parameters resource restore request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,7 +58,7 @@ public interface RestoresClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String recoveryPointId, RestoreRequestResource parameters,
-        Context context);
+        String xMsAuthorizationAuxiliary, Context context);
 
     /**
      * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
@@ -91,6 +92,7 @@ public interface RestoresClient {
      * @param protectedItemName Backed up item to be restored.
      * @param recoveryPointId Recovery point ID which represents the backed up data to be restored.
      * @param parameters resource restore request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -98,5 +100,6 @@ public interface RestoresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
-        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters, Context context);
+        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters,
+        String xMsAuthorizationAuxiliary, Context context);
 }

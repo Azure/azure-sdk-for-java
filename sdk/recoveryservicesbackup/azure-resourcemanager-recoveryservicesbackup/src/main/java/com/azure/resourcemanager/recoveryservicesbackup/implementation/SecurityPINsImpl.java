@@ -10,8 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.SecurityPINsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.TokenInformationInner;
-import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPINs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPinBase;
+import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPINs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TokenInformation;
 
 public final class SecurityPINsImpl implements SecurityPINs {
@@ -28,9 +28,9 @@ public final class SecurityPINsImpl implements SecurityPINs {
     }
 
     public Response<TokenInformation> getWithResponse(String vaultName, String resourceGroupName,
-        SecurityPinBase parameters, Context context) {
-        Response<TokenInformationInner> inner
-            = this.serviceClient().getWithResponse(vaultName, resourceGroupName, parameters, context);
+        String xMsAuthorizationAuxiliary, SecurityPinBase parameters, Context context) {
+        Response<TokenInformationInner> inner = this.serviceClient()
+            .getWithResponse(vaultName, resourceGroupName, xMsAuthorizationAuxiliary, parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new TokenInformationImpl(inner.getValue(), this.manager()));

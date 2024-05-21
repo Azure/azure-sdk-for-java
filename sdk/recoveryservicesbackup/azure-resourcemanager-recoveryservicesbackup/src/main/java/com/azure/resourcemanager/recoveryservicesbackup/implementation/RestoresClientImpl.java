@@ -72,6 +72,7 @@ public final class RestoresClientImpl implements RestoresClient {
             @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("containerName") String containerName, @PathParam("protectedItemName") String protectedItemName,
             @PathParam("recoveryPointId") String recoveryPointId,
+            @HeaderParam("x-ms-authorization-auxiliary") String xMsAuthorizationAuxiliary,
             @BodyParam("application/json") RestoreRequestResource parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -88,6 +89,7 @@ public final class RestoresClientImpl implements RestoresClient {
      * @param protectedItemName Backed up item to be restored.
      * @param recoveryPointId Recovery point ID which represents the backed up data to be restored.
      * @param parameters resource restore request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -96,7 +98,7 @@ public final class RestoresClientImpl implements RestoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> triggerWithResponseAsync(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
-        RestoreRequestResource parameters) {
+        RestoreRequestResource parameters, String xMsAuthorizationAuxiliary) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -135,7 +137,7 @@ public final class RestoresClientImpl implements RestoresClient {
         return FluxUtil
             .withContext(context -> service.trigger(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
                 resourceGroupName, this.client.getSubscriptionId(), fabricName, containerName, protectedItemName,
-                recoveryPointId, parameters, accept, context))
+                recoveryPointId, xMsAuthorizationAuxiliary, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -151,6 +153,7 @@ public final class RestoresClientImpl implements RestoresClient {
      * @param protectedItemName Backed up item to be restored.
      * @param recoveryPointId Recovery point ID which represents the backed up data to be restored.
      * @param parameters resource restore request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -160,7 +163,7 @@ public final class RestoresClientImpl implements RestoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> triggerWithResponseAsync(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
-        RestoreRequestResource parameters, Context context) {
+        RestoreRequestResource parameters, String xMsAuthorizationAuxiliary, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -198,8 +201,36 @@ public final class RestoresClientImpl implements RestoresClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.trigger(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
-            this.client.getSubscriptionId(), fabricName, containerName, protectedItemName, recoveryPointId, parameters,
-            accept, context);
+            this.client.getSubscriptionId(), fabricName, containerName, protectedItemName, recoveryPointId,
+            xMsAuthorizationAuxiliary, parameters, accept, context);
+    }
+
+    /**
+     * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the backed up items.
+     * @param containerName Container name associated with the backed up items.
+     * @param protectedItemName Backed up item to be restored.
+     * @param recoveryPointId Recovery point ID which represents the backed up data to be restored.
+     * @param parameters resource restore request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginTriggerAsync(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId,
+        RestoreRequestResource parameters, String xMsAuthorizationAuxiliary) {
+        Mono<Response<Flux<ByteBuffer>>> mono = triggerWithResponseAsync(vaultName, resourceGroupName, fabricName,
+            containerName, protectedItemName, recoveryPointId, parameters, xMsAuthorizationAuxiliary);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -223,8 +254,9 @@ public final class RestoresClientImpl implements RestoresClient {
     private PollerFlux<PollResult<Void>, Void> beginTriggerAsync(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         RestoreRequestResource parameters) {
+        final String xMsAuthorizationAuxiliary = null;
         Mono<Response<Flux<ByteBuffer>>> mono = triggerWithResponseAsync(vaultName, resourceGroupName, fabricName,
-            containerName, protectedItemName, recoveryPointId, parameters);
+            containerName, protectedItemName, recoveryPointId, parameters, xMsAuthorizationAuxiliary);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -241,6 +273,7 @@ public final class RestoresClientImpl implements RestoresClient {
      * @param protectedItemName Backed up item to be restored.
      * @param recoveryPointId Recovery point ID which represents the backed up data to be restored.
      * @param parameters resource restore request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -250,10 +283,10 @@ public final class RestoresClientImpl implements RestoresClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginTriggerAsync(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
-        RestoreRequestResource parameters, Context context) {
+        RestoreRequestResource parameters, String xMsAuthorizationAuxiliary, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = triggerWithResponseAsync(vaultName, resourceGroupName, fabricName,
-            containerName, protectedItemName, recoveryPointId, parameters, context);
+            containerName, protectedItemName, recoveryPointId, parameters, xMsAuthorizationAuxiliary, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -279,8 +312,11 @@ public final class RestoresClientImpl implements RestoresClient {
     public SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
         RestoreRequestResource parameters) {
-        return this.beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            recoveryPointId, parameters).getSyncPoller();
+        final String xMsAuthorizationAuxiliary = null;
+        return this
+            .beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+                recoveryPointId, parameters, xMsAuthorizationAuxiliary)
+            .getSyncPoller();
     }
 
     /**
@@ -295,6 +331,7 @@ public final class RestoresClientImpl implements RestoresClient {
      * @param protectedItemName Backed up item to be restored.
      * @param recoveryPointId Recovery point ID which represents the backed up data to be restored.
      * @param parameters resource restore request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -304,9 +341,38 @@ public final class RestoresClientImpl implements RestoresClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginTrigger(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String recoveryPointId,
-        RestoreRequestResource parameters, Context context) {
-        return this.beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            recoveryPointId, parameters, context).getSyncPoller();
+        RestoreRequestResource parameters, String xMsAuthorizationAuxiliary, Context context) {
+        return this
+            .beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+                recoveryPointId, parameters, xMsAuthorizationAuxiliary, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
+     * use
+     * GetProtectedItemOperationResult API.
+     * 
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the backed up items.
+     * @param containerName Container name associated with the backed up items.
+     * @param protectedItemName Backed up item to be restored.
+     * @param recoveryPointId Recovery point ID which represents the backed up data to be restored.
+     * @param parameters resource restore request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> triggerAsync(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters,
+        String xMsAuthorizationAuxiliary) {
+        return beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters, xMsAuthorizationAuxiliary).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -329,8 +395,10 @@ public final class RestoresClientImpl implements RestoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> triggerAsync(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, RestoreRequestResource parameters) {
+        final String xMsAuthorizationAuxiliary = null;
         return beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            recoveryPointId, parameters).last().flatMap(this.client::getLroFinalResultOrError);
+            recoveryPointId, parameters, xMsAuthorizationAuxiliary).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -345,6 +413,7 @@ public final class RestoresClientImpl implements RestoresClient {
      * @param protectedItemName Backed up item to be restored.
      * @param recoveryPointId Recovery point ID which represents the backed up data to be restored.
      * @param parameters resource restore request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -353,9 +422,11 @@ public final class RestoresClientImpl implements RestoresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> triggerAsync(String vaultName, String resourceGroupName, String fabricName, String containerName,
-        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters, Context context) {
+        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters,
+        String xMsAuthorizationAuxiliary, Context context) {
         return beginTriggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            recoveryPointId, parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+            recoveryPointId, parameters, xMsAuthorizationAuxiliary, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -377,8 +448,9 @@ public final class RestoresClientImpl implements RestoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
         String protectedItemName, String recoveryPointId, RestoreRequestResource parameters) {
+        final String xMsAuthorizationAuxiliary = null;
         triggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
-            parameters).block();
+            parameters, xMsAuthorizationAuxiliary).block();
     }
 
     /**
@@ -393,6 +465,7 @@ public final class RestoresClientImpl implements RestoresClient {
      * @param protectedItemName Backed up item to be restored.
      * @param recoveryPointId Recovery point ID which represents the backed up data to be restored.
      * @param parameters resource restore request.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -400,8 +473,9 @@ public final class RestoresClientImpl implements RestoresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
-        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters, Context context) {
+        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters,
+        String xMsAuthorizationAuxiliary, Context context) {
         triggerAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId,
-            parameters, context).block();
+            parameters, xMsAuthorizationAuxiliary, context).block();
     }
 }

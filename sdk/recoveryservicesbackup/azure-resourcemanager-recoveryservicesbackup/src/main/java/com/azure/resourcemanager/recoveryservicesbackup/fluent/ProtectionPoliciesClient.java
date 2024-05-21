@@ -56,6 +56,7 @@ public interface ProtectionPoliciesClient {
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be created.
      * @param parameters resource backup policy.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -64,7 +65,7 @@ public interface ProtectionPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ProtectionPolicyResourceInner> createOrUpdateWithResponse(String vaultName, String resourceGroupName,
-        String policyName, ProtectionPolicyResourceInner parameters, Context context);
+        String policyName, ProtectionPolicyResourceInner parameters, String xMsAuthorizationAuxiliary, Context context);
 
     /**
      * Creates or modifies a backup policy. This is an asynchronous operation. Status of the operation can be fetched

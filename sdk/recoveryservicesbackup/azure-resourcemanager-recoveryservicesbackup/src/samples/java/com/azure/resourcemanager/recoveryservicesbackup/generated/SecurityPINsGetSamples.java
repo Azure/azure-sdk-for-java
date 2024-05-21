@@ -9,9 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class SecurityPINsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * Common/BackupSecurityPin_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Common/BackupSecurityPin_Get.json
      */
     /**
      * Sample code: Get Vault Security Pin.
@@ -20,6 +18,7 @@ public final class SecurityPINsGetSamples {
      */
     public static void
         getVaultSecurityPin(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.securityPINs().getWithResponse("SwaggerTest", "SwaggerTestRg", null, com.azure.core.util.Context.NONE);
+        manager.securityPINs()
+            .getWithResponse("SwaggerTest", "SwaggerTestRg", null, null, com.azure.core.util.Context.NONE);
     }
 }

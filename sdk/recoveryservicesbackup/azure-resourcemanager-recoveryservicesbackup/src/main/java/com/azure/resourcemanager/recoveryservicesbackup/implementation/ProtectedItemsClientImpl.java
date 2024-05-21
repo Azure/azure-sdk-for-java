@@ -80,6 +80,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("containerName") String containerName, @PathParam("protectedItemName") String protectedItemName,
+            @HeaderParam("x-ms-authorization-auxiliary") String xMsAuthorizationAuxiliary,
             @BodyParam("application/json") ProtectedItemResourceInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -277,6 +278,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @param containerName Container name associated with the backup item.
      * @param protectedItemName Item name to be backed up.
      * @param parameters resource backed up item.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -285,7 +287,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectedItemResourceInner>> createOrUpdateWithResponseAsync(String vaultName,
         String resourceGroupName, String fabricName, String containerName, String protectedItemName,
-        ProtectedItemResourceInner parameters) {
+        ProtectedItemResourceInner parameters, String xMsAuthorizationAuxiliary) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -320,7 +322,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
                 vaultName, resourceGroupName, this.client.getSubscriptionId(), fabricName, containerName,
-                protectedItemName, parameters, accept, context))
+                protectedItemName, xMsAuthorizationAuxiliary, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -334,6 +336,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @param containerName Container name associated with the backup item.
      * @param protectedItemName Item name to be backed up.
      * @param parameters resource backed up item.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -343,7 +346,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectedItemResourceInner>> createOrUpdateWithResponseAsync(String vaultName,
         String resourceGroupName, String fabricName, String containerName, String protectedItemName,
-        ProtectedItemResourceInner parameters, Context context) {
+        ProtectedItemResourceInner parameters, String xMsAuthorizationAuxiliary, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -378,7 +381,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
             resourceGroupName, this.client.getSubscriptionId(), fabricName, containerName, protectedItemName,
-            parameters, accept, context);
+            xMsAuthorizationAuxiliary, parameters, accept, context);
     }
 
     /**
@@ -399,8 +402,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProtectedItemResourceInner> createOrUpdateAsync(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, ProtectedItemResourceInner parameters) {
+        final String xMsAuthorizationAuxiliary = null;
         return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            protectedItemName, parameters, xMsAuthorizationAuxiliary).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -413,6 +417,7 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @param containerName Container name associated with the backup item.
      * @param protectedItemName Item name to be backed up.
      * @param parameters resource backed up item.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -422,9 +427,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectedItemResourceInner> createOrUpdateWithResponse(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, ProtectedItemResourceInner parameters,
-        Context context) {
+        String xMsAuthorizationAuxiliary, Context context) {
         return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, parameters, context).block();
+            protectedItemName, parameters, xMsAuthorizationAuxiliary, context).block();
     }
 
     /**
@@ -445,8 +450,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectedItemResourceInner createOrUpdate(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, ProtectedItemResourceInner parameters) {
+        final String xMsAuthorizationAuxiliary = null;
         return createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            parameters, Context.NONE).getValue();
+            parameters, xMsAuthorizationAuxiliary, Context.NONE).getValue();
     }
 
     /**

@@ -83,6 +83,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
             @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("policyName") String policyName,
+            @HeaderParam("x-ms-authorization-auxiliary") String xMsAuthorizationAuxiliary,
             @BodyParam("application/json") ProtectionPolicyResourceInner parameters,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -240,6 +241,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be created.
      * @param parameters resource backup policy.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -247,7 +249,8 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectionPolicyResourceInner>> createOrUpdateWithResponseAsync(String vaultName,
-        String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters) {
+        String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters,
+        String xMsAuthorizationAuxiliary) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -274,7 +277,8 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                vaultName, resourceGroupName, this.client.getSubscriptionId(), policyName, parameters, accept, context))
+                vaultName, resourceGroupName, this.client.getSubscriptionId(), policyName, xMsAuthorizationAuxiliary,
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -286,6 +290,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be created.
      * @param parameters resource backup policy.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -294,7 +299,8 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProtectionPolicyResourceInner>> createOrUpdateWithResponseAsync(String vaultName,
-        String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters, Context context) {
+        String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters,
+        String xMsAuthorizationAuxiliary, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -321,7 +327,8 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
-            resourceGroupName, this.client.getSubscriptionId(), policyName, parameters, accept, context);
+            resourceGroupName, this.client.getSubscriptionId(), policyName, xMsAuthorizationAuxiliary, parameters,
+            accept, context);
     }
 
     /**
@@ -340,8 +347,9 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ProtectionPolicyResourceInner> createOrUpdateAsync(String vaultName, String resourceGroupName,
         String policyName, ProtectionPolicyResourceInner parameters) {
-        return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, policyName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        final String xMsAuthorizationAuxiliary = null;
+        return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, policyName, parameters,
+            xMsAuthorizationAuxiliary).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -352,6 +360,7 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be created.
      * @param parameters resource backup policy.
+     * @param xMsAuthorizationAuxiliary The xMsAuthorizationAuxiliary parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -360,8 +369,10 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProtectionPolicyResourceInner> createOrUpdateWithResponse(String vaultName,
-        String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters, Context context) {
-        return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, policyName, parameters, context).block();
+        String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters,
+        String xMsAuthorizationAuxiliary, Context context) {
+        return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, policyName, parameters,
+            xMsAuthorizationAuxiliary, context).block();
     }
 
     /**
@@ -380,8 +391,9 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProtectionPolicyResourceInner createOrUpdate(String vaultName, String resourceGroupName, String policyName,
         ProtectionPolicyResourceInner parameters) {
-        return createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, parameters, Context.NONE)
-            .getValue();
+        final String xMsAuthorizationAuxiliary = null;
+        return createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, parameters,
+            xMsAuthorizationAuxiliary, Context.NONE).getValue();
     }
 
     /**
