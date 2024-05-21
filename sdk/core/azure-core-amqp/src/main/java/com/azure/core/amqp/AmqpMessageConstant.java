@@ -126,11 +126,7 @@ public enum AmqpMessageConstant {
     /**
      * The state of message.
      */
-    MESSAGE_STATE_ANNOTATION_NAME("x-opt-message-state"),
-    /**
-     * The replication segment for the message.
-     */
-    REPLICATION_SEGMENT_ANNOTATION_NAME("x-opt-sequence-number-epoch");
+    MESSAGE_STATE_ANNOTATION_NAME("x-opt-message-state");
 
     private static final Map<String, AmqpMessageConstant> RESERVED_CONSTANTS_MAP = new HashMap<>();
     private final String constant;
