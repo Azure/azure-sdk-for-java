@@ -115,7 +115,7 @@ public class StorageBlobContainersTests extends StorageManagementTest {
 
     @Test
     @Disabled("Need to set env CLI_USERNAME for CLI authentication, e.g. johndoe@microsoft.com")
-    public void canUsePipelineInDataPlane() {
+    public void canShareHttpPipelineInDataPlane() {
         String userName = Configuration.getGlobalConfiguration().get("CLI_USERNAME");
         Assertions.assertNotNull(userName);
 
