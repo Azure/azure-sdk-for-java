@@ -261,6 +261,7 @@ public class EventHubClientBuilder implements
     private Integer prefetchCount;
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
+
     private URI customEndpointAddress;
     private ConnectionStringProperties connectionStringProperties;
 
@@ -1141,9 +1142,13 @@ public class EventHubClientBuilder implements
             ? CbsAuthorizationType.SHARED_ACCESS_SIGNATURE
             : CbsAuthorizationType.JSON_WEB_TOKEN;
 
-        final SslDomain.VerifyMode verificationMode = verifyMode != null
+        SslDomain.VerifyMode verificationMode = verifyMode != null
             ? verifyMode
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
+
+        if (useDevelopmentEmulator != null && useDevelopmentEmulator) {
+            verificationMode = SslDomain.VerifyMode.ANONYMOUS_PEER;
+        }
 
         final ClientOptions options = clientOptions != null ? clientOptions : new ClientOptions();
 
