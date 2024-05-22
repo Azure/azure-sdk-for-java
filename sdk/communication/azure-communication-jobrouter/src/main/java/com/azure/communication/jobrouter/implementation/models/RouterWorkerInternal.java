@@ -55,8 +55,8 @@ public final class RouterWorkerInternal {
     private Integer capacity;
 
     /*
-     * A set of key/value pairs that are identifying attributes used by the rules engines to make decisions. Values must
-     * be primitive values - number, string, boolean.
+     * A set of key/value pairs that are identifying attributes used by the rules engines to make decisions. Values
+     * must be primitive values - number, string, boolean.
      */
     @Generated
     @JsonProperty(value = "labels")
@@ -309,37 +309,6 @@ public final class RouterWorkerInternal {
     @Generated
     public RouterWorkerInternal setAvailableForOffers(Boolean availableForOffers) {
         this.availableForOffers = availableForOffers;
-        return this;
-    }
-
-    /*
-     * If this is set, the worker will only receive up to this many new offers at a time.
-     */
-    @Generated
-    @JsonProperty(value = "maxConcurrentOffers")
-    private Integer maxConcurrentOffers;
-
-    /**
-     * Get the maxConcurrentOffers property: If this is set, the worker will only receive up to this many new offers at
-     * a time.
-     *
-     * @return the maxConcurrentOffers value.
-     */
-    @Generated
-    public Integer getMaxConcurrentOffers() {
-        return this.maxConcurrentOffers;
-    }
-
-    /**
-     * Set the maxConcurrentOffers property: If this is set, the worker will only receive up to this many new offers at
-     * a time.
-     *
-     * @param maxConcurrentOffers the maxConcurrentOffers value to set.
-     * @return the RouterWorkerInternal object itself.
-     */
-    @Generated
-    public RouterWorkerInternal setMaxConcurrentOffers(Integer maxConcurrentOffers) {
-        this.maxConcurrentOffers = maxConcurrentOffers;
         return this;
     }
 }
