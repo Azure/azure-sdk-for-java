@@ -3,6 +3,7 @@
 ### 4.61.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added query statement conditionally in diagnostics and tracing. - See[PR 39990](https://github.com/Azure/azure-sdk-for-java/pull/39990)
 
 #### Breaking Changes
 
