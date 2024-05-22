@@ -1,22 +1,5 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-- Migrating `azure-monitor-query` to stream-style serialization.
-
-#### Dependency Updates
-
-- Added `azure-json` dependency to support JSON serialization and deserialization.
-
-
 ## 1.3.1 (2024-04-23)
 
 ### Other Changes

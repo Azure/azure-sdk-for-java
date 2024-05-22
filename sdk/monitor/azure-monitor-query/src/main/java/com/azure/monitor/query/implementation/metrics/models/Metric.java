@@ -5,58 +5,62 @@
 package com.azure.monitor.query.implementation.metrics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * The result data of a query.
  */
 @Fluent
-public final class Metric implements JsonSerializable<Metric> {
+public final class Metric {
     /*
      * The metric Id.
      */
-    private final String id;
+    @JsonProperty(value = "id", required = true)
+    private String id;
 
     /*
      * The resource type of the metric resource.
      */
-    private final String type;
+    @JsonProperty(value = "type", required = true)
+    private String type;
 
     /*
      * The name and the display name of the metric, i.e. it is localizable string.
      */
-    private final LocalizableString name;
+    @JsonProperty(value = "name", required = true)
+    private LocalizableString name;
 
     /*
      * Detailed description of this metric.
      */
+    @JsonProperty(value = "displayDescription")
     private String displayDescription;
 
     /*
      * 'Success' or the error details on query failures for this metric.
      */
+    @JsonProperty(value = "errorCode")
     private String errorCode;
 
     /*
      * Error message encountered querying this specific metric.
      */
+    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /*
      * The unit of the metric.
      */
-    private final MetricUnit unit;
+    @JsonProperty(value = "unit", required = true)
+    private MetricUnit unit;
 
     /*
      * The time series returned when a data query is performed.
      */
-    private final List<TimeSeriesElement> timeseries;
+    @JsonProperty(value = "timeseries", required = true)
+    private List<TimeSeriesElement> timeseries;
 
     /**
      * Creates an instance of Metric class.
@@ -67,7 +71,12 @@ public final class Metric implements JsonSerializable<Metric> {
      * @param unit the unit value to set.
      * @param timeseries the timeseries value to set.
      */
-    public Metric(String id, String type, LocalizableString name, MetricUnit unit, List<TimeSeriesElement> timeseries) {
+    @JsonCreator
+    public Metric(@JsonProperty(value = "id", required = true) String id,
+        @JsonProperty(value = "type", required = true) String type,
+        @JsonProperty(value = "name", required = true) LocalizableString name,
+        @JsonProperty(value = "unit", required = true) MetricUnit unit,
+        @JsonProperty(value = "timeseries", required = true) List<TimeSeriesElement> timeseries) {
         this.id = id;
         this.type = type;
         this.name = name;
@@ -178,102 +187,5 @@ public final class Metric implements JsonSerializable<Metric> {
      */
     public List<TimeSeriesElement> getTimeseries() {
         return this.timeseries;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeJsonField("name", this.name);
-        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
-        jsonWriter.writeArrayField("timeseries", this.timeseries, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("displayDescription", this.displayDescription);
-        jsonWriter.writeStringField("errorCode", this.errorCode);
-        jsonWriter.writeStringField("errorMessage", this.errorMessage);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of Metric from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of Metric if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     * JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Metric.
-     */
-    public static Metric fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean idFound = false;
-            String id = null;
-            boolean typeFound = false;
-            String type = null;
-            boolean nameFound = false;
-            LocalizableString name = null;
-            boolean unitFound = false;
-            MetricUnit unit = null;
-            boolean timeseriesFound = false;
-            List<TimeSeriesElement> timeseries = null;
-            String displayDescription = null;
-            String errorCode = null;
-            String errorMessage = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                    idFound = true;
-                } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
-                    typeFound = true;
-                } else if ("name".equals(fieldName)) {
-                    name = LocalizableString.fromJson(reader);
-                    nameFound = true;
-                } else if ("unit".equals(fieldName)) {
-                    unit = MetricUnit.fromString(reader.getString());
-                    unitFound = true;
-                } else if ("timeseries".equals(fieldName)) {
-                    timeseries = reader.readArray(reader1 -> TimeSeriesElement.fromJson(reader1));
-                    timeseriesFound = true;
-                } else if ("displayDescription".equals(fieldName)) {
-                    displayDescription = reader.getString();
-                } else if ("errorCode".equals(fieldName)) {
-                    errorCode = reader.getString();
-                } else if ("errorMessage".equals(fieldName)) {
-                    errorMessage = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (idFound && typeFound && nameFound && unitFound && timeseriesFound) {
-                Metric deserializedMetric = new Metric(id, type, name, unit, timeseries);
-                deserializedMetric.displayDescription = displayDescription;
-                deserializedMetric.errorCode = errorCode;
-                deserializedMetric.errorMessage = errorMessage;
-
-                return deserializedMetric;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!idFound) {
-                missingProperties.add("id");
-            }
-            if (!typeFound) {
-                missingProperties.add("type");
-            }
-            if (!nameFound) {
-                missingProperties.add("name");
-            }
-            if (!unitFound) {
-                missingProperties.add("unit");
-            }
-            if (!timeseriesFound) {
-                missingProperties.add("timeseries");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
     }
 }

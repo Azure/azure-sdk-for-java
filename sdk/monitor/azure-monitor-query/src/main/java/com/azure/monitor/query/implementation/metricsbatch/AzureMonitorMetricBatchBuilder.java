@@ -214,7 +214,7 @@ public final class AzureMonitorMetricBatchBuilder
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the AzureMonitorMetricBatchBuilder.
      */
@@ -232,7 +232,7 @@ public final class AzureMonitorMetricBatchBuilder
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureMonitorMetricBatchBuilder.
      */
@@ -250,7 +250,7 @@ public final class AzureMonitorMetricBatchBuilder
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the AzureMonitorMetricBatchBuilder.
      */
@@ -262,7 +262,7 @@ public final class AzureMonitorMetricBatchBuilder
 
     /**
      * Builds an instance of AzureMonitorMetricBatch with the provided parameters.
-     * 
+     *
      * @return an instance of AzureMonitorMetricBatch.
      */
     @Generated
@@ -301,8 +301,7 @@ public final class AzureMonitorMetricBatchBuilder
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
-            policies.add(
-                new BearerTokenAuthenticationPolicy(tokenCredential, "https://metrics.monitor.azure.com/.default"));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, "https://metrics.monitor.azure.com/.default"));
         }
         this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
