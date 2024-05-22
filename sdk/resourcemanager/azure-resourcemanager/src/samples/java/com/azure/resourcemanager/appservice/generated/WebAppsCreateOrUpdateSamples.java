@@ -13,13 +13,13 @@ import com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig;
 import com.azure.resourcemanager.appservice.models.FunctionsDeployment;
 import com.azure.resourcemanager.appservice.models.FunctionsDeploymentStorage;
 import com.azure.resourcemanager.appservice.models.FunctionsDeploymentStorageAuthentication;
+import com.azure.resourcemanager.appservice.models.FunctionsDeploymentStorageType;
 import com.azure.resourcemanager.appservice.models.FunctionsRuntime;
 import com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency;
 import com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggers;
 import com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp;
 import com.azure.resourcemanager.appservice.models.NameValuePair;
 import com.azure.resourcemanager.appservice.models.RuntimeName;
-import com.azure.resourcemanager.appservice.models.StorageType;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,8 +51,8 @@ public final class WebAppsCreateOrUpdateSamples {
                     new NameValuePair().withName("APPLICATIONINSIGHTS_CONNECTION_STRING")
                         .withValue("InstrumentationKey=Sanitized;IngestionEndpoint=Sanitized;LiveEndpoint=Sanitized"))))
                 .withFunctionAppConfig(new FunctionAppConfig()
-                    .withDeployment(new FunctionsDeployment()
-                        .withStorage(new FunctionsDeploymentStorage().withType(StorageType.BLOB_CONTAINER)
+                    .withDeployment(new FunctionsDeployment().withStorage(
+                        new FunctionsDeploymentStorage().withType(FunctionsDeploymentStorageType.BLOB_CONTAINER)
                             .withValue("https://storageAccountName.blob.core.windows.net/containername")
                             .withAuthentication(new FunctionsDeploymentStorageAuthentication()
                                 .withType(AuthenticationType.STORAGE_ACCOUNT_CONNECTION_STRING)
@@ -90,8 +90,8 @@ public final class WebAppsCreateOrUpdateSamples {
                     new NameValuePair().withName("APPLICATIONINSIGHTS_CONNECTION_STRING")
                         .withValue("InstrumentationKey=Sanitized;IngestionEndpoint=Sanitized;LiveEndpoint=Sanitized"))))
                 .withFunctionAppConfig(new FunctionAppConfig()
-                    .withDeployment(new FunctionsDeployment()
-                        .withStorage(new FunctionsDeploymentStorage().withType(StorageType.BLOB_CONTAINER)
+                    .withDeployment(new FunctionsDeployment().withStorage(
+                        new FunctionsDeploymentStorage().withType(FunctionsDeploymentStorageType.BLOB_CONTAINER)
                             .withValue("https://storageAccountName.blob.core.windows.net/containername")
                             .withAuthentication(new FunctionsDeploymentStorageAuthentication()
                                 .withType(AuthenticationType.STORAGE_ACCOUNT_CONNECTION_STRING)

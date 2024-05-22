@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ArcConfiguration {
     /*
-     * Property to select Azure Storage type. Available options: blobContainer.
+     * The artifactsStorageType property.
      */
     @JsonProperty(value = "artifactsStorageType")
     private StorageType artifactsStorageType;
@@ -61,7 +61,7 @@ public final class ArcConfiguration {
     }
 
     /**
-     * Get the artifactsStorageType property: Property to select Azure Storage type. Available options: blobContainer.
+     * Get the artifactsStorageType property: The artifactsStorageType property.
      * 
      * @return the artifactsStorageType value.
      */
@@ -70,7 +70,7 @@ public final class ArcConfiguration {
     }
 
     /**
-     * Set the artifactsStorageType property: Property to select Azure Storage type. Available options: blobContainer.
+     * Set the artifactsStorageType property: The artifactsStorageType property.
      * 
      * @param artifactsStorageType the artifactsStorageType value to set.
      * @return the ArcConfiguration object itself.

@@ -3269,7 +3269,7 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.appservice.models.StorageType",
+  "name" : "com.azure.resourcemanager.appservice.models.FunctionsDeploymentStorageType",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
@@ -3624,6 +3624,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.appservice.models.StorageType",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.appservice.models.FrontEndServiceType",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
@@ -3779,12 +3784,12 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.appservice.models.ClientCredentialMethod",
+  "name" : "com.azure.resourcemanager.appservice.models.ConfigReferenceSource",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
-  "name" : "com.azure.resourcemanager.appservice.models.ConfigReferenceSource",
+  "name" : "com.azure.resourcemanager.appservice.models.ClientCredentialMethod",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true

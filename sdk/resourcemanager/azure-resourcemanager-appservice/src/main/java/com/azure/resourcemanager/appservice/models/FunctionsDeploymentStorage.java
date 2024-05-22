@@ -16,7 +16,7 @@ public final class FunctionsDeploymentStorage {
      * Property to select Azure Storage type. Available options: blobContainer.
      */
     @JsonProperty(value = "type")
-    private StorageType type;
+    private FunctionsDeploymentStorageType type;
 
     /*
      * Property to set the URL for the selected Azure Storage type. Example: For blobContainer, the value could be https://<storageAccountName>.blob.core.windows.net/<containerName>.
@@ -41,7 +41,7 @@ public final class FunctionsDeploymentStorage {
      * 
      * @return the type value.
      */
-    public StorageType type() {
+    public FunctionsDeploymentStorageType type() {
         return this.type;
     }
 
@@ -51,7 +51,7 @@ public final class FunctionsDeploymentStorage {
      * @param type the type value to set.
      * @return the FunctionsDeploymentStorage object itself.
      */
-    public FunctionsDeploymentStorage withType(StorageType type) {
+    public FunctionsDeploymentStorage withType(FunctionsDeploymentStorageType type) {
         this.type = type;
         return this;
     }
