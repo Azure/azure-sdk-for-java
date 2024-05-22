@@ -126,6 +126,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
+            // Disable `AZSDK2015` and `AZSDK3430` sanitizers for non-Azure tests
+            interceptorManager.removeSanitizers(Arrays.asList("AZSDK2015", "AZSDK3430"));
         }
 
         if (getTestMode() == TestMode.PLAYBACK) {

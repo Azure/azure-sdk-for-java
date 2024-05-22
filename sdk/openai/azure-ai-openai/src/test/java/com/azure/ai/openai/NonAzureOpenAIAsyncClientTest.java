@@ -300,7 +300,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     ChatChoice chatChoice = chatCompletions.getChoices().get(0);
                     MyFunctionCallArguments arguments = assertFunctionCall(
                         chatChoice,
-                        "MyFunction",
+                        "Sanitized",
                         MyFunctionCallArguments.class);
                     assertTrue(arguments.getLocation().contains("San Francisco"));
                     assertEquals(arguments.getUnit(), "CELSIUS");
@@ -756,7 +756,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
                         ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
                         assertNotNull(functionToolCall);
-                        assertEquals(functionToolCall.getFunction().getName(), "FutureTemperature"); // see base class
+                        assertEquals(functionToolCall.getFunction().getName(), "Sanitized"); // see base class
                         assertFalse(functionToolCall.getFunction().getArguments() == null
                                 || functionToolCall.getFunction().getArguments().isEmpty());
                         return client.getChatCompletions(modelId, getChatCompletionsOptionWithToolCallFollowUp(
