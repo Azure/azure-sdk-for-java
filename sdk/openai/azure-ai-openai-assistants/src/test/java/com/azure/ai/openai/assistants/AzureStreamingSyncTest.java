@@ -39,10 +39,7 @@ public class AzureStreamingSyncTest extends AssistantsClientTestBase {
 
             IterableStream<StreamUpdate> streamEvents = client.createThreadAndRunStream(createAndRunThreadOptions);
 
-            streamEvents.forEach(streamUpdate -> {
-                String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-                assertFalse(CoreUtils.isNullOrEmpty(streamUpdateJson));
-            });
+            streamEvents.forEach(AssistantsClientTestBase::assertStreamUpdate);
         }, mathTutorAssistantId);
     }
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -58,8 +55,7 @@ public class AzureStreamingSyncTest extends AssistantsClientTestBase {
             RequiredAction requiredAction = null;
             RunStep runStep = null;
             for (StreamUpdate streamUpdate : streamEvents) {
-                String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-                assertFalse(CoreUtils.isNullOrEmpty(streamUpdateJson));
+                assertStreamUpdate(streamUpdate);
                 if (streamUpdate instanceof StreamRequiredAction) {
                     requiredAction = ((StreamRequiredAction) streamUpdate).getMessage().getRequiredAction();
                 }
@@ -84,8 +80,7 @@ public class AzureStreamingSyncTest extends AssistantsClientTestBase {
 
             IterableStream<StreamUpdate> result = client.submitToolOutputsToRunStream(runStep.getThreadId(), runStep.getRunId(), toolOutputs);
             for (StreamUpdate streamUpdate : result) {
-                String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-                assertFalse(CoreUtils.isNullOrEmpty(streamUpdateJson));
+                assertStreamUpdate(streamUpdate);
             }
         }, mathTutorAssistantId);
     }
@@ -101,8 +96,7 @@ public class AzureStreamingSyncTest extends AssistantsClientTestBase {
 
         IterableStream<StreamUpdate> run = client.createRunStream(threadId, mathTutorAssistantId);
         for (StreamUpdate streamUpdate : run) {
-            String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-            assertFalse(CoreUtils.isNullOrEmpty(streamUpdateJson));
+            assertStreamUpdate(streamUpdate);
         }
     }
 
@@ -121,8 +115,7 @@ public class AzureStreamingSyncTest extends AssistantsClientTestBase {
             RequiredAction requiredAction = null;
             RunStep runStep = null;
             for (StreamUpdate streamUpdate : streamEvents) {
-                String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-                assertFalse(CoreUtils.isNullOrEmpty(streamUpdateJson));
+                assertStreamUpdate(streamUpdate);
                 if (streamUpdate instanceof StreamRequiredAction) {
                     requiredAction = ((StreamRequiredAction) streamUpdate).getMessage().getRequiredAction();
                 }
@@ -147,8 +140,7 @@ public class AzureStreamingSyncTest extends AssistantsClientTestBase {
 
             IterableStream<StreamUpdate> result = client.submitToolOutputsToRunStream(runStep.getThreadId(), runStep.getRunId(), toolOutputs);
             for (StreamUpdate streamUpdate : result) {
-                String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-                assertFalse(CoreUtils.isNullOrEmpty(streamUpdateJson));
+                assertStreamUpdate(streamUpdate);
             }
         }, assistantId);
 

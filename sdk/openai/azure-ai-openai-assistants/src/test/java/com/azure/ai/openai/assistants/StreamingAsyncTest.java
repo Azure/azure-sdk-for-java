@@ -10,8 +10,6 @@ import com.azure.ai.openai.assistants.models.StreamRunCreation;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -22,7 +20,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -37,10 +34,7 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
         String mathTutorAssistantId = createMathTutorAssistant(client);
         createThreadAndRunRunner(createAndRunThreadOptions -> {
             StepVerifier.create(client.createThreadAndRunStream(createAndRunThreadOptions))
-                    .thenConsumeWhile(streamUpdate -> true, streamUpdate -> {
-                        String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-                        assertFalse(CoreUtils.isNullOrEmpty(streamUpdateJson));
-                    })
+                    .thenConsumeWhile(streamUpdate -> true, AssistantsClientTestBase::assertStreamUpdate)
                 .verifyComplete();
         }, mathTutorAssistantId);
     }
@@ -57,8 +51,7 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
             final AtomicReference<RunStep> runStep = new AtomicReference<>();
             StepVerifier.create(client.createThreadAndRunStream(createAndRunThreadOptions))
                     .thenConsumeWhile(streamUpdate -> true, streamUpdate -> {
-                        String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-                        assertFalse(CoreUtils.isNullOrEmpty(streamUpdateJson));
+                        assertStreamUpdate(streamUpdate);
                         if (streamUpdate instanceof StreamRequiredAction) {
                             requiredAction.set(((StreamRequiredAction) streamUpdate).getMessage().getRequiredAction());
                         }
@@ -82,10 +75,7 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
             }
 
             StepVerifier.create(client.submitToolOutputsToRunStream(runStep.get().getThreadId(), runStep.get().getRunId(), toolOutputs))
-                .thenConsumeWhile(streamUpdate -> true, streamUpdate -> {
-                    String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-                    assertFalse(CoreUtils.isNullOrEmpty(streamUpdateJson));
-                })
+                .thenConsumeWhile(streamUpdate -> true, AssistantsClientTestBase::assertStreamUpdate)
                 .verifyComplete();
         }, mathTutorAssistantId);
     }
@@ -102,11 +92,7 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
             .verifyComplete();
 
         StepVerifier.create(client.createRunStream(threadId, mathTutorAssistantId))
-            .thenConsumeWhile(streamUpdate -> {
-                String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-                assertFalse(CoreUtils.isNullOrEmpty(streamUpdateJson));
-                return true;
-            }).verifyComplete();
+            .thenConsumeWhile(streamUpdate -> true, AssistantsClientTestBase::assertStreamUpdate).verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -125,8 +111,7 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
             final AtomicReference<RunStep> runStep = new AtomicReference<>();
             StepVerifier.create(client.createRunStream(threadId, createThreadOption))
                 .thenConsumeWhile(streamUpdate -> {
-                    String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-                    assertFalse(CoreUtils.isNullOrEmpty(streamUpdateJson));
+                    assertStreamUpdate(streamUpdate);
                     if (streamUpdate instanceof StreamRequiredAction) {
                         requiredAction.set(((StreamRequiredAction) streamUpdate).getMessage().getRequiredAction());
                     }
@@ -152,11 +137,8 @@ public class StreamingAsyncTest extends AssistantsClientTestBase {
             }
 
             StepVerifier.create(client.submitToolOutputsToRunStream(runStep.get().getThreadId(), runStep.get().getRunId(), toolOutputs))
-                .thenConsumeWhile(streamUpdate -> {
-                    String streamUpdateJson = BinaryData.fromObject(streamUpdate).toString();
-                    assertFalse(CoreUtils.isNullOrEmpty(streamUpdateJson));
-                    return true;
-                }).verifyComplete();
+                .thenConsumeWhile(streamUpdate -> true, AssistantsClientTestBase::assertStreamUpdate)
+                .verifyComplete();
         }, assistantId);
 
     }

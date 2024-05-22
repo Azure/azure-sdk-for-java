@@ -1,6 +1,7 @@
 package com.azure.ai.openai.assistants.implementation.streaming;
 
 import com.azure.ai.openai.assistants.AssistantsClientTestBase;
+import com.azure.ai.openai.assistants.models.AssistantStreamEvent;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.StreamThreadCreation;
 import com.azure.core.util.BinaryData;
@@ -14,6 +15,7 @@ import java.nio.ByteBuffer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OpenAIServerSentEventsTest {
@@ -26,9 +28,7 @@ public class OpenAIServerSentEventsTest {
         // data: [DONE] is the last event in the file, but is not emitted by the Flux
         StepVerifier.create(
                 openAIServerSentEvents.getEvents()
-                    .doOnNext(event -> {
-                        assertFalse(CoreUtils.isNullOrEmpty(BinaryData.fromObject(event).toString()));
-                    })
+                    .doOnNext(AssistantsClientTestBase::assertStreamUpdate)
             ).expectNextCount(30)
             .verifyComplete();
     }

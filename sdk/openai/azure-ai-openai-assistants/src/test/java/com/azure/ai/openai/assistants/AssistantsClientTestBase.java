@@ -8,6 +8,7 @@ import com.azure.ai.openai.assistants.implementation.accesshelpers.PageableListA
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
+import com.azure.ai.openai.assistants.models.AssistantStreamEvent;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CodeInterpreterToolDefinition;
@@ -24,6 +25,7 @@ import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStep;
+import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
@@ -320,6 +322,12 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         assertEquals(expected.getBytes(), actual.getBytes());
         assertEquals(expected.getPurpose(), actual.getPurpose());
         assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
+    }
+
+    public static void assertStreamUpdate(StreamUpdate event) {
+        assertNotNull(event);
+        assertNotNull(event.getKind());
+        assertTrue(AssistantStreamEvent.values().contains(event.getKind()));
     }
 
     public static Path openResourceFile(String fileName) {
