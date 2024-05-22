@@ -15,6 +15,12 @@ public final class PlayFailed extends CallAutomationEventBaseWithReasonCode {
     @JsonProperty(value = "resultInformation")
     private final ResultInformation resultInformation;
 
+     /*
+     * Contains the index of the failed play source.
+     */
+    @JsonProperty(value = "failedPlaySourceIndex")
+    private Integer failedPlaySourceIndex;
+
     private PlayFailed() {
         this.resultInformation = null;
     }
@@ -26,5 +32,14 @@ public final class PlayFailed extends CallAutomationEventBaseWithReasonCode {
      */
     public ResultInformation getResultInformation() {
         return this.resultInformation;
+    }
+
+    /**
+     * Get the failedPlaySourceIndex property: Contains the index of the failed play source.
+     * 
+     * @return the failedPlaySourceIndex value.
+     */
+    public Integer getFailedPlaySourceIndex() {
+        return this.failedPlaySourceIndex;
     }
 }
