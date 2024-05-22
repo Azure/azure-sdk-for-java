@@ -32,7 +32,7 @@ public enum ShowQueryOptions {
         return showQueryOptionsHashMap;
     }
     
-	private final String value;
+    private final String value;
 	
 	ShowQueryOptions(String value) {
 		this.value = value;
