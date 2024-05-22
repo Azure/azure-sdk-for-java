@@ -115,26 +115,4 @@ public final class CoreUtils {
                 return String.join(delimiter, values);
         }
     }
-
-    /**
-     * Attempts to convert a byte stream into the properly encoded String.
-     * <p>
-     * This utility method will attempt to find the encoding for the String in this order.
-     * <ol>
-     *     <li>Find the byte order mark in the byte array.</li>
-     *     <li>Find the {@code charset} in the {@code Content-Type} header.</li>
-     *     <li>Default to {@code UTF-8}.</li>
-     * </ol>
-     *
-     * @param bytes Byte array.
-     * @param contentType {@code Content-Type} header value.
-     * @return A string representation of the byte array encoded to the found encoding.
-     */
-    public static String bomAwareToString(byte[] bytes, String contentType) {
-        if (bytes == null) {
-            return null;
-        }
-
-        return ImplUtils.bomAwareToString(bytes, 0, bytes.length, contentType);
-    }
 }

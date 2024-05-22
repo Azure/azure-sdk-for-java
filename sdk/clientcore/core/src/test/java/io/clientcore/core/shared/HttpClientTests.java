@@ -79,6 +79,7 @@ import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.DESERIALIZE;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
+import static io.clientcore.core.implementation.util.ImplUtils.bomAwareToString;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -186,8 +187,9 @@ public abstract class HttpClientTests {
     @Test
     public void utf8BomResponse() throws IOException {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+        byte[] response = sendRequest(UTF_8_BOM_RESPONSE);
 
-        assertEquals(expected, CoreUtils.bomAwareToString(sendRequest(UTF_8_BOM_RESPONSE), null));
+        assertEquals(expected, bomAwareToString(response, 0, response.length, null));
     }
 
     /**
@@ -196,8 +198,9 @@ public abstract class HttpClientTests {
     @Test
     public void utf16BeBomResponse() throws IOException {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
+        byte[] response = sendRequest(UTF_16BE_BOM_RESPONSE);
 
-        assertEquals(expected, CoreUtils.bomAwareToString(sendRequest(UTF_16BE_BOM_RESPONSE), null));
+        assertEquals(expected, bomAwareToString(response, 0, response.length, null));
     }
 
     /**
@@ -206,8 +209,9 @@ public abstract class HttpClientTests {
     @Test
     public void utf16LeBomResponse() throws IOException {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16LE);
+        byte[] response = sendRequest(UTF_16LE_BOM_RESPONSE);
 
-        assertEquals(expected, CoreUtils.bomAwareToString(sendRequest(UTF_16LE_BOM_RESPONSE), null));
+        assertEquals(expected, bomAwareToString(response, 0, response.length, null));
     }
 
     /**
@@ -236,8 +240,9 @@ public abstract class HttpClientTests {
     @Test
     public void bomWithSameHeader() throws IOException {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+        byte[] response = sendRequest(BOM_WITH_DIFFERENT_HEADER);
 
-        assertEquals(expected, CoreUtils.bomAwareToString(sendRequest(BOM_WITH_DIFFERENT_HEADER), "charset=utf-8"));
+        assertEquals(expected, bomAwareToString(response, 0, response.length, "charset=utf-8"));
     }
 
     /**
@@ -246,8 +251,9 @@ public abstract class HttpClientTests {
     @Test
     public void bomWithDifferentHeader() throws IOException {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+        byte[] response = sendRequest(BOM_WITH_DIFFERENT_HEADER);
 
-        assertEquals(expected, CoreUtils.bomAwareToString(sendRequest(BOM_WITH_DIFFERENT_HEADER), "charset=utf-16"));
+        assertEquals(expected, bomAwareToString(response, 0, response.length, "charset=utf-16"));
     }
 
     /**
