@@ -346,8 +346,8 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchJobScheduleStatistics.
      */
-    // TODO: Re-add @Generated tag here and re-generate SDK once the 2024-05-01 Batch Service API is released
     public static BatchJobScheduleStatistics fromJson(JsonReader jsonReader) throws IOException {
+        // TODO: Re-add @Generated tag here and re-generate SDK once the 2024-05-01 Batch Service API is released
         return jsonReader.readObject(reader -> {
             String url = null;
             OffsetDateTime startTime = null;
