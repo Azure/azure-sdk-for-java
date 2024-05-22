@@ -43,12 +43,15 @@ public final class StorageError implements XmlSerializable<StorageError> {
      */
     private String authenticationErrorDetail;
 
-    /** Creates an instance of StorageError class. */
-    public StorageError() {}
+    /**
+     * Creates an instance of StorageError class.
+     */
+    public StorageError() {
+    }
 
     /**
      * Get the message property: The Message property.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -57,7 +60,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
 
     /**
      * Set the message property: The Message property.
-     *
+     * 
      * @param message the message value to set.
      * @return the StorageError object itself.
      */
@@ -68,7 +71,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
 
     /**
      * Get the copySourceStatusCode property: The CopySourceStatusCode property.
-     *
+     * 
      * @return the copySourceStatusCode value.
      */
     public Long getCopySourceStatusCode() {
@@ -77,7 +80,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
 
     /**
      * Set the copySourceStatusCode property: The CopySourceStatusCode property.
-     *
+     * 
      * @param copySourceStatusCode the copySourceStatusCode value to set.
      * @return the StorageError object itself.
      */
@@ -88,7 +91,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
 
     /**
      * Get the copySourceErrorCode property: The CopySourceErrorCode property.
-     *
+     * 
      * @return the copySourceErrorCode value.
      */
     public String getCopySourceErrorCode() {
@@ -97,7 +100,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
 
     /**
      * Set the copySourceErrorCode property: The CopySourceErrorCode property.
-     *
+     * 
      * @param copySourceErrorCode the copySourceErrorCode value to set.
      * @return the StorageError object itself.
      */
@@ -108,7 +111,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
 
     /**
      * Get the copySourceErrorMessage property: The CopySourceErrorMessage property.
-     *
+     * 
      * @return the copySourceErrorMessage value.
      */
     public String getCopySourceErrorMessage() {
@@ -117,7 +120,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
 
     /**
      * Set the copySourceErrorMessage property: The CopySourceErrorMessage property.
-     *
+     * 
      * @param copySourceErrorMessage the copySourceErrorMessage value to set.
      * @return the StorageError object itself.
      */
@@ -128,7 +131,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
 
     /**
      * Get the authenticationErrorDetail property: The AuthenticationErrorDetail property.
-     *
+     * 
      * @return the authenticationErrorDetail value.
      */
     public String getAuthenticationErrorDetail() {
@@ -137,7 +140,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
 
     /**
      * Set the authenticationErrorDetail property: The AuthenticationErrorDetail property.
-     *
+     * 
      * @param authenticationErrorDetail the authenticationErrorDetail value to set.
      * @return the StorageError object itself.
      */
@@ -156,12 +159,16 @@ public final class StorageError implements XmlSerializable<StorageError> {
         rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageError" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Message", this.message);
+        xmlWriter.writeNumberElement("CopySourceStatusCode", this.copySourceStatusCode);
+        xmlWriter.writeStringElement("CopySourceErrorCode", this.copySourceErrorCode);
+        xmlWriter.writeStringElement("CopySourceErrorMessage", this.copySourceErrorMessage);
+        xmlWriter.writeStringElement("AuthenticationErrorDetail", this.authenticationErrorDetail);
         return xmlWriter.writeEndElement();
     }
 
     /**
      * Reads an instance of StorageError from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @return An instance of StorageError if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
@@ -173,7 +180,7 @@ public final class StorageError implements XmlSerializable<StorageError> {
 
     /**
      * Reads an instance of StorageError from the XmlReader.
-     *
+     * 
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.
@@ -190,6 +197,14 @@ public final class StorageError implements XmlSerializable<StorageError> {
 
                 if ("Message".equals(elementName.getLocalPart())) {
                     deserializedStorageError.message = reader.getStringElement();
+                } else if ("CopySourceStatusCode".equals(elementName.getLocalPart())) {
+                    deserializedStorageError.copySourceStatusCode = reader.getNullableElement(Long::parseLong);
+                } else if ("CopySourceErrorCode".equals(elementName.getLocalPart())) {
+                    deserializedStorageError.copySourceErrorCode = reader.getStringElement();
+                } else if ("CopySourceErrorMessage".equals(elementName.getLocalPart())) {
+                    deserializedStorageError.copySourceErrorMessage = reader.getStringElement();
+                } else if ("AuthenticationErrorDetail".equals(elementName.getLocalPart())) {
+                    deserializedStorageError.authenticationErrorDetail = reader.getStringElement();
                 } else {
                     reader.skipElement();
                 }

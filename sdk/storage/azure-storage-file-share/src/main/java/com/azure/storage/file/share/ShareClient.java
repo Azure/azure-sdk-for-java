@@ -361,7 +361,8 @@ public class ShareClient {
         String finalEnabledProtocol = "".equals(enabledProtocol) ? null : enabledProtocol;
         Callable<ResponseBase<SharesCreateHeaders, Void>> operation = () -> azureFileStorageClient.getShares()
             .createWithResponse(shareName, null, finalOptions.getMetadata(), finalOptions.getQuotaInGb(),
-                finalOptions.getAccessTier(), finalEnabledProtocol, finalOptions.getRootSquash(), finalContext);
+                finalOptions.getAccessTier(), finalEnabledProtocol, finalOptions.getRootSquash(),
+                finalOptions.isSnapshotVirtualDirectoryAccessEnabled(), finalContext);
 
         ResponseBase<SharesCreateHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
 
@@ -886,7 +887,8 @@ public class ShareClient {
 
         Callable<ResponseBase<SharesSetPropertiesHeaders, Void>> operation = () ->
             this.azureFileStorageClient.getShares().setPropertiesWithResponse(shareName, null, options.getQuotaInGb(),
-                options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(), finalContext);
+                options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
+                options.isSnapshotVirtualDirectoryAccessEnabled(), finalContext);
 
         ResponseBase<SharesSetPropertiesHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout, ShareStorageException.class);
         return ModelHelper.mapToShareInfoResponse(response);

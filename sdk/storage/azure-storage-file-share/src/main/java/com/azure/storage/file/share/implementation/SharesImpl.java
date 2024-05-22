@@ -25,8 +25,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.SharePermission;
-import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
-import com.azure.storage.file.share.implementation.models.ShareStats;
 import com.azure.storage.file.share.implementation.models.SharesAcquireLeaseHeaders;
 import com.azure.storage.file.share.implementation.models.SharesBreakLeaseHeaders;
 import com.azure.storage.file.share.implementation.models.SharesChangeLeaseHeaders;
@@ -38,12 +36,14 @@ import com.azure.storage.file.share.implementation.models.SharesGetAccessPolicyH
 import com.azure.storage.file.share.implementation.models.SharesGetPermissionHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetStatisticsHeaders;
+import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
 import com.azure.storage.file.share.implementation.models.SharesReleaseLeaseHeaders;
 import com.azure.storage.file.share.implementation.models.SharesRenewLeaseHeaders;
 import com.azure.storage.file.share.implementation.models.SharesRestoreHeaders;
 import com.azure.storage.file.share.implementation.models.SharesSetAccessPolicyHeaders;
 import com.azure.storage.file.share.implementation.models.SharesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.SharesSetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.ShareStats;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareRootSquash;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
@@ -69,7 +69,7 @@ public final class SharesImpl {
 
     /**
      * Initializes an instance of SharesImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SharesImpl(AzureFileStorageImpl client) {
@@ -116,8 +116,9 @@ public final class SharesImpl {
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata,
             @HeaderParam("x-ms-share-quota") Integer quota, @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 201 })
@@ -127,8 +128,9 @@ public final class SharesImpl {
             @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-share-quota") Integer quota,
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-version") String version,
             @HeaderParam("x-ms-enabled-protocols") String enabledProtocols,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -525,30 +527,6 @@ public final class SharesImpl {
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
-        @Put("/{shareName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<ResponseBase<SharesSetPropertiesHeaders, Void>> setProperties(@HostParam("url") String url,
-            @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
-            @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota,
-            @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
-            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Put("/{shareName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<Response<Void>> setPropertiesNoCustomHeaders(@HostParam("url") String url,
-            @PathParam("shareName") String shareName, @QueryParam("restype") String restype,
-            @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
-            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota,
-            @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
-            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
-            @HeaderParam("Accept") String accept, Context context);
-
         @Get("/{shareName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ShareStorageException.class)
@@ -577,8 +555,9 @@ public final class SharesImpl {
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota,
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -588,8 +567,9 @@ public final class SharesImpl {
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota,
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -599,8 +579,9 @@ public final class SharesImpl {
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota,
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -610,8 +591,9 @@ public final class SharesImpl {
             @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota,
             @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId,
-            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash,
+            @HeaderParam("x-ms-enable-snapshot-virtual-directory-access") Boolean enableSnapshotVirtualDirectoryAccess,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}")
         @ExpectedResponses({ 200 })
@@ -809,7 +791,7 @@ public final class SharesImpl {
     /**
      * Creates a new share under the specified account. If the share with the same name already exists, the operation
      * fails.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -839,7 +821,7 @@ public final class SharesImpl {
     /**
      * Creates a new share under the specified account. If the share with the same name already exists, the operation
      * fails.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -870,7 +852,7 @@ public final class SharesImpl {
     /**
      * Creates a new share under the specified account. If the share with the same name already exists, the operation
      * fails.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -897,7 +879,7 @@ public final class SharesImpl {
     /**
      * Creates a new share under the specified account. If the share with the same name already exists, the operation
      * fails.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -925,7 +907,7 @@ public final class SharesImpl {
     /**
      * Creates a new share under the specified account. If the share with the same name already exists, the operation
      * fails.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -955,7 +937,7 @@ public final class SharesImpl {
     /**
      * Creates a new share under the specified account. If the share with the same name already exists, the operation
      * fails.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -986,7 +968,7 @@ public final class SharesImpl {
     /**
      * Creates a new share under the specified account. If the share with the same name already exists, the operation
      * fails.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -996,6 +978,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -1005,17 +988,18 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesCreateHeaders, Void> createWithResponse(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Context context) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
         return service.createSync(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
-            this.client.getVersion(), enabledProtocols, rootSquash, accept, context);
+            this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess, accept,
+            context);
     }
 
     /**
      * Creates a new share under the specified account. If the share with the same name already exists, the operation
      * fails.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -1025,20 +1009,23 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void create(String shareName, Integer timeout, Map<String, String> metadata, Integer quota,
-        ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash) {
-        createWithResponse(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash, Context.NONE);
+        ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess) {
+        createWithResponse(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, Context.NONE);
     }
 
     /**
      * Creates a new share under the specified account. If the share with the same name already exists, the operation
      * fails.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -1048,6 +1035,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param enabledProtocols Protocols to enable on the share.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -1057,17 +1045,18 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createNoCustomHeadersWithResponse(String shareName, Integer timeout,
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
-        ShareRootSquash rootSquash, Context context) {
+        ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String accept = "application/xml";
         return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, restype, timeout, metadata, quota,
-            accessTier, this.client.getVersion(), enabledProtocols, rootSquash, accept, context);
+            accessTier, this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            accept, context);
     }
 
     /**
      * Returns all user-defined metadata and system properties for the specified share or share snapshot. The data
      * returned does not include the share's list of files.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1092,7 +1081,7 @@ public final class SharesImpl {
     /**
      * Returns all user-defined metadata and system properties for the specified share or share snapshot. The data
      * returned does not include the share's list of files.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1118,7 +1107,7 @@ public final class SharesImpl {
     /**
      * Returns all user-defined metadata and system properties for the specified share or share snapshot. The data
      * returned does not include the share's list of files.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1140,7 +1129,7 @@ public final class SharesImpl {
     /**
      * Returns all user-defined metadata and system properties for the specified share or share snapshot. The data
      * returned does not include the share's list of files.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1164,7 +1153,7 @@ public final class SharesImpl {
     /**
      * Returns all user-defined metadata and system properties for the specified share or share snapshot. The data
      * returned does not include the share's list of files.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1189,7 +1178,7 @@ public final class SharesImpl {
     /**
      * Returns all user-defined metadata and system properties for the specified share or share snapshot. The data
      * returned does not include the share's list of files.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1215,7 +1204,7 @@ public final class SharesImpl {
     /**
      * Returns all user-defined metadata and system properties for the specified share or share snapshot. The data
      * returned does not include the share's list of files.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1241,7 +1230,7 @@ public final class SharesImpl {
     /**
      * Returns all user-defined metadata and system properties for the specified share or share snapshot. The data
      * returned does not include the share's list of files.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1261,7 +1250,7 @@ public final class SharesImpl {
     /**
      * Returns all user-defined metadata and system properties for the specified share or share snapshot. The data
      * returned does not include the share's list of files.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1287,7 +1276,7 @@ public final class SharesImpl {
     /**
      * Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files
      * contained within it are later deleted during garbage collection.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1313,7 +1302,7 @@ public final class SharesImpl {
     /**
      * Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files
      * contained within it are later deleted during garbage collection.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1340,7 +1329,7 @@ public final class SharesImpl {
     /**
      * Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files
      * contained within it are later deleted during garbage collection.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1364,7 +1353,7 @@ public final class SharesImpl {
     /**
      * Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files
      * contained within it are later deleted during garbage collection.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1389,7 +1378,7 @@ public final class SharesImpl {
     /**
      * Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files
      * contained within it are later deleted during garbage collection.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1415,7 +1404,7 @@ public final class SharesImpl {
     /**
      * Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files
      * contained within it are later deleted during garbage collection.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1442,7 +1431,7 @@ public final class SharesImpl {
     /**
      * Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files
      * contained within it are later deleted during garbage collection.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1469,7 +1458,7 @@ public final class SharesImpl {
     /**
      * Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files
      * contained within it are later deleted during garbage collection.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1491,7 +1480,7 @@ public final class SharesImpl {
     /**
      * Operation marks the specified share or share snapshot for deletion. The share or share snapshot and any files
      * contained within it are later deleted during garbage collection.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharesnapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the share
      * snapshot to query.
@@ -1518,7 +1507,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -1553,7 +1542,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -1589,7 +1578,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -1619,7 +1608,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -1650,7 +1639,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -1685,7 +1674,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -1720,7 +1709,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -1755,7 +1744,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -1783,7 +1772,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -1818,7 +1807,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -1847,7 +1836,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -1877,7 +1866,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -1902,7 +1891,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -1928,7 +1917,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -1958,7 +1947,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -1988,7 +1977,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2018,7 +2007,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2041,7 +2030,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2071,7 +2060,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2104,7 +2093,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2138,7 +2127,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2166,7 +2155,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2195,7 +2184,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2228,7 +2217,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2261,7 +2250,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2294,7 +2283,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2320,7 +2309,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2353,7 +2342,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2382,7 +2371,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2412,7 +2401,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2437,7 +2426,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2463,7 +2452,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2492,7 +2481,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2522,7 +2511,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2552,7 +2541,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2574,7 +2563,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param leaseId Specifies the current lease ID on the resource.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -2604,7 +2593,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -2640,7 +2629,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -2676,7 +2665,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -2707,7 +2696,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -2739,7 +2728,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -2775,7 +2764,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -2811,7 +2800,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -2847,7 +2836,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -2876,7 +2865,7 @@ public final class SharesImpl {
     /**
      * The Lease Share operation establishes and manages a lock on a share, or the specified snapshot for set and delete
      * share operations.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -2911,7 +2900,7 @@ public final class SharesImpl {
 
     /**
      * Creates a read-only snapshot of a share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -2934,7 +2923,7 @@ public final class SharesImpl {
 
     /**
      * Creates a read-only snapshot of a share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -2958,7 +2947,7 @@ public final class SharesImpl {
 
     /**
      * Creates a read-only snapshot of a share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -2976,7 +2965,7 @@ public final class SharesImpl {
 
     /**
      * Creates a read-only snapshot of a share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -2996,7 +2985,7 @@ public final class SharesImpl {
 
     /**
      * Creates a read-only snapshot of a share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3019,7 +3008,7 @@ public final class SharesImpl {
 
     /**
      * Creates a read-only snapshot of a share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3043,7 +3032,7 @@ public final class SharesImpl {
 
     /**
      * Creates a read-only snapshot of a share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3067,7 +3056,7 @@ public final class SharesImpl {
 
     /**
      * Creates a read-only snapshot of a share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3084,7 +3073,7 @@ public final class SharesImpl {
 
     /**
      * Creates a read-only snapshot of a share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3108,7 +3097,7 @@ public final class SharesImpl {
 
     /**
      * Create a permission (a security descriptor).
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3131,7 +3120,7 @@ public final class SharesImpl {
 
     /**
      * Create a permission (a security descriptor).
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3155,7 +3144,7 @@ public final class SharesImpl {
 
     /**
      * Create a permission (a security descriptor).
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3173,7 +3162,7 @@ public final class SharesImpl {
 
     /**
      * Create a permission (a security descriptor).
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3194,7 +3183,7 @@ public final class SharesImpl {
 
     /**
      * Create a permission (a security descriptor).
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3218,7 +3207,7 @@ public final class SharesImpl {
 
     /**
      * Create a permission (a security descriptor).
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3242,7 +3231,7 @@ public final class SharesImpl {
 
     /**
      * Create a permission (a security descriptor).
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3266,7 +3255,7 @@ public final class SharesImpl {
 
     /**
      * Create a permission (a security descriptor).
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3283,7 +3272,7 @@ public final class SharesImpl {
 
     /**
      * Create a permission (a security descriptor).
-     *
+     * 
      * @param shareName The name of the target share.
      * @param sharePermission A permission (a security descriptor) at the share level.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3307,7 +3296,7 @@ public final class SharesImpl {
 
     /**
      * Returns the permission (security descriptor) for a given key.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3331,7 +3320,7 @@ public final class SharesImpl {
 
     /**
      * Returns the permission (security descriptor) for a given key.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3356,7 +3345,7 @@ public final class SharesImpl {
 
     /**
      * Returns the permission (security descriptor) for a given key.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3375,7 +3364,7 @@ public final class SharesImpl {
 
     /**
      * Returns the permission (security descriptor) for a given key.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3396,7 +3385,7 @@ public final class SharesImpl {
 
     /**
      * Returns the permission (security descriptor) for a given key.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3421,7 +3410,7 @@ public final class SharesImpl {
 
     /**
      * Returns the permission (security descriptor) for a given key.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3446,7 +3435,7 @@ public final class SharesImpl {
 
     /**
      * Returns the permission (security descriptor) for a given key.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3470,7 +3459,7 @@ public final class SharesImpl {
 
     /**
      * Returns the permission (security descriptor) for a given key.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3488,7 +3477,7 @@ public final class SharesImpl {
 
     /**
      * Returns the permission (security descriptor) for a given key.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param filePermissionKey Key of the permission to be set for the directory/file.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
@@ -3512,7 +3501,7 @@ public final class SharesImpl {
 
     /**
      * Sets properties for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3541,7 +3530,7 @@ public final class SharesImpl {
 
     /**
      * Sets properties for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3570,7 +3559,7 @@ public final class SharesImpl {
 
     /**
      * Sets properties for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3594,7 +3583,7 @@ public final class SharesImpl {
 
     /**
      * Sets properties for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3619,7 +3608,7 @@ public final class SharesImpl {
 
     /**
      * Sets properties for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3648,7 +3637,7 @@ public final class SharesImpl {
 
     /**
      * Sets properties for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3678,7 +3667,7 @@ public final class SharesImpl {
 
     /**
      * Sets properties for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3687,6 +3676,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3695,17 +3685,19 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesSetPropertiesHeaders, Void> setPropertiesWithResponse(String shareName, Integer timeout,
-        Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash, Context context) {
+        Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setPropertiesSync(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), quota, accessTier, leaseId, rootSquash, accept, context);
+            this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            accept, context);
     }
 
     /**
      * Sets properties for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3714,19 +3706,21 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setProperties(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier,
-        String leaseId, ShareRootSquash rootSquash) {
-        setPropertiesWithResponse(shareName, timeout, quota, accessTier, leaseId, rootSquash, Context.NONE);
+        String leaseId, ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess) {
+        setPropertiesWithResponse(shareName, timeout, quota, accessTier, leaseId, rootSquash,
+            enableSnapshotVirtualDirectoryAccess, Context.NONE);
     }
 
     /**
      * Sets properties for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3735,6 +3729,7 @@ public final class SharesImpl {
      * @param accessTier Specifies the access tier of the share.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param rootSquash Root squash to set on the share. Only valid for NFS shares.
+     * @param enableSnapshotVirtualDirectoryAccess The enableSnapshotVirtualDirectoryAccess parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageException thrown if the request is rejected by server.
@@ -3743,17 +3738,19 @@ public final class SharesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesNoCustomHeadersWithResponse(String shareName, Integer timeout, Integer quota,
-        ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash, Context context) {
+        ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
+        Boolean enableSnapshotVirtualDirectoryAccess, Context context) {
         final String restype = "share";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
-            this.client.getVersion(), quota, accessTier, leaseId, rootSquash, accept, context);
+            this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
+            accept, context);
     }
 
     /**
      * Sets one or more user-defined name-value pairs for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3777,7 +3774,7 @@ public final class SharesImpl {
 
     /**
      * Sets one or more user-defined name-value pairs for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3802,7 +3799,7 @@ public final class SharesImpl {
 
     /**
      * Sets one or more user-defined name-value pairs for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3822,7 +3819,7 @@ public final class SharesImpl {
 
     /**
      * Sets one or more user-defined name-value pairs for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3844,7 +3841,7 @@ public final class SharesImpl {
 
     /**
      * Sets one or more user-defined name-value pairs for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3868,7 +3865,7 @@ public final class SharesImpl {
 
     /**
      * Sets one or more user-defined name-value pairs for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3893,7 +3890,7 @@ public final class SharesImpl {
 
     /**
      * Sets one or more user-defined name-value pairs for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3918,7 +3915,7 @@ public final class SharesImpl {
 
     /**
      * Sets one or more user-defined name-value pairs for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3936,7 +3933,7 @@ public final class SharesImpl {
 
     /**
      * Sets one or more user-defined name-value pairs for the specified share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3961,7 +3958,7 @@ public final class SharesImpl {
 
     /**
      * Returns information about stored access policies specified on the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -3985,7 +3982,7 @@ public final class SharesImpl {
 
     /**
      * Returns information about stored access policies specified on the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4010,7 +4007,7 @@ public final class SharesImpl {
 
     /**
      * Returns information about stored access policies specified on the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4029,7 +4026,7 @@ public final class SharesImpl {
 
     /**
      * Returns information about stored access policies specified on the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4050,7 +4047,7 @@ public final class SharesImpl {
 
     /**
      * Returns information about stored access policies specified on the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4073,7 +4070,7 @@ public final class SharesImpl {
 
     /**
      * Returns information about stored access policies specified on the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4097,7 +4094,7 @@ public final class SharesImpl {
 
     /**
      * Returns information about stored access policies specified on the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4121,7 +4118,7 @@ public final class SharesImpl {
 
     /**
      * Returns information about stored access policies specified on the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4139,7 +4136,7 @@ public final class SharesImpl {
 
     /**
      * Returns information about stored access policies specified on the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4163,7 +4160,7 @@ public final class SharesImpl {
 
     /**
      * Sets a stored access policy for use with shared access signatures.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4188,7 +4185,7 @@ public final class SharesImpl {
 
     /**
      * Sets a stored access policy for use with shared access signatures.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4214,7 +4211,7 @@ public final class SharesImpl {
 
     /**
      * Sets a stored access policy for use with shared access signatures.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4234,7 +4231,7 @@ public final class SharesImpl {
 
     /**
      * Sets a stored access policy for use with shared access signatures.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4256,7 +4253,7 @@ public final class SharesImpl {
 
     /**
      * Sets a stored access policy for use with shared access signatures.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4281,7 +4278,7 @@ public final class SharesImpl {
 
     /**
      * Sets a stored access policy for use with shared access signatures.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4307,7 +4304,7 @@ public final class SharesImpl {
 
     /**
      * Sets a stored access policy for use with shared access signatures.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4333,7 +4330,7 @@ public final class SharesImpl {
 
     /**
      * Sets a stored access policy for use with shared access signatures.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4352,7 +4349,7 @@ public final class SharesImpl {
 
     /**
      * Sets a stored access policy for use with shared access signatures.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4378,7 +4375,7 @@ public final class SharesImpl {
 
     /**
      * Retrieves statistics related to the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4401,7 +4398,7 @@ public final class SharesImpl {
 
     /**
      * Retrieves statistics related to the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4425,7 +4422,7 @@ public final class SharesImpl {
 
     /**
      * Retrieves statistics related to the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4444,7 +4441,7 @@ public final class SharesImpl {
 
     /**
      * Retrieves statistics related to the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4464,7 +4461,7 @@ public final class SharesImpl {
 
     /**
      * Retrieves statistics related to the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4487,7 +4484,7 @@ public final class SharesImpl {
 
     /**
      * Retrieves statistics related to the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4511,7 +4508,7 @@ public final class SharesImpl {
 
     /**
      * Retrieves statistics related to the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4535,7 +4532,7 @@ public final class SharesImpl {
 
     /**
      * Retrieves statistics related to the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4553,7 +4550,7 @@ public final class SharesImpl {
 
     /**
      * Retrieves statistics related to the share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4577,7 +4574,7 @@ public final class SharesImpl {
 
     /**
      * Restores a previously deleted Share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4603,7 +4600,7 @@ public final class SharesImpl {
 
     /**
      * Restores a previously deleted Share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4630,7 +4627,7 @@ public final class SharesImpl {
 
     /**
      * Restores a previously deleted Share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4653,7 +4650,7 @@ public final class SharesImpl {
 
     /**
      * Restores a previously deleted Share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4677,7 +4674,7 @@ public final class SharesImpl {
 
     /**
      * Restores a previously deleted Share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4704,7 +4701,7 @@ public final class SharesImpl {
 
     /**
      * Restores a previously deleted Share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4731,7 +4728,7 @@ public final class SharesImpl {
 
     /**
      * Restores a previously deleted Share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4758,7 +4755,7 @@ public final class SharesImpl {
 
     /**
      * Restores a previously deleted Share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
@@ -4779,7 +4776,7 @@ public final class SharesImpl {
 
     /**
      * Restores a previously deleted Share.
-     *
+     * 
      * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
