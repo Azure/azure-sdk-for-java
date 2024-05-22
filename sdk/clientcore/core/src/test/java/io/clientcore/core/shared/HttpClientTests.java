@@ -839,7 +839,7 @@ public abstract class HttpClientTests {
             method = HttpMethod.GET,
             path = "anything",
             expectedStatusCodes = { 200 },
-            requestHeaders = { "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
+            headers = { "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
         HttpBinJSON get(@HostParam("url") String url);
     }
 
@@ -878,7 +878,7 @@ public abstract class HttpClientTests {
             method = HttpMethod.GET,
             path = "anything",
             expectedStatusCodes = { 200 },
-            requestHeaders = { "MyHeader:MyHeaderValue" })
+            headers = { "MyHeader:MyHeaderValue" })
         HttpBinJSON get(@HostParam("url") String url);
     }
 
@@ -1001,22 +1001,22 @@ public abstract class HttpClientTests {
             @BodyParam(ContentType.APPLICATION_JSON) String body);
 
         @HttpRequestInformation(
-            method = HttpMethod.PUT, path = "put", requestHeaders = { "Content-Type: application/json" })
+            method = HttpMethod.PUT, path = "put", headers = { "Content-Type: application/json" })
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndByteArrayBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
 
         @HttpRequestInformation(
-            method = HttpMethod.PUT, path = "put", requestHeaders = { "Content-Type: application/json; charset=utf-8" })
+            method = HttpMethod.PUT, path = "put", headers = { "Content-Type: application/json; charset=utf-8" })
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @HttpRequestInformation(
-            method = HttpMethod.PUT, path = "put", requestHeaders = { "Content-Type: application/octet-stream" })
+            method = HttpMethod.PUT, path = "put", headers = { "Content-Type: application/octet-stream" })
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @HttpRequestInformation(
-            method = HttpMethod.PUT, path = "put", requestHeaders = { "Content-Type: application/octet-stream" })
+            method = HttpMethod.PUT, path = "put", headers = { "Content-Type: application/octet-stream" })
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("url") String url,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
 

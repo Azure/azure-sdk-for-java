@@ -42,7 +42,7 @@ public @interface HttpRequestInformation {
      *
      * @return The list of static headers to send with the request.
      */
-    String[] requestHeaders() default {};
+    String[] headers() default {};
 
     /**
      * Get expected the status code(s) to receive with a response.

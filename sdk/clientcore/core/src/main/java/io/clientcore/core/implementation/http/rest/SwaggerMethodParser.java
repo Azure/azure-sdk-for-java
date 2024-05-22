@@ -122,7 +122,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         returnType = swaggerMethod.getGenericReturnType();
 
-        final String[] requestHeaders = httpRequestInformation.requestHeaders();
+        final String[] requestHeaders = httpRequestInformation.headers();
 
         if (requestHeaders != null) {
             for (final String requestHeader : requestHeaders) {
