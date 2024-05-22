@@ -21,13 +21,17 @@ public enum ShowQueryOptions {
 	 */
 	ALL("All");
     
-    private static Map<String, ShowQueryOptions> showQueryOptionsHashMap = new HashMap<>();
+    private static Map<String, ShowQueryOptions> showQueryOptionsHashMap = initializeMap();
     
-    static {
-	    for(ShowQueryOptions showQueryOptions : ShowQueryOptions.values()) {
+    private static Map<String, ShowQueryOptions> initializeMap() {
+	    Map<String, ShowQueryOptions> showQueryOptionsHashMap = new HashMap<>();
+        for(ShowQueryOptions showQueryOptions : ShowQueryOptions.values()) {
 	    	showQueryOptionsHashMap.put(showQueryOptions.toString(), showQueryOptions);
 	    }
+
+        return showQueryOptionsHashMap;
     }
+    
 	private final String value;
 	
 	ShowQueryOptions(String value) {
