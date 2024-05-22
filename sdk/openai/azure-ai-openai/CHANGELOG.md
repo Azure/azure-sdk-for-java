@@ -17,7 +17,23 @@
 
 **Chat**
 
+- [AOAI] Added new class `OnYourDataContextProperty` to represent the context property in the On Your Data deployment.
+- [AOAI] Added new class `OnYourDataVectorSearchAuthenticationType`, `OnYourDataVectorSearchAuthenticationOptions`, `OnYourDataVectorSearchApiKeyAuthenticationOptions`, `OnYourDataVectorSearchAccessTokenAuthenticationOptions` for the vector search authentication options.
+- [AOAI] Added new class `AzureChatExtensionRetrievedDocument` and `AzureChatExtensionRetrieveDocumentFilterReason` to represent the retrieved document and filter reason in the chat extension.
+- [AOAI] Added a new property `all_retrieved_documents` in `AzureChatExtensionsMessageContext` class to represent all the retrieved documents in the chat extension.
 - [AOAI] Added a new property `indirectAttack` in `ContentFilterResultDetailsForPrompt` class to represent the indirect attack results.
+- [AOAI] Added new properties `max_search_queries`, `allow_partial_result`, and `include_contexts` in 
+  `AzureCosmosDBChatExtensionParameters`, `AzureMachineLearningIndexChatExtensionParameters`, 
+  `AzureSearchChatExtensionParameters`, `ElasticsearchChatExtensionParameters`, `PineconeChatExtensionParameters` class
+  to support additional search queries.
+
+**Embeddings**
+
+- [AOAI] Added a new property `dimensions` in `OnYourDataDeploymentNameVectorizationSource` class to represent the dimensions of the vectorization source.
+
+**Image**
+
+- [AOAI] Added a new property `custom_blocklists` in `ImageGenerationPromptFilterResults` class to represent the prompt filter results.
 
 ### Breaking Changes
 
@@ -25,6 +41,7 @@
 - [AOAI] Added a new class `ContentFilterDetailedResults` to represent detailed content filter results, which replaces the
   `customBlocklists` response property type, `List<ContentFilterBlocklistIdResult>` in 
   `ContentFilterResultDetailsForPrompt` and `ContentFilterResultsForChoice` class.
+- [AOAI] Replace the `OnYourDataAuthenticationOptions` by `OnYourDataVectorSearchAuthenticationOptions` in the `OnYourDataEndpointVectorizationSource` class.
 
 ### Bugs Fixed
 
