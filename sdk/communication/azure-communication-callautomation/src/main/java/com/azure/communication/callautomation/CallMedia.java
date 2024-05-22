@@ -323,6 +323,16 @@ public final class CallMedia {
         callMediaAsync.updateTranscription(locale).block();
     }
 
+     /**
+     * Updates transcription language in the call.
+     * @param locale Defines new locale for transcription.
+     * @param speechRecognitionModelEndpointId Defines custom model endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateTranscription(String locale, String speechRecognitionModelEndpointId) {
+        callMediaAsync.updateTranscription(locale, speechRecognitionModelEndpointId).block();
+    }
+
     /**
      * Updates transcription language in the call.
      *
@@ -333,6 +343,19 @@ public final class CallMedia {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateTranscriptionWithResponse(String locale, Context context) {
         return callMediaAsync.updateTranscriptionWithResponseInternal(locale, context).block();
+    }
+
+    /**
+     * Updates transcription language in the call.
+     *
+     * @param locale Defines new locale for transcription.
+     * @param speechRecognitionModelEndpointId Defines custom model endpoint.
+     * @param context Context
+     * @return Response for successful update transcription request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateTranscriptionWithResponse(String locale, String speechRecognitionModelEndpointId, Context context) {
+        return callMediaAsync.updateTranscriptionWithResponseInternal(locale, speechRecognitionModelEndpointId, context).block();
     }
 
     /**

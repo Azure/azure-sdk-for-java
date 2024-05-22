@@ -227,7 +227,7 @@ public class CallMediaUnitTests {
     }
 
     @Test
-    public void startTranscriptionWithResponse() {
+    public void startTranscriptionWithResponseTest() {
         StartTranscriptionOptions options = new StartTranscriptionOptions();
         options.setOperationContext("operationContext");
         options.setLocale("en-US");
@@ -236,10 +236,16 @@ public class CallMediaUnitTests {
     }
 
     @Test
-    public void stopTranscriptionWithResponse() {
+    public void stopTranscriptionWithResponseTest() {
         StopTranscriptionOptions options = new StopTranscriptionOptions();
         options.setOperationContext("operationContext");
         Response<Void> response = callMedia.stopTranscriptionWithResponse(options, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void updateTranscriptionSpeechModelWithResponseTest() {
+        Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", "customEndpoint", Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 
