@@ -3,7 +3,7 @@
 ## 1.0.0-beta.23 (05-23-2024)
 
 ### Other Changes
-- [Disable _OTELRESOURCE_ custom metric in non-AKS environments](https://github.com/Azure/azure-sdk-for-java/pull/40312)
+- [Only emit `_APPRESOURCEPREVIEW_` custom metric in AKS preview integration](https://github.com/Azure/azure-sdk-for-java/pull/40312)
 - [Update OpenTelemetry to 2.4.0](https://github.com/Azure/azure-sdk-for-java/pull/40289)
 
 ## 1.0.0-beta.22 (2024-05-09)
