@@ -4,18 +4,18 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DocumentModelsCopyModelToHeaders model.
- */
-@Fluent
+/** The DocumentModelsCopyModelToHeaders model. */
+@Immutable
 public final class DocumentModelsCopyModelToHeaders {
     /*
      * The Operation-Location property.
      */
+    @JsonProperty(value = "Operation-Location")
     private String operationLocation;
 
     private static final HttpHeaderName OPERATION_LOCATION = HttpHeaderName.fromString("Operation-Location");
@@ -23,7 +23,7 @@ public final class DocumentModelsCopyModelToHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of DocumentModelsCopyModelToHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public DocumentModelsCopyModelToHeaders(HttpHeaders rawHeaders) {
@@ -32,21 +32,10 @@ public final class DocumentModelsCopyModelToHeaders {
 
     /**
      * Get the operationLocation property: The Operation-Location property.
-     * 
+     *
      * @return the operationLocation value.
      */
     public String getOperationLocation() {
         return this.operationLocation;
-    }
-
-    /**
-     * Set the operationLocation property: The Operation-Location property.
-     * 
-     * @param operationLocation the operationLocation value to set.
-     * @return the DocumentModelsCopyModelToHeaders object itself.
-     */
-    public DocumentModelsCopyModelToHeaders setOperationLocation(String operationLocation) {
-        this.operationLocation = operationLocation;
-        return this;
     }
 }
