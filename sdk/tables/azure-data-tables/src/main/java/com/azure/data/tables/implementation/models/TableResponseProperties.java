@@ -122,9 +122,6 @@ public class TableResponseProperties implements JsonSerializable<TableResponsePr
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
