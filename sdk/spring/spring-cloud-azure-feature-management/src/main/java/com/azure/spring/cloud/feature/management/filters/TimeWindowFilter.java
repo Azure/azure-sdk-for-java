@@ -73,7 +73,6 @@ public final class TimeWindowFilter implements FeatureFilter {
             return now.isAfter(settings.getStart()) && now.isBefore(settings.getEnd());
         }
 
-        final RecurrenceEvaluator evaluator = new RecurrenceEvaluator(settings, now);
-        return evaluator.isMatch();
+        return RecurrenceEvaluator.isMatch(settings, now);
     }
 }

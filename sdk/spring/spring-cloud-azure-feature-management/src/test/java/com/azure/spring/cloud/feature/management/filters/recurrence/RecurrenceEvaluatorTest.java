@@ -529,7 +529,6 @@ public class RecurrenceEvaluatorTest {
     }
 
     private void consumeEvaluationTestData(TimeWindowFilterSettings settings, ZonedDateTime now, boolean isEnabled) {
-        final RecurrenceEvaluator evaluator = new RecurrenceEvaluator(settings, now);
-        assertEquals(evaluator.isMatch(), isEnabled);
+        assertEquals(RecurrenceEvaluator.isMatch(settings, now), isEnabled);
     }
 }
