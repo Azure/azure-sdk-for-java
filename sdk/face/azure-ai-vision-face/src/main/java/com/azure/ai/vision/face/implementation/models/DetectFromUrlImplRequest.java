@@ -9,10 +9,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The AddLargePersonGroupPersonFaceFromUrlRequest model.
+ * The DetectFromUrlImplRequest model.
  */
 @Immutable
-public final class AddLargePersonGroupPersonFaceFromUrlRequest {
+public final class DetectFromUrlImplRequest {
 
     /*
      * URL of input image.
@@ -22,13 +22,13 @@ public final class AddLargePersonGroupPersonFaceFromUrlRequest {
     private final String url;
 
     /**
-     * Creates an instance of AddLargePersonGroupPersonFaceFromUrlRequest class.
+     * Creates an instance of DetectFromUrlImplRequest class.
      *
      * @param url the url value to set.
      */
     @Generated
     @JsonCreator
-    public AddLargePersonGroupPersonFaceFromUrlRequest(@JsonProperty(value = "url") String url) {
+    public DetectFromUrlImplRequest(@JsonProperty(value = "url") String url) {
         this.url = url;
     }
 
