@@ -5,13 +5,9 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Objects;
 
 /** The AnalyzeTextJobState model. */
 @Fluent
@@ -19,11 +15,13 @@ public final class AnalyzeTextJobState extends JobState {
     /*
      * The tasks property.
      */
+    @JsonProperty(value = "tasks", required = true)
     private TasksStateTasks tasks;
 
     /*
      * if showStats=true was specified in the request this field will contain information about the request payload.
      */
+    @JsonProperty(value = "statistics")
     private RequestStatistics statistics;
 
     /** Creates an instance of AnalyzeTextJobState class. */
@@ -125,74 +123,5 @@ public final class AnalyzeTextJobState extends JobState {
     public AnalyzeTextJobState setNextLink(String nextLink) {
         super.setNextLink(nextLink);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("createdDateTime", Objects.toString(getCreatedDateTime(), null));
-        jsonWriter.writeStringField("jobId", getJobId());
-        jsonWriter.writeStringField("lastUpdatedDateTime", Objects.toString(getLastUpdatedDateTime(), null));
-        jsonWriter.writeStringField("status", Objects.toString(getStatus(), null));
-        jsonWriter.writeStringField("displayName", getDisplayName());
-        jsonWriter.writeStringField("expirationDateTime", Objects.toString(getExpirationDateTime(), null));
-        jsonWriter.writeArrayField("errors", getErrors(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("nextLink", getNextLink());
-        jsonWriter.writeJsonField("tasks", this.tasks);
-        jsonWriter.writeJsonField("statistics", this.statistics);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AnalyzeTextJobState from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeTextJobState if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AnalyzeTextJobState.
-     */
-    public static AnalyzeTextJobState fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AnalyzeTextJobState deserializedAnalyzeTextJobState = new AnalyzeTextJobState();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("createdDateTime".equals(fieldName)) {
-                            deserializedAnalyzeTextJobState.setCreatedDateTime(
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                        } else if ("jobId".equals(fieldName)) {
-                            deserializedAnalyzeTextJobState.setJobId(reader.getString());
-                        } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                            deserializedAnalyzeTextJobState.setLastUpdatedDateTime(
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                        } else if ("status".equals(fieldName)) {
-                            deserializedAnalyzeTextJobState.setStatus(State.fromString(reader.getString()));
-                        } else if ("displayName".equals(fieldName)) {
-                            deserializedAnalyzeTextJobState.setDisplayName(reader.getString());
-                        } else if ("expirationDateTime".equals(fieldName)) {
-                            deserializedAnalyzeTextJobState.setExpirationDateTime(
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                        } else if ("errors".equals(fieldName)) {
-                            List<Error> errors = reader.readArray(reader1 -> Error.fromJson(reader1));
-                            deserializedAnalyzeTextJobState.setErrors(errors);
-                        } else if ("nextLink".equals(fieldName)) {
-                            deserializedAnalyzeTextJobState.setNextLink(reader.getString());
-                        } else if ("tasks".equals(fieldName)) {
-                            deserializedAnalyzeTextJobState.tasks = TasksStateTasks.fromJson(reader);
-                        } else if ("statistics".equals(fieldName)) {
-                            deserializedAnalyzeTextJobState.statistics = RequestStatistics.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedAnalyzeTextJobState;
-                });
     }
 }

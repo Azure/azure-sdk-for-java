@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Defines values for State. */
@@ -44,6 +45,7 @@ public final class State extends ExpandableStringEnum<State> {
      * @param name a name to look for.
      * @return the corresponding State.
      */
+    @JsonCreator
     public static State fromString(String name) {
         return fromString(name, State.class);
     }
