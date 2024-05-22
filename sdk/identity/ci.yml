@@ -83,12 +83,4 @@ extends:
             - name: azure-identity
               groupId: com.azure
               safeName: azureidentity
-          AdditionalModules:
-            - name: azure-core
-              groupId: com.azure
-              # required by the above perf library
-            - name: azure-core-test
-              groupId: com.azure
-            - name: azure-storage-blob
-              groupId: com.azure
 
