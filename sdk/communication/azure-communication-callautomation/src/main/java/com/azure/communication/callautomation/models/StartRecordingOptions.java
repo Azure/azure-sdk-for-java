@@ -197,7 +197,7 @@ public final class StartRecordingOptions {
      * @param recordingStorage the recording storage for call recording
      * @return the StartRecordingOptions object itself.
      */
-    public StartRecordingOptions setExternalStorage(RecordingStorage recordingStorage) {
+    public StartRecordingOptions setRecordingStorage(RecordingStorage recordingStorage) {
         this.recordingStorage = recordingStorage;
         return this;
     }

@@ -56,16 +56,6 @@ public final class CallInvite {
     }
     
     /**
-     * Create a CallInvite object with MicrosoftTeamsAppIdentifier
-     * @param targetIdentity Target's MicrosoftTeamsAppIdentifier
-     */
-    public CallInvite(MicrosoftTeamsAppIdentifier targetIdentity) {
-        this.targetParticipant = targetIdentity;
-        this.sourceCallerIdNumber = null;
-        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
-    }
-    
-    /**
      * Get target's CommunicationIdentifier
      * @return target's CommunicationIdentifier
      */

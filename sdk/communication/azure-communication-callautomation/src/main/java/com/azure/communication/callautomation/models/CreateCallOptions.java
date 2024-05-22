@@ -44,11 +44,6 @@ public final class CreateCallOptions {
     private TranscriptionOptions transcriptionOptions;
 
     /**
-     * Custom Context
-     */
-    private final CustomCallingContext customContext;
-
-    /**
      * Constructor
      * @param callInvite Call invitee information.
      * @param callbackUrl The call back URI.
@@ -56,7 +51,6 @@ public final class CreateCallOptions {
     public CreateCallOptions(CallInvite callInvite, String callbackUrl) {
         this.callInvite = callInvite;
         this.callbackUrl = callbackUrl;
-        this.customContext = new CustomCallingContext(new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     /**
@@ -155,13 +149,5 @@ public final class CreateCallOptions {
     public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
-    }
-
-    /**
-     *  get custom context
-     * @return custom context
-     */
-    public CustomCallingContext getCustomContext() {
-        return customContext;
     }
 }

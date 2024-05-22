@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.models;
+import com.azure.core.annotation.Fluent;
 
 /**
  * Options for the Stop media streaming operation.
  */
+@Fluent
 public class StopMediaStreamingOptions {
 /*
      * Set a callback URL that overrides the default callback URL set by CreateCall/AnswerCall for this operation.

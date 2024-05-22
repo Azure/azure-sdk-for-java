@@ -29,10 +29,7 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
     @JsonProperty(value = "resultInformation")
     private final ResultInformation resultInformation;
 
-    /**
-     * Constructor for ContinuousDtmfRecognitionToneReceived
-     */
-    public ContinuousDtmfRecognitionToneReceived() {
+    private ContinuousDtmfRecognitionToneReceived() {
         resultInformation = null;
         sequenceId = 0;
         tone = null;

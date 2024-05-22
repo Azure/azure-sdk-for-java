@@ -207,12 +207,4 @@ public final class CreateGroupCallOptions {
     public TranscriptionOptions getTranscriptionConfiguration() {
         return transcriptionOptions;
     }
-
-    /**
-     *  get custom context
-     * @return custom context
-     */
-    public CustomCallingContext getCustomContext() {
-        return customContext;
-    }
 }
