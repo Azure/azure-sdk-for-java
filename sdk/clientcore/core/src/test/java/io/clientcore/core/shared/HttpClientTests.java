@@ -1814,8 +1814,8 @@ public abstract class HttpClientTests {
         List<String> expected = Arrays.asList("YHOO", "+2", "10");
 
         try (Response<BinaryData> response =
-                 service.post(getServerUri(isSecure()), BinaryData.EMPTY, sse -> assertEquals(expected, sse.getData()),
-                     requestOptions)) {
+                 service.post(getServerUri(isSecure()), BinaryData.empty(),
+                     sse -> assertEquals(expected, sse.getData()), requestOptions)) {
             assertNotNull(response.getBody());
             assertNotEquals(0, response.getBody().getLength());
             assertNotNull(response.getValue());
