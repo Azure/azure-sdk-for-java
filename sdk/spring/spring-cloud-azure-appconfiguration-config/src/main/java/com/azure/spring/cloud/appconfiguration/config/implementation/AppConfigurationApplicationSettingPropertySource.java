@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -59,9 +60,9 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * </p>
      *
      * @param keyPrefixTrimValues prefixs to trim from key values
-     * @throws IOException thrown if fails to parse Json content type
+     * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> keyPrefixTrimValues) throws IOException {
+    public void initProperties(List<String> keyPrefixTrimValues) throws InvalidConfigurationPropertyValueException {
 
         List<String> labels = Arrays.asList(labelFilters);
         // Reverse labels so they have the right priority order.
@@ -78,7 +79,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
 
     protected void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter,
         List<String> keyPrefixTrimValues)
-        throws IOException {
+        throws InvalidConfigurationPropertyValueException {
         for (ConfigurationSetting setting : settings) {
             if (keyPrefixTrimValues == null && StringUtils.hasText(keyFilter)) {
                 keyPrefixTrimValues = new ArrayList<>();
@@ -131,12 +132,12 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
     }
 
     void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
-        throws IOException {
+        throws InvalidConfigurationPropertyValueException {
         handleJson(setting, trimStrings);
     }
 
     void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
-        throws IOException {
+        throws InvalidConfigurationPropertyValueException {
         Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
         for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
             String key = trimKey(jsonSetting.getKey(), keyPrefixTrimValues);

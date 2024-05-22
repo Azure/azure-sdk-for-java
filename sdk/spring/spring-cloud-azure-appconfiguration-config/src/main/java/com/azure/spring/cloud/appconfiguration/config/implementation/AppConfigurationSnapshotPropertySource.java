@@ -5,11 +5,11 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
 
-import java.io.IOException;
 import java.util.List;
 
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -37,9 +37,9 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
      * </p>
      *
      * @param trim prefix to trim
-     * @throws IOException thrown if fails to parse Json content type
+     * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> trim) throws IOException {
+    public void initProperties(List<String> trim) throws InvalidConfigurationPropertyValueException {
         processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName), null, trim);
     }
 

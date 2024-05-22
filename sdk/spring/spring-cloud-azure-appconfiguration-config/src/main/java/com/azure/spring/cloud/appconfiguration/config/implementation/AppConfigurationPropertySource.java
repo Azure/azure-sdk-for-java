@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.core.env.EnumerablePropertySource;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
@@ -55,5 +55,5 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
         return String.join(",", labelFilters);
     }
 
-    protected abstract void initProperties(List<String> trim) throws IOException;
+    protected abstract void initProperties(List<String> trim) throws InvalidConfigurationPropertyValueException;
 }

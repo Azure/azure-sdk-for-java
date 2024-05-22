@@ -37,6 +37,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 
 public class AppConfigurationApplicationSettingPropertySourceTest {
 
@@ -172,8 +173,7 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         when(clientMock.listSettings(Mockito.any())).thenReturn(configurationListMock);
 
         assertThatThrownBy(() -> propertySource.initProperties(null))
-            .isInstanceOf(IOException.class)
-            .hasMessageStartingWith("Invalid value")
+            .isInstanceOf(InvalidConfigurationPropertyValueException.class)
             .hasMessageNotContaining(ITEM_INVALID_JSON.getValue());
     }
 }

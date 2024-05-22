@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -45,15 +45,16 @@ final class JsonConfigurationParser {
     }
 
     static Map<String, Object> parseJsonSetting(ConfigurationSetting setting)
-        throws IOException {
+        throws InvalidConfigurationPropertyValueException {
         Map<String, Object> settings = new HashMap<>();
         try {
             JsonNode json = MAPPER.readTree(setting.getValue());
             parseSetting(setting.getKey(), json, settings);
         } catch (JsonProcessingException e) {
-            throw new IOException(
-                "Invalid value of key '%s'. Expected type: JSON String, Number, Array, Object or token 'null', 'true' or 'false'".formatted(setting.getKey()),
-                e.getCause());
+            throw new InvalidConfigurationPropertyValueException(
+                setting.getKey(),
+                "<Redacted>",
+                "Expected type: JSON String, Number, Array, Object or token 'null', 'true' or 'false'");
         }
         return settings;
     }
