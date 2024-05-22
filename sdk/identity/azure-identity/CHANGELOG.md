@@ -3,6 +3,7 @@
 ## 1.13.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added `AzurePipelinesCredential`
 
 ### Breaking Changes
 
