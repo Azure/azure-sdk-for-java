@@ -155,7 +155,7 @@
     "com.azure.ai.openai.assistants.models.AssistantDeletionStatus": "Azure.AI.OpenAI.Assistants.AssistantDeletionStatus",
     "com.azure.ai.openai.assistants.models.AssistantFile": "Azure.AI.OpenAI.Assistants.AssistantFile",
     "com.azure.ai.openai.assistants.models.AssistantFileDeletionStatus": "Azure.AI.OpenAI.Assistants.AssistantFileDeletionStatus",
-    "com.azure.ai.openai.assistants.models.AssistantStreamEvent": "",
+    "com.azure.ai.openai.assistants.models.AssistantStreamEvent": "Azure.AI.OpenAI.Assistants.AssistantStreamEvent",
     "com.azure.ai.openai.assistants.models.AssistantThread": "Azure.AI.OpenAI.Assistants.AssistantThread",
     "com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions": "Azure.AI.OpenAI.Assistants.AssistantThreadCreationOptions",
     "com.azure.ai.openai.assistants.models.CodeInterpreterToolDefinition": "Azure.AI.OpenAI.Assistants.CodeInterpreterToolDefinition",
