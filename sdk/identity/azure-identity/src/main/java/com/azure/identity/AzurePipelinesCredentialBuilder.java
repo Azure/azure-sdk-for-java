@@ -1,23 +1,29 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+    // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package com.azure.identity;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.util.ValidationUtil;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
  * The {@link AzurePipelinesCredentialBuilder} provides a fluent builder for {@link AzurePipelinesCredential}.
  */
 public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<AzurePipelinesCredentialBuilder> {
-    private String serviceConnectionId;
+    private static final ClientLogger LOGGER = new ClientLogger(AzurePipelinesCredentialBuilder.class);
     private final static String OIDC_API_VERSION = "7.1-preview.1";
+    private String serviceConnectionId;
+    private String systemAccessToken;
+
     /**
-     * Sets the service connection id for the Azure Devops Pipeline service connection. The service connection id is
-     * retrieved from the Serivce Connection in the portal.
+     * Sets the service connection id for the Azure Pipelines service connection. The service connection ID is
+     * retrieved from the Service Connection in the portal.
      *
-     * @param serviceConnectionId the service connection id for the Azure Devops Pipeline service connection.
+     * @param serviceConnectionId The service connection  ID, as found in the query string's resourceId key.
      * @return the updated instance of the builder.
      */
     public AzurePipelinesCredentialBuilder serviceConnectionId(String serviceConnectionId) {
@@ -26,25 +32,40 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
     }
 
     /**
+     * Sets the System Access Token for the Azure Pipeline service connection. The system access token is
+     * retrieved from the pipeline variables by assigning it to an environment variable and reading it.
+     * See {@link AzurePipelinesCredential} for more information.
+     *
+     * @param systemAccessToken the system access token for the Azure Devops Pipeline service connection.
+     * @return The updated instance of the builder.
+     */
+    public AzurePipelinesCredentialBuilder systemAccessToken(String systemAccessToken) {
+        this.systemAccessToken = systemAccessToken;
+        return this;
+    }
+
+    /**
      * Builds an instance of the {@link AzurePipelinesCredential} with the current configurations.
      * @return an instance of the {@link AzurePipelinesCredential}.
      */
     public AzurePipelinesCredential build() {
-        Objects.requireNonNull(serviceConnectionId);
-        Objects.requireNonNull(this.clientId);
-        Objects.requireNonNull(this.tenantId);
+        ValidationUtil.validate(getClass().getSimpleName(),
+            LOGGER,
+            Arrays.asList("clientId", "tenantId", "serviceConnectionId", "systemAccessToken"),
+            Arrays.asList(this.clientId, this.tenantId, this.serviceConnectionId, this.systemAccessToken));
 
-        String teamFoundationCollectionUri = Configuration.getGlobalConfiguration().get("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI");
-        String teamProjectId = Configuration.getGlobalConfiguration().get("SYSTEM_TEAMPROJECTID");
-        String planId = Configuration.getGlobalConfiguration().get("SYSTEM_PLANID");
-        String jobId = Configuration.getGlobalConfiguration().get("SYSTEM_JOBID");
-        String systemAccessToken = Configuration.getGlobalConfiguration().get("SYSTEM_ACCESSTOKEN");
+        Configuration configuration = identityClientOptions.getConfiguration();
+        if (configuration == null) {
+            configuration = Configuration.getGlobalConfiguration();
+        }
+        String teamFoundationCollectionUri = configuration.get("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI");
+        String teamProjectId = configuration.get("SYSTEM_TEAMPROJECTID");
+        String planId = configuration.get("SYSTEM_PLANID");
+        String jobId = configuration.get("SYSTEM_JOBID");
 
-        Objects.requireNonNull(teamFoundationCollectionUri);
-        Objects.requireNonNull(teamProjectId);
-        Objects.requireNonNull(planId);
-        Objects.requireNonNull(jobId);
-        Objects.requireNonNull(systemAccessToken);
+        ValidationUtil.validate(getClass().getSimpleName(), LOGGER,
+            Arrays.asList("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI", "SYSTEM_TEAMPROJECTID", "SYSTEM_PLANID", "SYSTEM_JOBID"),
+            Arrays.asList(teamFoundationCollectionUri, teamProjectId, planId, jobId));
 
         String requestUrl = String.format("%s%s/_apis/distributedtask/hubs/build/plans/%s/jobs/%s/oidctoken?api-version=%s&serviceConnectionId=%s",
             teamFoundationCollectionUri, teamProjectId, planId, jobId, OIDC_API_VERSION, serviceConnectionId);
