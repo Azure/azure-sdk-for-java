@@ -24,7 +24,8 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 
-import java.net.URI;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,56 +33,21 @@ import java.util.Objects;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.createTracer;
 
 /**
- * <p>Fluent builder for instantiating a {@link ContainerRegistryContentClient} and {@link ContainerRegistryContentAsyncClient}. which are used to
- * upload, download, or delete images and artifacts in Azure Container Registry.</p>
+ * This class provides a fluent builder API to help aid the configuration and instantiation of {@link
+ * ContainerRegistryContentClient ContainerRegistryContentClients} and {@link ContainerRegistryContentAsyncClient ContainerRegistryContentAsyncClients}, call {@link
+ * #buildClient() buildClient} and {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of
+ * the desired client.
  *
- * <p>The client needs the service endpoint of the Azure Container Registry, access credential, and the repository name.</p>
+ * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
+ * authenticated way to communicate with the service but it doesn't contain the service endpoint. Set the pipeline with
+ * {@link #pipeline(HttpPipeline) this} and set the service endpoint with {@link #endpoint(String) this}. Using a
+ * pipeline requires additional setup but allows for finer control on how the {@link ContainerRegistryContentClient} and {@link
+ * ContainerRegistryContentAsyncClient} is built.</p>
+ * <p>The service does not directly support AAD credentials and as a result the clients internally depend on a policy that converts
+ * the AAD credentials to the Azure Container Registry specific service credentials. In case you use your own pipeline, you
+ * would need to provide implementation for this policy as well.
+ * For more information please see <a href="https://github.com/Azure/acr/blob/main/docs/AAD-OAuth.md"> Azure Container Registry Authentication </a>.</p>
  *
- * <p><strong>Instantiating an asynchronous Container Registry Content client</strong></p>
- * <br/>
- *
- * <!-- src_embed readme-sample-createContentAsyncClient -->
- * <pre>
- * DefaultAzureCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
- * ContainerRegistryContentAsyncClient contentClient = new ContainerRegistryContentClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;credential&#41;
- *     .repositoryName&#40;repository&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end readme-sample-createContentAsyncClient -->
- *
- * <p><strong>Instantiating a synchronous Container Registry Content client</strong></p>
- * <br/>
- *
- * <!-- src_embed readme-sample-createContentClient -->
- * <pre>
- * DefaultAzureCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
- * ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .credential&#40;credential&#41;
- *     .repositoryName&#40;repository&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end readme-sample-createContentClient -->
- *
- * <p>Azure Container Registry could be configured for <a href="https://learn.microsoft.com/azure/container-registry/anonymous-pull-access">anonymous access</a>
- * allowing to pull artifacts without authentication.</p>
- *
- * <p><strong>Instantiating a synchronous Container Registry Content client without credential</strong></p>
- * <br/>
- *
- * <!-- src_embed readme-sample-createAnonymousContentClient -->
- * <pre>
- * ContainerRegistryContentClient contentClient = new ContainerRegistryContentClientBuilder&#40;&#41;
- *     .endpoint&#40;endpoint&#41;
- *     .repositoryName&#40;repository&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end readme-sample-createAnonymousContentClient -->
- *
- * @see ContainerRegistryContentAsyncClient
- * @see ContainerRegistryContentClient
  */
 @ServiceClientBuilder(
     serviceClients = {
@@ -111,12 +77,6 @@ public final class ContainerRegistryContentClientBuilder implements
     private String repositoryName;
 
     /**
-     * Creates a new instance of {@link ContainerRegistryContentClientBuilder}
-     */
-    public ContainerRegistryContentClientBuilder() {
-    }
-
-    /**
      * Sets the service endpoint for the Azure Container Registry instance.
      *
      * @param endpoint The URL of the Container Registry instance.
@@ -126,12 +86,12 @@ public final class ContainerRegistryContentClientBuilder implements
     @Override
     public ContainerRegistryContentClientBuilder endpoint(String endpoint) {
         try {
-            URI url = URI.create(endpoint);
-            this.endpoint = url.toASCIIString();
-        } catch (IllegalArgumentException ex) {
-            throw LOGGER.logExceptionAsWarning(ex);
+            new URL(endpoint);
+        } catch (MalformedURLException ex) {
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL", ex));
         }
 
+        this.endpoint = endpoint;
         return this;
     }
 
