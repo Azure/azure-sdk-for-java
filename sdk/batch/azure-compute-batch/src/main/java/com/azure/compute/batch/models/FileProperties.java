@@ -139,6 +139,7 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FileProperties.
      */
+    // TODO: Re-add @Generated tag here and re-generate SDK once the 2024-05-01 Batch Service API is released
     public static FileProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OffsetDateTime lastModified = null;
