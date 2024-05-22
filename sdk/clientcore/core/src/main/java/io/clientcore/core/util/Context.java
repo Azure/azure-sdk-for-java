@@ -61,7 +61,7 @@ public final class Context {
      * An empty {@link Context} that is immutable, used in situations where there is no context-specific content to pass
      * into the request.
      *
-     * @return The singleton instance of an empty context.
+     * @return The singleton instance of an empty {@link Context}.
      */
     public static Context none() {
         return NONE;

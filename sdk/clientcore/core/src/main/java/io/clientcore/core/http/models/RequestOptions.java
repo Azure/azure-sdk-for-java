@@ -387,6 +387,8 @@ public final class RequestOptions {
      * An empty {@link RequestOptions} that is immutable, used in situations where there is no request-specific
      * configuration to pass into the request. Modifications to the {@link RequestOptions} will result in an
      * {@link IllegalStateException}.
+     *
+     * @return The singleton instance of an empty {@link RequestOptions}.
      */
     public static RequestOptions none() {
         return NONE;
