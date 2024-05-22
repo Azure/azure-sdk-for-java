@@ -1,4 +1,4 @@
-    // Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
 package com.azure.identity;
@@ -8,14 +8,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 /**
  * The {@link AzurePipelinesCredentialBuilder} provides a fluent builder for {@link AzurePipelinesCredential}.
  */
 public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<AzurePipelinesCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(AzurePipelinesCredentialBuilder.class);
-    private final static String OIDC_API_VERSION = "7.1-preview.1";
+    private static final String OIDC_API_VERSION = "7.1-preview.1";
     private String serviceConnectionId;
     private String systemAccessToken;
 

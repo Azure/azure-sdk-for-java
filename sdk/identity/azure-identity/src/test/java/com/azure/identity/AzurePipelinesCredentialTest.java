@@ -7,15 +7,9 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
-import com.azure.identity.implementation.models.OidcTokenResponse;
-import com.azure.json.JsonProviders;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import reactor.test.StepVerifier;
 
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AzurePipelinesCredentialTest extends TestProxyTestBase {

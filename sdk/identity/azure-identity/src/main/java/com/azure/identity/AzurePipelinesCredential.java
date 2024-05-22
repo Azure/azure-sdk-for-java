@@ -62,7 +62,7 @@ public class AzurePipelinesCredential implements TokenCredential {
     AzurePipelinesCredential(String clientId, String tenantId, String requestUrl, String systemAccessToken, IdentityClientOptions identityClientOptions) {
         clientAssertionCredentialHelper = new ClientAssertionCredentialHelper(clientId, tenantId, identityClientOptions, () -> {
             HttpClient client = identityClientOptions.getHttpClient();
-            if (client == null ) {
+            if (client == null) {
                 HttpClient.createDefault();
             }
             HttpPipeline pipeline = IdentityClientBase.setupPipeline(client, identityClientOptions);
@@ -82,7 +82,7 @@ public class AzurePipelinesCredential implements TokenCredential {
                     return tokenResponse.getOidcToken();
                 }
             } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to get the client assertion token", null));
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to get the client assertion token", null, e));
             }
         });
     }

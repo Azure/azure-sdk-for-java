@@ -5,14 +5,12 @@ package com.azure.identity;
 
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.ConfigurationBuilder;
-import com.azure.core.util.ConfigurationSource;
 import com.azure.identity.util.TestUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AzurePiplinesCredentialBuilderTest {
+public class AzurePipelinesCredentialBuilderTest {
 
     @Test
     public void testRequiredParameters() {
@@ -35,13 +33,13 @@ public class AzurePiplinesCredentialBuilderTest {
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
-                AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder()
-                    .clientId(clientId)
-                    .tenantId(tenantId)
-                    .serviceConnectionId(serviceConnectionId)
-                    .systemAccessToken(systemAccessToken)
-                    .build();
-            });
+            AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder()
+                .clientId(clientId)
+                .tenantId(tenantId)
+                .serviceConnectionId(serviceConnectionId)
+                .systemAccessToken(systemAccessToken)
+                .build();
+        });
 
     }
 }

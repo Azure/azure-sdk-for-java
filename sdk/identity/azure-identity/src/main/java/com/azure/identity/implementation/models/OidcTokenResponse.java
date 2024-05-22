@@ -26,9 +26,9 @@ public class OidcTokenResponse implements JsonSerializable<OidcTokenResponse> {
     public static OidcTokenResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OidcTokenResponse oidcTokenResponse = new OidcTokenResponse();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
+            while (JsonToken.END_OBJECT != reader.nextToken()) {
                 String fieldName = reader.getFieldName();
-                if (fieldName.equals("oidcToken")) {
+                if ("oidcToken".equals(fieldName)) {
                     oidcTokenResponse.oidcToken = reader.getString();
                 } else {
                     reader.skipChildren();

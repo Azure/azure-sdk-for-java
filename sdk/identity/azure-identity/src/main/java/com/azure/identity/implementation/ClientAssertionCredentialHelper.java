@@ -7,9 +7,6 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.AadCredentialBuilderBase;
-import com.azure.identity.ClientAssertionCredential;
-import com.azure.identity.ClientAssertionCredentialBuilder;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
@@ -21,15 +18,10 @@ import java.util.function.Supplier;
 public class ClientAssertionCredentialHelper implements TokenCredential {
 
     private static final ClientLogger LOGGER = new ClientLogger(ClientAssertionCredentialHelper.class);
-    private final Supplier<String> assertionCallback
-        ;
-    private final IdentityClientOptions options;
     private final IdentityClient identityClient;
     private final IdentitySyncClient identitySyncClient;
 
     public ClientAssertionCredentialHelper(String clientId, String tenantId, IdentityClientOptions options, Supplier<String> clientAssertion) {
-        this.options = options;
-        this.assertionCallback = clientAssertion;
         IdentityClientBuilder builder = new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)

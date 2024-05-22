@@ -127,7 +127,7 @@ public abstract class IdentityClientBase {
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
 
-    private static final Map<String, String> properties = CoreUtils.getProperties(AZURE_IDENTITY_PROPERTIES);
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties(AZURE_IDENTITY_PROPERTIES);
 
 
     final IdentityClientOptions options;
@@ -852,8 +852,8 @@ public abstract class IdentityClientBase {
     public static HttpPipeline setupPipeline(HttpClient httpClient, IdentityClientOptions options) {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
 
         Configuration buildConfiguration = Configuration.getGlobalConfiguration().clone();
 
