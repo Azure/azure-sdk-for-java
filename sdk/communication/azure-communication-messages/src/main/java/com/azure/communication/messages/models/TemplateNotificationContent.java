@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,11 +14,7 @@ import java.util.List;
 /**
  * A request to send a template notification.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "kind",
-    defaultImpl = TemplateNotificationContent.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("template")
 @Immutable
 public final class TemplateNotificationContent extends NotificationContent {
@@ -29,7 +24,7 @@ public final class TemplateNotificationContent extends NotificationContent {
      */
     @Generated
     @JsonProperty(value = "template")
-    private final MessageTemplate template;
+    private MessageTemplate template;
 
     /**
      * Creates an instance of TemplateNotificationContent class.
@@ -54,24 +49,5 @@ public final class TemplateNotificationContent extends NotificationContent {
     @Generated
     public MessageTemplate getTemplate() {
         return this.template;
-    }
-
-    /*
-     * The type discriminator describing a notification type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private CommunicationMessageKind kind = CommunicationMessageKind.TEMPLATE;
-
-    /**
-     * Get the kind property: The type discriminator describing a notification type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public CommunicationMessageKind getKind() {
-        return this.kind;
     }
 }
