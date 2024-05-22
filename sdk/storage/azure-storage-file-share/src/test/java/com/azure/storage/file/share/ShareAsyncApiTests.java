@@ -831,9 +831,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .assertNext(r -> {
                 assertEquals(protocols.toString(), r.getProtocols().toString());
                 if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
-                    assertTrue(r.isEnableSnapshotVirtualDirectoryAccess());
+                    assertTrue(r.isSnapshotVirtualDirectoryAccessEnabled());
                 } else {
-                    assertFalse(r.isEnableSnapshotVirtualDirectoryAccess());
+                    assertFalse(r.isSnapshotVirtualDirectoryAccessEnabled());
                 }
             })
             .verifyComplete();
@@ -866,9 +866,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .assertNext(r -> {
                 assertEquals(protocols.toString(), r.getProtocols().toString());
                 if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
-                    assertTrue(r.isEnableSnapshotVirtualDirectoryAccess());
+                    assertTrue(r.isSnapshotVirtualDirectoryAccessEnabled());
                 } else {
-                    assertFalse(r.isEnableSnapshotVirtualDirectoryAccess());
+                    assertFalse(r.isSnapshotVirtualDirectoryAccessEnabled());
                 }
             })
             .verifyComplete();

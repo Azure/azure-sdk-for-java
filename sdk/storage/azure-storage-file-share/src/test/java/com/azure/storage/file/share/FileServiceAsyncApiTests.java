@@ -320,7 +320,7 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
             .assertNext(r -> {
                 ShareProperties properties = r.getProperties();
                 assertEquals(protocols.toString(), properties.getProtocols().toString());
-                assertTrue(properties.isEnableSnapshotVirtualDirectoryAccess());
+                assertTrue(properties.isSnapshotVirtualDirectoryAccessEnabled());
             })
             .verifyComplete();
     }
