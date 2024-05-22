@@ -16,6 +16,7 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.clienttelemetry.ShowQueryOptions;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.guava25.base.Splitter;
@@ -760,6 +761,7 @@ public final class DiagnosticsProvider {
             trackingId,
             clientAccessor.getConnectionMode(client),
             clientAccessor.getUserAgent(client),
+            null, 
             null);
 
         if (requestOptions != null) {
@@ -1163,6 +1165,14 @@ public final class DiagnosticsProvider {
         private boolean isTransportLevelTracingEnabled() {
             return clientTelemetryConfigAccessor.isTransportLevelTracingEnabled(this.config);
         }
+        
+        private boolean showQueryStatement() {
+            if(ShowQueryOptions.ALL.equals(clientTelemetryConfigAccessor.showQueryOptions(this.config))
+                   || ShowQueryOptions.PARAMETERIZED_ONLY.equals(clientTelemetryConfigAccessor.showQueryOptions(this.config))) {
+                   return true;
+            }
+            return false;
+        }
 
         @Override
         public Context startSpan(String spanName, CosmosDiagnosticsContext cosmosCtx, Context context) {
@@ -1201,6 +1211,10 @@ public final class DiagnosticsProvider {
                 if (!cosmosCtx.getOperationId().isEmpty() &&
                     !cosmosCtx.getOperationId().equals(ctxAccessor.getSpanName(cosmosCtx))) {
                     spanOptions.setAttribute("db.cosmosdb.operation_id", cosmosCtx.getOperationId());
+                }
+                
+                if (showQueryStatement() && null != cosmosCtx.getQueryStatement() ) {
+                    spanOptions.setAttribute("db.statement", cosmosCtx.getQueryStatement());
                 }
 
                 String containerName = cosmosCtx.getContainerName();
