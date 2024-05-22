@@ -11,6 +11,7 @@ import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.util.Base64Url;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;
@@ -44,7 +45,7 @@ public final class HttpResponseBodyDecoder {
      *
      * @throws HttpResponseException If the body cannot be decoded.
      */
-    public static Object decodeByteArray(byte[] body, Response<?> response, ObjectSerializer serializer,
+    public static Object decodeByteArray(BinaryData body, Response<?> response, ObjectSerializer serializer,
                                          HttpResponseDecodeData decodeData) {
         ensureRequestSet(response);
 
@@ -84,10 +85,8 @@ public final class HttpResponseBodyDecoder {
                 return null;
             }
 
-            byte[] bodyAsByteArray = body == null ? response.getBody().toBytes() : body;
-
             try {
-                return deserializeBody(bodyAsByteArray, extractEntityTypeFromReturnType(decodeData),
+                return deserializeBody(response.getBody(), extractEntityTypeFromReturnType(decodeData),
                     decodeData.getReturnValueWireType(), serializer);
             } catch (MalformedValueException e) {
                 throw new HttpResponseException("HTTP response has a malformed body.", response, null, e);
@@ -139,7 +138,7 @@ public final class HttpResponseBodyDecoder {
      * @return Deserialized object.
      * @throws IOException If the deserialization fails.
      */
-    private static Object deserializeBody(byte[] value, Type resultType, Type wireType, ObjectSerializer serializer)
+    private static Object deserializeBody(BinaryData value, Type resultType, Type wireType, ObjectSerializer serializer)
         throws IOException {
         if (wireType == null) {
             return deserialize(value, resultType, serializer);
@@ -151,8 +150,8 @@ public final class HttpResponseBodyDecoder {
         }
     }
 
-    private static Object deserialize(byte[] value, Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromBytes(value == null ? new byte[0] : value, type);
+    private static Object deserialize(BinaryData value, Type type, ObjectSerializer serializer) throws IOException {
+        return serializer.deserializeFromBytes(value == null ? new byte[0] : value.toBytes(), type);
     }
 
     /**
