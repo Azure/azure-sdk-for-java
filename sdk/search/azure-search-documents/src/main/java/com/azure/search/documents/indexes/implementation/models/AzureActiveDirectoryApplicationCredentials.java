@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 @Fluent
 public final class AzureActiveDirectoryApplicationCredentials
-    implements JsonSerializable<AzureActiveDirectoryApplicationCredentials> {
+        implements JsonSerializable<AzureActiveDirectoryApplicationCredentials> {
     /*
      * An AAD Application ID that was granted the required access permissions to the Azure Key Vault that is to be used
      * when encrypting your data at rest. The Application ID should not be confused with the Object ID for your AAD
@@ -32,17 +32,14 @@ public final class AzureActiveDirectoryApplicationCredentials
      */
     private String applicationSecret;
 
-    /**
-     * Creates an instance of AzureActiveDirectoryApplicationCredentials class.
-     */
-    public AzureActiveDirectoryApplicationCredentials() {
-    }
+    /** Creates an instance of AzureActiveDirectoryApplicationCredentials class. */
+    public AzureActiveDirectoryApplicationCredentials() {}
 
     /**
      * Get the applicationId property: An AAD Application ID that was granted the required access permissions to the
      * Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused
      * with the Object ID for your AAD Application.
-     * 
+     *
      * @return the applicationId value.
      */
     public String getApplicationId() {
@@ -53,7 +50,7 @@ public final class AzureActiveDirectoryApplicationCredentials
      * Set the applicationId property: An AAD Application ID that was granted the required access permissions to the
      * Azure Key Vault that is to be used when encrypting your data at rest. The Application ID should not be confused
      * with the Object ID for your AAD Application.
-     * 
+     *
      * @param applicationId the applicationId value to set.
      * @return the AzureActiveDirectoryApplicationCredentials object itself.
      */
@@ -64,7 +61,7 @@ public final class AzureActiveDirectoryApplicationCredentials
 
     /**
      * Get the applicationSecret property: The authentication key of the specified AAD application.
-     * 
+     *
      * @return the applicationSecret value.
      */
     public String getApplicationSecret() {
@@ -73,7 +70,7 @@ public final class AzureActiveDirectoryApplicationCredentials
 
     /**
      * Set the applicationSecret property: The authentication key of the specified AAD application.
-     * 
+     *
      * @param applicationSecret the applicationSecret value to set.
      * @return the AzureActiveDirectoryApplicationCredentials object itself.
      */
@@ -92,30 +89,32 @@ public final class AzureActiveDirectoryApplicationCredentials
 
     /**
      * Reads an instance of AzureActiveDirectoryApplicationCredentials from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureActiveDirectoryApplicationCredentials if the JsonReader was pointing to an instance
-     * of it, or null if it was pointing to JSON null.
+     *     of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureActiveDirectoryApplicationCredentials.
      */
     public static AzureActiveDirectoryApplicationCredentials fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AzureActiveDirectoryApplicationCredentials deserializedAzureActiveDirectoryApplicationCredentials
-                = new AzureActiveDirectoryApplicationCredentials();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    AzureActiveDirectoryApplicationCredentials deserializedAzureActiveDirectoryApplicationCredentials =
+                            new AzureActiveDirectoryApplicationCredentials();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("applicationId".equals(fieldName)) {
-                    deserializedAzureActiveDirectoryApplicationCredentials.applicationId = reader.getString();
-                } else if ("applicationSecret".equals(fieldName)) {
-                    deserializedAzureActiveDirectoryApplicationCredentials.applicationSecret = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("applicationId".equals(fieldName)) {
+                            deserializedAzureActiveDirectoryApplicationCredentials.applicationId = reader.getString();
+                        } else if ("applicationSecret".equals(fieldName)) {
+                            deserializedAzureActiveDirectoryApplicationCredentials.applicationSecret =
+                                    reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedAzureActiveDirectoryApplicationCredentials;
-        });
+                    return deserializedAzureActiveDirectoryApplicationCredentials;
+                });
     }
 }

@@ -33,17 +33,14 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
      */
     private Double b;
 
-    /**
-     * Creates an instance of BM25SimilarityAlgorithm class.
-     */
-    public BM25SimilarityAlgorithm() {
-    }
+    /** Creates an instance of BM25SimilarityAlgorithm class. */
+    public BM25SimilarityAlgorithm() {}
 
     /**
      * Get the k1 property: This property controls the scaling function between the term frequency of each matching
      * terms and the final relevance score of a document-query pair. By default, a value of 1.2 is used. A value of 0.0
      * means the score does not scale with an increase in term frequency.
-     * 
+     *
      * @return the k1 value.
      */
     public Double getK1() {
@@ -54,7 +51,7 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
      * Set the k1 property: This property controls the scaling function between the term frequency of each matching
      * terms and the final relevance score of a document-query pair. By default, a value of 1.2 is used. A value of 0.0
      * means the score does not scale with an increase in term frequency.
-     * 
+     *
      * @param k1 the k1 value to set.
      * @return the BM25SimilarityAlgorithm object itself.
      */
@@ -67,7 +64,7 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
      * Get the b property: This property controls how the length of a document affects the relevance score. By default,
      * a value of 0.75 is used. A value of 0.0 means no length normalization is applied, while a value of 1.0 means the
      * score is fully normalized by the length of the document.
-     * 
+     *
      * @return the b value.
      */
     public Double getB() {
@@ -78,7 +75,7 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
      * Set the b property: This property controls how the length of a document affects the relevance score. By default,
      * a value of 0.75 is used. A value of 0.0 means no length normalization is applied, while a value of 1.0 means the
      * score is fully normalized by the length of the document.
-     * 
+     *
      * @param b the b value to set.
      * @return the BM25SimilarityAlgorithm object itself.
      */
@@ -98,37 +95,39 @@ public final class BM25SimilarityAlgorithm extends SimilarityAlgorithm {
 
     /**
      * Reads an instance of BM25SimilarityAlgorithm from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of BM25SimilarityAlgorithm if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the BM25SimilarityAlgorithm.
      */
     public static BM25SimilarityAlgorithm fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            BM25SimilarityAlgorithm deserializedBM25SimilarityAlgorithm = new BM25SimilarityAlgorithm();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    BM25SimilarityAlgorithm deserializedBM25SimilarityAlgorithm = new BM25SimilarityAlgorithm();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.BM25Similarity".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.BM25Similarity'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.BM25Similarity".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.BM25Similarity'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("k1".equals(fieldName)) {
+                            deserializedBM25SimilarityAlgorithm.k1 = reader.getNullable(JsonReader::getDouble);
+                        } else if ("b".equals(fieldName)) {
+                            deserializedBM25SimilarityAlgorithm.b = reader.getNullable(JsonReader::getDouble);
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("k1".equals(fieldName)) {
-                    deserializedBM25SimilarityAlgorithm.k1 = reader.getNullable(JsonReader::getDouble);
-                } else if ("b".equals(fieldName)) {
-                    deserializedBM25SimilarityAlgorithm.b = reader.getNullable(JsonReader::getDouble);
-                } else {
-                    reader.skipChildren();
-                }
-            }
 
-            return deserializedBM25SimilarityAlgorithm;
-        });
+                    return deserializedBM25SimilarityAlgorithm;
+                });
     }
 }

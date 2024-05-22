@@ -13,6 +13,9 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.EdgeNGramTokenFilterSide;
 import com.azure.search.documents.indexes.models.TokenFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Generates n-grams of the given size(s) starting from the front or the back of an input token. This token filter is
@@ -37,7 +40,7 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
 
     /**
      * Creates an instance of EdgeNGramTokenFilterV1 class.
-     * 
+     *
      * @param name the name value to set.
      */
     public EdgeNGramTokenFilterV1(String name) {
@@ -46,7 +49,7 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
 
     /**
      * Get the minGram property: The minimum n-gram length. Default is 1. Must be less than the value of maxGram.
-     * 
+     *
      * @return the minGram value.
      */
     public Integer getMinGram() {
@@ -55,7 +58,7 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
 
     /**
      * Set the minGram property: The minimum n-gram length. Default is 1. Must be less than the value of maxGram.
-     * 
+     *
      * @param minGram the minGram value to set.
      * @return the EdgeNGramTokenFilterV1 object itself.
      */
@@ -66,7 +69,7 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
 
     /**
      * Get the maxGram property: The maximum n-gram length. Default is 2.
-     * 
+     *
      * @return the maxGram value.
      */
     public Integer getMaxGram() {
@@ -75,7 +78,7 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
 
     /**
      * Set the maxGram property: The maximum n-gram length. Default is 2.
-     * 
+     *
      * @param maxGram the maxGram value to set.
      * @return the EdgeNGramTokenFilterV1 object itself.
      */
@@ -85,9 +88,8 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
     }
 
     /**
-     * Get the side property: Specifies which side of the input the n-gram should be generated from. Default is
-     * "front".
-     * 
+     * Get the side property: Specifies which side of the input the n-gram should be generated from. Default is "front".
+     *
      * @return the side value.
      */
     public EdgeNGramTokenFilterSide getSide() {
@@ -95,9 +97,8 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
     }
 
     /**
-     * Set the side property: Specifies which side of the input the n-gram should be generated from. Default is
-     * "front".
-     * 
+     * Set the side property: Specifies which side of the input the n-gram should be generated from. Default is "front".
+     *
      * @param side the side value to set.
      * @return the EdgeNGramTokenFilterV1 object itself.
      */
@@ -113,60 +114,68 @@ public final class EdgeNGramTokenFilterV1 extends TokenFilter {
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeNumberField("minGram", this.minGram);
         jsonWriter.writeNumberField("maxGram", this.maxGram);
-        jsonWriter.writeStringField("side", this.side == null ? null : this.side.toString());
+        jsonWriter.writeStringField("side", Objects.toString(this.side, null));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of EdgeNGramTokenFilterV1 from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of EdgeNGramTokenFilterV1 if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the EdgeNGramTokenFilterV1.
      */
     public static EdgeNGramTokenFilterV1 fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            Integer minGram = null;
-            Integer maxGram = null;
-            EdgeNGramTokenFilterSide side = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    Integer minGram = null;
+                    Integer maxGram = null;
+                    EdgeNGramTokenFilterSide side = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.EdgeNGramTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.EdgeNGramTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.EdgeNGramTokenFilter".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.EdgeNGramTokenFilter'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("minGram".equals(fieldName)) {
+                            minGram = reader.getNullable(JsonReader::getInt);
+                        } else if ("maxGram".equals(fieldName)) {
+                            maxGram = reader.getNullable(JsonReader::getInt);
+                        } else if ("side".equals(fieldName)) {
+                            side = EdgeNGramTokenFilterSide.fromString(reader.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("minGram".equals(fieldName)) {
-                    minGram = reader.getNullable(JsonReader::getInt);
-                } else if ("maxGram".equals(fieldName)) {
-                    maxGram = reader.getNullable(JsonReader::getInt);
-                } else if ("side".equals(fieldName)) {
-                    side = EdgeNGramTokenFilterSide.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                EdgeNGramTokenFilterV1 deserializedEdgeNGramTokenFilterV1 = new EdgeNGramTokenFilterV1(name);
-                deserializedEdgeNGramTokenFilterV1.minGram = minGram;
-                deserializedEdgeNGramTokenFilterV1.maxGram = maxGram;
-                deserializedEdgeNGramTokenFilterV1.side = side;
+                    if (nameFound) {
+                        EdgeNGramTokenFilterV1 deserializedEdgeNGramTokenFilterV1 = new EdgeNGramTokenFilterV1(name);
+                        deserializedEdgeNGramTokenFilterV1.minGram = minGram;
+                        deserializedEdgeNGramTokenFilterV1.maxGram = maxGram;
+                        deserializedEdgeNGramTokenFilterV1.side = side;
 
-                return deserializedEdgeNGramTokenFilterV1;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+                        return deserializedEdgeNGramTokenFilterV1;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

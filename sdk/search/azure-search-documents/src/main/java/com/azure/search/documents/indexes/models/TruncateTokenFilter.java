@@ -11,10 +11,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Truncates the terms to a specific length. This token filter is implemented using Apache Lucene.
- */
+/** Truncates the terms to a specific length. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class TruncateTokenFilter extends TokenFilter {
     /*
@@ -24,7 +24,7 @@ public final class TruncateTokenFilter extends TokenFilter {
 
     /**
      * Creates an instance of TruncateTokenFilter class.
-     * 
+     *
      * @param name the name value to set.
      */
     public TruncateTokenFilter(String name) {
@@ -33,7 +33,7 @@ public final class TruncateTokenFilter extends TokenFilter {
 
     /**
      * Get the length property: The length at which terms will be truncated. Default and maximum is 300.
-     * 
+     *
      * @return the length value.
      */
     public Integer getLength() {
@@ -42,7 +42,7 @@ public final class TruncateTokenFilter extends TokenFilter {
 
     /**
      * Set the length property: The length at which terms will be truncated. Default and maximum is 300.
-     * 
+     *
      * @param length the length value to set.
      * @return the TruncateTokenFilter object itself.
      */
@@ -62,46 +62,54 @@ public final class TruncateTokenFilter extends TokenFilter {
 
     /**
      * Reads an instance of TruncateTokenFilter from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of TruncateTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the TruncateTokenFilter.
      */
     public static TruncateTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            Integer length = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    Integer length = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.TruncateTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.TruncateTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.TruncateTokenFilter".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.TruncateTokenFilter'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("length".equals(fieldName)) {
+                            length = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("length".equals(fieldName)) {
-                    length = reader.getNullable(JsonReader::getInt);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                TruncateTokenFilter deserializedTruncateTokenFilter = new TruncateTokenFilter(name);
-                deserializedTruncateTokenFilter.length = length;
+                    if (nameFound) {
+                        TruncateTokenFilter deserializedTruncateTokenFilter = new TruncateTokenFilter(name);
+                        deserializedTruncateTokenFilter.length = length;
 
-                return deserializedTruncateTokenFilter;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+                        return deserializedTruncateTokenFilter;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }
