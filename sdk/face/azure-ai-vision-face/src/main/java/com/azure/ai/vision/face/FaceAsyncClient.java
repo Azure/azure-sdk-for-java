@@ -34,6 +34,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
+import com.azure.ai.vision.face.models.DetectOptions;
+import static com.azure.ai.vision.face.implementation.ClientUtils.addOptionalQueryParameterForDetection;
+import static com.azure.ai.vision.face.implementation.ClientUtils.addRequiredQueryParameterForDetection;
 
 /**
  * Initializes a new instance of the asynchronous FaceClient type.
@@ -956,390 +959,6 @@ public final class FaceAsyncClient {
         = new TypeReference<List<FaceDetectionResult>>() {
         };
 
-    private static final TypeReference<List<FaceDetectionResult>> TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT
-        = new TypeReference<List<FaceDetectionResult>>() {
-        };
-
-    /**
-     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
-     *
-     * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
-     * https://azure.microsoft.com/en-us/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
-     *
-     * *
-     * * No image will be stored. Only the extracted face feature(s) will be stored on server. The faceId is an
-     * identifier of the face feature and will be used in "Identify", "Verify", and "Find Similar". The stored face
-     * features will expire and be deleted at the time specified by faceIdTimeToLive after the original detection call.
-     * * Optional parameters include faceId, landmarks, and attributes. Attributes include headPose, glasses, occlusion,
-     * accessories, blur, exposure, noise, mask, and qualityForRecognition. Some of the results returned for specific
-     * attributes may not be highly accurate.
-     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
-     * * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
-     * dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
-     * * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
-     * * For optimal results when querying "Identify", "Verify", and "Find Similar" ('returnFaceId' is true), please use
-     * faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
-     * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
-     * to https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/how-to/specify-detection-model
-     * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
-     * * 'detection_03': Face attributes (mask and headPose only) and landmarks are supported if you choose this
-     * detection model.
-     * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
-     * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
-     * for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need
-     * in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model.
-     * More details, please refer to
-     * https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/how-to/specify-recognition-model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>returnFaceId</td><td>Boolean</td><td>No</td><td>Return faceIds of the detected faces or not. The default
-     * value is true.</td></tr>
-     * <tr><td>returnFaceLandmarks</td><td>Boolean</td><td>No</td><td>Return face landmarks of the detected faces or
-     * not. The default value is false.</td></tr>
-     * <tr><td>returnFaceAttributes</td><td>List&lt;String&gt;</td><td>No</td><td>Analyze and return the one or more
-     * specified face attributes in the comma-separated string like 'returnFaceAttributes=headPose,glasses'. Face
-     * attribute analysis has additional computational and time cost. In the form of "," separated string.</td></tr>
-     * <tr><td>recognitionModel</td><td>String</td><td>No</td><td>The 'recognitionModel' associated with the detected
-     * faceIds. Supported 'recognitionModel' values include 'recognition_01', 'recognition_02', 'recognition_03' or
-     * 'recognition_04'. The default value is 'recognition_01'. 'recognition_04' is recommended since its accuracy is
-     * improved on faces wearing masks compared with 'recognition_03', and its overall accuracy is improved compared
-     * with 'recognition_01' and 'recognition_02'. Allowed values: "recognition_01", "recognition_02", "recognition_03",
-     * "recognition_04".</td></tr>
-     * <tr><td>returnRecognitionModel</td><td>Boolean</td><td>No</td><td>Return 'recognitionModel' or not. The default
-     * value is false.</td></tr>
-     * <tr><td>detectionModel</td><td>String</td><td>No</td><td>The 'detectionModel' associated with the detected
-     * faceIds. Supported 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default
-     * value is 'detection_01'. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
-     * <tr><td>faceIdTimeToLive</td><td>Integer</td><td>No</td><td>The number of seconds for the face ID being cached.
-     * Supported range from 60 seconds up to 86400 seconds. The default value is 86400 (24 hours).</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>{@code
-     * BinaryData
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Optional)
-     *         recognitionModel: String(recognition_01/recognition_02/recognition_03/recognition_04) (Optional)
-     *         faceRectangle (Required): {
-     *             top: int (Required)
-     *             left: int (Required)
-     *             width: int (Required)
-     *             height: int (Required)
-     *         }
-     *         faceLandmarks (Optional): {
-     *             pupilLeft (Required): {
-     *                 x: double (Required)
-     *                 y: double (Required)
-     *             }
-     *             pupilRight (Required): (recursive schema, see pupilRight above)
-     *             noseTip (Required): (recursive schema, see noseTip above)
-     *             mouthLeft (Required): (recursive schema, see mouthLeft above)
-     *             mouthRight (Required): (recursive schema, see mouthRight above)
-     *             eyebrowLeftOuter (Required): (recursive schema, see eyebrowLeftOuter above)
-     *             eyebrowLeftInner (Required): (recursive schema, see eyebrowLeftInner above)
-     *             eyeLeftOuter (Required): (recursive schema, see eyeLeftOuter above)
-     *             eyeLeftTop (Required): (recursive schema, see eyeLeftTop above)
-     *             eyeLeftBottom (Required): (recursive schema, see eyeLeftBottom above)
-     *             eyeLeftInner (Required): (recursive schema, see eyeLeftInner above)
-     *             eyebrowRightInner (Required): (recursive schema, see eyebrowRightInner above)
-     *             eyebrowRightOuter (Required): (recursive schema, see eyebrowRightOuter above)
-     *             eyeRightInner (Required): (recursive schema, see eyeRightInner above)
-     *             eyeRightTop (Required): (recursive schema, see eyeRightTop above)
-     *             eyeRightBottom (Required): (recursive schema, see eyeRightBottom above)
-     *             eyeRightOuter (Required): (recursive schema, see eyeRightOuter above)
-     *             noseRootLeft (Required): (recursive schema, see noseRootLeft above)
-     *             noseRootRight (Required): (recursive schema, see noseRootRight above)
-     *             noseLeftAlarTop (Required): (recursive schema, see noseLeftAlarTop above)
-     *             noseRightAlarTop (Required): (recursive schema, see noseRightAlarTop above)
-     *             noseLeftAlarOutTip (Required): (recursive schema, see noseLeftAlarOutTip above)
-     *             noseRightAlarOutTip (Required): (recursive schema, see noseRightAlarOutTip above)
-     *             upperLipTop (Required): (recursive schema, see upperLipTop above)
-     *             upperLipBottom (Required): (recursive schema, see upperLipBottom above)
-     *             underLipTop (Required): (recursive schema, see underLipTop above)
-     *             underLipBottom (Required): (recursive schema, see underLipBottom above)
-     *         }
-     *         faceAttributes (Optional): {
-     *             age: Double (Optional)
-     *             smile: Double (Optional)
-     *             facialHair (Optional): {
-     *                 moustache: double (Required)
-     *                 beard: double (Required)
-     *                 sideburns: double (Required)
-     *             }
-     *             glasses: String(noGlasses/readingGlasses/sunglasses/swimmingGoggles) (Optional)
-     *             headPose (Optional): {
-     *                 pitch: double (Required)
-     *                 roll: double (Required)
-     *                 yaw: double (Required)
-     *             }
-     *             hair (Optional): {
-     *                 bald: double (Required)
-     *                 invisible: boolean (Required)
-     *                 hairColor (Required): [
-     *                      (Required){
-     *                         color: String(unknown/white/gray/blond/brown/red/black/other) (Required)
-     *                         confidence: double (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             occlusion (Optional): {
-     *                 foreheadOccluded: boolean (Required)
-     *                 eyeOccluded: boolean (Required)
-     *                 mouthOccluded: boolean (Required)
-     *             }
-     *             accessories (Optional): [
-     *                  (Optional){
-     *                     type: String(headwear/glasses/mask) (Required)
-     *                     confidence: double (Required)
-     *                 }
-     *             ]
-     *             blur (Optional): {
-     *                 blurLevel: String(low/medium/high) (Required)
-     *                 value: double (Required)
-     *             }
-     *             exposure (Optional): {
-     *                 exposureLevel: String(underExposure/goodExposure/overExposure) (Required)
-     *                 value: double (Required)
-     *             }
-     *             noise (Optional): {
-     *                 noiseLevel: String(low/medium/high) (Required)
-     *                 value: double (Required)
-     *             }
-     *             mask (Optional): {
-     *                 noseAndMouthCovered: boolean (Required)
-     *                 type: String(faceMask/noMask/otherMaskOrOcclusion/uncertain) (Required)
-     *             }
-     *             qualityForRecognition: String(low/medium/high) (Optional)
-     *         }
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param imageContent The input image binary.
-     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
-     * values include 'detection_01', 'detection_02' and 'detection_03'.
-     * @param recognitionModel The 'recognitionModel' associated with the detected faceIds. Supported 'recognitionModel'
-     * values include 'recognition_01', 'recognition_02', 'recognition_03' or 'recognition_04'.
-     * 'recognition_04' is recommended since its accuracy is improved on faces wearing masks compared with
-     * 'recognition_03', and its overall accuracy is improved compared with 'recognition_01' and 'recognition_02'.
-     * @param returnFaceId Return faceIds of the detected faces or not.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> detectWithResponse(BinaryData imageContent, FaceDetectionModel detectionModel,
-        FaceRecognitionModel recognitionModel, boolean returnFaceId, RequestOptions requestOptions) {
-        addRequiredQueryParameterForDetection(requestOptions, detectionModel, recognitionModel, returnFaceId);
-        return this.serviceClient.detectWithResponseAsync(imageContent, requestOptions);
-    }
-
-    /**
-     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
-     *
-     * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
-     * https://azure.microsoft.com/en-us/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
-     *
-     * *
-     * * No image will be stored. Only the extracted face feature(s) will be stored on server. The faceId is an
-     * identifier of the face feature and will be used in "Identify", "Verify", and "Find Similar". The stored face
-     * features will expire and be deleted at the time specified by faceIdTimeToLive after the original detection call.
-     * * Optional parameters include faceId, landmarks, and attributes. Attributes include headPose, glasses, occlusion,
-     * accessories, blur, exposure, noise, mask, and qualityForRecognition. Some of the results returned for specific
-     * attributes may not be highly accurate.
-     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
-     * * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
-     * dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
-     * * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
-     * * For optimal results when querying "Identify", "Verify", and "Find Similar" ('returnFaceId' is true), please use
-     * faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
-     * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
-     * to https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/how-to/specify-detection-model
-     * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
-     * * 'detection_03': Face attributes (mask and headPose only) and landmarks are supported if you choose this
-     * detection model.
-     * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
-     * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
-     * for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need
-     * in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model.
-     * More details, please refer to
-     * https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/how-to/specify-recognition-model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>returnFaceId</td><td>Boolean</td><td>No</td><td>Return faceIds of the detected faces or not. The default
-     * value is true.</td></tr>
-     * <tr><td>returnFaceLandmarks</td><td>Boolean</td><td>No</td><td>Return face landmarks of the detected faces or
-     * not. The default value is false.</td></tr>
-     * <tr><td>returnFaceAttributes</td><td>List&lt;String&gt;</td><td>No</td><td>Analyze and return the one or more
-     * specified face attributes in the comma-separated string like 'returnFaceAttributes=headPose,glasses'. Face
-     * attribute analysis has additional computational and time cost. In the form of "," separated string.</td></tr>
-     * <tr><td>recognitionModel</td><td>String</td><td>No</td><td>The 'recognitionModel' associated with the detected
-     * faceIds. Supported 'recognitionModel' values include 'recognition_01', 'recognition_02', 'recognition_03' or
-     * 'recognition_04'. The default value is 'recognition_01'. 'recognition_04' is recommended since its accuracy is
-     * improved on faces wearing masks compared with 'recognition_03', and its overall accuracy is improved compared
-     * with 'recognition_01' and 'recognition_02'. Allowed values: "recognition_01", "recognition_02", "recognition_03",
-     * "recognition_04".</td></tr>
-     * <tr><td>returnRecognitionModel</td><td>Boolean</td><td>No</td><td>Return 'recognitionModel' or not. The default
-     * value is false.</td></tr>
-     * <tr><td>detectionModel</td><td>String</td><td>No</td><td>The 'detectionModel' associated with the detected
-     * faceIds. Supported 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default
-     * value is 'detection_01'. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
-     * <tr><td>faceIdTimeToLive</td><td>Integer</td><td>No</td><td>The number of seconds for the face ID being cached.
-     * Supported range from 60 seconds up to 86400 seconds. The default value is 86400 (24 hours).</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>{@code
-     * {
-     *     url: String (Required)
-     * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Optional)
-     *         recognitionModel: String(recognition_01/recognition_02/recognition_03/recognition_04) (Optional)
-     *         faceRectangle (Required): {
-     *             top: int (Required)
-     *             left: int (Required)
-     *             width: int (Required)
-     *             height: int (Required)
-     *         }
-     *         faceLandmarks (Optional): {
-     *             pupilLeft (Required): {
-     *                 x: double (Required)
-     *                 y: double (Required)
-     *             }
-     *             pupilRight (Required): (recursive schema, see pupilRight above)
-     *             noseTip (Required): (recursive schema, see noseTip above)
-     *             mouthLeft (Required): (recursive schema, see mouthLeft above)
-     *             mouthRight (Required): (recursive schema, see mouthRight above)
-     *             eyebrowLeftOuter (Required): (recursive schema, see eyebrowLeftOuter above)
-     *             eyebrowLeftInner (Required): (recursive schema, see eyebrowLeftInner above)
-     *             eyeLeftOuter (Required): (recursive schema, see eyeLeftOuter above)
-     *             eyeLeftTop (Required): (recursive schema, see eyeLeftTop above)
-     *             eyeLeftBottom (Required): (recursive schema, see eyeLeftBottom above)
-     *             eyeLeftInner (Required): (recursive schema, see eyeLeftInner above)
-     *             eyebrowRightInner (Required): (recursive schema, see eyebrowRightInner above)
-     *             eyebrowRightOuter (Required): (recursive schema, see eyebrowRightOuter above)
-     *             eyeRightInner (Required): (recursive schema, see eyeRightInner above)
-     *             eyeRightTop (Required): (recursive schema, see eyeRightTop above)
-     *             eyeRightBottom (Required): (recursive schema, see eyeRightBottom above)
-     *             eyeRightOuter (Required): (recursive schema, see eyeRightOuter above)
-     *             noseRootLeft (Required): (recursive schema, see noseRootLeft above)
-     *             noseRootRight (Required): (recursive schema, see noseRootRight above)
-     *             noseLeftAlarTop (Required): (recursive schema, see noseLeftAlarTop above)
-     *             noseRightAlarTop (Required): (recursive schema, see noseRightAlarTop above)
-     *             noseLeftAlarOutTip (Required): (recursive schema, see noseLeftAlarOutTip above)
-     *             noseRightAlarOutTip (Required): (recursive schema, see noseRightAlarOutTip above)
-     *             upperLipTop (Required): (recursive schema, see upperLipTop above)
-     *             upperLipBottom (Required): (recursive schema, see upperLipBottom above)
-     *             underLipTop (Required): (recursive schema, see underLipTop above)
-     *             underLipBottom (Required): (recursive schema, see underLipBottom above)
-     *         }
-     *         faceAttributes (Optional): {
-     *             age: Double (Optional)
-     *             smile: Double (Optional)
-     *             facialHair (Optional): {
-     *                 moustache: double (Required)
-     *                 beard: double (Required)
-     *                 sideburns: double (Required)
-     *             }
-     *             glasses: String(noGlasses/readingGlasses/sunglasses/swimmingGoggles) (Optional)
-     *             headPose (Optional): {
-     *                 pitch: double (Required)
-     *                 roll: double (Required)
-     *                 yaw: double (Required)
-     *             }
-     *             hair (Optional): {
-     *                 bald: double (Required)
-     *                 invisible: boolean (Required)
-     *                 hairColor (Required): [
-     *                      (Required){
-     *                         color: String(unknown/white/gray/blond/brown/red/black/other) (Required)
-     *                         confidence: double (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             occlusion (Optional): {
-     *                 foreheadOccluded: boolean (Required)
-     *                 eyeOccluded: boolean (Required)
-     *                 mouthOccluded: boolean (Required)
-     *             }
-     *             accessories (Optional): [
-     *                  (Optional){
-     *                     type: String(headwear/glasses/mask) (Required)
-     *                     confidence: double (Required)
-     *                 }
-     *             ]
-     *             blur (Optional): {
-     *                 blurLevel: String(low/medium/high) (Required)
-     *                 value: double (Required)
-     *             }
-     *             exposure (Optional): {
-     *                 exposureLevel: String(underExposure/goodExposure/overExposure) (Required)
-     *                 value: double (Required)
-     *             }
-     *             noise (Optional): {
-     *                 noiseLevel: String(low/medium/high) (Required)
-     *                 value: double (Required)
-     *             }
-     *             mask (Optional): {
-     *                 noseAndMouthCovered: boolean (Required)
-     *                 type: String(faceMask/noMask/otherMaskOrOcclusion/uncertain) (Required)
-     *             }
-     *             qualityForRecognition: String(low/medium/high) (Optional)
-     *         }
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param request The request parameter.
-     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
-     * values include 'detection_01', 'detection_02' and 'detection_03'.
-     * @param recognitionModel The 'recognitionModel' associated with the detected faceIds. Supported 'recognitionModel'
-     * values include 'recognition_01', 'recognition_02', 'recognition_03' or 'recognition_04'.
-     * 'recognition_04' is recommended since its accuracy is improved on faces wearing masks compared with
-     * 'recognition_03', and its overall accuracy is improved compared with 'recognition_01' and 'recognition_02'.
-     * @param returnFaceId Return faceIds of the detected faces or not.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> detectFromUrlWithResponse(BinaryData request, FaceDetectionModel detectionModel,
-        FaceRecognitionModel recognitionModel, boolean returnFaceId, RequestOptions requestOptions) {
-        addRequiredQueryParameterForDetection(requestOptions, detectionModel, recognitionModel, returnFaceId);
-        return this.serviceClient.detectFromUrlWithResponseAsync(request, requestOptions);
-    }
-
     /**
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      *
@@ -1386,7 +1005,7 @@ public final class FaceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<FaceDetectionResult>> detect(BinaryData imageContent, DetectOptions options) {
-        return this.detect(imageContent, options.getDetectionModel(), options.getRecognitionModel(),
+        return this.detectImpl(imageContent, options.getDetectionModel(), options.getRecognitionModel(),
             options.isReturnFaceId(), options.getReturnFaceAttributes(), options.isReturnFaceLandmarks(),
             options.isReturnRecognitionModel(), options.getFaceIdTimeToLive());
     }
@@ -1452,12 +1071,8 @@ public final class FaceAsyncClient {
     public Mono<List<FaceDetectionResult>> detect(BinaryData imageContent, FaceDetectionModel detectionModel,
         FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes,
         Boolean returnFaceLandmarks, Boolean returnRecognitionModel, Integer faceIdTimeToLive) {
-        RequestOptions requestOptions = new RequestOptions();
-        addRequiredQueryParameterForDetection(requestOptions, detectionModel, recognitionModel, returnFaceId);
-        addOptionalQueryParameterForDetection(requestOptions, returnFaceAttributes, returnFaceLandmarks,
-            returnRecognitionModel, faceIdTimeToLive);
-        return detectWithResponse(imageContent, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT));
+        return this.detectImpl(imageContent, detectionModel, recognitionModel, returnFaceId, returnFaceAttributes,
+            returnFaceLandmarks, returnRecognitionModel, faceIdTimeToLive);
     }
 
     /**
@@ -1514,7 +1129,7 @@ public final class FaceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<FaceDetectionResult>> detect(BinaryData imageContent, FaceDetectionModel detectionModel,
         FaceRecognitionModel recognitionModel, boolean returnFaceId) {
-        return this.detect(imageContent, detectionModel, recognitionModel, returnFaceId, null, null, null, null);
+        return this.detectImpl(imageContent, detectionModel, recognitionModel, returnFaceId, null, null, null, null);
     }
 
     /**
@@ -1574,7 +1189,7 @@ public final class FaceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<FaceDetectionResult>> detect(BinaryData imageContent, FaceDetectionModel detectionModel,
         FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes) {
-        return this.detect(imageContent, detectionModel, recognitionModel, returnFaceId, returnFaceAttributes, null,
+        return this.detectImpl(imageContent, detectionModel, recognitionModel, returnFaceId, returnFaceAttributes, null,
             null, null);
     }
 
@@ -1623,10 +1238,10 @@ public final class FaceAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceDetectionResult>> detectFromUrl(String url, DetectOptions options) {
-        return this.detectFromUrl(url, options.getDetectionModel(), options.getRecognitionModel(),
-            options.isReturnFaceId(), options.getReturnFaceAttributes(), options.isReturnFaceLandmarks(),
-            options.isReturnRecognitionModel(), options.getFaceIdTimeToLive());
+    public Mono<List<FaceDetectionResult>> detect(String url, DetectOptions options) {
+        return this.detect(url, options.getDetectionModel(), options.getRecognitionModel(), options.isReturnFaceId(),
+            options.getReturnFaceAttributes(), options.isReturnFaceLandmarks(), options.isReturnRecognitionModel(),
+            options.getFaceIdTimeToLive());
     }
 
     /**
@@ -1687,16 +1302,16 @@ public final class FaceAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceDetectionResult>> detectFromUrl(String url, FaceDetectionModel detectionModel,
+    public Mono<List<FaceDetectionResult>> detect(String url, FaceDetectionModel detectionModel,
         FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes,
         Boolean returnFaceLandmarks, Boolean returnRecognitionModel, Integer faceIdTimeToLive) {
         RequestOptions requestOptions = new RequestOptions();
         addRequiredQueryParameterForDetection(requestOptions, detectionModel, recognitionModel, returnFaceId);
         addOptionalQueryParameterForDetection(requestOptions, returnFaceAttributes, returnFaceLandmarks,
             returnRecognitionModel, faceIdTimeToLive);
-        DetectFromUrlRequest requestObj = new DetectFromUrlRequest(url);
+        DetectFromUrlImplRequest requestObj = new DetectFromUrlImplRequest(url);
         BinaryData request = BinaryData.fromObject(requestObj);
-        return detectFromUrlWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
+        return detectFromUrlImplWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT));
     }
 
@@ -1751,9 +1366,9 @@ public final class FaceAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceDetectionResult>> detectFromUrl(String url, FaceDetectionModel detectionModel,
+    public Mono<List<FaceDetectionResult>> detect(String url, FaceDetectionModel detectionModel,
         FaceRecognitionModel recognitionModel, boolean returnFaceId) {
-        return this.detectFromUrl(url, detectionModel, recognitionModel, returnFaceId, null, null, null, null);
+        return this.detect(url, detectionModel, recognitionModel, returnFaceId, null, null, null, null);
     }
 
     /**
@@ -1810,9 +1425,8 @@ public final class FaceAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceDetectionResult>> detectFromUrl(String url, FaceDetectionModel detectionModel,
+    public Mono<List<FaceDetectionResult>> detect(String url, FaceDetectionModel detectionModel,
         FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes) {
-        return this.detectFromUrl(url, detectionModel, recognitionModel, returnFaceId, returnFaceAttributes, null, null,
-            null);
+        return this.detect(url, detectionModel, recognitionModel, returnFaceId, returnFaceAttributes, null, null, null);
     }
 }
