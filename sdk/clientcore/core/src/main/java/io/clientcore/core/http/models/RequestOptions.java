@@ -129,7 +129,7 @@ public final class RequestOptions {
      * Creates a new instance of {@link RequestOptions}.
      */
     public RequestOptions() {
-        this.context = Context.EMPTY;
+        this.context = Context.none();
     }
 
     /**
