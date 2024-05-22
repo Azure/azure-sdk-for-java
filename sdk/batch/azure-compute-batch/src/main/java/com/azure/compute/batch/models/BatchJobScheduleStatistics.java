@@ -416,12 +416,14 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
                         try {
                             numSucceededTasks = Long.parseLong(numSucceededTasksStr);
                         } catch (NumberFormatException e) {
-                            throw new IOException("Expected numeric numSucceededTasks, but found: " + numSucceededTasksStr, e);
+                            throw new IOException(
+                                "Expected numeric numSucceededTasks, but found: " + numSucceededTasksStr, e);
                         }
                     } else if (reader.currentToken() == JsonToken.NUMBER) {
                         numSucceededTasks = reader.getLong();
                     } else {
-                        throw new IOException("Expected numSucceededTasks to be a number or string, but found other type");
+                        throw new IOException(
+                            "Expected numSucceededTasks to be a number or string, but found other type");
                     }
                 } else if ("numFailedTasks".equals(fieldName)) {
                     if (reader.currentToken() == JsonToken.STRING) {
@@ -429,7 +431,8 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
                         try {
                             numFailedTasks = Long.parseLong(numFailedTasksStr);
                         } catch (NumberFormatException e) {
-                            throw new IOException("Expected numeric numFailedTasks, but found: " + numFailedTasksStr, e);
+                            throw new IOException("Expected numeric numFailedTasks, but found: " + numFailedTasksStr,
+                                e);
                         }
                     } else if (reader.currentToken() == JsonToken.NUMBER) {
                         numFailedTasks = reader.getLong();
@@ -442,7 +445,8 @@ public final class BatchJobScheduleStatistics implements JsonSerializable<BatchJ
                         try {
                             numTaskRetries = Long.parseLong(numTaskRetriesStr);
                         } catch (NumberFormatException e) {
-                            throw new IOException("Expected numeric numTaskRetries, but found: " + numTaskRetriesStr, e);
+                            throw new IOException("Expected numeric numTaskRetries, but found: " + numTaskRetriesStr,
+                                e);
                         }
                     } else if (reader.currentToken() == JsonToken.NUMBER) {
                         numTaskRetries = reader.getLong();
