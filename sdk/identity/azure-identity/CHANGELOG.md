@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Migrated Managed Identity authentication flow to utilize Msal4j MI implementation. 
 
 ## 1.12.1 (2024-05-02)
 

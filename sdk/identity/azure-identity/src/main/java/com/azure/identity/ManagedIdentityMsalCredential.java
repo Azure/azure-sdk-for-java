@@ -3,8 +3,8 @@
 
 package com.azure.identity;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.implementation.IdentityClient;
 import reactor.core.publisher.Mono;
@@ -13,15 +13,17 @@ import reactor.core.publisher.Mono;
  * The Managed Service Identity credential for Virtual Machines.
  */
 @Immutable
-class VirtualMachineMsiCredential extends ManagedIdentityServiceCredential {
+class ManagedIdentityMsalCredential extends ManagedIdentityServiceCredential {
+    private final IdentityClient identityClient;
 
     /**
      * Creates an instance of VirtualMachineMSICredential.
      * @param clientId the client id of user assigned or system assigned identity
      * @param identityClient the identity client to acquire a token with.
      */
-    VirtualMachineMsiCredential(String clientId, IdentityClient identityClient) {
-        super(clientId, identityClient, "AZURE VM IMDS ENDPOINT");
+    ManagedIdentityMsalCredential(String clientId, IdentityClient identityClient) {
+        super(clientId, identityClient, "Managed Identity");
+        this.identityClient = identityClient;
     }
 
     /**
