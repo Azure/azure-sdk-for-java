@@ -10,6 +10,7 @@
 * Fixed a rare issue causing `StackOverflowError` when `RntbdRequestRecord` expires and tries to serialize `CosmosException` using default Jackson Object Mapper - See[PR 40272](https://github.com/Azure/azure-sdk-for-java/pull/40272)
 
 #### Other Changes
+* Added robustness improvement to avoid client-side parsing errors `java.lang.IllegalArgumentException: Unable to parse JSON` when Gateway returns duplicate `unqiueKeyPolicy` in IndexPolicy (invalid json) - See[PR 40306](https://github.com/Azure/azure-sdk-for-java/pull/40306)
 
 ### 4.60.0 (2024-05-19)
 
