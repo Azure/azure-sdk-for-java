@@ -1,7 +1,5 @@
-/*
- * // Copyright (c) Microsoft Corporation. All rights reserved.
- * // Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.spring.cloud.feature.management.implementation.models;
 
@@ -72,14 +70,5 @@ public class RecurrenceRange {
      * */
     public void setNumberOfRecurrences(int numberOfRecurrences) {
         this.numberOfRecurrences = numberOfRecurrences;
-    }
-
-    @Override
-    public String toString() {
-        return "RecurrenceRange{"
-            + "type=" + type
-            + ", endDate=" + endDate
-            + ", numberOfRecurrences=" + numberOfRecurrences
-            + '}';
     }
 }

@@ -1,7 +1,5 @@
-/*
- * // Copyright (c) Microsoft Corporation. All rights reserved.
- * // Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.spring.cloud.feature.management.implementation.models;
 
@@ -93,15 +91,5 @@ public class RecurrencePattern {
         if (firstDayOfWeek != null) {
             this.firstDayOfWeek = firstDayOfWeek;
         }
-    }
-
-    @Override
-    public String toString() {
-        return "RecurrencePattern{"
-            + "type=" + type
-            + ", interval=" + interval
-            + ", daysOfWeek=" + daysOfWeek
-            + ", firstDayOfWeek='" + firstDayOfWeek + '\''
-            + '}';
     }
 }

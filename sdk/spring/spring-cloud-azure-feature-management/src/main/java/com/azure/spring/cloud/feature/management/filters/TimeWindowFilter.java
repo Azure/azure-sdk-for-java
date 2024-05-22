@@ -4,8 +4,8 @@ package com.azure.spring.cloud.feature.management.filters;
 
 import com.azure.spring.cloud.feature.management.implementation.FeatureFilterUtils;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceCachedService;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceEvaluator;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Map;
 
@@ -74,18 +73,7 @@ public final class TimeWindowFilter implements FeatureFilter {
             return now.isAfter(settings.getStart()) && now.isBefore(settings.getEnd());
         }
 
-        final Duration activeDuration = Duration.between(settings.getStart(), settings.getEnd());
-        ZonedDateTime closestRecurrence = RecurrenceCachedService.getClosestTime(settings, now);
-
-        // Recalculate the closest recurrence if we have passed the cached time window.
-        if (now.isAfter(closestRecurrence.plus(activeDuration))) {
-            closestRecurrence = RecurrenceCachedService.updateClosestTime(settings, now);
-        }
-
-        if (closestRecurrence == null || now.isBefore(closestRecurrence)) {
-            return false;
-        }
-
-        return now.isBefore(closestRecurrence.plus(activeDuration));
+        final RecurrenceEvaluator evaluator = new RecurrenceEvaluator(settings, now);
+        return evaluator.isMatch();
     }
 }
