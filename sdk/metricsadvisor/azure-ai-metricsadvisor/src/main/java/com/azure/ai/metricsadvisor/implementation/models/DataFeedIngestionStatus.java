@@ -5,42 +5,36 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The DataFeedIngestionStatus model.
- */
+/** The DataFeedIngestionStatus model. */
 @Immutable
-public final class DataFeedIngestionStatus implements JsonSerializable<DataFeedIngestionStatus> {
+public final class DataFeedIngestionStatus {
     /*
      * data slice timestamp.
      */
+    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
     /*
      * latest ingestion task status for this data slice.
      */
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private IngestionStatusType status;
 
     /*
      * the trimmed message of last ingestion job.
      */
+    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /**
-     * Creates an instance of DataFeedIngestionStatus class.
-     */
-    public DataFeedIngestionStatus() {
-    }
+    /** Creates an instance of DataFeedIngestionStatus class. */
+    public DataFeedIngestionStatus() {}
 
     /**
      * Get the timestamp property: data slice timestamp.
-     * 
+     *
      * @return the timestamp value.
      */
     public OffsetDateTime getTimestamp() {
@@ -49,7 +43,7 @@ public final class DataFeedIngestionStatus implements JsonSerializable<DataFeedI
 
     /**
      * Get the status property: latest ingestion task status for this data slice.
-     * 
+     *
      * @return the status value.
      */
     public IngestionStatusType getStatus() {
@@ -58,47 +52,10 @@ public final class DataFeedIngestionStatus implements JsonSerializable<DataFeedI
 
     /**
      * Get the message property: the trimmed message of last ingestion job.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
         return this.message;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DataFeedIngestionStatus from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DataFeedIngestionStatus if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DataFeedIngestionStatus.
-     */
-    public static DataFeedIngestionStatus fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            DataFeedIngestionStatus deserializedDataFeedIngestionStatus = new DataFeedIngestionStatus();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("timestamp".equals(fieldName)) {
-                    deserializedDataFeedIngestionStatus.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("status".equals(fieldName)) {
-                    deserializedDataFeedIngestionStatus.status = IngestionStatusType.fromString(reader.getString());
-                } else if ("message".equals(fieldName)) {
-                    deserializedDataFeedIngestionStatus.message = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedDataFeedIngestionStatus;
-        });
     }
 }
