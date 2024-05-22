@@ -110,7 +110,7 @@ public class PhoneNumbersClientBuilderTest {
     public void buildClientWithServiceVersion() {
         // Build client with required settings and mock configuration
         PhoneNumbersClient phoneNumberClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-                .serviceVersion(PhoneNumbersServiceVersion.V2024_03_01_PREVIEW)
+                .serviceVersion(PhoneNumbersServiceVersion.V2021_03_07)
                 .buildClient();
 
         // Validate client created with expected settings
@@ -227,7 +227,7 @@ public class PhoneNumbersClientBuilderTest {
         // Build client with required settings and mock configuration
         PhoneNumbersAsyncClient phoneNumberAsyncClient = this
                 .setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-                .serviceVersion(PhoneNumbersServiceVersion.V2024_03_01_PREVIEW)
+                .serviceVersion(PhoneNumbersServiceVersion.V2021_03_07)
                 .buildAsyncClient();
 
         // Validate client created with expected settings
