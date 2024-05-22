@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models.events;
 
+import com.azure.communication.callautomation.models.RecordingKind;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -29,6 +30,12 @@ public final class RecordingStateChanged extends CallAutomationEventBase {
     private final RecordingState recordingState;
 
     /**
+     * Recording kind.
+     */
+    @JsonProperty(value = "recordingKind")
+    private final RecordingKind recordingKind;
+
+    /**
      * Time of when it started recording.
      */
     @JsonIgnore
@@ -39,6 +46,7 @@ public final class RecordingStateChanged extends CallAutomationEventBase {
         this.startDateTime = OffsetDateTime.parse(startDateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         this.recordingId = null;
         this.recordingState = null;
+        this.recordingKind = null;
     }
 
     /**
@@ -66,5 +74,14 @@ public final class RecordingStateChanged extends CallAutomationEventBase {
      */
     public OffsetDateTime getStartDateTime() {
         return startDateTime;
+    }
+
+    /**
+     * Get the Recording kind property: Recording Kind.
+     * 
+     * @return the recordingKind.
+     */
+    public RecordingKind getRecordingKind() {
+        return recordingKind;
     }
 }
