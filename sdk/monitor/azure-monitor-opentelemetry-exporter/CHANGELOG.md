@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.23 (05-23-2024)
+## 1.0.0-beta.23 (2024-05-23)
 
 ### Other Changes
 - [Disable _OTELRESOURCE_ custom metric in non-AKS environments](https://github.com/Azure/azure-sdk-for-java/pull/40312)
