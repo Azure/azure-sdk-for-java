@@ -16,9 +16,10 @@ import java.util.Objects;
 
 @Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
 @CosmosIndexingPolicy()
-public class Person {
+public class PersonWithTransientPartitionKey {
     private String id;
     private String firstName;
+    @Transient
     @PartitionKey
     private String lastName;
     @Transient
@@ -30,7 +31,7 @@ public class Person {
     @Version
     private String _etag;
 
-    public Person(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses) {
+    public PersonWithTransientPartitionKey(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -38,8 +39,8 @@ public class Person {
         this.shippingAddresses = shippingAddresses;
     }
 
-    public Person(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses,
-                  Integer age, Map<String, String> passportIDsByCountry) {
+    public PersonWithTransientPartitionKey(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses,
+                                           Integer age, Map<String, String> passportIDsByCountry) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -49,8 +50,8 @@ public class Person {
         this.passportIdsByCountry = passportIDsByCountry;
     }
 
-    public Person(String id, String firstName, String lastName, String transientProperty, List<String> hobbies, List<Address> shippingAddresses,
-                  Integer age, Map<String, String> passportIDsByCountry) {
+    public PersonWithTransientPartitionKey(String id, String firstName, String lastName, String transientProperty, List<String> hobbies, List<Address> shippingAddresses,
+                                           Integer age, Map<String, String> passportIDsByCountry) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -61,7 +62,7 @@ public class Person {
         this.passportIdsByCountry = passportIDsByCountry;
     }
 
-    public Person() {
+    public PersonWithTransientPartitionKey() {
     }
 
     public String getId() {
@@ -144,7 +145,7 @@ public class Person {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Person person = (Person) o;
+        PersonWithTransientPartitionKey person = (PersonWithTransientPartitionKey) o;
         return Objects.equals(id, person.id)
             && Objects.equals(firstName, person.firstName)
             && Objects.equals(lastName, person.lastName)
@@ -162,7 +163,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{"
+        return "PersonWithTransientPartitionKey{"
             + "id='"
             + id
             + '\''
