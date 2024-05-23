@@ -38,7 +38,7 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
      * Sets the service connection id for the Azure Pipelines service connection. The service connection ID is
      * retrieved from the Service Connection in the portal.
      *
-     * @param serviceConnectionId The service connection  ID, as found in the query string's resourceId key.
+     * @param serviceConnectionId The service connection ID, as found in the query string's resourceId key.
      * @return the updated instance of the builder.
      */
     public AzurePipelinesCredentialBuilder serviceConnectionId(String serviceConnectionId) {
@@ -47,11 +47,11 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
     }
 
     /**
-     * Sets the System Access Token for the Azure Pipeline service connection. The system access token is
+     * Sets the System Access Token for the Azure Pipelines service connection. The system access token is
      * retrieved from the pipeline variables by assigning it to an environment variable and reading it.
      * See {@link AzurePipelinesCredential} for more information.
      *
-     * @param systemAccessToken the system access token for the Azure Devops Pipeline service connection.
+     * @param systemAccessToken the system access token for the Azure Pipelines service connection.
      * @return The updated instance of the builder.
      */
     public AzurePipelinesCredentialBuilder systemAccessToken(String systemAccessToken) {
