@@ -3,17 +3,21 @@
 ### 4.61.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added query statement conditionally in diagnostics and tracing. - See[PR 39990](https://github.com/Azure/azure-sdk-for-java/pull/39990)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed a rare issue causing `StackOverflowError` when `RntbdRequestRecord` expires and tries to serialize `CosmosException` using default Jackson Object Mapper - See[PR 40272](https://github.com/Azure/azure-sdk-for-java/pull/40272)
+* Fixed UserAgent encoding when the suffix contains non-ASCII characters. - See[PR 40293](https://github.com/Azure/azure-sdk-for-java/pull/40293)
 
 #### Other Changes
+* Added robustness improvement to avoid client-side parsing errors `java.lang.IllegalArgumentException: Unable to parse JSON` when Gateway returns duplicate `unqiueKeyPolicy` in IndexPolicy (invalid json) - See[PR 40306](https://github.com/Azure/azure-sdk-for-java/pull/40306)
 
 ### 4.60.0 (2024-05-19)
 
 #### Features Added
-* Added `cosmosVectorEmbeddingPolicy` in `cosmosContainerProperties` and `vectorIndexes` in `indexPolicy` to support vector search in CosmosDB - See[39379](https://github.com/Azure/azure-sdk-for-java/pull/39379)
+* Added `cosmosVectorEmbeddingPolicy` in `cosmosContainerProperties` and `vectorIndexes` in `indexPolicy` to support vector search in CosmosDB - See[PR 39379](https://github.com/Azure/azure-sdk-for-java/pull/39379)
 * Added support for non-streaming OrderBy query and a query feature `NonStreamingOrderBy` to support Vector Search queries. - See [PR 39897](https://github.com/Azure/azure-sdk-for-java/pull/39897/) 
 * Added the capability to regionally scope session tokens used for operations scoped to a logical partition. - See [PR 38003](https://github.com/Azure/azure-sdk-for-java/pull/38003)
 

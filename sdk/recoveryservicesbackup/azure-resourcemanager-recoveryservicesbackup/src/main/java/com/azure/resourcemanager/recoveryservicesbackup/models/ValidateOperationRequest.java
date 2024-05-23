@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,18 +16,36 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "objectType",
-    defaultImpl = ValidateOperationRequest.class)
+    defaultImpl = ValidateOperationRequest.class,
+    visible = true)
 @JsonTypeName("ValidateOperationRequest")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ValidateRestoreOperationRequest", value = ValidateRestoreOperationRequest.class) })
 @Immutable
 public class ValidateOperationRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType;
+
     /**
      * Creates an instance of ValidateOperationRequest class.
      */
     public ValidateOperationRequest() {
+        this.objectType = "ValidateOperationRequest";
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    public String objectType() {
+        return this.objectType;
     }
 
     /**

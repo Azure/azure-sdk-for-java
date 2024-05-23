@@ -6,60 +6,42 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementUsage;
 import com.azure.resourcemanager.recoveryservicesbackup.models.UsagesUnit;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BackupUsageSummariesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"unit\":\"Percent\",\"quotaPeriod\":\"ykycndzfqi\",\"nextResetTime\":\"2021-10-29T14:16:23Z\",\"currentValue\":7426182523879959329,\"limit\":1980513995377307383,\"name\":{\"value\":\"wagltbxoeeonqlnf\",\"localizedValue\":\"y\"}}]}";
+            = "{\"value\":[{\"unit\":\"CountPerSecond\",\"quotaPeriod\":\"gijiitnspxlzd\",\"nextResetTime\":\"2021-08-31T17:26:18Z\",\"currentValue\":6495524474457353023,\"limit\":303813991586774149,\"name\":{\"value\":\"fanraybfu\",\"localizedValue\":\"frojsydgr\"}}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure().withHttpClient(httpClient)
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<BackupManagementUsage> response = manager.backupUsageSummaries().list("ovwzdbpqvybefg", "mx",
-            "okcvtlubses", "vcuartrhun", com.azure.core.util.Context.NONE);
+        PagedIterable<BackupManagementUsage> response
+            = manager.backupUsageSummaries().list("ewres", "moweg", "mut", "yxey", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UsagesUnit.PERCENT, response.iterator().next().unit());
-        Assertions.assertEquals("ykycndzfqi", response.iterator().next().quotaPeriod());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-29T14:16:23Z"),
+        Assertions.assertEquals(UsagesUnit.COUNT_PER_SECOND, response.iterator().next().unit());
+        Assertions.assertEquals("gijiitnspxlzd", response.iterator().next().quotaPeriod());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-31T17:26:18Z"),
             response.iterator().next().nextResetTime());
-        Assertions.assertEquals(7426182523879959329L, response.iterator().next().currentValue());
-        Assertions.assertEquals(1980513995377307383L, response.iterator().next().limit());
-        Assertions.assertEquals("wagltbxoeeonqlnf", response.iterator().next().name().value());
-        Assertions.assertEquals("y", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals(6495524474457353023L, response.iterator().next().currentValue());
+        Assertions.assertEquals(303813991586774149L, response.iterator().next().limit());
+        Assertions.assertEquals("fanraybfu", response.iterator().next().name().value());
+        Assertions.assertEquals("frojsydgr", response.iterator().next().name().localizedValue());
     }
 }
