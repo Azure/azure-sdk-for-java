@@ -63,8 +63,7 @@ public class RetryUtilTest {
         // Arrange
         final String timeoutMessage = "Operation timed out.";
         final Duration timeout = Duration.ofMillis(1500);
-        final AmqpRetryOptions options = new AmqpRetryOptions()
-            .setDelay(Duration.ofSeconds(1))
+        final AmqpRetryOptions options = new AmqpRetryOptions().setDelay(Duration.ofSeconds(1))
             .setMode(AmqpRetryMode.FIXED)
             .setMaxRetries(2)
             .setTryTimeout(timeout);
@@ -97,8 +96,7 @@ public class RetryUtilTest {
         // Arrange
         final String timeoutMessage = "Operation timed out.";
         final Duration timeout = Duration.ofMillis(500);
-        final AmqpRetryOptions options = new AmqpRetryOptions()
-            .setDelay(Duration.ofSeconds(1))
+        final AmqpRetryOptions options = new AmqpRetryOptions().setDelay(Duration.ofSeconds(1))
             .setMaxRetries(2)
             .setMode(AmqpRetryMode.FIXED)
             .setTryTimeout(timeout);
@@ -166,8 +164,7 @@ public class RetryUtilTest {
     @Test
     void testRetrySpecServerBusy() {
         // Arrange
-        final AmqpRetryOptions fixedOptions = new AmqpRetryOptions()
-            .setMode(AmqpRetryMode.FIXED)
+        final AmqpRetryOptions fixedOptions = new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED)
             .setDelay(Duration.ofSeconds(1))
             .setMaxRetries(2)
             .setMaxDelay(Duration.ofSeconds(15));
@@ -189,11 +186,8 @@ public class RetryUtilTest {
     }
 
     static Stream<Throwable> testRetrySpecNonServerBusyExceptions() {
-        return Stream.of(
-            new AmqpException(true, AmqpErrorCondition.INTERNAL_ERROR, "Message",
-                new AmqpErrorContext("namespace-foo-bar")),
-            new TimeoutException("Timeout exception test.")
-        );
+        return Stream.of(new AmqpException(true, AmqpErrorCondition.INTERNAL_ERROR, "Message",
+            new AmqpErrorContext("namespace-foo-bar")), new TimeoutException("Timeout exception test."));
     }
 
     /**
@@ -205,8 +199,7 @@ public class RetryUtilTest {
     void testRetrySpecNonServerBusyExceptions(Throwable exception) {
         // Arrange
         // The delay is 4x longer than the SERVER_BUSY_WAIT_TIME.
-        final AmqpRetryOptions fixedOptions = new AmqpRetryOptions()
-            .setMode(AmqpRetryMode.FIXED)
+        final AmqpRetryOptions fixedOptions = new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED)
             .setDelay(Duration.ofSeconds(1))
             .setMaxRetries(2)
             .setMaxDelay(Duration.ofSeconds(15));
@@ -232,8 +225,7 @@ public class RetryUtilTest {
     @Test
     void testRetryExhausted() {
         // Arrange
-        final AmqpRetryOptions fixedOptions = new AmqpRetryOptions()
-            .setMode(AmqpRetryMode.FIXED)
+        final AmqpRetryOptions fixedOptions = new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED)
             .setDelay(Duration.ofSeconds(1))
             .setMaxRetries(2)
             .setMaxDelay(Duration.ofSeconds(15));
@@ -255,11 +247,8 @@ public class RetryUtilTest {
     }
 
     static Stream<Throwable> testRetryWhenExceptionDoesNotMatch() {
-        return Stream.of(
-            new AmqpException(false, AmqpErrorCondition.INTERNAL_ERROR, "Message",
-                new AmqpErrorContext("namespace-foo-bar")),
-            new IllegalArgumentException("Illegal state exception")
-        );
+        return Stream.of(new AmqpException(false, AmqpErrorCondition.INTERNAL_ERROR, "Message",
+            new AmqpErrorContext("namespace-foo-bar")), new IllegalArgumentException("Illegal state exception"));
     }
 
     /**
@@ -269,8 +258,7 @@ public class RetryUtilTest {
     @ParameterizedTest
     void testRetryWhenExceptionDoesNotMatch(Throwable exception) {
         // Arrange
-        final AmqpRetryOptions fixedOptions = new AmqpRetryOptions()
-            .setMode(AmqpRetryMode.FIXED)
+        final AmqpRetryOptions fixedOptions = new AmqpRetryOptions().setMode(AmqpRetryMode.FIXED)
             .setDelay(Duration.ofSeconds(1))
             .setMaxRetries(2)
             .setMaxDelay(Duration.ofSeconds(15));
