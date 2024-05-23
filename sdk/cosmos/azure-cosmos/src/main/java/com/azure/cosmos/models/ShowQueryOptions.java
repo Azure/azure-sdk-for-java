@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.implementation.clienttelemetry;
+package com.azure.cosmos.models;
 
 import java.util.HashMap;
 import java.util.Map;
