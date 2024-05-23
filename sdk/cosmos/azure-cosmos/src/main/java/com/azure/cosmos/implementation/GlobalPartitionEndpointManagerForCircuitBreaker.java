@@ -155,7 +155,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             this.partitionKeyRangeToFailoverInfo.get(partitionKeyRangeWrapper);
 
         List<URI> unavailableLocations = new ArrayList<>();
-        boolean doesPartitionHaveUnavailableLocations = false;
+        boolean doesPartitionHaveUnhealthyLocations = false;
 
         if (partitionLevelLocationUnavailabilityInfoSnapshot != null) {
             Map<URI, LocationSpecificContext> locationEndpointToFailureMetricsForPartition =
@@ -167,16 +167,16 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
                 if (locationSpecificContext.locationUnavailabilityStatus == LocationUnavailabilityStatus.FreshUnavailable) {
                     unavailableLocations.add(location);
-                    doesPartitionHaveUnavailableLocations = true;
+                    doesPartitionHaveUnhealthyLocations = true;
                 } else if (locationSpecificContext.locationUnavailabilityStatus == LocationUnavailabilityStatus.StaleUnavailable) {
-                    doesPartitionHaveUnavailableLocations = true;
-                } else if (locationSpecificContext.exceptionCountForWrite >= 1) {
-                    doesPartitionHaveUnavailableLocations = true;
+                    doesPartitionHaveUnhealthyLocations = true;
+                } else if (locationSpecificContext.exceptionCountForWrite >= 1 || locationSpecificContext.exceptionCountForRead >= 1) {
+                    doesPartitionHaveUnhealthyLocations = true;
                 }
             }
         }
 
-        if (!doesPartitionHaveUnavailableLocations) {
+        if (!doesPartitionHaveUnhealthyLocations) {
             this.partitionKeyRangeToFailoverInfo.remove(partitionKeyRangeWrapper);
         }
 
@@ -240,7 +240,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             this.locationEndpointToLocationSpecificContextForPartition.compute(locationWithException, (locationAsKey, locationSpecificContextAsVal) -> {
 
                 if (locationSpecificContextAsVal == null) {
-                    locationSpecificContextAsVal = new LocationSpecificContext(0, 0, 0, 0, Instant.MAX, LocationUnavailabilityStatus.Available, false);
+                    locationSpecificContextAsVal = new LocationSpecificContext(
+                        0,
+                        0,
+                        0,
+                        0,
+                        Instant.MAX,
+                        LocationUnavailabilityStatus.Available,
+                        false);
                 }
 
                 LocationSpecificContext locationSpecificContextAfterTransition = GlobalPartitionEndpointManagerForCircuitBreaker
