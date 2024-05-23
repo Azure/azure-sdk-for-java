@@ -47,7 +47,7 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
     }
 
     /**
-     * Sets the System Access Token for the Azure Pipeline service connection. The system access token is
+     * Sets the System Access Token for the Azure Pipelines service connection. The system access token is
      * retrieved from the pipeline variables by assigning it to an environment variable and reading it.
      * See {@link AzurePipelinesCredential} for more information.
      *
