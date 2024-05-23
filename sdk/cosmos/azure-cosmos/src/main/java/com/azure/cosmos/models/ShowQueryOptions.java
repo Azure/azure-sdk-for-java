@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Defines whether to print db.statement in tracing.
+ */
 public enum ShowQueryOptions {
 
     /**
