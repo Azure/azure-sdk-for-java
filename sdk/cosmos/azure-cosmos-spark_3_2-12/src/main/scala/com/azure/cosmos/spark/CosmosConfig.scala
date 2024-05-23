@@ -20,7 +20,7 @@ import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.SerializationDateTimeConversionModes.SerializationDateTimeConversionMode
 import com.azure.cosmos.spark.SerializationInclusionModes.SerializationInclusionMode
 import com.azure.cosmos.spark.diagnostics.{BasicLoggingTrait, DetailedFeedDiagnosticsProvider, DiagnosticsProvider, FeedDiagnosticsProvider, SimpleDiagnosticsProvider}
-import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
@@ -238,15 +238,8 @@ private[spark] object CosmosConfigNames {
 }
 
 private object CosmosConfig  extends BasicLoggingTrait {
-  lazy val accountDataResolverCls = getAccountDataResolver
-  def getAccountDataResolver(): Option[AccountDataResolver] = {
-
-    val session = SparkSession.getActiveSession
-    val accountDataResolverServiceName : Option[String] = if (session.isDefined) {
-      session.get.sparkContext.getConf.getOption(CosmosConfigNames.AccountDataResolverServiceName)
-    } else {
-      None
-    }
+  def getAccountDataResolver(config: CaseInsensitiveMap[String]): Option[AccountDataResolver] = {
+    val accountDataResolverServiceName : Option[String] = config.get(CosmosConfigNames.AccountDataResolverServiceName)
 
     logInfo(s"Checking for account resolvers - requested service name '${accountDataResolverServiceName.getOrElse("n/a")}'")
     var accountDataResolverCls = None: Option[AccountDataResolver]
@@ -278,6 +271,7 @@ private object CosmosConfig  extends BasicLoggingTrait {
     executorCount: Option[Int] // total executor count
   ) : Map[String, String] = {
     var effectiveUserConfig = CaseInsensitiveMap(userProvidedOptions)
+    val accountDataResolverCls = getAccountDataResolver(effectiveUserConfig)
     if (accountDataResolverCls.isDefined) {
         val accountDataConfig = accountDataResolverCls.get.getAccountDataConfig(effectiveUserConfig)
         effectiveUserConfig = CaseInsensitiveMap(accountDataConfig)
@@ -719,7 +713,7 @@ private object CosmosAuthConfig {
                 clientCert)
         } else if (authType.get == CosmosAuthType.AccessToken) {
           assert(tenantId.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
-          val accountDataResolver = CosmosConfig.getAccountDataResolver()
+          val accountDataResolver = CosmosConfig.getAccountDataResolver(CaseInsensitiveMap(cfg))
           if (!accountDataResolver.isDefined) {
             throw new IllegalArgumentException(
               s"For auth type '${authType.get}' you have to provide an implementation of the " +
