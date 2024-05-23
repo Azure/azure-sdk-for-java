@@ -12,9 +12,7 @@ import java.util.Arrays;
  */
 public final class RecoveryPointsRecommendedForMoveListSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
      */
     /**
      * Sample code: Get Protected Azure Vm Recovery Points Recommended for Move.
@@ -23,12 +21,13 @@ public final class RecoveryPointsRecommendedForMoveListSamples {
      */
     public static void getProtectedAzureVmRecoveryPointsRecommendedForMove(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.recoveryPointsRecommendedForMoves().list("rshvault", "rshhtestmdvmrg", "Azure",
-            "IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
-            "VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
-            new ListRecoveryPointsRecommendedForMoveRequest()
-                .withObjectType("ListRecoveryPointsRecommendedForMoveRequest").withExcludedRPList(
-                    Arrays.asList("348916168024334", "348916168024335")),
-            com.azure.core.util.Context.NONE);
+        manager.recoveryPointsRecommendedForMoves()
+            .list("rshvault", "rshhtestmdvmrg", "Azure",
+                "IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
+                "VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
+                new ListRecoveryPointsRecommendedForMoveRequest()
+                    .withObjectType("ListRecoveryPointsRecommendedForMoveRequest")
+                    .withExcludedRPList(Arrays.asList("348916168024334", "348916168024335")),
+                com.azure.core.util.Context.NONE);
     }
 }

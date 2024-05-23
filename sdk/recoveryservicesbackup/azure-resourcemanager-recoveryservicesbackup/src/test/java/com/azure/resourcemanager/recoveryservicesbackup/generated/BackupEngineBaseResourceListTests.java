@@ -52,39 +52,53 @@ public final class BackupEngineBaseResourceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupEngineBaseResourceList model
-            = new BackupEngineBaseResourceList().withNextLink("nzbtbhj")
-                .withValue(Arrays.asList(
-                    new BackupEngineBaseResourceInner().withLocation("zpswiydmc")
-                        .withTags(mapOf("dbzm", "zdxss", "cblylpstdbhhxsr", "vdfznudaodvxzb", "erscdntne", "dzu"))
-                        .withProperties(new BackupEngineBase().withFriendlyName("q")
-                            .withBackupManagementType(BackupManagementType.AZURE_IAAS_VM)
-                            .withRegistrationStatus("mqtaruoujmkcjh").withBackupEngineState("ytjrybnwjewgdr")
-                            .withHealthStatus("rvnaenqpeh").withCanReRegister(false).withBackupEngineId("ygmi")
-                            .withDpmVersion("hnzdndslgnayqi").withAzureBackupAgentVersion("nduhavhqlkthum")
-                            .withIsAzureBackupAgentUpgradeAvailable(true).withIsDpmUpgradeAvailable(true)
-                            .withExtendedInfo(new BackupEngineExtendedInfo().withDatabaseName("cdui")
-                                .withProtectedItemsCount(1108910411).withProtectedServersCount(1393187057)
-                                .withDiskCount(178925296).withUsedDiskSpace(63.86816695634684D)
-                                .withAvailableDiskSpace(0.14011937036747524D)
-                                .withRefreshedAt(OffsetDateTime.parse("2021-01-19T21:06:36Z"))
-                                .withAzureProtectedInstances(245335843)))
-                        .withEtag("fmmdnbbg"),
-                    new BackupEngineBaseResourceInner().withLocation("ogqxndlkzgxhuri")
-                        .withTags(mapOf("bxmubyynt", "podxunkb", "tkoievseotgq", "lrb", "tmuwlauwzi", "l", "cjefuzmu",
-                            "xbmp"))
-                        .withProperties(new BackupEngineBase().withFriendlyName("szhedplvw")
-                            .withBackupManagementType(BackupManagementType.INVALID).withRegistrationStatus("mwmbes")
-                            .withBackupEngineState("nkww").withHealthStatus("pjflcxogao").withCanReRegister(true)
-                            .withBackupEngineId("m").withDpmVersion("ikvmkqzeqqk").withAzureBackupAgentVersion("tfz")
-                            .withIsAzureBackupAgentUpgradeAvailable(false).withIsDpmUpgradeAvailable(false)
-                            .withExtendedInfo(
-                                new BackupEngineExtendedInfo().withDatabaseName("ur").withProtectedItemsCount(191107441)
-                                    .withProtectedServersCount(1245356368).withDiskCount(1368192153)
-                                    .withUsedDiskSpace(29.50996555933806D).withAvailableDiskSpace(71.73574705933942D)
-                                    .withRefreshedAt(OffsetDateTime.parse("2021-02-24T08:44:41Z"))
-                                    .withAzureProtectedInstances(1120938995)))
-                        .withEtag("xwak")));
+        BackupEngineBaseResourceList model = new BackupEngineBaseResourceList().withNextLink("nzbtbhj")
+            .withValue(Arrays.asList(
+                new BackupEngineBaseResourceInner().withLocation("zpswiydmc")
+                    .withTags(mapOf("dbzm", "zdxss", "cblylpstdbhhxsr", "vdfznudaodvxzb", "erscdntne", "dzu"))
+                    .withProperties(new BackupEngineBase().withFriendlyName("q")
+                        .withBackupManagementType(BackupManagementType.AZURE_IAAS_VM)
+                        .withRegistrationStatus("mqtaruoujmkcjh")
+                        .withBackupEngineState("ytjrybnwjewgdr")
+                        .withHealthStatus("rvnaenqpeh")
+                        .withCanReRegister(false)
+                        .withBackupEngineId("ygmi")
+                        .withDpmVersion("hnzdndslgnayqi")
+                        .withAzureBackupAgentVersion("nduhavhqlkthum")
+                        .withIsAzureBackupAgentUpgradeAvailable(true)
+                        .withIsDpmUpgradeAvailable(true)
+                        .withExtendedInfo(new BackupEngineExtendedInfo().withDatabaseName("cdui")
+                            .withProtectedItemsCount(1108910411)
+                            .withProtectedServersCount(1393187057)
+                            .withDiskCount(178925296)
+                            .withUsedDiskSpace(63.86816695634684D)
+                            .withAvailableDiskSpace(0.14011937036747524D)
+                            .withRefreshedAt(OffsetDateTime.parse("2021-01-19T21:06:36Z"))
+                            .withAzureProtectedInstances(245335843)))
+                    .withEtag("fmmdnbbg"),
+                new BackupEngineBaseResourceInner().withLocation("ogqxndlkzgxhuri")
+                    .withTags(
+                        mapOf("bxmubyynt", "podxunkb", "tkoievseotgq", "lrb", "tmuwlauwzi", "l", "cjefuzmu", "xbmp"))
+                    .withProperties(new BackupEngineBase().withFriendlyName("szhedplvw")
+                        .withBackupManagementType(BackupManagementType.INVALID)
+                        .withRegistrationStatus("mwmbes")
+                        .withBackupEngineState("nkww")
+                        .withHealthStatus("pjflcxogao")
+                        .withCanReRegister(true)
+                        .withBackupEngineId("m")
+                        .withDpmVersion("ikvmkqzeqqk")
+                        .withAzureBackupAgentVersion("tfz")
+                        .withIsAzureBackupAgentUpgradeAvailable(false)
+                        .withIsDpmUpgradeAvailable(false)
+                        .withExtendedInfo(new BackupEngineExtendedInfo().withDatabaseName("ur")
+                            .withProtectedItemsCount(191107441)
+                            .withProtectedServersCount(1245356368)
+                            .withDiskCount(1368192153)
+                            .withUsedDiskSpace(29.50996555933806D)
+                            .withAvailableDiskSpace(71.73574705933942D)
+                            .withRefreshedAt(OffsetDateTime.parse("2021-02-24T08:44:41Z"))
+                            .withAzureProtectedInstances(1120938995)))
+                    .withEtag("xwak")));
         model = BinaryData.fromObject(model).toObject(BackupEngineBaseResourceList.class);
         Assertions.assertEquals("nzbtbhj", model.nextLink());
         Assertions.assertEquals("zpswiydmc", model.value().get(0).location());

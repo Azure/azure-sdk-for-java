@@ -14,20 +14,19 @@ public final class PrepareDataMoveResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrepareDataMoveResponse model = BinaryData.fromString(
-            "{\"objectType\":\"PrepareDataMoveResponse\",\"correlationId\":\"tx\",\"sourceVaultProperties\":{\"xbannovvoxc\":\"zna\",\"tlyo\":\"ytprwnwvroev\",\"bcrymodizrx\":\"rrrouuxvnsa\",\"pmkmlmvevfx\":\"lobdxna\"}}")
+            "{\"objectType\":\"PrepareDataMoveResponse\",\"correlationId\":\"lklmtkhlo\",\"sourceVaultProperties\":{\"syzfhotlhikcyych\":\"xpvbrdfjm\"}}")
             .toObject(PrepareDataMoveResponse.class);
-        Assertions.assertEquals("tx", model.correlationId());
-        Assertions.assertEquals("zna", model.sourceVaultProperties().get("xbannovvoxc"));
+        Assertions.assertEquals("lklmtkhlo", model.correlationId());
+        Assertions.assertEquals("xpvbrdfjm", model.sourceVaultProperties().get("syzfhotlhikcyych"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrepareDataMoveResponse model
-            = new PrepareDataMoveResponse().withCorrelationId("tx").withSourceVaultProperties(mapOf("xbannovvoxc",
-                "zna", "tlyo", "ytprwnwvroev", "bcrymodizrx", "rrrouuxvnsa", "pmkmlmvevfx", "lobdxna"));
+        PrepareDataMoveResponse model = new PrepareDataMoveResponse().withCorrelationId("lklmtkhlo")
+            .withSourceVaultProperties(mapOf("syzfhotlhikcyych", "xpvbrdfjm"));
         model = BinaryData.fromObject(model).toObject(PrepareDataMoveResponse.class);
-        Assertions.assertEquals("tx", model.correlationId());
-        Assertions.assertEquals("zna", model.sourceVaultProperties().get("xbannovvoxc"));
+        Assertions.assertEquals("lklmtkhlo", model.correlationId());
+        Assertions.assertEquals("xpvbrdfjm", model.sourceVaultProperties().get("syzfhotlhikcyych"));
     }
 
     // Use "Map.of" if available

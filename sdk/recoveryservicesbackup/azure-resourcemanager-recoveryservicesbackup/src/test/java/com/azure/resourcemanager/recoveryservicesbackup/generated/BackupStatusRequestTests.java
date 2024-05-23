@@ -22,7 +22,8 @@ public final class BackupStatusRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupStatusRequest model = new BackupStatusRequest().withResourceType(DataSourceType.VM).withResourceId("dkfo")
+        BackupStatusRequest model = new BackupStatusRequest().withResourceType(DataSourceType.VM)
+            .withResourceId("dkfo")
             .withPoLogicalName("nygj");
         model = BinaryData.fromObject(model).toObject(BackupStatusRequest.class);
         Assertions.assertEquals(DataSourceType.VM, model.resourceType());
