@@ -8,8 +8,8 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Predicate;
 
@@ -99,7 +99,7 @@ public class SampleCriticalResultInferenceAsync {
 
         // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsights
         PollerFlux<RadiologyInsightsJob, RadiologyInsightsJob> asyncPoller = radiologyInsightsAsyncClient
-                .beginInferRadiologyInsights("job" + new Date().getTime(), createRadiologyInsightsJob());
+                .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
         // END: com.azure.health.insights.radiologyinsights.inferradiologyinsights
         
         CountDownLatch latch = new CountDownLatch(1);

@@ -90,7 +90,7 @@ Infer radiology insights from a patient's radiology report using a **synchronous
 - [SampleCriticalResultInferenceSync.java][ri_sync_sample]
 
 ```java com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
-RadiologyInsightsJob riJobResponse = radiologyInsightsClient.beginInferRadiologyInsights("job" + new Date().getTime(), createRadiologyInsightsJob()).getFinalResult();
+RadiologyInsightsJob riJobResponse = radiologyInsightsClient.beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob()).getFinalResult();
 ```
 
 Infer radiology insights from a patient's radiology report using an **asynchronous** client.
@@ -98,7 +98,7 @@ Infer radiology insights from a patient's radiology report using an **asynchrono
 
 ```java com.azure.health.insights.radiologyinsights.inferradiologyinsights
 PollerFlux<RadiologyInsightsJob, RadiologyInsightsJob> asyncPoller = radiologyInsightsAsyncClient
-        .beginInferRadiologyInsights("job" + new Date().getTime(), createRadiologyInsightsJob());
+        .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
 ```
 
 Create the request.
