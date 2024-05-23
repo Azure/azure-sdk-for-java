@@ -33,6 +33,7 @@ stages:
       ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      ClientCertPem: $(spark-databricks-cosmos-spn-clientCert)
       CosmosContainerName: 'sampleContainer2'
       CosmosDatabaseName: 'sampleDB2'
       DatabricksToken: $(spark-databricks-token-with-msi)
@@ -48,6 +49,7 @@ stages:
       ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      ClientCertPem: $(spark-databricks-cosmos-spn-clientCert)
       CosmosContainerName: 'sampleContainer3'
       CosmosDatabaseName: 'sampleDB3'
       DatabricksToken: $(spark-databricks-token-with-msi)
@@ -63,6 +65,7 @@ stages:
       ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      ClientCertPem: $(spark-databricks-cosmos-spn-clientCert)
       CosmosContainerName: 'sampleContainer4'
       CosmosDatabaseName: 'sampleDB4'
       DatabricksToken: $(spark-databricks-token-with-msi)
@@ -78,6 +81,7 @@ stages:
       ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      ClientCertPem: $(spark-databricks-cosmos-spn-clientCert)
       CosmosContainerName: 'sampleContainer5'
       CosmosDatabaseName: 'sampleDB5'
       DatabricksToken: $(spark-databricks-token-with-msi)
