@@ -19,11 +19,7 @@ public class AzurePipelinesCredentialBuilderTest {
         String tenantId = "tenantId";
         String serviceConnectionId = "serviceConnectionId";
         String systemAccessToken = "FakeToken";
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI", "teamfoundationcollectionuri")
-            .put("SYSTEM_TEAMPROJECTID", "teamprojectid")
-            .put("SYSTEM_PLANID", "planid")
-            .put("SYSTEM_JOBID", "jobid"));
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource());
 
         // test
 
@@ -38,6 +34,7 @@ public class AzurePipelinesCredentialBuilderTest {
                 .tenantId(tenantId)
                 .serviceConnectionId(serviceConnectionId)
                 .systemAccessToken(systemAccessToken)
+                .configuration(configuration)
                 .build();
         });
 
