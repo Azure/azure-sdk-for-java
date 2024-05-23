@@ -35,6 +35,7 @@ import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SharedAccessAuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
 import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
+import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
@@ -46,6 +47,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.function.Tuples;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -65,7 +67,9 @@ import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getTopicBaseName;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -100,7 +104,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         TEST_PROXY_REQUEST_MATCHERS = Collections.singletonList(customMatcher);
     }
 
-    static Stream<Arguments> createHttpClients() {
+    public static Stream<Arguments> createHttpClients() {
         return Stream.of(Arguments.of(new NettyAsyncHttpClientBuilder().build()));
     }
 
@@ -437,6 +441,32 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
 
                 assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
                 assertEquals(expected.isSessionRequired(), actual.isSessionRequired());
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
+    void createSubscriptionWithRule(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String topicName = getEntityName(getTopicBaseName(), 0);
+        final String subscriptionName = testResourceNamer.randomName("sub", 10);
+        final CreateSubscriptionOptions subscriptionOptions = new CreateSubscriptionOptions()
+            .setMaxDeliveryCount(7)
+            .setLockDuration(Duration.ofSeconds(45))
+            .setUserMetadata("some-metadata-for-testing-subscriptions");
+
+        final String ruleName = testResourceNamer.randomName("rule", 10);
+        final CreateRuleOptions ruleOptions = new CreateRuleOptions(new SqlRuleFilter("color='red'"));
+        // Act & Assert
+        StepVerifier.create(client.createSubscription(topicName, subscriptionName, ruleName, subscriptionOptions, ruleOptions)
+                .flatMap(s -> client.getRule(topicName, subscriptionName, ruleName)))
+            .assertNext(rule -> {
+                assertEquals(ruleName, rule.getName());
+                assertTrue(rule.getFilter() instanceof SqlRuleFilter);
+                assertEquals("color='red'", ((SqlRuleFilter) rule.getFilter()).getSqlExpression());
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
