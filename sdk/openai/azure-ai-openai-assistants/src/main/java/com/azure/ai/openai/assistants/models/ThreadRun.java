@@ -462,7 +462,8 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
     }
 
     /*
-     * Usage statistics related to the run. This value will be `null` if the run is not in a terminal state (i.e. `in_progress`, `queued`, etc.).
+     * Usage statistics related to the run. This value will be `null` if the run is not in a terminal state (i.e.
+     * `in_progress`, `queued`, etc.).
      */
     @Generated
     private final RunCompletionUsage usage;
