@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservices.models.CapabilitiesResponsePro
 import com.azure.resourcemanager.recoveryservices.models.ResourceCapabilitiesBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Capabilities response for Microsoft.RecoveryServices. */
+/**
+ * Capabilities response for Microsoft.RecoveryServices.
+ */
 @Fluent
 public final class CapabilitiesResponseInner extends ResourceCapabilitiesBase {
     /*
@@ -18,13 +20,15 @@ public final class CapabilitiesResponseInner extends ResourceCapabilitiesBase {
     @JsonProperty(value = "properties")
     private CapabilitiesResponseProperties properties;
 
-    /** Creates an instance of CapabilitiesResponseInner class. */
+    /**
+     * Creates an instance of CapabilitiesResponseInner class.
+     */
     public CapabilitiesResponseInner() {
     }
 
     /**
      * Get the properties property: Capabilities properties in response.
-     *
+     * 
      * @return the properties value.
      */
     public CapabilitiesResponseProperties properties() {
@@ -33,7 +37,7 @@ public final class CapabilitiesResponseInner extends ResourceCapabilitiesBase {
 
     /**
      * Set the properties property: Capabilities properties in response.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CapabilitiesResponseInner object itself.
      */
@@ -42,7 +46,9 @@ public final class CapabilitiesResponseInner extends ResourceCapabilitiesBase {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CapabilitiesResponseInner withType(String type) {
         super.withType(type);
@@ -51,7 +57,7 @@ public final class CapabilitiesResponseInner extends ResourceCapabilitiesBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

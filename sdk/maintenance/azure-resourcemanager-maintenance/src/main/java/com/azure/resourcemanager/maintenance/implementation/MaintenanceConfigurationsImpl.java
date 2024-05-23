@@ -21,22 +21,18 @@ public final class MaintenanceConfigurationsImpl implements MaintenanceConfigura
 
     private final com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager;
 
-    public MaintenanceConfigurationsImpl(
-        MaintenanceConfigurationsClient innerClient,
+    public MaintenanceConfigurationsImpl(MaintenanceConfigurationsClient innerClient,
         com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<MaintenanceConfiguration> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<MaintenanceConfigurationInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+    public Response<MaintenanceConfiguration> getByResourceGroupWithResponse(String resourceGroupName,
+        String resourceName, Context context) {
+        Response<MaintenanceConfigurationInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MaintenanceConfigurationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,15 +48,12 @@ public final class MaintenanceConfigurationsImpl implements MaintenanceConfigura
         }
     }
 
-    public Response<MaintenanceConfiguration> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<MaintenanceConfigurationInner> inner =
-            this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, context);
+    public Response<MaintenanceConfiguration> deleteByResourceGroupWithResponse(String resourceGroupName,
+        String resourceName, Context context) {
+        Response<MaintenanceConfigurationInner> inner
+            = this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MaintenanceConfigurationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -78,98 +71,66 @@ public final class MaintenanceConfigurationsImpl implements MaintenanceConfigura
 
     public PagedIterable<MaintenanceConfiguration> list() {
         PagedIterable<MaintenanceConfigurationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<MaintenanceConfiguration> list(Context context) {
         PagedIterable<MaintenanceConfigurationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MaintenanceConfigurationImpl(inner1, this.manager()));
     }
 
     public MaintenanceConfiguration getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "maintenanceConfigurations");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "maintenanceConfigurations");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'maintenanceConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'maintenanceConfigurations'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     public Response<MaintenanceConfiguration> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "maintenanceConfigurations");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "maintenanceConfigurations");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'maintenanceConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'maintenanceConfigurations'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
 
     public MaintenanceConfiguration deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "maintenanceConfigurations");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "maintenanceConfigurations");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'maintenanceConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'maintenanceConfigurations'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     public Response<MaintenanceConfiguration> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "maintenanceConfigurations");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "maintenanceConfigurations");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'maintenanceConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'maintenanceConfigurations'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }

@@ -77,7 +77,7 @@ public class DetectLivenessWithVerifyAsync {
             logObject("List all the liveness sessions: ", sessions, true);
 
         } finally {
-            logObject("Delete liveness sessions: "+sessionId);
+            logObject("Delete liveness sessions: " + sessionId);
             // Delete this session
             faceSessionClient.deleteLivenessWithVerifySession(livenessSessionCreationResult.getSessionId())
                 .block();

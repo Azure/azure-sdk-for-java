@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The error information associated with a failed run step.
+ * The RunStepError model.
  */
 @Immutable
 public final class RunStepError implements JsonSerializable<RunStepError> {

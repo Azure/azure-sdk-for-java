@@ -28,13 +28,15 @@ import java.util.List;
 public final class BatchTask implements JsonSerializable<BatchTask> {
 
     /*
-     * A string that uniquely identifies the Task within the Job. The ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters.
+     * A string that uniquely identifies the Task within the Job. The ID can contain any combination of alphanumeric
+     * characters including hyphens and underscores, and cannot contain more than 64 characters.
      */
     @Generated
     private String id;
 
     /*
-     * A display name for the Task. The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.
+     * A display name for the Task. The display name need not be unique and can contain any Unicode characters up to a
+     * maximum length of 1024.
      */
     @Generated
     private String displayName;
@@ -46,7 +48,9 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
     private String url;
 
     /*
-     * The ETag of the Task. This is an opaque string. You can use it to detect whether the Task has changed between requests. In particular, you can be pass the ETag when updating a Task to specify that your changes should take effect only if nobody else has modified the Task in the meantime.
+     * The ETag of the Task. This is an opaque string. You can use it to detect whether the Task has changed between
+     * requests. In particular, you can be pass the ETag when updating a Task to specify that your changes should take
+     * effect only if nobody else has modified the Task in the meantime.
      */
     @Generated
     private String eTag;
@@ -88,31 +92,50 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
     private BatchTaskState previousState;
 
     /*
-     * The time at which the Task entered its previous state. This property is not set if the Task is in its initial Active state.
+     * The time at which the Task entered its previous state. This property is not set if the Task is in its initial
+     * Active state.
      */
     @Generated
     private OffsetDateTime previousStateTransitionTime;
 
     /*
-     * The command line of the Task. For multi-instance Tasks, the command line is executed as the primary Task, after the primary Task and all subtasks have finished executing the coordination command line. The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the Task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
+     * The command line of the Task. For multi-instance Tasks, the command line is executed as the primary Task, after
+     * the primary Task and all subtasks have finished executing the coordination command line. The command line does
+     * not run under a shell, and therefore cannot take advantage of shell features such as environment variable
+     * expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for
+     * example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to
+     * file paths, it should use a relative path (relative to the Task working directory), or use the Batch provided
+     * environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
      */
     @Generated
     private String commandLine;
 
     /*
-     * The settings for the container under which the Task runs. If the Pool that will run this Task has containerConfiguration set, this must be set as well. If the Pool that will run this Task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all Task environment variables are mapped into the container, and the Task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
+     * The settings for the container under which the Task runs. If the Pool that will run this Task has
+     * containerConfiguration set, this must be set as well. If the Pool that will run this Task doesn't have
+     * containerConfiguration set, this must not be set. When this is specified, all directories recursively below the
+     * AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all Task
+     * environment variables are mapped into the container, and the Task command line is executed in the container.
+     * Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk,
+     * meaning that Batch file APIs will not be able to access those files.
      */
     @Generated
     private BatchTaskContainerSettings containerSettings;
 
     /*
-     * A list of files that the Batch service will download to the Compute Node before running the command line. For multi-instance Tasks, the resource files will only be downloaded to the Compute Node on which the primary Task is executed. There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
+     * A list of files that the Batch service will download to the Compute Node before running the command line. For
+     * multi-instance Tasks, the resource files will only be downloaded to the Compute Node on which the primary Task is
+     * executed. There is a maximum size for the list of resource files. When the max size is exceeded, the request will
+     * fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles
+     * must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
      */
     @Generated
     private List<ResourceFile> resourceFiles;
 
     /*
-     * A list of files that the Batch service will upload from the Compute Node after running the command line. For multi-instance Tasks, the files will only be uploaded from the Compute Node on which the primary Task is executed.
+     * A list of files that the Batch service will upload from the Compute Node after running the command line. For
+     * multi-instance Tasks, the files will only be uploaded from the Compute Node on which the primary Task is
+     * executed.
      */
     @Generated
     private List<OutputFile> outputFiles;
@@ -136,13 +159,16 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
     private BatchTaskConstraints constraints;
 
     /*
-     * The number of scheduling slots that the Task requires to run. The default is 1. A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this must be 1.
+     * The number of scheduling slots that the Task requires to run. The default is 1. A Task can only be scheduled to
+     * run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this must
+     * be 1.
      */
     @Generated
     private Integer requiredSlots;
 
     /*
-     * The user identity under which the Task runs. If omitted, the Task runs as a non-administrative user unique to the Task.
+     * The user identity under which the Task runs. If omitted, the Task runs as a non-administrative user unique to the
+     * Task.
      */
     @Generated
     private UserIdentity userIdentity;
@@ -160,7 +186,8 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
     private BatchNodeInfo nodeInfo;
 
     /*
-     * An object that indicates that the Task is a multi-instance Task, and contains information about how to run the multi-instance Task.
+     * An object that indicates that the Task is a multi-instance Task, and contains information about how to run the
+     * multi-instance Task.
      */
     @Generated
     private MultiInstanceSettings multiInstanceSettings;
@@ -172,19 +199,30 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
     private BatchTaskStatistics stats;
 
     /*
-     * The Tasks that this Task depends on. This Task will not be scheduled until all Tasks that it depends on have completed successfully. If any of those Tasks fail and exhaust their retry counts, this Task will never be scheduled.
+     * The Tasks that this Task depends on. This Task will not be scheduled until all Tasks that it depends on have
+     * completed successfully. If any of those Tasks fail and exhaust their retry counts, this Task will never be
+     * scheduled.
      */
     @Generated
     private BatchTaskDependencies dependsOn;
 
     /*
-     * A list of Packages that the Batch service will deploy to the Compute Node before running the command line. Application packages are downloaded and deployed to a shared directory, not the Task working directory. Therefore, if a referenced package is already on the Node, and is up to date, then it is not re-downloaded; the existing copy on the Compute Node is used. If a referenced Package cannot be installed, for example because the package has been deleted or because download failed, the Task fails.
+     * A list of Packages that the Batch service will deploy to the Compute Node before running the command line.
+     * Application packages are downloaded and deployed to a shared directory, not the Task working directory.
+     * Therefore, if a referenced package is already on the Node, and is up to date, then it is not re-downloaded; the
+     * existing copy on the Compute Node is used. If a referenced Package cannot be installed, for example because the
+     * package has been deleted or because download failed, the Task fails.
      */
     @Generated
     private List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
-     * The settings for an authentication token that the Task can use to perform Batch service operations. If this property is set, the Batch service provides the Task with an authentication token which can be used to authenticate Batch service operations without requiring an Account access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
+     * The settings for an authentication token that the Task can use to perform Batch service operations. If this
+     * property is set, the Batch service provides the Task with an authentication token which can be used to
+     * authenticate Batch service operations without requiring an Account access key. The token is provided via the
+     * AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the Task can carry out using the token
+     * depend on the settings. For example, a Task can request Job permissions in order to add other Tasks to the Job,
+     * or check the status of the Job or of other Tasks under the Job.
      */
     @Generated
     private AuthenticationTokenSettings authenticationTokenSettings;

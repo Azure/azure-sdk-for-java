@@ -41,37 +41,56 @@ import java.util.List;
 public final class BatchJobManagerTask implements JsonSerializable<BatchJobManagerTask> {
 
     /*
-     * A string that uniquely identifies the Job Manager Task within the Job. The ID can contain any combination of alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters.
+     * A string that uniquely identifies the Job Manager Task within the Job. The ID can contain any combination of
+     * alphanumeric characters including hyphens and underscores and cannot contain more than 64 characters.
      */
     @Generated
     private final String id;
 
     /*
-     * The display name of the Job Manager Task. It need not be unique and can contain any Unicode characters up to a maximum length of 1024.
+     * The display name of the Job Manager Task. It need not be unique and can contain any Unicode characters up to a
+     * maximum length of 1024.
      */
     @Generated
     private String displayName;
 
     /*
-     * The command line of the Job Manager Task. The command line does not run under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want to take advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path (relative to the Task working directory), or use the Batch provided environment variable (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
+     * The command line of the Job Manager Task. The command line does not run under a shell, and therefore cannot take
+     * advantage of shell features such as environment variable expansion. If you want to take advantage of such
+     * features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or
+     * "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path
+     * (relative to the Task working directory), or use the Batch provided environment variable
+     * (https://docs.microsoft.com/en-us/azure/batch/batch-compute-node-environment-variables).
      */
     @Generated
     private final String commandLine;
 
     /*
-     * The settings for the container under which the Job Manager Task runs. If the Pool that will run this Task has containerConfiguration set, this must be set as well. If the Pool that will run this Task doesn't have containerConfiguration set, this must not be set. When this is specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all Task environment variables are mapped into the container, and the Task command line is executed in the container. Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
+     * The settings for the container under which the Job Manager Task runs. If the Pool that will run this Task has
+     * containerConfiguration set, this must be set as well. If the Pool that will run this Task doesn't have
+     * containerConfiguration set, this must not be set. When this is specified, all directories recursively below the
+     * AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node) are mapped into the container, all Task
+     * environment variables are mapped into the container, and the Task command line is executed in the container.
+     * Files produced in the container outside of AZ_BATCH_NODE_ROOT_DIR might not be reflected to the host disk,
+     * meaning that Batch file APIs will not be able to access those files.
      */
     @Generated
     private BatchTaskContainerSettings containerSettings;
 
     /*
-     * A list of files that the Batch service will download to the Compute Node before running the command line. Files listed under this element are located in the Task's working directory. There is a maximum size for the list of resource files.  When the max size is exceeded, the request will fail and the response error code will be RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be achieved using .zip files, Application Packages, or Docker Containers.
+     * A list of files that the Batch service will download to the Compute Node before running the command line. Files
+     * listed under this element are located in the Task's working directory. There is a maximum size for the list of
+     * resource files. When the max size is exceeded, the request will fail and the response error code will be
+     * RequestEntityTooLarge. If this occurs, the collection of ResourceFiles must be reduced in size. This can be
+     * achieved using .zip files, Application Packages, or Docker Containers.
      */
     @Generated
     private List<ResourceFile> resourceFiles;
 
     /*
-     * A list of files that the Batch service will upload from the Compute Node after running the command line. For multi-instance Tasks, the files will only be uploaded from the Compute Node on which the primary Task is executed.
+     * A list of files that the Batch service will upload from the Compute Node after running the command line. For
+     * multi-instance Tasks, the files will only be uploaded from the Compute Node on which the primary Task is
+     * executed.
      */
     @Generated
     private List<OutputFile> outputFiles;
@@ -89,25 +108,39 @@ public final class BatchJobManagerTask implements JsonSerializable<BatchJobManag
     private BatchTaskConstraints constraints;
 
     /*
-     * The number of scheduling slots that the Task requires to run. The default is 1. A Task can only be scheduled to run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this property is not supported and must not be specified.
+     * The number of scheduling slots that the Task requires to run. The default is 1. A Task can only be scheduled to
+     * run on a compute node if the node has enough free scheduling slots available. For multi-instance Tasks, this
+     * property is not supported and must not be specified.
      */
     @Generated
     private Integer requiredSlots;
 
     /*
-     * Whether completion of the Job Manager Task signifies completion of the entire Job. If true, when the Job Manager Task completes, the Batch service marks the Job as complete. If any Tasks are still running at this time (other than Job Release), those Tasks are terminated. If false, the completion of the Job Manager Task does not affect the Job status. In this case, you should either use the onAllTasksComplete attribute to terminate the Job, or have a client or user terminate the Job explicitly. An example of this is if the Job Manager creates a set of Tasks but then takes no further role in their execution. The default value is true. If you are using the onAllTasksComplete and onTaskFailure attributes to control Job lifetime, and using the Job Manager Task only to create the Tasks for the Job (not to monitor progress), then it is important to set killJobOnCompletion to false.
+     * Whether completion of the Job Manager Task signifies completion of the entire Job. If true, when the Job Manager
+     * Task completes, the Batch service marks the Job as complete. If any Tasks are still running at this time (other
+     * than Job Release), those Tasks are terminated. If false, the completion of the Job Manager Task does not affect
+     * the Job status. In this case, you should either use the onAllTasksComplete attribute to terminate the Job, or
+     * have a client or user terminate the Job explicitly. An example of this is if the Job Manager creates a set of
+     * Tasks but then takes no further role in their execution. The default value is true. If you are using the
+     * onAllTasksComplete and onTaskFailure attributes to control Job lifetime, and using the Job Manager Task only to
+     * create the Tasks for the Job (not to monitor progress), then it is important to set killJobOnCompletion to false.
      */
     @Generated
     private Boolean killJobOnCompletion;
 
     /*
-     * The user identity under which the Job Manager Task runs. If omitted, the Task runs as a non-administrative user unique to the Task.
+     * The user identity under which the Job Manager Task runs. If omitted, the Task runs as a non-administrative user
+     * unique to the Task.
      */
     @Generated
     private UserIdentity userIdentity;
 
     /*
-     * Whether the Job Manager Task requires exclusive use of the Compute Node where it runs. If true, no other Tasks will run on the same Node for as long as the Job Manager is running. If false, other Tasks can run simultaneously with the Job Manager on a Compute Node. The Job Manager Task counts normally against the Compute Node's concurrent Task limit, so this is only relevant if the Compute Node allows multiple concurrent Tasks. The default value is true.
+     * Whether the Job Manager Task requires exclusive use of the Compute Node where it runs. If true, no other Tasks
+     * will run on the same Node for as long as the Job Manager is running. If false, other Tasks can run simultaneously
+     * with the Job Manager on a Compute Node. The Job Manager Task counts normally against the Compute Node's
+     * concurrent Task limit, so this is only relevant if the Compute Node allows multiple concurrent Tasks. The default
+     * value is true.
      */
     @Generated
     private Boolean runExclusive;
@@ -126,7 +159,12 @@ public final class BatchJobManagerTask implements JsonSerializable<BatchJobManag
     private List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
-     * The settings for an authentication token that the Task can use to perform Batch service operations. If this property is set, the Batch service provides the Task with an authentication token which can be used to authenticate Batch service operations without requiring an Account access key. The token is provided via the AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the Task can carry out using the token depend on the settings. For example, a Task can request Job permissions in order to add other Tasks to the Job, or check the status of the Job or of other Tasks under the Job.
+     * The settings for an authentication token that the Task can use to perform Batch service operations. If this
+     * property is set, the Batch service provides the Task with an authentication token which can be used to
+     * authenticate Batch service operations without requiring an Account access key. The token is provided via the
+     * AZ_BATCH_AUTHENTICATION_TOKEN environment variable. The operations that the Task can carry out using the token
+     * depend on the settings. For example, a Task can request Job permissions in order to add other Tasks to the Job,
+     * or check the status of the Job or of other Tasks under the Job.
      */
     @Generated
     private AuthenticationTokenSettings authenticationTokenSettings;

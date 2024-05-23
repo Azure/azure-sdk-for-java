@@ -120,6 +120,15 @@ public final class Constants {
         public static final String SPATIAL_INDEXES = "spatialIndexes";
         public static final String TYPES = "types";
 
+        // Vector Embedding Policy
+        public static final String VECTOR_EMBEDDING_POLICY = "vectorEmbeddingPolicy";
+        public static final String VECTOR_INDEXES = "vectorIndexes";
+        public static final String VECTOR_EMBEDDINGS = "vectorEmbeddings";
+        public static final String VECTOR_INDEX_TYPE = "type";
+        public static final String VECTOR_DATA_TYPE = "dataType";
+        public static final String VECTOR_DIMENSIONS = "dimensions";
+        public static final String DISTANCE_FUNCTION = "distanceFunction";
+
         // Unique index.
         public static final String UNIQUE_KEY_POLICY = "uniqueKeyPolicy";
         public static final String UNIQUE_KEYS = "uniqueKeys";

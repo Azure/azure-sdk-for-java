@@ -16,9 +16,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RehydrationPriori
  */
 public final class FetchTieringCostPostSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * TieringCost/FetchTieringCostForRehydrate.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/TieringCost/FetchTieringCostForRehydrate.json
      */
     /**
      * Sample code: Get the rehydration cost for recovery point.
@@ -27,19 +25,19 @@ public final class FetchTieringCostPostSamples {
      */
     public static void getTheRehydrationCostForRecoveryPoint(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.fetchTieringCosts().post("netsdktestrg", "testVault",
-            new FetchTieringCostInfoForRehydrationRequest().withSourceTierType(RecoveryPointTierType.ARCHIVED_RP)
-                .withTargetTierType(RecoveryPointTierType.HARDENED_RP)
-                .withContainerName("IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1")
-                .withProtectedItemName("VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1")
-                .withRecoveryPointId("1222343434").withRehydrationPriority(RehydrationPriority.HIGH),
-            com.azure.core.util.Context.NONE);
+        manager.fetchTieringCosts()
+            .post("netsdktestrg", "testVault",
+                new FetchTieringCostInfoForRehydrationRequest().withSourceTierType(RecoveryPointTierType.ARCHIVED_RP)
+                    .withTargetTierType(RecoveryPointTierType.HARDENED_RP)
+                    .withContainerName("IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1")
+                    .withProtectedItemName("VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1")
+                    .withRecoveryPointId("1222343434")
+                    .withRehydrationPriority(RehydrationPriority.HIGH),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * TieringCost/FetchTieringCostForProtectedItem.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/TieringCost/FetchTieringCostForProtectedItem.json
      */
     /**
      * Sample code: Get the tiering savings cost info for protected item.
@@ -48,19 +46,18 @@ public final class FetchTieringCostPostSamples {
      */
     public static void getTheTieringSavingsCostInfoForProtectedItem(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.fetchTieringCosts().post("netsdktestrg", "testVault",
-            new FetchTieringCostSavingsInfoForProtectedItemRequest()
-                .withSourceTierType(RecoveryPointTierType.HARDENED_RP)
-                .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP)
-                .withContainerName("IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1")
-                .withProtectedItemName("VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1"),
-            com.azure.core.util.Context.NONE);
+        manager.fetchTieringCosts()
+            .post("netsdktestrg", "testVault",
+                new FetchTieringCostSavingsInfoForProtectedItemRequest()
+                    .withSourceTierType(RecoveryPointTierType.HARDENED_RP)
+                    .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP)
+                    .withContainerName("IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1")
+                    .withProtectedItemName("VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * TieringCost/FetchTieringCostForPolicy.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/TieringCost/FetchTieringCostForPolicy.json
      */
     /**
      * Sample code: Get the tiering savings cost info for policy.
@@ -69,16 +66,16 @@ public final class FetchTieringCostPostSamples {
      */
     public static void getTheTieringSavingsCostInfoForPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.fetchTieringCosts().post("netsdktestrg", "testVault",
-            new FetchTieringCostSavingsInfoForPolicyRequest().withSourceTierType(RecoveryPointTierType.HARDENED_RP)
-                .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP).withPolicyName("monthly"),
-            com.azure.core.util.Context.NONE);
+        manager.fetchTieringCosts()
+            .post("netsdktestrg", "testVault",
+                new FetchTieringCostSavingsInfoForPolicyRequest().withSourceTierType(RecoveryPointTierType.HARDENED_RP)
+                    .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP)
+                    .withPolicyName("monthly"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * TieringCost/FetchTieringCostForVault.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/TieringCost/FetchTieringCostForVault.json
      */
     /**
      * Sample code: Get the tiering savings cost info for vault.
@@ -87,9 +84,10 @@ public final class FetchTieringCostPostSamples {
      */
     public static void getTheTieringSavingsCostInfoForVault(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.fetchTieringCosts().post("netsdktestrg", "testVault",
-            new FetchTieringCostSavingsInfoForVaultRequest().withSourceTierType(RecoveryPointTierType.HARDENED_RP)
-                .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP),
-            com.azure.core.util.Context.NONE);
+        manager.fetchTieringCosts()
+            .post("netsdktestrg", "testVault",
+                new FetchTieringCostSavingsInfoForVaultRequest().withSourceTierType(RecoveryPointTierType.HARDENED_RP)
+                    .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP),
+                com.azure.core.util.Context.NONE);
     }
 }

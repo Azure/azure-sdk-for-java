@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservices.fluent.models.ReplicationUsage
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Replication usages for vault. */
+/**
+ * Replication usages for vault.
+ */
 @Fluent
 public final class ReplicationUsageList {
     /*
@@ -18,13 +20,15 @@ public final class ReplicationUsageList {
     @JsonProperty(value = "value")
     private List<ReplicationUsageInner> value;
 
-    /** Creates an instance of ReplicationUsageList class. */
+    /**
+     * Creates an instance of ReplicationUsageList class.
+     */
     public ReplicationUsageList() {
     }
 
     /**
      * Get the value property: The list of replication usages for the given vault.
-     *
+     * 
      * @return the value value.
      */
     public List<ReplicationUsageInner> value() {
@@ -33,7 +37,7 @@ public final class ReplicationUsageList {
 
     /**
      * Set the value property: The list of replication usages for the given vault.
-     *
+     * 
      * @param value the value value to set.
      * @return the ReplicationUsageList object itself.
      */
@@ -44,7 +48,7 @@ public final class ReplicationUsageList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

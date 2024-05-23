@@ -14,18 +14,19 @@ from typing import Tuple, List, Union
 from typespec_utils import validate_tspconfig
 
 pwd = os.getcwd()
-#os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
+# os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
 from parameters import *
 from utils import update_service_ci_and_pom
 from utils import update_root_pom
 from utils import update_version
+
 os.chdir(pwd)
 
 
 # Add two more indent for list in yaml dump
 class ListIndentDumper(yaml.SafeDumper):
 
-    def increase_indent(self, flow = False, indentless = False):
+    def increase_indent(self, flow=False, indentless=False):
         return super(ListIndentDumper, self).increase_indent(flow, False)
 
 
@@ -41,43 +42,46 @@ def generate(
     namespace: str,
     tag: str = None,
     version: str = None,
-    autorest_options: str = '',
+    autorest_options: str = "",
     **kwargs,
 ) -> bool:
     output_dir = os.path.join(
         sdk_root,
-        'sdk/{0}'.format(service),
+        "sdk/{0}".format(service),
         module,
     )
 
-    require_sdk_integration = not os.path.exists(os.path.join(output_dir, 'src'))
+    require_sdk_integration = not os.path.exists(os.path.join(output_dir, "src"))
 
     remove_generated_source_code(output_dir, namespace)
 
-    if re.match(r'https?://', spec_root):
+    if re.match(r"https?://", spec_root):
         readme = urllib.parse.urljoin(spec_root, readme)
     else:
         readme = os.path.join(spec_root, readme)
 
-    tag_option = '--tag={0}'.format(tag) if tag else ''
-    version_option = '--package-version={0}'.format(version) if version else ''
+    tag_option = "--tag={0}".format(tag) if tag else ""
+    version_option = "--package-version={0}".format(version) if version else ""
 
-    command = 'autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={3} ' \
-              '--java.namespace={4} {5}'\
-        .format(
+    command = (
+        "autorest --version={0} --use={1} --java --java.java-sdks-folder={2} --java.output-folder={3} "
+        "--java.namespace={4} {5}".format(
             autorest,
             use,
             os.path.abspath(sdk_root),
             os.path.abspath(output_dir),
             namespace,
-            ' '.join((tag_option, version_option, FLUENTLITE_ARGUMENTS, autorest_options, readme)),
+            " ".join((tag_option, version_option, FLUENTLITE_ARGUMENTS, autorest_options, readme)),
         )
+    )
     logging.info(command)
     if os.system(command) != 0:
-        error_message = ('[GENERATE][Error] Code generation failed.\n'
-                         'Please first check if the failure happens only to Java automation, or for all SDK automations.\n'
-                         'If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff.\n'
-                         'If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue.')
+        error_message = (
+            "[GENERATE][Error] Code generation failed.\n"
+            "Please first check if the failure happens only to Java automation, or for all SDK automations.\n"
+            "If it happens for all SDK automations, please double check your Swagger, and check whether there is errors in ModelValidation and LintDiff.\n"
+            "If it happens to Java alone, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
+        )
         logging.error(error_message)
         print(error_message, file=sys.stderr)
         return False
@@ -90,19 +94,30 @@ def generate(
 
     return True
 
+
 def remove_generated_source_code(sdk_folder: str, namespace: str):
-    shutil.rmtree(os.path.join(sdk_folder, 'src/main'), ignore_errors=True)
-    shutil.rmtree(os.path.join(sdk_folder, 'src/test/java', namespace.replace('.', '/'), 'generated'),
-                  ignore_errors=True)
-    shutil.rmtree(os.path.join(sdk_folder, 'src/samples/java', namespace.replace('.', '/'), 'generated'),
-                  ignore_errors=True)
+    shutil.rmtree(os.path.join(sdk_folder, "src/main"), ignore_errors=True)
+    shutil.rmtree(
+        os.path.join(sdk_folder, "src/test/java", namespace.replace(".", "/"), "generated"), ignore_errors=True
+    )
+    shutil.rmtree(
+        os.path.join(sdk_folder, "src/samples/java", namespace.replace(".", "/"), "generated"), ignore_errors=True
+    )
+
 
 def compile_arm_package(sdk_root: str, module: str) -> bool:
-    if os.system(
-            'mvn --no-transfer-progress clean verify -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip -pl {1}:{2} -am'.format(
-                sdk_root, GROUP_ID, module)) != 0:
-        error_message = ('[COMPILE] Maven build fail.\n'
-                         'You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.')
+    if (
+        os.system(
+            "mvn --no-transfer-progress clean verify -f {0}/pom.xml -Dmaven.javadoc.skip -Dgpg.skip -DskipTestCompile -Djacoco.skip -Drevapi.skip -pl {1}:{2} -am".format(
+                sdk_root, GROUP_ID, module
+            )
+        )
+        != 0
+    ):
+        error_message = (
+            "[COMPILE] Maven build fail.\n"
+            'You can inquire in "Language - Java" Teams channel. Please include the link of this Pull Request in the query.'
+        )
         logging.error(error_message)
         print(error_message, file=sys.stderr)
         return False
@@ -115,103 +130,89 @@ def generate_changelog_and_breaking_change(
     new_jar,
     **kwargs,
 ) -> Tuple[bool, str]:
-    logging.info('[CHANGELOG] changelog jar: {0} -> {1}'.format(
-        old_jar, new_jar))
+    logging.info("[CHANGELOG] changelog jar: {0} -> {1}".format(old_jar, new_jar))
     stdout = subprocess.run(
-        'mvn --no-transfer-progress clean compile exec:java -q -f {0}/eng/mgmt/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'
-        .format(sdk_root, old_jar, new_jar),
-        stdout = subprocess.PIPE,
-        shell = True,
+        'mvn --no-transfer-progress clean compile exec:java -q -f {0}/eng/mgmt/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'.format(
+            sdk_root, old_jar, new_jar
+        ),
+        stdout=subprocess.PIPE,
+        shell=True,
     ).stdout
-    logging.info('[CHANGELOG] changelog output: {0}'.format(stdout))
+    logging.info("[CHANGELOG] changelog output: {0}".format(stdout))
 
     config = json.loads(stdout)
-    return (config.get('breaking', False), config.get('changelog', ''))
+    return (config.get("breaking", False), config.get("changelog", ""))
 
 
 def update_changelog(changelog_file, changelog):
-    version_pattern = '^## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((.*?)\)'
-    with open(changelog_file, 'r') as fin:
+    version_pattern = "^## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((.*?)\)"
+    with open(changelog_file, "r") as fin:
         old_changelog = fin.read()
 
     first_version = re.search(version_pattern, old_changelog, re.M)
     if not first_version:
-        logging.error(
-            '[Changelog][Skip] Cannot read first version from {}'.format(
-                changelog_file))
+        logging.error("[Changelog][Skip] Cannot read first version from {}".format(changelog_file))
         return
 
-    left = old_changelog[first_version.end():]
+    left = old_changelog[first_version.end() :]
     second_version = re.search(version_pattern, left, re.M)
     if not second_version:
-        logging.error(
-            '[Changelog][Skip] Cannot read second version from {}'.format(
-                changelog_file))
+        logging.error("[Changelog][Skip] Cannot read second version from {}".format(changelog_file))
         return
 
-    first_version_part = old_changelog[:first_version.end() +
-                                       second_version.start()]
+    first_version_part = old_changelog[: first_version.end() + second_version.start()]
     # remove text starting from the first '###' (usually the block '### Features Added')
-    first_version_part = re.sub('\n###.*', '\n', first_version_part, flags=re.S)
-    first_version_part = re.sub('\s+$', '', first_version_part)
+    first_version_part = re.sub("\n###.*", "\n", first_version_part, flags=re.S)
+    first_version_part = re.sub("\s+$", "", first_version_part)
 
-    first_version_part += '\n\n'
-    if changelog.strip() != '':
-        first_version_part += changelog.strip() + '\n\n'
+    first_version_part += "\n\n"
+    if changelog.strip() != "":
+        first_version_part += changelog.strip() + "\n\n"
 
-    with open(changelog_file, 'w') as fout:
-        fout.write(first_version_part +
-                   old_changelog[first_version.end() + second_version.start():])
+    with open(changelog_file, "w") as fout:
+        fout.write(first_version_part + old_changelog[first_version.end() + second_version.start() :])
 
-    logging.info('[Changelog][Success] Write to changelog')
+    logging.info("[Changelog][Success] Write to changelog")
 
 
-def compare_with_maven_package(sdk_root: str, service: str, stable_version: str,
-                               current_version: str, module: str):
+def compare_with_maven_package(sdk_root: str, service: str, stable_version: str, current_version: str, module: str):
     if stable_version == current_version:
-        logging.info('[Changelog][Skip] no previous version')
+        logging.info("[Changelog][Skip] no previous version")
         return
 
-    if '-beta.' in current_version and '-beta.' not in stable_version:
+    if "-beta." in current_version and "-beta." not in stable_version:
         # if current version is preview, try compare it with a previous preview release
 
-        version_pattern = r'\d+\.\d+\.\d+-beta\.(\d+)?'
+        version_pattern = r"\d+\.\d+\.\d+-beta\.(\d+)?"
         beta_version_int = int(re.match(version_pattern, current_version).group(1))
         if beta_version_int > 1:
             previous_beta_version_int = beta_version_int - 1
             previous_beta_version = current_version.replace(
-                '-beta.' + str(beta_version_int),
-                '-beta.' + str(previous_beta_version_int))
+                "-beta." + str(beta_version_int), "-beta." + str(previous_beta_version_int)
+            )
             stable_version = previous_beta_version
 
-    logging.info('[Changelog] Compare stable version {0} with current version {1}'.format(stable_version, current_version))
+    logging.info(
+        "[Changelog] Compare stable version {0} with current version {1}".format(stable_version, current_version)
+    )
 
-    r = requests.get(
-        MAVEN_URL.format(group_id = GROUP_ID.replace('.', '/'),
-                         artifact_id = module,
-                         version = stable_version))
+    r = requests.get(MAVEN_URL.format(group_id=GROUP_ID.replace(".", "/"), artifact_id=module, version=stable_version))
     r.raise_for_status()
-    old_jar_fd, old_jar = tempfile.mkstemp('.jar')
+    old_jar_fd, old_jar = tempfile.mkstemp(".jar")
     try:
-        with os.fdopen(old_jar_fd, 'wb') as tmp:
+        with os.fdopen(old_jar_fd, "wb") as tmp:
             tmp.write(r.content)
         new_jar = os.path.join(
-            sdk_root,
-            JAR_FORMAT.format(service = service,
-                              artifact_id = module,
-                              version = current_version))
+            sdk_root, JAR_FORMAT.format(service=service, artifact_id=module, version=current_version)
+        )
         if not os.path.exists(new_jar):
-            raise Exception('Cannot found built jar in {0}'.format(new_jar))
-        breaking, changelog = generate_changelog_and_breaking_change(
-            sdk_root, old_jar, new_jar)
+            raise Exception("Cannot found built jar in {0}".format(new_jar))
+        breaking, changelog = generate_changelog_and_breaking_change(sdk_root, old_jar, new_jar)
         if changelog is not None:
-            changelog_file = os.path.join(
-                sdk_root,
-                CHANGELOG_FORMAT.format(service = service,
-                                        artifact_id = module))
+            changelog_file = os.path.join(sdk_root, CHANGELOG_FORMAT.format(service=service, artifact_id=module))
             update_changelog(changelog_file, changelog)
         else:
-            logging.error('[Changelog][Skip] Cannot get changelog')
+            logging.error("[Changelog][Skip] Cannot get changelog")
     finally:
         os.remove(old_jar)
 
@@ -220,23 +221,23 @@ def get_version(
     sdk_root: str,
     module: str,
 ) -> Union[str, None]:
-    version_file = os.path.join(sdk_root, 'eng/versioning/version_client.txt')
-    project = '{0}:{1}'.format(GROUP_ID, module)
+    version_file = os.path.join(sdk_root, "eng/versioning/version_client.txt")
+    project = "{0}:{1}".format(GROUP_ID, module)
 
-    with open(version_file, 'r') as fin:
+    with open(version_file, "r") as fin:
         for line in fin.readlines():
             version_line = line.strip()
-            if version_line.startswith('#'):
+            if version_line.startswith("#"):
                 continue
-            versions = version_line.split(';')
+            versions = version_line.split(";")
             if versions[0] == project:
                 return version_line
-    logging.error('Cannot get version of {0}'.format(project))
+    logging.error("Cannot get version of {0}".format(project))
     return None
 
 
 def valid_service(service: str):
-    return re.sub('[^a-z0-9_]', '', service.lower())
+    return re.sub("[^a-z0-9_]", "", service.lower())
 
 
 def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
@@ -245,21 +246,21 @@ def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
     with open(api_specs_file) as fin:
         lines = fin.readlines()
 
-    comment = ''
+    comment = ""
 
     for i, line in enumerate(lines):
-        if not line.strip().startswith('#'):
-            comment = ''.join(lines[:i])
-            api_specs = yaml.safe_load(''.join(lines[i:]))
+        if not line.strip().startswith("#"):
+            comment = "".join(lines[:i])
+            api_specs = yaml.safe_load("".join(lines[i:]))
             break
     else:
-        raise Exception('api-specs.yml should has non comment line')
+        raise Exception("api-specs.yml should has non comment line")
 
     return comment, api_specs
 
 
 def write_api_specs(api_specs_file: str, comment: str, api_specs: dict):
-    with open(api_specs_file, 'w') as fout:
+    with open(api_specs_file, "w") as fout:
         fout.write(comment)
         fout.write(yaml.dump(api_specs, width=sys.maxsize, Dumper=ListIndentDumper))
 
@@ -269,7 +270,7 @@ def get_and_update_service_from_api_specs(
     spec: str,
     service: str = None,
 ):
-    SPECIAL_SPEC = {'resources'}
+    SPECIAL_SPEC = {"resources"}
     if spec in SPECIAL_SPEC:
         if not service:
             service = spec
@@ -280,14 +281,14 @@ def get_and_update_service_from_api_specs(
     api_spec = api_specs.get(spec)
     if not service:
         if api_spec:
-            service = api_spec.get('service')
+            service = api_spec.get("service")
         if not service:
             service = spec
     service = valid_service(service)
 
     if service != spec:
         api_specs[spec] = dict() if not api_spec else api_spec
-        api_specs[spec]['service'] = service
+        api_specs[spec]["service"] = service
 
     write_api_specs(api_specs_file, comment, api_specs)
 
@@ -298,8 +299,8 @@ def get_suffix_from_api_specs(api_specs_file: str, spec: str):
     comment, api_specs = read_api_specs(api_specs_file)
 
     api_spec = api_specs.get(spec)
-    if api_spec and api_spec.get('suffix'):
-        return api_spec.get('suffix')
+    if api_spec and api_spec.get("suffix"):
+        return api_spec.get("suffix")
 
     return None
 
@@ -317,7 +318,8 @@ def generate_typespec_project(
     head_sha: str = "",
     repo_url: str = "",
     remove_before_regen: bool = False,
-    group_id: str = None):
+    group_id: str = None,
+):
 
     if not tsp_project:
         return False
@@ -330,63 +332,69 @@ def generate_typespec_project(
 
     try:
         url_match = re.match(
-            r'^https://github.com/(?P<repo>[^/]*/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$',
+            r"^https://github.com/(?P<repo>[^/]*/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$",
             tsp_project,
-            re.IGNORECASE
+            re.IGNORECASE,
         )
 
         tspconfig_valid = True
         if url_match:
             # generate from remote url
-            tsp_cmd = [
-                'npx', 'tsp-client', 'init', '--debug',
-                '--tsp-config', tsp_project
-            ]
+            tsp_cmd = ["npx", "tsp-client", "init", "--debug", "--tsp-config", tsp_project]
         else:
             # sdk automation
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
             tspconfig_valid = validate_tspconfig(tsp_dir)
-            repo = remove_prefix(repo_url, 'https://github.com/')
+            repo = remove_prefix(repo_url, "https://github.com/")
             tsp_cmd = [
-                'npx', 'tsp-client', 'init', '--debug',
-                '--tsp-config', tsp_dir,
-                '--commit', head_sha,
-                '--repo', repo,
-                '--local-spec-repo', tsp_dir
+                "npx",
+                "tsp-client",
+                "init",
+                "--debug",
+                "--tsp-config",
+                tsp_dir,
+                "--commit",
+                head_sha,
+                "--repo",
+                repo,
+                "--local-spec-repo",
+                tsp_dir,
             ]
 
         if tspconfig_valid:
             check_call(tsp_cmd, sdk_root)
 
             sdk_folder = find_sdk_folder(sdk_root)
-            logging.info('SDK folder: ' + sdk_folder)
+            logging.info("SDK folder: " + sdk_folder)
             if sdk_folder:
                 # parse service and module
-                match = re.match(r'sdk[\\/](.*)[\\/](.*)', sdk_folder)
+                match = re.match(r"sdk[\\/](.*)[\\/](.*)", sdk_folder)
                 service = match.group(1)
                 module = match.group(2)
                 # check require_sdk_integration
-                cmd = ['git', 'add', '.']
+                cmd = ["git", "add", "."]
                 check_call(cmd, sdk_root)
-                cmd = ['git', 'status', '--porcelain', os.path.join(sdk_folder, 'pom.xml')]
-                logging.info('Command line: ' + ' '.join(cmd))
+                cmd = ["git", "status", "--porcelain", os.path.join(sdk_folder, "pom.xml")]
+                logging.info("Command line: " + " ".join(cmd))
                 output = subprocess.check_output(cmd, cwd=sdk_root)
-                output_str = str(output, 'utf-8')
+                output_str = str(output, "utf-8")
                 git_items = output_str.splitlines()
                 if len(git_items) > 0:
                     git_pom_item = git_items[0]
                     # new pom.xml implies new SDK
-                    require_sdk_integration = git_pom_item.startswith('A ')
+                    require_sdk_integration = git_pom_item.startswith("A ")
                 if not require_sdk_integration and remove_before_regen and group_id:
                     # clear existing generated source code, and regenerate
                     drop_changes(sdk_root)
-                    remove_generated_source_code(sdk_folder, f'${group_id}.${module}')
+                    remove_generated_source_code(sdk_folder, f"${group_id}.${module}")
                     # regenerate
                     check_call(tsp_cmd, sdk_root)
                 succeeded = True
     except subprocess.CalledProcessError as error:
-        error_message = (f'[GENERATE][Error] Code generation failed. tsp-client init fails: {error}\n'
-                         'If TypeSpec Validation passes, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue.')
+        error_message = (
+            f"[GENERATE][Error] Code generation failed. tsp-client init fails: {error}\n"
+            "If TypeSpec Validation passes, you can open an issue to https://github.com/Azure/autorest.java/issues. Please include the link of this Pull Request in the issue."
+        )
         logging.error(error_message)
         print(error_message, file=sys.stderr)
 
@@ -394,36 +402,36 @@ def generate_typespec_project(
 
 
 def check_call(cmd: List[str], work_dir: str):
-    logging.info('Command line: ' + ' '.join(cmd))
+    logging.info("Command line: " + " ".join(cmd))
     subprocess.check_call(cmd, cwd=work_dir)
 
 
 def drop_changes(work_dir: str):
-    check_call(['git', 'checkout', '--', '.'], work_dir)
-    check_call(['git', 'clean', '-qf'], work_dir)
+    check_call(["git", "checkout", "--", "."], work_dir)
+    check_call(["git", "clean", "-qf"], work_dir)
 
 
 def remove_prefix(text, prefix):
     if text.startswith(prefix):
-        return text[len(prefix):]
+        return text[len(prefix) :]
     return text
 
 
 def find_sdk_folder(sdk_root: str):
-    cmd = ['git', 'add', '.']
+    cmd = ["git", "add", "."]
     check_call(cmd, sdk_root)
 
-    cmd = ['git', 'status', '--porcelain', '**/tsp-location.yaml']
-    logging.info('Command line: ' + ' '.join(cmd))
+    cmd = ["git", "status", "--porcelain", "**/tsp-location.yaml"]
+    logging.info("Command line: " + " ".join(cmd))
     output = subprocess.check_output(cmd, cwd=sdk_root)
-    output_str = str(output, 'utf-8')
+    output_str = str(output, "utf-8")
     git_items = output_str.splitlines()
     sdk_folder = None
     if len(git_items) > 0:
         tsp_location_item: str = git_items[0]
-        sdk_folder = tsp_location_item[1:].strip()[0:-len('/tsp-location.yaml')]
+        sdk_folder = tsp_location_item[1:].strip()[0 : -len("/tsp-location.yaml")]
 
-    cmd = ['git', 'reset', '.']
+    cmd = ["git", "reset", "."]
     check_call(cmd, sdk_root)
 
     return sdk_folder

@@ -3,10 +3,6 @@
 
 package com.azure.quantum.jobs;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
@@ -18,6 +14,10 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class QuantumClientTestBase extends TestProxyTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(QuantumClientTestBase.class);
@@ -43,7 +43,7 @@ public class QuantumClientTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
             customMatchers.add(new BodilessMatcher());
-            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Arrays.asList("Authorization", "Cookie")));
             interceptorManager.addMatchers(customMatchers);
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else {

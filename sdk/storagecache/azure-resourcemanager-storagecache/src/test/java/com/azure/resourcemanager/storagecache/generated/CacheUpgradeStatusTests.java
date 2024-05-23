@@ -11,7 +11,7 @@ public final class CacheUpgradeStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CacheUpgradeStatus model = BinaryData.fromString(
-            "{\"currentFirmwareVersion\":\"ycnojvknmefqsg\",\"firmwareUpdateStatus\":\"available\",\"firmwareUpdateDeadline\":\"2021-11-22T14:09:07Z\",\"lastFirmwareUpdate\":\"2021-04-03T04:06:05Z\",\"pendingFirmwareVersion\":\"zhpvgqzcjrvxd\"}")
+            "{\"currentFirmwareVersion\":\"iirqtd\",\"firmwareUpdateStatus\":\"unavailable\",\"firmwareUpdateDeadline\":\"2021-05-24T02:05:43Z\",\"lastFirmwareUpdate\":\"2021-09-27T01:53:27Z\",\"pendingFirmwareVersion\":\"fgsqu\"}")
             .toObject(CacheUpgradeStatus.class);
     }
 

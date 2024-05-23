@@ -11,8 +11,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceConfigResourceInner;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * BackupResourceStorageConfigsNonCrrsClient.
+ * An instance of this class provides access to all the operations defined in BackupResourceStorageConfigsNonCrrsClient.
  */
 public interface BackupResourceStorageConfigsNonCrrsClient {
     /**

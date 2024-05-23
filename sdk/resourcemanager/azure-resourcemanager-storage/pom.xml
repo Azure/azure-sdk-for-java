@@ -92,6 +92,12 @@
       <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-storage-blob</artifactId>
+      <version>12.26.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <profiles>
     <profile>

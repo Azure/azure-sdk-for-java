@@ -33,13 +33,16 @@ public final class CreateMessageRequest implements JsonSerializable<CreateMessag
     private final String content;
 
     /*
-     * A list of up to 10 file IDs to associate with the message, as used by tools like 'code_interpreter' or 'retrieval' that can read files.
+     * A list of up to 10 file IDs to associate with the message, as used by tools like 'code_interpreter' or
+     * 'retrieval' that can read files.
      */
     @Generated
     private List<String> fileIds;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     private Map<String, String> metadata;

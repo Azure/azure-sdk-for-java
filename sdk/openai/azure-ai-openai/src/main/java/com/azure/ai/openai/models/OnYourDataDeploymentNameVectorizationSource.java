@@ -18,7 +18,8 @@ import java.io.IOException;
 public final class OnYourDataDeploymentNameVectorizationSource extends OnYourDataVectorizationSource {
 
     /*
-     * The embedding model deployment name within the same Azure OpenAI resource. This enables you to use vector search without Azure OpenAI api-key and without Azure OpenAI public network access.
+     * The embedding model deployment name within the same Azure OpenAI resource. This enables you to use vector search
+     * without Azure OpenAI api-key and without Azure OpenAI public network access.
      */
     @Generated
     private final String deploymentName;

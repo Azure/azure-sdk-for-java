@@ -4,9 +4,11 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.BadRequestException;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -47,6 +49,12 @@ import java.util.stream.Collectors;
  * This is meant to be internally used only by our sdk.
  */
 public class DocumentQueryExecutionContextFactory {
+
+    private static final ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsHelper
+        .CosmosQueryRequestOptionsAccessor qryOptAccessor = ImplementationBridgeHelpers
+        .CosmosQueryRequestOptionsHelper
+        .getCosmosQueryRequestOptionsAccessor();
 
     private final static int PageSizeFactorForTop = 5;
     private static final Logger logger = LoggerFactory.getLogger(DocumentQueryExecutionContextFactory.class);
@@ -240,7 +248,8 @@ public class DocumentQueryExecutionContextFactory {
                    && !queryInfo.hasTop()
                    && !queryInfo.hasOffset()
                    && !queryInfo.hasDCount()
-                   && !queryInfo.hasOrderBy();
+                   && !queryInfo.hasOrderBy()
+                   && !queryInfo.hasNonStreamingOrderBy();
     }
 
     private static boolean isScopedToSinglePartition(CosmosQueryRequestOptions cosmosQueryRequestOptions) {
@@ -361,6 +370,34 @@ public class DocumentQueryExecutionContextFactory {
         }
 
         boolean getLazyFeedResponse = queryInfo.hasTop();
+
+        // We need to compute the optimal initial age size for non-streaming order-by queries
+        if (queryInfo.hasNonStreamingOrderBy()) {
+            // Validate the TOP or LIMIT for non-streaming order-by queries
+            if (!queryInfo.hasTop() && !queryInfo.hasLimit() && queryInfo.getTop() < 0 && queryInfo.getLimit() < 0) {
+                throw new NonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
+                    "Executing a vector search query without TOP or LIMIT can consume a large number of RUs" +
+                        "very fast and have long runtimes. Please ensure you are using one of the above two filters" +
+                        "with you vector search query.");
+            }
+            // Validate the size of TOP or LIMIT against MaxItemSizeForVectorSearch
+            int maxLimit = Math.max(queryInfo.hasTop() ? queryInfo.getTop() : 0,
+                queryInfo.hasLimit() ? queryInfo.getLimit() : 0);
+            int maxItemSizeForVectorSearch = Math.max(Configs.getMaxItemCountForVectorSearch(),
+                qryOptAccessor.getMaxItemCountForVectorSearch(cosmosQueryRequestOptions));
+            if (maxLimit > maxItemSizeForVectorSearch) {
+                throw new NonStreamingOrderByBadRequestException(HttpConstants.StatusCodes.BADREQUEST,
+                    "Executing a vector search query with TOP or LIMIT larger than the maxItemSizeForVectorSearch " +
+                        "is not allowed");
+            }
+            // Set initialPageSize based on the smallest of TOP or LIMIT
+            if (queryInfo.hasTop() || queryInfo.hasLimit()) {
+                int pageSizeWithTopOrLimit = Math.min(queryInfo.hasTop() ? queryInfo.getTop() : Integer.MAX_VALUE,
+                                           queryInfo.hasLimit() && queryInfo.hasOffset() ?
+                                               queryInfo.getLimit() + queryInfo.getOffset() : Integer.MAX_VALUE);
+                initialPageSize = pageSizeWithTopOrLimit;
+            }
+        }
 
         // We need to compute the optimal initial page size for order-by queries
         if (queryInfo.hasOrderBy()) {

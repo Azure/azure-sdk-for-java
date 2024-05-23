@@ -20,8 +20,8 @@
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
     <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
     <jacoco.min.linecoverage>0.18</jacoco.min.linecoverage>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
     <jacoco.skip>true</jacoco.skip>
     <shadingPrefix>azure_cosmos_spark_sample</shadingPrefix>
     <legal>
@@ -84,7 +84,7 @@
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
-      <version>2.12.10</version> <!-- {x-version-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
+      <version>2.12.19</version> <!-- {x-version-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -96,7 +96,7 @@
     <dependency>
       <groupId>com.azure.cosmos.spark</groupId>
       <artifactId>azure-cosmos-spark_3-5_2-12</artifactId>
-      <version>4.31.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+      <version>4.32.0-beta.1</version> <!-- {x-version-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -141,6 +141,55 @@
           <artifactId>azure-core</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>com.globalmentor</groupId>
+      <artifactId>hadoop-bare-naked-local-fs</artifactId>
+      <version>0.1.0</version> <!-- {x-version-update;cosmos_com.globalmentor:hadoop-bare-naked-local-fs;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.8.1</version> <!-- {x-version-update;cosmos_org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.projectreactor</groupId>
+      <artifactId>reactor-test</artifactId>
+      <version>3.4.36</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.22.0</version> <!-- {x-version-update;org.assertj:assertj-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest_2.12</artifactId>
+      <version>3.2.2</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalatest</groupId>
+      <artifactId>scalatest-flatspec_2.12</artifactId>
+      <version>3.2.3</version> <!-- {x-version-update;cosmos_org.scalatest:scalatest-flatspec_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalactic</groupId>
+      <artifactId>scalactic_2.12</artifactId>
+      <version>3.2.3</version> <!-- {x-version-update;cosmos_org.scalactic:scalactic_2.12;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.scalamock</groupId>
+      <artifactId>scalamock_2.12</artifactId>
+      <version>5.0.0</version> <!-- {x-version-update;cosmos_org.scalamock:scalamock_2.12;external_dependency} -->
+      <scope>test</scope>
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -230,7 +279,7 @@
                 <include>org.slf4j:slf4j-api:[1.7.36]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.5.0]</include> <!-- {x-include-update;cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>commons-io:commons-io:[2.4]</include> <!-- {x-include-update;cosmos_commons-io:commons-io;external_dependency} -->
-                <include>org.scala-lang:scala-library:[2.12.10]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
+                <include>org.scala-lang:scala-library:[2.12.19]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
                 <include>org.scala-lang.modules:scala-java8-compat_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
                 <include>io.projectreactor:reactor-scala-extensions_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
                 <include>org.scalatest:scalatest_2.12:[3.2.2]</include> <!-- {x-include-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
@@ -243,7 +292,7 @@
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
                 <include>com.fasterxml.jackson.module:jackson-module-scala_2.12:[2.15.2]</include> <!-- {x-include-update;cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;external_dependency} -->
                 <include>com.globalmentor:hadoop-bare-naked-local-fs:[0.1.0]</include> <!-- {x-include-update;cosmos_com.globalmentor:hadoop-bare-naked-local-fs;external_dependency} -->
-                <include>com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:[4.31.0-beta.1]</include> <!-- {x-include-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
+                <include>com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:[4.32.0-beta.1]</include> <!-- {x-include-update;com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12;current} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -325,9 +374,9 @@
             <artifactId>scala-maven-plugin</artifactId>
             <version>4.8.1</version> <!-- {x-version-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
             <configuration>
-              <source>11</source>
-              <target>11</target>
-              <scalaVersion>2.12.10</scalaVersion>
+              <source>1.8</source>
+              <target>1.8</target>
+              <scalaVersion>2.12.19</scalaVersion>
             </configuration>
             <executions>
               <execution>
@@ -738,13 +787,13 @@
               <execution>
                 <id>default-compile</id>
                 <configuration>
-                  <release>11</release>
+                  <release>8</release>
                 </configuration>
               </execution>
               <!-- Here the 'base-compile' execution section of java-lts profile defined in parent pom.client.xml is
               overridden. In parent pom, this execution entry enforces java8 release compatibility. The Spark
-              connectors for Spark 3.0 and above not available in Java8, hence here in this pom we override that
-              release compact to 11.
+              connectors for Spark 3.0 and above are available in Java8, hence here in this pom we override that
+              release compact to 1.8.
               -->
               <execution>
                 <id>base-compile</id>
@@ -752,7 +801,7 @@
                   <goal>compile</goal>
                 </goals>
                 <configuration combine.self="override">
-                  <release>11</release>
+                  <release>8</release>
                 </configuration>
               </execution>
               <execution>
@@ -761,8 +810,8 @@
                   <goal>testCompile</goal>
                 </goals>
                 <configuration>
-                  <release>11</release>
-                  <testRelease>11</testRelease>
+                  <release>8</release>
+                  <testRelease>8</testRelease>
                 </configuration>
               </execution>
               <execution>
@@ -771,7 +820,7 @@
                   <goal>testCompile</goal>
                 </goals>
                 <configuration combine.self="override">
-                  <testRelease>11</testRelease>
+                  <testRelease>8</testRelease>
                 </configuration>
               </execution>
             </executions>

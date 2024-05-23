@@ -7,13 +7,15 @@ package com.azure.resourcemanager.maintenance.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ConfigurationAssignmentsForSubscriptions. */
+/**
+ * Resource collection API of ConfigurationAssignmentsForSubscriptions.
+ */
 public interface ConfigurationAssignmentsForSubscriptions {
     /**
      * Get configuration assignment
-     *
-     * <p>Get configuration assignment for resource..
-     *
+     * 
+     * Get configuration assignment for resource..
+     * 
      * @param configurationAssignmentName Configuration assignment name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,9 +27,9 @@ public interface ConfigurationAssignmentsForSubscriptions {
 
     /**
      * Get configuration assignment
-     *
-     * <p>Get configuration assignment for resource..
-     *
+     * 
+     * Get configuration assignment for resource..
+     * 
      * @param configurationAssignmentName Configuration assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,9 +40,9 @@ public interface ConfigurationAssignmentsForSubscriptions {
 
     /**
      * Unregister configuration for resource
-     *
-     * <p>Unregister configuration for resource.
-     *
+     * 
+     * Unregister configuration for resource.
+     * 
      * @param configurationAssignmentName Unique configuration assignment name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,9 +54,9 @@ public interface ConfigurationAssignmentsForSubscriptions {
 
     /**
      * Unregister configuration for resource
-     *
-     * <p>Unregister configuration for resource.
-     *
+     * 
+     * Unregister configuration for resource.
+     * 
      * @param configurationAssignmentName Unique configuration assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,9 +67,9 @@ public interface ConfigurationAssignmentsForSubscriptions {
 
     /**
      * Get configuration assignment
-     *
-     * <p>Get configuration assignment for resource..
-     *
+     * 
+     * Get configuration assignment for resource..
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,9 +80,9 @@ public interface ConfigurationAssignmentsForSubscriptions {
 
     /**
      * Get configuration assignment
-     *
-     * <p>Get configuration assignment for resource..
-     *
+     * 
+     * Get configuration assignment for resource..
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,9 +94,9 @@ public interface ConfigurationAssignmentsForSubscriptions {
 
     /**
      * Unregister configuration for resource
-     *
-     * <p>Unregister configuration for resource.
-     *
+     * 
+     * Unregister configuration for resource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -105,9 +107,9 @@ public interface ConfigurationAssignmentsForSubscriptions {
 
     /**
      * Unregister configuration for resource
-     *
-     * <p>Unregister configuration for resource.
-     *
+     * 
+     * Unregister configuration for resource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,7 +121,7 @@ public interface ConfigurationAssignmentsForSubscriptions {
 
     /**
      * Begins definition for a new ConfigurationAssignment resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ConfigurationAssignment definition.
      */

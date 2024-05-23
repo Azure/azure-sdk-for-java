@@ -20,8 +20,8 @@
     <maven.build.timestamp.format>MM-dd-HH-mm-ss</maven.build.timestamp.format>
     <jacoco.min.branchcoverage>0.17</jacoco.min.branchcoverage>
     <jacoco.min.linecoverage>0.18</jacoco.min.linecoverage>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>8</maven.compiler.source>
+    <maven.compiler.target>8</maven.compiler.target>
     <jacoco.skip>true</jacoco.skip>
     <shadingPrefix>azure_cosmos_spark</shadingPrefix>
     <shadingPrefixNetty>azurecosmosspark</shadingPrefixNetty>
@@ -47,12 +47,11 @@
     </developer>
   </developers>
 
-
   <dependencies>
     <dependency>
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
-      <version>2.12.10</version> <!-- {x-version-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
+      <version>2.12.19</version> <!-- {x-version-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -64,7 +63,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.60.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.61.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>org.scala-lang.modules</groupId>
@@ -228,7 +227,7 @@
                 <include>org.apache.spark:spark-sql_2.12:[3.4.0]</include> <!-- {x-include-update;cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.5.0]</include> <!-- {x-include-update;cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>commons-io:commons-io:[2.4]</include> <!-- {x-include-update;cosmos_commons-io:commons-io;external_dependency} -->
-                <include>org.scala-lang:scala-library:[2.12.10]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
+                <include>org.scala-lang:scala-library:[2.12.19]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
                 <include>org.scala-lang.modules:scala-java8-compat_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_org.scala-lang.modules:scala-java8-compat_2.12;external_dependency} -->
                 <include>io.projectreactor:reactor-scala-extensions_2.12:[0.8.0]</include> <!-- {x-include-update;cosmos_io.projectreactor:reactor-scala-extensions_2.12;external_dependency} -->
                 <include>org.scalatest:scalatest_2.12:[3.2.2]</include> <!-- {x-include-update;cosmos_org.scalatest:scalatest_2.12;external_dependency} -->
@@ -326,9 +325,9 @@
             <artifactId>scala-maven-plugin</artifactId>
             <version>4.8.1</version> <!-- {x-version-update;cosmos_net.alchim31.maven:scala-maven-plugin;external_dependency} -->
             <configuration>
-              <source>11</source>
-              <target>11</target>
-              <scalaVersion>2.12.10</scalaVersion>
+              <source>1.8</source>
+              <target>1.8</target>
+              <scalaVersion>2.12.19</scalaVersion>
             </configuration>
             <executions>
               <execution>
@@ -768,13 +767,13 @@
               <execution>
                 <id>default-compile</id>
                 <configuration>
-                  <release>11</release>
+                  <release>8</release>
                 </configuration>
               </execution>
               <!-- Here the 'base-compile' execution section of java-lts profile defined in parent pom.client.xml is
               overridden. In parent pom, this execution entry enforces java8 release compatibility. The Spark
-              connectors for Spark 3.0 and above not available in Java8, hence here in this pom we override that
-              release compact to 11.
+              connectors for Spark 3.0 and above are available in Java8, hence here in this pom we override that
+              release compact to 1.8.
               -->
               <execution>
                 <id>base-compile</id>
@@ -782,7 +781,7 @@
                   <goal>compile</goal>
                 </goals>
                 <configuration combine.self="override">
-                  <release>11</release>
+                  <release>8</release>
                 </configuration>
               </execution>
               <execution>
@@ -791,8 +790,8 @@
                   <goal>testCompile</goal>
                 </goals>
                 <configuration>
-                  <release>11</release>
-                  <testRelease>11</testRelease>
+                  <release>8</release>
+                  <testRelease>8</testRelease>
                 </configuration>
               </execution>
               <execution>
@@ -801,7 +800,7 @@
                   <goal>testCompile</goal>
                 </goals>
                 <configuration combine.self="override">
-                  <testRelease>11</testRelease>
+                  <testRelease>8</testRelease>
                 </configuration>
               </execution>
             </executions>

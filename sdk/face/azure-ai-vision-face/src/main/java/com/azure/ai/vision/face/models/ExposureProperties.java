@@ -22,7 +22,8 @@ public final class ExposureProperties {
     private final ExposureLevel exposureLevel;
 
     /*
-     * A number indicating level of exposure level ranging from 0 to 1. [0, 0.25) is under exposure. [0.25, 0.75) is good exposure. [0.75, 1] is over exposure.
+     * A number indicating level of exposure level ranging from 0 to 1. [0, 0.25) is under exposure. [0.25, 0.75) is
+     * good exposure. [0.75, 1] is over exposure.
      */
     @Generated
     @JsonProperty(value = "value")

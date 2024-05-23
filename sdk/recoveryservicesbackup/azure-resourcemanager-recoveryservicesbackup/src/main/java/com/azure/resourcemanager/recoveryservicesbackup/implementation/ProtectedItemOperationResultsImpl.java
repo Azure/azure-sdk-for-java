@@ -28,8 +28,9 @@ public final class ProtectedItemOperationResultsImpl implements ProtectedItemOpe
 
     public Response<ProtectedItemResource> getWithResponse(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String operationId, Context context) {
-        Response<ProtectedItemResourceInner> inner = this.serviceClient().getWithResponse(vaultName, resourceGroupName,
-            fabricName, containerName, protectedItemName, operationId, context);
+        Response<ProtectedItemResourceInner> inner = this.serviceClient()
+            .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProtectedItemResourceImpl(inner.getValue(), this.manager()));
@@ -40,8 +41,8 @@ public final class ProtectedItemOperationResultsImpl implements ProtectedItemOpe
 
     public ProtectedItemResource get(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, String operationId) {
-        ProtectedItemResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName, fabricName,
-            containerName, protectedItemName, operationId);
+        ProtectedItemResourceInner inner = this.serviceClient()
+            .get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId);
         if (inner != null) {
             return new ProtectedItemResourceImpl(inner, this.manager());
         } else {

@@ -15,7 +15,9 @@ import java.util.List;
 @Fluent
 public final class TransportAuthentication {
     /*
-     * Defines a reference to a secret which contains all certificates and private keys that can be used by the southbound connector connecting to the shop floor/OT device. The accepted extensions are .der for certificates and .pfx/.pem for private keys.
+     * Defines a reference to a secret which contains all certificates and private keys that can be used by the
+     * southbound connector connecting to the shop floor/OT device. The accepted extensions are .der for certificates
+     * and .pfx/.pem for private keys.
      */
     @JsonProperty(value = "ownCertificates", required = true)
     private List<OwnCertificate> ownCertificates;
