@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.31.1 (2024-05-22)
+### 4.32.0 (2024-05-23)
 
 #### Bugs Fixed
 * Fixed an issue where `SHOW DATABASES IN` only return one database even though multiple databases exist. - See [PR 40277](https://github.com/Azure/azure-sdk-for-java/pull/40277)
