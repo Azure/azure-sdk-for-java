@@ -248,7 +248,7 @@ private object CosmosConfig  extends BasicLoggingTrait {
       None
     }
 
-    logInfo("Checking for account resolvers")
+    logInfo(s"Checking for account resolvers - requested service name '${accountDataResolverServiceName.getOrElse("n/a")}'")
     var accountDataResolverCls = None: Option[AccountDataResolver]
     val serviceLoader = ServiceLoader.load(classOf[AccountDataResolver])
     val iterator = serviceLoader.iterator()

@@ -16,7 +16,7 @@ val clientCertPem = dbutils.widgets.get("clientCertPem")
 val cosmosContainerName = dbutils.widgets.get("cosmosContainerName")
 val cosmosDatabaseName = dbutils.widgets.get("cosmosDatabaseName")
 
-val clientCertPemBase64 = Base64.getEncoder().encodeToString(clientCertPem.getBytes("UTF-8"));
+val clientCertPemBase64 = java.util.Base64.getEncoder().encodeToString(clientCertPem.getBytes("UTF-8"));
 
 val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
     "spark.cosmos.auth.type" -> authType,
