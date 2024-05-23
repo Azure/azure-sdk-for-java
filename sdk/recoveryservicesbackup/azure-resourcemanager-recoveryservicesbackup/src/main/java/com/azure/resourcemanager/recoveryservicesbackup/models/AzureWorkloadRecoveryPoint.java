@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -19,9 +20,9 @@ import java.util.Map;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "objectType",
-    defaultImpl = AzureWorkloadRecoveryPoint.class)
+    defaultImpl = AzureWorkloadRecoveryPoint.class,
+    visible = true)
 @JsonTypeName("AzureWorkloadRecoveryPoint")
 @JsonSubTypes({
     @JsonSubTypes.Type(
@@ -31,6 +32,13 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureWorkloadSQLRecoveryPoint", value = AzureWorkloadSqlRecoveryPoint.class) })
 @Fluent
 public class AzureWorkloadRecoveryPoint extends RecoveryPoint {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "AzureWorkloadRecoveryPoint";
+
     /*
      * UTC time at which recovery point was created
      */
@@ -66,6 +74,17 @@ public class AzureWorkloadRecoveryPoint extends RecoveryPoint {
      * Creates an instance of AzureWorkloadRecoveryPoint class.
      */
     public AzureWorkloadRecoveryPoint() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**

@@ -5,20 +5,43 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Azure backup goal feature specific request.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "featureType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "featureType",
+    defaultImpl = AzureBackupGoalFeatureSupportRequest.class,
+    visible = true)
 @JsonTypeName("AzureBackupGoals")
 @Immutable
 public final class AzureBackupGoalFeatureSupportRequest extends FeatureSupportRequest {
+    /*
+     * backup support feature type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "featureType", required = true)
+    private String featureType = "AzureBackupGoals";
+
     /**
      * Creates an instance of AzureBackupGoalFeatureSupportRequest class.
      */
     public AzureBackupGoalFeatureSupportRequest() {
+    }
+
+    /**
+     * Get the featureType property: backup support feature type.
+     * 
+     * @return the featureType value.
+     */
+    @Override
+    public String featureType() {
+        return this.featureType;
     }
 
     /**

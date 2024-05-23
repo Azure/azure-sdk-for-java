@@ -6,69 +6,56 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionIntent;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionIntentResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ProtectionIntentsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"DPM\",\"sourceResourceId\":\"eqipxgzdy\",\"itemId\":\"sfayorpravkjoges\",\"policyId\":\"bnsmjkwynqxaek\",\"protectionState\":\"Protecting\"},\"eTag\":\"vwjtqpkevmyltjc\",\"location\":\"spxklu\",\"tags\":{\"annnoytzposewx\":\"lfg\"},\"id\":\"gpxvkqmaupxvpi\",\"name\":\"dfaifyzyzeyuube\",\"type\":\"ds\"}";
+            = "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureBackupServer\",\"sourceResourceId\":\"djyibqbnaomhjrm\",\"itemId\":\"hmaxljalfi\",\"policyId\":\"jmobca\",\"protectionState\":\"NotProtected\"},\"eTag\":\"xxqcwgaxf\",\"location\":\"vaknokzwjj\",\"tags\":{\"x\":\"tixldzyyfytpqs\",\"vyqlkjuvsmbmslzo\":\"mmpuj\",\"mx\":\"ovwzdbpqvybefg\",\"vcuartrhun\":\"okcvtlubses\"},\"id\":\"pirykycndzfqiv\",\"name\":\"reuykbbmnwagl\",\"type\":\"bxoeeonql\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure().withHttpClient(httpClient)
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ProtectionIntentResource response = manager.protectionIntents().define("bcfhzagxnv").withRegion("tfvpndpmiljpn")
-            .withExistingBackupFabric("ickduoiqta", "t", "vsknxrwzawnv")
-            .withTags(mapOf("sauzpjlx", "udqll", "zxlskihmxr", "ehuxiqhzlraym"))
-            .withProperties(new ProtectionIntent().withBackupManagementType(BackupManagementType.DPM)
-                .withSourceResourceId("imwrzregzgyufu").withItemId("wpwerye").withPolicyId("kdhmeottawjyosx")
-                .withProtectionState(ProtectionStatus.PROTECTED))
-            .withEtag("h").create();
+        ProtectionIntentResource response = manager.protectionIntents()
+            .define("rcyrucpcunnu")
+            .withRegion("hblkwqpatvbq")
+            .withExistingBackupFabric("l", "ytoithgygvfl", "gvdihoynkrxwetwk")
+            .withTags(mapOf("zqymtuowogtgits", "cjbctviv"))
+            .withProperties(new ProtectionIntent().withBackupManagementType(BackupManagementType.MAB)
+                .withSourceResourceId("oenodnaienh")
+                .withItemId("skndnelqkaadlknw")
+                .withPolicyId("anniyopetxivcnr")
+                .withProtectionState(ProtectionStatus.INVALID))
+            .withEtag("ucae")
+            .create();
 
-        Assertions.assertEquals("spxklu", response.location());
-        Assertions.assertEquals("lfg", response.tags().get("annnoytzposewx"));
-        Assertions.assertEquals(BackupManagementType.DPM, response.properties().backupManagementType());
-        Assertions.assertEquals("eqipxgzdy", response.properties().sourceResourceId());
-        Assertions.assertEquals("sfayorpravkjoges", response.properties().itemId());
-        Assertions.assertEquals("bnsmjkwynqxaek", response.properties().policyId());
-        Assertions.assertEquals(ProtectionStatus.PROTECTING, response.properties().protectionState());
-        Assertions.assertEquals("vwjtqpkevmyltjc", response.etag());
+        Assertions.assertEquals("vaknokzwjj", response.location());
+        Assertions.assertEquals("tixldzyyfytpqs", response.tags().get("x"));
+        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, response.properties().backupManagementType());
+        Assertions.assertEquals("djyibqbnaomhjrm", response.properties().sourceResourceId());
+        Assertions.assertEquals("hmaxljalfi", response.properties().itemId());
+        Assertions.assertEquals("jmobca", response.properties().policyId());
+        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, response.properties().protectionState());
+        Assertions.assertEquals("xxqcwgaxf", response.etag());
     }
 
     // Use "Map.of" if available

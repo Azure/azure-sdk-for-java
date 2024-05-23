@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequestResource;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -15,22 +16,27 @@ public final class RestoreRequestResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestoreRequestResource model = BinaryData.fromString(
-            "{\"properties\":{\"objectType\":\"RestoreRequest\"},\"eTag\":\"hibnuqqkpika\",\"location\":\"rgvtqag\",\"tags\":{\"fsiarbutr\":\"ynhijggme\",\"jrunmpxtt\":\"vpnazzm\"},\"id\":\"bh\",\"name\":\"bnlankxmyskpb\",\"type\":\"enbtkcxywny\"}")
+            "{\"properties\":{\"objectType\":\"RestoreRequest\",\"resourceGuardOperationRequests\":[\"ibnuqqkpik\",\"drgvtqagn\",\"uynhijg\"]},\"eTag\":\"ebf\",\"location\":\"iarbutrcvpna\",\"tags\":{\"unmpxttd\":\"hj\",\"nbtkcxywnytnr\":\"hrbnlankxmyskpbh\",\"qidybyx\":\"yn\",\"aaxdbabphlwrq\":\"zfcl\"},\"id\":\"fkts\",\"name\":\"hsucoc\",\"type\":\"nyyazttbtwwrqpue\"}")
             .toObject(RestoreRequestResource.class);
-        Assertions.assertEquals("rgvtqag", model.location());
-        Assertions.assertEquals("ynhijggme", model.tags().get("fsiarbutr"));
-        Assertions.assertEquals("hibnuqqkpika", model.etag());
+        Assertions.assertEquals("iarbutrcvpna", model.location());
+        Assertions.assertEquals("hj", model.tags().get("unmpxttd"));
+        Assertions.assertEquals("ibnuqqkpik", model.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("ebf", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestoreRequestResource model = new RestoreRequestResource().withLocation("rgvtqag")
-            .withTags(mapOf("fsiarbutr", "ynhijggme", "jrunmpxtt", "vpnazzm")).withProperties(new RestoreRequest())
-            .withEtag("hibnuqqkpika");
+        RestoreRequestResource model = new RestoreRequestResource().withLocation("iarbutrcvpna")
+            .withTags(
+                mapOf("unmpxttd", "hj", "nbtkcxywnytnr", "hrbnlankxmyskpbh", "qidybyx", "yn", "aaxdbabphlwrq", "zfcl"))
+            .withProperties(new RestoreRequest()
+                .withResourceGuardOperationRequests(Arrays.asList("ibnuqqkpik", "drgvtqagn", "uynhijg")))
+            .withEtag("ebf");
         model = BinaryData.fromObject(model).toObject(RestoreRequestResource.class);
-        Assertions.assertEquals("rgvtqag", model.location());
-        Assertions.assertEquals("ynhijggme", model.tags().get("fsiarbutr"));
-        Assertions.assertEquals("hibnuqqkpika", model.etag());
+        Assertions.assertEquals("iarbutrcvpna", model.location());
+        Assertions.assertEquals("hj", model.tags().get("unmpxttd"));
+        Assertions.assertEquals("ibnuqqkpik", model.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("ebf", model.etag());
     }
 
     // Use "Map.of" if available

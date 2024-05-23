@@ -32,7 +32,8 @@ public final class ResourceGuardProxyBaseTests {
                 new ResourceGuardOperationDetail().withVaultCriticalOperation("zpxdt").withDefaultResourceRequest("dm"),
                 new ResourceGuardOperationDetail().withVaultCriticalOperation("j")
                     .withDefaultResourceRequest("wuenvr")))
-            .withLastUpdatedTime("yo").withDescription("ibreb");
+            .withLastUpdatedTime("yo")
+            .withDescription("ibreb");
         model = BinaryData.fromObject(model).toObject(ResourceGuardProxyBase.class);
         Assertions.assertEquals("saz", model.resourceGuardResourceId());
         Assertions.assertEquals("qkagfhsxt", model.resourceGuardOperationDetails().get(0).vaultCriticalOperation());
