@@ -252,9 +252,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
-            Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux().doOnSubscribe(ignore -> {
-                request.requestContext.isRequestSendingStarted = true;
-            });
+            Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
 
             HttpRequest httpRequest = new HttpRequest(method,
                 requestUri,
@@ -409,6 +407,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
                     if (request.requestContext.cosmosDiagnostics != null) {
                         BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, rsp, globalEndpointManager);
                     }
+
                     return rsp;
                 })
                 .single();
