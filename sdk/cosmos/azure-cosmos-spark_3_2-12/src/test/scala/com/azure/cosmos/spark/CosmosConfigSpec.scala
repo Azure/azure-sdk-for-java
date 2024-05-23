@@ -69,7 +69,8 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
           servicePrincipalAuthConfig.tenantId shouldEqual testAccountTenantId
           endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
           servicePrincipalAuthConfig.clientId shouldEqual testServicePrincipalClientId
-          servicePrincipalAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
+          servicePrincipalAuthConfig.clientSecret.isDefined shouldEqual true
+          servicePrincipalAuthConfig.clientSecret.get shouldEqual testServicePrincipalClientSecret
           new AzureEnvironment(endpointConfig.azureEnvironmentEndpoints).getActiveDirectoryEndpoint shouldEqual AzureEnvironment.AZURE.getActiveDirectoryEndpoint
           endpointConfig.accountName shouldEqual "boson-test"
       }
@@ -145,7 +146,8 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
           servicePrincipalAuthConfig.tenantId shouldEqual testAccountTenantId
           endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
           servicePrincipalAuthConfig.clientId shouldEqual testServicePrincipalClientId
-          servicePrincipalAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
+          servicePrincipalAuthConfig.clientSecret.isDefined shouldEqual true
+          servicePrincipalAuthConfig.clientSecret.get shouldEqual testServicePrincipalClientSecret
           new AzureEnvironment(endpointConfig.azureEnvironmentEndpoints).getActiveDirectoryEndpoint shouldEqual AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint
           endpointConfig.accountName shouldEqual "boson-test"
       }

@@ -238,14 +238,14 @@ private[spark] object CosmosConfigNames {
 }
 
 private object CosmosConfig  extends BasicLoggingTrait {
-  def getAccountDataResolver(config: CaseInsensitiveMap[String]): Option[AccountDataResolver] = {
+  def getAccountDataResolver(config: Map[String, String]): Option[AccountDataResolver] = {
     val accountDataResolverServiceName : Option[String] = config.get(CosmosConfigNames.AccountDataResolverServiceName)
 
     logInfo(s"Checking for account resolvers - requested service name '${accountDataResolverServiceName.getOrElse("n/a")}'")
     var accountDataResolverCls = None: Option[AccountDataResolver]
     val serviceLoader = ServiceLoader.load(classOf[AccountDataResolver])
     val iterator = serviceLoader.iterator()
-    if (iterator.hasNext()) {
+    while (!accountDataResolverCls.isDefined && iterator.hasNext()) {
       val resolver = iterator.next()
       if (accountDataResolverServiceName.isEmpty
         || accountDataResolverServiceName.get.equalsIgnoreCase(resolver.getClass.getName)) {
@@ -271,7 +271,15 @@ private object CosmosConfig  extends BasicLoggingTrait {
     executorCount: Option[Int] // total executor count
   ) : Map[String, String] = {
     var effectiveUserConfig = CaseInsensitiveMap(userProvidedOptions)
-    val accountDataResolverCls = getAccountDataResolver(effectiveUserConfig)
+    val mergedConfig = sparkConf match {
+      case Some(sparkConfig) => {
+        val conf = sparkConfig.clone()
+        conf.setAll(effectiveUserConfig.toMap).getAll.toMap
+      }
+      case None => effectiveUserConfig.toMap
+    }
+
+    val accountDataResolverCls = getAccountDataResolver(mergedConfig)
     if (accountDataResolverCls.isDefined) {
         val accountDataConfig = accountDataResolverCls.get.getAccountDataConfig(effectiveUserConfig)
         effectiveUserConfig = CaseInsensitiveMap(accountDataConfig)
