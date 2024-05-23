@@ -41,16 +41,6 @@ public class RecurrenceValidator {
 
     private boolean validateRecurrenceRequiredParameter() {
         final Recurrence recurrence = settings.getRecurrence();
-        if (settings.getStart() == null) {
-            paramName = TIME_WINDOW_FILTER_SETTING_START;
-            reason = RecurrenceConstants.REQUIRED_PARAMETER;
-            return false;
-        }
-        if (settings.getEnd() == null) {
-            paramName = TIME_WINDOW_FILTER_SETTING_END;
-            reason = RecurrenceConstants.REQUIRED_PARAMETER;
-            return false;
-        }
         if (recurrence.getPattern() == null) {
             paramName = String.format("%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_PATTERN);
             reason = RecurrenceConstants.REQUIRED_PARAMETER;
@@ -76,17 +66,7 @@ public class RecurrenceValidator {
     }
 
     private boolean validateRecurrencePattern() {
-        if (!validateInterval()) {
-            return false;
-        }
-
         final RecurrencePatternType patternType = settings.getRecurrence().getPattern().getType();
-        if (patternType == null) {
-            paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_PATTERN,
-                RecurrenceConstants.RECURRENCE_PATTERN_TYPE);
-            reason = RecurrenceConstants.UNRECOGNIZED_VALUE;
-            return false;
-        }
 
         if (patternType == RecurrencePatternType.DAILY) {
             return validateDailyRecurrencePattern();
@@ -97,35 +77,17 @@ public class RecurrenceValidator {
 
     private boolean validateRecurrenceRange() {
         RecurrenceRangeType rangeType = settings.getRecurrence().getRange().getType();
-        if (rangeType == null) {
-            paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE,
-                RecurrenceConstants.RECURRENCE_RANGE_TYPE);
-            reason = RecurrenceConstants.UNRECOGNIZED_VALUE;
-            return false;
-        }
 
         switch (rangeType) {
-            case END_DATE:
+            case ENDDATE:
                 return validateEndDate();
-            case NUMBERED:
-                return validateNumberOfOccurrences();
             default:
                 return true;
         }
     }
 
-    private boolean validateInterval() {
-        if (settings.getRecurrence().getPattern().getInterval() <= 0) {
-            paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_PATTERN,
-                RecurrenceConstants.RECURRENCE_PATTERN_INTERVAL);
-            reason = RecurrenceConstants.OUT_OF_RANGE;
-            return false;
-        }
-        return true;
-    }
-
     private boolean validateDailyRecurrencePattern() {
-        // No required parameter for "Daily" pattern and "Start" is always a valid first occurrence for "Daily" pattern.
+        // "Start" is always a valid first occurrence for "Daily" pattern.
         // Only need to check if time window validated
         final Duration intervalDuration = Duration.ofDays(settings.getRecurrence().getPattern().getInterval());
         return validateTimeWindowDuration(intervalDuration);
@@ -135,9 +97,6 @@ public class RecurrenceValidator {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
 
         if (!validateDaysOfWeek()) {
-            return false;
-        }
-        if (!validateFirstDayOfWeek()) {
             return false;
         }
 
@@ -150,7 +109,7 @@ public class RecurrenceValidator {
 
         // Check whether "Start" is a valid first occurrence
         if (pattern.getDaysOfWeek().stream().noneMatch((dayOfWeekStr) ->
-            settings.getStart().getDayOfWeek() == DayOfWeek.valueOf(dayOfWeekStr.toUpperCase()))) {
+            settings.getStart().getDayOfWeek() == dayOfWeekStr)) {
             paramName = TIME_WINDOW_FILTER_SETTING_START;
             reason = RecurrenceConstants.NOT_MATCHED;
             return false;
@@ -181,57 +140,19 @@ public class RecurrenceValidator {
     private boolean validateDaysOfWeek() {
         paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_PATTERN,
             RecurrenceConstants.RECURRENCE_PATTERN_DAYS_OF_WEEK);
-        final List<String> daysOfWeek = settings.getRecurrence().getPattern().getDaysOfWeek();
+        final List<DayOfWeek> daysOfWeek = settings.getRecurrence().getPattern().getDaysOfWeek();
         if (daysOfWeek == null || daysOfWeek.size() == 0) {
             reason = RecurrenceConstants.REQUIRED_PARAMETER;
             return false;
         }
 
-        for (String dayOfWeek : daysOfWeek) {
-            try {
-                DayOfWeek.valueOf(dayOfWeek.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                reason = RecurrenceConstants.UNRECOGNIZED_VALUE;
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    private boolean validateFirstDayOfWeek() {
-        paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_PATTERN,
-            RecurrenceConstants.RECURRENCE_PATTERN_FIRST_DAY_OF_WEEK);
-
-        final String firstDayOfWeek = settings.getRecurrence().getPattern().getFirstDayOfWeek();
-        try {
-            DayOfWeek.valueOf(firstDayOfWeek.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            reason = RecurrenceConstants.UNRECOGNIZED_VALUE;
-            return false;
-        }
         return true;
     }
 
     private boolean validateEndDate() {
-        paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE,
-            RecurrenceConstants.RECURRENCE_RANGE_EDN_DATE);
-        if (settings.getRecurrence().getRange().getEndDate() == null) {
-            reason = RecurrenceConstants.REQUIRED_PARAMETER;
-            return false;
-        }
-
         if (settings.getRecurrence().getRange().getEndDate().isBefore(settings.getStart())) {
-            reason = RecurrenceConstants.OUT_OF_RANGE;
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validateNumberOfOccurrences() {
-        paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE,
-            RecurrenceConstants.RECURRENCE_RANGE_NUMBER_OF_OCCURRENCES);
-        if (settings.getRecurrence().getRange().getNumberOfRecurrences() < 1) {
+            paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE,
+                RecurrenceConstants.RECURRENCE_RANGE_EDN_DATE);
             reason = RecurrenceConstants.OUT_OF_RANGE;
             return false;
         }
@@ -247,7 +168,7 @@ public class RecurrenceValidator {
      * @param firstDayOfWeek The first day of the week.
      * @return True if the duration is compliant with days of week, false otherwise.
      */
-    private boolean isDurationCompliantWithDaysOfWeek(Duration duration, int interval, List<String> daysOfWeek, String firstDayOfWeek) {
+    private boolean isDurationCompliantWithDaysOfWeek(Duration duration, int interval, List<DayOfWeek> daysOfWeek, DayOfWeek firstDayOfWeek) {
         if (daysOfWeek.size() == 1) {
             return true;
         }

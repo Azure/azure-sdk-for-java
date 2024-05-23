@@ -3,29 +3,30 @@
 
 package com.azure.spring.cloud.feature.management.filters.recurrence;
 
+import com.azure.spring.cloud.feature.management.filters.TimeWindowFilter;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
-import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceValidator;
 import com.azure.spring.cloud.feature.management.implementation.models.Recurrence;
 import com.azure.spring.cloud.feature.management.implementation.models.RecurrencePattern;
 import com.azure.spring.cloud.feature.management.implementation.models.RecurrenceRange;
+import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FilterParameters;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RecurrenceValidatorTest {
     private final String pattern = "Recurrence.Pattern";
-    private final String patternType = "Recurrence.Pattern.Type";
+    private final String range = "Recurrence.Range";
     private final String interval = "Recurrence.Pattern.Interval";
     private final String daysOfWeek = "Recurrence.Pattern.DaysOfWeek";
-    private final String firstDayOfWeek = "Recurrence.Pattern.FirstDayOfWeek";
-    private final String rangeType = "Recurrence.Range.Type";
     private final String numberOfOccurrences = "Recurrence.Range.NumberOfOccurrences";
     private final String endDate = "Recurrence.Range.EndDate";
 
@@ -34,163 +35,152 @@ public class RecurrenceValidatorTest {
         final ZonedDateTime startTime = ZonedDateTime.now();
         final ZonedDateTime endTime = startTime.plusHours(2);
 
-        // no end parameter
-        final TimeWindowFilterSettings settings1 = new TimeWindowFilterSettings();
-        settings1.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings1.setRecurrence(new Recurrence());
-        consumeValidationTestData(settings1, FilterParameters.TIME_WINDOW_FILTER_SETTING_END,
-            RecurrenceConstants.REQUIRED_PARAMETER);
-
-        // no start parameter
-        final TimeWindowFilterSettings settings2 = new TimeWindowFilterSettings();
-        settings2.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings2.setRecurrence(new Recurrence());
-        consumeValidationTestData(settings2, FilterParameters.TIME_WINDOW_FILTER_SETTING_START,
-            RecurrenceConstants.REQUIRED_PARAMETER);
-
         // no pattern in recurrence parameter
-        final TimeWindowFilterSettings settings3 = new TimeWindowFilterSettings();
-        settings3.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings3.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final Recurrence recurrence3 = new Recurrence();
-        recurrence3.setRange(new RecurrenceRange());
-        settings3.setRecurrence(recurrence3);
-        consumeValidationTestData(settings3, pattern, RecurrenceConstants.REQUIRED_PARAMETER);
+        final HashMap<String, Object> range1 = new HashMap<>();
+        range1.put("Type", "NoEnd");
+        final HashMap<String, Object> recurrence1 = new HashMap<>();
+        recurrence1.put("Range", range1);
+        final Map<String, Object> parameters1 = new LinkedHashMap<String, Object>();
+        parameters1.put("Start", startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        parameters1.put("End", endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        parameters1.put("Recurrence", recurrence1);
+        consumeValidationTestData(parameters1, String.format(RecurrenceConstants.REQUIRED_PARAMETER, pattern));
 
-        // no type in recurrence pattern parameter
-        final TimeWindowFilterSettings settings5 = new TimeWindowFilterSettings();
-        settings5.setStart(startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings5.setEnd(endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        final Recurrence recurrence5 = new Recurrence();
-        recurrence5.setPattern(new RecurrencePattern());
-        recurrence5.setRange(new RecurrenceRange());
-        settings5.setRecurrence(recurrence5);
-        consumeValidationTestData(settings5, patternType, RecurrenceConstants.UNRECOGNIZED_VALUE);
+        // no range in recurrence parameter
+        final HashMap<String, Object> pattern2 = new HashMap<>();
+        pattern2.put("Type", "Daily");
+        final HashMap<String, Object> recurrence2 = new HashMap<>();
+        recurrence2.put("Pattern", pattern2);
+        final Map<String, Object> parameters2 = new LinkedHashMap<String, Object>();
+        parameters2.put("Start", startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        parameters2.put("End", endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
+        parameters2.put("Recurrence", recurrence2);
+        consumeValidationTestData(parameters2, String.format(RecurrenceConstants.REQUIRED_PARAMETER, range));
     }
 
     @Test
     public void invalidPatternTypeTest() {
-        final RecurrencePattern pattern = new RecurrencePattern();
-        pattern.setType("");
+        final HashMap<String, Object> pattern1 = new HashMap<>();
+        pattern1.put("Type", "");
 
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
+        final HashMap<String, Object> range1 = new HashMap<>();
+        range1.put("Type", "NoEnd");
 
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setPattern(pattern);
-        recurrence.setRange(range);
+        final HashMap<String, Object> recurrence1 = new HashMap<>();
+        recurrence1.put("Pattern", pattern1);
+        recurrence1.put("Range", range1);
 
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart("2023-09-01T00:00:00+08:00");
-        settings.setEnd("2023-09-01T02:00:00+08:00");
-        settings.setRecurrence(recurrence);
+        final Map<String, Object> parameters1 = new LinkedHashMap<String, Object>();
+        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters1.put("End", "2023-09-01T02:00:00+08:00");
+        parameters1.put("Recurrence", recurrence1);
 
-        consumeValidationTestData(settings, patternType, RecurrenceConstants.UNRECOGNIZED_VALUE);
+        consumeValidationTestData(parameters1, "No enum constant");
     }
 
     @Test
     public void invalidPatternIntervalTest() {
-        final RecurrencePattern pattern = new RecurrencePattern();
-        pattern.setType("Daily");
-        pattern.setInterval(0);
+        final HashMap<String, Object> pattern1 = new HashMap<>();
+        pattern1.put("Type", "Daily");
+        pattern1.put("Interval", 0);
 
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
+        final HashMap<String, Object> range1 = new HashMap<>();
+        range1.put("Type", "NoEnd");
 
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setPattern(pattern);
-        recurrence.setRange(range);
+        final HashMap<String, Object> recurrence1 = new HashMap<>();
+        recurrence1.put("Pattern", pattern1);
+        recurrence1.put("Range", range1);
 
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart("2023-09-01T00:00:00+08:00");
-        settings.setEnd("2023-09-01T02:00:00+08:00");
-        settings.setRecurrence(recurrence);
+        final Map<String, Object> parameters1 = new LinkedHashMap<String, Object>();
+        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters1.put("End", "2023-09-01T02:00:00+08:00");
+        parameters1.put("Recurrence", recurrence1);
 
-        consumeValidationTestData(settings, interval, RecurrenceConstants.OUT_OF_RANGE);
+        consumeValidationTestData(parameters1, String.format(RecurrenceConstants.OUT_OF_RANGE, interval));
     }
 
     @Test
     public void invalidPatternFirstDayOfWeekTest() {
-        final RecurrencePattern pattern = new RecurrencePattern();
-        pattern.setType("Weekly");
-        pattern.setFirstDayOfWeek("");
-        pattern.setDaysOfWeek(List.of("Monday"));
+        final HashMap<String, Object> pattern1 = new HashMap<>();
+        pattern1.put("Type", "Weekly");
+        pattern1.put("FirstDayOfWeek", "");
+        pattern1.put("DaysOfWeek", List.of("Monday"));
 
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
+        final HashMap<String, Object> range1 = new HashMap<>();
+        range1.put("Type", "NoEnd");
 
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setPattern(pattern);
-        recurrence.setRange(range);
+        final HashMap<String, Object> recurrence1 = new HashMap<>();
+        recurrence1.put("Pattern", pattern1);
+        recurrence1.put("Range", range1);
 
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart("2023-09-01T00:00:00+08:00");
-        settings.setEnd("2023-09-01T02:00:00+08:00");
-        settings.setRecurrence(recurrence);
+        final Map<String, Object> parameters1 = new LinkedHashMap<String, Object>();
+        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters1.put("End", "2023-09-01T02:00:00+08:00");
+        parameters1.put("Recurrence", recurrence1);
 
-        consumeValidationTestData(settings, firstDayOfWeek, RecurrenceConstants.UNRECOGNIZED_VALUE);
+        consumeValidationTestData(parameters1, "No enum constant");
     }
 
     @Test
     public void invalidPatternDaysOfWeekTest() {
-        final RecurrencePattern pattern = new RecurrencePattern();
-        pattern.setType("Weekly");
-        pattern.setDaysOfWeek(List.of("day"));
+        final HashMap<String, Object> pattern1 = new HashMap<>();
+        pattern1.put("Type", "Weekly");
+        pattern1.put("DaysOfWeek", List.of("day"));
 
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
+        final HashMap<String, Object> range1 = new HashMap<>();
+        range1.put("Type", "NoEnd");
 
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setPattern(pattern);
-        recurrence.setRange(range);
+        final HashMap<String, Object> recurrence1 = new HashMap<>();
+        recurrence1.put("Pattern", pattern1);
+        recurrence1.put("Range", range1);
 
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart("2023-09-01T00:00:00+08:00");
-        settings.setEnd("2023-09-01T02:00:00+08:00");
-        settings.setRecurrence(recurrence);
+        final Map<String, Object> parameters1 = new LinkedHashMap<String, Object>();
+        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters1.put("End", "2023-09-01T02:00:00+08:00");
+        parameters1.put("Recurrence", recurrence1);
 
-        consumeValidationTestData(settings, daysOfWeek, RecurrenceConstants.UNRECOGNIZED_VALUE);
+        consumeValidationTestData(parameters1, "No enum constant");
     }
 
     @Test
     public void invalidRangeTypeTest() {
-        final RecurrencePattern pattern = new RecurrencePattern();
-        pattern.setType("Daily");
+        final HashMap<String, Object> pattern1 = new HashMap<>();
+        pattern1.put("Type", "Daily");
 
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("");
+        final HashMap<String, Object> range1 = new HashMap<>();
+        range1.put("Type", "");
 
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setPattern(pattern);
-        recurrence.setRange(range);
+        final HashMap<String, Object> recurrence1 = new HashMap<>();
+        recurrence1.put("Pattern", pattern1);
+        recurrence1.put("Range", range1);
 
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart("2023-09-01T00:00:00+08:00");
-        settings.setEnd("2023-09-01T02:00:00+08:00");
-        settings.setRecurrence(recurrence);
+        final Map<String, Object> parameters1 = new LinkedHashMap<String, Object>();
+        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters1.put("End", "2023-09-01T02:00:00+08:00");
+        parameters1.put("Recurrence", recurrence1);
 
-        consumeValidationTestData(settings, rangeType, RecurrenceConstants.UNRECOGNIZED_VALUE);
+        consumeValidationTestData(parameters1, "No enum constant");
     }
 
     @Test
     public void invalidRangeNumberOfOccurrencesTest() {
-        final RecurrencePattern pattern = new RecurrencePattern();
-        pattern.setType("Daily");
+        final HashMap<String, Object> pattern1 = new HashMap<>();
+        pattern1.put("Type", "Daily");
 
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("Numbered");
-        range.setNumberOfRecurrences(0);
+        final HashMap<String, Object> range1 = new HashMap<>();
+        range1.put("Type", "Numbered");
+        range1.put("NumberOfRecurrences", 0);
 
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setPattern(pattern);
-        recurrence.setRange(range);
+        final HashMap<String, Object> recurrence1 = new HashMap<>();
+        recurrence1.put("Pattern", pattern1);
+        recurrence1.put("Range", range1);
 
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart("2023-09-01T00:00:00+08:00");
-        settings.setEnd("2023-09-01T02:00:00+08:00");
-        settings.setRecurrence(recurrence);
+        final Map<String, Object> parameters1 = new LinkedHashMap<String, Object>();
+        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters1.put("End", "2023-09-01T02:00:00+08:00");
+        parameters1.put("Recurrence", recurrence1);
 
-        consumeValidationTestData(settings, numberOfOccurrences, RecurrenceConstants.OUT_OF_RANGE);
+        consumeValidationTestData(parameters1, String.format(RecurrenceConstants.OUT_OF_RANGE, numberOfOccurrences));
     }
 
     @Test
@@ -204,88 +194,134 @@ public class RecurrenceValidatorTest {
         settings.setRecurrence(recurrence);
 
         // time window is zero
-        pattern.setType("Daily");
-        range.setType("NoEnd");
-        settings.setStart("2023-09-25T00:00:00+08:00");
-        settings.setEnd("2023-09-25T00:00:00+08:00");
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceConstants.OUT_OF_RANGE);
+        final HashMap<String, Object> pattern1 = new HashMap<>();
+        pattern1.put("Type", "Daily");
+        final HashMap<String, Object> range1 = new HashMap<>();
+        range1.put("Type", "NoEnd");
+        final HashMap<String, Object> recurrence1 = new HashMap<>();
+        recurrence1.put("Pattern", pattern1);
+        recurrence1.put("Range", range1);
+        final Map<String, Object> parameters1 = new LinkedHashMap<String, Object>();
+        parameters1.put("Start", "2023-09-25T00:00:00+08:00");
+        parameters1.put("End", "2023-09-25T00:00:00+08:00");
+        parameters1.put("Recurrence", recurrence1);
+        consumeValidationTestData(parameters1, String.format(RecurrenceConstants.OUT_OF_RANGE, FilterParameters.TIME_WINDOW_FILTER_SETTING_END));
 
         // time window is bigger than interval when pattern is daily
-        settings.setEnd("2023-09-27T00:00:01+08:00");
-        pattern.setInterval(2);
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceConstants.OUT_OF_RANGE);
+        final HashMap<String, Object> pattern2 = new HashMap<>();
+        pattern2.put("Type", "Daily");
+        pattern2.put("Interval", 2);
+        final HashMap<String, Object> range2 = new HashMap<>();
+        range2.put("Type", "NoEnd");
+        final HashMap<String, Object> recurrence2 = new HashMap<>();
+        recurrence2.put("Pattern", pattern2);
+        recurrence2.put("Range", range2);
+        final Map<String, Object> parameters2 = new LinkedHashMap<String, Object>();
+        parameters2.put("Start", "2023-09-25T00:00:00+08:00");
+        parameters2.put("End", "2023-09-27T00:00:01+08:00");
+        parameters2.put("Recurrence", recurrence2);
+        consumeValidationTestData(parameters2, String.format(RecurrenceConstants.OUT_OF_RANGE, FilterParameters.TIME_WINDOW_FILTER_SETTING_END));
 
         // time window is bigger than interval when pattern is weekly
-        settings.setEnd("2023-10-02T00:00:01+08:00");
-        pattern.setType("Weekly");
-        pattern.setInterval(1);
-        pattern.setDaysOfWeek(List.of("Monday"));
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceConstants.OUT_OF_RANGE);
+        final HashMap<String, Object> pattern3 = new HashMap<>();
+        pattern3.put("Type", "WeekLy");
+        pattern3.put("Interval", 1);
+        pattern3.put("DaysOfWeek", List.of("Monday"));
+        final HashMap<String, Object> range3 = new HashMap<>();
+        range3.put("Type", "NoEnd");
+        final HashMap<String, Object> recurrence3= new HashMap<>();
+        recurrence3.put("Pattern", pattern3);
+        recurrence3.put("Range", range3);
+        final Map<String, Object> parameters3 = new LinkedHashMap<String, Object>();
+        parameters3.put("Start", "2023-09-25T00:00:00+08:00");
+        parameters3.put("End", "2023-10-02T00:00:01+08:00");
+        parameters3.put("Recurrence", recurrence3);
+        consumeValidationTestData(parameters3, String.format(RecurrenceConstants.OUT_OF_RANGE, FilterParameters.TIME_WINDOW_FILTER_SETTING_END));
 
         // time window is bigger than interval when pattern is weekly
-        settings.setEnd("2023-09-27T00:00:01+08:00");
-        pattern.setInterval(1);
-        pattern.setDaysOfWeek(List.of("Monday", "Thursday", "Sunday"));
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_END, RecurrenceConstants.OUT_OF_RANGE);
+        final HashMap<String, Object> pattern4 = new HashMap<>();
+        pattern4.put("Type", "WeekLy");
+        pattern4.put("Interval", 1);
+        pattern4.put("DaysOfWeek", List.of("Monday", "Thursday", "Sunday"));
+        final HashMap<String, Object> range4 = new HashMap<>();
+        range4.put("Type", "NoEnd");
+        final HashMap<String, Object> recurrence4= new HashMap<>();
+        recurrence4.put("Pattern", pattern4);
+        recurrence4.put("Range", range4);
+        final Map<String, Object> parameters4 = new LinkedHashMap<String, Object>();
+        parameters4.put("Start", "2023-09-25T00:00:00+08:00");
+        parameters4.put("End", "2023-09-27T00:00:01+08:00");
+        parameters4.put("Recurrence", recurrence4);
+        consumeValidationTestData(parameters4, String.format(RecurrenceConstants.OUT_OF_RANGE, FilterParameters.TIME_WINDOW_FILTER_SETTING_END));
 
         // endDate is before first start time
-        final ZonedDateTime startTime6 = ZonedDateTime.parse("2023-09-01T00:00:00+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        final ZonedDateTime endTime6 = ZonedDateTime.parse("2023-09-01T00:00:01+08:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-        settings.setStart(startTime6.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        settings.setEnd(endTime6.format(DateTimeFormatter.RFC_1123_DATE_TIME));
-        pattern.setType("Daily");
-        range.setType("EndDate");
-        range.setEndDate("2023-08-31T00:00:00+08:00");
-        consumeValidationTestData(settings, endDate, RecurrenceConstants.OUT_OF_RANGE);
-
+        final HashMap<String, Object> pattern5 = new HashMap<>();
+        pattern5.put("Type", "Daily");
+        final HashMap<String, Object> range5 = new HashMap<>();
+        range5.put("Type", "EndDate");
+        range5.put("EndDate", "2023-08-31T00:00:00+08:00");
+        final HashMap<String, Object> recurrence5= new HashMap<>();
+        recurrence5.put("Pattern", pattern5);
+        recurrence5.put("Range", range5);
+        final Map<String, Object> parameters5 = new LinkedHashMap<String, Object>();
+        parameters5.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters5.put("End", "2023-09-01T00:00:01+08:00");
+        parameters5.put("Recurrence", recurrence5);
+        consumeValidationTestData(parameters5, String.format(RecurrenceConstants.OUT_OF_RANGE, endDate));
     }
 
     @Test
     public void weeklyPatternRequiredParameterTest() {
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart("2023-09-01T00:00:00+08:00");
-        settings.setEnd("2023-09-01T02:00:00+08:00");
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setRange(range);
-        settings.setRecurrence(recurrence);
+        final HashMap<String, Object> pattern1 = new HashMap<>();
+        pattern1.put("Type", "Weekly");
+
+        final HashMap<String, Object> range1 = new HashMap<>();
+        range1.put("Type", "NoEnd");
+
+        final HashMap<String, Object> recurrence1 = new HashMap<>();
+        recurrence1.put("Pattern", pattern1);
+        recurrence1.put("Range", range1);
+
+        final Map<String, Object> parameters1 = new LinkedHashMap<String, Object>();
+        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters1.put("End", "2023-09-01T02:00:00+08:00");
+        parameters1.put("Recurrence", recurrence1);
 
         // daysOfWeek parameter is required
-        final RecurrencePattern pattern = new RecurrencePattern();
-        pattern.setType("Weekly");
-        pattern.setDaysOfWeek(null);
-        recurrence.setPattern(pattern);
-        consumeValidationTestData(settings, daysOfWeek, RecurrenceConstants.REQUIRED_PARAMETER);
+        consumeValidationTestData(parameters1, String.format(RecurrenceConstants.REQUIRED_PARAMETER, daysOfWeek));
     }
 
     @Test
     public void startParameterNotMatchTest() {
-        final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
-        settings.setStart("2023-09-01T00:00:00+08:00");
-        settings.setEnd("2023-09-01T02:00:00+08:00");
-        final RecurrenceRange range = new RecurrenceRange();
-        range.setType("NoEnd");
-        final Recurrence recurrence = new Recurrence();
-        recurrence.setRange(range);
-        settings.setRecurrence(recurrence);
+        final HashMap<String, Object> pattern1 = new HashMap<>();
+        pattern1.put("Type", "Weekly");
+        pattern1.put("DaysOfWeek", List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Saturday", "Sunday"));
 
-        // start time need to match the first recurrence
-        final RecurrencePattern pattern1 = new RecurrencePattern();
-        pattern1.setType("Weekly");
-        pattern1.setDaysOfWeek(List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Saturday", "Sunday"));
-        recurrence.setPattern(pattern1);
-        consumeValidationTestData(settings, FilterParameters.TIME_WINDOW_FILTER_SETTING_START, RecurrenceConstants.NOT_MATCHED);
+        final HashMap<String, Object> range1 = new HashMap<>();
+        range1.put("Type", "NoEnd");
+
+        final HashMap<String, Object> recurrence1 = new HashMap<>();
+        recurrence1.put("Pattern", pattern1);
+        recurrence1.put("Range", range1);
+
+        final Map<String, Object> parameters1 = new LinkedHashMap<String, Object>();
+        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters1.put("End", "2023-09-01T02:00:00+08:00");
+        parameters1.put("Recurrence", recurrence1);
+
+        consumeValidationTestData(parameters1, String.format(RecurrenceConstants.NOT_MATCHED, FilterParameters.TIME_WINDOW_FILTER_SETTING_START));
     }
 
-    private void consumeValidationTestData(TimeWindowFilterSettings settings, String parameterName, String errorMessage) {
 
+    private void consumeValidationTestData(Map<String, Object> parameters, String errorMessage) {
         try {
-            final RecurrenceValidator validator = new RecurrenceValidator(settings);
-            validator.validateSettings();
+            final TimeWindowFilter filter = new TimeWindowFilter();
+            final FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
+            context.setParameters(parameters);
+            filter.evaluate(context);
         } catch (final Exception e) {
             assertTrue(e instanceof IllegalArgumentException);
-            assertEquals(e.getMessage(), String.format(errorMessage, parameterName));
+            assertTrue(e.getMessage().contains(errorMessage));
         }
     }
 }

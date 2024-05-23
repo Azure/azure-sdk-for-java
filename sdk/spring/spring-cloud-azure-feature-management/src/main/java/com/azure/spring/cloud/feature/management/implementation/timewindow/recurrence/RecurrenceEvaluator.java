@@ -58,7 +58,7 @@ public class RecurrenceEvaluator {
         }
 
         final RecurrenceRange range = settings.getRecurrence().getRange();
-        if (range.getType() == RecurrenceRangeType.END_DATE
+        if (range.getType() == RecurrenceRangeType.ENDDATE
             && occurrenceInfo.previousOccurrence != null
             && occurrenceInfo.previousOccurrence.isAfter(range.getEndDate())) {
             return emptyOccurrence;

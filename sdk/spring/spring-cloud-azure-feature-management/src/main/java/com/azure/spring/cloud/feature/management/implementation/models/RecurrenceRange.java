@@ -4,11 +4,11 @@
 package com.azure.spring.cloud.feature.management.implementation.models;
 
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowUtils;
+import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
 
 /**
  * The recurrence range specifying how long the recurrence pattern repeats
@@ -17,7 +17,7 @@ public class RecurrenceRange {
     /**
      * The recurrence range type. Default value is "NoEnd"
      * */
-    private RecurrenceRangeType type = RecurrenceRangeType.NO_END;
+    private RecurrenceRangeType type = RecurrenceRangeType.NOEND;
 
     /**
      * The date to stop applying the recurrence pattern
@@ -40,8 +40,8 @@ public class RecurrenceRange {
      * @param type the range type to be set
      * */
     public void setType(String type) {
-        this.type = Arrays.stream(RecurrenceRangeType.values())
-            .filter(e -> e.toString().equalsIgnoreCase(type)).findAny().orElse(null);
+        // `RecurrenceRangeType.valueOf` may throw IllegalArgumentException if value is invalid
+        this.type = RecurrenceRangeType.valueOf(type.toUpperCase());
     }
 
     /**
@@ -69,6 +69,10 @@ public class RecurrenceRange {
      * @param numberOfRecurrences the repeat times to be set
      * */
     public void setNumberOfRecurrences(int numberOfRecurrences) {
+        if (numberOfRecurrences < 1) {
+            throw new IllegalArgumentException(
+                String.format(RecurrenceConstants.OUT_OF_RANGE, "Recurrence.Range.NumberOfOccurrences"));
+        }
         this.numberOfRecurrences = numberOfRecurrences;
     }
 }

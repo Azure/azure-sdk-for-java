@@ -10,9 +10,9 @@ import java.time.DayOfWeek;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TimeWindowUtils {
     public static ZonedDateTime convertStringToDate(String timeStr) {
@@ -32,7 +32,7 @@ public class TimeWindowUtils {
      * @param firstDayOfWeek the start day of the week
      * @return the number of days passed
      * */
-    public static int daysPassedWeekStart(DayOfWeek today, String firstDayOfWeek) {
+    public static int daysPassedWeekStart(DayOfWeek today, DayOfWeek firstDayOfWeek) {
         int passedDays = (convertToWeekDayNumber(today) - convertToWeekDayNumber(firstDayOfWeek));
         if (passedDays < 0) {
             return passedDays + RecurrenceConstants.DAYS_PER_WEEK;
@@ -41,18 +41,12 @@ public class TimeWindowUtils {
         }
     }
 
-    public static int convertToWeekDayNumber(String str) {
-        return DayOfWeek.valueOf(str.toUpperCase()).getValue() % 7;
-    }
-
     public static int convertToWeekDayNumber(DayOfWeek dateTime) {
         return dateTime.getValue() % 7;
     }
 
-    public static List<DayOfWeek> sortDaysOfWeek(List<String> daysOfWeek, String firstDayOfWeek) {
-        final List<DayOfWeek> result = daysOfWeek.stream()
-            .map(str -> DayOfWeek.valueOf(str.toUpperCase()))
-            .collect(Collectors.toList());
+    public static List<DayOfWeek> sortDaysOfWeek(List<DayOfWeek> daysOfWeek, DayOfWeek firstDayOfWeek) {
+        final List<DayOfWeek> result = new ArrayList<>(daysOfWeek);
 
         final int firstDayNum = TimeWindowUtils.convertToWeekDayNumber(firstDayOfWeek);
         Collections.sort(result, (a, b) -> {

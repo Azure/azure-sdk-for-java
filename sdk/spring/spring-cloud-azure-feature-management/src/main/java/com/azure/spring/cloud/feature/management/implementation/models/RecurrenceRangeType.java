@@ -10,13 +10,13 @@ public enum RecurrenceRangeType {
     /**
      * The time window repeats on all the days that fit the corresponding {@link RecurrencePattern}.
      */
-    NO_END("NoEnd"),
+    NOEND("NoEnd"),
 
     /**
      * The time window repeats on all the days that fit the corresponding {@link RecurrencePattern}
      * before or on the end date specified in EndDate of {@link RecurrenceRange}.
      */
-    END_DATE("EndDate"),
+    ENDDATE("EndDate"),
 
     /**
      * The time window repeats for the number specified in the NumberOfOccurrences of {@link RecurrenceRange}

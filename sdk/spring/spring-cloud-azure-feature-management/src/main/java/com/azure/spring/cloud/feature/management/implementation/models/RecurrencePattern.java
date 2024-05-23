@@ -3,8 +3,10 @@
 
 package com.azure.spring.cloud.feature.management.implementation.models;
 
+import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
+
 import java.time.DayOfWeek;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,12 +27,12 @@ public class RecurrencePattern {
     /**
      * The days of the week on which the time window occurs
      */
-    private List<String> daysOfWeek;
+    private List<DayOfWeek> daysOfWeek = new ArrayList<>();
 
     /**
      * The first day of the week
      * */
-    private String firstDayOfWeek = DayOfWeek.SUNDAY.name();
+    private DayOfWeek firstDayOfWeek = DayOfWeek.SUNDAY;
 
     /**
      * @return the recurrence pattern type
@@ -43,8 +45,8 @@ public class RecurrencePattern {
      * @param type pattern type to be set
      * */
     public void setType(String type) {
-        this.type = Arrays.stream(RecurrencePatternType.values())
-            .filter(e -> e.toString().equalsIgnoreCase(type)).findAny().orElse(null);
+        // `RecurrencePatternType.valueOf` may throw IllegalArgumentException if value is invalid
+        this.type = RecurrencePatternType.valueOf(type.toUpperCase());
     }
 
     /**
@@ -58,15 +60,17 @@ public class RecurrencePattern {
      * @param interval the time units to be set
      * */
     public void setInterval(Integer interval) {
-        if (interval != null) {
-            this.interval = interval;
+        if (interval == null || interval <= 0) {
+            throw new IllegalArgumentException(
+                String.format(RecurrenceConstants.OUT_OF_RANGE, "Recurrence.Pattern.Interval"));
         }
+        this.interval = interval;
     }
 
     /**
      * @return the days of the week on which the time window occurs
      * */
-    public List<String> getDaysOfWeek() {
+    public List<DayOfWeek> getDaysOfWeek() {
         return daysOfWeek;
     }
 
@@ -74,13 +78,21 @@ public class RecurrencePattern {
      * @param daysOfWeek the days that time window occurs
      * */
     public void setDaysOfWeek(List<String> daysOfWeek) {
-        this.daysOfWeek = daysOfWeek;
+        if (daysOfWeek == null || daysOfWeek.size() == 0) {
+            throw new IllegalArgumentException(
+                String.format(RecurrenceConstants.REQUIRED_PARAMETER, "Recurrence.Pattern.DaysOfWeek"));
+        }
+
+        for (String dayOfWeek : daysOfWeek) {
+            // `DayOfWeek.valueOf` may throw IllegalArgumentException if value is invalid
+            this.daysOfWeek.add(DayOfWeek.valueOf(dayOfWeek.toUpperCase()));
+        }
     }
 
     /**
      * @return the first day of the week
      * */
-    public String getFirstDayOfWeek() {
+    public DayOfWeek getFirstDayOfWeek() {
         return firstDayOfWeek;
     }
 
@@ -88,8 +100,12 @@ public class RecurrencePattern {
      * @param firstDayOfWeek the first day of the week
      * */
     public void setFirstDayOfWeek(String firstDayOfWeek) {
-        if (firstDayOfWeek != null) {
-            this.firstDayOfWeek = firstDayOfWeek;
+        if (firstDayOfWeek == null) {
+            throw new IllegalArgumentException(
+                String.format(RecurrenceConstants.REQUIRED_PARAMETER, "Recurrence.Pattern.FirstDayOfWeek"));
         }
+
+        // `DayOfWeek.valueOf` may throw IllegalArgumentException if value is invalid
+        this.firstDayOfWeek = DayOfWeek.valueOf(firstDayOfWeek.toUpperCase());
     }
 }
