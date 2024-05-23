@@ -55,6 +55,7 @@ private[spark] object CosmosConfigNames {
   val ResourceId = "spark.cosmos.auth.aad.resourceId"
   val ClientSecret = "spark.cosmos.auth.aad.clientSecret"
   val ClientCertPemBase64 = "spark.cosmos.auth.aad.clientCertPemBase64"
+  val ClientCertSendChain = "spark.cosmos.auth.aad.clientCertSendChain"
   val Database = "spark.cosmos.database"
   val Container = "spark.cosmos.container"
   val PreferredRegionsList = "spark.cosmos.preferredRegionsList"
@@ -150,6 +151,7 @@ private[spark] object CosmosConfigNames {
     ClientId,
     ClientSecret,
     ClientCertPemBase64,
+    ClientCertSendChain,
     AzureEnvironment,
     Database,
     Container,
@@ -630,6 +632,7 @@ private case class CosmosMasterKeyAuthConfig(accountKey: String) extends CosmosA
 private case class CosmosServicePrincipalAuthConfig(
                                        clientId: String,
                                        tenantId: String,
+                                       sendChain: Boolean,
                                        clientSecret: Option[String],
                                        clientCertPemBase64: Option[String]) extends CosmosAuthConfig
 private case class CosmosManagedIdentityAuthConfig( tenantId: String,
@@ -690,6 +693,14 @@ private object CosmosAuthConfig {
       helpMessage = "The base64 encoded PEM client certificate to be used to authenticate the service principal. " +
         "Either client secret or certificate are required for `ServicePrincipal` authentication.")
 
+    private val ClientCertSendChain = CosmosConfigEntry[Boolean](key = CosmosConfigNames.ClientCertSendChain,
+      defaultValue = Some(false),
+      mandatory = false,
+      parseFromStringFunction = booleanAsText => booleanAsText.toBoolean,
+      helpMessage = "A flag indicating whether the client certificate chain (public keys only) is sent to AAD " +
+        "when authenticating the service principal. This is required for SNI (relevant for 1st party only). " +
+        "The default value is `false`.")
+
     def parseCosmosAuthConfig(cfg: Map[String, String]): CosmosAuthConfig = {
         val authType = CosmosConfigEntry.parse(cfg, AuthenticationType)
         val key = CosmosConfigEntry.parse(cfg, CosmosKey)
@@ -698,6 +709,7 @@ private object CosmosAuthConfig {
         val tenantId = CosmosConfigEntry.parse(cfg, TenantId)
         val clientSecret = CosmosConfigEntry.parse(cfg, ClientSecret)
         val clientCert = CosmosConfigEntry.parse(cfg, ClientCertPemBase64)
+        val sendChain = CosmosConfigEntry.parse(cfg, ClientCertSendChain)
 
         assert(authType.isDefined,s"Parameter '${CosmosConfigNames.AuthType}' is missing.")
 
@@ -717,6 +729,7 @@ private object CosmosAuthConfig {
             CosmosServicePrincipalAuthConfig(
                 clientId.get,
                 tenantId.get,
+                sendChain.getOrElse(false),
                 clientSecret,
                 clientCert)
         } else if (authType.get == CosmosAuthType.AccessToken) {

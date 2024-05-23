@@ -235,6 +235,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                   .tenantId(servicePrincipalAuthConfig.tenantId)
                   .clientId(servicePrincipalAuthConfig.clientId)
                   .pemCertificate(certInputStream)
+                  .sendCertificateChain(servicePrincipalAuthConfig.sendChain)
                   .build()
               } else {
                 new ClientSecretCredentialBuilder()
@@ -409,6 +410,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           .tenantId(authConfig.tenantId)
           .clientId(authConfig.clientId)
           .pemCertificate(certInputStream)
+          .sendCertificateChain(authConfig.sendChain)
           .build()
       } else {
         new ClientSecretCredentialBuilder()

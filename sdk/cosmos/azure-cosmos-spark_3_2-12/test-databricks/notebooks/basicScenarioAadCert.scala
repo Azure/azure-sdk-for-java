@@ -37,6 +37,7 @@ val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEnd
     "spark.cosmos.account.resourceGroupName" -> resourceGroupName,
     "spark.cosmos.auth.aad.clientId" -> clientId,
     "spark.cosmos.auth.aad.spark.cosmos.auth.aad.clientCertPemBase64" -> clientCertPemBase64,
+    "spark.cosmos.auth.aad.spark.cosmos.auth.aad.clientCertSendChain" -> "true",
     "spark.cosmos.database" -> cosmosDatabaseName,
     "spark.cosmos.container" -> cosmosContainerName,
     "spark.cosmos.read.inferSchema.enabled" -> "true",

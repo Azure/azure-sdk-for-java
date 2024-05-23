@@ -43,6 +43,10 @@ class ServicePrincipalAccountDataResolver extends AccountDataResolver with Basic
     val clientId = getRequiredConfig(configs, SampleConfigNames.ServicePrincipalClientId)
 
     if (configs.contains(SampleConfigNames.ServicePrincipalCert)) {
+      val sendChain = configs.get(SampleConfigNames.ServicePrincipalCertSendChain) match {
+        case Some(sendChainText) => sendChainText.toBoolean
+        case None=> false
+      }
 
       val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(configs.get(SampleConfigNames.ServicePrincipalCert).get))
 
@@ -51,6 +55,7 @@ class ServicePrincipalAccountDataResolver extends AccountDataResolver with Basic
         .tenantId(tenantId)
         .clientId(clientId)
         .pemCertificate(certInputStream)
+        .sendCertificateChain(sendChain)
         .build())
     } else if (configs.contains(SampleConfigNames.ClientSecret)) {
       Some(new ClientSecretCredentialBuilder()
@@ -109,6 +114,7 @@ class ServicePrincipalAccountDataResolver extends AccountDataResolver with Basic
     val CustomAuthEnabled = "cosmos.auth.sample.enabled"
     val ResourceGroupName = "cosmos.auth.sample.resourceGroupName"
     val ServicePrincipalCert= "cosmos.auth.sample.serviceprincipal.cert"
+    val ServicePrincipalCertSendChain= "cosmos.auth.sample.serviceprincipal.cert.sendChain"
     val ServicePrincipalClientId = "cosmos.auth.sample.serviceprincipal.clientId"
     val SubscriptionId = "cosmos.auth.sample.subscriptionId"
     val TenantId = "cosmos.auth.sample.tenantId"
