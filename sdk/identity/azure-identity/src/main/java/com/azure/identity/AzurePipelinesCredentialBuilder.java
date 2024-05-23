@@ -11,6 +11,22 @@ import java.util.Arrays;
 
 /**
  * The {@link AzurePipelinesCredentialBuilder} provides a fluent builder for {@link AzurePipelinesCredential}.
+ *
+ * <!-- src_embed com.azure.identity.credential.azurepipelinescredential.construct -->
+ * <pre>
+ * &#47;&#47; serviceConnectionId is retrieved from the portal.
+ * &#47;&#47; systemAccessToken is retrieved from the pipeline environment as shown.
+ * &#47;&#47; You may choose another name for this variable.
+ *
+ * String systemAccessToken = System.getenv&#40;&quot;SYSTEM_ACCESSTOKEN&quot;&#41;;
+ * AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder&#40;&#41;
+ *     .clientId&#40;clientId&#41;
+ *     .tenantId&#40;tenantId&#41;
+ *     .serviceConnectionId&#40;serviceConnectionId&#41;
+ *     .systemAccessToken&#40;systemAccessToken&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.azurepipelinescredential.construct -->
  */
 public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<AzurePipelinesCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(AzurePipelinesCredentialBuilder.class);
