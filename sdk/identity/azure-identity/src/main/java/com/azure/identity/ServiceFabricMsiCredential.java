@@ -49,6 +49,6 @@ class ServiceFabricMsiCredential extends ManagedIdentityServiceCredential {
      * @return A publisher that emits an {@link AccessToken}.
      */
     public Mono<AccessToken> authenticate(TokenRequestContext request) {
-        return identityClient.authenticateWithManagedIdentityConfidentialClient(request);
+        return identityClient.authenticateWithManagedIdentityMsalClient(request);
     }
 }

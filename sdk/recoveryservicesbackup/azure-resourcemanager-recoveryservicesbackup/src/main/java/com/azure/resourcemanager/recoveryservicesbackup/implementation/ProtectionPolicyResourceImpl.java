@@ -84,14 +84,16 @@ public final class ProtectionPolicyResourceImpl
     }
 
     public ProtectionPolicyResource create() {
-        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionPolicies()
             .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public ProtectionPolicyResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionPolicies()
             .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), context)
             .getValue();
         return this;
@@ -109,14 +111,16 @@ public final class ProtectionPolicyResourceImpl
     }
 
     public ProtectionPolicyResource apply() {
-        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionPolicies()
             .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public ProtectionPolicyResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionPolicies()
             .createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, this.innerModel(), context)
             .getValue();
         return this;
@@ -132,14 +136,18 @@ public final class ProtectionPolicyResourceImpl
     }
 
     public ProtectionPolicyResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
-            .getWithResponse(vaultName, resourceGroupName, policyName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionPolicies()
+            .getWithResponse(vaultName, resourceGroupName, policyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProtectionPolicyResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getProtectionPolicies()
-            .getWithResponse(vaultName, resourceGroupName, policyName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionPolicies()
+            .getWithResponse(vaultName, resourceGroupName, policyName, context)
+            .getValue();
         return this;
     }
 

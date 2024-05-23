@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.AzureServiceBusConsumerCondition;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
@@ -34,12 +36,12 @@ import org.springframework.util.StringUtils;
     AzureServiceBusConsumerClientConfiguration.SessionConsumerClientConfiguration.class,
     AzureServiceBusConsumerClientConfiguration.NoneSessionConsumerClientConfiguration.class
 })
+@Conditional(AzureServiceBusConsumerCondition.class)
 class AzureServiceBusConsumerClientConfiguration {
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.consumer.session-enabled", havingValue = "false",
         matchIfMissing = true)
-    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "consumer.entity-type" })
     static class NoneSessionConsumerClientConfiguration {
 
         @Bean
@@ -88,7 +90,6 @@ class AzureServiceBusConsumerClientConfiguration {
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.consumer.session-enabled", havingValue = "true")
-    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "consumer.entity-type" })
     static class SessionConsumerClientConfiguration {
 
         @Bean

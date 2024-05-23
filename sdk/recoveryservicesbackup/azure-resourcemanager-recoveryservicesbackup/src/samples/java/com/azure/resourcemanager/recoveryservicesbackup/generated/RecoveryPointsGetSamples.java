@@ -9,9 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class RecoveryPointsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureIaasVm/RecoveryPoints_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/RecoveryPoints_Get.json
      */
     /**
      * Sample code: Get Azure Vm Recovery Point Details.
@@ -20,8 +18,9 @@ public final class RecoveryPointsGetSamples {
      */
     public static void getAzureVmRecoveryPointDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.recoveryPoints().getWithResponse("rshvault", "rshhtestmdvmrg", "Azure",
-            "IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
-            "VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall", "26083826328862", com.azure.core.util.Context.NONE);
+        manager.recoveryPoints()
+            .getWithResponse("rshvault", "rshhtestmdvmrg", "Azure",
+                "IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
+                "VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall", "26083826328862", com.azure.core.util.Context.NONE);
     }
 }

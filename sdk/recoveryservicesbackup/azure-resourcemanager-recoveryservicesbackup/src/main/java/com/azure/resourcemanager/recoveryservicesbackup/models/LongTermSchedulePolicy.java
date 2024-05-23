@@ -5,20 +5,44 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Long term policy schedule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "schedulePolicyType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "schedulePolicyType",
+    defaultImpl = LongTermSchedulePolicy.class,
+    visible = true)
 @JsonTypeName("LongTermSchedulePolicy")
 @Immutable
 public final class LongTermSchedulePolicy extends SchedulePolicy {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "schedulePolicyType", required = true)
+    private String schedulePolicyType = "LongTermSchedulePolicy";
+
     /**
      * Creates an instance of LongTermSchedulePolicy class.
      */
     public LongTermSchedulePolicy() {
+    }
+
+    /**
+     * Get the schedulePolicyType property: This property will be used as the discriminator for deciding the specific
+     * types in the polymorphic chain of types.
+     * 
+     * @return the schedulePolicyType value.
+     */
+    @Override
+    public String schedulePolicyType() {
+        return this.schedulePolicyType;
     }
 
     /**

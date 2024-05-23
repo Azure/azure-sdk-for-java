@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
@@ -15,10 +16,17 @@ import java.util.List;
 /**
  * MAB workload-specific job.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "jobType", defaultImpl = MabJob.class, visible = true)
 @JsonTypeName("MabJob")
 @Fluent
 public final class MabJob extends Job {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "jobType", required = true)
+    private String jobType = "MabJob";
+
     /*
      * Time taken by job to run.
      */
@@ -65,6 +73,17 @@ public final class MabJob extends Job {
      * Creates an instance of MabJob class.
      */
     public MabJob() {
+    }
+
+    /**
+     * Get the jobType property: This property will be used as the discriminator for deciding the specific types in the
+     * polymorphic chain of types.
+     * 
+     * @return the jobType value.
+     */
+    @Override
+    public String jobType() {
+        return this.jobType;
     }
 
     /**

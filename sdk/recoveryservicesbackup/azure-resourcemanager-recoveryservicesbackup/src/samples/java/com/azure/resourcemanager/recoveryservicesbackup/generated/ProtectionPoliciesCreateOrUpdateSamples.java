@@ -12,10 +12,11 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.DailySchedule;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DayOfWeek;
 import com.azure.resourcemanager.recoveryservicesbackup.models.HourlySchedule;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasvmPolicyType;
+import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMSnapshotConsistencyType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.LogSchedulePolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.LongTermRetentionPolicy;
-import com.azure.resourcemanager.recoveryservicesbackup.models.MonthOfYear;
 import com.azure.resourcemanager.recoveryservicesbackup.models.MonthlyRetentionSchedule;
+import com.azure.resourcemanager.recoveryservicesbackup.models.MonthOfYear;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PolicyType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionDuration;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionDurationType;
@@ -27,9 +28,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.SimpleSchedulePol
 import com.azure.resourcemanager.recoveryservicesbackup.models.SimpleSchedulePolicyV2;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SubProtectionPolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.VaultRetentionPolicy;
-import com.azure.resourcemanager.recoveryservicesbackup.models.WeekOfMonth;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WeeklyRetentionFormat;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WeeklyRetentionSchedule;
+import com.azure.resourcemanager.recoveryservicesbackup.models.WeekOfMonth;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WorkloadType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.YearlyRetentionSchedule;
 import java.time.OffsetDateTime;
@@ -40,9 +41,7 @@ import java.util.Arrays;
  */
 public final class ProtectionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Create or Update Full Azure Workload Protection Policy.
@@ -51,21 +50,21 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
      */
     public static void createOrUpdateFullAzureWorkloadProtectionPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicies().define(
-                "testPolicy1")
-            .withRegion((String) null).withExistingVault("NetSDKTestRsVault", "SwaggerTestRg")
+        manager.protectionPolicies()
+            .define("testPolicy1")
+            .withRegion((String) null)
+            .withExistingVault("NetSDKTestRsVault", "SwaggerTestRg")
             .withProperties(
                 new AzureVmWorkloadProtectionPolicy().withWorkLoadType(WorkloadType.SQLDATA_BASE)
                     .withSettings(new Settings().withTimeZone("Pacific Standard Time").withIssqlcompression(false))
-                    .withSubProtectionPolicy(Arrays.asList(
-                        new SubProtectionPolicy().withPolicyType(PolicyType.FULL)
-                            .withSchedulePolicy(
-                                new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.WEEKLY)
+                    .withSubProtectionPolicy(
+                        Arrays.asList(
+                            new SubProtectionPolicy().withPolicyType(PolicyType.FULL)
+                                .withSchedulePolicy(new SimpleSchedulePolicy()
+                                    .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
                                     .withScheduleRunDays(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
                                     .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z"))))
-                            .withRetentionPolicy(
-                                new LongTermRetentionPolicy()
+                                .withRetentionPolicy(new LongTermRetentionPolicy()
                                     .withWeeklySchedule(new WeeklyRetentionSchedule()
                                         .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
                                         .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
@@ -77,7 +76,8 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
                                             .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
                                             .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.SECOND)))
                                         .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
-                                        .withRetentionDuration(new RetentionDuration().withCount(1)
+                                        .withRetentionDuration(new RetentionDuration()
+                                            .withCount(1)
                                             .withDurationType(RetentionDurationType.MONTHS)))
                                     .withYearlySchedule(new YearlyRetentionSchedule()
                                         .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
@@ -89,24 +89,23 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
                                         .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
                                         .withRetentionDuration(new RetentionDuration().withCount(1)
                                             .withDurationType(RetentionDurationType.YEARS)))),
-                        new SubProtectionPolicy().withPolicyType(PolicyType.DIFFERENTIAL)
-                            .withSchedulePolicy(
-                                new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.WEEKLY)
+                            new SubProtectionPolicy().withPolicyType(PolicyType.DIFFERENTIAL)
+                                .withSchedulePolicy(new SimpleSchedulePolicy()
+                                    .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
                                     .withScheduleRunDays(Arrays.asList(DayOfWeek.FRIDAY))
                                     .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z"))))
-                            .withRetentionPolicy(new SimpleRetentionPolicy().withRetentionDuration(
-                                new RetentionDuration().withCount(8).withDurationType(RetentionDurationType.DAYS))),
-                        new SubProtectionPolicy().withPolicyType(PolicyType.LOG)
-                            .withSchedulePolicy(new LogSchedulePolicy().withScheduleFrequencyInMins(60))
-                            .withRetentionPolicy(new SimpleRetentionPolicy().withRetentionDuration(
-                                new RetentionDuration().withCount(7).withDurationType(RetentionDurationType.DAYS))))))
+                                .withRetentionPolicy(new SimpleRetentionPolicy().withRetentionDuration(
+                                    new RetentionDuration().withCount(8).withDurationType(RetentionDurationType.DAYS))),
+                            new SubProtectionPolicy().withPolicyType(PolicyType.LOG)
+                                .withSchedulePolicy(new LogSchedulePolicy().withScheduleFrequencyInMins(60))
+                                .withRetentionPolicy(new SimpleRetentionPolicy()
+                                    .withRetentionDuration(new RetentionDuration().withCount(7)
+                                        .withDurationType(RetentionDurationType.DAYS))))))
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: Create or Update Simple Azure Vm Protection Policy.
@@ -115,9 +114,10 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
      */
     public static void createOrUpdateSimpleAzureVmProtectionPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.protectionPolicies().define("testPolicy1").withRegion((String) null)
-            .withExistingVault("NetSDKTestRsVault",
-                "SwaggerTestRg")
+        manager.protectionPolicies()
+            .define("testPolicy1")
+            .withRegion((String) null)
+            .withExistingVault("NetSDKTestRsVault", "SwaggerTestRg")
             .withProperties(new AzureIaaSvmProtectionPolicy()
                 .withSchedulePolicy(new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.DAILY)
                     .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T02:00:00Z"))))
@@ -130,9 +130,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
      */
     /**
      * Sample code: Create or Update Daily Azure Storage Protection Policy.
@@ -141,49 +139,49 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
      */
     public static void createOrUpdateDailyAzureStorageProtectionPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicies().define(
-                "dailyPolicy2")
-            .withRegion((String) null).withExistingVault("swaggertestvault",
-                "SwaggerTestRg")
-            .withProperties(new AzureFileShareProtectionPolicy().withWorkLoadType(WorkloadType.AZURE_FILE_SHARE)
-                .withSchedulePolicy(
-                    new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.DAILY).withScheduleRunTimes(
-                        Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z"))))
-                .withRetentionPolicy(new LongTermRetentionPolicy()
-                    .withDailySchedule(new DailyRetentionSchedule()
-                        .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z")))
-                        .withRetentionDuration(
-                            new RetentionDuration().withCount(5).withDurationType(RetentionDurationType.DAYS)))
-                    .withWeeklySchedule(new WeeklyRetentionSchedule().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                        .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z")))
-                        .withRetentionDuration(
-                            new RetentionDuration().withCount(12).withDurationType(RetentionDurationType.WEEKS)))
-                    .withMonthlySchedule(
-                        new MonthlyRetentionSchedule().withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                            .withRetentionScheduleWeekly(
-                                new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                    .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
-                            .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z")))
-                            .withRetentionDuration(
-                                new RetentionDuration().withCount(60).withDurationType(RetentionDurationType.MONTHS)))
-                    .withYearlySchedule(
-                        new YearlyRetentionSchedule().withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                            .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
-                            .withRetentionScheduleWeekly(
-                                new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                    .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
-                            .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z")))
-                            .withRetentionDuration(
-                                new RetentionDuration().withCount(10).withDurationType(RetentionDurationType.YEARS))))
-                .withTimeZone("UTC"))
+        manager.protectionPolicies()
+            .define("dailyPolicy2")
+            .withRegion((String) null)
+            .withExistingVault("swaggertestvault", "SwaggerTestRg")
+            .withProperties(
+                new AzureFileShareProtectionPolicy().withWorkLoadType(WorkloadType.AZURE_FILE_SHARE)
+                    .withSchedulePolicy(new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.DAILY)
+                        .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z"))))
+                    .withRetentionPolicy(
+                        new LongTermRetentionPolicy()
+                            .withDailySchedule(
+                                new DailyRetentionSchedule()
+                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z")))
+                                    .withRetentionDuration(new RetentionDuration().withCount(5)
+                                        .withDurationType(RetentionDurationType.DAYS)))
+                            .withWeeklySchedule(
+                                new WeeklyRetentionSchedule().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z")))
+                                    .withRetentionDuration(new RetentionDuration().withCount(12)
+                                        .withDurationType(RetentionDurationType.WEEKS)))
+                            .withMonthlySchedule(new MonthlyRetentionSchedule()
+                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                .withRetentionScheduleWeekly(
+                                    new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z")))
+                                .withRetentionDuration(new RetentionDuration().withCount(60)
+                                    .withDurationType(RetentionDurationType.MONTHS)))
+                            .withYearlySchedule(new YearlyRetentionSchedule()
+                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
+                                .withRetentionScheduleWeekly(
+                                    new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z")))
+                                .withRetentionDuration(new RetentionDuration().withCount(10)
+                                    .withDurationType(RetentionDurationType.YEARS))))
+                    .withTimeZone("UTC"))
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureStorage/ProtectionPolicies_CreateOrUpdate_Hardened.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hardened.json
      */
     /**
      * Sample code: Create or Update Azure Storage Vault Standard Protection Policy.
@@ -192,17 +190,12 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
      */
     public static void createOrUpdateAzureStorageVaultStandardProtectionPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicies().define(
-                "newPolicyV2")
-            .withRegion(
-                (String) null)
-            .withExistingVault("swaggertestvault",
-                "SwaggerTestRg")
+        manager.protectionPolicies()
+            .define("newPolicyV2")
+            .withRegion((String) null)
+            .withExistingVault("swaggertestvault", "SwaggerTestRg")
             .withProperties(
-                new AzureFileShareProtectionPolicy()
-                    .withWorkLoadType(
-                        WorkloadType.AZURE_FILE_SHARE)
+                new AzureFileShareProtectionPolicy().withWorkLoadType(WorkloadType.AZURE_FILE_SHARE)
                     .withSchedulePolicy(new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.DAILY)
                         .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2023-07-18T09:30:00.000Z"))))
                     .withVaultRetentionPolicy(
@@ -244,9 +237,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
      */
     /**
      * Sample code: Create or Update Hourly Azure Storage Protection Policy.
@@ -255,15 +246,17 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
      */
     public static void createOrUpdateHourlyAzureStorageProtectionPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.protectionPolicies().define("newPolicy2").withRegion((String) null)
+        manager.protectionPolicies()
+            .define("newPolicy2")
+            .withRegion((String) null)
             .withExistingVault("swaggertestvault", "SwaggerTestRg")
-            .withProperties(new AzureFileShareProtectionPolicy().withWorkLoadType(WorkloadType.AZURE_FILE_SHARE)
-                .withSchedulePolicy(new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.HOURLY)
-                    .withHourlySchedule(new HourlySchedule().withInterval(4)
-                        .withScheduleWindowStartTime(OffsetDateTime.parse("2021-09-29T08:00:00.000Z"))
-                        .withScheduleWindowDuration(12)))
-                .withRetentionPolicy(
-                    new LongTermRetentionPolicy()
+            .withProperties(
+                new AzureFileShareProtectionPolicy().withWorkLoadType(WorkloadType.AZURE_FILE_SHARE)
+                    .withSchedulePolicy(new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.HOURLY)
+                        .withHourlySchedule(new HourlySchedule().withInterval(4)
+                            .withScheduleWindowStartTime(OffsetDateTime.parse("2021-09-29T08:00:00.000Z"))
+                            .withScheduleWindowDuration(12)))
+                    .withRetentionPolicy(new LongTermRetentionPolicy()
                         .withDailySchedule(new DailyRetentionSchedule().withRetentionDuration(
                             new RetentionDuration().withCount(5).withDurationType(RetentionDurationType.DAYS)))
                         .withWeeklySchedule(
@@ -285,14 +278,12 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
                                     .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
                             .withRetentionDuration(
                                 new RetentionDuration().withCount(10).withDurationType(RetentionDurationType.YEARS))))
-                .withTimeZone("UTC"))
+                    .withTimeZone("UTC"))
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Create or Update Full Azure Vm Protection Policy.
@@ -301,13 +292,14 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
      */
     public static void createOrUpdateFullAzureVmProtectionPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.protectionPolicies().define("testPolicy1").withRegion((String) null)
+        manager.protectionPolicies()
+            .define("testPolicy1")
+            .withRegion((String) null)
             .withExistingVault("NetSDKTestRsVault", "SwaggerTestRg")
             .withProperties(
                 new AzureIaaSvmProtectionPolicy()
                     .withSchedulePolicy(new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.WEEKLY)
-                        .withScheduleRunDays(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY,
-                            DayOfWeek.THURSDAY))
+                        .withScheduleRunDays(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY))
                         .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z"))))
                     .withRetentionPolicy(
                         new LongTermRetentionPolicy()
@@ -318,31 +310,31 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
                                     .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
                                     .withRetentionDuration(new RetentionDuration().withCount(1)
                                         .withDurationType(RetentionDurationType.WEEKS)))
-                            .withMonthlySchedule(new MonthlyRetentionSchedule()
-                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                .withRetentionScheduleWeekly(new WeeklyRetentionFormat()
-                                    .withDaysOfTheWeek(Arrays.asList(DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY))
-                                    .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST, WeekOfMonth.THIRD)))
-                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
-                                .withRetentionDuration(new RetentionDuration().withCount(2)
-                                    .withDurationType(RetentionDurationType.MONTHS)))
-                            .withYearlySchedule(new YearlyRetentionSchedule()
-                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                .withMonthsOfYear(Arrays.asList(MonthOfYear.FEBRUARY, MonthOfYear.NOVEMBER))
-                                .withRetentionScheduleWeekly(new WeeklyRetentionFormat()
-                                    .withDaysOfTheWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.THURSDAY))
-                                    .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FOURTH)))
-                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
-                                .withRetentionDuration(new RetentionDuration().withCount(4)
-                                    .withDurationType(RetentionDurationType.YEARS))))
+                            .withMonthlySchedule(
+                                new MonthlyRetentionSchedule()
+                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                    .withRetentionScheduleWeekly(new WeeklyRetentionFormat()
+                                        .withDaysOfTheWeek(Arrays.asList(DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST, WeekOfMonth.THIRD)))
+                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
+                                    .withRetentionDuration(new RetentionDuration().withCount(2)
+                                        .withDurationType(RetentionDurationType.MONTHS)))
+                            .withYearlySchedule(
+                                new YearlyRetentionSchedule()
+                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                    .withMonthsOfYear(Arrays.asList(MonthOfYear.FEBRUARY, MonthOfYear.NOVEMBER))
+                                    .withRetentionScheduleWeekly(new WeeklyRetentionFormat()
+                                        .withDaysOfTheWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.THURSDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FOURTH)))
+                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
+                                    .withRetentionDuration(new RetentionDuration().withCount(4)
+                                        .withDurationType(RetentionDurationType.YEARS))))
                     .withTimeZone("Pacific Standard Time"))
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureIaasVm/V2Policy/IaaS_v2_hourly.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/V2Policy/IaaS_v2_hourly.json
      */
     /**
      * Sample code: Create or Update Enhanced Azure Vm Protection Policy with Hourly backup.
@@ -351,52 +343,53 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
      */
     public static void createOrUpdateEnhancedAzureVmProtectionPolicyWithHourlyBackup(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicies().define(
-                "v2-daily-sample")
-            .withRegion(
-                (String) null)
+        manager.protectionPolicies()
+            .define("v2-daily-sample")
+            .withRegion((String) null)
             .withExistingVault("NetSDKTestRsVault", "SwaggerTestRg")
-            .withProperties(new AzureIaaSvmProtectionPolicy()
-                .withSchedulePolicy(new SimpleSchedulePolicyV2().withScheduleRunFrequency(ScheduleRunType.HOURLY)
-                    .withHourlySchedule(new HourlySchedule().withInterval(4)
-                        .withScheduleWindowStartTime(OffsetDateTime.parse("2021-12-17T08:00:00Z"))
-                        .withScheduleWindowDuration(16)))
-                .withRetentionPolicy(new LongTermRetentionPolicy()
-                    .withDailySchedule(new DailyRetentionSchedule()
-                        .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                        .withRetentionDuration(
-                            new RetentionDuration().withCount(180).withDurationType(RetentionDurationType.DAYS)))
-                    .withWeeklySchedule(new WeeklyRetentionSchedule().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                        .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                        .withRetentionDuration(
-                            new RetentionDuration().withCount(12).withDurationType(RetentionDurationType.WEEKS)))
-                    .withMonthlySchedule(
-                        new MonthlyRetentionSchedule().withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                            .withRetentionScheduleWeekly(
-                                new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                    .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
-                            .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                            .withRetentionDuration(
-                                new RetentionDuration().withCount(60).withDurationType(RetentionDurationType.MONTHS)))
-                    .withYearlySchedule(
-                        new YearlyRetentionSchedule().withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                            .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
-                            .withRetentionScheduleWeekly(
-                                new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                    .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
-                            .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                            .withRetentionDuration(
-                                new RetentionDuration().withCount(10).withDurationType(RetentionDurationType.YEARS))))
-                .withInstantRpRetentionRangeInDays(30).withTimeZone("India Standard Time")
-                .withPolicyType(IaasvmPolicyType.V2))
+            .withProperties(
+                new AzureIaaSvmProtectionPolicy()
+                    .withSchedulePolicy(new SimpleSchedulePolicyV2().withScheduleRunFrequency(ScheduleRunType.HOURLY)
+                        .withHourlySchedule(new HourlySchedule().withInterval(4)
+                            .withScheduleWindowStartTime(OffsetDateTime.parse("2021-12-17T08:00:00Z"))
+                            .withScheduleWindowDuration(16)))
+                    .withRetentionPolicy(
+                        new LongTermRetentionPolicy()
+                            .withDailySchedule(new DailyRetentionSchedule()
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(180)
+                                    .withDurationType(RetentionDurationType.DAYS)))
+                            .withWeeklySchedule(new WeeklyRetentionSchedule()
+                                .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(12)
+                                    .withDurationType(RetentionDurationType.WEEKS)))
+                            .withMonthlySchedule(new MonthlyRetentionSchedule()
+                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                .withRetentionScheduleWeekly(
+                                    new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(60)
+                                    .withDurationType(RetentionDurationType.MONTHS)))
+                            .withYearlySchedule(new YearlyRetentionSchedule()
+                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
+                                .withRetentionScheduleWeekly(
+                                    new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(10)
+                                    .withDurationType(RetentionDurationType.YEARS))))
+                    .withInstantRpRetentionRangeInDays(30)
+                    .withTimeZone("India Standard Time")
+                    .withPolicyType(IaasvmPolicyType.V2)
+                    .withSnapshotConsistencyType(IaasVMSnapshotConsistencyType.ONLY_CRASH_CONSISTENT))
             .create();
     }
 
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureIaasVm/V2Policy/IaaS_v2_daily.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureIaasVm/V2Policy/IaaS_v2_daily.json
      */
     /**
      * Sample code: Create or Update Enhanced Azure Vm Protection Policy with daily backup.
@@ -405,43 +398,47 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
      */
     public static void createOrUpdateEnhancedAzureVmProtectionPolicyWithDailyBackup(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicies().define(
-                "v2-daily-sample")
-            .withRegion((String) null).withExistingVault("NetSDKTestRsVault", "SwaggerTestRg")
-            .withProperties(new AzureIaaSvmProtectionPolicy()
-                .withSchedulePolicy(
-                    new SimpleSchedulePolicyV2().withScheduleRunFrequency(ScheduleRunType.DAILY)
+        manager.protectionPolicies()
+            .define("v2-daily-sample")
+            .withRegion((String) null)
+            .withExistingVault("NetSDKTestRsVault", "SwaggerTestRg")
+            .withProperties(
+                new AzureIaaSvmProtectionPolicy()
+                    .withSchedulePolicy(new SimpleSchedulePolicyV2().withScheduleRunFrequency(ScheduleRunType.DAILY)
                         .withDailySchedule(new DailySchedule()
                             .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))))
-                .withRetentionPolicy(new LongTermRetentionPolicy()
-                    .withDailySchedule(new DailyRetentionSchedule()
-                        .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                        .withRetentionDuration(
-                            new RetentionDuration().withCount(180).withDurationType(RetentionDurationType.DAYS)))
-                    .withWeeklySchedule(new WeeklyRetentionSchedule().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                        .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                        .withRetentionDuration(
-                            new RetentionDuration().withCount(12).withDurationType(RetentionDurationType.WEEKS)))
-                    .withMonthlySchedule(
-                        new MonthlyRetentionSchedule().withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                            .withRetentionScheduleWeekly(
-                                new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                    .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
-                            .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                            .withRetentionDuration(
-                                new RetentionDuration().withCount(60).withDurationType(RetentionDurationType.MONTHS)))
-                    .withYearlySchedule(
-                        new YearlyRetentionSchedule().withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                            .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
-                            .withRetentionScheduleWeekly(
-                                new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                    .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
-                            .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                            .withRetentionDuration(
-                                new RetentionDuration().withCount(10).withDurationType(RetentionDurationType.YEARS))))
-                .withInstantRpRetentionRangeInDays(30).withTimeZone("India Standard Time")
-                .withPolicyType(IaasvmPolicyType.V2))
+                    .withRetentionPolicy(
+                        new LongTermRetentionPolicy()
+                            .withDailySchedule(new DailyRetentionSchedule()
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(180)
+                                    .withDurationType(RetentionDurationType.DAYS)))
+                            .withWeeklySchedule(new WeeklyRetentionSchedule()
+                                .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(12)
+                                    .withDurationType(RetentionDurationType.WEEKS)))
+                            .withMonthlySchedule(new MonthlyRetentionSchedule()
+                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                .withRetentionScheduleWeekly(
+                                    new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(60)
+                                    .withDurationType(RetentionDurationType.MONTHS)))
+                            .withYearlySchedule(new YearlyRetentionSchedule()
+                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
+                                .withRetentionScheduleWeekly(
+                                    new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(10)
+                                    .withDurationType(RetentionDurationType.YEARS))))
+                    .withInstantRpRetentionRangeInDays(30)
+                    .withTimeZone("India Standard Time")
+                    .withPolicyType(IaasvmPolicyType.V2)
+                    .withSnapshotConsistencyType(IaasVMSnapshotConsistencyType.ONLY_CRASH_CONSISTENT))
             .create();
     }
 }
