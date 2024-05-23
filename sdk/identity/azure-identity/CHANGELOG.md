@@ -1,12 +1,6 @@
 # Release History
 
-## 1.13.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.13.0-beta.1 (2024-05-23)
 
 ### Other Changes
 - Migrated Managed Identity authentication flow to utilize Msal4j MI implementation. 
