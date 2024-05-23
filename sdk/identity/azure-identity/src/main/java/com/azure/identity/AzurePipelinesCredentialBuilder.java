@@ -38,7 +38,7 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
      * Sets the service connection id for the Azure Pipelines service connection. The service connection ID is
      * retrieved from the Service Connection in the portal.
      *
-     * @param serviceConnectionId The service connection  ID, as found in the query string's resourceId key.
+     * @param serviceConnectionId The service connection ID, as found in the query string's resourceId key.
      * @return the updated instance of the builder.
      */
     public AzurePipelinesCredentialBuilder serviceConnectionId(String serviceConnectionId) {
