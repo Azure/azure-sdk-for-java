@@ -51,7 +51,7 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
      * retrieved from the pipeline variables by assigning it to an environment variable and reading it.
      * See {@link AzurePipelinesCredential} for more information.
      *
-     * @param systemAccessToken the system access token for the Azure Devops Pipeline service connection.
+     * @param systemAccessToken the system access token for the Azure Pipelines service connection.
      * @return The updated instance of the builder.
      */
     public AzurePipelinesCredentialBuilder systemAccessToken(String systemAccessToken) {
