@@ -35,6 +35,7 @@
         <module>spring-cloud-azure-starter-appconfiguration</module>
         <module>spring-cloud-azure-starter-cosmos</module>
         <module>spring-cloud-azure-starter-data-cosmos</module>
+        <module>spring-cloud-azure-starter-data-redis-lettuce</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
         <module>spring-cloud-azure-starter-eventgrid</module>
         <module>spring-cloud-azure-starter-keyvault</module>
@@ -94,6 +95,7 @@
         <module>spring-cloud-azure-starter-appconfiguration</module>
         <module>spring-cloud-azure-starter-cosmos</module>
         <module>spring-cloud-azure-starter-data-cosmos</module>
+        <module>spring-cloud-azure-starter-data-redis-lettuce</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
         <module>spring-cloud-azure-starter-eventgrid</module>
         <module>spring-cloud-azure-starter-keyvault</module>

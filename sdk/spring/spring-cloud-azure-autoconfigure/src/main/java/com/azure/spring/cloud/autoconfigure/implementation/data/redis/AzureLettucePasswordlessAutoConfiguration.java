@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 /**
  * Azure Redis passwordless connection configuration using Lettuce.
  *
- * @since 4.6.0
+ * @since 5.13.0
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({LettuceConnection.class, RedisCredentials.class})
@@ -52,7 +52,8 @@ public class AzureLettucePasswordlessAutoConfiguration {
     @Bean(name = "azureRedisCredentials")
     @ConditionalOnMissingBean
     AzureRedisCredentials azureRedisCredentials(RedisProperties redisProperties,
-                                                AzureRedisPasswordlessProperties azureRedisPasswordlessProperties, AzureGlobalProperties azureGlobalProperties) {
+                                                AzureRedisPasswordlessProperties azureRedisPasswordlessProperties,
+                                                AzureGlobalProperties azureGlobalProperties) {
         return new AzureRedisCredentials(redisProperties.getUsername(),
             mergeAzureProperties(azureGlobalProperties, azureRedisPasswordlessProperties));
     }
