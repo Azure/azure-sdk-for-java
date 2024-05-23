@@ -229,9 +229,9 @@ public final class AppServiceEnvironmentPatchResourceInner extends ProxyOnlyReso
     }
 
     /**
-     * Get the suspended property: &lt;code&gt;true&lt;/code&gt; if the App Service Environment is suspended;
-     * otherwise, &lt;code&gt;false&lt;/code&gt;. The environment can be suspended, e.g. when the management endpoint
-     * is no longer available
+     * Get the suspended property: &lt;code&gt;true&lt;/code&gt; if the App Service Environment is suspended; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;. The environment can be suspended, e.g. when the management endpoint is no longer
+     * available
      * (most likely because NSG blocked the incoming traffic).
      * 
      * @return the suspended value.

@@ -69,8 +69,8 @@ public final class TopLevelDomainCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model TopLevelDomainCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model TopLevelDomainCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

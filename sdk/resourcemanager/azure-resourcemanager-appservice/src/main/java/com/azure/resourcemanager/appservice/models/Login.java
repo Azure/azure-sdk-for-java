@@ -26,15 +26,13 @@ public final class Login {
     private TokenStore tokenStore;
 
     /*
-     * <code>true</code> if the fragments from the request are preserved after the login request is made; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if the fragments from the request are preserved after the login request is made; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "preserveUrlFragmentsForLogins")
     private Boolean preserveUrlFragmentsForLogins;
 
     /*
-     * External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query
-     * string part of the URL is ignored.
+     * External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part of the URL is ignored.
      * This is an advanced setting typically only needed by Windows Store application backends.
      * Note that URLs within the current domain are always implicitly allowed.
      */

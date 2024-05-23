@@ -15,9 +15,7 @@ import java.util.Map;
  */
 public final class AppServiceCertificateOrdersUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-01-01/examples/
-     * UpdateAppServiceCertificateOrder.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2023-12-01/examples/UpdateAppServiceCertificateOrder.json
      */
     /**
      * Sample code: Update Certificate order.
@@ -25,18 +23,24 @@ public final class AppServiceCertificateOrdersUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateCertificateOrder(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceCertificateOrders().updateWithResponse("testrg123",
-            "SampleCertificateOrderName",
-            new AppServiceCertificateOrderPatchResource()
-                .withCertificates(mapOf("SampleCertName1",
-                    new AppServiceCertificateInner()
-                        .withKeyVaultId("fakeTokenPlaceholder").withKeyVaultSecretName("fakeTokenPlaceholder"),
-                    "SampleCertName2",
-                    new AppServiceCertificateInner().withKeyVaultId("fakeTokenPlaceholder")
-                        .withKeyVaultSecretName("fakeTokenPlaceholder")))
-                .withDistinguishedName("CN=SampleCustomDomain.com").withValidityInYears(2).withKeySize(2048)
-                .withProductType(CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL).withAutoRenew(true),
-            com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceCertificateOrders()
+            .updateWithResponse("testrg123", "SampleCertificateOrderName",
+                new AppServiceCertificateOrderPatchResource()
+                    .withCertificates(mapOf("SampleCertName1",
+                        new AppServiceCertificateInner().withKeyVaultId("fakeTokenPlaceholder")
+                            .withKeyVaultSecretName("fakeTokenPlaceholder"),
+                        "SampleCertName2",
+                        new AppServiceCertificateInner().withKeyVaultId("fakeTokenPlaceholder")
+                            .withKeyVaultSecretName("fakeTokenPlaceholder")))
+                    .withDistinguishedName("CN=SampleCustomDomain.com")
+                    .withValidityInYears(2)
+                    .withKeySize(2048)
+                    .withProductType(CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL)
+                    .withAutoRenew(true),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

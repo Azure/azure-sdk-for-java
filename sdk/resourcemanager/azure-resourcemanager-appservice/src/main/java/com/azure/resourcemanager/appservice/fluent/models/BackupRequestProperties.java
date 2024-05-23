@@ -23,8 +23,7 @@ public final class BackupRequestProperties {
     private String backupName;
 
     /*
-     * True if the backup schedule is enabled (must be included in that case), false if the backup schedule should be
-     * disabled.
+     * True if the backup schedule is enabled (must be included in that case), false if the backup schedule should be disabled.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
@@ -162,8 +161,9 @@ public final class BackupRequestProperties {
      */
     public void validate() {
         if (storageAccountUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storageAccountUrl in model BackupRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountUrl in model BackupRequestProperties"));
         }
         if (backupSchedule() != null) {
             backupSchedule().validate();

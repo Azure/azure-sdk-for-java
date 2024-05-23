@@ -13,6 +13,7 @@ import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.RedundancyMode;
 import com.azure.resourcemanager.appservice.models.SiteAvailabilityState;
+import com.azure.resourcemanager.appservice.models.SiteDnsConfig;
 import com.azure.resourcemanager.appservice.models.SlotSwapStatus;
 import com.azure.resourcemanager.appservice.models.UsageState;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -286,6 +287,29 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
      */
     public OffsetDateTime lastModifiedTimeUtc() {
         return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTimeUtc();
+    }
+
+    /**
+     * Get the dnsConfiguration property: Property to configure various DNS related settings for a site.
+     * 
+     * @return the dnsConfiguration value.
+     */
+    public SiteDnsConfig dnsConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().dnsConfiguration();
+    }
+
+    /**
+     * Set the dnsConfiguration property: Property to configure various DNS related settings for a site.
+     * 
+     * @param dnsConfiguration the dnsConfiguration value to set.
+     * @return the SitePatchResourceInner object itself.
+     */
+    public SitePatchResourceInner withDnsConfiguration(SiteDnsConfig dnsConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePatchResourcePropertiesInner();
+        }
+        this.innerProperties().withDnsConfiguration(dnsConfiguration);
+        return this;
     }
 
     /**
@@ -579,8 +603,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps
-     * only).
+     * Get the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps only).
      * 
      * @return the dailyMemoryTimeQuota value.
      */
@@ -589,8 +612,7 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps
-     * only).
+     * Set the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps only).
      * 
      * @param dailyMemoryTimeQuota the dailyMemoryTimeQuota value to set.
      * @return the SitePatchResourceInner object itself.
@@ -786,8 +808,8 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be
-     * joined by Regional VNET Integration.
+     * Get the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be joined
+     * by Regional VNET Integration.
      * This must be of the form
      * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      * 
@@ -798,8 +820,8 @@ public final class SitePatchResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be
-     * joined by Regional VNET Integration.
+     * Set the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be joined
+     * by Regional VNET Integration.
      * This must be of the form
      * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      * 

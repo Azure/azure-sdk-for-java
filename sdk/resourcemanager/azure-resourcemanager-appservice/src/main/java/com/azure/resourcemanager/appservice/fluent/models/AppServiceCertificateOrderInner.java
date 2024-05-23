@@ -212,8 +212,8 @@ public final class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed
-     * when it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed when
+     * it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the autoRenew value.
      */
@@ -222,8 +222,8 @@ public final class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed
-     * when it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Set the autoRenew property: &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed when
+     * it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @param autoRenew the autoRenew value to set.
      * @return the AppServiceCertificateOrderInner object itself.
@@ -348,7 +348,8 @@ public final class AppServiceCertificateOrderInner extends Resource {
      * @return the appServiceCertificateNotRenewableReasons value.
      */
     public List<ResourceNotRenewableReason> appServiceCertificateNotRenewableReasons() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().appServiceCertificateNotRenewableReasons();
     }
 

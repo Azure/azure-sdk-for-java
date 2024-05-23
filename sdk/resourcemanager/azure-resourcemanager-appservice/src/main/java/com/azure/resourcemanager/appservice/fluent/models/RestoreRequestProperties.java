@@ -29,8 +29,7 @@ public final class RestoreRequestProperties {
     private String blobName;
 
     /*
-     * <code>true</code> if the restore operation can overwrite target app; otherwise, <code>false</code>.
-     * <code>true</code> is needed if trying to restore over an existing app.
+     * <code>true</code> if the restore operation can overwrite target app; otherwise, <code>false</code>. <code>true</code> is needed if trying to restore over an existing app.
      */
     @JsonProperty(value = "overwrite", required = true)
     private boolean overwrite;
@@ -42,15 +41,13 @@ public final class RestoreRequestProperties {
     private String siteName;
 
     /*
-     * Collection of databases which should be restored. This list has to match the list of databases included in the
-     * backup.
+     * Collection of databases which should be restored. This list has to match the list of databases included in the backup.
      */
     @JsonProperty(value = "databases")
     private List<DatabaseBackupSetting> databases;
 
     /*
-     * Changes a logic when restoring an app with custom domains. <code>true</code> to remove custom domains
-     * automatically. If <code>false</code>, custom domains are added to
+     * Changes a logic when restoring an app with custom domains. <code>true</code> to remove custom domains automatically. If <code>false</code>, custom domains are added to 
      * the app's object when it is being restored, but that might fail due to conflicts during the operation.
      */
     @JsonProperty(value = "ignoreConflictingHostNames")
@@ -285,8 +282,8 @@ public final class RestoreRequestProperties {
     }
 
     /**
-     * Get the adjustConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should
-     * be set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the adjustConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should be
+     * set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the adjustConnectionStrings value.
      */
@@ -295,8 +292,8 @@ public final class RestoreRequestProperties {
     }
 
     /**
-     * Set the adjustConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should
-     * be set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Set the adjustConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should be
+     * set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @param adjustConnectionStrings the adjustConnectionStrings value to set.
      * @return the RestoreRequestProperties object itself.
@@ -335,8 +332,9 @@ public final class RestoreRequestProperties {
      */
     public void validate() {
         if (storageAccountUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property storageAccountUrl in model RestoreRequestProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountUrl in model RestoreRequestProperties"));
         }
         if (databases() != null) {
             databases().forEach(e -> e.validate());

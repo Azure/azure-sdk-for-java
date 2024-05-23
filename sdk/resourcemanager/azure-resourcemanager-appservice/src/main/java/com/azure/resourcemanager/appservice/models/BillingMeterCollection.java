@@ -69,8 +69,8 @@ public final class BillingMeterCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model BillingMeterCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model BillingMeterCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -69,8 +69,8 @@ public final class StaticSiteCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model StaticSiteCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model StaticSiteCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

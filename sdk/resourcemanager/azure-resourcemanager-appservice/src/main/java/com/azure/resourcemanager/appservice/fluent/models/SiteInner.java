@@ -10,12 +10,14 @@ import com.azure.resourcemanager.appservice.models.ClientCertMode;
 import com.azure.resourcemanager.appservice.models.CloningInfo;
 import com.azure.resourcemanager.appservice.models.DaprConfig;
 import com.azure.resourcemanager.appservice.models.ExtendedLocation;
+import com.azure.resourcemanager.appservice.models.FunctionAppConfig;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.HostnameSslState;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.RedundancyMode;
 import com.azure.resourcemanager.appservice.models.ResourceConfig;
 import com.azure.resourcemanager.appservice.models.SiteAvailabilityState;
+import com.azure.resourcemanager.appservice.models.SiteDnsConfig;
 import com.azure.resourcemanager.appservice.models.SlotSwapStatus;
 import com.azure.resourcemanager.appservice.models.UsageState;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -354,8 +356,31 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to
-     * have Virtual Network Security Groups and User Defined Routes applied.
+     * Get the dnsConfiguration property: Property to configure various DNS related settings for a site.
+     * 
+     * @return the dnsConfiguration value.
+     */
+    public SiteDnsConfig dnsConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().dnsConfiguration();
+    }
+
+    /**
+     * Set the dnsConfiguration property: Property to configure various DNS related settings for a site.
+     * 
+     * @param dnsConfiguration the dnsConfiguration value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withDnsConfiguration(SiteDnsConfig dnsConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withDnsConfiguration(dnsConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
      * 
      * @return the vnetRouteAllEnabled value.
      */
@@ -364,8 +389,8 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to
-     * have Virtual Network Security Groups and User Defined Routes applied.
+     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
      * 
      * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
      * @return the SiteInner object itself.
@@ -425,6 +450,29 @@ public final class SiteInner extends Resource {
     }
 
     /**
+     * Get the vnetBackupRestoreEnabled property: To enable Backup and Restore operations over virtual network.
+     * 
+     * @return the vnetBackupRestoreEnabled value.
+     */
+    public Boolean vnetBackupRestoreEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().vnetBackupRestoreEnabled();
+    }
+
+    /**
+     * Set the vnetBackupRestoreEnabled property: To enable Backup and Restore operations over virtual network.
+     * 
+     * @param vnetBackupRestoreEnabled the vnetBackupRestoreEnabled value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withVnetBackupRestoreEnabled(Boolean vnetBackupRestoreEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withVnetBackupRestoreEnabled(vnetBackupRestoreEnabled);
+        return this;
+    }
+
+    /**
      * Get the siteConfig property: Configuration of the app.
      * 
      * @return the siteConfig value.
@@ -444,6 +492,29 @@ public final class SiteInner extends Resource {
             this.innerProperties = new SitePropertiesInner();
         }
         this.innerProperties().withSiteConfig(siteConfig);
+        return this;
+    }
+
+    /**
+     * Get the functionAppConfig property: Configuration specific of the Azure Function app.
+     * 
+     * @return the functionAppConfig value.
+     */
+    public FunctionAppConfig functionAppConfig() {
+        return this.innerProperties() == null ? null : this.innerProperties().functionAppConfig();
+    }
+
+    /**
+     * Set the functionAppConfig property: Configuration specific of the Azure Function app.
+     * 
+     * @param functionAppConfig the functionAppConfig value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withFunctionAppConfig(FunctionAppConfig functionAppConfig) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withFunctionAppConfig(functionAppConfig);
         return this;
     }
 
@@ -784,8 +855,7 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Get the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps
-     * only).
+     * Get the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps only).
      * 
      * @return the dailyMemoryTimeQuota value.
      */
@@ -794,8 +864,7 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Set the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps
-     * only).
+     * Set the dailyMemoryTimeQuota property: Maximum allowed daily memory-time quota (applicable on dynamic apps only).
      * 
      * @param dailyMemoryTimeQuota the dailyMemoryTimeQuota value to set.
      * @return the SiteInner object itself.
@@ -1016,8 +1085,8 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Get the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be
-     * joined by Regional VNET Integration.
+     * Get the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be joined
+     * by Regional VNET Integration.
      * This must be of the form
      * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      * 
@@ -1028,8 +1097,8 @@ public final class SiteInner extends Resource {
     }
 
     /**
-     * Set the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be
-     * joined by Regional VNET Integration.
+     * Set the virtualNetworkSubnetId property: Azure Resource Manager ID of the Virtual network and subnet to be joined
+     * by Regional VNET Integration.
      * This must be of the form
      * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      * 

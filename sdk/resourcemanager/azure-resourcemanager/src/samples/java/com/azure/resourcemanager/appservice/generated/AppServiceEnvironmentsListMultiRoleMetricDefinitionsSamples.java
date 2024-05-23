@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServiceEnvironmentsListMultiRoleMetricDefinitionsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
-     * AppServiceEnvironments_ListMultiRoleMetricDefinitions.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/AppServiceEnvironments_ListMultiRoleMetricDefinitions.json
      */
     /**
      * Sample code: Get metric definitions for a multi-role pool of an App Service Environment.
@@ -19,7 +18,10 @@ public final class AppServiceEnvironmentsListMultiRoleMetricDefinitionsSamples {
      */
     public static void getMetricDefinitionsForAMultiRolePoolOfAnAppServiceEnvironment(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getAppServiceEnvironments().listMultiRoleMetricDefinitions("test-rg",
-            "test-ase", com.azure.core.util.Context.NONE);
+        azure.webApps()
+            .manager()
+            .serviceClient()
+            .getAppServiceEnvironments()
+            .listMultiRoleMetricDefinitions("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

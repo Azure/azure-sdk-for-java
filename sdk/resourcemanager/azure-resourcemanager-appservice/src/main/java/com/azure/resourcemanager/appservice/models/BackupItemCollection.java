@@ -69,8 +69,8 @@ public final class BackupItemCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model BackupItemCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model BackupItemCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

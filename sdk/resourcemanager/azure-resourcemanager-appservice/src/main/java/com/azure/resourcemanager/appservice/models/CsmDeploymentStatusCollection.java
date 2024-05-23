@@ -68,8 +68,9 @@ public final class CsmDeploymentStatusCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model CsmDeploymentStatusCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property value in model CsmDeploymentStatusCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

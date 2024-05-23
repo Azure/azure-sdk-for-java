@@ -89,8 +89,8 @@ public final class WebAppRuntimeSettings {
     }
 
     /**
-     * Get the remoteDebuggingSupported property: &lt;code&gt;true&lt;/code&gt; if remote debugging is supported for
-     * the stack; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get the remoteDebuggingSupported property: &lt;code&gt;true&lt;/code&gt; if remote debugging is supported for the
+     * stack; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * 
      * @return the remoteDebuggingSupported value.
      */
