@@ -41,15 +41,13 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
     @Override
     public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
-        return Mono.defer(() -> {
-            String[] scopes = this.scopes;
-            scopes = getScopes(context, scopes);
-            if (scopes == null) {
-                return Mono.empty();
-            } else {
-                return setAuthorizationHeader(context, new TokenRequestContext().addScopes(scopes));
-            }
-        });
+        String[] scopes = this.scopes;
+        scopes = getScopes(context, scopes);
+        if (scopes == null) {
+            return Mono.empty();
+        } else {
+            return setAuthorizationHeader(context, new TokenRequestContext().addScopes(scopes));
+        }
     }
 
     @Override
@@ -64,19 +62,17 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
 
     @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
-        return Mono.defer(() -> {
-            String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-            Map<String, String> challenges = parseChallenges(authHeader);
+        String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+        Map<String, String> challenges = parseChallenges(authHeader);
 
-            String scope = challenges.get("resource_id=");
-            if (scope != null) {
-                scope += DEFAULT_SCOPE;
-                scopes = new String[] { scope };
-                scopes = getScopes(context, scopes);
-                return setAuthorizationHeader(context, new TokenRequestContext().addScopes(scopes)).thenReturn(true);
-            }
-            return Mono.just(false);
-        });
+        String scope = challenges.get("resource_id=");
+        if (scope != null) {
+            scope += DEFAULT_SCOPE;
+            scopes = new String[] { scope };
+            scopes = getScopes(context, scopes);
+            return setAuthorizationHeader(context, new TokenRequestContext().addScopes(scopes)).thenReturn(true);
+        }
+        return Mono.just(false);
     }
 
     @Override
@@ -102,7 +98,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
      * @param scopes Default scopes used by the policy.
      * @return The scopes for the specific request.
      */
-    public String[] getScopes(HttpPipelineCallContext context, String[] scopes) {
+    String[] getScopes(HttpPipelineCallContext context, String[] scopes) {
         return CoreUtils.clone(scopes);
     }
 
