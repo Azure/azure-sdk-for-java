@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,9 +18,9 @@ import java.util.Map;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "objectType",
-    defaultImpl = AzureWorkloadSapHanaRestoreRequest.class)
+    defaultImpl = AzureWorkloadSapHanaRestoreRequest.class,
+    visible = true)
 @JsonTypeName("AzureWorkloadSAPHanaRestoreRequest")
 @JsonSubTypes({
     @JsonSubTypes.Type(
@@ -28,10 +31,28 @@ import java.util.Map;
         value = AzureWorkloadSapHanaRestoreWithRehydrateRequest.class) })
 @Fluent
 public class AzureWorkloadSapHanaRestoreRequest extends AzureWorkloadRestoreRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "AzureWorkloadSAPHanaRestoreRequest";
+
     /**
      * Creates an instance of AzureWorkloadSapHanaRestoreRequest class.
      */
     public AzureWorkloadSapHanaRestoreRequest() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**
@@ -114,6 +135,16 @@ public class AzureWorkloadSapHanaRestoreRequest extends AzureWorkloadRestoreRequ
     @Override
     public AzureWorkloadSapHanaRestoreRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSapHanaRestoreRequest
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 

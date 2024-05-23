@@ -158,7 +158,7 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
         if (orgName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orgName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01-preview";
+        final String apiVersion = "2024-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -203,7 +203,7 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
         if (orgName == null) {
             return Mono.error(new IllegalArgumentException("Parameter orgName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01-preview";
+        final String apiVersion = "2024-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -322,7 +322,7 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
         if (projectName == null) {
             return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01-preview";
+        final String apiVersion = "2024-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -368,7 +368,7 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
         if (projectName == null) {
             return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01-preview";
+        final String apiVersion = "2024-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -475,7 +475,7 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
         } else {
             azureDevOpsProject.validate();
         }
-        final String apiVersion = "2023-09-01-preview";
+        final String apiVersion = "2024-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -530,7 +530,7 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
         } else {
             azureDevOpsProject.validate();
         }
-        final String apiVersion = "2023-09-01-preview";
+        final String apiVersion = "2024-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -603,8 +603,10 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
     public SyncPoller<PollResult<AzureDevOpsProjectInner>, AzureDevOpsProjectInner> beginCreateOrUpdate(
         String resourceGroupName, String securityConnectorName, String orgName, String projectName,
         AzureDevOpsProjectInner azureDevOpsProject) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, securityConnectorName, orgName, projectName,
-            azureDevOpsProject).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, securityConnectorName, orgName, projectName,
+                azureDevOpsProject)
+            .getSyncPoller();
     }
 
     /**
@@ -625,8 +627,10 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
     public SyncPoller<PollResult<AzureDevOpsProjectInner>, AzureDevOpsProjectInner> beginCreateOrUpdate(
         String resourceGroupName, String securityConnectorName, String orgName, String projectName,
         AzureDevOpsProjectInner azureDevOpsProject, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, securityConnectorName, orgName, projectName,
-            azureDevOpsProject, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, securityConnectorName, orgName, projectName,
+                azureDevOpsProject, context)
+            .getSyncPoller();
     }
 
     /**
@@ -755,7 +759,7 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
         } else {
             azureDevOpsProject.validate();
         }
-        final String apiVersion = "2023-09-01-preview";
+        final String apiVersion = "2024-04-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -810,7 +814,7 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
         } else {
             azureDevOpsProject.validate();
         }
-        final String apiVersion = "2023-09-01-preview";
+        final String apiVersion = "2024-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -905,8 +909,10 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
     public SyncPoller<PollResult<AzureDevOpsProjectInner>, AzureDevOpsProjectInner> beginUpdate(
         String resourceGroupName, String securityConnectorName, String orgName, String projectName,
         AzureDevOpsProjectInner azureDevOpsProject, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, securityConnectorName, orgName, projectName, azureDevOpsProject,
-            context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, securityConnectorName, orgName, projectName, azureDevOpsProject,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -926,7 +932,8 @@ public final class AzureDevOpsProjectsClientImpl implements AzureDevOpsProjectsC
     private Mono<AzureDevOpsProjectInner> updateAsync(String resourceGroupName, String securityConnectorName,
         String orgName, String projectName, AzureDevOpsProjectInner azureDevOpsProject) {
         return beginUpdateAsync(resourceGroupName, securityConnectorName, orgName, projectName, azureDevOpsProject)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

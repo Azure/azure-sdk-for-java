@@ -413,6 +413,10 @@ public class Utils {
         return Utils.simpleObjectMapper;
     }
 
+    public static ObjectMapper getSimpleObjectMapperWithAllowDuplicates() {
+        return Utils.simpleObjectMapperAllowingDuplicatedProperties;
+    }
+
     public static ObjectMapper getDurationEnabledObjectMapper() {
         return durationEnabledObjectMapper;
     }

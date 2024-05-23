@@ -5,14 +5,15 @@
 package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.resourcemanager.nginx.models.NginxDeployment;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Samples for Deployments Update.
  */
 public final class DeploymentsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Deployments_Update.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Update.json
      */
     /**
      * Sample code: Deployments_Update.
@@ -23,6 +24,18 @@ public final class DeploymentsUpdateSamples {
         NginxDeployment resource = manager.deployments()
             .getByResourceGroupWithResponse("myResourceGroup", "myDeployment", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().apply();
+        resource.update().withTags(mapOf("Environment", "Dev")).apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

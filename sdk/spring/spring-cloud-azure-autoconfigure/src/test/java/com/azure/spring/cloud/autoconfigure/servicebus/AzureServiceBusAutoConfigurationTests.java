@@ -13,6 +13,8 @@ import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusClientBuilderFactory;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
+import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -264,5 +266,39 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
             });
     }
 
+    @Test
+    void processorSubscriptionNameShouldConfigureProcessorClient() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.namespace=test-namespace",
+                "spring.cloud.azure.servicebus.entity-name=test-topic",
+                "spring.cloud.azure.servicebus.entity-type=topic",
+                "spring.cloud.azure.servicebus.processor.subscription-name=sub"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AzureServiceBusConsumerClientConfiguration.class);
+                assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
+            });
+    }
 
+    @Test
+    void consumerSubscriptionNameShouldConfigureConsumerClient() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.namespace=test-namespace",
+                "spring.cloud.azure.servicebus.entity-name=test-topic",
+                "spring.cloud.azure.servicebus.entity-type=topic",
+                "spring.cloud.azure.servicebus.consumer.subscription-name=sub"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.class);
+                assertThat(context).hasSingleBean(AzureServiceBusConsumerClientConfiguration.class);
+            });
+    }
 }

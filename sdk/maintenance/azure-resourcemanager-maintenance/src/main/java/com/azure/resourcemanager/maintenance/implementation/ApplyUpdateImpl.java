@@ -15,8 +15,8 @@ public final class ApplyUpdateImpl implements ApplyUpdate {
 
     private final com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager;
 
-    ApplyUpdateImpl(
-        ApplyUpdateInner innerObject, com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
+    ApplyUpdateImpl(ApplyUpdateInner innerObject,
+        com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

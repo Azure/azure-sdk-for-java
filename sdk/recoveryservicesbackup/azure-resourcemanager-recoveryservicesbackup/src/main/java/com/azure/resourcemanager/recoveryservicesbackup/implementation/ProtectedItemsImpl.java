@@ -28,8 +28,9 @@ public final class ProtectedItemsImpl implements ProtectedItems {
 
     public Response<ProtectedItemResource> getWithResponse(String vaultName, String resourceGroupName,
         String fabricName, String containerName, String protectedItemName, String filter, Context context) {
-        Response<ProtectedItemResourceInner> inner = this.serviceClient().getWithResponse(vaultName, resourceGroupName,
-            fabricName, containerName, protectedItemName, filter, context);
+        Response<ProtectedItemResourceInner> inner = this.serviceClient()
+            .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProtectedItemResourceImpl(inner.getValue(), this.manager()));
@@ -51,8 +52,8 @@ public final class ProtectedItemsImpl implements ProtectedItems {
 
     public Response<Void> deleteWithResponse(String vaultName, String resourceGroupName, String fabricName,
         String containerName, String protectedItemName, Context context) {
-        return this.serviceClient().deleteWithResponse(vaultName, resourceGroupName, fabricName, containerName,
-            protectedItemName, context);
+        return this.serviceClient()
+            .deleteWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, context);
     }
 
     public void delete(String vaultName, String resourceGroupName, String fabricName, String containerName,
@@ -87,8 +88,10 @@ public final class ProtectedItemsImpl implements ProtectedItems {
                 String.format("The resource ID '%s' is not valid. Missing path segment 'protectedItems'.", id)));
         }
         String localFilter = null;
-        return this.getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
-            localFilter, Context.NONE).getValue();
+        return this
+            .getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, localFilter,
+                Context.NONE)
+            .getValue();
     }
 
     public Response<ProtectedItemResource> getByIdWithResponse(String id, String filter, Context context) {

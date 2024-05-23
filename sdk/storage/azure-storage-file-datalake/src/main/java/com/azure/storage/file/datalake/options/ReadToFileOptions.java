@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake.options;
 
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
@@ -18,29 +19,30 @@ import java.util.Set;
  * Parameters when calling readToFile() on {@link DataLakeFileClient}
  */
 public class ReadToFileOptions {
-    private String filePath;
+    private final String filePath;
     private FileRange range;
     private ParallelTransferOptions parallelTransferOptions;
     private DownloadRetryOptions downloadRetryOptions;
     private DataLakeRequestConditions dataLakeRequestConditions;
-    private boolean rangeGetContentMd5;
+    private Boolean rangeGetContentMd5;
     private Set<OpenOption> openOptions;
     private Boolean userPrincipalName;
+
+    /**
+     * Constructs a {@link ReadToFileOptions}.
+     *
+     * @param filePath Path of the file to download to.
+     */
+    public ReadToFileOptions(String filePath) {
+        StorageImplUtils.assertNotNull("filePath", filePath);
+        this.filePath = filePath;
+    }
 
     /**
      * @return A {@link String} representing the filePath where the downloaded data will be written.
      */
     public String getFilePath() {
         return filePath;
-    }
-
-    /**
-     * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
-     * @return The updated options.
-     */
-    public ReadToFileOptions setFilePath(String filePath) {
-        this.filePath = filePath;
-        return this;
     }
 
     /**
@@ -113,7 +115,7 @@ public class ReadToFileOptions {
     /**
      * @return Whether the contentMD5 for the specified file range should be returned.
      */
-    public boolean isRangeGetContentMd5() {
+    public Boolean isRangeGetContentMd5() {
         return rangeGetContentMd5;
     }
 
@@ -121,7 +123,7 @@ public class ReadToFileOptions {
      * @param rangeGetContentMd5 Whether the contentMD5 for the specified file range should be returned.
      * @return The updated options.
      */
-    public ReadToFileOptions setRangeGetContentMd5(boolean rangeGetContentMd5) {
+    public ReadToFileOptions setRangeGetContentMd5(Boolean rangeGetContentMd5) {
         this.rangeGetContentMd5 = rangeGetContentMd5;
         return this;
     }

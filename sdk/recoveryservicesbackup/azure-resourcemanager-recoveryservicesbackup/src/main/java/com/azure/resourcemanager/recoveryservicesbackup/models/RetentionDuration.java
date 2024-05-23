@@ -32,8 +32,8 @@ public final class RetentionDuration {
     }
 
     /**
-     * Get the count property: Count of duration types. Retention duration is obtained by the counting the duration
-     * type Count times.
+     * Get the count property: Count of duration types. Retention duration is obtained by the counting the duration type
+     * Count times.
      * For example, when Count = 3 and DurationType = Weeks, retention duration will be three weeks.
      * 
      * @return the count value.
@@ -43,8 +43,8 @@ public final class RetentionDuration {
     }
 
     /**
-     * Set the count property: Count of duration types. Retention duration is obtained by the counting the duration
-     * type Count times.
+     * Set the count property: Count of duration types. Retention duration is obtained by the counting the duration type
+     * Count times.
      * For example, when Count = 3 and DurationType = Weeks, retention duration will be three weeks.
      * 
      * @param count the count value to set.

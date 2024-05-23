@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Summary of the replication monitoring data for this vault. */
+/**
+ * Summary of the replication monitoring data for this vault.
+ */
 @Fluent
 public final class MonitoringSummary {
     /*
@@ -46,13 +48,15 @@ public final class MonitoringSummary {
     @JsonProperty(value = "unsupportedProviderCount")
     private Integer unsupportedProviderCount;
 
-    /** Creates an instance of MonitoringSummary class. */
+    /**
+     * Creates an instance of MonitoringSummary class.
+     */
     public MonitoringSummary() {
     }
 
     /**
      * Get the unHealthyVmCount property: Count of unhealthy VMs.
-     *
+     * 
      * @return the unHealthyVmCount value.
      */
     public Integer unHealthyVmCount() {
@@ -61,7 +65,7 @@ public final class MonitoringSummary {
 
     /**
      * Set the unHealthyVmCount property: Count of unhealthy VMs.
-     *
+     * 
      * @param unHealthyVmCount the unHealthyVmCount value to set.
      * @return the MonitoringSummary object itself.
      */
@@ -72,7 +76,7 @@ public final class MonitoringSummary {
 
     /**
      * Get the unHealthyProviderCount property: Count of unhealthy replication providers.
-     *
+     * 
      * @return the unHealthyProviderCount value.
      */
     public Integer unHealthyProviderCount() {
@@ -81,7 +85,7 @@ public final class MonitoringSummary {
 
     /**
      * Set the unHealthyProviderCount property: Count of unhealthy replication providers.
-     *
+     * 
      * @param unHealthyProviderCount the unHealthyProviderCount value to set.
      * @return the MonitoringSummary object itself.
      */
@@ -92,7 +96,7 @@ public final class MonitoringSummary {
 
     /**
      * Get the eventsCount property: Count of all critical warnings.
-     *
+     * 
      * @return the eventsCount value.
      */
     public Integer eventsCount() {
@@ -101,7 +105,7 @@ public final class MonitoringSummary {
 
     /**
      * Set the eventsCount property: Count of all critical warnings.
-     *
+     * 
      * @param eventsCount the eventsCount value to set.
      * @return the MonitoringSummary object itself.
      */
@@ -112,7 +116,7 @@ public final class MonitoringSummary {
 
     /**
      * Get the deprecatedProviderCount property: Count of all deprecated recovery service providers.
-     *
+     * 
      * @return the deprecatedProviderCount value.
      */
     public Integer deprecatedProviderCount() {
@@ -121,7 +125,7 @@ public final class MonitoringSummary {
 
     /**
      * Set the deprecatedProviderCount property: Count of all deprecated recovery service providers.
-     *
+     * 
      * @param deprecatedProviderCount the deprecatedProviderCount value to set.
      * @return the MonitoringSummary object itself.
      */
@@ -132,7 +136,7 @@ public final class MonitoringSummary {
 
     /**
      * Get the supportedProviderCount property: Count of all the supported recovery service providers.
-     *
+     * 
      * @return the supportedProviderCount value.
      */
     public Integer supportedProviderCount() {
@@ -141,7 +145,7 @@ public final class MonitoringSummary {
 
     /**
      * Set the supportedProviderCount property: Count of all the supported recovery service providers.
-     *
+     * 
      * @param supportedProviderCount the supportedProviderCount value to set.
      * @return the MonitoringSummary object itself.
      */
@@ -152,7 +156,7 @@ public final class MonitoringSummary {
 
     /**
      * Get the unsupportedProviderCount property: Count of all the unsupported recovery service providers.
-     *
+     * 
      * @return the unsupportedProviderCount value.
      */
     public Integer unsupportedProviderCount() {
@@ -161,7 +165,7 @@ public final class MonitoringSummary {
 
     /**
      * Set the unsupportedProviderCount property: Count of all the unsupported recovery service providers.
-     *
+     * 
      * @param unsupportedProviderCount the unsupportedProviderCount value to set.
      * @return the MonitoringSummary object itself.
      */
@@ -172,7 +176,7 @@ public final class MonitoringSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

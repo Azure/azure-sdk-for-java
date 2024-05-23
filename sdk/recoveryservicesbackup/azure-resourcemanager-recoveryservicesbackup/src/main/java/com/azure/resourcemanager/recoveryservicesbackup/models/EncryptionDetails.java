@@ -49,8 +49,8 @@ public final class EncryptionDetails {
     }
 
     /**
-     * Get the encryptionEnabled property: Identifies whether this backup copy represents an encrypted VM at the time
-     * of backup.
+     * Get the encryptionEnabled property: Identifies whether this backup copy represents an encrypted VM at the time of
+     * backup.
      * 
      * @return the encryptionEnabled value.
      */
@@ -59,8 +59,8 @@ public final class EncryptionDetails {
     }
 
     /**
-     * Set the encryptionEnabled property: Identifies whether this backup copy represents an encrypted VM at the time
-     * of backup.
+     * Set the encryptionEnabled property: Identifies whether this backup copy represents an encrypted VM at the time of
+     * backup.
      * 
      * @param encryptionEnabled the encryptionEnabled value to set.
      * @return the EncryptionDetails object itself.

@@ -29,8 +29,7 @@ public final class ResourceSkuInner {
     private List<ResourceSkuCapabilities> capabilities;
 
     /*
-     * The set of locations where the SKU is available. This is the supported and registered Azure Geo Regions (e.g.,
-     * West US, East US, Southeast Asia, etc.).
+     * The set of locations where the SKU is available. This is the supported and registered Azure Geo Regions (e.g., West US, East US, Southeast Asia, etc.).
      */
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> locations;
@@ -89,8 +88,8 @@ public final class ResourceSkuInner {
     }
 
     /**
-     * Get the locations property: The set of locations where the SKU is available. This is the supported and
-     * registered Azure Geo Regions (e.g., West US, East US, Southeast Asia, etc.).
+     * Get the locations property: The set of locations where the SKU is available. This is the supported and registered
+     * Azure Geo Regions (e.g., West US, East US, Southeast Asia, etc.).
      * 
      * @return the locations value.
      */

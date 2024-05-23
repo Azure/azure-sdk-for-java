@@ -7,6 +7,7 @@
 - Supported disabling public network access in `FunctionApp` via `disablePublicNetworkAccess()`, for private link feature.
 - Supported disabling public network access in `DeploymentSlot` via `disablePublicNetworkAccess()`, for private link feature.
 - Supported disabling public network access in `FunctionDeploymentSlot` via `disablePublicNetworkAccess()`, for private link feature.
+- Added extra retry for Function App on ACA.
 
 ## 2.38.0 (2024-04-16)
 

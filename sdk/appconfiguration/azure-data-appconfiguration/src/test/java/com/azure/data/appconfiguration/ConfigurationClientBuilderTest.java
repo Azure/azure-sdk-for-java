@@ -199,6 +199,10 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
                 .httpClient(httpClient)
                 .addPolicy(interceptorManager.getRecordPolicy());
         }
+        // Disable `("$.key")` sanitizer
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers(Collections.singletonList("AZSDK3447"));
+        }
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
         assertEquals(addedSetting.getKey(), key);
@@ -227,6 +231,11 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             clientBuilder.httpClient(interceptorManager.getPlaybackClient());
+        }
+
+        // Disable `("$.key")` sanitizer
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers(Collections.singletonList("AZSDK3447"));
         }
 
         ConfigurationSetting addedSetting = clientBuilder

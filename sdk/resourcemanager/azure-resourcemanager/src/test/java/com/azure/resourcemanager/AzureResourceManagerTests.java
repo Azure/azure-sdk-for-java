@@ -13,6 +13,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.logging.ClientLogger;
@@ -1093,7 +1094,9 @@ public class AzureResourceManagerTests extends ResourceManagerTestProxyTestBase 
     //    }
 
     @Test
+    @LiveOnly
     public void testTrafficManager() throws Exception {
+        // LiveOnly because "subscription references cannot be stored in recordings"
         new TestTrafficManager(azureResourceManager.publicIpAddresses())
                 .runTest(azureResourceManager.trafficManagerProfiles(), azureResourceManager.resourceGroups());
     }

@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the authentication type. */
+/**
+ * Specifies the authentication type.
+ */
 public final class AuthType extends ExpandableStringEnum<AuthType> {
-    /** Static value Invalid for AuthType. */
+    /**
+     * Static value Invalid for AuthType.
+     */
     public static final AuthType INVALID = fromString("Invalid");
 
-    /** Static value ACS for AuthType. */
+    /**
+     * Static value ACS for AuthType.
+     */
     public static final AuthType ACS = fromString("ACS");
 
-    /** Static value AAD for AuthType. */
+    /**
+     * Static value AAD for AuthType.
+     */
     public static final AuthType AAD = fromString("AAD");
 
-    /** Static value AccessControlService for AuthType. */
+    /**
+     * Static value AccessControlService for AuthType.
+     */
     public static final AuthType ACCESS_CONTROL_SERVICE = fromString("AccessControlService");
 
-    /** Static value AzureActiveDirectory for AuthType. */
+    /**
+     * Static value AzureActiveDirectory for AuthType.
+     */
     public static final AuthType AZURE_ACTIVE_DIRECTORY = fromString("AzureActiveDirectory");
 
     /**
      * Creates a new instance of AuthType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class AuthType extends ExpandableStringEnum<AuthType> {
 
     /**
      * Creates or finds a AuthType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AuthType.
      */
@@ -47,7 +59,7 @@ public final class AuthType extends ExpandableStringEnum<AuthType> {
 
     /**
      * Gets known AuthType values.
-     *
+     * 
      * @return known AuthType values.
      */
     public static Collection<AuthType> values() {

@@ -9,9 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class BackupProtectionContainersListSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * AzureStorage/ProtectionContainers_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/AzureStorage/ProtectionContainers_List.json
      */
     /**
      * Sample code: List Backup Protection Containers.
@@ -20,7 +18,7 @@ public final class BackupProtectionContainersListSamples {
      */
     public static void listBackupProtectionContainers(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupProtectionContainers().list("testVault", "testRg", "backupManagementType eq 'AzureWorkload'",
-            com.azure.core.util.Context.NONE);
+        manager.backupProtectionContainers()
+            .list("testVault", "testRg", "backupManagementType eq 'AzureWorkload'", com.azure.core.util.Context.NONE);
     }
 }

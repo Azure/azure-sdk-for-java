@@ -3,11 +3,25 @@
 
 package com.azure.cosmos.spark
 
+/**
+ * The AccountDataResolver trait is used to allow spark environments to provide custom authentication
+ */
 trait AccountDataResolver {
-    def getAccountDataConfig(configs : Map[String, String]): Map[String, String]
+  /**
+   * This method will be invoked during initialization to allow a spark environment to customize the account
+   * configuration
+   * @param configs the user configuration originally provided
+   * @return the configuration with any projections done
+   */
+  def getAccountDataConfig(configs : Map[String, String]): Map[String, String]
 
-    // @TODO fabianm - leaving this commented out for now. Below is how I would envision
-    // exposing the option to use linked service tokens eventually when the LinkedService for
-    // Cosmos DB supports ManagedIdentity authentication
-    // def getManagedIdentityTokenProvider: List[String] => Mono[CosmosAccessToken]
+  /**
+   * This method will be invoked by the Cosmos DB Spark connector to retrieve access tokens. It will only
+   * be used when the config `spark.cosmos.auth.type` is set to `AccessToken` - and in this case
+   * the implementation of this trait will need to provide a function that can be used to produce
+   * access tokens or None in the case that for the specified configuration no auth can be provided.
+   * @param configs the user configuration originally provided
+   * @return A function that can be used to provide access tokens
+   */
+  def getAccessTokenProvider(configs : Map[String, String]): Option[List[String] => CosmosAccessToken]
 }

@@ -19,7 +19,7 @@ import java.util.List;
 @Immutable
 public final class DocumentLanguage implements JsonSerializable<DocumentLanguage> {
     /*
-     * Detected language.  Value may an ISO 639-1 language code (ex. "en", "fr")
+     * Detected language. Value may an ISO 639-1 language code (ex. "en", "fr")
      * or BCP 47 language tag (ex. "zh-Hans").
      */
     @Generated

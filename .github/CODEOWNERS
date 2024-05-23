@@ -451,6 +451,12 @@
 # ServiceLabel: %Functions
 # ServiceOwners:                                     @ahmedelnably @fabiocav
 
+# PRLabel: %clientcore
+/sdk/clientcore/                                    @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
+
+# ServiceLabel: %clientcore
+# AzureSdkOwners:                                    @samvaity @vcolin7 @jonathangiles @srnagar @alzimmermsft
+
 # ServiceLabel: %Graph.Microsoft
 # ServiceOwners:                                     @dkershaw10 @baywet
 
@@ -850,3 +856,4 @@
 
 # Add owners for notifications for specific pipelines
 /eng/pipelines/aggregate-reports.yml                 @joshfree @jonathangiles
+/eng/common/pipelines/codeowners-linter.yml          @alzimmermsft @srnagar @lmolkova
