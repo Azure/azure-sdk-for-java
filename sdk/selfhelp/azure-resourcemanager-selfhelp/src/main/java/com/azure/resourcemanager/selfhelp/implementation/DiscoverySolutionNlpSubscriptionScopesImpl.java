@@ -27,10 +27,10 @@ public final class DiscoverySolutionNlpSubscriptionScopesImpl implements Discove
         this.serviceManager = serviceManager;
     }
 
-    public Response<DiscoveryNlpResponse> postWithResponse(DiscoveryNlpRequest discoverSolutionRequest,
-        Context context) {
+    public Response<DiscoveryNlpResponse> postWithResponse(String subscriptionId,
+        DiscoveryNlpRequest discoverSolutionRequest, Context context) {
         Response<DiscoveryNlpResponseInner> inner
-            = this.serviceClient().postWithResponse(discoverSolutionRequest, context);
+            = this.serviceClient().postWithResponse(subscriptionId, discoverSolutionRequest, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DiscoveryNlpResponseImpl(inner.getValue(), this.manager()));
@@ -39,8 +39,8 @@ public final class DiscoverySolutionNlpSubscriptionScopesImpl implements Discove
         }
     }
 
-    public DiscoveryNlpResponse post() {
-        DiscoveryNlpResponseInner inner = this.serviceClient().post();
+    public DiscoveryNlpResponse post(String subscriptionId) {
+        DiscoveryNlpResponseInner inner = this.serviceClient().post(subscriptionId);
         if (inner != null) {
             return new DiscoveryNlpResponseImpl(inner, this.manager());
         } else {

@@ -36,7 +36,8 @@ public final class BatchTaskCounts implements JsonSerializable<BatchTaskCounts> 
     private final int completed;
 
     /*
-     * The number of Tasks which succeeded. A Task succeeds if its result (found in the executionInfo property) is 'success'.
+     * The number of Tasks which succeeded. A Task succeeds if its result (found in the executionInfo property) is
+     * 'success'.
      */
     @Generated
     private final int succeeded;

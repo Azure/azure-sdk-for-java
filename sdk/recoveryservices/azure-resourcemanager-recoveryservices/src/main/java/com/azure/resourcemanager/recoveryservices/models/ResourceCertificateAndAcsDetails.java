@@ -7,15 +7,29 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 
-/** Certificate details representing the Vault credentials for ACS. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authType")
+/**
+ * Certificate details representing the Vault credentials for ACS.
+ */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "authType",
+    defaultImpl = ResourceCertificateAndAcsDetails.class,
+    visible = true)
 @JsonTypeName("AccessControlService")
 @Fluent
 public final class ResourceCertificateAndAcsDetails extends ResourceCertificateDetails {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "authType", required = true)
+    private String authType = "AccessControlService";
+
     /*
      * ACS namespace name - tenant for our service.
      */
@@ -34,13 +48,26 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
     @JsonProperty(value = "globalAcsRPRealm", required = true)
     private String globalAcsRPRealm;
 
-    /** Creates an instance of ResourceCertificateAndAcsDetails class. */
+    /**
+     * Creates an instance of ResourceCertificateAndAcsDetails class.
+     */
     public ResourceCertificateAndAcsDetails() {
     }
 
     /**
+     * Get the authType property: This property will be used as the discriminator for deciding the specific types in the
+     * polymorphic chain of types.
+     * 
+     * @return the authType value.
+     */
+    @Override
+    public String authType() {
+        return this.authType;
+    }
+
+    /**
      * Get the globalAcsNamespace property: ACS namespace name - tenant for our service.
-     *
+     * 
      * @return the globalAcsNamespace value.
      */
     public String globalAcsNamespace() {
@@ -49,7 +76,7 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
 
     /**
      * Set the globalAcsNamespace property: ACS namespace name - tenant for our service.
-     *
+     * 
      * @param globalAcsNamespace the globalAcsNamespace value to set.
      * @return the ResourceCertificateAndAcsDetails object itself.
      */
@@ -60,7 +87,7 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
 
     /**
      * Get the globalAcsHostname property: Acs mgmt host name to connect to.
-     *
+     * 
      * @return the globalAcsHostname value.
      */
     public String globalAcsHostname() {
@@ -69,7 +96,7 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
 
     /**
      * Set the globalAcsHostname property: Acs mgmt host name to connect to.
-     *
+     * 
      * @param globalAcsHostname the globalAcsHostname value to set.
      * @return the ResourceCertificateAndAcsDetails object itself.
      */
@@ -80,7 +107,7 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
 
     /**
      * Get the globalAcsRPRealm property: Global ACS namespace RP realm.
-     *
+     * 
      * @return the globalAcsRPRealm value.
      */
     public String globalAcsRPRealm() {
@@ -89,7 +116,7 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
 
     /**
      * Set the globalAcsRPRealm property: Global ACS namespace RP realm.
-     *
+     * 
      * @param globalAcsRPRealm the globalAcsRPRealm value to set.
      * @return the ResourceCertificateAndAcsDetails object itself.
      */
@@ -98,56 +125,72 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAcsDetails withCertificate(byte[] certificate) {
         super.withCertificate(certificate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAcsDetails withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAcsDetails withIssuer(String issuer) {
         super.withIssuer(issuer);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAcsDetails withResourceId(Long resourceId) {
         super.withResourceId(resourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAcsDetails withSubject(String subject) {
         super.withSubject(subject);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAcsDetails withThumbprint(String thumbprint) {
         super.withThumbprint(thumbprint);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAcsDetails withValidFrom(OffsetDateTime validFrom) {
         super.withValidFrom(validFrom);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceCertificateAndAcsDetails withValidTo(OffsetDateTime validTo) {
         super.withValidTo(validTo);
@@ -156,29 +199,26 @@ public final class ResourceCertificateAndAcsDetails extends ResourceCertificateD
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (globalAcsNamespace() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property globalAcsNamespace in model ResourceCertificateAndAcsDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property globalAcsNamespace in model ResourceCertificateAndAcsDetails"));
         }
         if (globalAcsHostname() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property globalAcsHostname in model ResourceCertificateAndAcsDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property globalAcsHostname in model ResourceCertificateAndAcsDetails"));
         }
         if (globalAcsRPRealm() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property globalAcsRPRealm in model ResourceCertificateAndAcsDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property globalAcsRPRealm in model ResourceCertificateAndAcsDetails"));
         }
     }
 

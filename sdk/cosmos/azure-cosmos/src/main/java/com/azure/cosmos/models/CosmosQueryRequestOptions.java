@@ -257,6 +257,15 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
+     * Gets the maximum item size to fetch during non-streaming order by queries.
+     *
+     * @return the max number of items for vector search.
+     */
+    Integer getMaxItemCountForVectorSearch() {
+        return this.actualRequestOptions.getMaxItemCountForVectorSearch();
+    }
+
+    /**
      * Gets the request continuation token.
      *
      * @return the request continuation.
@@ -614,6 +623,11 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
+                public Integer getMaxItemCountForVectorSearch(CosmosQueryRequestOptions options) {
+                    return options.getMaxItemCountForVectorSearch();
+                }
+
+                @Override
                 public void setPartitionKeyDefinition(CosmosQueryRequestOptions options, PartitionKeyDefinition partitionKeyDefinition) {
                     options.setPartitionKeyDefinition(partitionKeyDefinition);
                 }
@@ -621,6 +635,7 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public PartitionKeyDefinition getPartitionKeyDefinition(CosmosQueryRequestOptions options) {
                     return options.getPartitionKeyDefinition();
+
                 }
             });
     }

@@ -6,78 +6,57 @@ package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.nginx.NginxManager;
 import com.azure.resourcemanager.nginx.models.NginxConfiguration;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationFile;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationPackage;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ConfigurationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"files\":[{\"content\":\"yriwwroyqb\",\"virtualPath\":\"rmcqiby\"},{\"content\":\"ojvknmefqsgzvaha\",\"virtualPath\":\"y\"},{\"content\":\"pvgqzcjrvxdjzlm\",\"virtualPath\":\"xkvugfhzov\"},{\"content\":\"jvzunluthnnp\",\"virtualPath\":\"xipeilpjzuaejx\"}],\"protectedFiles\":[{\"content\":\"skzbb\",\"virtualPath\":\"zumveekgpwo\"},{\"content\":\"hkfpbs\",\"virtualPath\":\"ofd\"},{\"content\":\"uusdttouwa\",\"virtualPath\":\"ekqvkeln\"}],\"package\":{\"data\":\"bxwyjsflhhcaa\",\"protectedFiles\":[\"ixisxyawjoy\",\"qcslyjpkiid\",\"yexz\",\"eli\"]},\"rootFile\":\"nr\"},\"location\":\"folhbnxknal\",\"id\":\"lp\",\"name\":\"ggdtpnapnyiro\",\"type\":\"uhpigvp\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"files\":[{\"content\":\"hjpglkf\",\"virtualPath\":\"hdneuelfph\"},{\"content\":\"yhtozfikdowwqu\",\"virtualPath\":\"xzxcl\"},{\"content\":\"thhqzonosggbh\",\"virtualPath\":\"hfwdsjnkaljutiis\"},{\"content\":\"cffgdkzzewk\",\"virtualPath\":\"hqcrailvpnpp\"}],\"protectedFiles\":[{\"content\":\"rwdmhdlxyjrxsa\",\"virtualPath\":\"fcnihgwq\"},{\"content\":\"nedgfbc\",\"virtualPath\":\"cvqvpkeqdcv\"}],\"package\":{\"data\":\"vo\",\"protectedFiles\":[\"otbobzdopcj\",\"vnhdldwmgxcxr\"]},\"rootFile\":\"pmutwuo\"},\"location\":\"rpkhjwn\",\"id\":\"qsluicp\",\"name\":\"ggkzzlvmbmpa\",\"type\":\"modfvuefywsbpfvm\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NginxManager manager = NginxManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NginxManager manager = NginxManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NginxConfiguration response = manager.configurations()
+            .define("tmweriofzpyq")
+            .withExistingNginxDeployment("zucerscdntnev", "iwjmygtdssls")
+            .withRegion("pgcjefuzmuvp")
+            .withProperties(new NginxConfigurationProperties()
+                .withFiles(Arrays.asList(new NginxConfigurationFile().withContent("ets").withVirtualPath("szhedplvw"),
+                    new NginxConfigurationFile().withContent("ubmwmbesld").withVirtualPath("wwtppj")))
+                .withProtectedFiles(
+                    Arrays.asList(new NginxConfigurationFile().withContent("ogaok").withVirtualPath("z"),
+                        new NginxConfigurationFile().withContent("sikvmkqzeqqkdlt").withVirtualPath("xmhhvhgureo"),
+                        new NginxConfigurationFile().withContent("wobdagxtibqdx").withVirtualPath("wakbogqxndl")))
+                .withPackageProperty(new NginxConfigurationPackage().withData("xhuri")
+                    .withProtectedFiles(Arrays.asList("podxunkb", "bxmubyynt", "lrb", "tkoievseotgq")))
+                .withRootFile("ltmuwlauwzizx"))
+            .create();
 
-        NginxConfiguration response
-            = manager
-                .configurations().define("ovbvmeueciv").withExistingNginxDeployment("xcug",
-                    "cjooxdjebwpucwwf")
-                .withRegion("zmh")
-                .withProperties(new NginxConfigurationProperties()
-                    .withFiles(Arrays.asList(
-                        new NginxConfigurationFile().withContent("jgjrwjueiotwm").withVirtualPath("ytdxwit"),
-                        new NginxConfigurationFile().withContent("rjaw").withVirtualPath("wgxhn")))
-                    .withProtectedFiles(
-                        Arrays.asList(new NginxConfigurationFile().withContent("fbkp").withVirtualPath("gklwn"),
-                            new NginxConfigurationFile().withContent("hjdauwhvylwz").withVirtualPath("dhxujznbmpo"),
-                            new NginxConfigurationFile().withContent("wpr").withVirtualPath("lve"),
-                            new NginxConfigurationFile().withContent("lupj").withVirtualPath("hfxobbcswsrtj")))
-                    .withPackageProperty(new NginxConfigurationPackage().withData("lrbpbewtghfgbl")
-                        .withProtectedFiles(Arrays.asList("xzvlvqhjkbegib", "nmxiebwwaloayqc", "wrtz")))
-                    .withRootFile("zg"))
-                .create();
-
-        Assertions.assertEquals("yriwwroyqb", response.properties().files().get(0).content());
-        Assertions.assertEquals("rmcqiby", response.properties().files().get(0).virtualPath());
-        Assertions.assertEquals("skzbb", response.properties().protectedFiles().get(0).content());
-        Assertions.assertEquals("zumveekgpwo", response.properties().protectedFiles().get(0).virtualPath());
-        Assertions.assertEquals("bxwyjsflhhcaa", response.properties().packageProperty().data());
-        Assertions.assertEquals("ixisxyawjoy", response.properties().packageProperty().protectedFiles().get(0));
-        Assertions.assertEquals("nr", response.properties().rootFile());
-        Assertions.assertEquals("folhbnxknal", response.location());
+        Assertions.assertEquals("hjpglkf", response.properties().files().get(0).content());
+        Assertions.assertEquals("hdneuelfph", response.properties().files().get(0).virtualPath());
+        Assertions.assertEquals("rwdmhdlxyjrxsa", response.properties().protectedFiles().get(0).content());
+        Assertions.assertEquals("fcnihgwq", response.properties().protectedFiles().get(0).virtualPath());
+        Assertions.assertEquals("vo", response.properties().packageProperty().data());
+        Assertions.assertEquals("otbobzdopcj", response.properties().packageProperty().protectedFiles().get(0));
+        Assertions.assertEquals("pmutwuo", response.properties().rootFile());
+        Assertions.assertEquals("rpkhjwn", response.location());
     }
 }

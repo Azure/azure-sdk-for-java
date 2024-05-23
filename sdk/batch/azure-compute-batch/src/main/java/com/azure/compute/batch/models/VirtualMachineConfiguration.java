@@ -26,19 +26,34 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
     private final ImageReference imageReference;
 
     /*
-     * The SKU of the Batch Compute Node agent to be provisioned on Compute Nodes in the Pool. The Batch Compute Node agent is a program that runs on each Compute Node in the Pool, and provides the command-and-control interface between the Compute Node and the Batch service. There are different implementations of the Compute Node agent, known as SKUs, for different operating systems. You must specify a Compute Node agent SKU which matches the selected Image reference. To get the list of supported Compute Node agent SKUs along with their list of verified Image references, see the 'List supported Compute Node agent SKUs' operation.
+     * The SKU of the Batch Compute Node agent to be provisioned on Compute Nodes in the Pool. The Batch Compute Node
+     * agent is a program that runs on each Compute Node in the Pool, and provides the command-and-control interface
+     * between the Compute Node and the Batch service. There are different implementations of the Compute Node agent,
+     * known as SKUs, for different operating systems. You must specify a Compute Node agent SKU which matches the
+     * selected Image reference. To get the list of supported Compute Node agent SKUs along with their list of verified
+     * Image references, see the 'List supported Compute Node agent SKUs' operation.
      */
     @Generated
     private final String nodeAgentSkuId;
 
     /*
-     * Windows operating system settings on the virtual machine. This property must not be specified if the imageReference property specifies a Linux OS Image.
+     * Windows operating system settings on the virtual machine. This property must not be specified if the
+     * imageReference property specifies a Linux OS Image.
      */
     @Generated
     private WindowsConfiguration windowsConfiguration;
 
     /*
-     * The configuration for data disks attached to the Compute Nodes in the Pool. This property must be specified if the Compute Nodes in the Pool need to have empty data disks attached to them. This cannot be updated. Each Compute Node gets its own disk (the disk is not a file share). Existing disks cannot be attached, each attached disk is empty. When the Compute Node is removed from the Pool, the disk and all data associated with it is also deleted. The disk is not formatted after being attached, it must be formatted before use - for more information see https://docs.microsoft.com/en-us/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux and https://docs.microsoft.com/en-us/azure/virtual-machines/windows/attach-disk-ps#add-an-empty-data-disk-to-a-virtual-machine.
+     * The configuration for data disks attached to the Compute Nodes in the Pool. This property must be specified if
+     * the Compute Nodes in the Pool need to have empty data disks attached to them. This cannot be updated. Each
+     * Compute Node gets its own disk (the disk is not a file share). Existing disks cannot be attached, each attached
+     * disk is empty. When the Compute Node is removed from the Pool, the disk and all data associated with it is also
+     * deleted. The disk is not formatted after being attached, it must be formatted before use - for more information
+     * see
+     * https://docs.microsoft.com/en-us/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-
+     * linux and
+     * https://docs.microsoft.com/en-us/azure/virtual-machines/windows/attach-disk-ps#add-an-empty-data-disk-to-a-
+     * virtual-machine.
      */
     @Generated
     private List<DataDisk> dataDisks;
@@ -49,33 +64,38 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * Nodes which will be deployed. If omitted, no on-premises licensing discount is
      * applied. Values are:
      * 
-     *  Windows_Server - The on-premises license is for Windows
+     * Windows_Server - The on-premises license is for Windows
      * Server.
-     *  Windows_Client - The on-premises license is for Windows Client.
+     * Windows_Client - The on-premises license is for Windows Client.
      */
     @Generated
     private String licenseType;
 
     /*
-     * The container configuration for the Pool. If specified, setup is performed on each Compute Node in the Pool to allow Tasks to run in containers. All regular Tasks and Job manager Tasks run on this Pool must specify the containerSettings property, and all other Tasks may specify it.
+     * The container configuration for the Pool. If specified, setup is performed on each Compute Node in the Pool to
+     * allow Tasks to run in containers. All regular Tasks and Job manager Tasks run on this Pool must specify the
+     * containerSettings property, and all other Tasks may specify it.
      */
     @Generated
     private ContainerConfiguration containerConfiguration;
 
     /*
-     * The disk encryption configuration for the pool. If specified, encryption is performed on each node in the pool during node provisioning.
+     * The disk encryption configuration for the pool. If specified, encryption is performed on each node in the pool
+     * during node provisioning.
      */
     @Generated
     private DiskEncryptionConfiguration diskEncryptionConfiguration;
 
     /*
-     * The node placement configuration for the pool. This configuration will specify rules on how nodes in the pool will be physically allocated.
+     * The node placement configuration for the pool. This configuration will specify rules on how nodes in the pool
+     * will be physically allocated.
      */
     @Generated
     private BatchNodePlacementConfiguration nodePlacementConfiguration;
 
     /*
-     * The virtual machine extension for the pool. If specified, the extensions mentioned in this configuration will be installed on each node.
+     * The virtual machine extension for the pool. If specified, the extensions mentioned in this configuration will be
+     * installed on each node.
      */
     @Generated
     private List<VMExtension> extensions;
@@ -351,7 +371,10 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
     private SecurityProfile securityProfile;
 
     /*
-     * Specifies the service artifact reference id used to set same image version for all virtual machines in the scale set when using 'latest' image version. The service artifact reference id in the form of /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
+     * Specifies the service artifact reference id used to set same image version for all virtual machines in the scale
+     * set when using 'latest' image version. The service artifact reference id in the form of
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName
+     * }/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
      */
     @Generated
     private ServiceArtifactReference serviceArtifactReference;

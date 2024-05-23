@@ -7,16 +7,28 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.TieringCostInfoInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Response parameters for tiering cost info for savings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = TieringCostSavingInfo.class,
+    visible = true)
 @JsonTypeName("TieringCostSavingInfo")
 @Fluent
 public final class TieringCostSavingInfo extends TieringCostInfoInner {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "TieringCostSavingInfo";
+
     /*
      * Source tier size reduction in bytes after moving all the recommended backup points to target tier
      */
@@ -45,6 +57,17 @@ public final class TieringCostSavingInfo extends TieringCostInfoInner {
      * Creates an instance of TieringCostSavingInfo class.
      */
     public TieringCostSavingInfo() {
+    }
+
+    /**
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
     }
 
     /**

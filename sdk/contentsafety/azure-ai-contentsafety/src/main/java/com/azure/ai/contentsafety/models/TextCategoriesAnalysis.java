@@ -24,7 +24,9 @@ public final class TextCategoriesAnalysis implements JsonSerializable<TextCatego
     private final TextCategory category;
 
     /*
-     * The value increases with the severity of the input content. The value of this field is determined by the output type specified in the request. The output type could be ‘FourSeverityLevels’ or ‘EightSeverity Levels’, and the output value can be 0, 2, 4, 6 or 0, 1, 2, 3, 4, 5, 6, or 7.
+     * The value increases with the severity of the input content. The value of this field is determined by the output
+     * type specified in the request. The output type could be ‘FourSeverityLevels’ or ‘EightSeverity Levels’, and the
+     * output value can be 0, 2, 4, 6 or 0, 1, 2, 3, 4, 5, 6, or 7.
      */
     @Generated
     private Integer severity;

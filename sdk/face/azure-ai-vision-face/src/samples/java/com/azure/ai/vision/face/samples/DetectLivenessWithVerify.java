@@ -75,7 +75,7 @@ public class DetectLivenessWithVerify {
 
         } finally {
 //             Delete this session
-            logObject("Delete liveness sessions: "+sessionId);
+            logObject("Delete liveness sessions: " + sessionId);
             faceSessionClient.deleteLivenessWithVerifySession(sessionId);
         }
     }

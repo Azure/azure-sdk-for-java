@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceCertificateDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceCertificateDetails model =
-            BinaryData
-                .fromString(
-                    "{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"izhwlrxy\",\"issuer\":\"soqijg\",\"resourceId\":7369620870818526832,\"subject\":\"azlobcufpdznrbt\",\"thumbprint\":\"qjnqglhqgnufoooj\",\"validFrom\":\"2021-06-05T07:25:28Z\",\"validTo\":\"2021-11-19T20:38:19Z\"}")
-                .toObject(ResourceCertificateDetails.class);
+        ResourceCertificateDetails model = BinaryData.fromString(
+            "{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"izhwlrxy\",\"issuer\":\"soqijg\",\"resourceId\":7369620870818526832,\"subject\":\"azlobcufpdznrbt\",\"thumbprint\":\"qjnqglhqgnufoooj\",\"validFrom\":\"2021-06-05T07:25:28Z\",\"validTo\":\"2021-11-19T20:38:19Z\"}")
+            .toObject(ResourceCertificateDetails.class);
         Assertions.assertEquals("izhwlrxy", model.friendlyName());
         Assertions.assertEquals("soqijg", model.issuer());
         Assertions.assertEquals(7369620870818526832L, model.resourceId());
@@ -28,15 +26,13 @@ public final class ResourceCertificateDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceCertificateDetails model =
-            new ResourceCertificateDetails()
-                .withFriendlyName("izhwlrxy")
-                .withIssuer("soqijg")
-                .withResourceId(7369620870818526832L)
-                .withSubject("azlobcufpdznrbt")
-                .withThumbprint("qjnqglhqgnufoooj")
-                .withValidFrom(OffsetDateTime.parse("2021-06-05T07:25:28Z"))
-                .withValidTo(OffsetDateTime.parse("2021-11-19T20:38:19Z"));
+        ResourceCertificateDetails model = new ResourceCertificateDetails().withFriendlyName("izhwlrxy")
+            .withIssuer("soqijg")
+            .withResourceId(7369620870818526832L)
+            .withSubject("azlobcufpdznrbt")
+            .withThumbprint("qjnqglhqgnufoooj")
+            .withValidFrom(OffsetDateTime.parse("2021-06-05T07:25:28Z"))
+            .withValidTo(OffsetDateTime.parse("2021-11-19T20:38:19Z"));
         model = BinaryData.fromObject(model).toObject(ResourceCertificateDetails.class);
         Assertions.assertEquals("izhwlrxy", model.friendlyName());
         Assertions.assertEquals("soqijg", model.issuer());

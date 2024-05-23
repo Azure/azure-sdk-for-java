@@ -14,9 +14,7 @@ import java.util.Arrays;
  */
 public final class FleetUpdateStrategiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-02-02-preview/
-     * examples/UpdateStrategies_CreateOrUpdate.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2024-04-01/examples/UpdateStrategies_CreateOrUpdate.json
      */
     /**
      * Sample code: Create a FleetUpdateStrategy.
@@ -25,9 +23,12 @@ public final class FleetUpdateStrategiesCreateOrUpdateSamples {
      */
     public static void createAFleetUpdateStrategy(
         com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.fleetUpdateStrategies().define("strartegy1").withExistingFleet("rg1", "fleet1")
+        manager.fleetUpdateStrategies()
+            .define("strartegy1")
+            .withExistingFleet("rg1", "fleet1")
             .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("stage1")
-                .withGroups(Arrays.asList(new UpdateGroup().withName("group-a"))).withAfterStageWaitInSeconds(3600))))
+                .withGroups(Arrays.asList(new UpdateGroup().withName("group-a")))
+                .withAfterStageWaitInSeconds(3600))))
             .create();
     }
 }

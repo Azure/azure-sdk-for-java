@@ -28,10 +28,10 @@ public final class AzureChatExtensionsMessageContext implements JsonSerializable
     }
 
     /*
-     *   The contextual information associated with the Azure chat extensions used for a chat completions request.
-     *   These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in the
-     *   course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
-     *   extensions.
+     * The contextual information associated with the Azure chat extensions used for a chat completions request.
+     * These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in the
+     * course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
+     * extensions.
      */
     @Generated
     private List<AzureChatExtensionDataSourceResponseCitation> citations;

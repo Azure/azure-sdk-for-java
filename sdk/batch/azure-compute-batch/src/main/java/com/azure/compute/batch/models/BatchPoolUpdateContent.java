@@ -19,25 +19,34 @@ import java.util.List;
 public final class BatchPoolUpdateContent implements JsonSerializable<BatchPoolUpdateContent> {
 
     /*
-     * A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the Pool or when the Compute Node is restarted. If this element is present, it overwrites any existing StartTask. If omitted, any existing StartTask is left unchanged.
+     * A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the Pool
+     * or when the Compute Node is restarted. If this element is present, it overwrites any existing StartTask. If
+     * omitted, any existing StartTask is left unchanged.
      */
     @Generated
     private BatchStartTask startTask;
 
     /*
-     * A list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. If this element is present, it replaces any existing Package references. If you specify an empty collection, then all Package references are removed from the Pool. If omitted, any existing Package references are left unchanged.
+     * A list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all new
+     * Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or
+     * reimaged. If this element is present, it replaces any existing Package references. If you specify an empty
+     * collection, then all Package references are removed from the Pool. If omitted, any existing Package references
+     * are left unchanged.
      */
     @Generated
     private List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
-     * A list of name-value pairs associated with the Pool as metadata. If this element is present, it replaces any existing metadata configured on the Pool. If you specify an empty collection, any metadata is removed from the Pool. If omitted, any existing metadata is left unchanged.
+     * A list of name-value pairs associated with the Pool as metadata. If this element is present, it replaces any
+     * existing metadata configured on the Pool. If you specify an empty collection, any metadata is removed from the
+     * Pool. If omitted, any existing metadata is left unchanged.
      */
     @Generated
     private List<MetadataItem> metadata;
 
     /*
-     * The desired node communication mode for the pool. If this element is present, it replaces the existing targetNodeCommunicationMode configured on the Pool. If omitted, any existing metadata is left unchanged.
+     * The desired node communication mode for the pool. If this element is present, it replaces the existing
+     * targetNodeCommunicationMode configured on the Pool. If omitted, any existing metadata is left unchanged.
      */
     @Generated
     private BatchNodeCommunicationMode targetNodeCommunicationMode;

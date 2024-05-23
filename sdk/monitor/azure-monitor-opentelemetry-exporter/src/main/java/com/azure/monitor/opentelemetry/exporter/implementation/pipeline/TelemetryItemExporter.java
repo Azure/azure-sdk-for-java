@@ -10,6 +10,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTe
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributes;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.io.SerializedString;
@@ -137,8 +138,10 @@ public class TelemetryItemExporter {
         List<ByteBuffer> byteBuffers;
         // Don't send _OTELRESOURCE_ custom metric when OTEL_RESOURCE_ATTRIBUTES env var is empty
         // Don't send _OTELRESOURCE_ custom metric to Statsbeat yet
+        // Don't Send _OTELRESOURCE_ when the app is running on other env other than AKS
         // insert _OTELRESOURCE_ at the beginning of each batch
-        if (!"Statsbeat".equals(telemetryItems.get(0).getName())) {
+        // TODO (heya) add a json config for customers to disable _OTELRESOURCE_ metric to the ingestion service when this feature is GA
+        if (!"Statsbeat".equals(telemetryItems.get(0).getName()) && AksResourceAttributes.isAks(telemetryItemBatchKey.resource)) {
             telemetryItems.add(0, createOtelResourceMetric(telemetryItemBatchKey));
         }
         try {

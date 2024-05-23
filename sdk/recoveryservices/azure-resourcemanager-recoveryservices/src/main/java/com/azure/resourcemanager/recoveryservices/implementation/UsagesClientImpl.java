@@ -30,17 +30,23 @@ import com.azure.resourcemanager.recoveryservices.fluent.models.VaultUsageInner;
 import com.azure.resourcemanager.recoveryservices.models.VaultUsageList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in UsagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UsagesClient.
+ */
 public final class UsagesClientImpl implements UsagesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final UsagesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesManagementClientImpl client;
 
     /**
      * Initializes an instance of UsagesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     UsagesClientImpl(RecoveryServicesManagementClientImpl client) {
@@ -55,24 +61,19 @@ public final class UsagesClientImpl implements UsagesClient {
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesMana")
     public interface UsagesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/usages")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/usages")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VaultUsageList>> listByVaults(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<VaultUsageList>> listByVaults(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Fetches the usages of the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,19 +82,15 @@ public final class UsagesClientImpl implements UsagesClient {
      * @return usage for vault along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VaultUsageInner>> listByVaultsSinglePageAsync(
-        String resourceGroupName, String vaultName) {
+    private Mono<PagedResponse<VaultUsageInner>> listByVaultsSinglePageAsync(String resourceGroupName,
+        String vaultName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -104,27 +101,16 @@ public final class UsagesClientImpl implements UsagesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByVaults(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            vaultName,
-                            accept,
-                            context))
-            .<PagedResponse<VaultUsageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByVaults(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, vaultName, accept, context))
+            .<PagedResponse<VaultUsageInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Fetches the usages of the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
@@ -134,19 +120,15 @@ public final class UsagesClientImpl implements UsagesClient {
      * @return usage for vault along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VaultUsageInner>> listByVaultsSinglePageAsync(
-        String resourceGroupName, String vaultName, Context context) {
+    private Mono<PagedResponse<VaultUsageInner>> listByVaultsSinglePageAsync(String resourceGroupName, String vaultName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -158,23 +140,15 @@ public final class UsagesClientImpl implements UsagesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByVaults(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                vaultName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByVaults(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+                resourceGroupName, vaultName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Fetches the usages of the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,7 +163,7 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Fetches the usages of the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
@@ -205,7 +179,7 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Fetches the usages of the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -220,7 +194,7 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Fetches the usages of the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.

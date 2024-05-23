@@ -15,9 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FleetMemberProperties {
     /*
-     * The ARM resource id of the cluster that joins the Fleet. Must be a valid Azure resource id. e.g.:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/
-     * managedClusters/{clusterName}'.
+     * The ARM resource id of the cluster that joins the Fleet. Must be a valid Azure resource id. e.g.: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{clusterName}'.
      */
     @JsonProperty(value = "clusterResourceId", required = true)
     private String clusterResourceId;
@@ -100,8 +98,9 @@ public final class FleetMemberProperties {
      */
     public void validate() {
         if (clusterResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property clusterResourceId in model FleetMemberProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clusterResourceId in model FleetMemberProperties"));
         }
     }
 

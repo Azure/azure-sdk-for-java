@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.recoveryservices.generated;
 
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/ListOperations.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/ListOperations.json
      */
     /**
      * Sample code: ListOperations.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void listOperations(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {

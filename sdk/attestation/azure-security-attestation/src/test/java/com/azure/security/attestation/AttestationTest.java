@@ -6,6 +6,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -46,7 +47,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+@LiveOnly
 public class AttestationTest extends AttestationClientTestBase {
+    // LiveOnly because "JWT cannot be stored in recordings."
     private static final String RUNTIME_DATA = "CiAgICAgICAgewogICAgICAgICAgICAiandrIiA6IHsKICAgICAgICAgICAgICAgICJrdHk"
         + "iOiJFQyIsCiAgICAgICAgICAgICAgICAidXNlIjoic2lnIiwKICAgICAgICAgICAgICAgICJjcnYiOiJQLTI1NiIsCiAgICAgICAgICAgICA"
         + "gICAieCI6IjE4d0hMZUlnVzl3Vk42VkQxVHhncHF5MkxzellrTWY2SjhualZBaWJ2aE0iLAogICAgICAgICAgICAgICAgInkiOiJjVjRkUzR"

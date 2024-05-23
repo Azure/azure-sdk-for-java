@@ -38,7 +38,9 @@ public final class BatchPoolUsageMetrics implements JsonSerializable<BatchPoolUs
     private final OffsetDateTime endTime;
 
     /*
-     * The size of virtual machines in the Pool. All VMs in a Pool are the same size. For information about available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+     * The size of virtual machines in the Pool. All VMs in a Pool are the same size. For information about available
+     * sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool
+     * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
      */
     @Generated
     private final String vmSize;

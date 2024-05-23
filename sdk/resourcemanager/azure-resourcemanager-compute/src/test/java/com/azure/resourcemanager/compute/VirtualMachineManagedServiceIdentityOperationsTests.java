@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.models.CachingTypes;
@@ -36,7 +37,9 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     }
 
     @Test
+    @LiveOnly
     public void canSetMSIOnNewOrExistingVMWithoutRoleAssignment() throws Exception {
+        // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
         // Create a virtual machine with just MSI enabled without role and scope.
         //
         VirtualMachine virtualMachine =
@@ -244,7 +247,9 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
     }
 
     @Test
+    @LiveOnly
     public void canSetMSIOnExistingVMWithRoleAssignments() throws Exception {
+        // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
         VirtualMachine virtualMachine =
             computeManager
                 .virtualMachines()

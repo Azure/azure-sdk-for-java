@@ -28,17 +28,17 @@ public final class BreakSentenceItem {
      */
     @Generated
     @JsonProperty(value = "sentLen")
-    private final List<Integer> sentLen;
+    private final List<Integer> sentencesLengths;
 
     /**
      * Creates an instance of BreakSentenceItem class.
      *
-     * @param sentLen the sentLen value to set.
+     * @param sentencesLengths the sentencesLengths value to set.
      */
     @Generated
     @JsonCreator
-    private BreakSentenceItem(@JsonProperty(value = "sentLen") List<Integer> sentLen) {
-        this.sentLen = sentLen;
+    private BreakSentenceItem(@JsonProperty(value = "sentLen") List<Integer> sentencesLengths) {
+        this.sentencesLengths = sentencesLengths;
     }
 
     /**
@@ -53,13 +53,13 @@ public final class BreakSentenceItem {
     }
 
     /**
-     * Get the sentLen property: An integer array representing the lengths of the sentences in the input text.
+     * Get the sentencesLengths property: An integer array representing the lengths of the sentences in the input text.
      * The length of the array is the number of sentences, and the values are the length of each sentence.
      *
-     * @return the sentLen value.
+     * @return the sentencesLengths value.
      */
     @Generated
-    public List<Integer> getSentLen() {
-        return this.sentLen;
+    public List<Integer> getSentencesLengths() {
+        return this.sentencesLengths;
     }
 }

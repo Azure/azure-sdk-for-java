@@ -19,7 +19,8 @@ public final class AssetStatusError {
     private Integer code;
 
     /*
-     * Human readable helpful error message to provide additional context for error (ex: “capability Id 'foo' does not exist”).
+     * Human readable helpful error message to provide additional context for error (ex: “capability Id 'foo' does not
+     * exist”).
      */
     @JsonProperty(value = "message")
     private String message;
