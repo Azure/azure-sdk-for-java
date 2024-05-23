@@ -3,7 +3,7 @@
 ## 1.13.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added `AzurePipelinesCredential`
+- Added `AzurePipelinesCredential` to support [Microsoft Entra Workload ID](https://learn.microsoft.com/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml).
 
 ### Breaking Changes
 
