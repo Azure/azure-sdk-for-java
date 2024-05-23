@@ -60,7 +60,7 @@ public class RadiologyInsightsSexMismatchTest extends RadiologyInsightsClientTes
         try {
             testRadiologyInsightsWithResponse(request -> {
                 RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
-                        getClient().beginInferRadiologyInsights(/*"job" + new Date().getTime()*/"job1715007680570", request)).getFinalResult();
+                        getClient().beginInferRadiologyInsights("job1715007680570", request)).getFinalResult();
 
                 List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
                 assertEquals(1, patients.size());
