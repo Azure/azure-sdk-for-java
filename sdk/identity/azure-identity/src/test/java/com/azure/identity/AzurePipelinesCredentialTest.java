@@ -18,9 +18,15 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
     static String tenantId = Configuration.getGlobalConfiguration().get("AZURE_SERVICE_CONNECTION_TENANT_ID");
 
     static String serviceConnectionId = Configuration.getGlobalConfiguration().get("AZURE_SERVICE_CONNECTION_ID");
+    static String systemAccessToken = Configuration.getGlobalConfiguration().get("SYSTEM_ACCESSTOKEN");
 
     private AzurePipelinesCredential getCredential() {
-        return new AzurePipelinesCredentialBuilder().clientId(clientId).tenantId(tenantId).serviceConnectionId(serviceConnectionId).build();
+        return new AzurePipelinesCredentialBuilder()
+            .clientId(clientId)
+            .tenantId(tenantId)
+            .serviceConnectionId(serviceConnectionId)
+            .systemAccessToken(systemAccessToken)
+            .build();
     }
 
     @Test
