@@ -963,12 +963,12 @@ public class CosmosAsyncContainer {
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
             
-            ShowQueryMode showQueryOptions = clientTelemetryConfigAccessor.showQueryOptions(client.getClientTelemetryConfig());
+            ShowQueryMode showQueryMode = clientTelemetryConfigAccessor.showQueryMode(client.getClientTelemetryConfig());
 
-            if(ShowQueryMode.PARAMETERIZED_ONLY.equals(showQueryOptions) && isParameterized) {
+            if(ShowQueryMode.PARAMETERIZED_ONLY.equals(showQueryMode) && isParameterized) {
 
                     pagedFluxOptions.setQueryText(sqlQuerySpec.getQueryText());
-            } else if (ShowQueryMode.ALL.equals(showQueryOptions)) {
+            } else if (ShowQueryMode.ALL.equals(showQueryMode)) {
 
                     pagedFluxOptions.setQueryText(sqlQuerySpec.getQueryText());
             }

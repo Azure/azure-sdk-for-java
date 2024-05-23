@@ -27,15 +27,15 @@ public enum ShowQueryMode {
      */
     ALL("All");
 
-    private static Map<String, ShowQueryMode> showQueryOptionsHashMap = initializeMap();
+    private static Map<String, ShowQueryMode> showQueryModeHashMap = initializeMap();
     
     private static Map<String, ShowQueryMode> initializeMap() {
-	    Map<String, ShowQueryMode> showQueryOptionsHashMap = new HashMap<>();
+	    Map<String, ShowQueryMode> showQueryModeHashMap = new HashMap<>();
         for(ShowQueryMode showQueryOptions : ShowQueryMode.values()) {
-	    	showQueryOptionsHashMap.put(showQueryOptions.toString(), showQueryOptions);
+	    	showQueryModeHashMap.put(showQueryOptions.toString(), showQueryOptions);
 	    }
 
-        return showQueryOptionsHashMap;
+        return showQueryModeHashMap;
     }
     
     private final String value;
@@ -45,7 +45,7 @@ public enum ShowQueryMode {
     }
 	
     static ShowQueryMode fromServiceSerializedFormat(String showQueryOptions) {
-        return showQueryOptionsHashMap.get(showQueryOptions);
+        return showQueryModeHashMap.get(showQueryOptions);
     }
 
     @JsonValue

@@ -75,7 +75,7 @@ public final class CosmosClientTelemetryConfig {
 
     private double samplingRate;
     
-    private ShowQueryMode showQueryOptions = ShowQueryMode.NONE;
+    private ShowQueryMode showQueryMode = ShowQueryMode.NONE;
 
     /**
      * Instantiates a new Cosmos client telemetry configuration.
@@ -402,11 +402,11 @@ public final class CosmosClientTelemetryConfig {
      * Users have the option to enable printing parameterized or all queries, 
      * but has to beware that customer data may be shown when the later option is chosen
      * It's the user's responsibility to sanitize the queries if necessary.
-     * @param showQueryOptions the options for printing none, parameterized or all of the query statements
+     * @param showQueryMode the mode for printing none, parameterized or all of the query statements
      * @return current CosmosClientTelemetryConfig
      */
-    public CosmosClientTelemetryConfig showQueryOptions(ShowQueryMode showQueryOptions) {
-        this.showQueryOptions = showQueryOptions;
+    public CosmosClientTelemetryConfig showQueryMode(ShowQueryMode showQueryMode) {
+        this.showQueryMode = showQueryMode;
         return this;
     }
 
@@ -452,7 +452,7 @@ public final class CosmosClientTelemetryConfig {
             ", clientTelemetryEnabled=" + this.effectiveIsClientTelemetryEnabled +
             ", clientMetricsEnabled=" + this.isClientMetricsEnabled +
             ", transportLevelTracingEnabled=" + this.isTransportLevelTracingEnabled +
-            ", showQueryOptions=" + this.showQueryOptions +
+            ", showQueryMode=" + this.showQueryMode +
             ", customTracerProvided=" + (this.tracer != null) +
             ", customDiagnosticHandlers=" + handlers +
             "}";
@@ -678,8 +678,8 @@ public final class CosmosClientTelemetryConfig {
                 }
 
                 @Override
-                public ShowQueryMode showQueryOptions(CosmosClientTelemetryConfig config) {
-                    return config.showQueryOptions;
+                public ShowQueryMode showQueryMode(CosmosClientTelemetryConfig config) {
+                    return config.showQueryMode;
                 }
        
                 @Override

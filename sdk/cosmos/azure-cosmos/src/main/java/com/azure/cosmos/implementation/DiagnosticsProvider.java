@@ -1167,8 +1167,8 @@ public final class DiagnosticsProvider {
         }
         
         private boolean showQueryStatement() {
-            if(ShowQueryMode.ALL.equals(clientTelemetryConfigAccessor.showQueryOptions(this.config))
-                   || ShowQueryMode.PARAMETERIZED_ONLY.equals(clientTelemetryConfigAccessor.showQueryOptions(this.config))) {
+            if(ShowQueryMode.ALL.equals(clientTelemetryConfigAccessor.showQueryMode(this.config))
+                   || ShowQueryMode.PARAMETERIZED_ONLY.equals(clientTelemetryConfigAccessor.showQueryMode(this.config))) {
                    return true;
             }
             return false;
