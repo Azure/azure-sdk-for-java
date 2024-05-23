@@ -198,14 +198,35 @@ directive:
 define the `XML` name itself. Instead, rely on the Swagger model property name matching the expected XML serialization
 name to support using a different XML element name based on the use case.
 
+Instead of simply adding a new property with the correct name to `CreateRuleBody` and `SubscriptionDescription`, we need
+use a custom transformation to ensure the property ordering is retained, as the property order matters some times.
+
 ```yaml
 directive:
   - from: swagger-document
     where: $.definitions
     transform: >
       delete $.RuleDescription.xml.name;
-      $.CreateRuleBody.properties.content.properties.RuleDescription = $.CreateRuleBody.properties.content.properties.ruleDescription;
-      delete $.CreateRuleBody.properties.content.properties.ruleDescription;
-      $.SubscriptionDescription.properties.DefaultRuleDescription = $.SubscriptionDescription.properties.defaultRuleDescription;
-      delete $.SubscriptionDescription.properties.defaultRuleDescription;
+
+      let properties = $.CreateRuleBody.properties.content.properties; = $.CreateRuleBody.properties.content.properties.ruleDescription;
+      let newProperties = {};
+      Object.keys(properties).forEach(key => {
+        if (key === "ruleDescription") {
+          newProperties["RuleDescription"] = properties[key];
+        } else {
+          newProperties[key] = properties[key];
+        }
+      });
+      $.CreateRuleBody.properties.content.properties = newProperties;
+        
+      properties = $.SubscriptionDescription.properties;
+      newProperties = {};
+      Object.keys(properties).forEach(key => {
+        if (key === "defaultRuleDescription") {
+          newProperties["DefaultRuleDescription"] = properties[key];
+        } else {
+          newProperties[key] = properties[key];
+        }
+      });
+      $.SubscriptionDescription.properties = newProperties;
 ```
