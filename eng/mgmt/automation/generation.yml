@@ -33,10 +33,10 @@ steps:
   displayName: 'Install autorest'
   condition: eq(variables.fromTypeSpec, false)
 
-- bash: |
-    npm install -g @azure-tools/typespec-client-generator-cli
-  displayName: 'Install tsp-client'
-  condition: eq(variables.fromTypeSpec, true)
+#- bash: |
+#    npm install -g @azure-tools/typespec-client-generator-cli
+#  displayName: 'Install tsp-client'
+#  condition: eq(variables.fromTypeSpec, true)
 
 # - template: /eng/common/testproxy/test-proxy-tool.yml
 #   parameters:
