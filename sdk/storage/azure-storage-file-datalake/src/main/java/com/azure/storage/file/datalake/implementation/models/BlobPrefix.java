@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The BlobPrefix model. */
+/**
+ * The BlobPrefix model.
+ */
 @JacksonXmlRootElement(localName = "BlobPrefix")
 @Fluent
 public final class BlobPrefix {
@@ -18,12 +20,15 @@ public final class BlobPrefix {
     @JsonProperty(value = "Name", required = true)
     private String name;
 
-    /** Creates an instance of BlobPrefix class. */
-    public BlobPrefix() {}
+    /**
+     * Creates an instance of BlobPrefix class.
+     */
+    public BlobPrefix() {
+    }
 
     /**
      * Get the name property: The Name property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -32,7 +37,7 @@ public final class BlobPrefix {
 
     /**
      * Set the name property: The Name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the BlobPrefix object itself.
      */

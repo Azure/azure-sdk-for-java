@@ -7,11 +7,11 @@ package com.azure.storage.file.datalake.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/** Parameter group. */
-@JacksonXmlRootElement(localName = "ModifiedAccessConditions")
+/**
+ * Parameter group.
+ */
 @Fluent
 public final class ModifiedAccessConditions {
     /*
@@ -38,13 +38,16 @@ public final class ModifiedAccessConditions {
     @JsonProperty(value = "ifNoneMatch")
     private String ifNoneMatch;
 
-    /** Creates an instance of ModifiedAccessConditions class. */
-    public ModifiedAccessConditions() {}
+    /**
+     * Creates an instance of ModifiedAccessConditions class.
+     */
+    public ModifiedAccessConditions() {
+    }
 
     /**
      * Get the ifModifiedSince property: Specify this header value to operate only on a blob if it has been modified
      * since the specified date/time.
-     *
+     * 
      * @return the ifModifiedSince value.
      */
     public OffsetDateTime getIfModifiedSince() {
@@ -57,7 +60,7 @@ public final class ModifiedAccessConditions {
     /**
      * Set the ifModifiedSince property: Specify this header value to operate only on a blob if it has been modified
      * since the specified date/time.
-     *
+     * 
      * @param ifModifiedSince the ifModifiedSince value to set.
      * @return the ModifiedAccessConditions object itself.
      */
@@ -73,7 +76,7 @@ public final class ModifiedAccessConditions {
     /**
      * Get the ifUnmodifiedSince property: Specify this header value to operate only on a blob if it has not been
      * modified since the specified date/time.
-     *
+     * 
      * @return the ifUnmodifiedSince value.
      */
     public OffsetDateTime getIfUnmodifiedSince() {
@@ -86,7 +89,7 @@ public final class ModifiedAccessConditions {
     /**
      * Set the ifUnmodifiedSince property: Specify this header value to operate only on a blob if it has not been
      * modified since the specified date/time.
-     *
+     * 
      * @param ifUnmodifiedSince the ifUnmodifiedSince value to set.
      * @return the ModifiedAccessConditions object itself.
      */
@@ -101,7 +104,7 @@ public final class ModifiedAccessConditions {
 
     /**
      * Get the ifMatch property: Specify an ETag value to operate only on blobs with a matching value.
-     *
+     * 
      * @return the ifMatch value.
      */
     public String getIfMatch() {
@@ -110,7 +113,7 @@ public final class ModifiedAccessConditions {
 
     /**
      * Set the ifMatch property: Specify an ETag value to operate only on blobs with a matching value.
-     *
+     * 
      * @param ifMatch the ifMatch value to set.
      * @return the ModifiedAccessConditions object itself.
      */
@@ -121,7 +124,7 @@ public final class ModifiedAccessConditions {
 
     /**
      * Get the ifNoneMatch property: Specify an ETag value to operate only on blobs without a matching value.
-     *
+     * 
      * @return the ifNoneMatch value.
      */
     public String getIfNoneMatch() {
@@ -130,7 +133,7 @@ public final class ModifiedAccessConditions {
 
     /**
      * Set the ifNoneMatch property: Specify an ETag value to operate only on blobs without a matching value.
-     *
+     * 
      * @param ifNoneMatch the ifNoneMatch value to set.
      * @return the ModifiedAccessConditions object itself.
      */

@@ -7,24 +7,38 @@ package com.azure.storage.file.datalake.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for PathLeaseAction. */
+/**
+ * Defines values for PathLeaseAction.
+ */
 public enum PathLeaseAction {
-    /** Enum value acquire. */
+    /**
+     * Enum value acquire.
+     */
     ACQUIRE("acquire"),
 
-    /** Enum value break. */
+    /**
+     * Enum value break.
+     */
     BREAK("break"),
 
-    /** Enum value change. */
+    /**
+     * Enum value change.
+     */
     CHANGE("change"),
 
-    /** Enum value renew. */
+    /**
+     * Enum value renew.
+     */
     RENEW("renew"),
 
-    /** Enum value release. */
+    /**
+     * Enum value release.
+     */
     RELEASE("release");
 
-    /** The actual serialized value for a PathLeaseAction instance. */
+    /**
+     * The actual serialized value for a PathLeaseAction instance.
+     */
     private final String value;
 
     PathLeaseAction(String value) {
@@ -33,7 +47,7 @@ public enum PathLeaseAction {
 
     /**
      * Parses a serialized value to a PathLeaseAction instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PathLeaseAction object, or null if unable to parse.
      */
@@ -51,7 +65,9 @@ public enum PathLeaseAction {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

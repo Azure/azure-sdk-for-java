@@ -6,10 +6,10 @@ package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The AclFailedEntry model. */
-@JacksonXmlRootElement(localName = "AclFailedEntry")
+/**
+ * The AclFailedEntry model.
+ */
 @Fluent
 public final class AclFailedEntry {
     /*
@@ -30,12 +30,15 @@ public final class AclFailedEntry {
     @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
-    /** Creates an instance of AclFailedEntry class. */
-    public AclFailedEntry() {}
+    /**
+     * Creates an instance of AclFailedEntry class.
+     */
+    public AclFailedEntry() {
+    }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -44,7 +47,7 @@ public final class AclFailedEntry {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the AclFailedEntry object itself.
      */
@@ -55,7 +58,7 @@ public final class AclFailedEntry {
 
     /**
      * Get the type property: The type property.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -64,7 +67,7 @@ public final class AclFailedEntry {
 
     /**
      * Set the type property: The type property.
-     *
+     * 
      * @param type the type value to set.
      * @return the AclFailedEntry object itself.
      */
@@ -75,7 +78,7 @@ public final class AclFailedEntry {
 
     /**
      * Get the errorMessage property: The errorMessage property.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String getErrorMessage() {
@@ -84,7 +87,7 @@ public final class AclFailedEntry {
 
     /**
      * Set the errorMessage property: The errorMessage property.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the AclFailedEntry object itself.
      */

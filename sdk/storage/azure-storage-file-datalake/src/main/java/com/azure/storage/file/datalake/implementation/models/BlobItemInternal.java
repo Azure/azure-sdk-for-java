@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** An Azure Storage blob. */
+/**
+ * An Azure Storage blob.
+ */
 @JacksonXmlRootElement(localName = "Blob")
 @Fluent
 public final class BlobItemInternal {
@@ -54,12 +56,15 @@ public final class BlobItemInternal {
     @JsonProperty(value = "DeletionId")
     private String deletionId;
 
-    /** Creates an instance of BlobItemInternal class. */
-    public BlobItemInternal() {}
+    /**
+     * Creates an instance of BlobItemInternal class.
+     */
+    public BlobItemInternal() {
+    }
 
     /**
      * Get the name property: The Name property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -68,7 +73,7 @@ public final class BlobItemInternal {
 
     /**
      * Set the name property: The Name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the BlobItemInternal object itself.
      */
@@ -79,7 +84,7 @@ public final class BlobItemInternal {
 
     /**
      * Get the deleted property: The Deleted property.
-     *
+     * 
      * @return the deleted value.
      */
     public boolean isDeleted() {
@@ -88,7 +93,7 @@ public final class BlobItemInternal {
 
     /**
      * Set the deleted property: The Deleted property.
-     *
+     * 
      * @param deleted the deleted value to set.
      * @return the BlobItemInternal object itself.
      */
@@ -99,7 +104,7 @@ public final class BlobItemInternal {
 
     /**
      * Get the snapshot property: The Snapshot property.
-     *
+     * 
      * @return the snapshot value.
      */
     public String getSnapshot() {
@@ -108,7 +113,7 @@ public final class BlobItemInternal {
 
     /**
      * Set the snapshot property: The Snapshot property.
-     *
+     * 
      * @param snapshot the snapshot value to set.
      * @return the BlobItemInternal object itself.
      */
@@ -119,7 +124,7 @@ public final class BlobItemInternal {
 
     /**
      * Get the versionId property: The VersionId property.
-     *
+     * 
      * @return the versionId value.
      */
     public String getVersionId() {
@@ -128,7 +133,7 @@ public final class BlobItemInternal {
 
     /**
      * Set the versionId property: The VersionId property.
-     *
+     * 
      * @param versionId the versionId value to set.
      * @return the BlobItemInternal object itself.
      */
@@ -139,7 +144,7 @@ public final class BlobItemInternal {
 
     /**
      * Get the isCurrentVersion property: The IsCurrentVersion property.
-     *
+     * 
      * @return the isCurrentVersion value.
      */
     public Boolean isCurrentVersion() {
@@ -148,7 +153,7 @@ public final class BlobItemInternal {
 
     /**
      * Set the isCurrentVersion property: The IsCurrentVersion property.
-     *
+     * 
      * @param isCurrentVersion the isCurrentVersion value to set.
      * @return the BlobItemInternal object itself.
      */
@@ -159,7 +164,7 @@ public final class BlobItemInternal {
 
     /**
      * Get the properties property: Properties of a blob.
-     *
+     * 
      * @return the properties value.
      */
     public BlobPropertiesInternal getProperties() {
@@ -168,7 +173,7 @@ public final class BlobItemInternal {
 
     /**
      * Set the properties property: Properties of a blob.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BlobItemInternal object itself.
      */
@@ -179,7 +184,7 @@ public final class BlobItemInternal {
 
     /**
      * Get the deletionId property: The DeletionId property.
-     *
+     * 
      * @return the deletionId value.
      */
     public String getDeletionId() {
@@ -188,7 +193,7 @@ public final class BlobItemInternal {
 
     /**
      * Set the deletionId property: The DeletionId property.
-     *
+     * 
      * @param deletionId the deletionId value to set.
      * @return the BlobItemInternal object itself.
      */

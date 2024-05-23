@@ -9,11 +9,11 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/** The PathsCreateHeaders model. */
-@JacksonXmlRootElement(localName = "null")
+/**
+ * The PathsCreateHeaders model.
+ */
 @Fluent
 public final class PathsCreateHeaders {
     /*
@@ -72,20 +72,18 @@ public final class PathsCreateHeaders {
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
-    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256 =
-            HttpHeaderName.fromString("x-ms-encryption-key-sha256");
-
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256
+        = HttpHeaderName.fromString("x-ms-encryption-key-sha256");
 
     private static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
 
-    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
-            HttpHeaderName.fromString("x-ms-request-server-encrypted");
+    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED
+        = HttpHeaderName.fromString("x-ms-request-server-encrypted");
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PathsCreateHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsCreateHeaders(HttpHeaders rawHeaders) {
@@ -100,7 +98,7 @@ public final class PathsCreateHeaders {
             this.contentLength = Long.parseLong(contentLength);
         }
         this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
@@ -114,7 +112,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -123,7 +121,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathsCreateHeaders object itself.
      */
@@ -134,7 +132,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -143,7 +141,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the PathsCreateHeaders object itself.
      */
@@ -154,7 +152,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -166,7 +164,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     *
+     * 
      * @param lastModified the lastModified value to set.
      * @return the PathsCreateHeaders object itself.
      */
@@ -181,7 +179,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Get the contentLength property: The Content-Length property.
-     *
+     * 
      * @return the contentLength value.
      */
     public Long getContentLength() {
@@ -190,7 +188,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Set the contentLength property: The Content-Length property.
-     *
+     * 
      * @param contentLength the contentLength value to set.
      * @return the PathsCreateHeaders object itself.
      */
@@ -201,7 +199,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Get the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
-     *
+     * 
      * @return the xMsEncryptionKeySha256 value.
      */
     public String getXMsEncryptionKeySha256() {
@@ -210,7 +208,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Set the xMsEncryptionKeySha256 property: The x-ms-encryption-key-sha256 property.
-     *
+     * 
      * @param xMsEncryptionKeySha256 the xMsEncryptionKeySha256 value to set.
      * @return the PathsCreateHeaders object itself.
      */
@@ -221,7 +219,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -230,7 +228,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathsCreateHeaders object itself.
      */
@@ -241,7 +239,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Get the xMsContinuation property: The x-ms-continuation property.
-     *
+     * 
      * @return the xMsContinuation value.
      */
     public String getXMsContinuation() {
@@ -250,7 +248,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Set the xMsContinuation property: The x-ms-continuation property.
-     *
+     * 
      * @param xMsContinuation the xMsContinuation value to set.
      * @return the PathsCreateHeaders object itself.
      */
@@ -261,7 +259,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Get the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     *
+     * 
      * @return the xMsRequestServerEncrypted value.
      */
     public Boolean isXMsRequestServerEncrypted() {
@@ -270,7 +268,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Set the xMsRequestServerEncrypted property: The x-ms-request-server-encrypted property.
-     *
+     * 
      * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
      * @return the PathsCreateHeaders object itself.
      */
@@ -281,7 +279,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -293,7 +291,7 @@ public final class PathsCreateHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the PathsCreateHeaders object itself.
      */

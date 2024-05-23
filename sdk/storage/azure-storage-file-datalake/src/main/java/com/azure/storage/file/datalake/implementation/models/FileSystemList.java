@@ -5,23 +5,25 @@ package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import java.util.ArrayList;
 import java.util.List;
 
-/** The FileSystemList model. */
-@JacksonXmlRootElement(localName = "FileSystemList")
+/**
+ * The FileSystemList model.
+ */
 @Fluent
 public final class FileSystemList {
 
     /*
      * The filesystems property.
      */
-    @JsonProperty("filesystems")
-    private List<FileSystem> filesystems = new ArrayList<>();
+    @JsonProperty(value = "filesystems")
+    private List<FileSystem> filesystems;
 
-    /** Creates an instance of FileSystemList class. */
-    public FileSystemList() {}
+    /**
+     * Creates an instance of FileSystemList class.
+     */
+    public FileSystemList() {
+    }
 
     /**
      * Get the filesystems property: The filesystems property.

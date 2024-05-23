@@ -9,11 +9,11 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/** The PathsUpdateHeaders model. */
-@JacksonXmlRootElement(localName = "null")
+/**
+ * The PathsUpdateHeaders model.
+ */
 @Fluent
 public final class PathsUpdateHeaders {
     /*
@@ -118,12 +118,10 @@ public final class PathsUpdateHeaders {
 
     private static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
 
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PathsUpdateHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsUpdateHeaders(HttpHeaders rawHeaders) {
@@ -149,14 +147,14 @@ public final class PathsUpdateHeaders {
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
         }
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
     }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -165,7 +163,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -176,7 +174,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the contentRange property: The Content-Range property.
-     *
+     * 
      * @return the contentRange value.
      */
     public String getContentRange() {
@@ -185,7 +183,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the contentRange property: The Content-Range property.
-     *
+     * 
      * @param contentRange the contentRange value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -196,7 +194,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -208,7 +206,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     *
+     * 
      * @param lastModified the lastModified value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -223,7 +221,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the xMsProperties property: The x-ms-properties property.
-     *
+     * 
      * @return the xMsProperties value.
      */
     public String getXMsProperties() {
@@ -232,7 +230,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the xMsProperties property: The x-ms-properties property.
-     *
+     * 
      * @param xMsProperties the xMsProperties value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -243,7 +241,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the xMsContinuation property: The x-ms-continuation property.
-     *
+     * 
      * @return the xMsContinuation value.
      */
     public String getXMsContinuation() {
@@ -252,7 +250,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the xMsContinuation property: The x-ms-continuation property.
-     *
+     * 
      * @param xMsContinuation the xMsContinuation value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -263,7 +261,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -275,7 +273,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -290,7 +288,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the contentMD5 property: The Content-MD5 property.
-     *
+     * 
      * @return the contentMD5 value.
      */
     public String getContentMD5() {
@@ -299,7 +297,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the contentMD5 property: The Content-MD5 property.
-     *
+     * 
      * @param contentMD5 the contentMD5 value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -310,7 +308,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the acceptRanges property: The Accept-Ranges property.
-     *
+     * 
      * @return the acceptRanges value.
      */
     public String getAcceptRanges() {
@@ -319,7 +317,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the acceptRanges property: The Accept-Ranges property.
-     *
+     * 
      * @param acceptRanges the acceptRanges value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -330,7 +328,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the cacheControl property: The Cache-Control property.
-     *
+     * 
      * @return the cacheControl value.
      */
     public String getCacheControl() {
@@ -339,7 +337,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the cacheControl property: The Cache-Control property.
-     *
+     * 
      * @param cacheControl the cacheControl value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -350,7 +348,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -359,7 +357,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -370,7 +368,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the contentDisposition property: The Content-Disposition property.
-     *
+     * 
      * @return the contentDisposition value.
      */
     public String getContentDisposition() {
@@ -379,7 +377,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the contentDisposition property: The Content-Disposition property.
-     *
+     * 
      * @param contentDisposition the contentDisposition value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -390,7 +388,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the contentEncoding property: The Content-Encoding property.
-     *
+     * 
      * @return the contentEncoding value.
      */
     public String getContentEncoding() {
@@ -399,7 +397,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the contentEncoding property: The Content-Encoding property.
-     *
+     * 
      * @param contentEncoding the contentEncoding value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -410,7 +408,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the contentLength property: The Content-Length property.
-     *
+     * 
      * @return the contentLength value.
      */
     public Long getContentLength() {
@@ -419,7 +417,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the contentLength property: The Content-Length property.
-     *
+     * 
      * @param contentLength the contentLength value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -430,7 +428,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -439,7 +437,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -450,7 +448,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the contentLanguage property: The Content-Language property.
-     *
+     * 
      * @return the contentLanguage value.
      */
     public String getContentLanguage() {
@@ -459,7 +457,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the contentLanguage property: The Content-Language property.
-     *
+     * 
      * @param contentLanguage the contentLanguage value to set.
      * @return the PathsUpdateHeaders object itself.
      */
@@ -470,7 +468,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Get the contentType property: The Content-Type property.
-     *
+     * 
      * @return the contentType value.
      */
     public String getContentType() {
@@ -479,7 +477,7 @@ public final class PathsUpdateHeaders {
 
     /**
      * Set the contentType property: The Content-Type property.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the PathsUpdateHeaders object itself.
      */

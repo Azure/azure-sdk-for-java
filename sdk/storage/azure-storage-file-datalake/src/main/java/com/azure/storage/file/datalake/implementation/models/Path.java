@@ -6,10 +6,10 @@ package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The Path model. */
-@JacksonXmlRootElement(localName = "Path")
+/**
+ * The Path model.
+ */
 @Fluent
 public final class Path {
     /*
@@ -84,12 +84,15 @@ public final class Path {
     @JsonProperty(value = "etag")
     private String eTag;
 
-    /** Creates an instance of Path class. */
-    public Path() {}
+    /**
+     * Creates an instance of Path class.
+     */
+    public Path() {
+    }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -98,7 +101,7 @@ public final class Path {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the Path object itself.
      */
@@ -109,7 +112,7 @@ public final class Path {
 
     /**
      * Get the isDirectory property: The isDirectory property.
-     *
+     * 
      * @return the isDirectory value.
      */
     public Boolean isDirectory() {
@@ -118,7 +121,7 @@ public final class Path {
 
     /**
      * Set the isDirectory property: The isDirectory property.
-     *
+     * 
      * @param isDirectory the isDirectory value to set.
      * @return the Path object itself.
      */
@@ -129,7 +132,7 @@ public final class Path {
 
     /**
      * Get the lastModified property: The lastModified property.
-     *
+     * 
      * @return the lastModified value.
      */
     public String getLastModified() {
@@ -138,7 +141,7 @@ public final class Path {
 
     /**
      * Set the lastModified property: The lastModified property.
-     *
+     * 
      * @param lastModified the lastModified value to set.
      * @return the Path object itself.
      */
@@ -149,7 +152,7 @@ public final class Path {
 
     /**
      * Get the contentLength property: The contentLength property.
-     *
+     * 
      * @return the contentLength value.
      */
     public Long getContentLength() {
@@ -158,7 +161,7 @@ public final class Path {
 
     /**
      * Set the contentLength property: The contentLength property.
-     *
+     * 
      * @param contentLength the contentLength value to set.
      * @return the Path object itself.
      */
@@ -169,7 +172,7 @@ public final class Path {
 
     /**
      * Get the owner property: The owner property.
-     *
+     * 
      * @return the owner value.
      */
     public String getOwner() {
@@ -178,7 +181,7 @@ public final class Path {
 
     /**
      * Set the owner property: The owner property.
-     *
+     * 
      * @param owner the owner value to set.
      * @return the Path object itself.
      */
@@ -189,7 +192,7 @@ public final class Path {
 
     /**
      * Get the group property: The group property.
-     *
+     * 
      * @return the group value.
      */
     public String getGroup() {
@@ -198,7 +201,7 @@ public final class Path {
 
     /**
      * Set the group property: The group property.
-     *
+     * 
      * @param group the group value to set.
      * @return the Path object itself.
      */
@@ -209,7 +212,7 @@ public final class Path {
 
     /**
      * Get the permissions property: The permissions property.
-     *
+     * 
      * @return the permissions value.
      */
     public String getPermissions() {
@@ -218,7 +221,7 @@ public final class Path {
 
     /**
      * Set the permissions property: The permissions property.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the Path object itself.
      */
@@ -229,7 +232,7 @@ public final class Path {
 
     /**
      * Get the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
-     *
+     * 
      * @return the encryptionScope value.
      */
     public String getEncryptionScope() {
@@ -238,7 +241,7 @@ public final class Path {
 
     /**
      * Set the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
-     *
+     * 
      * @param encryptionScope the encryptionScope value to set.
      * @return the Path object itself.
      */
@@ -249,7 +252,7 @@ public final class Path {
 
     /**
      * Get the creationTime property: The creationTime property.
-     *
+     * 
      * @return the creationTime value.
      */
     public String getCreationTime() {
@@ -258,7 +261,7 @@ public final class Path {
 
     /**
      * Set the creationTime property: The creationTime property.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the Path object itself.
      */
@@ -269,7 +272,7 @@ public final class Path {
 
     /**
      * Get the expiryTime property: The expiryTime property.
-     *
+     * 
      * @return the expiryTime value.
      */
     public String getExpiryTime() {
@@ -278,7 +281,7 @@ public final class Path {
 
     /**
      * Set the expiryTime property: The expiryTime property.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the Path object itself.
      */
@@ -289,7 +292,7 @@ public final class Path {
 
     /**
      * Get the encryptionContext property: The EncryptionContext property.
-     *
+     * 
      * @return the encryptionContext value.
      */
     public String getEncryptionContext() {
@@ -298,7 +301,7 @@ public final class Path {
 
     /**
      * Set the encryptionContext property: The EncryptionContext property.
-     *
+     * 
      * @param encryptionContext the encryptionContext value to set.
      * @return the Path object itself.
      */
@@ -309,7 +312,7 @@ public final class Path {
 
     /**
      * Get the eTag property: The etag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -318,7 +321,7 @@ public final class Path {
 
     /**
      * Set the eTag property: The etag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the Path object itself.
      */

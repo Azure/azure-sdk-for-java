@@ -9,11 +9,11 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/** The PathsSetAccessControlHeaders model. */
-@JacksonXmlRootElement(localName = "null")
+/**
+ * The PathsSetAccessControlHeaders model.
+ */
 @Fluent
 public final class PathsSetAccessControlHeaders {
     /*
@@ -54,12 +54,10 @@ public final class PathsSetAccessControlHeaders {
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of PathsSetAccessControlHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PathsSetAccessControlHeaders(HttpHeaders rawHeaders) {
@@ -69,7 +67,7 @@ public final class PathsSetAccessControlHeaders {
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
@@ -79,7 +77,7 @@ public final class PathsSetAccessControlHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -88,7 +86,7 @@ public final class PathsSetAccessControlHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the PathsSetAccessControlHeaders object itself.
      */
@@ -99,7 +97,7 @@ public final class PathsSetAccessControlHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -108,7 +106,7 @@ public final class PathsSetAccessControlHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the PathsSetAccessControlHeaders object itself.
      */
@@ -119,7 +117,7 @@ public final class PathsSetAccessControlHeaders {
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -131,7 +129,7 @@ public final class PathsSetAccessControlHeaders {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     *
+     * 
      * @param lastModified the lastModified value to set.
      * @return the PathsSetAccessControlHeaders object itself.
      */
@@ -146,7 +144,7 @@ public final class PathsSetAccessControlHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -155,7 +153,7 @@ public final class PathsSetAccessControlHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the PathsSetAccessControlHeaders object itself.
      */
@@ -166,7 +164,7 @@ public final class PathsSetAccessControlHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -178,7 +176,7 @@ public final class PathsSetAccessControlHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the PathsSetAccessControlHeaders object itself.
      */
@@ -193,7 +191,7 @@ public final class PathsSetAccessControlHeaders {
 
     /**
      * Get the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @return the xMsClientRequestId value.
      */
     public String getXMsClientRequestId() {
@@ -202,7 +200,7 @@ public final class PathsSetAccessControlHeaders {
 
     /**
      * Set the xMsClientRequestId property: The x-ms-client-request-id property.
-     *
+     * 
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the PathsSetAccessControlHeaders object itself.
      */

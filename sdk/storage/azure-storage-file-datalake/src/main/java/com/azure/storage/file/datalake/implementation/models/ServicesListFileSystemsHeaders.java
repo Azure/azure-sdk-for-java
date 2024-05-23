@@ -9,11 +9,11 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/** The ServicesListFileSystemsHeaders model. */
-@JacksonXmlRootElement(localName = "null")
+/**
+ * The ServicesListFileSystemsHeaders model.
+ */
 @Fluent
 public final class ServicesListFileSystemsHeaders {
     /*
@@ -48,19 +48,17 @@ public final class ServicesListFileSystemsHeaders {
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
     private static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ServicesListFileSystemsHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ServicesListFileSystemsHeaders(HttpHeaders rawHeaders) {
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
@@ -71,7 +69,7 @@ public final class ServicesListFileSystemsHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -80,7 +78,7 @@ public final class ServicesListFileSystemsHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the ServicesListFileSystemsHeaders object itself.
      */
@@ -91,7 +89,7 @@ public final class ServicesListFileSystemsHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -100,7 +98,7 @@ public final class ServicesListFileSystemsHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the ServicesListFileSystemsHeaders object itself.
      */
@@ -111,7 +109,7 @@ public final class ServicesListFileSystemsHeaders {
 
     /**
      * Get the xMsContinuation property: The x-ms-continuation property.
-     *
+     * 
      * @return the xMsContinuation value.
      */
     public String getXMsContinuation() {
@@ -120,7 +118,7 @@ public final class ServicesListFileSystemsHeaders {
 
     /**
      * Set the xMsContinuation property: The x-ms-continuation property.
-     *
+     * 
      * @param xMsContinuation the xMsContinuation value to set.
      * @return the ServicesListFileSystemsHeaders object itself.
      */
@@ -131,7 +129,7 @@ public final class ServicesListFileSystemsHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -143,7 +141,7 @@ public final class ServicesListFileSystemsHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the ServicesListFileSystemsHeaders object itself.
      */
@@ -158,7 +156,7 @@ public final class ServicesListFileSystemsHeaders {
 
     /**
      * Get the contentType property: The Content-Type property.
-     *
+     * 
      * @return the contentType value.
      */
     public String getContentType() {
@@ -167,7 +165,7 @@ public final class ServicesListFileSystemsHeaders {
 
     /**
      * Set the contentType property: The Content-Type property.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the ServicesListFileSystemsHeaders object itself.
      */

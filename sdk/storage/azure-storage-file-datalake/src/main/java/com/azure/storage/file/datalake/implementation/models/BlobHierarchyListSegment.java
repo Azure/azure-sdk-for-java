@@ -11,11 +11,13 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/** The BlobHierarchyListSegment model. */
+/**
+ * The BlobHierarchyListSegment model.
+ */
 @JacksonXmlRootElement(localName = "Blobs")
 @Fluent
 @JsonDeserialize(
-        using = com.azure.storage.file.datalake.implementation.util.CustomHierarchicalListingDeserializer.class)
+    using = com.azure.storage.file.datalake.implementation.util.CustomHierarchicalListingDeserializer.class)
 public final class BlobHierarchyListSegment {
     /*
      * The BlobPrefixes property.
@@ -29,12 +31,15 @@ public final class BlobHierarchyListSegment {
     @JsonProperty("Blob")
     private List<BlobItemInternal> blobItems = new ArrayList<>();
 
-    /** Creates an instance of BlobHierarchyListSegment class. */
-    public BlobHierarchyListSegment() {}
+    /**
+     * Creates an instance of BlobHierarchyListSegment class.
+     */
+    public BlobHierarchyListSegment() {
+    }
 
     /**
      * Get the blobPrefixes property: The BlobPrefixes property.
-     *
+     * 
      * @return the blobPrefixes value.
      */
     public List<BlobPrefix> getBlobPrefixes() {
@@ -43,7 +48,7 @@ public final class BlobHierarchyListSegment {
 
     /**
      * Set the blobPrefixes property: The BlobPrefixes property.
-     *
+     * 
      * @param blobPrefixes the blobPrefixes value to set.
      * @return the BlobHierarchyListSegment object itself.
      */
@@ -54,7 +59,7 @@ public final class BlobHierarchyListSegment {
 
     /**
      * Get the blobItems property: The BlobItems property.
-     *
+     * 
      * @return the blobItems value.
      */
     public List<BlobItemInternal> getBlobItems() {
@@ -63,7 +68,7 @@ public final class BlobHierarchyListSegment {
 
     /**
      * Set the blobItems property: The BlobItems property.
-     *
+     * 
      * @param blobItems the blobItems value to set.
      * @return the BlobHierarchyListSegment object itself.
      */

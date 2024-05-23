@@ -9,11 +9,11 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/** The FileSystemsGetPropertiesHeaders model. */
-@JacksonXmlRootElement(localName = "null")
+/**
+ * The FileSystemsGetPropertiesHeaders model.
+ */
 @Fluent
 public final class FileSystemsGetPropertiesHeaders {
     /*
@@ -64,12 +64,10 @@ public final class FileSystemsGetPropertiesHeaders {
 
     private static final HttpHeaderName X_MS_PROPERTIES = HttpHeaderName.fromString("x-ms-properties");
 
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FileSystemsGetPropertiesHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FileSystemsGetPropertiesHeaders(HttpHeaders rawHeaders) {
@@ -81,7 +79,7 @@ public final class FileSystemsGetPropertiesHeaders {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
         this.xMsProperties = rawHeaders.getValue(X_MS_PROPERTIES);
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
@@ -90,7 +88,7 @@ public final class FileSystemsGetPropertiesHeaders {
 
     /**
      * Get the xMsNamespaceEnabled property: The x-ms-namespace-enabled property.
-     *
+     * 
      * @return the xMsNamespaceEnabled value.
      */
     public String getXMsNamespaceEnabled() {
@@ -99,7 +97,7 @@ public final class FileSystemsGetPropertiesHeaders {
 
     /**
      * Set the xMsNamespaceEnabled property: The x-ms-namespace-enabled property.
-     *
+     * 
      * @param xMsNamespaceEnabled the xMsNamespaceEnabled value to set.
      * @return the FileSystemsGetPropertiesHeaders object itself.
      */
@@ -110,7 +108,7 @@ public final class FileSystemsGetPropertiesHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -119,7 +117,7 @@ public final class FileSystemsGetPropertiesHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the FileSystemsGetPropertiesHeaders object itself.
      */
@@ -130,7 +128,7 @@ public final class FileSystemsGetPropertiesHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -139,7 +137,7 @@ public final class FileSystemsGetPropertiesHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the FileSystemsGetPropertiesHeaders object itself.
      */
@@ -150,7 +148,7 @@ public final class FileSystemsGetPropertiesHeaders {
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -162,7 +160,7 @@ public final class FileSystemsGetPropertiesHeaders {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     *
+     * 
      * @param lastModified the lastModified value to set.
      * @return the FileSystemsGetPropertiesHeaders object itself.
      */
@@ -177,7 +175,7 @@ public final class FileSystemsGetPropertiesHeaders {
 
     /**
      * Get the xMsProperties property: The x-ms-properties property.
-     *
+     * 
      * @return the xMsProperties value.
      */
     public String getXMsProperties() {
@@ -186,7 +184,7 @@ public final class FileSystemsGetPropertiesHeaders {
 
     /**
      * Set the xMsProperties property: The x-ms-properties property.
-     *
+     * 
      * @param xMsProperties the xMsProperties value to set.
      * @return the FileSystemsGetPropertiesHeaders object itself.
      */
@@ -197,7 +195,7 @@ public final class FileSystemsGetPropertiesHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -206,7 +204,7 @@ public final class FileSystemsGetPropertiesHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FileSystemsGetPropertiesHeaders object itself.
      */
@@ -217,7 +215,7 @@ public final class FileSystemsGetPropertiesHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -229,7 +227,7 @@ public final class FileSystemsGetPropertiesHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the FileSystemsGetPropertiesHeaders object itself.
      */

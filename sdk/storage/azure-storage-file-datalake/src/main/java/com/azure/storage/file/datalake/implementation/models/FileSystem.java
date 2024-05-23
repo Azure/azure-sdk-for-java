@@ -6,10 +6,10 @@ package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/** The FileSystem model. */
-@JacksonXmlRootElement(localName = "FileSystem")
+/**
+ * The FileSystem model.
+ */
 @Fluent
 public final class FileSystem {
     /*
@@ -30,12 +30,15 @@ public final class FileSystem {
     @JsonProperty(value = "eTag")
     private String eTag;
 
-    /** Creates an instance of FileSystem class. */
-    public FileSystem() {}
+    /**
+     * Creates an instance of FileSystem class.
+     */
+    public FileSystem() {
+    }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -44,7 +47,7 @@ public final class FileSystem {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the FileSystem object itself.
      */
@@ -55,7 +58,7 @@ public final class FileSystem {
 
     /**
      * Get the lastModified property: The lastModified property.
-     *
+     * 
      * @return the lastModified value.
      */
     public String getLastModified() {
@@ -64,7 +67,7 @@ public final class FileSystem {
 
     /**
      * Set the lastModified property: The lastModified property.
-     *
+     * 
      * @param lastModified the lastModified value to set.
      * @return the FileSystem object itself.
      */
@@ -75,7 +78,7 @@ public final class FileSystem {
 
     /**
      * Get the eTag property: The eTag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -84,7 +87,7 @@ public final class FileSystem {
 
     /**
      * Set the eTag property: The eTag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the FileSystem object itself.
      */
