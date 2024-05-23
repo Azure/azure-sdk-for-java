@@ -4,7 +4,7 @@ package com.azure.cosmos.spark.samples
 
 import com.azure.core.credential.{TokenCredential, TokenRequestContext}
 import com.azure.cosmos.spark.{AccountDataResolver, CosmosAccessToken}
-import com.azure.identity.{ClientCertificateCredentialBuilder, ClientSecretCredentialBuilder, ManagedIdentityCredentialBuilder}
+import com.azure.identity.{ClientCertificateCredentialBuilder, ClientSecretCredentialBuilder}
 
 import java.io.ByteArrayInputStream
 import java.util.Base64
@@ -13,19 +13,14 @@ import java.util.Base64
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-class SampleAccountDataResolver extends AccountDataResolver with BasicLoggingTrait {
+class ServicePrincipalAccountDataResolver extends AccountDataResolver with BasicLoggingTrait {
   override def getAccountDataConfig(configs: Map[String, String]): Map[String, String] = {
     if (isEnabled(configs)) {
-      val authType = getRequiredConfig(configs, SampleConfigNames.AuthType)
-      if (authType.equalsIgnoreCase(SampleAuthTypes.MasterKey)) {
-        configs + ("spark.cosmos.accountKey" -> getRequiredConfig(configs, SampleConfigNames.MasterKeySecret))
-      } else {
-        configs +
-          ("spark.cosmos.auth.type" -> "AccessToken") +
-          ("spark.cosmos.account.tenantId" -> getRequiredConfig(configs, SampleConfigNames.TenantId)) +
-          ("spark.cosmos.account.subscriptionId" -> getRequiredConfig(configs, SampleConfigNames.SubscriptionId)) +
-          ("spark.cosmos.account.resourceGroupName" -> getRequiredConfig(configs, SampleConfigNames.ResourceGroupName))
-      }
+      configs +
+        ("spark.cosmos.auth.type" -> "AccessToken") +
+        ("spark.cosmos.account.tenantId" -> getRequiredConfig(configs, SampleConfigNames.TenantId)) +
+        ("spark.cosmos.account.subscriptionId" -> getRequiredConfig(configs, SampleConfigNames.SubscriptionId)) +
+        ("spark.cosmos.account.resourceGroupName" -> getRequiredConfig(configs, SampleConfigNames.ResourceGroupName))
     } else {
       configs
     }
@@ -40,20 +35,6 @@ class SampleAccountDataResolver extends AccountDataResolver with BasicLoggingTra
   private def isEnabled(configs: Map[String, String]): Boolean = {
     val enabled = configs.get(SampleConfigNames.CustomAuthEnabled)
     enabled.isDefined && enabled.get.toBoolean
-  }
-
-  private def getManagedIdentityTokenCredential(configs: Map[String, String]): Option[TokenCredential] = {
-    logInfo(s"Constructing ManagedIdentity TokenCredential")
-    val tokenCredentialBuilder = new ManagedIdentityCredentialBuilder()
-    if (configs.contains(SampleConfigNames.ManagedIdentityClientId)) {
-      tokenCredentialBuilder.clientId(configs(SampleConfigNames.ManagedIdentityClientId))
-    }
-
-    if (configs.contains(SampleConfigNames.ManagedIdentityResourceId)) {
-      tokenCredentialBuilder.resourceId(configs(SampleConfigNames.ManagedIdentityResourceId))
-    }
-
-    Some(tokenCredentialBuilder.build())
   }
 
   private def getServicePrincipalTokenCredential(configs: Map[String, String]): Option[TokenCredential] = {
@@ -90,12 +71,6 @@ class SampleAccountDataResolver extends AccountDataResolver with BasicLoggingTra
     if (authType.equalsIgnoreCase(SampleAuthTypes.ServicePrincipal)) {
       logInfo(s"Service principal used")
       getServicePrincipalTokenCredential(configs)
-    } else if (authType.equalsIgnoreCase(SampleAuthTypes.ManagedIdentity)) {
-      logInfo(s"Managed identity used")
-      getManagedIdentityTokenCredential(configs)
-    } else if (authType.equalsIgnoreCase(SampleAuthTypes.MasterKey)) {
-      logInfo(s"Master key used")
-      None
     } else {
       logError(s"Invalid authType '$authType'.")
       assert(assertion = false, s"Invalid authType '$authType'.")
@@ -132,9 +107,6 @@ class SampleAccountDataResolver extends AccountDataResolver with BasicLoggingTra
     val AuthType = "cosmos.auth.sample.authType"
     val ClientSecret = "cosmos.auth.sample.serviceprincipal.clientsecret"
     val CustomAuthEnabled = "cosmos.auth.sample.enabled"
-    val ManagedIdentityClientId = "cosmos.auth.sample.managedIdentity.clientId"
-    val ManagedIdentityResourceId = "cosmos.auth.sample.managedIdentity.resourceId"
-    val MasterKeySecret = "cosmos.auth.sample.key.secret"
     val ResourceGroupName = "cosmos.auth.sample.resourceGroupName"
     val ServicePrincipalCert= "cosmos.auth.sample.serviceprincipal.cert"
     val ServicePrincipalClientId = "cosmos.auth.sample.serviceprincipal.clientId"
@@ -143,8 +115,6 @@ class SampleAccountDataResolver extends AccountDataResolver with BasicLoggingTra
   }
 
   private[this] object SampleAuthTypes {
-    val ManagedIdentity: String = "managedidentity"
-    val MasterKey: String = "masterkey"
     val ServicePrincipal: String = "serviceprincipal"
   }
 }

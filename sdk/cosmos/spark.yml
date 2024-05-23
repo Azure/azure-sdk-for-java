@@ -16,6 +16,7 @@ stages:
       ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
+      ClientCertPem: $(spark-databricks-cosmos-spn-clientCert)
       CosmosContainerName: 'sampleContainer1'
       CosmosDatabaseName: 'sampleDB1'
       DatabricksEndpoint: $(spark-databricks-endpoint-with-msi)

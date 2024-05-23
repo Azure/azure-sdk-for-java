@@ -20,7 +20,7 @@ import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
 import com.azure.cosmos.spark.SerializationDateTimeConversionModes.SerializationDateTimeConversionMode
 import com.azure.cosmos.spark.SerializationInclusionModes.SerializationInclusionMode
 import com.azure.cosmos.spark.diagnostics.{BasicLoggingTrait, DetailedFeedDiagnosticsProvider, DiagnosticsProvider, FeedDiagnosticsProvider, SimpleDiagnosticsProvider}
-import org.apache.spark.SparkConf
+import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
 import org.apache.spark.sql.connector.read.streaming.ReadLimit
@@ -43,6 +43,7 @@ import scala.collection.JavaConverters._
 // scalastyle:off number.of.types
 
 private[spark] object CosmosConfigNames {
+  val AccountDataResolverServiceName = "spark.cosmos.accountDataResolverServiceName"
   val AccountEndpoint = "spark.cosmos.accountEndpoint"
   val AccountKey = "spark.cosmos.accountKey"
   val SubscriptionId = "spark.cosmos.account.subscriptionId"
@@ -53,6 +54,7 @@ private[spark] object CosmosConfigNames {
   val ClientId = "spark.cosmos.auth.aad.clientId"
   val ResourceId = "spark.cosmos.auth.aad.resourceId"
   val ClientSecret = "spark.cosmos.auth.aad.clientSecret"
+  val ClientCertPemBase64 = "spark.cosmos.auth.aad.clientCertPemBase64"
   val Database = "spark.cosmos.database"
   val Container = "spark.cosmos.container"
   val PreferredRegionsList = "spark.cosmos.preferredRegionsList"
@@ -137,6 +139,7 @@ private[spark] object CosmosConfigNames {
   private val cosmosPrefix = "spark.cosmos."
 
   private val validConfigNames: Set[String] = HashSet[String](
+    AccountDataResolverServiceName,
     AccountEndpoint,
     AccountKey,
     AuthType,
@@ -146,6 +149,7 @@ private[spark] object CosmosConfigNames {
     ResourceGroupName,
     ClientId,
     ClientSecret,
+    ClientCertPemBase64,
     AzureEnvironment,
     Database,
     Container,
@@ -236,14 +240,29 @@ private[spark] object CosmosConfigNames {
 private object CosmosConfig  extends BasicLoggingTrait {
   lazy val accountDataResolverCls = getAccountDataResolver
   def getAccountDataResolver(): Option[AccountDataResolver] = {
+
+    val session = SparkSession.getActiveSession
+    val accountDataResolverServiceName : Option[String] = if (session.isDefined) {
+      session.get.sparkContext.getConf.getOption(CosmosConfigNames.AccountDataResolverServiceName)
+    } else {
+      None
+    }
+
     logInfo("Checking for account resolvers")
     var accountDataResolverCls = None: Option[AccountDataResolver]
     val serviceLoader = ServiceLoader.load(classOf[AccountDataResolver])
     val iterator = serviceLoader.iterator()
     if (iterator.hasNext()) {
       val resolver = iterator.next()
-      logInfo(s"Found account resolver ${resolver.getClass.getName}")
-      accountDataResolverCls = Some(resolver)
+      if (accountDataResolverServiceName.isEmpty
+        || accountDataResolverServiceName.get.equalsIgnoreCase(resolver.getClass.getName)) {
+        logInfo(s"Found account resolver ${resolver.getClass.getName}")
+        accountDataResolverCls = Some(resolver)
+      } else {
+        logInfo(
+          s"Ignoring account resolver ${resolver.getClass.getName} because name is different " +
+            s"than requested ${accountDataResolverServiceName.get}")
+      }
     }
 
     accountDataResolverCls
@@ -609,7 +628,8 @@ private case class CosmosMasterKeyAuthConfig(accountKey: String) extends CosmosA
 private case class CosmosServicePrincipalAuthConfig(
                                        clientId: String,
                                        tenantId: String,
-                                       clientSecret: String) extends CosmosAuthConfig
+                                       clientSecret: Option[String],
+                                       clientCertPemBase64: Option[String]) extends CosmosAuthConfig
 private case class CosmosManagedIdentityAuthConfig( tenantId: String,
                                                      clientId: Option[String],
                                                      resourceId: Option[String]) extends CosmosAuthConfig
@@ -658,7 +678,15 @@ private object CosmosAuthConfig {
         defaultValue = None,
         mandatory = false,
         parseFromStringFunction = clientSecret => clientSecret,
-        helpMessage = "The client secret/password of the service principal. Required for `ServicePrincipal` authentication. ")
+        helpMessage = "The client secret/password of the service principal. " +
+          "Either client secret or certificate are required for `ServicePrincipal` authentication.")
+
+    private val ClientCertPemBase64 = CosmosConfigEntry[String](key = CosmosConfigNames.ClientCertPemBase64,
+      defaultValue = None,
+      mandatory = false,
+      parseFromStringFunction = base64 => base64,
+      helpMessage = "The base64 encoded PEM client certificate to be used to authenticate the service principal. " +
+        "Either client secret or certificate are required for `ServicePrincipal` authentication.")
 
     def parseCosmosAuthConfig(cfg: Map[String, String]): CosmosAuthConfig = {
         val authType = CosmosConfigEntry.parse(cfg, AuthenticationType)
@@ -667,6 +695,7 @@ private object CosmosAuthConfig {
         val resourceId = CosmosConfigEntry.parse(cfg, ResourceId)
         val tenantId = CosmosConfigEntry.parse(cfg, TenantId)
         val clientSecret = CosmosConfigEntry.parse(cfg, ClientSecret)
+        val clientCert = CosmosConfigEntry.parse(cfg, ClientCertPemBase64)
 
         assert(authType.isDefined,s"Parameter '${CosmosConfigNames.AuthType}' is missing.")
 
@@ -679,12 +708,15 @@ private object CosmosAuthConfig {
         } else if (authType.get == CosmosAuthType.ServicePrincipal || authType.get == CosmosAuthType.ServicePrinciple) {
             assert(clientId.isDefined, s"Parameter '${CosmosConfigNames.ClientId}' is missing.")
             assert(tenantId.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
-            assert(clientSecret.isDefined, s"Parameter '${CosmosConfigNames.ClientSecret}' is missing.")
+            assert(
+              clientSecret.isDefined || clientCert.isDefined,
+              s"Parameter '${CosmosConfigNames.ClientSecret}' or '${CosmosConfigNames.ClientCertPemBase64}' must be defined.")
 
             CosmosServicePrincipalAuthConfig(
                 clientId.get,
                 tenantId.get,
-                clientSecret.get)
+                clientSecret,
+                clientCert)
         } else if (authType.get == CosmosAuthType.AccessToken) {
           assert(tenantId.isDefined, s"Parameter '${CosmosConfigNames.TenantId}' is missing.")
           val accountDataResolver = CosmosConfig.getAccountDataResolver()
