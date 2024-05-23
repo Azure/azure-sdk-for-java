@@ -12,7 +12,6 @@ import com.azure.core.test.models.*;
 import com.azure.core.util.Configuration;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
