@@ -279,4 +279,22 @@ class AzureServiceBusAutoConfigurationTests extends AbstractAzureServiceConfigur
                 assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
             });
     }
+
+    @Test
+    void consumerSubscriptionNameShouldConfigureConsumerClient() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.namespace=test-namespace",
+                "spring.cloud.azure.servicebus.entity-name=test-topic",
+                "spring.cloud.azure.servicebus.entity-type=topic",
+                "spring.cloud.azure.servicebus.consumer.subscription-name=sub"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.class);
+                assertThat(context).hasSingleBean(AzureServiceBusConsumerClientConfiguration.class);
+            });
+    }
 }
