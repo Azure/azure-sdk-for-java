@@ -703,6 +703,10 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
         });
     }
 
+    /*
+     * Custom Jackson JsonDeserialized used to deserialize anything into the String field 'data'.
+     * A custom serializer isn't needed as the field is used as a raw value, meaning it will be serialized as is.
+     */
     private static final class AnyToStringDeserializer extends JsonDeserializer<String> {
         @Override
         public String deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
