@@ -15,7 +15,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.models.ShowQueryOptions;
+import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
@@ -167,22 +167,22 @@ public class CosmosTracerTest extends TestSuiteBase {
     @DataProvider(name = "traceTestCaseProviderAsyncContainer")
     private Object[][] traceTestCaseProviderAsyncContainer() {
         return new Object[][]{
-            new Object[] { true, false, ShowQueryOptions.NONE, true, 1d },
-            new Object[] { true, false, ShowQueryOptions.NONE, false, 1d },
-            new Object[] { false, false, ShowQueryOptions.NONE, false, 1d },
-            new Object[] { false, true, ShowQueryOptions.NONE, false, 1d },
-            new Object[] { false, false, ShowQueryOptions.NONE, true, 1d },
-            new Object[] { false, true, ShowQueryOptions.NONE, true, 1d },
-            new Object[] { false, true, ShowQueryOptions.NONE, true, 0.99999999 },
-            new Object[] { false, true, ShowQueryOptions.NONE, true, 0d },
+            new Object[] { true, false, ShowQueryMode.NONE, true, 1d },
+            new Object[] { true, false, ShowQueryMode.NONE, false, 1d },
+            new Object[] { false, false, ShowQueryMode.NONE, false, 1d },
+            new Object[] { false, true, ShowQueryMode.NONE, false, 1d },
+            new Object[] { false, false, ShowQueryMode.NONE, true, 1d },
+            new Object[] { false, true, ShowQueryMode.NONE, true, 1d },
+            new Object[] { false, true, ShowQueryMode.NONE, true, 0.99999999 },
+            new Object[] { false, true, ShowQueryMode.NONE, true, 0d },
             
-            new Object[] { false, true, ShowQueryOptions.ALL, true, 1d },
-            new Object[] { false, false, ShowQueryOptions.ALL, true, 1d },
-            new Object[] { false, false, ShowQueryOptions.ALL, false, 1d },
+            new Object[] { false, true, ShowQueryMode.ALL, true, 1d },
+            new Object[] { false, false, ShowQueryMode.ALL, true, 1d },
+            new Object[] { false, false, ShowQueryMode.ALL, false, 1d },
 
-            new Object[] { false, true, ShowQueryOptions.PARAMETERIZED_ONLY, true, 1d },
-            new Object[] { false, false, ShowQueryOptions.PARAMETERIZED_ONLY, true, 1d },
-            new Object[] { false, false, ShowQueryOptions.PARAMETERIZED_ONLY, false, 1d }
+            new Object[] { false, true, ShowQueryMode.PARAMETERIZED_ONLY, true, 1d },
+            new Object[] { false, false, ShowQueryMode.PARAMETERIZED_ONLY, true, 1d },
+            new Object[] { false, false, ShowQueryMode.PARAMETERIZED_ONLY, false, 1d }
         };
     }
 
@@ -196,7 +196,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         TracerUnderTest mockTracer = new TracerUnderTest();
 
         createAndInitializeDiagnosticsProvider(
-            mockTracer, useLegacyTracing, enableRequestLevelTracing, ShowQueryOptions.NONE, forceThresholdViolations, samplingRate);
+            mockTracer, useLegacyTracing, enableRequestLevelTracing, ShowQueryMode.NONE, forceThresholdViolations, samplingRate);
 
         CosmosDatabaseResponse cosmosDatabaseResponse = client.createDatabaseIfNotExists(cosmosAsyncDatabase.getId(),
             ThroughputProperties.createManualThroughput(5000)).block();
@@ -284,7 +284,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         TracerUnderTest mockTracer = Mockito.spy(new TracerUnderTest());
 
         createAndInitializeDiagnosticsProvider(
-            mockTracer, useLegacyTracing, enableRequestLevelTracing, ShowQueryOptions.NONE, forceThresholdViolations, samplingRate);
+            mockTracer, useLegacyTracing, enableRequestLevelTracing, ShowQueryMode.NONE, forceThresholdViolations, samplingRate);
 
         CosmosContainerResponse containerResponse =
             cosmosAsyncDatabase.createContainerIfNotExists(cosmosAsyncContainer.getId(),
@@ -372,7 +372,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         TracerUnderTest mockTracer = Mockito.spy(new TracerUnderTest());
 
         createAndInitializeDiagnosticsProvider(
-            mockTracer, useLegacyTracing, enableRequestLevelTracing, ShowQueryOptions.NONE, forceThresholdViolations, samplingRate);
+            mockTracer, useLegacyTracing, enableRequestLevelTracing, ShowQueryMode.NONE, forceThresholdViolations, samplingRate);
 
         IFaultInjectionResult result = FaultInjectionResultBuilders
             .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
@@ -465,7 +465,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         TracerUnderTest mockTracer = Mockito.spy(new TracerUnderTest());
 
         createAndInitializeDiagnosticsProvider(
-            mockTracer, useLegacyTracing, enableRequestLevelTracing, ShowQueryOptions.NONE, forceThresholdViolations, samplingRate);
+            mockTracer, useLegacyTracing, enableRequestLevelTracing, ShowQueryMode.NONE, forceThresholdViolations, samplingRate);
 
         ObjectNode item = getDocumentDefinition(ITEM_ID);
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
@@ -554,7 +554,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     public void cosmosAsyncContainer(
         boolean useLegacyTracing,
         boolean enableRequestLevelTracing,
-        ShowQueryOptions showQueryOptions,
+        ShowQueryMode showQueryOptions,
         boolean forceThresholdViolations,
         double samplingRate) throws Exception {
 
@@ -902,7 +902,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         TracerUnderTest mockTracer = Mockito.spy(new TracerUnderTest());
 
         createAndInitializeDiagnosticsProvider(
-            mockTracer, useLegacyTracing, enableRequestLevelTracing, ShowQueryOptions.NONE, forceThresholdViolations, samplingRate);
+            mockTracer, useLegacyTracing, enableRequestLevelTracing, ShowQueryMode.NONE, forceThresholdViolations, samplingRate);
 
         FeedResponse<CosmosStoredProcedureProperties> sprocFeedResponse = cosmosAsyncContainer
             .getScripts()
@@ -1191,7 +1191,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         TracerUnderTest mockTracer = Mockito.spy(new TracerUnderTest());
 
         createAndInitializeDiagnosticsProvider(
-            mockTracer, useLegacyTracing, enableRequestLevelTracing, ShowQueryOptions.NONE, forceThresholdViolations, samplingRate);
+            mockTracer, useLegacyTracing, enableRequestLevelTracing, ShowQueryMode.NONE, forceThresholdViolations, samplingRate);
 
 
         ObjectNode item = getDocumentDefinition(UUID.randomUUID().toString());
@@ -1328,7 +1328,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             cosmosDiagnostics,
             error,
             enableRequestLevelTracing,
-            ShowQueryOptions.NONE,
+            ShowQueryMode.NONE,
             null,
             customOperationId,
             samplingRate);
@@ -1342,7 +1342,7 @@ public class CosmosTracerTest extends TestSuiteBase {
             CosmosException error,
             boolean useLegacyTracing,
             boolean enableRequestLevelTracing,
-            ShowQueryOptions showQueryOptions,
+            ShowQueryMode showQueryOptions,
             String queryStatement,
             boolean forceThresholdViolation,
             String customOperationId,
@@ -1382,7 +1382,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         CosmosDiagnostics cosmosDiagnostics,
         CosmosException error,
         boolean enableRequestLevelTracing,
-        ShowQueryOptions showQueryOptions,
+        ShowQueryMode showQueryOptions,
         String queryStatement,
         String customOperationId,
         double samplingRate) {
@@ -1445,10 +1445,10 @@ public class CosmosTracerTest extends TestSuiteBase {
             
             String dbStatement = (String) attributes.get("db.statement");
 
-            if (ShowQueryOptions.ALL.equals(showQueryOptions)) {
+            if (ShowQueryMode.ALL.equals(showQueryOptions)) {
                 assertThat(attributes.get("db.statement")).isNotNull();
                 assertThat(attributes.get("db.statement")).isEqualTo(queryStatement);
-            } else if (ShowQueryOptions.PARAMETERIZED_ONLY.equals(showQueryOptions)
+            } else if (ShowQueryMode.PARAMETERIZED_ONLY.equals(showQueryOptions)
                     && null != dbStatement && dbStatement.contains("@")) {
                 assertThat(attributes.get("db.statement")).isNotNull();
                 assertThat(attributes.get("db.statement")).isEqualTo(queryStatement);
@@ -1969,7 +1969,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     private DiagnosticsProvider createAndInitializeDiagnosticsProvider(TracerUnderTest mockTracer,
                                                                        boolean useLegacyTracing,
                                                                        boolean enableRequestLevelTracing,
-                                                                       ShowQueryOptions showQueryOptions,
+                                                                       ShowQueryMode showQueryOptions,
                                                                        boolean forceThresholdViolations,
                                                                        double samplingRate) {
         CosmosDiagnosticsThresholds thresholds = forceThresholdViolations ?

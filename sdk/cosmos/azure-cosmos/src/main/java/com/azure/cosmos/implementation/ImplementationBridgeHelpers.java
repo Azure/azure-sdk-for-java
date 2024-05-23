@@ -67,7 +67,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
-import com.azure.cosmos.models.ShowQueryOptions;
+import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -1504,7 +1504,7 @@ public class ImplementationBridgeHelpers {
             void setUseLegacyTracing(CosmosClientTelemetryConfig config, boolean useLegacyTracing);
             void setTracer(CosmosClientTelemetryConfig config, Tracer tracer);
             double getSamplingRate(CosmosClientTelemetryConfig config);
-            ShowQueryOptions showQueryOptions(CosmosClientTelemetryConfig config);
+            ShowQueryMode showQueryOptions(CosmosClientTelemetryConfig config);
             double[] getDefaultPercentiles(CosmosClientTelemetryConfig config);
             boolean shouldPublishHistograms(CosmosClientTelemetryConfig config);
             boolean shouldApplyDiagnosticThresholdsForTransportLevelMeters(CosmosClientTelemetryConfig config);

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines whether to print db.statement in tracing.
  */
-public enum ShowQueryOptions {
+public enum ShowQueryMode {
 
     /**
      * Do not show query.
@@ -27,11 +27,11 @@ public enum ShowQueryOptions {
      */
     ALL("All");
 
-    private static Map<String, ShowQueryOptions> showQueryOptionsHashMap = initializeMap();
+    private static Map<String, ShowQueryMode> showQueryOptionsHashMap = initializeMap();
     
-    private static Map<String, ShowQueryOptions> initializeMap() {
-	    Map<String, ShowQueryOptions> showQueryOptionsHashMap = new HashMap<>();
-        for(ShowQueryOptions showQueryOptions : ShowQueryOptions.values()) {
+    private static Map<String, ShowQueryMode> initializeMap() {
+	    Map<String, ShowQueryMode> showQueryOptionsHashMap = new HashMap<>();
+        for(ShowQueryMode showQueryOptions : ShowQueryMode.values()) {
 	    	showQueryOptionsHashMap.put(showQueryOptions.toString(), showQueryOptions);
 	    }
 
@@ -40,11 +40,11 @@ public enum ShowQueryOptions {
     
     private final String value;
 	
-    ShowQueryOptions(String value) {
+    ShowQueryMode(String value) {
         this.value = value;
     }
 	
-    static ShowQueryOptions fromServiceSerializedFormat(String showQueryOptions) {
+    static ShowQueryMode fromServiceSerializedFormat(String showQueryOptions) {
         return showQueryOptionsHashMap.get(showQueryOptions);
     }
 

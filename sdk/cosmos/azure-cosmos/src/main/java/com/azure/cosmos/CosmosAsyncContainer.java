@@ -61,7 +61,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.ShowQueryOptions;
+import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -963,12 +963,12 @@ public class CosmosAsyncContainer {
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
             
-            ShowQueryOptions showQueryOptions = clientTelemetryConfigAccessor.showQueryOptions(client.getClientTelemetryConfig());
+            ShowQueryMode showQueryOptions = clientTelemetryConfigAccessor.showQueryOptions(client.getClientTelemetryConfig());
 
-            if(ShowQueryOptions.PARAMETERIZED_ONLY.equals(showQueryOptions) && isParameterized) {
+            if(ShowQueryMode.PARAMETERIZED_ONLY.equals(showQueryOptions) && isParameterized) {
 
                     pagedFluxOptions.setQueryText(sqlQuerySpec.getQueryText());
-            } else if (ShowQueryOptions.ALL.equals(showQueryOptions)) {
+            } else if (ShowQueryMode.ALL.equals(showQueryOptions)) {
 
                     pagedFluxOptions.setQueryText(sqlQuerySpec.getQueryText());
             }

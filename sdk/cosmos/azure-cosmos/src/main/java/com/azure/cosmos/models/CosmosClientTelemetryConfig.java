@@ -75,7 +75,7 @@ public final class CosmosClientTelemetryConfig {
 
     private double samplingRate;
     
-    private ShowQueryOptions showQueryOptions = ShowQueryOptions.NONE;
+    private ShowQueryMode showQueryOptions = ShowQueryMode.NONE;
 
     /**
      * Instantiates a new Cosmos client telemetry configuration.
@@ -405,7 +405,7 @@ public final class CosmosClientTelemetryConfig {
      * @param showQueryOptions the options for printing none, parameterized or all of the query statements
      * @return current CosmosClientTelemetryConfig
      */
-    public CosmosClientTelemetryConfig showQueryOptions(ShowQueryOptions showQueryOptions) {
+    public CosmosClientTelemetryConfig showQueryOptions(ShowQueryMode showQueryOptions) {
         this.showQueryOptions = showQueryOptions;
         return this;
     }
@@ -678,7 +678,7 @@ public final class CosmosClientTelemetryConfig {
                 }
 
                 @Override
-                public ShowQueryOptions showQueryOptions(CosmosClientTelemetryConfig config) {
+                public ShowQueryMode showQueryOptions(CosmosClientTelemetryConfig config) {
                     return config.showQueryOptions;
                 }
        
