@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -24,7 +25,6 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -58,11 +58,11 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * <p>
      * Gets settings from Azure/Cache to set as configurations. Updates the cache.
      * </p>
-     * 
+     *
      * @param keyPrefixTrimValues prefixs to trim from key values
-     * @throws JsonProcessingException thrown if fails to parse Json content type
+     * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> keyPrefixTrimValues) throws JsonProcessingException {
+    public void initProperties(List<String> keyPrefixTrimValues) throws InvalidConfigurationPropertyValueException {
 
         List<String> labels = Arrays.asList(labelFilters);
         // Reverse labels so they have the right priority order.
@@ -79,7 +79,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
 
     protected void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter,
         List<String> keyPrefixTrimValues)
-        throws JsonProcessingException {
+        throws InvalidConfigurationPropertyValueException {
         for (ConfigurationSetting setting : settings) {
             if (keyPrefixTrimValues == null && StringUtils.hasText(keyFilter)) {
                 keyPrefixTrimValues = new ArrayList<>();
@@ -100,11 +100,11 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             }
         }
     }
-    
+
     /**
      * Given a Setting's Key Vault Reference stored in the Settings value, it will get its entry in Key Vault.
      *
-     * @param key Application Setting name 
+     * @param key Application Setting name
      * @param secretReference {"uri": "&lt;your-vault-url&gt;/secret/&lt;secret&gt;/&lt;version&gt;"}
      * @return Key Vault Secret Value
      */
@@ -132,12 +132,12 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
     }
 
     void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
-        throws JsonProcessingException {
+        throws InvalidConfigurationPropertyValueException {
         handleJson(setting, trimStrings);
     }
 
     void handleJson(ConfigurationSetting setting, List<String> keyPrefixTrimValues)
-        throws JsonProcessingException {
+        throws InvalidConfigurationPropertyValueException {
         Map<String, Object> jsonSettings = JsonConfigurationParser.parseJsonSetting(setting);
         for (Entry<String, Object> jsonSetting : jsonSettings.entrySet()) {
             String key = trimKey(jsonSetting.getKey(), keyPrefixTrimValues);

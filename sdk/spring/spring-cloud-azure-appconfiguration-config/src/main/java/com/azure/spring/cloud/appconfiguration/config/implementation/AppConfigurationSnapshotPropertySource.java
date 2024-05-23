@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -37,15 +37,14 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
      * </p>
      *
      * @param trim prefix to trim
-     * @throws JsonProcessingException thrown if fails to parse Json content type
+     * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> trim) throws JsonProcessingException {
+    public void initProperties(List<String> trim) throws InvalidConfigurationPropertyValueException {
         processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName), null, trim);
     }
 
     @Override
-    void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings)
-        throws JsonProcessingException {
+    void handleFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings) {
         // Feature Flags are only part of this if they come from a snapshot
         processFeatureFlag(key, setting, trimStrings);
     }
