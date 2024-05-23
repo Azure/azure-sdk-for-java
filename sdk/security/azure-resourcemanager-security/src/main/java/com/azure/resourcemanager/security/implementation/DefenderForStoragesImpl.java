@@ -10,8 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.DefenderForStoragesClient;
 import com.azure.resourcemanager.security.fluent.models.DefenderForStorageSettingInner;
-import com.azure.resourcemanager.security.models.DefenderForStorageSetting;
 import com.azure.resourcemanager.security.models.DefenderForStorages;
+import com.azure.resourcemanager.security.models.DefenderForStorageSetting;
 import com.azure.resourcemanager.security.models.SettingName;
 
 public final class DefenderForStoragesImpl implements DefenderForStorages {

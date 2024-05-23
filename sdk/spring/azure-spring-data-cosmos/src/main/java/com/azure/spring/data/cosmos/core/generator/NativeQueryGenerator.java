@@ -48,7 +48,9 @@ public class NativeQueryGenerator {
             matcher.find();
             int beginIndex = matcher.start(0) + 6;
             String tableName = querySpec.getQueryText().substring(beginIndex);
-            tableName = tableName.substring(0, tableName.indexOf(" "));
+            if (tableName.indexOf(" ") != -1) {
+                tableName = tableName.substring(0, tableName.indexOf(" "));
+            }
 
             String querySort = AbstractQueryGenerator.generateQuerySort(sort, tableName);
             String queryText = querySpec.getQueryText() + " " + querySort;

@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * An abstract representation of a required action for an assistant thread run to continue.
+ * The RequiredAction model.
  */
 @Immutable
 public class RequiredAction implements JsonSerializable<RequiredAction> {

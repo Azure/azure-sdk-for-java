@@ -4,10 +4,10 @@
 
 package com.azure.messaging.servicebus.administration.implementation.models;
 
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.messaging.servicebus.administration.implementation.CoreToCodegenBridgeUtils;
-import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
@@ -30,9 +30,7 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
         = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect";
 
     /*
-     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting
-     * from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a
-     * message itself.
+     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
      */
     private Duration defaultMessageTimeToLive;
 
@@ -47,8 +45,7 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
     private Boolean requiresDuplicateDetection;
 
     /*
-     * ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is
-     * 10 minutes.
+     * ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
      */
     private Duration duplicateDetectionHistoryTimeWindow;
 
@@ -98,9 +95,7 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
     private OffsetDateTime accessedAt;
 
     /*
-     * Indicates if messages are received in the same order they are sent. If partitioned topics, defaults to false,
-     * and setting it to true has no effect. For unpartitioned topics, setting it to false will improve perf, but
-     * messages may not be received in the order they are sent.
+     * Indicates if messages are received in the same order they are sent. If partitioned topics, defaults to false, and setting it to true has no effect. For unpartitioned topics, setting it to false will improve perf, but messages may not be received in the order they are sent.
      */
     private Boolean supportOrdering;
 
@@ -115,8 +110,7 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
     private Integer subscriptionCount;
 
     /*
-     * ISO 8601 timeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5
-     * minutes.
+     * ISO 8601 timeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5 minutes.
      */
     private Duration autoDeleteOnIdle;
 
@@ -136,8 +130,7 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
     private Boolean enableSubscriptionPartitioning;
 
     /*
-     * A value that indicates whether Express Entities are enabled. An express topic holds a message in memory
-     * temporarily before writing it to persistent storage.
+     * A value that indicates whether Express Entities are enabled. An express topic holds a message in memory temporarily before writing it to persistent storage.
      */
     private Boolean enableExpress;
 
@@ -159,8 +152,8 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
 
     /**
      * Get the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
-     * after which the message expires, starting from when the message is sent to Service Bus. This is the default
-     * value used when TimeToLive is not set on a message itself.
+     * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
+     * used when TimeToLive is not set on a message itself.
      * 
      * @return the defaultMessageTimeToLive value.
      */
@@ -170,8 +163,8 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
 
     /**
      * Set the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
-     * after which the message expires, starting from when the message is sent to Service Bus. This is the default
-     * value used when TimeToLive is not set on a message itself.
+     * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
+     * used when TimeToLive is not set on a message itself.
      * 
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
      * @return the TopicDescription object itself.
@@ -308,8 +301,7 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
     }
 
     /**
-     * Get the isAnonymousAccessible property: A value indicating if the resource can be accessed without
-     * authorization.
+     * Get the isAnonymousAccessible property: A value indicating if the resource can be accessed without authorization.
      * 
      * @return the isAnonymousAccessible value.
      */
@@ -318,8 +310,7 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
     }
 
     /**
-     * Set the isAnonymousAccessible property: A value indicating if the resource can be accessed without
-     * authorization.
+     * Set the isAnonymousAccessible property: A value indicating if the resource can be accessed without authorization.
      * 
      * @param isAnonymousAccessible the isAnonymousAccessible value to set.
      * @return the TopicDescription object itself.
@@ -436,8 +427,8 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
 
     /**
      * Get the supportOrdering property: Indicates if messages are received in the same order they are sent. If
-     * partitioned topics, defaults to false, and setting it to true has no effect. For unpartitioned topics, setting
-     * it to false will improve perf, but messages may not be received in the order they are sent.
+     * partitioned topics, defaults to false, and setting it to true has no effect. For unpartitioned topics, setting it
+     * to false will improve perf, but messages may not be received in the order they are sent.
      * 
      * @return the supportOrdering value.
      */
@@ -447,8 +438,8 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
 
     /**
      * Set the supportOrdering property: Indicates if messages are received in the same order they are sent. If
-     * partitioned topics, defaults to false, and setting it to true has no effect. For unpartitioned topics, setting
-     * it to false will improve perf, but messages may not be received in the order they are sent.
+     * partitioned topics, defaults to false, and setting it to true has no effect. For unpartitioned topics, setting it
+     * to false will improve perf, but messages may not be received in the order they are sent.
      * 
      * @param supportOrdering the supportOrdering value to set.
      * @return the TopicDescription object itself.
@@ -563,8 +554,8 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
     }
 
     /**
-     * Get the enableSubscriptionPartitioning property: A value that indicates whether the topic's subscription is to
-     * be partitioned.
+     * Get the enableSubscriptionPartitioning property: A value that indicates whether the topic's subscription is to be
+     * partitioned.
      * 
      * @return the enableSubscriptionPartitioning value.
      */
@@ -573,8 +564,8 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
     }
 
     /**
-     * Set the enableSubscriptionPartitioning property: A value that indicates whether the topic's subscription is to
-     * be partitioned.
+     * Set the enableSubscriptionPartitioning property: A value that indicates whether the topic's subscription is to be
+     * partitioned.
      * 
      * @param enableSubscriptionPartitioning the enableSubscriptionPartitioning value to set.
      * @return the TopicDescription object itself.
@@ -627,8 +618,8 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
     }
 
     /**
-     * Get the maxMessageSizeInKilobytes property: The maximum size in kilobytes of message payload that can be
-     * accepted by the topic.
+     * Get the maxMessageSizeInKilobytes property: The maximum size in kilobytes of message payload that can be accepted
+     * by the topic.
      * 
      * @return the maxMessageSizeInKilobytes value.
      */
@@ -637,8 +628,8 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
     }
 
     /**
-     * Set the maxMessageSizeInKilobytes property: The maximum size in kilobytes of message payload that can be
-     * accepted by the topic.
+     * Set the maxMessageSizeInKilobytes property: The maximum size in kilobytes of message payload that can be accepted
+     * by the topic.
      * 
      * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
      * @return the TopicDescription object itself.
@@ -659,13 +650,13 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "DefaultMessageTimeToLive",
-            CoreToCodegenBridgeUtils.durationToStringWithDays(this.defaultMessageTimeToLive));
+            CoreUtils.durationToStringWithDays(this.defaultMessageTimeToLive));
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MaxSizeInMegabytes",
             this.maxSizeInMegabytes);
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "RequiresDuplicateDetection",
             this.requiresDuplicateDetection);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "DuplicateDetectionHistoryTimeWindow",
-            CoreToCodegenBridgeUtils.durationToStringWithDays(this.duplicateDetectionHistoryTimeWindow));
+            CoreUtils.durationToStringWithDays(this.duplicateDetectionHistoryTimeWindow));
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "EnableBatchedOperations",
             this.enableBatchedOperations);
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "SizeInBytes", this.sizeInBytes);
@@ -694,7 +685,7 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "SubscriptionCount",
             this.subscriptionCount);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "AutoDeleteOnIdle",
-            CoreToCodegenBridgeUtils.durationToStringWithDays(this.autoDeleteOnIdle));
+            CoreUtils.durationToStringWithDays(this.autoDeleteOnIdle));
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "EnablePartitioning",
             this.enablePartitioning);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "EntityAvailabilityStatus",

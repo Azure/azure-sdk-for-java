@@ -11,7 +11,7 @@ public final class IoTSecurityDeviceAlertTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTSecurityDeviceAlert model = BinaryData.fromString(
-            "{\"alertDisplayName\":\"ottaw\",\"reportedSeverity\":\"Informational\",\"alertsCount\":6609053466837158122}")
+            "{\"alertDisplayName\":\"jqatucoigebxn\",\"reportedSeverity\":\"Medium\",\"alertsCount\":8956842510027719445}")
             .toObject(IoTSecurityDeviceAlert.class);
     }
 

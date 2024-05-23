@@ -26,7 +26,7 @@ import java.util.List;
 public final class FollowupRecommendationInference extends RadiologyInsightsInference {
 
     /*
-     * Inference type.
+     * The kind property.
      */
     @Generated
     @JsonTypeId
@@ -55,28 +55,32 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     private List<RecommendationFinding> findings;
 
     /*
-     * The conditional value indicates whether or not the sentence containing the recommendation includes a conditional statement. Keywords for conditional statements include 'if', 'when', 'unless', and so on.
+     * The conditional value indicates whether or not the sentence containing the recommendation includes a conditional
+     * statement. Keywords for conditional statements include 'if', 'when', 'unless', and so on.
      */
     @Generated
     @JsonProperty(value = "isConditional")
     private final boolean isConditional;
 
     /*
-     * The option value indicates whether or not the sentence containing the recommendation includes an optional statement. Keywords for optional statements include 'recommend', 'consider', and so on.
+     * The option value indicates whether or not the sentence containing the recommendation includes an optional
+     * statement. Keywords for optional statements include 'recommend', 'consider', and so on.
      */
     @Generated
     @JsonProperty(value = "isOption")
     private final boolean isOption;
 
     /*
-     * The guideline value indicates whether or not the recommendation is part of a guideline section that compiles all recommendations applicable to various findings.
+     * The guideline value indicates whether or not the recommendation is part of a guideline section that compiles all
+     * recommendations applicable to various findings.
      */
     @Generated
     @JsonProperty(value = "isGuideline")
     private final boolean isGuideline;
 
     /*
-     * Hedging refers to ambiguous, vague or imprecise language within the sentence of the recommendation. Keywords for hedging are 'can be','may be',and so on.
+     * Hedging refers to ambiguous, vague or imprecise language within the sentence of the recommendation. Keywords for
+     * hedging are 'can be','may be',and so on.
      */
     @Generated
     @JsonProperty(value = "isHedging")
@@ -112,7 +116,7 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
     }
 
     /**
-     * Get the kind property: Inference type.
+     * Get the kind property: The kind property.
      *
      * @return the kind value.
      */

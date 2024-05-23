@@ -19,8 +19,7 @@ public final class AutomationScope {
     private String description;
 
     /*
-     * The resources scope path. Can be the subscription on which the automation is defined on or a resource group
-     * under that subscription (fully qualified Azure resource IDs).
+     * The resources scope path. Can be the subscription on which the automation is defined on or a resource group under that subscription (fully qualified Azure resource IDs).
      */
     @JsonProperty(value = "scopePath")
     private String scopePath;

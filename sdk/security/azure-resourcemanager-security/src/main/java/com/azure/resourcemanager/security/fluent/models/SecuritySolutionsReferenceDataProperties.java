@@ -209,32 +209,39 @@ public final class SecuritySolutionsReferenceDataProperties {
      */
     public void validate() {
         if (securityFamily() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property securityFamily in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property securityFamily in model SecuritySolutionsReferenceDataProperties"));
         }
         if (alertVendorName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property alertVendorName in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property alertVendorName in model SecuritySolutionsReferenceDataProperties"));
         }
         if (packageInfoUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property packageInfoUrl in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property packageInfoUrl in model SecuritySolutionsReferenceDataProperties"));
         }
         if (productName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property productName in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property productName in model SecuritySolutionsReferenceDataProperties"));
         }
         if (publisher() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property publisher in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publisher in model SecuritySolutionsReferenceDataProperties"));
         }
         if (publisherDisplayName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property publisherDisplayName in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publisherDisplayName in model SecuritySolutionsReferenceDataProperties"));
         }
         if (template() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property template in model SecuritySolutionsReferenceDataProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property template in model SecuritySolutionsReferenceDataProperties"));
         }
     }
 

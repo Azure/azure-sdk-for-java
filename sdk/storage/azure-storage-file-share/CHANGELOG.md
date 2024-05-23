@@ -1,6 +1,6 @@
 # Release History
 
-## 12.22.0-beta.2 (Unreleased)
+## 12.23.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,21 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.22.0 (2024-05-15)
+
+### Features Added
+- Added support for service versions 2024-02-04 and 2024-05-04.
+- Added `clientName` property on `HandleItem` that specifies the name of the client machine where the share is being mounted.
+- Added rename support for `listRange` API via `supportRename` in `ShareFileListRangesDiffOptions`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+- Upgraded `azure-storage-common` from `12.25.0-beta.2` to version `12.25.0`.
 
 
 ## 12.21.4 (2024-04-23)

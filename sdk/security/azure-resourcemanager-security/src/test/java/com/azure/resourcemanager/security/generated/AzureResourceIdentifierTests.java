@@ -11,7 +11,7 @@ public final class AzureResourceIdentifierTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureResourceIdentifier model
-            = BinaryData.fromString("{\"type\":\"AzureResource\",\"azureResourceId\":\"jjktfin\"}")
+            = BinaryData.fromString("{\"type\":\"AzureResource\",\"azureResourceId\":\"idbdqzs\"}")
                 .toObject(AzureResourceIdentifier.class);
     }
 

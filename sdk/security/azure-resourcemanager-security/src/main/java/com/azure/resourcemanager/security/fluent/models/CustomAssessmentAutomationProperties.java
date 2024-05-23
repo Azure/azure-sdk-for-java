@@ -63,8 +63,7 @@ public final class CustomAssessmentAutomationProperties {
     }
 
     /**
-     * Get the compressedQuery property: GZip encoded KQL query representing the assessment automation results
-     * required.
+     * Get the compressedQuery property: GZip encoded KQL query representing the assessment automation results required.
      * 
      * @return the compressedQuery value.
      */
@@ -73,8 +72,7 @@ public final class CustomAssessmentAutomationProperties {
     }
 
     /**
-     * Set the compressedQuery property: GZip encoded KQL query representing the assessment automation results
-     * required.
+     * Set the compressedQuery property: GZip encoded KQL query representing the assessment automation results required.
      * 
      * @param compressedQuery the compressedQuery value to set.
      * @return the CustomAssessmentAutomationProperties object itself.

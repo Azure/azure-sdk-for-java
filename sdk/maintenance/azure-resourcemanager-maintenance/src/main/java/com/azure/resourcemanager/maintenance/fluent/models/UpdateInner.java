@@ -11,7 +11,9 @@ import com.azure.resourcemanager.maintenance.models.UpdateStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Maintenance update on a resource. */
+/**
+ * Maintenance update on a resource.
+ */
 @Fluent
 public final class UpdateInner {
     /*
@@ -50,13 +52,15 @@ public final class UpdateInner {
     @JsonProperty(value = "properties")
     private UpdateProperties innerProperties;
 
-    /** Creates an instance of UpdateInner class. */
+    /**
+     * Creates an instance of UpdateInner class.
+     */
     public UpdateInner() {
     }
 
     /**
      * Get the maintenanceScope property: The impact area.
-     *
+     * 
      * @return the maintenanceScope value.
      */
     public MaintenanceScope maintenanceScope() {
@@ -65,7 +69,7 @@ public final class UpdateInner {
 
     /**
      * Set the maintenanceScope property: The impact area.
-     *
+     * 
      * @param maintenanceScope the maintenanceScope value to set.
      * @return the UpdateInner object itself.
      */
@@ -76,7 +80,7 @@ public final class UpdateInner {
 
     /**
      * Get the impactType property: The impact type.
-     *
+     * 
      * @return the impactType value.
      */
     public ImpactType impactType() {
@@ -85,7 +89,7 @@ public final class UpdateInner {
 
     /**
      * Set the impactType property: The impact type.
-     *
+     * 
      * @param impactType the impactType value to set.
      * @return the UpdateInner object itself.
      */
@@ -96,7 +100,7 @@ public final class UpdateInner {
 
     /**
      * Get the status property: The status.
-     *
+     * 
      * @return the status value.
      */
     public UpdateStatus status() {
@@ -105,7 +109,7 @@ public final class UpdateInner {
 
     /**
      * Set the status property: The status.
-     *
+     * 
      * @param status the status value to set.
      * @return the UpdateInner object itself.
      */
@@ -116,7 +120,7 @@ public final class UpdateInner {
 
     /**
      * Get the impactDurationInSec property: Duration of impact in seconds.
-     *
+     * 
      * @return the impactDurationInSec value.
      */
     public Integer impactDurationInSec() {
@@ -125,7 +129,7 @@ public final class UpdateInner {
 
     /**
      * Set the impactDurationInSec property: Duration of impact in seconds.
-     *
+     * 
      * @param impactDurationInSec the impactDurationInSec value to set.
      * @return the UpdateInner object itself.
      */
@@ -137,7 +141,7 @@ public final class UpdateInner {
     /**
      * Get the notBefore property: Time when Azure will start force updates if not self-updated by customer before this
      * time.
-     *
+     * 
      * @return the notBefore value.
      */
     public OffsetDateTime notBefore() {
@@ -147,7 +151,7 @@ public final class UpdateInner {
     /**
      * Set the notBefore property: Time when Azure will start force updates if not self-updated by customer before this
      * time.
-     *
+     * 
      * @param notBefore the notBefore value to set.
      * @return the UpdateInner object itself.
      */
@@ -158,7 +162,7 @@ public final class UpdateInner {
 
     /**
      * Get the innerProperties property: Properties of the apply update.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateProperties innerProperties() {
@@ -167,7 +171,7 @@ public final class UpdateInner {
 
     /**
      * Get the resourceId property: The resourceId.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -176,7 +180,7 @@ public final class UpdateInner {
 
     /**
      * Set the resourceId property: The resourceId.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the UpdateInner object itself.
      */
@@ -190,7 +194,7 @@ public final class UpdateInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

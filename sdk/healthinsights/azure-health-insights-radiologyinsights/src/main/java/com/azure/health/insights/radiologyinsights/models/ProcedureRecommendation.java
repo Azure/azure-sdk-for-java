@@ -28,7 +28,7 @@ import java.util.List;
 public class ProcedureRecommendation {
 
     /*
-     * Procedure type : generic.
+     * The kind property.
      */
     @Generated
     @JsonTypeId
@@ -51,7 +51,7 @@ public class ProcedureRecommendation {
     }
 
     /**
-     * Get the kind property: Procedure type : generic.
+     * Get the kind property: The kind property.
      *
      * @return the kind value.
      */

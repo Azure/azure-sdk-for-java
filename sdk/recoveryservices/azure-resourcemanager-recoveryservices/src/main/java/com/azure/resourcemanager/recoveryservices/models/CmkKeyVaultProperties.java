@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of the Key Vault which hosts CMK. */
+/**
+ * The properties of the Key Vault which hosts CMK.
+ */
 @Fluent
 public final class CmkKeyVaultProperties {
     /*
@@ -16,13 +18,15 @@ public final class CmkKeyVaultProperties {
     @JsonProperty(value = "keyUri")
     private String keyUri;
 
-    /** Creates an instance of CmkKeyVaultProperties class. */
+    /**
+     * Creates an instance of CmkKeyVaultProperties class.
+     */
     public CmkKeyVaultProperties() {
     }
 
     /**
      * Get the keyUri property: The key uri of the Customer Managed Key.
-     *
+     * 
      * @return the keyUri value.
      */
     public String keyUri() {
@@ -31,7 +35,7 @@ public final class CmkKeyVaultProperties {
 
     /**
      * Set the keyUri property: The key uri of the Customer Managed Key.
-     *
+     * 
      * @param keyUri the keyUri value to set.
      * @return the CmkKeyVaultProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class CmkKeyVaultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

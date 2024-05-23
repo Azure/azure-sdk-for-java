@@ -55,14 +55,16 @@ public final class RouterWorkerInternal {
     private Integer capacity;
 
     /*
-     * A set of key/value pairs that are identifying attributes used by the rules engines to make decisions. Values must be primitive values - number, string, boolean.
+     * A set of key/value pairs that are identifying attributes used by the rules engines to make decisions. Values must
+     * be primitive values - number, string, boolean.
      */
     @Generated
     @JsonProperty(value = "labels")
     private Map<String, Object> labels;
 
     /*
-     * A set of non-identifying attributes attached to this worker. Values must be primitive values - number, string, boolean.
+     * A set of non-identifying attributes attached to this worker. Values must be primitive values - number, string,
+     * boolean.
      */
     @Generated
     @JsonProperty(value = "tags")
@@ -90,7 +92,8 @@ public final class RouterWorkerInternal {
     private List<RouterWorkerAssignment> assignedJobs;
 
     /*
-     * A value indicating the workers capacity. A value of '1' means all capacity is consumed. A value of '0' means no capacity is currently consumed.
+     * A value indicating the workers capacity. A value of '1' means all capacity is consumed. A value of '0' means no
+     * capacity is currently consumed.
      */
     @Generated
     @JsonProperty(value = "loadRatio", access = JsonProperty.Access.WRITE_ONLY)

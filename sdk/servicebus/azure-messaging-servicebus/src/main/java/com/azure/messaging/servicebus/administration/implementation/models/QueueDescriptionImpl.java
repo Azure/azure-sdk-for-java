@@ -4,10 +4,10 @@
 
 package com.azure.messaging.servicebus.administration.implementation.models;
 
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.messaging.servicebus.administration.implementation.CoreToCodegenBridgeUtils;
-import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
@@ -30,8 +30,7 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
         = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect";
 
     /*
-     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other
-     * receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
+     * ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
      */
     private Duration lockDuration;
 
@@ -51,9 +50,7 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     private Boolean requiresSession;
 
     /*
-     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting
-     * from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a
-     * message itself.
+     * ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself.
      */
     private Duration defaultMessageTimeToLive;
 
@@ -63,14 +60,12 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     private Boolean deadLetteringOnMessageExpiration;
 
     /*
-     * ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is
-     * 10 minutes.
+     * ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
      */
     private Duration duplicateDetectionHistoryTimeWindow;
 
     /*
-     * The maximum delivery count. A message is automatically deadlettered after this number of deliveries. Default
-     * value is 10.
+     * The maximum delivery count. A message is automatically deadlettered after this number of deliveries. Default value is 10.
      */
     private Integer maxDeliveryCount;
 
@@ -130,8 +125,7 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     private OffsetDateTime accessedAt;
 
     /*
-     * Indicates if messages are received in the same order they are sent. For queues, defaults to true and setting it
-     * to false has no effect.
+     * Indicates if messages are received in the same order they are sent. For queues, defaults to true and setting it to false has no effect.
      */
     private Boolean supportOrdering;
 
@@ -141,8 +135,7 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     private MessageCountDetailsImpl messageCountDetails;
 
     /*
-     * ISO 8601 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5
-     * minutes.
+     * ISO 8601 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes.
      */
     private Duration autoDeleteOnIdle;
 
@@ -162,8 +155,7 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     private String forwardDeadLetteredMessagesTo;
 
     /*
-     * A value that indicates whether Express Entities are enabled. An express queue holds a message in memory
-     * temporarily before writing it to persistent storage.
+     * A value that indicates whether Express Entities are enabled. An express queue holds a message in memory temporarily before writing it to persistent storage.
      */
     private Boolean enableExpress;
 
@@ -266,8 +258,8 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
 
     /**
      * Get the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
-     * after which the message expires, starting from when the message is sent to Service Bus. This is the default
-     * value used when TimeToLive is not set on a message itself.
+     * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
+     * used when TimeToLive is not set on a message itself.
      * 
      * @return the defaultMessageTimeToLive value.
      */
@@ -277,8 +269,8 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
 
     /**
      * Set the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
-     * after which the message expires, starting from when the message is sent to Service Bus. This is the default
-     * value used when TimeToLive is not set on a message itself.
+     * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
+     * used when TimeToLive is not set on a message itself.
      * 
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
      * @return the QueueDescription object itself.
@@ -333,8 +325,8 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     }
 
     /**
-     * Get the maxDeliveryCount property: The maximum delivery count. A message is automatically deadlettered after
-     * this number of deliveries. Default value is 10.
+     * Get the maxDeliveryCount property: The maximum delivery count. A message is automatically deadlettered after this
+     * number of deliveries. Default value is 10.
      * 
      * @return the maxDeliveryCount value.
      */
@@ -343,8 +335,8 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     }
 
     /**
-     * Set the maxDeliveryCount property: The maximum delivery count. A message is automatically deadlettered after
-     * this number of deliveries. Default value is 10.
+     * Set the maxDeliveryCount property: The maximum delivery count. A message is automatically deadlettered after this
+     * number of deliveries. Default value is 10.
      * 
      * @param maxDeliveryCount the maxDeliveryCount value to set.
      * @return the QueueDescription object itself.
@@ -417,8 +409,7 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     }
 
     /**
-     * Get the isAnonymousAccessible property: A value indicating if the resource can be accessed without
-     * authorization.
+     * Get the isAnonymousAccessible property: A value indicating if the resource can be accessed without authorization.
      * 
      * @return the isAnonymousAccessible value.
      */
@@ -427,8 +418,7 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     }
 
     /**
-     * Set the isAnonymousAccessible property: A value indicating if the resource can be accessed without
-     * authorization.
+     * Set the isAnonymousAccessible property: A value indicating if the resource can be accessed without authorization.
      * 
      * @param isAnonymousAccessible the isAnonymousAccessible value to set.
      * @return the QueueDescription object itself.
@@ -588,8 +578,8 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     }
 
     /**
-     * Get the supportOrdering property: Indicates if messages are received in the same order they are sent. For
-     * queues, defaults to true and setting it to false has no effect.
+     * Get the supportOrdering property: Indicates if messages are received in the same order they are sent. For queues,
+     * defaults to true and setting it to false has no effect.
      * 
      * @return the supportOrdering value.
      */
@@ -598,8 +588,8 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     }
 
     /**
-     * Set the supportOrdering property: Indicates if messages are received in the same order they are sent. For
-     * queues, defaults to true and setting it to false has no effect.
+     * Set the supportOrdering property: Indicates if messages are received in the same order they are sent. For queues,
+     * defaults to true and setting it to false has no effect.
      * 
      * @param supportOrdering the supportOrdering value to set.
      * @return the QueueDescription object itself.
@@ -738,8 +728,8 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     }
 
     /**
-     * Get the maxMessageSizeInKilobytes property: The maximum size in kilobytes of message payload that can be
-     * accepted by the queue.
+     * Get the maxMessageSizeInKilobytes property: The maximum size in kilobytes of message payload that can be accepted
+     * by the queue.
      * 
      * @return the maxMessageSizeInKilobytes value.
      */
@@ -748,8 +738,8 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
     }
 
     /**
-     * Set the maxMessageSizeInKilobytes property: The maximum size in kilobytes of message payload that can be
-     * accepted by the queue.
+     * Set the maxMessageSizeInKilobytes property: The maximum size in kilobytes of message payload that can be accepted
+     * by the queue.
      * 
      * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
      * @return the QueueDescription object itself.
@@ -770,7 +760,7 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "LockDuration",
-            CoreToCodegenBridgeUtils.durationToStringWithDays(this.lockDuration));
+            CoreUtils.durationToStringWithDays(this.lockDuration));
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MaxSizeInMegabytes",
             this.maxSizeInMegabytes);
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "RequiresDuplicateDetection",
@@ -778,11 +768,11 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "RequiresSession",
             this.requiresSession);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "DefaultMessageTimeToLive",
-            CoreToCodegenBridgeUtils.durationToStringWithDays(this.defaultMessageTimeToLive));
+            CoreUtils.durationToStringWithDays(this.defaultMessageTimeToLive));
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "DeadLetteringOnMessageExpiration",
             this.deadLetteringOnMessageExpiration);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "DuplicateDetectionHistoryTimeWindow",
-            CoreToCodegenBridgeUtils.durationToStringWithDays(this.duplicateDetectionHistoryTimeWindow));
+            CoreUtils.durationToStringWithDays(this.duplicateDetectionHistoryTimeWindow));
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MaxDeliveryCount",
             this.maxDeliveryCount);
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "EnableBatchedOperations",
@@ -812,7 +802,7 @@ public final class QueueDescriptionImpl implements XmlSerializable<QueueDescript
             this.supportOrdering);
         xmlWriter.writeXml(this.messageCountDetails, "CountDetails");
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "AutoDeleteOnIdle",
-            CoreToCodegenBridgeUtils.durationToStringWithDays(this.autoDeleteOnIdle));
+            CoreUtils.durationToStringWithDays(this.autoDeleteOnIdle));
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "EnablePartitioning",
             this.enablePartitioning);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "EntityAvailabilityStatus",

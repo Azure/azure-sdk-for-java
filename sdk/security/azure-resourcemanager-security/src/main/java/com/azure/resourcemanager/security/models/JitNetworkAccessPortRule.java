@@ -27,8 +27,7 @@ public final class JitNetworkAccessPortRule {
     private Protocol protocol;
 
     /*
-     * Mutually exclusive with the "allowedSourceAddressPrefixes" parameter. Should be an IP address or CIDR, for
-     * example "192.168.0.3" or "192.168.0.0/16".
+     * Mutually exclusive with the "allowedSourceAddressPrefixes" parameter. Should be an IP address or CIDR, for example "192.168.0.3" or "192.168.0.0/16".
      */
     @JsonProperty(value = "allowedSourceAddressPrefix")
     private String allowedSourceAddressPrefix;
@@ -164,12 +163,14 @@ public final class JitNetworkAccessPortRule {
      */
     public void validate() {
         if (protocol() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property protocol in model JitNetworkAccessPortRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protocol in model JitNetworkAccessPortRule"));
         }
         if (maxRequestAccessDuration() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property maxRequestAccessDuration in model JitNetworkAccessPortRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property maxRequestAccessDuration in model JitNetworkAccessPortRule"));
         }
     }
 

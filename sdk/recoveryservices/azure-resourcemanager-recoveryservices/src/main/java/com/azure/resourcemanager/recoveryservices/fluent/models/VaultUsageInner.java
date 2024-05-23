@@ -10,7 +10,9 @@ import com.azure.resourcemanager.recoveryservices.models.UsagesUnit;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Usages of a vault. */
+/**
+ * Usages of a vault.
+ */
 @Fluent
 public final class VaultUsageInner {
     /*
@@ -49,13 +51,15 @@ public final class VaultUsageInner {
     @JsonProperty(value = "name")
     private NameInfo name;
 
-    /** Creates an instance of VaultUsageInner class. */
+    /**
+     * Creates an instance of VaultUsageInner class.
+     */
     public VaultUsageInner() {
     }
 
     /**
      * Get the unit property: Unit of the usage.
-     *
+     * 
      * @return the unit value.
      */
     public UsagesUnit unit() {
@@ -64,7 +68,7 @@ public final class VaultUsageInner {
 
     /**
      * Set the unit property: Unit of the usage.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the VaultUsageInner object itself.
      */
@@ -75,7 +79,7 @@ public final class VaultUsageInner {
 
     /**
      * Get the quotaPeriod property: Quota period of usage.
-     *
+     * 
      * @return the quotaPeriod value.
      */
     public String quotaPeriod() {
@@ -84,7 +88,7 @@ public final class VaultUsageInner {
 
     /**
      * Set the quotaPeriod property: Quota period of usage.
-     *
+     * 
      * @param quotaPeriod the quotaPeriod value to set.
      * @return the VaultUsageInner object itself.
      */
@@ -95,7 +99,7 @@ public final class VaultUsageInner {
 
     /**
      * Get the nextResetTime property: Next reset time of usage.
-     *
+     * 
      * @return the nextResetTime value.
      */
     public OffsetDateTime nextResetTime() {
@@ -104,7 +108,7 @@ public final class VaultUsageInner {
 
     /**
      * Set the nextResetTime property: Next reset time of usage.
-     *
+     * 
      * @param nextResetTime the nextResetTime value to set.
      * @return the VaultUsageInner object itself.
      */
@@ -115,7 +119,7 @@ public final class VaultUsageInner {
 
     /**
      * Get the currentValue property: Current value of usage.
-     *
+     * 
      * @return the currentValue value.
      */
     public Long currentValue() {
@@ -124,7 +128,7 @@ public final class VaultUsageInner {
 
     /**
      * Set the currentValue property: Current value of usage.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the VaultUsageInner object itself.
      */
@@ -135,7 +139,7 @@ public final class VaultUsageInner {
 
     /**
      * Get the limit property: Limit of usage.
-     *
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -144,7 +148,7 @@ public final class VaultUsageInner {
 
     /**
      * Set the limit property: Limit of usage.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the VaultUsageInner object itself.
      */
@@ -155,7 +159,7 @@ public final class VaultUsageInner {
 
     /**
      * Get the name property: Name of usage.
-     *
+     * 
      * @return the name value.
      */
     public NameInfo name() {
@@ -164,7 +168,7 @@ public final class VaultUsageInner {
 
     /**
      * Set the name property: Name of usage.
-     *
+     * 
      * @param name the name value to set.
      * @return the VaultUsageInner object itself.
      */
@@ -175,7 +179,7 @@ public final class VaultUsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

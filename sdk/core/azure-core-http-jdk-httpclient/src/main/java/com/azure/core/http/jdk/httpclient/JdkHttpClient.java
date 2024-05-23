@@ -12,6 +12,7 @@ import com.azure.core.http.jdk.httpclient.implementation.ByteArrayTimeoutRespons
 import com.azure.core.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseAsync;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseSync;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -31,8 +32,6 @@ import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fro
  */
 class JdkHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
-    private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
-    private static final String AZURE_IGNORE_RESPONSE_BODY = "azure-ignore-response-body";
 
     private final java.net.http.HttpClient jdkHttpClient;
 
@@ -79,8 +78,8 @@ class JdkHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
-        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData(HttpUtils.AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        boolean ignoreResponseBody = (boolean) context.getData(HttpUtils.AZURE_IGNORE_RESPONSE_BODY).orElse(false);
 
         Mono<java.net.http.HttpRequest> jdkRequestMono = Mono.fromCallable(() -> toJdkHttpRequest(request, context));
 
@@ -111,8 +110,8 @@ class JdkHttpClient implements HttpClient {
 
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
-        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData(HttpUtils.AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        boolean ignoreResponseBody = (boolean) context.getData(HttpUtils.AZURE_IGNORE_RESPONSE_BODY).orElse(false);
 
         java.net.http.HttpRequest jdkRequest = toJdkHttpRequest(request, context);
         try {

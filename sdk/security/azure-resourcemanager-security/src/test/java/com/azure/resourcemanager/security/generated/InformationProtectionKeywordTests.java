@@ -23,7 +23,9 @@ public final class InformationProtectionKeywordTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InformationProtectionKeyword model = new InformationProtectionKeyword().withPattern("tehfiqscjeypvh")
-            .withCustom(true).withCanBeNumeric(true).withExcluded(true);
+            .withCustom(true)
+            .withCanBeNumeric(true)
+            .withExcluded(true);
         model = BinaryData.fromObject(model).toObject(InformationProtectionKeyword.class);
         Assertions.assertEquals("tehfiqscjeypvh", model.pattern());
         Assertions.assertEquals(true, model.custom());

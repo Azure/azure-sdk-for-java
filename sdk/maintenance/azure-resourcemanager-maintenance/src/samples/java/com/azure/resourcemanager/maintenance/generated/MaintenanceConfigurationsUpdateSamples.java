@@ -8,25 +8,24 @@ import com.azure.resourcemanager.maintenance.models.MaintenanceConfiguration;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
 import com.azure.resourcemanager.maintenance.models.Visibility;
 
-/** Samples for MaintenanceConfigurations Update. */
+/**
+ * Samples for MaintenanceConfigurations Update.
+ */
 public final class MaintenanceConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/MaintenanceConfigurations_UpdateForResource.json
+     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/MaintenanceConfigurations_UpdateForResource.json
      */
     /**
      * Sample code: MaintenanceConfigurations_UpdateForResource.
-     *
+     * 
      * @param manager Entry point to MaintenanceManager.
      */
-    public static void maintenanceConfigurationsUpdateForResource(
-        com.azure.resourcemanager.maintenance.MaintenanceManager manager) {
-        MaintenanceConfiguration resource =
-            manager
-                .maintenanceConfigurations()
-                .getByResourceGroupWithResponse("examplerg", "configuration1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+    public static void
+        maintenanceConfigurationsUpdateForResource(com.azure.resourcemanager.maintenance.MaintenanceManager manager) {
+        MaintenanceConfiguration resource = manager.maintenanceConfigurations()
+            .getByResourceGroupWithResponse("examplerg", "configuration1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withNamespace("Microsoft.Maintenance")
             .withMaintenanceScope(MaintenanceScope.OSIMAGE)
             .withVisibility(Visibility.CUSTOM)

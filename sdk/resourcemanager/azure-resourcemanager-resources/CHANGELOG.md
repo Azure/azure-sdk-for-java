@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `mode` and `metadata` in `PolicyDefinition` class.
 
 ## 2.38.0 (2024-04-16)
 

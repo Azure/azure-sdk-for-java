@@ -69,8 +69,8 @@ public final class IoTSecuritySolutionsList {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model IoTSecuritySolutionsList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model IoTSecuritySolutionsList"));
         } else {
             value().forEach(e -> e.validate());
         }

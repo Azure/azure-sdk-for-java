@@ -26,9 +26,9 @@ public final class GetSensitivitySettingsListResponseImpl implements GetSensitiv
     public List<GetSensitivitySettingsResponse> value() {
         List<GetSensitivitySettingsResponseInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections.unmodifiableList(
-                inner.stream().map(inner1 -> new GetSensitivitySettingsResponseImpl(inner1, this.manager()))
-                    .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new GetSensitivitySettingsResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
