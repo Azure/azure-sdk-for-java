@@ -4,6 +4,7 @@
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
+import com.azure.ai.openai.assistants.models.AssistantStreamEvent;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CodeInterpreterToolDefinition;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
@@ -82,7 +83,7 @@ public class StreamingFunctionCallExample {
         client.submitToolOutputsToRunStream(threadId.get(), runId.get(),
             prepareToolOutputs((SubmitToolOutputsAction) requiredAction.get())
         ).doOnNext(streamUpdate -> {
-            if (streamUpdate instanceof StreamRunStepUpdate) {
+            if (streamUpdate.getKind() == AssistantStreamEvent.THREAD_RUN_STEP_DELTA) {
                 RunStepDeltaToolCallObject runStepDetails = (RunStepDeltaToolCallObject) ((StreamRunStepUpdate) streamUpdate).getMessage().getDelta().getStepDetails();
                 handleToolCallOutput((RunStepDeltaCodeInterpreterToolCall) runStepDetails.getToolCalls().get(0));
             }
