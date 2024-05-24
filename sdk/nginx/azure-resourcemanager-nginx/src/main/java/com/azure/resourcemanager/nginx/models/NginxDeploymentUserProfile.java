@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class NginxDeploymentUserProfile {
     /*
-     * The preferred support contact email address of the user used for sending alerts and notification. Can be an
-     * empty string or a valid email address.
+     * The preferred support contact email address of the user used for sending alerts and notification. Can be an empty string or a valid email address.
      */
     @JsonProperty(value = "preferredEmail")
     private String preferredEmail;

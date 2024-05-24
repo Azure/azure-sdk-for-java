@@ -20,7 +20,8 @@ import java.util.List;
 public final class BatchJob implements JsonSerializable<BatchJob> {
 
     /*
-     * A string that uniquely identifies the Job within the Account. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
+     * A string that uniquely identifies the Job within the Account. The ID is case-preserving and case-insensitive
+     * (that is, you may not have two IDs within an Account that differ only by case).
      */
     @Generated
     private String id;
@@ -44,13 +45,16 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     private String url;
 
     /*
-     * The ETag of the Job. This is an opaque string. You can use it to detect whether the Job has changed between requests. In particular, you can be pass the ETag when updating a Job to specify that your changes should take effect only if nobody else has modified the Job in the meantime.
+     * The ETag of the Job. This is an opaque string. You can use it to detect whether the Job has changed between
+     * requests. In particular, you can be pass the ETag when updating a Job to specify that your changes should take
+     * effect only if nobody else has modified the Job in the meantime.
      */
     @Generated
     private String eTag;
 
     /*
-     * The last modified time of the Job. This is the last time at which the Job level data, such as the Job state or priority, changed. It does not factor in task-level changes such as adding new Tasks or Tasks changing state.
+     * The last modified time of the Job. This is the last time at which the Job level data, such as the Job state or
+     * priority, changed. It does not factor in task-level changes such as adding new Tasks or Tasks changing state.
      */
     @Generated
     private OffsetDateTime lastModified;
@@ -80,25 +84,32 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     private BatchJobState previousState;
 
     /*
-     * The time at which the Job entered its previous state. This property is not set if the Job is in its initial Active state.
+     * The time at which the Job entered its previous state. This property is not set if the Job is in its initial
+     * Active state.
      */
     @Generated
     private OffsetDateTime previousStateTransitionTime;
 
     /*
-     * The priority of the Job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. The default value is 0.
+     * The priority of the Job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and
+     * 1000 being the highest priority. The default value is 0.
      */
     @Generated
     private Integer priority;
 
     /*
-     * Whether Tasks in this job can be preempted by other high priority jobs. If the value is set to True, other high priority jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can update a job's allowTaskPreemption after it has been created using the update job API.
+     * Whether Tasks in this job can be preempted by other high priority jobs. If the value is set to True, other high
+     * priority jobs submitted to the system will take precedence and will be able requeue tasks from this job. You can
+     * update a job's allowTaskPreemption after it has been created using the update job API.
      */
     @Generated
     private Boolean allowTaskPreemption;
 
     /*
-     * The maximum number of tasks that can be executed in parallel for the job. The value of maxParallelTasks must be -1 or greater than 0 if specified. If not specified, the default value is -1, which means there's no limit to the number of tasks that can be run at once. You can update a job's maxParallelTasks after it has been created using the update job API.
+     * The maximum number of tasks that can be executed in parallel for the job. The value of maxParallelTasks must be
+     * -1 or greater than 0 if specified. If not specified, the default value is -1, which means there's no limit to the
+     * number of tasks that can be run at once. You can update a job's maxParallelTasks after it has been created using
+     * the update job API.
      */
     @Generated
     private Integer maxParallelTasks;
@@ -116,19 +127,23 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     private BatchJobManagerTask jobManagerTask;
 
     /*
-     * The Job Preparation Task. The Job Preparation Task is a special Task run on each Compute Node before any other Task of the Job.
+     * The Job Preparation Task. The Job Preparation Task is a special Task run on each Compute Node before any other
+     * Task of the Job.
      */
     @Generated
     private BatchJobPreparationTask jobPreparationTask;
 
     /*
-     * The Job Release Task. The Job Release Task is a special Task run at the end of the Job on each Compute Node that has run any other Task of the Job.
+     * The Job Release Task. The Job Release Task is a special Task run at the end of the Job on each Compute Node that
+     * has run any other Task of the Job.
      */
     @Generated
     private BatchJobReleaseTask jobReleaseTask;
 
     /*
-     * The list of common environment variable settings. These environment variables are set for all Tasks in the Job (including the Job Manager, Job Preparation and Job Release Tasks). Individual Tasks can override an environment setting specified here by specifying the same setting name with a different value.
+     * The list of common environment variable settings. These environment variables are set for all Tasks in the Job
+     * (including the Job Manager, Job Preparation and Job Release Tasks). Individual Tasks can override an environment
+     * setting specified here by specifying the same setting name with a different value.
      */
     @Generated
     private List<EnvironmentSetting> commonEnvironmentSettings;
@@ -140,13 +155,17 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     private final BatchPoolInfo poolInfo;
 
     /*
-     * The action the Batch service should take when all Tasks in the Job are in the completed state. The default is noaction.
+     * The action the Batch service should take when all Tasks in the Job are in the completed state. The default is
+     * noaction.
      */
     @Generated
     private OnAllBatchTasksComplete onAllTasksComplete;
 
     /*
-     * The action the Batch service should take when any Task in the Job fails. A Task is considered to have failed if has a failureInfo. A failureInfo is set if the Task completes with a non-zero exit code after exhausting its retry count, or if there was an error starting the Task, for example due to a resource file download error. The default is noaction.
+     * The action the Batch service should take when any Task in the Job fails. A Task is considered to have failed if
+     * has a failureInfo. A failureInfo is set if the Task completes with a non-zero exit code after exhausting its
+     * retry count, or if there was an error starting the Task, for example due to a resource file download error. The
+     * default is noaction.
      */
     @Generated
     private OnBatchTaskFailure onTaskFailure;
@@ -158,7 +177,8 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     private BatchJobNetworkConfiguration networkConfiguration;
 
     /*
-     * A list of name-value pairs associated with the Job as metadata. The Batch service does not assign any meaning to metadata; it is solely for the use of user code.
+     * A list of name-value pairs associated with the Job as metadata. The Batch service does not assign any meaning to
+     * metadata; it is solely for the use of user code.
      */
     @Generated
     private List<MetadataItem> metadata;
@@ -170,7 +190,10 @@ public final class BatchJob implements JsonSerializable<BatchJob> {
     private BatchJobExecutionInfo executionInfo;
 
     /*
-     * Resource usage statistics for the entire lifetime of the Job. This property is populated only if the CloudJob was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
+     * Resource usage statistics for the entire lifetime of the Job. This property is populated only if the CloudJob was
+     * retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The statistics may not be
+     * immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30
+     * minutes.
      */
     @Generated
     private BatchJobStatistics stats;

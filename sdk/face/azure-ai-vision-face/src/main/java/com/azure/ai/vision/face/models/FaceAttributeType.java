@@ -69,8 +69,7 @@ public final class FaceAttributeType extends ExpandableStringEnum<FaceAttributeT
      * The overall image quality regarding whether the image being used in the detection is of sufficient quality to
      * attempt face recognition on. The value is an informal rating of low, medium, or high. Only 'high' quality images
      * are recommended for person enrollment and quality at or above 'medium' is recommended for identification
-     * scenarios. The attribute is only available when using any combinations of detection models detection_01 or
-     * detection_03, and recognition models recognition_03 or recognition_04.
+     * scenarios. The attribute is only available when using recognition models recognition_03 or recognition_04.
      */
     @Generated
     public static final FaceAttributeType QUALITY_FOR_RECOGNITION = fromString("qualityForRecognition");
@@ -182,16 +181,20 @@ public final class FaceAttributeType extends ExpandableStringEnum<FaceAttributeT
     public static final class Detection03 {
 
         /**
+         * Face is blurry or not. Level returns 'Low', 'Medium' or 'High'. Value returns a number between [0,1], the
+         * larger the blurrier.
+         */
+        public static final FaceAttributeType BLUR = FaceAttributeType.BLUR;
+
+        /**
          * 3-D roll/yaw/pitch angles for face direction.
          */
-        @Generated
         public static final FaceAttributeType HEAD_POSE = FaceAttributeType.HEAD_POSE;
 
         /**
          * Whether each face is wearing a mask. Mask type returns 'noMask', 'faceMask', 'otherMaskOrOcclusion', or
          * 'uncertain'. Value returns a boolean 'noseAndMouthCovered' indicating whether nose and mouth are covered.
          */
-        @Generated
         public static final FaceAttributeType MASK = FaceAttributeType.MASK;
     }
 
@@ -208,7 +211,6 @@ public final class FaceAttributeType extends ExpandableStringEnum<FaceAttributeT
          * scenarios. The attribute is only available when using any combinations of detection models detection_01 or
          * detection_03, and recognition models recognition_03 or recognition_04.
          */
-        @Generated
         public static final FaceAttributeType QUALITY_FOR_RECOGNITION = FaceAttributeType.QUALITY_FOR_RECOGNITION;
     }
 
@@ -225,7 +227,6 @@ public final class FaceAttributeType extends ExpandableStringEnum<FaceAttributeT
          * scenarios. The attribute is only available when using any combinations of detection models detection_01 or
          * detection_03, and recognition models recognition_03 or recognition_04.
          */
-        @Generated
         public static final FaceAttributeType QUALITY_FOR_RECOGNITION = FaceAttributeType.QUALITY_FOR_RECOGNITION;
     }
 }

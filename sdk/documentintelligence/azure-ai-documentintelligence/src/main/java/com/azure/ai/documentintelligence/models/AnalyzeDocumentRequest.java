@@ -19,13 +19,13 @@ import java.io.IOException;
 @Fluent
 public final class AnalyzeDocumentRequest implements JsonSerializable<AnalyzeDocumentRequest> {
     /*
-     * Document URL to analyze.  Either urlSource or base64Source must be specified.
+     * Document URL to analyze. Either urlSource or base64Source must be specified.
      */
     @Generated
     private String urlSource;
 
     /*
-     * Base64 encoding of the document to analyze.  Either urlSource or base64Source
+     * Base64 encoding of the document to analyze. Either urlSource or base64Source
      * must be specified.
      */
     @Generated

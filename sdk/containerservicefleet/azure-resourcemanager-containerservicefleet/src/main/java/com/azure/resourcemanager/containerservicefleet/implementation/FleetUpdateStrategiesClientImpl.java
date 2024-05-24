@@ -64,8 +64,8 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
     }
 
     /**
-     * The interface defining all the services for ContainerServiceFleetManagementClientFleetUpdateStrategies to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for ContainerServiceFleetManagementClientFleetUpdateStrategies to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceFlee")
@@ -617,8 +617,10 @@ public final class FleetUpdateStrategiesClientImpl implements FleetUpdateStrateg
     public SyncPoller<PollResult<FleetUpdateStrategyInner>, FleetUpdateStrategyInner> beginCreateOrUpdate(
         String resourceGroupName, String fleetName, String updateStrategyName, FleetUpdateStrategyInner resource,
         String ifMatch, String ifNoneMatch, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, fleetName, updateStrategyName, resource, ifMatch,
-            ifNoneMatch, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, fleetName, updateStrategyName, resource, ifMatch, ifNoneMatch,
+                context)
+            .getSyncPoller();
     }
 
     /**

@@ -29,7 +29,8 @@ public final class LivenessOutputsTarget {
     private final String fileName;
 
     /*
-     * The time offset within the file of the frame which contains the face rectangle where the liveness classification was made on.
+     * The time offset within the file of the frame which contains the face rectangle where the liveness classification
+     * was made on.
      */
     @Generated
     @JsonProperty(value = "timeOffsetWithinFile")

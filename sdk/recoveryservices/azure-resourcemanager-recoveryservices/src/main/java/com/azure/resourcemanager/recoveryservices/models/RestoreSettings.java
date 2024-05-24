@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Restore Settings of the vault. */
+/**
+ * Restore Settings of the vault.
+ */
 @Fluent
 public final class RestoreSettings {
     /*
@@ -16,13 +18,15 @@ public final class RestoreSettings {
     @JsonProperty(value = "crossSubscriptionRestoreSettings")
     private CrossSubscriptionRestoreSettings crossSubscriptionRestoreSettings;
 
-    /** Creates an instance of RestoreSettings class. */
+    /**
+     * Creates an instance of RestoreSettings class.
+     */
     public RestoreSettings() {
     }
 
     /**
      * Get the crossSubscriptionRestoreSettings property: Settings for CrossSubscriptionRestore.
-     *
+     * 
      * @return the crossSubscriptionRestoreSettings value.
      */
     public CrossSubscriptionRestoreSettings crossSubscriptionRestoreSettings() {
@@ -31,19 +35,19 @@ public final class RestoreSettings {
 
     /**
      * Set the crossSubscriptionRestoreSettings property: Settings for CrossSubscriptionRestore.
-     *
+     * 
      * @param crossSubscriptionRestoreSettings the crossSubscriptionRestoreSettings value to set.
      * @return the RestoreSettings object itself.
      */
-    public RestoreSettings withCrossSubscriptionRestoreSettings(
-        CrossSubscriptionRestoreSettings crossSubscriptionRestoreSettings) {
+    public RestoreSettings
+        withCrossSubscriptionRestoreSettings(CrossSubscriptionRestoreSettings crossSubscriptionRestoreSettings) {
         this.crossSubscriptionRestoreSettings = crossSubscriptionRestoreSettings;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

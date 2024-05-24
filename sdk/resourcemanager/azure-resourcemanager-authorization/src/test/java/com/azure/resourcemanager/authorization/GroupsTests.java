@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class GroupsTests extends GraphRbacManagementTest {
         ServicePrincipal servicePrincipal = null;
         ActiveDirectoryGroup group1 = null;
         ActiveDirectoryGroup group2 = null;
+
+        // Disable `$.appId` sanitizer for this test
+        interceptorManager.removeSanitizers(Arrays.asList("AZSDK3432"));
         try {
             user =
                 authorizationManager

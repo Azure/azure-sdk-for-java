@@ -33,7 +33,7 @@ public class OperationDetails implements JsonSerializable<OperationDetails> {
     private String operationId;
 
     /*
-     * Operation status.  notStarted, running, completed, or failed
+     * Operation status. notStarted, running, completed, or failed
      */
     @Generated
     private final OperationStatus status;

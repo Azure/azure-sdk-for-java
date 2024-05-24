@@ -16,28 +16,24 @@ public final class FleetUpdateStrategyListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FleetUpdateStrategyListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"ywbiexzfeyueax\"},{\"name\":\"bxu\"}]}},\"eTag\":\"bhqwalmuzyoxa\",\"id\":\"dkzjancuxrh\",\"name\":\"wbavxbniwdj\",\"type\":\"wz\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"gnxytxhpzxbz\"}]}},\"eTag\":\"zabglcuhxwt\",\"id\":\"yqiklbbovplwzb\",\"name\":\"vgyuguos\",\"type\":\"mkfssxqukkfplgm\"},{\"properties\":{\"provisioningState\":\"Failed\",\"strategy\":{\"stages\":[{\"name\":\"jzkdeslpvlopwi\"}]}},\"eTag\":\"ghxpkdw\",\"id\":\"aiuebbaumnyqu\",\"name\":\"edeojnabc\",\"type\":\"hsmtxpsiebtfhvp\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"krdqmh\"},{\"name\":\"jdhtldwkyzxu\"},{\"name\":\"tkncwsc\"}]}},\"eTag\":\"vlxotogtwrupqsx\",\"id\":\"micykvceoveilo\",\"name\":\"notyfjfcnjbkcn\",\"type\":\"dhbt\"}],\"nextLink\":\"phywpnvj\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"rbmpukgri\"}]}},\"eTag\":\"lzlfbxzpuz\",\"id\":\"ispnqzahmgkbrp\",\"name\":\"y\",\"type\":\"hibnuqqkpika\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"qagnbuyn\"},{\"name\":\"ijggmebfsiar\"},{\"name\":\"utrc\"}]}},\"eTag\":\"na\",\"id\":\"mhjrunmpxttdbhr\",\"name\":\"nlankxmyskpb\",\"type\":\"enbtkcxywny\"}],\"nextLink\":\"rsyn\"}")
             .toObject(FleetUpdateStrategyListResult.class);
-        Assertions.assertEquals("ywbiexzfeyueax", model.value().get(0).strategy().stages().get(0).name());
-        Assertions.assertEquals("phywpnvj", model.nextLink());
+        Assertions.assertEquals("rbmpukgri", model.value().get(0).strategy().stages().get(0).name());
+        Assertions.assertEquals("rsyn", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FleetUpdateStrategyListResult model = new FleetUpdateStrategyListResult()
             .withValue(Arrays.asList(
-                new FleetUpdateStrategyInner().withStrategy(new UpdateRunStrategy().withStages(
-                    Arrays.asList(new UpdateStage().withName("ywbiexzfeyueax"), new UpdateStage().withName("bxu")))),
                 new FleetUpdateStrategyInner().withStrategy(
-                    new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("gnxytxhpzxbz")))),
+                    new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("rbmpukgri")))),
                 new FleetUpdateStrategyInner().withStrategy(
-                    new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("jzkdeslpvlopwi")))),
-                new FleetUpdateStrategyInner()
-                    .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("krdqmh"),
-                        new UpdateStage().withName("jdhtldwkyzxu"), new UpdateStage().withName("tkncwsc"))))))
-            .withNextLink("phywpnvj");
+                    new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("qagnbuyn"),
+                        new UpdateStage().withName("ijggmebfsiar"), new UpdateStage().withName("utrc"))))))
+            .withNextLink("rsyn");
         model = BinaryData.fromObject(model).toObject(FleetUpdateStrategyListResult.class);
-        Assertions.assertEquals("ywbiexzfeyueax", model.value().get(0).strategy().stages().get(0).name());
-        Assertions.assertEquals("phywpnvj", model.nextLink());
+        Assertions.assertEquals("rbmpukgri", model.value().get(0).strategy().stages().get(0).name());
+        Assertions.assertEquals("rsyn", model.nextLink());
     }
 }

@@ -44,13 +44,16 @@ public final class VMExtension implements JsonSerializable<VMExtension> {
     private String typeHandlerVersion;
 
     /*
-     * Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true.
+     * Indicates whether the extension should use a newer minor version if one is available at deployment time. Once
+     * deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set
+     * to true.
      */
     @Generated
     private Boolean autoUpgradeMinorVersion;
 
     /*
-     * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available.
+     * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of
+     * the extension available.
      */
     @Generated
     private Boolean enableAutomaticUpgrade;
@@ -62,13 +65,15 @@ public final class VMExtension implements JsonSerializable<VMExtension> {
     private Map<String, String> settings;
 
     /*
-     * The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
+     * The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at
+     * all.
      */
     @Generated
     private Map<String, String> protectedSettings;
 
     /*
-     * The collection of extension names. Collection of extension names after which this extension needs to be provisioned.
+     * The collection of extension names. Collection of extension names after which this extension needs to be
+     * provisioned.
      */
     @Generated
     private List<String> provisionAfterExtensions;

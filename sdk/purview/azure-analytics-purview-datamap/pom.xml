@@ -44,7 +44,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage> 
+    <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
   </properties>
   <dependencies>
     <dependency>
@@ -78,7 +78,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.25.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.26.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

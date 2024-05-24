@@ -24,14 +24,14 @@ import java.util.List;
     visible = true)
 @JsonTypeName("Fhir_R4_DomainResource")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Observation", value = FhirR4Observation.class),
     @JsonSubTypes.Type(name = "Condition", value = FhirR4Condition.class),
-    @JsonSubTypes.Type(name = "ResearchStudy", value = FhirR4ResearchStudy.class) })
+    @JsonSubTypes.Type(name = "ResearchStudy", value = FhirR4ResearchStudy.class),
+    @JsonSubTypes.Type(name = "Observation", value = FhirR4Observation.class) })
 @Immutable
 public class FhirR4DomainResource extends FhirR4Resource {
 
     /*
-     * resourceType
+     * The resourceType property.
      */
     @Generated
     @JsonTypeId
@@ -78,7 +78,7 @@ public class FhirR4DomainResource extends FhirR4Resource {
     }
 
     /**
-     * Get the resourceType property: resourceType.
+     * Get the resourceType property: The resourceType property.
      *
      * @return the resourceType value.
      */

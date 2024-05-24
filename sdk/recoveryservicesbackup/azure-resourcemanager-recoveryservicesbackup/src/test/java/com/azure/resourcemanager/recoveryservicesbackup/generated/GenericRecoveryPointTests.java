@@ -14,30 +14,32 @@ public final class GenericRecoveryPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GenericRecoveryPoint model = BinaryData.fromString(
-            "{\"objectType\":\"GenericRecoveryPoint\",\"friendlyName\":\"aglqivbgkcvkh\",\"recoveryPointType\":\"vuqd\",\"recoveryPointTime\":\"2021-06-25T03:03:43Z\",\"recoveryPointAdditionalInfo\":\"niypfpubcpzg\",\"recoveryPointProperties\":{\"expiryTime\":\"ivhjknidi\",\"ruleName\":\"qjxgpnrhgovfgp\",\"isSoftDeleted\":false}}")
+            "{\"objectType\":\"GenericRecoveryPoint\",\"friendlyName\":\"jmyccxlzhcoxov\",\"recoveryPointType\":\"khenlus\",\"recoveryPointTime\":\"2021-09-11T05:10:01Z\",\"recoveryPointAdditionalInfo\":\"tjxtxr\",\"recoveryPointProperties\":{\"expiryTime\":\"tjvidt\",\"ruleName\":\"epu\",\"isSoftDeleted\":false}}")
             .toObject(GenericRecoveryPoint.class);
-        Assertions.assertEquals("aglqivbgkcvkh", model.friendlyName());
-        Assertions.assertEquals("vuqd", model.recoveryPointType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T03:03:43Z"), model.recoveryPointTime());
-        Assertions.assertEquals("niypfpubcpzg", model.recoveryPointAdditionalInfo());
-        Assertions.assertEquals("ivhjknidi", model.recoveryPointProperties().expiryTime());
-        Assertions.assertEquals("qjxgpnrhgovfgp", model.recoveryPointProperties().ruleName());
+        Assertions.assertEquals("jmyccxlzhcoxov", model.friendlyName());
+        Assertions.assertEquals("khenlus", model.recoveryPointType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-11T05:10:01Z"), model.recoveryPointTime());
+        Assertions.assertEquals("tjxtxr", model.recoveryPointAdditionalInfo());
+        Assertions.assertEquals("tjvidt", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("epu", model.recoveryPointProperties().ruleName());
         Assertions.assertEquals(false, model.recoveryPointProperties().isSoftDeleted());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenericRecoveryPoint model = new GenericRecoveryPoint().withFriendlyName("aglqivbgkcvkh")
-            .withRecoveryPointType("vuqd").withRecoveryPointTime(OffsetDateTime.parse("2021-06-25T03:03:43Z"))
-            .withRecoveryPointAdditionalInfo("niypfpubcpzg").withRecoveryPointProperties(new RecoveryPointProperties()
-                .withExpiryTime("ivhjknidi").withRuleName("qjxgpnrhgovfgp").withIsSoftDeleted(false));
+        GenericRecoveryPoint model = new GenericRecoveryPoint().withFriendlyName("jmyccxlzhcoxov")
+            .withRecoveryPointType("khenlus")
+            .withRecoveryPointTime(OffsetDateTime.parse("2021-09-11T05:10:01Z"))
+            .withRecoveryPointAdditionalInfo("tjxtxr")
+            .withRecoveryPointProperties(
+                new RecoveryPointProperties().withExpiryTime("tjvidt").withRuleName("epu").withIsSoftDeleted(false));
         model = BinaryData.fromObject(model).toObject(GenericRecoveryPoint.class);
-        Assertions.assertEquals("aglqivbgkcvkh", model.friendlyName());
-        Assertions.assertEquals("vuqd", model.recoveryPointType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T03:03:43Z"), model.recoveryPointTime());
-        Assertions.assertEquals("niypfpubcpzg", model.recoveryPointAdditionalInfo());
-        Assertions.assertEquals("ivhjknidi", model.recoveryPointProperties().expiryTime());
-        Assertions.assertEquals("qjxgpnrhgovfgp", model.recoveryPointProperties().ruleName());
+        Assertions.assertEquals("jmyccxlzhcoxov", model.friendlyName());
+        Assertions.assertEquals("khenlus", model.recoveryPointType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-11T05:10:01Z"), model.recoveryPointTime());
+        Assertions.assertEquals("tjxtxr", model.recoveryPointAdditionalInfo());
+        Assertions.assertEquals("tjvidt", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("epu", model.recoveryPointProperties().ruleName());
         Assertions.assertEquals(false, model.recoveryPointProperties().isSoftDeleted());
     }
 }

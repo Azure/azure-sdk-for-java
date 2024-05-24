@@ -44,7 +44,8 @@ public final class LivenessSession {
     private final boolean sessionExpired;
 
     /*
-     * Unique Guid per each end-user device. This is to provide rate limiting and anti-hammering. If 'deviceCorrelationIdSetInClient' is true in this request, this 'deviceCorrelationId' must be null.
+     * Unique Guid per each end-user device. This is to provide rate limiting and anti-hammering. If
+     * 'deviceCorrelationIdSetInClient' is true in this request, this 'deviceCorrelationId' must be null.
      */
     @Generated
     @JsonProperty(value = "deviceCorrelationId")

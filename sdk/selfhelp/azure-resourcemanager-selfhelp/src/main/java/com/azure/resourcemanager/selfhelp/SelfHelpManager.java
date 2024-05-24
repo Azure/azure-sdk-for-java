@@ -84,7 +84,6 @@ public final class SelfHelpManager {
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new HelpRPBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-            .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
             .buildClient();
     }
@@ -241,7 +240,7 @@ public final class SelfHelpManager {
                 .append("-")
                 .append("com.azure.resourcemanager.selfhelp")
                 .append("/")
-                .append("1.1.0-beta.3");
+                .append("1.1.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))

@@ -12,13 +12,6 @@ import java.time.Duration;
  */
 public interface HelpRP {
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
-     * 
-     * @return the subscriptionId value.
-     */
-    String getSubscriptionId();
-
-    /**
      * Gets server parameter.
      * 
      * @return the endpoint value.
