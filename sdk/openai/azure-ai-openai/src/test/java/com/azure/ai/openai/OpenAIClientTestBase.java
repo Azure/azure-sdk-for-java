@@ -36,6 +36,9 @@ import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
+import com.azure.ai.openai.models.ContentFilterCitedDetectionResult;
+import com.azure.ai.openai.models.ContentFilterDetailedResults;
+import com.azure.ai.openai.models.ContentFilterDetectionResult;
 import com.azure.ai.openai.models.ContentFilterResult;
 import com.azure.ai.openai.models.ContentFilterResultDetailsForPrompt;
 import com.azure.ai.openai.models.ContentFilterResultsForChoice;
@@ -625,6 +628,30 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         ContentFilterResult violence = promptFilterDetails.getViolence();
         assertFalse(violence.isFiltered());
         assertEquals(violence.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterDetailedResults customBlocklists = promptFilterDetails.getCustomBlocklists();
+        if (customBlocklists != null) {
+            assertFalse(customBlocklists.isFiltered());
+            assertNull(customBlocklists.getDetails());
+        }
+
+        ContentFilterDetectionResult indirectAttack = promptFilterDetails.getIndirectAttack();
+        if (indirectAttack != null) {
+            assertFalse(indirectAttack.isFiltered());
+            assertFalse(indirectAttack.isDetected());
+        }
+
+        ContentFilterDetectionResult profanity = promptFilterDetails.getProfanity();
+        if (profanity != null) {
+            assertFalse(profanity.isFiltered());
+            assertFalse(profanity.isDetected());
+        }
+
+        ContentFilterDetectionResult jailbreak = promptFilterDetails.getJailbreak();
+        if (jailbreak != null) {
+            assertFalse(jailbreak.isFiltered());
+            assertFalse(jailbreak.isDetected());
+        }
     }
 
     static void assertSafeChoiceContentFilterResults(ContentFilterResultsForChoice contentFilterResults) {
@@ -645,6 +672,30 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         ContentFilterResult violence = contentFilterResults.getViolence();
         assertFalse(violence.isFiltered());
         assertEquals(violence.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterDetailedResults customBlocklists = contentFilterResults.getCustomBlocklists();
+        if (customBlocklists != null) {
+            assertFalse(customBlocklists.isFiltered());
+            assertNull(customBlocklists.getDetails());
+        }
+
+        ContentFilterDetectionResult profanity = contentFilterResults.getProfanity();
+        if (profanity != null) {
+            assertFalse(profanity.isFiltered());
+            assertFalse(profanity.isDetected());
+        }
+
+        ContentFilterDetectionResult protectedMaterialText = contentFilterResults.getProtectedMaterialText();
+        if (protectedMaterialText != null) {
+            assertFalse(protectedMaterialText.isFiltered());
+            assertFalse(protectedMaterialText.isDetected());
+        }
+
+        ContentFilterCitedDetectionResult protectedMaterialCode = contentFilterResults.getProtectedMaterialCode();
+        if (protectedMaterialCode != null) {
+            assertFalse(protectedMaterialCode.isFiltered());
+            assertFalse(protectedMaterialCode.isDetected());
+        }
     }
 
     static void assertChatCompletionsCognitiveSearch(ChatCompletions chatCompletions) {

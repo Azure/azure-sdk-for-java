@@ -18,9 +18,13 @@
 **Chat**
 
 - [AOAI] Added new class `OnYourDataContextProperty` to represent the context property in the On Your Data deployment.
-- [AOAI] Added new class `OnYourDataVectorSearchAuthenticationType`, `OnYourDataVectorSearchAuthenticationOptions`, `OnYourDataVectorSearchApiKeyAuthenticationOptions`, `OnYourDataVectorSearchAccessTokenAuthenticationOptions` for the vector search authentication options.
-- [AOAI] Added new class `AzureChatExtensionRetrievedDocument` and `AzureChatExtensionRetrieveDocumentFilterReason` to represent the retrieved document and filter reason in the chat extension.
-- [AOAI] Added a new property `all_retrieved_documents` in `AzureChatExtensionsMessageContext` class to represent all the retrieved documents in the chat extension.
+- [AOAI] Added new class `OnYourDataVectorSearchAuthenticationType`, `OnYourDataVectorSearchAuthenticationOptions`, 
+  `OnYourDataVectorSearchApiKeyAuthenticationOptions`, `OnYourDataVectorSearchAccessTokenAuthenticationOptions` for the 
+  vector search authentication options.
+- [AOAI] Added new class `AzureChatExtensionRetrievedDocument` and `AzureChatExtensionRetrieveDocumentFilterReason` to 
+  represent the retrieved document and filter reason in the chat extension.
+- [AOAI] Added a new property `all_retrieved_documents` in `AzureChatExtensionsMessageContext` class to represent all 
+  the retrieved documents in the chat extension.
 - [AOAI] Added a new property `indirectAttack` in `ContentFilterResultDetailsForPrompt` class to represent the indirect attack results.
 - [AOAI] Added new properties `max_search_queries`, `allow_partial_result`, and `include_contexts` in 
   `AzureCosmosDBChatExtensionParameters`, `AzureMachineLearningIndexChatExtensionParameters`, 
