@@ -198,7 +198,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
                     CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, DATA_SUBSCRIPTION_ID), 200)
             )));
 
-            ConnectCallOptions connectOptions = new ConnectCallOptions(new RoomCallLocator(ROOM_ID), CALL_CALLBACK_URL);
+        ConnectCallOptions connectOptions = new ConnectCallOptions(new RoomCallLocator(ROOM_ID), CALL_CALLBACK_URL);
 
         Response<ConnectCallResult> result = callAutomationAsyncClient.connectCallWithResponse(
             connectOptions).block();

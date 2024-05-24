@@ -8,5 +8,7 @@ import com.azure.core.annotation.Fluent;
 /** The PlayCanceled model. */
 @Fluent
 public final class PlayCanceled extends CallAutomationEventBase {
+    private PlayCanceled() {
 
+    }
 }
