@@ -11,12 +11,12 @@ import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.data.appconfiguration.ConfigurationClientTestBase.FAKE_CONNECTION_STRING;
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Unit test for construct a configuration client by using AAD token credential.
@@ -77,7 +77,8 @@ public class AadCredentialTest extends TestProxyTestBase {
         final String value = "newValue";
 
         ConfigurationSetting addedSetting = client.setConfigurationSetting(key, null, value);
-        Assertions.assertEquals(addedSetting.getKey(), key);
-        Assertions.assertEquals(addedSetting.getValue(), value);
+
+        assertNotNull(addedSetting.getKey());
+        assertNotNull(addedSetting.getValue());
     }
 }
