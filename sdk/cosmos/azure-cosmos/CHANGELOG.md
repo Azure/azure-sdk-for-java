@@ -1,11 +1,9 @@
 ## Release History
 
-### 4.61.0-beta.1 (Unreleased)
+### 4.61.0 (2024-05-24)
 
 #### Features Added
 * Added query statement conditionally in diagnostics and tracing. - See[PR 39990](https://github.com/Azure/azure-sdk-for-java/pull/39990)
-
-#### Breaking Changes
 
 #### Bugs Fixed
 * Fixed a rare issue causing `StackOverflowError` when `RntbdRequestRecord` expires and tries to serialize `CosmosException` using default Jackson Object Mapper - See[PR 40272](https://github.com/Azure/azure-sdk-for-java/pull/40272)
