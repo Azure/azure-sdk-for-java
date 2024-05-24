@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.61.0 (2024-05-23)
+### 4.61.0 (2024-05-24)
 
 #### Features Added
 * Added query statement conditionally in diagnostics and tracing. - See[PR 39990](https://github.com/Azure/azure-sdk-for-java/pull/39990)

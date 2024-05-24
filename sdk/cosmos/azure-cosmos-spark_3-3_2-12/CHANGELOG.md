@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.32.0 (2024-05-23)
+### 4.32.0 (2024-05-24)
 
 #### Features Added
 * Added config option `spark.cosmos.auth.aad.clientCertPemBase64` to allow using SPN (ServicePrincipal name) authentication with certificate instead of client secret. - See [PR 40325](https://github.com/Azure/azure-sdk-for-java/pull/40325)
