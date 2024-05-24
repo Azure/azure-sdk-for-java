@@ -836,7 +836,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startTranscription() {
-        return startTranscriptionWithResponseAsync(null).then();
+        return startTranscriptionWithResponse(null).then();
     }
 
     /**
@@ -846,7 +846,7 @@ public final class CallMediaAsync {
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> startTranscriptionWithResponseAsync(StartTranscriptionOptions options) {
+    public Mono<Response<Void>> startTranscriptionWithResponse(StartTranscriptionOptions options) {
         return withContext(context -> startTranscriptionWithResponseInternal(options, context));
     }
 
@@ -873,7 +873,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopTranscription() {
-        return stopTranscriptionWithResponseAsync(null).then();
+        return stopTranscriptionWithResponse(null).then();
     }
 
     /**
@@ -883,7 +883,7 @@ public final class CallMediaAsync {
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopTranscriptionWithResponseAsync(StopTranscriptionOptions options) {
+    public Mono<Response<Void>> stopTranscriptionWithResponse(StopTranscriptionOptions options) {
         return withContext(context -> stopTranscriptionWithResponseInternal(options, context));
     }
 
@@ -909,7 +909,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateTranscription(String locale) {
-        return withContext(context -> updateTranscriptionWithResponseInternal(locale, context)).then();
+        return updateTransriptionWithResponse(locale).then();
     }
 
     /**
@@ -921,7 +921,29 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateTranscription(String locale, String speechRecognitionModelEndpointId) {
+        return updateTransriptionWithResponse(locale, speechRecognitionModelEndpointId).then();
+    }
+
+     /**
+     * Updates transcription language
+     * @param speechRecognitionModelEndpointId Defines custom model endpoint.
+     * @param locale Defines new locale for transcription.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateTransriptionWithResponse(String locale, String speechRecognitionModelEndpointId) {
         return withContext(context -> updateTranscriptionWithResponseInternal(locale, speechRecognitionModelEndpointId, context)).then();
+    }
+    
+    /**
+     * Updates transcription language
+     *
+     * @param locale Defines new locale for transcription.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateTransriptionWithResponse(String locale) {
+        return withContext(context -> updateTranscriptionWithResponseInternal(locale, context)).then();
     }
 
     Mono<Response<Void>> updateTranscriptionWithResponseInternal(String locale, Context context) {
@@ -956,7 +978,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startMediaStreaming() {
-        return startMediaStreamingWithResponseAsync(null).then();
+        return startMediaStreamingWithResponse(null).then();
     }
 
     /**
@@ -966,7 +988,7 @@ public final class CallMediaAsync {
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> startMediaStreamingWithResponseAsync(StartMediaStreamingOptions options) {
+    public Mono<Response<Void>> startMediaStreamingWithResponse(StartMediaStreamingOptions options) {
         return withContext(context -> startMediaStreamingWithResponseInternal(options, context));
     }
 
@@ -992,7 +1014,7 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopMediaStreaming() {
-        return stopMediaStreamingWithResponseAsync(null).then();
+        return stopMediaStreamingWithResponse(null).then();
     }
 
     /**
@@ -1002,7 +1024,7 @@ public final class CallMediaAsync {
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> stopMediaStreamingWithResponseAsync(StopMediaStreamingOptions options) {
+    public Mono<Response<Void>> stopMediaStreamingWithResponse(StopMediaStreamingOptions options) {
         return withContext(context -> stopMediaStreamingWithResponseInternal(options, context));
     }
 
