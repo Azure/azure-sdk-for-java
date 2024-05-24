@@ -16,7 +16,7 @@ public final class RoomCallLocator extends CallLocator {
     /*
      * Defines the kind of call locator
      */
-    private CallLocatorKind kind;
+    private final CallLocatorKind kind;
 
     /**
      * Room call locator

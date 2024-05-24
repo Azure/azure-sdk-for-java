@@ -8,5 +8,7 @@ import com.azure.core.annotation.Fluent;
 /** The RecognizeFailed model. */
 @Fluent
 public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode {
+    private RecognizeFailed() {
 
+    }
 }

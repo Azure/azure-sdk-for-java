@@ -5,7 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImpl;
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImplBuilder;
-import com.azure.communication.callautomation.implementation.CustomBearerTokenAuthenticationPolicy;
+//import com.azure.communication.callautomation.implementation.CustomBearerTokenAuthenticationPolicy;
 import com.azure.communication.callautomation.implementation.CustomHmacAuthenticationPolicy;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
@@ -24,7 +24,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+//import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;

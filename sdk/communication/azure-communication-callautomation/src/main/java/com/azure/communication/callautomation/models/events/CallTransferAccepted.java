@@ -19,12 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /** The CallTransferAccepted model. */
 @Immutable
 public final class CallTransferAccepted extends CallAutomationEventBase {
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    @JsonProperty(value = "resultInformation")
-    private final ResultInformation resultInformation;
-
     /**
      * The participant who is being transferred away.
      */
@@ -41,21 +35,11 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
     private CallTransferAccepted(
             @JsonProperty("transferee") Map<String, Object> transferee,
             @JsonProperty("transferTarget") Map<String, Object> transferTarget) {
-        this.resultInformation = null;
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         this.transferee = CommunicationIdentifierConverter.convert(mapper.convertValue(transferee, CommunicationIdentifierModel.class));
         this.transferTarget = CommunicationIdentifierConverter.convert(mapper.convertValue(transferTarget, CommunicationIdentifierModel.class));
 
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 
     /**

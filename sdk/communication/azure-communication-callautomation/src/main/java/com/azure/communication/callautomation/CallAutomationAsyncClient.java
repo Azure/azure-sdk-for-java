@@ -220,7 +220,7 @@ public final class CallAutomationAsyncClient {
             callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(createCallGroupOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
         }
 
-       return new CreateCallRequestInternal()
+        return new CreateCallRequestInternal()
             .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallGroupOptions.getSourceCallIdNumber()))
             .setSourceDisplayName(createCallGroupOptions.getSourceDisplayName())
             .setSource(sourceIdentity)
@@ -400,7 +400,7 @@ public final class CallAutomationAsyncClient {
     /**
      * Create a connect request.
      *
-     * @param connectOptions Options for connect request.
+     * @param connectCallOptions Options for connect request.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of connect.

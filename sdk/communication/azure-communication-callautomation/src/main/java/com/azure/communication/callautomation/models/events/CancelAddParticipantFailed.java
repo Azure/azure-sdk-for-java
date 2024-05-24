@@ -16,17 +16,9 @@ public final class CancelAddParticipantFailed extends CallAutomationEventBase {
     @JsonProperty(value = "invitationId")
     private final String invitationId;
 
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    @JsonProperty(value = "resultInformation")
-    private final ResultInformation resultInformation;
-
     private CancelAddParticipantFailed() {
-        invitationId = null;
-        resultInformation = null;
+        this.invitationId = null;
     }
-
     /**
      * Get the invitationId property: The invitation ID used to cancel the add participant request.
      *
@@ -34,15 +26,5 @@ public final class CancelAddParticipantFailed extends CallAutomationEventBase {
      */
     public String getInvitationId() {
         return invitationId;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code
-     * and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return resultInformation;
     }
 }

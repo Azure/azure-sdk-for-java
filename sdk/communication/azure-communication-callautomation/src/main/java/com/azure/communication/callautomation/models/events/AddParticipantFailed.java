@@ -25,15 +25,8 @@ public final class AddParticipantFailed extends CallAutomationEventBase {
     @JsonIgnore
     private final CommunicationIdentifier participant;
 
-    /*
-     * Contains the resulting SIP code, sub-code and message.
-     */
-    @JsonProperty(value = "resultInformation")
-    private final ResultInformation resultInformation;
-
     @JsonCreator
     private AddParticipantFailed(@JsonProperty("participant") Map<String, Object> participant) {
-        this.resultInformation = null;
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         this.participant = CommunicationIdentifierConverter.convert(mapper.convertValue(participant, CommunicationIdentifierModel.class));
@@ -46,14 +39,5 @@ public final class AddParticipantFailed extends CallAutomationEventBase {
      */
     public CommunicationIdentifier getParticipant() {
         return this.participant;
-    }
-
-    /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
-     * @return the resultInformation value.
-     */
-    public ResultInformation getResultInformation() {
-        return this.resultInformation;
     }
 }

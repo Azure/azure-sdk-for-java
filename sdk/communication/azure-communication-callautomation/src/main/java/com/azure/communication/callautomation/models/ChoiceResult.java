@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
+//import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ChoiceResult model. */
