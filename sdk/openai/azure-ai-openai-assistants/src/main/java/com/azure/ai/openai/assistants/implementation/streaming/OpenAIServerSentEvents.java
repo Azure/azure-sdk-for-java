@@ -161,7 +161,7 @@ public final class OpenAIServerSentEvents {
             return;
         }
 
-        if(lines[0].isEmpty() || lines[1].isEmpty()) {
+        if (lines[0].isEmpty() || lines[1].isEmpty()) {
             return;
         }
 

@@ -74,7 +74,7 @@ public class FunctionToolCallSample {
                 for (RequiredToolCall toolCall : requiredAction.getSubmitToolOutputs().getToolCalls()) {
                     toolOutputs.add(getResolvedToolOutput(toolCall));
                 }
-                run = client.submitToolOutputsToRun(thread.getId(), run.getId(),toolOutputs);
+                run = client.submitToolOutputsToRun(thread.getId(), run.getId(), toolOutputs);
             }
 
         } while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS);

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.MessageRole;
@@ -10,8 +13,6 @@ import com.azure.ai.openai.assistants.models.StreamRunCreation;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -22,7 +23,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -95,7 +95,7 @@ public class AzureStreamingAsyncTest extends AssistantsClientTestBase {
             .verifyComplete();
 
         StepVerifier.create(client.createRunStream(threadId, mathTutorAssistantId))
-            .thenConsumeWhile(streamUpdate -> true , AssistantsClientTestBase::assertStreamUpdate).verifyComplete();
+            .thenConsumeWhile(streamUpdate -> true, AssistantsClientTestBase::assertStreamUpdate).verifyComplete();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
@@ -40,8 +43,8 @@ public class StreamingFunctionCallExample {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(deploymentOrModelId)
             .setName("Java SDK Test Assistant: math function plotter")
             .setDescription("This assistant helps you plot math functions.")
-            .setInstructions("You are a helpful math assistant that helps with visualizing equations. Use the code " +
-                "interpreter tool when asked to generate images. Use provided functions to resolve appropriate unknown values")
+            .setInstructions("You are a helpful math assistant that helps with visualizing equations. Use the code "
+                + "interpreter tool when asked to generate images. Use provided functions to resolve appropriate unknown values")
             .setTools(Arrays.asList(
                 new CodeInterpreterToolDefinition(),
                 new FunctionToolDefinition(

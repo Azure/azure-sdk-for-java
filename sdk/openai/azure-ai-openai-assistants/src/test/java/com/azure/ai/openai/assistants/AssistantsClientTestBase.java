@@ -242,7 +242,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     void uploadAssistantTextFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
-        String fileName =JAVA_SDK_TESTS_ASSISTANTS_TXT;
+        String fileName = JAVA_SDK_TESTS_ASSISTANTS_TXT;
         FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
             .setFilename(fileName);
         testRunner.accept(fileDetails, FilePurpose.ASSISTANTS);
@@ -345,8 +345,8 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     String createMathTutorAssistantWithFunctionTool(AssistantsClient client) {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
                 .setName("Math Tutor")
-                .setInstructions("You are a helpful math assistant that helps with visualizing equations. Use the code " +
-                    "interpreter tool when asked to generate images. Use provided functions to resolve appropriate unknown values")
+                .setInstructions("You are a helpful math assistant that helps with visualizing equations. Use the code "
+                    + "interpreter tool when asked to generate images. Use provided functions to resolve appropriate unknown values")
                 .setTools(Arrays.asList(
                     new CodeInterpreterToolDefinition(),
                     new FunctionToolDefinition(
@@ -359,8 +359,8 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     String createMathTutorAssistantWithFunctionTool(AssistantsAsyncClient client) {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
             .setName("Math Tutor")
-            .setInstructions("You are a helpful math assistant that helps with visualizing equations. Use the code " +
-                "interpreter tool when asked to generate images. Use provided functions to resolve appropriate unknown values")
+            .setInstructions("You are a helpful math assistant that helps with visualizing equations. Use the code "
+                + "interpreter tool when asked to generate images. Use provided functions to resolve appropriate unknown values")
             .setTools(Arrays.asList(
                 new CodeInterpreterToolDefinition(),
                 new FunctionToolDefinition(
@@ -379,7 +379,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     String uploadFile(AssistantsClient client) {
-        String fileName =JAVA_SDK_TESTS_ASSISTANTS_TXT;
+        String fileName = JAVA_SDK_TESTS_ASSISTANTS_TXT;
         FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
             .setFilename(fileName);
 
