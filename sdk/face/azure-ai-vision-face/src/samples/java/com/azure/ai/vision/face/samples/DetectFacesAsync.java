@@ -36,7 +36,7 @@ public class DetectFacesAsync {
             FaceDetectionModel.DETECTION_03,
             FaceRecognitionModel.RECOGNITION_04,
             true,
-            Arrays.asList(Detection03.HEAD_POSE, Detection03.MASK, Recognition04.QUALITY_FOR_RECOGNITION),
+            Arrays.asList(Detection03.HEAD_POSE, Detection03.MASK, Detection03.BLUR, Recognition04.QUALITY_FOR_RECOGNITION),
             false,
             true,
             120)
@@ -48,7 +48,7 @@ public class DetectFacesAsync {
             .setReturnFaceAttributes(Arrays.asList(Detection01.ACCESSORIES, Detection01.GLASSES, Detection01.EXPOSURE, Detection01.NOISE))
             .setReturnFaceLandmarks(true);
 
-        flux = client.detectFromUrl(Resources.TEST_IMAGE_URL_DETECT_SAMPLE, options)
+        flux = client.detect(Resources.TEST_IMAGE_URL_DETECT_SAMPLE, options)
             .flatMapMany(Flux::fromIterable);
 
         flux.subscribe(face -> log("Detected Face from URL:" + Utils.toString(face) + "\n"));
