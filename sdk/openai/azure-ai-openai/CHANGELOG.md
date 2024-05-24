@@ -45,7 +45,8 @@
 - [AOAI] Added a new class `ContentFilterDetailedResults` to represent detailed content filter results, which replaces the
   `customBlocklists` response property type, `List<ContentFilterBlocklistIdResult>` in 
   `ContentFilterResultDetailsForPrompt` and `ContentFilterResultsForChoice` class.
-- [AOAI] Replace the `OnYourDataAuthenticationOptions` by `OnYourDataVectorSearchAuthenticationOptions` in the `OnYourDataEndpointVectorizationSource` class.
+- [AOAI] Replaced `OnYourDataAuthenticationOptions` with `OnYourDataVectorSearchAuthenticationOptions` in the `OnYourDataEndpointVectorizationSource` class.
+  Currently, `OnYourDataEndpointVectorizationSource` only supports `OnYourDataApiKeyAuthenticationOptions` and `OnYourDataAccessTokenAuthenticationOptions` as authentication options.
 
 ### Bugs Fixed
 
