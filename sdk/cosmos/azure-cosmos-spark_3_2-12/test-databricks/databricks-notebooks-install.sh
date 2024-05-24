@@ -48,7 +48,7 @@ do
 	fi
 
 	echo "Creating run for job $JOB_ID"
-	RUN_ID=$(databricks jobs run-now --job-id $JOB_ID --notebook-params "{\"cosmosEndpoint\": \"$COSMOSENDPOINT\",\"cosmosMasterKey\": \"$COSMOSKEY\",\"subscriptionId\": \"$SUBSCRIPTIONID\",\"tenantId\": \"$TENANTID\",\"resourceGroupName\": \"$RESOURCEGROUPNAME\",\"clientIdCert\": \"$CLIENTID\",\"clientId\": \"$CLIENTIDCERT\",\"clientSecret\": \"$CLIENTSECRET\",\"clientCertPem\": \"$CLIENTCERTPEM\",\"cosmosContainerName\": \"$COSMOSCONTAINERNAME\", \"cosmosDatabaseName\": \"$COSMOSDATABASENAME\"}" | jq -r '.run_id')
+	RUN_ID=$(databricks jobs run-now --job-id $JOB_ID --notebook-params "{\"cosmosEndpoint\": \"$COSMOSENDPOINT\",\"cosmosMasterKey\": \"$COSMOSKEY\",\"subscriptionId\": \"$SUBSCRIPTIONID\",\"tenantId\": \"$TENANTID\",\"resourceGroupName\": \"$RESOURCEGROUPNAME\",\"clientId\": \"$CLIENTID\",\"clientIdCert\": \"$CLIENTIDCERT\",\"clientSecret\": \"$CLIENTSECRET\",\"clientCertPem\": \"$CLIENTCERTPEM\",\"cosmosContainerName\": \"$COSMOSCONTAINERNAME\", \"cosmosDatabaseName\": \"$COSMOSDATABASENAME\"}" | jq -r '.run_id')
 
 	if [[ -z "$RUN_ID" ]]
 	then
