@@ -6,6 +6,8 @@
 // val clientId = "<inserted by environment>"
 // val clientCertPem = "<inserted by environment>"
 
+println("SCENARIO: basicScenarioAadCert")
+
 val authType = "ServicePrincipal"
 val cosmosEndpoint = dbutils.widgets.get("cosmosEndpoint")
 val subscriptionId = dbutils.widgets.get("subscriptionId")
