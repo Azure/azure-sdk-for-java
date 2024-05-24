@@ -14,6 +14,7 @@ public final class StreamThreadCreation extends StreamUpdate {
      * Creates a new instance of StreamThreadCreation.
      *
      * @param thread The {@link AssistantThread} in the update sent by the service.
+     * @param kind The stream event type associated with this update.
      */
     public StreamThreadCreation(AssistantThread thread, AssistantStreamEvent kind) {
         super(kind);

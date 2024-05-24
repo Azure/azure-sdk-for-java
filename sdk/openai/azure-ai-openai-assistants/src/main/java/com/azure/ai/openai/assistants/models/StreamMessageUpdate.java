@@ -19,6 +19,7 @@ public class StreamMessageUpdate extends StreamUpdate {
      * Creates a new instance of StreamMessageUpdate.
      *
      * @param messageDelta The {@link MessageDeltaChunk} with the incremental delta update sent by the service.
+     * @param kind The stream event type associated with this update.
      */
     public StreamMessageUpdate(MessageDeltaChunk messageDelta, AssistantStreamEvent kind) {
         super(kind);

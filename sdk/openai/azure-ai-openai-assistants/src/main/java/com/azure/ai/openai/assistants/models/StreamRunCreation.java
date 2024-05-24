@@ -13,6 +13,7 @@ public class StreamRunCreation extends StreamUpdate {
      * Creates a new instance of StreamRunCreation.
      *
      * @param run The {@link RunStep} with the data about this run step sent by the service.
+     * @param kind The stream event type associated with this update.
      */
     public StreamRunCreation(RunStep run, AssistantStreamEvent kind) {
         super(kind);

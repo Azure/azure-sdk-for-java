@@ -14,6 +14,7 @@ public final class StreamThreadRunCreation extends StreamUpdate {
      * Creates a new instance of StreamThreadRunCreation.
      *
      * @param threadRun The {@link ThreadRun} with the update sent by the service.
+     * @param kind The stream event type associated with this update.
      */
     public StreamThreadRunCreation(ThreadRun threadRun, AssistantStreamEvent kind) {
         super(kind);

@@ -14,6 +14,7 @@ public class StreamRunStepUpdate extends StreamUpdate {
      * Creates a new instance of StreamRunStepUpdate.
      *
      * @param runStepDelta The {@link RunStepDeltaChunk} with the update sent by the service.
+     * @param kind The stream event type associated with this update.
      */
     public StreamRunStepUpdate(RunStepDeltaChunk runStepDelta, AssistantStreamEvent kind) {
         super(kind);

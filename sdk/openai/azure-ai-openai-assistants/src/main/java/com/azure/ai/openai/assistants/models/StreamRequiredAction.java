@@ -14,6 +14,7 @@ public class StreamRequiredAction extends StreamUpdate {
      * Creates a new instance of StreamRequiredAction.
      *
      * @param action The {@link ThreadRun} with the action required by the service.
+     * @param kind The stream event type associated with this update.
      */
     public StreamRequiredAction(ThreadRun action, AssistantStreamEvent kind) {
         super(kind);
