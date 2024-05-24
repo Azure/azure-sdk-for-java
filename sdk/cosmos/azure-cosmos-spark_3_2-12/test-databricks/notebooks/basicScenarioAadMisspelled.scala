@@ -19,26 +19,26 @@ val cosmosContainerName = dbutils.widgets.get("cosmosContainerName")
 val cosmosDatabaseName = dbutils.widgets.get("cosmosDatabaseName")
 
 val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-  "spark.cosmos.auth.type" -> authType,
-  "spark.cosmos.account.subscriptionId" -> subscriptionId,
-  "spark.cosmos.account.tenantId" -> tenantId,
-  "spark.cosmos.account.resourceGroupName" -> resourceGroupName,
-  "spark.cosmos.auth.aad.clientId" -> clientId,
-  "spark.cosmos.auth.aad.clientSecret" -> clientSecret,
-  "spark.cosmos.database" -> cosmosDatabaseName,
-  "spark.cosmos.container" -> cosmosContainerName
+    "spark.cosmos.auth.type" -> authType,
+    "spark.cosmos.account.subscriptionId" -> subscriptionId,
+    "spark.cosmos.account.tenantId" -> tenantId,
+    "spark.cosmos.account.resourceGroupName" -> resourceGroupName,
+    "spark.cosmos.auth.aad.clientId" -> clientId,
+    "spark.cosmos.auth.aad.clientSecret" -> clientSecret,
+    "spark.cosmos.database" -> cosmosDatabaseName,
+    "spark.cosmos.container" -> cosmosContainerName
 )
 
 val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-  "spark.cosmos.auth.type" -> authType,
-  "spark.cosmos.account.subscriptionId" -> subscriptionId,
-  "spark.cosmos.account.tenantId" -> tenantId,
-  "spark.cosmos.account.resourceGroupName" -> resourceGroupName,
-  "spark.cosmos.auth.aad.clientId" -> clientId,
-  "spark.cosmos.auth.aad.clientSecret" -> clientSecret,
-  "spark.cosmos.database" -> cosmosDatabaseName,
-  "spark.cosmos.container" -> cosmosContainerName,
-  "spark.cosmos.read.inferSchema.enabled" -> "true"
+    "spark.cosmos.auth.type" -> authType,
+    "spark.cosmos.account.subscriptionId" -> subscriptionId,
+    "spark.cosmos.account.tenantId" -> tenantId,
+    "spark.cosmos.account.resourceGroupName" -> resourceGroupName,
+    "spark.cosmos.auth.aad.clientId" -> clientId,
+    "spark.cosmos.auth.aad.clientSecret" -> clientSecret,
+    "spark.cosmos.database" -> cosmosDatabaseName,
+    "spark.cosmos.container" -> cosmosContainerName,
+    "spark.cosmos.read.inferSchema.enabled" -> "true"
 )
 
 // COMMAND ----------
@@ -58,22 +58,22 @@ spark.sql(s"CREATE DATABASE IF NOT EXISTS cosmosCatalogSpnOld.${cosmosDatabaseNa
 
 // create a cosmos container
 spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalogSpnOld.${cosmosDatabaseName}.${cosmosContainerName} using cosmos.oltp " +
-  s"TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '400')")
+    s"TBLPROPERTIES(partitionKeyPath = '/id', manualThroughput = '400')")
 
 // update the throughput
 spark.sql(s"ALTER TABLE cosmosCatalogSpnOld.${cosmosDatabaseName}.${cosmosContainerName} " +
-  s"SET TBLPROPERTIES('manualThroughput' = '1100')")
+    s"SET TBLPROPERTIES('manualThroughput' = '1100')")
 
 // COMMAND ----------
 
 // ingestion
 spark.createDataFrame(Seq(("cat-alive", "Schrodinger cat", 2, true), ("cat-dead", "Schrodinger cat", 2, false)))
-  .toDF("id","name","age","isAlive")
-  .write
-  .format("cosmos.oltp")
-  .options(cfg)
-  .mode("APPEND")
-  .save()
+    .toDF("id","name","age","isAlive")
+    .write
+    .format("cosmos.oltp")
+    .options(cfg)
+    .mode("APPEND")
+    .save()
 
 // COMMAND ----------
 
@@ -97,8 +97,8 @@ import org.apache.spark.sql.functions.col
 
 // Query to find the live cat and increment age of the alive cat
 df.filter(col("isAlive") === true)
-  .withColumn("age", col("age") + 1)
-  .show()
+    .withColumn("age", col("age") + 1)
+    .show()
 
 // COMMAND ----------
 
