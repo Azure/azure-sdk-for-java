@@ -75,10 +75,13 @@ extends:
           CalledFromClient: true
           ServiceDirectory: identity
           SupportedClouds: 'Public,UsGov,China'
+          EnvVars:
+            SYSTEM_ACCESSTOKEN: $(System.AccessToken)
           CloudConfig:
             Public:
               SubscriptionConfigurations:
                 - $(sub-config-azure-cloud-test-resources)
+                - $(sub-config-identity-test-resources)
           Artifacts:
             - name: azure-identity
               groupId: com.azure

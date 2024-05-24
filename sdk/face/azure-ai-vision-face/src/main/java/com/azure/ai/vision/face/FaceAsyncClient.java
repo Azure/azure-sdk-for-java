@@ -4,22 +4,17 @@
 package com.azure.ai.vision.face;
 
 import com.azure.ai.vision.face.implementation.FaceClientImpl;
-import com.azure.ai.vision.face.implementation.models.DetectFromUrlRequest;
-import com.azure.ai.vision.face.implementation.models.FindSimilarFromFaceListRequest;
-import com.azure.ai.vision.face.implementation.models.FindSimilarFromLargeFaceListRequest;
+import com.azure.ai.vision.face.implementation.models.DetectFromUrlImplOptions;
+import com.azure.ai.vision.face.implementation.models.DetectFromUrlImplRequest;
 import com.azure.ai.vision.face.implementation.models.FindSimilarRequest;
 import com.azure.ai.vision.face.implementation.models.GroupRequest;
-import com.azure.ai.vision.face.implementation.models.IdentifyFromDynamicPersonGroupRequest;
-import com.azure.ai.vision.face.implementation.models.IdentifyFromLargePersonGroupRequest;
-import com.azure.ai.vision.face.implementation.models.IdentifyFromPersonDirectoryRequest;
-import com.azure.ai.vision.face.implementation.models.IdentifyFromPersonGroupRequest;
 import com.azure.ai.vision.face.implementation.models.VerifyFaceToFaceRequest;
-import com.azure.ai.vision.face.implementation.models.VerifyFromLargePersonGroupRequest;
-import com.azure.ai.vision.face.implementation.models.VerifyFromPersonDirectoryRequest;
-import com.azure.ai.vision.face.implementation.models.VerifyFromPersonGroupRequest;
+import com.azure.ai.vision.face.models.FaceAttributeType;
+import com.azure.ai.vision.face.models.FaceDetectionModel;
+import com.azure.ai.vision.face.models.FaceDetectionResult;
 import com.azure.ai.vision.face.models.FaceFindSimilarResult;
 import com.azure.ai.vision.face.models.FaceGroupingResult;
-import com.azure.ai.vision.face.models.FaceIdentificationResult;
+import com.azure.ai.vision.face.models.FaceRecognitionModel;
 import com.azure.ai.vision.face.models.FaceVerificationResult;
 import com.azure.ai.vision.face.models.FindSimilarMatchMode;
 import com.azure.core.annotation.Generated;
@@ -36,14 +31,12 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.TypeReference;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 import com.azure.ai.vision.face.models.DetectOptions;
-import com.azure.ai.vision.face.models.FaceAttributeType;
-import com.azure.ai.vision.face.models.FaceDetectionModel;
-import com.azure.ai.vision.face.models.FaceDetectionResult;
-import com.azure.ai.vision.face.models.FaceRecognitionModel;
-import static com.azure.ai.vision.face.implementation.ClientUtils.addRequiredQueryParameterForDetection;
 import static com.azure.ai.vision.face.implementation.ClientUtils.addOptionalQueryParameterForDetection;
+import static com.azure.ai.vision.face.implementation.ClientUtils.addRequiredQueryParameterForDetection;
 
 /**
  * Initializes a new instance of the asynchronous FaceClient type.
@@ -62,370 +55,6 @@ public final class FaceAsyncClient {
     @Generated
     FaceAsyncClient(FaceClientImpl serviceClient) {
         this.serviceClient = serviceClient;
-    }
-
-    /**
-     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
-     *
-     * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
-     * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
-     *
-     * *
-     * * No image will be stored. Only the extracted face feature(s) will be stored on server. The faceId is an
-     * identifier of the face feature and will be used in "Identify", "Verify", and "Find Similar". The stored face
-     * features will expire and be deleted at the time specified by faceIdTimeToLive after the original detection call.
-     * * Optional parameters include faceId, landmarks, and attributes. Attributes include headPose, glasses, occlusion,
-     * accessories, blur, exposure, noise, mask, and qualityForRecognition. Some of the results returned for specific
-     * attributes may not be highly accurate.
-     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
-     * * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
-     * dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
-     * * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
-     * * For optimal results when querying "Identify", "Verify", and "Find Similar" ('returnFaceId' is true), please use
-     * faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
-     * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
-     * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
-     * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
-     * * 'detection_03': Face attributes (mask and headPose only) and landmarks are supported if you choose this
-     * detection model.
-     * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
-     * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
-     * for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need
-     * in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model.
-     * More details, please refer to
-     * https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-recognition-model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>detectionModel</td><td>String</td><td>No</td><td>The 'detectionModel' associated with the detected
-     * faceIds. Supported 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default
-     * value is 'detection_01'. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
-     * <tr><td>recognitionModel</td><td>String</td><td>No</td><td>The 'recognitionModel' associated with the detected
-     * faceIds. Supported 'recognitionModel' values include 'recognition_01', 'recognition_02', 'recognition_03' or
-     * 'recognition_04'. The default value is 'recognition_01'. 'recognition_04' is recommended since its accuracy is
-     * improved on faces wearing masks compared with 'recognition_03', and its overall accuracy is improved compared
-     * with 'recognition_01' and 'recognition_02'. Allowed values: "recognition_01", "recognition_02", "recognition_03",
-     * "recognition_04".</td></tr>
-     * <tr><td>returnFaceId</td><td>Boolean</td><td>No</td><td>Return faceIds of the detected faces or not. The default
-     * value is true.</td></tr>
-     * <tr><td>returnFaceAttributes</td><td>List&lt;String&gt;</td><td>No</td><td>Analyze and return the one or more
-     * specified face attributes in the comma-separated string like 'returnFaceAttributes=headPose,glasses'. Face
-     * attribute analysis has additional computational and time cost. In the form of "," separated string.</td></tr>
-     * <tr><td>returnFaceLandmarks</td><td>Boolean</td><td>No</td><td>Return face landmarks of the detected faces or
-     * not. The default value is false.</td></tr>
-     * <tr><td>returnRecognitionModel</td><td>Boolean</td><td>No</td><td>Return 'recognitionModel' or not. The default
-     * value is false. This is only applicable when returnFaceId = true.</td></tr>
-     * <tr><td>faceIdTimeToLive</td><td>Integer</td><td>No</td><td>The number of seconds for the face ID being cached.
-     * Supported range from 60 seconds up to 86400 seconds. The default value is 86400 (24 hours).</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     url: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Optional)
-     *         recognitionModel: String(recognition_01/recognition_02/recognition_03/recognition_04) (Optional)
-     *         faceRectangle (Required): {
-     *             top: int (Required)
-     *             left: int (Required)
-     *             width: int (Required)
-     *             height: int (Required)
-     *         }
-     *         faceLandmarks (Optional): {
-     *             pupilLeft (Required): {
-     *                 x: double (Required)
-     *                 y: double (Required)
-     *             }
-     *             pupilRight (Required): (recursive schema, see pupilRight above)
-     *             noseTip (Required): (recursive schema, see noseTip above)
-     *             mouthLeft (Required): (recursive schema, see mouthLeft above)
-     *             mouthRight (Required): (recursive schema, see mouthRight above)
-     *             eyebrowLeftOuter (Required): (recursive schema, see eyebrowLeftOuter above)
-     *             eyebrowLeftInner (Required): (recursive schema, see eyebrowLeftInner above)
-     *             eyeLeftOuter (Required): (recursive schema, see eyeLeftOuter above)
-     *             eyeLeftTop (Required): (recursive schema, see eyeLeftTop above)
-     *             eyeLeftBottom (Required): (recursive schema, see eyeLeftBottom above)
-     *             eyeLeftInner (Required): (recursive schema, see eyeLeftInner above)
-     *             eyebrowRightInner (Required): (recursive schema, see eyebrowRightInner above)
-     *             eyebrowRightOuter (Required): (recursive schema, see eyebrowRightOuter above)
-     *             eyeRightInner (Required): (recursive schema, see eyeRightInner above)
-     *             eyeRightTop (Required): (recursive schema, see eyeRightTop above)
-     *             eyeRightBottom (Required): (recursive schema, see eyeRightBottom above)
-     *             eyeRightOuter (Required): (recursive schema, see eyeRightOuter above)
-     *             noseRootLeft (Required): (recursive schema, see noseRootLeft above)
-     *             noseRootRight (Required): (recursive schema, see noseRootRight above)
-     *             noseLeftAlarTop (Required): (recursive schema, see noseLeftAlarTop above)
-     *             noseRightAlarTop (Required): (recursive schema, see noseRightAlarTop above)
-     *             noseLeftAlarOutTip (Required): (recursive schema, see noseLeftAlarOutTip above)
-     *             noseRightAlarOutTip (Required): (recursive schema, see noseRightAlarOutTip above)
-     *             upperLipTop (Required): (recursive schema, see upperLipTop above)
-     *             upperLipBottom (Required): (recursive schema, see upperLipBottom above)
-     *             underLipTop (Required): (recursive schema, see underLipTop above)
-     *             underLipBottom (Required): (recursive schema, see underLipBottom above)
-     *         }
-     *         faceAttributes (Optional): {
-     *             age: Double (Optional)
-     *             smile: Double (Optional)
-     *             facialHair (Optional): {
-     *                 moustache: double (Required)
-     *                 beard: double (Required)
-     *                 sideburns: double (Required)
-     *             }
-     *             glasses: String(noGlasses/readingGlasses/sunglasses/swimmingGoggles) (Optional)
-     *             headPose (Optional): {
-     *                 pitch: double (Required)
-     *                 roll: double (Required)
-     *                 yaw: double (Required)
-     *             }
-     *             hair (Optional): {
-     *                 bald: double (Required)
-     *                 invisible: boolean (Required)
-     *                 hairColor (Required): [
-     *                      (Required){
-     *                         color: String(unknown/white/gray/blond/brown/red/black/other) (Required)
-     *                         confidence: double (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             occlusion (Optional): {
-     *                 foreheadOccluded: boolean (Required)
-     *                 eyeOccluded: boolean (Required)
-     *                 mouthOccluded: boolean (Required)
-     *             }
-     *             accessories (Optional): [
-     *                  (Optional){
-     *                     type: String(headwear/glasses/mask) (Required)
-     *                     confidence: double (Required)
-     *                 }
-     *             ]
-     *             blur (Optional): {
-     *                 blurLevel: String(low/medium/high) (Required)
-     *                 value: double (Required)
-     *             }
-     *             exposure (Optional): {
-     *                 exposureLevel: String(underExposure/goodExposure/overExposure) (Required)
-     *                 value: double (Required)
-     *             }
-     *             noise (Optional): {
-     *                 noiseLevel: String(low/medium/high) (Required)
-     *                 value: double (Required)
-     *             }
-     *             mask (Optional): {
-     *                 noseAndMouthCovered: boolean (Required)
-     *                 type: String(faceMask/noMask/otherMaskOrOcclusion/uncertain) (Required)
-     *             }
-     *             qualityForRecognition: String(low/medium/high) (Optional)
-     *         }
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> detectFromUrlWithResponse(BinaryData request, RequestOptions requestOptions) {
-        return this.serviceClient.detectFromUrlWithResponseAsync(request, requestOptions);
-    }
-
-    /**
-     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
-     *
-     * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
-     * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
-     *
-     * *
-     * * No image will be stored. Only the extracted face feature(s) will be stored on server. The faceId is an
-     * identifier of the face feature and will be used in "Identify", "Verify", and "Find Similar". The stored face
-     * features will expire and be deleted at the time specified by faceIdTimeToLive after the original detection call.
-     * * Optional parameters include faceId, landmarks, and attributes. Attributes include headPose, glasses, occlusion,
-     * accessories, blur, exposure, noise, mask, and qualityForRecognition. Some of the results returned for specific
-     * attributes may not be highly accurate.
-     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
-     * * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
-     * dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
-     * * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
-     * * For optimal results when querying "Identify", "Verify", and "Find Similar" ('returnFaceId' is true), please use
-     * faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
-     * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
-     * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
-     * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
-     * * 'detection_03': Face attributes (mask and headPose only) and landmarks are supported if you choose this
-     * detection model.
-     * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
-     * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
-     * for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need
-     * in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model.
-     * More details, please refer to
-     * https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-recognition-model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>detectionModel</td><td>String</td><td>No</td><td>The 'detectionModel' associated with the detected
-     * faceIds. Supported 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default
-     * value is 'detection_01'. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
-     * <tr><td>recognitionModel</td><td>String</td><td>No</td><td>The 'recognitionModel' associated with the detected
-     * faceIds. Supported 'recognitionModel' values include 'recognition_01', 'recognition_02', 'recognition_03' or
-     * 'recognition_04'. The default value is 'recognition_01'. 'recognition_04' is recommended since its accuracy is
-     * improved on faces wearing masks compared with 'recognition_03', and its overall accuracy is improved compared
-     * with 'recognition_01' and 'recognition_02'. Allowed values: "recognition_01", "recognition_02", "recognition_03",
-     * "recognition_04".</td></tr>
-     * <tr><td>returnFaceId</td><td>Boolean</td><td>No</td><td>Return faceIds of the detected faces or not. The default
-     * value is true.</td></tr>
-     * <tr><td>returnFaceAttributes</td><td>List&lt;String&gt;</td><td>No</td><td>Analyze and return the one or more
-     * specified face attributes in the comma-separated string like 'returnFaceAttributes=headPose,glasses'. Face
-     * attribute analysis has additional computational and time cost. In the form of "," separated string.</td></tr>
-     * <tr><td>returnFaceLandmarks</td><td>Boolean</td><td>No</td><td>Return face landmarks of the detected faces or
-     * not. The default value is false.</td></tr>
-     * <tr><td>returnRecognitionModel</td><td>Boolean</td><td>No</td><td>Return 'recognitionModel' or not. The default
-     * value is false. This is only applicable when returnFaceId = true.</td></tr>
-     * <tr><td>faceIdTimeToLive</td><td>Integer</td><td>No</td><td>The number of seconds for the face ID being cached.
-     * Supported range from 60 seconds up to 86400 seconds. The default value is 86400 (24 hours).</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * BinaryData
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Optional)
-     *         recognitionModel: String(recognition_01/recognition_02/recognition_03/recognition_04) (Optional)
-     *         faceRectangle (Required): {
-     *             top: int (Required)
-     *             left: int (Required)
-     *             width: int (Required)
-     *             height: int (Required)
-     *         }
-     *         faceLandmarks (Optional): {
-     *             pupilLeft (Required): {
-     *                 x: double (Required)
-     *                 y: double (Required)
-     *             }
-     *             pupilRight (Required): (recursive schema, see pupilRight above)
-     *             noseTip (Required): (recursive schema, see noseTip above)
-     *             mouthLeft (Required): (recursive schema, see mouthLeft above)
-     *             mouthRight (Required): (recursive schema, see mouthRight above)
-     *             eyebrowLeftOuter (Required): (recursive schema, see eyebrowLeftOuter above)
-     *             eyebrowLeftInner (Required): (recursive schema, see eyebrowLeftInner above)
-     *             eyeLeftOuter (Required): (recursive schema, see eyeLeftOuter above)
-     *             eyeLeftTop (Required): (recursive schema, see eyeLeftTop above)
-     *             eyeLeftBottom (Required): (recursive schema, see eyeLeftBottom above)
-     *             eyeLeftInner (Required): (recursive schema, see eyeLeftInner above)
-     *             eyebrowRightInner (Required): (recursive schema, see eyebrowRightInner above)
-     *             eyebrowRightOuter (Required): (recursive schema, see eyebrowRightOuter above)
-     *             eyeRightInner (Required): (recursive schema, see eyeRightInner above)
-     *             eyeRightTop (Required): (recursive schema, see eyeRightTop above)
-     *             eyeRightBottom (Required): (recursive schema, see eyeRightBottom above)
-     *             eyeRightOuter (Required): (recursive schema, see eyeRightOuter above)
-     *             noseRootLeft (Required): (recursive schema, see noseRootLeft above)
-     *             noseRootRight (Required): (recursive schema, see noseRootRight above)
-     *             noseLeftAlarTop (Required): (recursive schema, see noseLeftAlarTop above)
-     *             noseRightAlarTop (Required): (recursive schema, see noseRightAlarTop above)
-     *             noseLeftAlarOutTip (Required): (recursive schema, see noseLeftAlarOutTip above)
-     *             noseRightAlarOutTip (Required): (recursive schema, see noseRightAlarOutTip above)
-     *             upperLipTop (Required): (recursive schema, see upperLipTop above)
-     *             upperLipBottom (Required): (recursive schema, see upperLipBottom above)
-     *             underLipTop (Required): (recursive schema, see underLipTop above)
-     *             underLipBottom (Required): (recursive schema, see underLipBottom above)
-     *         }
-     *         faceAttributes (Optional): {
-     *             age: Double (Optional)
-     *             smile: Double (Optional)
-     *             facialHair (Optional): {
-     *                 moustache: double (Required)
-     *                 beard: double (Required)
-     *                 sideburns: double (Required)
-     *             }
-     *             glasses: String(noGlasses/readingGlasses/sunglasses/swimmingGoggles) (Optional)
-     *             headPose (Optional): {
-     *                 pitch: double (Required)
-     *                 roll: double (Required)
-     *                 yaw: double (Required)
-     *             }
-     *             hair (Optional): {
-     *                 bald: double (Required)
-     *                 invisible: boolean (Required)
-     *                 hairColor (Required): [
-     *                      (Required){
-     *                         color: String(unknown/white/gray/blond/brown/red/black/other) (Required)
-     *                         confidence: double (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             occlusion (Optional): {
-     *                 foreheadOccluded: boolean (Required)
-     *                 eyeOccluded: boolean (Required)
-     *                 mouthOccluded: boolean (Required)
-     *             }
-     *             accessories (Optional): [
-     *                  (Optional){
-     *                     type: String(headwear/glasses/mask) (Required)
-     *                     confidence: double (Required)
-     *                 }
-     *             ]
-     *             blur (Optional): {
-     *                 blurLevel: String(low/medium/high) (Required)
-     *                 value: double (Required)
-     *             }
-     *             exposure (Optional): {
-     *                 exposureLevel: String(underExposure/goodExposure/overExposure) (Required)
-     *                 value: double (Required)
-     *             }
-     *             noise (Optional): {
-     *                 noiseLevel: String(low/medium/high) (Required)
-     *                 value: double (Required)
-     *             }
-     *             mask (Optional): {
-     *                 noseAndMouthCovered: boolean (Required)
-     *                 type: String(faceMask/noMask/otherMaskOrOcclusion/uncertain) (Required)
-     *             }
-     *             qualityForRecognition: String(low/medium/high) (Optional)
-     *         }
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param imageContent The input image binary.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> detectWithResponse(BinaryData imageContent, RequestOptions requestOptions) {
-        return this.serviceClient.detectWithResponseAsync(imageContent, requestOptions);
     }
 
     /**
@@ -482,369 +111,6 @@ public final class FaceAsyncClient {
     }
 
     /**
-     * Given query face's faceId, to search the similar-looking faces from a Face List. A 'faceListId' is created by
-     * Create Face List.
-     *
-     * Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
-     *
-     * Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it
-     * tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find
-     * a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds.
-     * "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is
-     * low. It can be used in the cases like searching celebrity-looking faces.
-     *
-     * The 'recognitionModel' associated with the query faceId should be the same as the 'recognitionModel' used by the
-     * target Face List.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     mode: String(matchPerson/matchFace) (Optional)
-     *     faceListId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         confidence: double (Required)
-     *         faceId: String (Optional)
-     *         persistedFaceId: String (Optional)
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> findSimilarFromFaceListWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        return this.serviceClient.findSimilarFromFaceListWithResponseAsync(request, requestOptions);
-    }
-
-    /**
-     * Given query face's faceId, to search the similar-looking faces from a Large Face List. A 'largeFaceListId' is
-     * created by Create Large Face List.
-     *
-     * Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
-     *
-     * Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it
-     * tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find
-     * a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds.
-     * "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is
-     * low. It can be used in the cases like searching celebrity-looking faces.
-     *
-     * The 'recognitionModel' associated with the query faceId should be the same as the 'recognitionModel' used by the
-     * target Large Face List.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     mode: String(matchPerson/matchFace) (Optional)
-     *     largeFaceListId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         confidence: double (Required)
-     *         faceId: String (Optional)
-     *         persistedFaceId: String (Optional)
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> findSimilarFromLargeFaceListWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        return this.serviceClient.findSimilarFromLargeFaceListWithResponseAsync(request, requestOptions);
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Person Group.
-     *
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Person Group (given by personGroupId), and return candidate person(s) for that face ranked by
-     * similarity confidence. The Person Group should be trained to make it ready for identification. See more in "Train
-     * Person Group".
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * Try "Find Similar" when you need to find similar faces from a Face List/Large Face List instead of a
-     * Person Group.
-     * &gt; * The 'recognitionModel' associated with the query faces' faceIds should be the same as the
-     * 'recognitionModel' used by the target Person Group.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     *     personGroupId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     confidenceThreshold: Double (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Required)
-     *         candidates (Required): [
-     *              (Required){
-     *                 personId: String (Required)
-     *                 confidence: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> identifyFromPersonGroupWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        return this.serviceClient.identifyFromPersonGroupWithResponseAsync(request, requestOptions);
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Large Person Group.
-     *
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Large Person Group (given by largePersonGroupId), and return candidate person(s) for that face
-     * ranked by similarity confidence. The Large Person Group should be trained to make it ready for identification.
-     * See more in "Train Large Person Group".
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * Try "Find Similar" when you need to find similar faces from a Face List/Large Face List instead of a
-     * Person Group/Large Person Group.
-     * &gt; * The 'recognitionModel' associated with the query faces' faceIds should be the same as the
-     * 'recognitionModel' used by the target Person Group or Large Person Group.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     *     largePersonGroupId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     confidenceThreshold: Double (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Required)
-     *         candidates (Required): [
-     *              (Required){
-     *                 personId: String (Required)
-     *                 confidence: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> identifyFromLargePersonGroupWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        return this.serviceClient.identifyFromLargePersonGroupWithResponseAsync(request, requestOptions);
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a person directory
-     * personIds array.
-     *
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Person Directory Persons (given by personIds), and return candidate person(s) for that face ranked
-     * by similarity confidence.
-     * Passing personIds with an array with one element "*" can perform the operation over entire person directory.
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * The Identify operation can only match faces obtained with the same recognition model, that is associated
-     * with the query faces.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     *     personIds (Required): [
-     *         String (Required)
-     *     ]
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     confidenceThreshold: Double (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Required)
-     *         candidates (Required): [
-     *              (Required){
-     *                 personId: String (Required)
-     *                 confidence: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> identifyFromPersonDirectoryWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        return this.serviceClient.identifyFromPersonDirectoryWithResponseAsync(request, requestOptions);
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Dynamic Person
-     * Group.
-     *
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Dynamic Person Group (given by dynamicPersonGroupId), and return candidate person(s) for that face
-     * ranked by similarity confidence.
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * The Identify operation can only match faces obtained with the same recognition model, that is associated
-     * with the query faces.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     *     dynamicPersonGroupId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     confidenceThreshold: Double (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Required)
-     *         candidates (Required): [
-     *              (Required){
-     *                 personId: String (Required)
-     *                 confidence: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> identifyFromDynamicPersonGroupWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        return this.serviceClient.identifyFromDynamicPersonGroupWithResponseAsync(request, requestOptions);
-    }
-
-    /**
      * Verify whether two faces belong to a same person.
      *
      * &gt; [!NOTE]
@@ -884,140 +150,6 @@ public final class FaceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> verifyFaceToFaceWithResponse(BinaryData request, RequestOptions requestOptions) {
         return this.serviceClient.verifyFaceToFaceWithResponseAsync(request, requestOptions);
-    }
-
-    /**
-     * Verify whether a face belongs to a person in a Person Group.
-     *
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
-     * &gt; * The 'recognitionModel' associated with the query face should be the same as the 'recognitionModel' used by
-     * the Person Group.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     personGroupId: String (Required)
-     *     personId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     isIdentical: boolean (Required)
-     *     confidence: double (Required)
-     * }
-     * }</pre>
-     *
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return verify result along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> verifyFromPersonGroupWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        return this.serviceClient.verifyFromPersonGroupWithResponseAsync(request, requestOptions);
-    }
-
-    /**
-     * Verify whether a face belongs to a person in a Large Person Group.
-     *
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
-     * &gt; * The 'recognitionModel' associated with the query face should be the same as the 'recognitionModel' used by
-     * the Large Person Group.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     largePersonGroupId: String (Required)
-     *     personId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     isIdentical: boolean (Required)
-     *     confidence: double (Required)
-     * }
-     * }</pre>
-     *
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return verify result along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> verifyFromLargePersonGroupWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        return this.serviceClient.verifyFromLargePersonGroupWithResponseAsync(request, requestOptions);
-    }
-
-    /**
-     * Verify whether a face belongs to a person in Person Directory.
-     *
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
-     * &gt; * The Verify operation can only match faces obtained with the same recognition model, that is associated
-     * with the query face.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     personId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     isIdentical: boolean (Required)
-     *     confidence: double (Required)
-     * }
-     * }</pre>
-     *
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return verify result along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> verifyFromPersonDirectoryWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        return this.serviceClient.verifyFromPersonDirectoryWithResponseAsync(request, requestOptions);
     }
 
     /**
@@ -1156,565 +288,6 @@ public final class FaceAsyncClient {
     }
 
     /**
-     * Given query face's faceId, to search the similar-looking faces from a Face List. A 'faceListId' is created by
-     * Create Face List.
-     *
-     * Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
-     *
-     * Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it
-     * tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find
-     * a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds.
-     * "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is
-     * low. It can be used in the cases like searching celebrity-looking faces.
-     *
-     * The 'recognitionModel' associated with the query faceId should be the same as the 'recognitionModel' used by the
-     * target Face List.
-     *
-     * @param faceId faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this
-     * faceId is not persisted and will expire 24 hours after the detection call.
-     * @param faceListId An existing user-specified unique candidate Face List, created in "Create Face List". Face List
-     * contains a set of persistedFaceIds which are persisted and will never expire.
-     * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000]. Default
-     * value is 20.
-     * @param mode Similar face searching mode. It can be 'matchPerson' or 'matchFace'. Default value is 'matchPerson'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceFindSimilarResult>> findSimilarFromFaceList(String faceId, String faceListId,
-        Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
-        // Generated convenience method for findSimilarFromFaceListWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        FindSimilarFromFaceListRequest requestObj = new FindSimilarFromFaceListRequest(faceId, faceListId)
-            .setMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned)
-            .setMode(mode);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return findSimilarFromFaceListWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT));
-    }
-
-    /**
-     * Given query face's faceId, to search the similar-looking faces from a Face List. A 'faceListId' is created by
-     * Create Face List.
-     *
-     * Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
-     *
-     * Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it
-     * tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find
-     * a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds.
-     * "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is
-     * low. It can be used in the cases like searching celebrity-looking faces.
-     *
-     * The 'recognitionModel' associated with the query faceId should be the same as the 'recognitionModel' used by the
-     * target Face List.
-     *
-     * @param faceId faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this
-     * faceId is not persisted and will expire 24 hours after the detection call.
-     * @param faceListId An existing user-specified unique candidate Face List, created in "Create Face List". Face List
-     * contains a set of persistedFaceIds which are persisted and will never expire.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceFindSimilarResult>> findSimilarFromFaceList(String faceId, String faceListId) {
-        // Generated convenience method for findSimilarFromFaceListWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        FindSimilarFromFaceListRequest requestObj = new FindSimilarFromFaceListRequest(faceId, faceListId);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return findSimilarFromFaceListWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT));
-    }
-
-    /**
-     * Given query face's faceId, to search the similar-looking faces from a Large Face List. A 'largeFaceListId' is
-     * created by Create Large Face List.
-     *
-     * Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
-     *
-     * Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it
-     * tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find
-     * a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds.
-     * "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is
-     * low. It can be used in the cases like searching celebrity-looking faces.
-     *
-     * The 'recognitionModel' associated with the query faceId should be the same as the 'recognitionModel' used by the
-     * target Large Face List.
-     *
-     * @param faceId faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this
-     * faceId is not persisted and will expire 24 hours after the detection call.
-     * @param largeFaceListId An existing user-specified unique candidate Large Face List, created in "Create Large Face
-     * List". Large Face List contains a set of persistedFaceIds which are persisted and will never expire.
-     * @param maxNumOfCandidatesReturned The number of top similar faces returned. The valid range is [1, 1000]. Default
-     * value is 20.
-     * @param mode Similar face searching mode. It can be 'matchPerson' or 'matchFace'. Default value is 'matchPerson'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceFindSimilarResult>> findSimilarFromLargeFaceList(String faceId, String largeFaceListId,
-        Integer maxNumOfCandidatesReturned, FindSimilarMatchMode mode) {
-        // Generated convenience method for findSimilarFromLargeFaceListWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        FindSimilarFromLargeFaceListRequest requestObj
-            = new FindSimilarFromLargeFaceListRequest(faceId, largeFaceListId)
-                .setMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned)
-                .setMode(mode);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return findSimilarFromLargeFaceListWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT));
-    }
-
-    /**
-     * Given query face's faceId, to search the similar-looking faces from a Large Face List. A 'largeFaceListId' is
-     * created by Create Large Face List.
-     *
-     * Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
-     *
-     * Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it
-     * tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find
-     * a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds.
-     * "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is
-     * low. It can be used in the cases like searching celebrity-looking faces.
-     *
-     * The 'recognitionModel' associated with the query faceId should be the same as the 'recognitionModel' used by the
-     * target Large Face List.
-     *
-     * @param faceId faceId of the query face. User needs to call "Detect" first to get a valid faceId. Note that this
-     * faceId is not persisted and will expire 24 hours after the detection call.
-     * @param largeFaceListId An existing user-specified unique candidate Large Face List, created in "Create Large Face
-     * List". Large Face List contains a set of persistedFaceIds which are persisted and will never expire.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceFindSimilarResult>> findSimilarFromLargeFaceList(String faceId, String largeFaceListId) {
-        // Generated convenience method for findSimilarFromLargeFaceListWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        FindSimilarFromLargeFaceListRequest requestObj
-            = new FindSimilarFromLargeFaceListRequest(faceId, largeFaceListId);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return findSimilarFromLargeFaceListWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT));
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Person Group.
-     *
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Person Group (given by personGroupId), and return candidate person(s) for that face ranked by
-     * similarity confidence. The Person Group should be trained to make it ready for identification. See more in "Train
-     * Person Group".
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * Try "Find Similar" when you need to find similar faces from a Face List/Large Face List instead of a
-     * Person Group.
-     * &gt; * The 'recognitionModel' associated with the query faces' faceIds should be the same as the
-     * 'recognitionModel' used by the target Person Group.
-     *
-     * @param faceIds Array of query faces faceIds, created by the "Detect". Each of the faces are identified
-     * independently. The valid number of faceIds is between [1, 10].
-     * @param personGroupId personGroupId of the target Person Group, created by "Create Person Group". Parameter
-     * personGroupId and largePersonGroupId should not be provided at the same time.
-     * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 100. Default value is
-     * 10.
-     * @param confidenceThreshold Customized identification confidence threshold, in the range of [0, 1]. Advanced user
-     * can tweak this value to override default internal threshold for better precision on their scenario data. Note
-     * there is no guarantee of this threshold value working on other data and after algorithm updates.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceIdentificationResult>> identifyFromPersonGroup(List<String> faceIds, String personGroupId,
-        Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
-        // Generated convenience method for identifyFromPersonGroupWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        IdentifyFromPersonGroupRequest requestObj = new IdentifyFromPersonGroupRequest(faceIds, personGroupId)
-            .setMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned)
-            .setConfidenceThreshold(confidenceThreshold);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return identifyFromPersonGroupWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_IDENTIFICATION_RESULT));
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Person Group.
-     *
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Person Group (given by personGroupId), and return candidate person(s) for that face ranked by
-     * similarity confidence. The Person Group should be trained to make it ready for identification. See more in "Train
-     * Person Group".
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * Try "Find Similar" when you need to find similar faces from a Face List/Large Face List instead of a
-     * Person Group.
-     * &gt; * The 'recognitionModel' associated with the query faces' faceIds should be the same as the
-     * 'recognitionModel' used by the target Person Group.
-     *
-     * @param faceIds Array of query faces faceIds, created by the "Detect". Each of the faces are identified
-     * independently. The valid number of faceIds is between [1, 10].
-     * @param personGroupId personGroupId of the target Person Group, created by "Create Person Group". Parameter
-     * personGroupId and largePersonGroupId should not be provided at the same time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceIdentificationResult>> identifyFromPersonGroup(List<String> faceIds, String personGroupId) {
-        // Generated convenience method for identifyFromPersonGroupWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        IdentifyFromPersonGroupRequest requestObj = new IdentifyFromPersonGroupRequest(faceIds, personGroupId);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return identifyFromPersonGroupWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_IDENTIFICATION_RESULT));
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Large Person Group.
-     *
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Large Person Group (given by largePersonGroupId), and return candidate person(s) for that face
-     * ranked by similarity confidence. The Large Person Group should be trained to make it ready for identification.
-     * See more in "Train Large Person Group".
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * Try "Find Similar" when you need to find similar faces from a Face List/Large Face List instead of a
-     * Person Group/Large Person Group.
-     * &gt; * The 'recognitionModel' associated with the query faces' faceIds should be the same as the
-     * 'recognitionModel' used by the target Person Group or Large Person Group.
-     *
-     * @param faceIds Array of query faces faceIds, created by the "Detect". Each of the faces are identified
-     * independently. The valid number of faceIds is between [1, 10].
-     * @param largePersonGroupId largePersonGroupId of the target Large Person Group, created by "Create Large Person
-     * Group". Parameter personGroupId and largePersonGroupId should not be provided at the same time.
-     * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 100. Default value is
-     * 10.
-     * @param confidenceThreshold Customized identification confidence threshold, in the range of [0, 1]. Advanced user
-     * can tweak this value to override default internal threshold for better precision on their scenario data. Note
-     * there is no guarantee of this threshold value working on other data and after algorithm updates.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceIdentificationResult>> identifyFromLargePersonGroup(List<String> faceIds,
-        String largePersonGroupId, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
-        // Generated convenience method for identifyFromLargePersonGroupWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        IdentifyFromLargePersonGroupRequest requestObj
-            = new IdentifyFromLargePersonGroupRequest(faceIds, largePersonGroupId)
-                .setMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned)
-                .setConfidenceThreshold(confidenceThreshold);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return identifyFromLargePersonGroupWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_IDENTIFICATION_RESULT));
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Large Person Group.
-     *
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Large Person Group (given by largePersonGroupId), and return candidate person(s) for that face
-     * ranked by similarity confidence. The Large Person Group should be trained to make it ready for identification.
-     * See more in "Train Large Person Group".
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * Try "Find Similar" when you need to find similar faces from a Face List/Large Face List instead of a
-     * Person Group/Large Person Group.
-     * &gt; * The 'recognitionModel' associated with the query faces' faceIds should be the same as the
-     * 'recognitionModel' used by the target Person Group or Large Person Group.
-     *
-     * @param faceIds Array of query faces faceIds, created by the "Detect". Each of the faces are identified
-     * independently. The valid number of faceIds is between [1, 10].
-     * @param largePersonGroupId largePersonGroupId of the target Large Person Group, created by "Create Large Person
-     * Group". Parameter personGroupId and largePersonGroupId should not be provided at the same time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceIdentificationResult>> identifyFromLargePersonGroup(List<String> faceIds,
-        String largePersonGroupId) {
-        // Generated convenience method for identifyFromLargePersonGroupWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        IdentifyFromLargePersonGroupRequest requestObj
-            = new IdentifyFromLargePersonGroupRequest(faceIds, largePersonGroupId);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return identifyFromLargePersonGroupWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_IDENTIFICATION_RESULT));
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a person directory
-     * personIds array.
-     *
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Person Directory Persons (given by personIds), and return candidate person(s) for that face ranked
-     * by similarity confidence.
-     * Passing personIds with an array with one element "*" can perform the operation over entire person directory.
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * The Identify operation can only match faces obtained with the same recognition model, that is associated
-     * with the query faces.
-     *
-     * @param faceIds Array of query faces faceIds, created by the "Detect". Each of the faces are identified
-     * independently. The valid number of faceIds is between [1, 10].
-     * @param personIds Array of personIds created in Person Directory "Create Person". The valid number of personIds is
-     * between [1,30].
-     * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 100. Default value is
-     * 10.
-     * @param confidenceThreshold Customized identification confidence threshold, in the range of [0, 1]. Advanced user
-     * can tweak this value to override default internal threshold for better precision on their scenario data. Note
-     * there is no guarantee of this threshold value working on other data and after algorithm updates.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceIdentificationResult>> identifyFromPersonDirectory(List<String> faceIds,
-        List<String> personIds, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
-        // Generated convenience method for identifyFromPersonDirectoryWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        IdentifyFromPersonDirectoryRequest requestObj = new IdentifyFromPersonDirectoryRequest(faceIds, personIds)
-            .setMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned)
-            .setConfidenceThreshold(confidenceThreshold);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return identifyFromPersonDirectoryWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_IDENTIFICATION_RESULT));
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a person directory
-     * personIds array.
-     *
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Person Directory Persons (given by personIds), and return candidate person(s) for that face ranked
-     * by similarity confidence.
-     * Passing personIds with an array with one element "*" can perform the operation over entire person directory.
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * The Identify operation can only match faces obtained with the same recognition model, that is associated
-     * with the query faces.
-     *
-     * @param faceIds Array of query faces faceIds, created by the "Detect". Each of the faces are identified
-     * independently. The valid number of faceIds is between [1, 10].
-     * @param personIds Array of personIds created in Person Directory "Create Person". The valid number of personIds is
-     * between [1,30].
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceIdentificationResult>> identifyFromPersonDirectory(List<String> faceIds,
-        List<String> personIds) {
-        // Generated convenience method for identifyFromPersonDirectoryWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        IdentifyFromPersonDirectoryRequest requestObj = new IdentifyFromPersonDirectoryRequest(faceIds, personIds);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return identifyFromPersonDirectoryWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_IDENTIFICATION_RESULT));
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Dynamic Person
-     * Group.
-     *
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Dynamic Person Group (given by dynamicPersonGroupId), and return candidate person(s) for that face
-     * ranked by similarity confidence.
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * The Identify operation can only match faces obtained with the same recognition model, that is associated
-     * with the query faces.
-     *
-     * @param faceIds Array of query faces faceIds, created by the "Detect". Each of the faces are identified
-     * independently. The valid number of faceIds is between [1, 10].
-     * @param dynamicPersonGroupId DynamicPersonGroupId of the target PersonDirectory DynamicPersonGroup to match
-     * against.
-     * @param maxNumOfCandidatesReturned The range of maxNumOfCandidatesReturned is between 1 and 100. Default value is
-     * 10.
-     * @param confidenceThreshold Customized identification confidence threshold, in the range of [0, 1]. Advanced user
-     * can tweak this value to override default internal threshold for better precision on their scenario data. Note
-     * there is no guarantee of this threshold value working on other data and after algorithm updates.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceIdentificationResult>> identifyFromDynamicPersonGroup(List<String> faceIds,
-        String dynamicPersonGroupId, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
-        // Generated convenience method for identifyFromDynamicPersonGroupWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        IdentifyFromDynamicPersonGroupRequest requestObj
-            = new IdentifyFromDynamicPersonGroupRequest(faceIds, dynamicPersonGroupId)
-                .setMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned)
-                .setConfidenceThreshold(confidenceThreshold);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return identifyFromDynamicPersonGroupWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_IDENTIFICATION_RESULT));
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Dynamic Person
-     * Group.
-     *
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Dynamic Person Group (given by dynamicPersonGroupId), and return candidate person(s) for that face
-     * ranked by similarity confidence.
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * The Identify operation can only match faces obtained with the same recognition model, that is associated
-     * with the query faces.
-     *
-     * @param faceIds Array of query faces faceIds, created by the "Detect". Each of the faces are identified
-     * independently. The valid number of faceIds is between [1, 10].
-     * @param dynamicPersonGroupId DynamicPersonGroupId of the target PersonDirectory DynamicPersonGroup to match
-     * against.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceIdentificationResult>> identifyFromDynamicPersonGroup(List<String> faceIds,
-        String dynamicPersonGroupId) {
-        // Generated convenience method for identifyFromDynamicPersonGroupWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        IdentifyFromDynamicPersonGroupRequest requestObj
-            = new IdentifyFromDynamicPersonGroupRequest(faceIds, dynamicPersonGroupId);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return identifyFromDynamicPersonGroupWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_IDENTIFICATION_RESULT));
-    }
-
-    /**
      * Verify whether two faces belong to a same person.
      *
      * &gt; [!NOTE]
@@ -1743,111 +316,6 @@ public final class FaceAsyncClient {
         VerifyFaceToFaceRequest requestObj = new VerifyFaceToFaceRequest(faceId1, faceId2);
         BinaryData request = BinaryData.fromObject(requestObj);
         return verifyFaceToFaceWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FaceVerificationResult.class));
-    }
-
-    /**
-     * Verify whether a face belongs to a person in a Person Group.
-     *
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
-     * &gt; * The 'recognitionModel' associated with the query face should be the same as the 'recognitionModel' used by
-     * the Person Group.
-     *
-     * @param faceId The faceId of the face, come from "Detect".
-     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId
-     * is created in "Create Person Group".
-     * @param personId Specify a certain person in Person Group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return verify result on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FaceVerificationResult> verifyFromPersonGroup(String faceId, String personGroupId, String personId) {
-        // Generated convenience method for verifyFromPersonGroupWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        VerifyFromPersonGroupRequest requestObj = new VerifyFromPersonGroupRequest(faceId, personGroupId, personId);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return verifyFromPersonGroupWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FaceVerificationResult.class));
-    }
-
-    /**
-     * Verify whether a face belongs to a person in a Large Person Group.
-     *
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
-     * &gt; * The 'recognitionModel' associated with the query face should be the same as the 'recognitionModel' used by
-     * the Large Person Group.
-     *
-     * @param faceId The faceId of the face, come from "Detect".
-     * @param largePersonGroupId Using existing largePersonGroupId and personId for fast loading a specified person.
-     * largePersonGroupId is created in "Create Large Person Group".
-     * @param personId Specify a certain person in Large Person Group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return verify result on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FaceVerificationResult> verifyFromLargePersonGroup(String faceId, String largePersonGroupId,
-        String personId) {
-        // Generated convenience method for verifyFromLargePersonGroupWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        VerifyFromLargePersonGroupRequest requestObj
-            = new VerifyFromLargePersonGroupRequest(faceId, largePersonGroupId, personId);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return verifyFromLargePersonGroupWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(FaceVerificationResult.class));
-    }
-
-    /**
-     * Verify whether a face belongs to a person in Person Directory.
-     *
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
-     * &gt; * The Verify operation can only match faces obtained with the same recognition model, that is associated
-     * with the query face.
-     *
-     * @param faceId The faceId of the face, come from "Detect".
-     * @param personId Specify a certain person in PersonDirectory Person.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return verify result on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<FaceVerificationResult> verifyFromPersonDirectory(String faceId, String personId) {
-        // Generated convenience method for verifyFromPersonDirectoryWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        VerifyFromPersonDirectoryRequest requestObj = new VerifyFromPersonDirectoryRequest(faceId, personId);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return verifyFromPersonDirectoryWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(FaceVerificationResult.class));
     }
 
@@ -1886,19 +354,10 @@ public final class FaceAsyncClient {
     }
 
     @Generated
-    private static final TypeReference<List<FaceIdentificationResult>> TYPE_REFERENCE_LIST_FACE_IDENTIFICATION_RESULT
-        = new TypeReference<List<FaceIdentificationResult>>() {
-        };
-
-    @Generated
     private static final TypeReference<List<FaceFindSimilarResult>> TYPE_REFERENCE_LIST_FACE_FIND_SIMILAR_RESULT
         = new TypeReference<List<FaceFindSimilarResult>>() {
         };
 
-    private static final TypeReference<List<FaceDetectionResult>> TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT
-        = new TypeReference<List<FaceDetectionResult>>() {
-        };
-
     /**
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      *
@@ -1906,7 +365,7 @@ public final class FaceAsyncClient {
      * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
      * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
      * makeup. Read more about this decision
-     * https://azure.microsoft.com/en-us/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
+     * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
      *
      * *
      * * No image will be stored. Only the extracted face feature(s) will be stored on server. The faceId is an
@@ -1922,241 +381,52 @@ public final class FaceAsyncClient {
      * * For optimal results when querying "Identify", "Verify", and "Find Similar" ('returnFaceId' is true), please use
      * faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
      * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
-     * to https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/how-to/specify-detection-model
+     * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
      * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
-     * * 'detection_03': Face attributes (mask and headPose only) and landmarks are supported if you choose this
+     * * 'detection_03': Face attributes (mask, blur, and headPose) and landmarks are supported if you choose this
      * detection model.
      * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
      * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
      * for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need
      * in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model.
      * More details, please refer to
-     * https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/how-to/specify-recognition-model.
+     * https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-recognition-model.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>returnFaceId</td><td>Boolean</td><td>No</td><td>Return faceIds of the detected faces or not. The default
-     * value is true.</td></tr>
-     * <tr><td>returnFaceLandmarks</td><td>Boolean</td><td>No</td><td>Return face landmarks of the detected faces or
-     * not. The default value is false.</td></tr>
-     * <tr><td>returnFaceAttributes</td><td>List&lt;String&gt;</td><td>No</td><td>Analyze and return the one or more
-     * specified face attributes in the comma-separated string like 'returnFaceAttributes=headPose,glasses'. Face
-     * attribute analysis has additional computational and time cost. In the form of "," separated string.</td></tr>
+     * <tr><td>detectionModel</td><td>String</td><td>No</td><td>The 'detectionModel' associated with the detected
+     * faceIds. Supported 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default
+     * value is 'detection_01'. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
      * <tr><td>recognitionModel</td><td>String</td><td>No</td><td>The 'recognitionModel' associated with the detected
      * faceIds. Supported 'recognitionModel' values include 'recognition_01', 'recognition_02', 'recognition_03' or
      * 'recognition_04'. The default value is 'recognition_01'. 'recognition_04' is recommended since its accuracy is
      * improved on faces wearing masks compared with 'recognition_03', and its overall accuracy is improved compared
      * with 'recognition_01' and 'recognition_02'. Allowed values: "recognition_01", "recognition_02", "recognition_03",
      * "recognition_04".</td></tr>
-     * <tr><td>returnRecognitionModel</td><td>Boolean</td><td>No</td><td>Return 'recognitionModel' or not. The default
-     * value is false.</td></tr>
-     * <tr><td>detectionModel</td><td>String</td><td>No</td><td>The 'detectionModel' associated with the detected
-     * faceIds. Supported 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default
-     * value is 'detection_01'. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
-     * <tr><td>faceIdTimeToLive</td><td>Integer</td><td>No</td><td>The number of seconds for the face ID being cached.
-     * Supported range from 60 seconds up to 86400 seconds. The default value is 86400 (24 hours).</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>{@code
-     * BinaryData
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Optional)
-     *         recognitionModel: String(recognition_01/recognition_02/recognition_03/recognition_04) (Optional)
-     *         faceRectangle (Required): {
-     *             top: int (Required)
-     *             left: int (Required)
-     *             width: int (Required)
-     *             height: int (Required)
-     *         }
-     *         faceLandmarks (Optional): {
-     *             pupilLeft (Required): {
-     *                 x: double (Required)
-     *                 y: double (Required)
-     *             }
-     *             pupilRight (Required): (recursive schema, see pupilRight above)
-     *             noseTip (Required): (recursive schema, see noseTip above)
-     *             mouthLeft (Required): (recursive schema, see mouthLeft above)
-     *             mouthRight (Required): (recursive schema, see mouthRight above)
-     *             eyebrowLeftOuter (Required): (recursive schema, see eyebrowLeftOuter above)
-     *             eyebrowLeftInner (Required): (recursive schema, see eyebrowLeftInner above)
-     *             eyeLeftOuter (Required): (recursive schema, see eyeLeftOuter above)
-     *             eyeLeftTop (Required): (recursive schema, see eyeLeftTop above)
-     *             eyeLeftBottom (Required): (recursive schema, see eyeLeftBottom above)
-     *             eyeLeftInner (Required): (recursive schema, see eyeLeftInner above)
-     *             eyebrowRightInner (Required): (recursive schema, see eyebrowRightInner above)
-     *             eyebrowRightOuter (Required): (recursive schema, see eyebrowRightOuter above)
-     *             eyeRightInner (Required): (recursive schema, see eyeRightInner above)
-     *             eyeRightTop (Required): (recursive schema, see eyeRightTop above)
-     *             eyeRightBottom (Required): (recursive schema, see eyeRightBottom above)
-     *             eyeRightOuter (Required): (recursive schema, see eyeRightOuter above)
-     *             noseRootLeft (Required): (recursive schema, see noseRootLeft above)
-     *             noseRootRight (Required): (recursive schema, see noseRootRight above)
-     *             noseLeftAlarTop (Required): (recursive schema, see noseLeftAlarTop above)
-     *             noseRightAlarTop (Required): (recursive schema, see noseRightAlarTop above)
-     *             noseLeftAlarOutTip (Required): (recursive schema, see noseLeftAlarOutTip above)
-     *             noseRightAlarOutTip (Required): (recursive schema, see noseRightAlarOutTip above)
-     *             upperLipTop (Required): (recursive schema, see upperLipTop above)
-     *             upperLipBottom (Required): (recursive schema, see upperLipBottom above)
-     *             underLipTop (Required): (recursive schema, see underLipTop above)
-     *             underLipBottom (Required): (recursive schema, see underLipBottom above)
-     *         }
-     *         faceAttributes (Optional): {
-     *             age: Double (Optional)
-     *             smile: Double (Optional)
-     *             facialHair (Optional): {
-     *                 moustache: double (Required)
-     *                 beard: double (Required)
-     *                 sideburns: double (Required)
-     *             }
-     *             glasses: String(noGlasses/readingGlasses/sunglasses/swimmingGoggles) (Optional)
-     *             headPose (Optional): {
-     *                 pitch: double (Required)
-     *                 roll: double (Required)
-     *                 yaw: double (Required)
-     *             }
-     *             hair (Optional): {
-     *                 bald: double (Required)
-     *                 invisible: boolean (Required)
-     *                 hairColor (Required): [
-     *                      (Required){
-     *                         color: String(unknown/white/gray/blond/brown/red/black/other) (Required)
-     *                         confidence: double (Required)
-     *                     }
-     *                 ]
-     *             }
-     *             occlusion (Optional): {
-     *                 foreheadOccluded: boolean (Required)
-     *                 eyeOccluded: boolean (Required)
-     *                 mouthOccluded: boolean (Required)
-     *             }
-     *             accessories (Optional): [
-     *                  (Optional){
-     *                     type: String(headwear/glasses/mask) (Required)
-     *                     confidence: double (Required)
-     *                 }
-     *             ]
-     *             blur (Optional): {
-     *                 blurLevel: String(low/medium/high) (Required)
-     *                 value: double (Required)
-     *             }
-     *             exposure (Optional): {
-     *                 exposureLevel: String(underExposure/goodExposure/overExposure) (Required)
-     *                 value: double (Required)
-     *             }
-     *             noise (Optional): {
-     *                 noiseLevel: String(low/medium/high) (Required)
-     *                 value: double (Required)
-     *             }
-     *             mask (Optional): {
-     *                 noseAndMouthCovered: boolean (Required)
-     *                 type: String(faceMask/noMask/otherMaskOrOcclusion/uncertain) (Required)
-     *             }
-     *             qualityForRecognition: String(low/medium/high) (Optional)
-     *         }
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param imageContent The input image binary.
-     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
-     * values include 'detection_01', 'detection_02' and 'detection_03'.
-     * @param recognitionModel The 'recognitionModel' associated with the detected faceIds. Supported 'recognitionModel'
-     * values include 'recognition_01', 'recognition_02', 'recognition_03' or 'recognition_04'.
-     * 'recognition_04' is recommended since its accuracy is improved on faces wearing masks compared with
-     * 'recognition_03', and its overall accuracy is improved compared with 'recognition_01' and 'recognition_02'.
-     * @param returnFaceId Return faceIds of the detected faces or not.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> detectWithResponse(BinaryData imageContent, FaceDetectionModel detectionModel,
-        FaceRecognitionModel recognitionModel, boolean returnFaceId, RequestOptions requestOptions) {
-        addRequiredQueryParameterForDetection(requestOptions, detectionModel, recognitionModel, returnFaceId);
-        return this.serviceClient.detectWithResponseAsync(imageContent, requestOptions);
-    }
-
-    /**
-     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
-     *
-     * &gt; [!IMPORTANT]
-     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
-     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
-     * makeup. Read more about this decision
-     * https://azure.microsoft.com/en-us/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
-     *
-     * *
-     * * No image will be stored. Only the extracted face feature(s) will be stored on server. The faceId is an
-     * identifier of the face feature and will be used in "Identify", "Verify", and "Find Similar". The stored face
-     * features will expire and be deleted at the time specified by faceIdTimeToLive after the original detection call.
-     * * Optional parameters include faceId, landmarks, and attributes. Attributes include headPose, glasses, occlusion,
-     * accessories, blur, exposure, noise, mask, and qualityForRecognition. Some of the results returned for specific
-     * attributes may not be highly accurate.
-     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
-     * * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
-     * dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
-     * * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
-     * * For optimal results when querying "Identify", "Verify", and "Find Similar" ('returnFaceId' is true), please use
-     * faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
-     * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
-     * to https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/how-to/specify-detection-model
-     * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
-     * * 'detection_03': Face attributes (mask and headPose only) and landmarks are supported if you choose this
-     * detection model.
-     * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
-     * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
-     * for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need
-     * in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model.
-     * More details, please refer to
-     * https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/how-to/specify-recognition-model.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>returnFaceId</td><td>Boolean</td><td>No</td><td>Return faceIds of the detected faces or not. The default
      * value is true.</td></tr>
-     * <tr><td>returnFaceLandmarks</td><td>Boolean</td><td>No</td><td>Return face landmarks of the detected faces or
-     * not. The default value is false.</td></tr>
      * <tr><td>returnFaceAttributes</td><td>List&lt;String&gt;</td><td>No</td><td>Analyze and return the one or more
      * specified face attributes in the comma-separated string like 'returnFaceAttributes=headPose,glasses'. Face
      * attribute analysis has additional computational and time cost. In the form of "," separated string.</td></tr>
-     * <tr><td>recognitionModel</td><td>String</td><td>No</td><td>The 'recognitionModel' associated with the detected
-     * faceIds. Supported 'recognitionModel' values include 'recognition_01', 'recognition_02', 'recognition_03' or
-     * 'recognition_04'. The default value is 'recognition_01'. 'recognition_04' is recommended since its accuracy is
-     * improved on faces wearing masks compared with 'recognition_03', and its overall accuracy is improved compared
-     * with 'recognition_01' and 'recognition_02'. Allowed values: "recognition_01", "recognition_02", "recognition_03",
-     * "recognition_04".</td></tr>
+     * <tr><td>returnFaceLandmarks</td><td>Boolean</td><td>No</td><td>Return face landmarks of the detected faces or
+     * not. The default value is false.</td></tr>
      * <tr><td>returnRecognitionModel</td><td>Boolean</td><td>No</td><td>Return 'recognitionModel' or not. The default
-     * value is false.</td></tr>
-     * <tr><td>detectionModel</td><td>String</td><td>No</td><td>The 'detectionModel' associated with the detected
-     * faceIds. Supported 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default
-     * value is 'detection_01'. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
+     * value is false. This is only applicable when returnFaceId = true.</td></tr>
      * <tr><td>faceIdTimeToLive</td><td>Integer</td><td>No</td><td>The number of seconds for the face ID being cached.
      * Supported range from 60 seconds up to 86400 seconds. The default value is 86400 (24 hours).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     url: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * [
      *      (Required){
@@ -2258,13 +528,6 @@ public final class FaceAsyncClient {
      * }</pre>
      *
      * @param request The request parameter.
-     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
-     * values include 'detection_01', 'detection_02' and 'detection_03'.
-     * @param recognitionModel The 'recognitionModel' associated with the detected faceIds. Supported 'recognitionModel'
-     * values include 'recognition_01', 'recognition_02', 'recognition_03' or 'recognition_04'.
-     * 'recognition_04' is recommended since its accuracy is improved on faces wearing masks compared with
-     * 'recognition_03', and its overall accuracy is improved compared with 'recognition_01' and 'recognition_02'.
-     * @param returnFaceId Return faceIds of the detected faces or not.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2272,12 +535,429 @@ public final class FaceAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> detectFromUrlWithResponse(BinaryData request, FaceDetectionModel detectionModel,
-        FaceRecognitionModel recognitionModel, boolean returnFaceId, RequestOptions requestOptions) {
-        addRequiredQueryParameterForDetection(requestOptions, detectionModel, recognitionModel, returnFaceId);
-        return this.serviceClient.detectFromUrlWithResponseAsync(request, requestOptions);
+    Mono<Response<BinaryData>> detectFromUrlImplWithResponse(BinaryData request, RequestOptions requestOptions) {
+        return this.serviceClient.detectFromUrlImplWithResponseAsync(request, requestOptions);
     }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+     *
+     * &gt; [!IMPORTANT]
+     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
+     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
+     * makeup. Read more about this decision
+     * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
+     *
+     * *
+     * * No image will be stored. Only the extracted face feature(s) will be stored on server. The faceId is an
+     * identifier of the face feature and will be used in "Identify", "Verify", and "Find Similar". The stored face
+     * features will expire and be deleted at the time specified by faceIdTimeToLive after the original detection call.
+     * * Optional parameters include faceId, landmarks, and attributes. Attributes include headPose, glasses, occlusion,
+     * accessories, blur, exposure, noise, mask, and qualityForRecognition. Some of the results returned for specific
+     * attributes may not be highly accurate.
+     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
+     * dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * * For optimal results when querying "Identify", "Verify", and "Find Similar" ('returnFaceId' is true), please use
+     * faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
+     * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
+     * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
+     * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
+     * * 'detection_03': Face attributes (mask, blur, and headPose) and landmarks are supported if you choose this
+     * detection model.
+     * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
+     * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
+     * for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need
+     * in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model.
+     * More details, please refer to
+     * https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-recognition-model.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>detectionModel</td><td>String</td><td>No</td><td>The 'detectionModel' associated with the detected
+     * faceIds. Supported 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default
+     * value is 'detection_01'. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
+     * <tr><td>recognitionModel</td><td>String</td><td>No</td><td>The 'recognitionModel' associated with the detected
+     * faceIds. Supported 'recognitionModel' values include 'recognition_01', 'recognition_02', 'recognition_03' or
+     * 'recognition_04'. The default value is 'recognition_01'. 'recognition_04' is recommended since its accuracy is
+     * improved on faces wearing masks compared with 'recognition_03', and its overall accuracy is improved compared
+     * with 'recognition_01' and 'recognition_02'. Allowed values: "recognition_01", "recognition_02", "recognition_03",
+     * "recognition_04".</td></tr>
+     * <tr><td>returnFaceId</td><td>Boolean</td><td>No</td><td>Return faceIds of the detected faces or not. The default
+     * value is true.</td></tr>
+     * <tr><td>returnFaceAttributes</td><td>List&lt;String&gt;</td><td>No</td><td>Analyze and return the one or more
+     * specified face attributes in the comma-separated string like 'returnFaceAttributes=headPose,glasses'. Face
+     * attribute analysis has additional computational and time cost. In the form of "," separated string.</td></tr>
+     * <tr><td>returnFaceLandmarks</td><td>Boolean</td><td>No</td><td>Return face landmarks of the detected faces or
+     * not. The default value is false.</td></tr>
+     * <tr><td>returnRecognitionModel</td><td>Boolean</td><td>No</td><td>Return 'recognitionModel' or not. The default
+     * value is false. This is only applicable when returnFaceId = true.</td></tr>
+     * <tr><td>faceIdTimeToLive</td><td>Integer</td><td>No</td><td>The number of seconds for the face ID being cached.
+     * Supported range from 60 seconds up to 86400 seconds. The default value is 86400 (24 hours).</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * BinaryData
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * [
+     *      (Required){
+     *         faceId: String (Optional)
+     *         recognitionModel: String(recognition_01/recognition_02/recognition_03/recognition_04) (Optional)
+     *         faceRectangle (Required): {
+     *             top: int (Required)
+     *             left: int (Required)
+     *             width: int (Required)
+     *             height: int (Required)
+     *         }
+     *         faceLandmarks (Optional): {
+     *             pupilLeft (Required): {
+     *                 x: double (Required)
+     *                 y: double (Required)
+     *             }
+     *             pupilRight (Required): (recursive schema, see pupilRight above)
+     *             noseTip (Required): (recursive schema, see noseTip above)
+     *             mouthLeft (Required): (recursive schema, see mouthLeft above)
+     *             mouthRight (Required): (recursive schema, see mouthRight above)
+     *             eyebrowLeftOuter (Required): (recursive schema, see eyebrowLeftOuter above)
+     *             eyebrowLeftInner (Required): (recursive schema, see eyebrowLeftInner above)
+     *             eyeLeftOuter (Required): (recursive schema, see eyeLeftOuter above)
+     *             eyeLeftTop (Required): (recursive schema, see eyeLeftTop above)
+     *             eyeLeftBottom (Required): (recursive schema, see eyeLeftBottom above)
+     *             eyeLeftInner (Required): (recursive schema, see eyeLeftInner above)
+     *             eyebrowRightInner (Required): (recursive schema, see eyebrowRightInner above)
+     *             eyebrowRightOuter (Required): (recursive schema, see eyebrowRightOuter above)
+     *             eyeRightInner (Required): (recursive schema, see eyeRightInner above)
+     *             eyeRightTop (Required): (recursive schema, see eyeRightTop above)
+     *             eyeRightBottom (Required): (recursive schema, see eyeRightBottom above)
+     *             eyeRightOuter (Required): (recursive schema, see eyeRightOuter above)
+     *             noseRootLeft (Required): (recursive schema, see noseRootLeft above)
+     *             noseRootRight (Required): (recursive schema, see noseRootRight above)
+     *             noseLeftAlarTop (Required): (recursive schema, see noseLeftAlarTop above)
+     *             noseRightAlarTop (Required): (recursive schema, see noseRightAlarTop above)
+     *             noseLeftAlarOutTip (Required): (recursive schema, see noseLeftAlarOutTip above)
+     *             noseRightAlarOutTip (Required): (recursive schema, see noseRightAlarOutTip above)
+     *             upperLipTop (Required): (recursive schema, see upperLipTop above)
+     *             upperLipBottom (Required): (recursive schema, see upperLipBottom above)
+     *             underLipTop (Required): (recursive schema, see underLipTop above)
+     *             underLipBottom (Required): (recursive schema, see underLipBottom above)
+     *         }
+     *         faceAttributes (Optional): {
+     *             age: Double (Optional)
+     *             smile: Double (Optional)
+     *             facialHair (Optional): {
+     *                 moustache: double (Required)
+     *                 beard: double (Required)
+     *                 sideburns: double (Required)
+     *             }
+     *             glasses: String(noGlasses/readingGlasses/sunglasses/swimmingGoggles) (Optional)
+     *             headPose (Optional): {
+     *                 pitch: double (Required)
+     *                 roll: double (Required)
+     *                 yaw: double (Required)
+     *             }
+     *             hair (Optional): {
+     *                 bald: double (Required)
+     *                 invisible: boolean (Required)
+     *                 hairColor (Required): [
+     *                      (Required){
+     *                         color: String(unknown/white/gray/blond/brown/red/black/other) (Required)
+     *                         confidence: double (Required)
+     *                     }
+     *                 ]
+     *             }
+     *             occlusion (Optional): {
+     *                 foreheadOccluded: boolean (Required)
+     *                 eyeOccluded: boolean (Required)
+     *                 mouthOccluded: boolean (Required)
+     *             }
+     *             accessories (Optional): [
+     *                  (Optional){
+     *                     type: String(headwear/glasses/mask) (Required)
+     *                     confidence: double (Required)
+     *                 }
+     *             ]
+     *             blur (Optional): {
+     *                 blurLevel: String(low/medium/high) (Required)
+     *                 value: double (Required)
+     *             }
+     *             exposure (Optional): {
+     *                 exposureLevel: String(underExposure/goodExposure/overExposure) (Required)
+     *                 value: double (Required)
+     *             }
+     *             noise (Optional): {
+     *                 noiseLevel: String(low/medium/high) (Required)
+     *                 value: double (Required)
+     *             }
+     *             mask (Optional): {
+     *                 noseAndMouthCovered: boolean (Required)
+     *                 type: String(faceMask/noMask/otherMaskOrOcclusion/uncertain) (Required)
+     *             }
+     *             qualityForRecognition: String(low/medium/high) (Optional)
+     *         }
+     *     }
+     * ]
+     * }</pre>
+     *
+     * @param imageContent The input image binary.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> detectImplWithResponse(BinaryData imageContent, RequestOptions requestOptions) {
+        return this.serviceClient.detectImplWithResponseAsync(imageContent, requestOptions);
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+     *
+     * &gt; [!IMPORTANT]
+     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
+     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
+     * makeup. Read more about this decision
+     * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
+     *
+     * *
+     * * No image will be stored. Only the extracted face feature(s) will be stored on server. The faceId is an
+     * identifier of the face feature and will be used in "Identify", "Verify", and "Find Similar". The stored face
+     * features will expire and be deleted at the time specified by faceIdTimeToLive after the original detection call.
+     * * Optional parameters include faceId, landmarks, and attributes. Attributes include headPose, glasses, occlusion,
+     * accessories, blur, exposure, noise, mask, and qualityForRecognition. Some of the results returned for specific
+     * attributes may not be highly accurate.
+     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
+     * dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * * For optimal results when querying "Identify", "Verify", and "Find Similar" ('returnFaceId' is true), please use
+     * faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
+     * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
+     * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
+     * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
+     * * 'detection_03': Face attributes (mask, blur, and headPose) and landmarks are supported if you choose this
+     * detection model.
+     * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
+     * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
+     * for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need
+     * in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model.
+     * More details, please refer to
+     * https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-recognition-model.
+     *
+     * @param options Options for detectFromUrlImpl API.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<FaceDetectionResult>> detectFromUrlImpl(DetectFromUrlImplOptions options) {
+        // Generated convenience method for detectFromUrlImplWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        DetectFromUrlImplRequest requestObj = new DetectFromUrlImplRequest(options.getUrl());
+        BinaryData request = BinaryData.fromObject(requestObj);
+        FaceDetectionModel detectionModel = options.getDetectionModel();
+        FaceRecognitionModel recognitionModel = options.getRecognitionModel();
+        Boolean returnFaceId = options.isReturnFaceId();
+        List<FaceAttributeType> returnFaceAttributes = options.getReturnFaceAttributes();
+        Boolean returnFaceLandmarks = options.isReturnFaceLandmarks();
+        Boolean returnRecognitionModel = options.isReturnRecognitionModel();
+        Integer faceIdTimeToLive = options.getFaceIdTimeToLive();
+        if (detectionModel != null) {
+            requestOptions.addQueryParam("detectionModel", detectionModel.toString(), false);
+        }
+        if (recognitionModel != null) {
+            requestOptions.addQueryParam("recognitionModel", recognitionModel.toString(), false);
+        }
+        if (returnFaceId != null) {
+            requestOptions.addQueryParam("returnFaceId", String.valueOf(returnFaceId), false);
+        }
+        if (returnFaceAttributes != null) {
+            requestOptions.addQueryParam("returnFaceAttributes",
+                returnFaceAttributes.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (returnFaceLandmarks != null) {
+            requestOptions.addQueryParam("returnFaceLandmarks", String.valueOf(returnFaceLandmarks), false);
+        }
+        if (returnRecognitionModel != null) {
+            requestOptions.addQueryParam("returnRecognitionModel", String.valueOf(returnRecognitionModel), false);
+        }
+        if (faceIdTimeToLive != null) {
+            requestOptions.addQueryParam("faceIdTimeToLive", String.valueOf(faceIdTimeToLive), false);
+        }
+        return detectFromUrlImplWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT));
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+     *
+     * &gt; [!IMPORTANT]
+     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
+     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
+     * makeup. Read more about this decision
+     * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
+     *
+     * *
+     * * No image will be stored. Only the extracted face feature(s) will be stored on server. The faceId is an
+     * identifier of the face feature and will be used in "Identify", "Verify", and "Find Similar". The stored face
+     * features will expire and be deleted at the time specified by faceIdTimeToLive after the original detection call.
+     * * Optional parameters include faceId, landmarks, and attributes. Attributes include headPose, glasses, occlusion,
+     * accessories, blur, exposure, noise, mask, and qualityForRecognition. Some of the results returned for specific
+     * attributes may not be highly accurate.
+     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
+     * dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * * For optimal results when querying "Identify", "Verify", and "Find Similar" ('returnFaceId' is true), please use
+     * faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
+     * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
+     * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
+     * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
+     * * 'detection_03': Face attributes (mask, blur, and headPose) and landmarks are supported if you choose this
+     * detection model.
+     * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
+     * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
+     * for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need
+     * in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model.
+     * More details, please refer to
+     * https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-recognition-model.
+     *
+     * @param imageContent The input image binary.
+     * @param detectionModel The 'detectionModel' associated with the detected faceIds. Supported 'detectionModel'
+     * values include 'detection_01', 'detection_02' and 'detection_03'. The default value is 'detection_01'.
+     * @param recognitionModel The 'recognitionModel' associated with the detected faceIds. Supported 'recognitionModel'
+     * values include 'recognition_01', 'recognition_02', 'recognition_03' or 'recognition_04'. The default value is
+     * 'recognition_01'. 'recognition_04' is recommended since its accuracy is improved on faces wearing masks compared
+     * with 'recognition_03', and its overall accuracy is improved compared with 'recognition_01' and 'recognition_02'.
+     * @param returnFaceId Return faceIds of the detected faces or not. The default value is true.
+     * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated
+     * string like 'returnFaceAttributes=headPose,glasses'. Face attribute analysis has additional computational and
+     * time cost.
+     * @param returnFaceLandmarks Return face landmarks of the detected faces or not. The default value is false.
+     * @param returnRecognitionModel Return 'recognitionModel' or not. The default value is false. This is only
+     * applicable when returnFaceId = true.
+     * @param faceIdTimeToLive The number of seconds for the face ID being cached. Supported range from 60 seconds up to
+     * 86400 seconds. The default value is 86400 (24 hours).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<FaceDetectionResult>> detectImpl(BinaryData imageContent, FaceDetectionModel detectionModel,
+        FaceRecognitionModel recognitionModel, Boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes,
+        Boolean returnFaceLandmarks, Boolean returnRecognitionModel, Integer faceIdTimeToLive) {
+        // Generated convenience method for detectImplWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (detectionModel != null) {
+            requestOptions.addQueryParam("detectionModel", detectionModel.toString(), false);
+        }
+        if (recognitionModel != null) {
+            requestOptions.addQueryParam("recognitionModel", recognitionModel.toString(), false);
+        }
+        if (returnFaceId != null) {
+            requestOptions.addQueryParam("returnFaceId", String.valueOf(returnFaceId), false);
+        }
+        if (returnFaceAttributes != null) {
+            requestOptions.addQueryParam("returnFaceAttributes",
+                returnFaceAttributes.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        if (returnFaceLandmarks != null) {
+            requestOptions.addQueryParam("returnFaceLandmarks", String.valueOf(returnFaceLandmarks), false);
+        }
+        if (returnRecognitionModel != null) {
+            requestOptions.addQueryParam("returnRecognitionModel", String.valueOf(returnRecognitionModel), false);
+        }
+        if (faceIdTimeToLive != null) {
+            requestOptions.addQueryParam("faceIdTimeToLive", String.valueOf(faceIdTimeToLive), false);
+        }
+        return detectImplWithResponse(imageContent, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT));
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+     *
+     * &gt; [!IMPORTANT]
+     * &gt; To mitigate potential misuse that can subject people to stereotyping, discrimination, or unfair denial of
+     * services, we are retiring Face API attributes that predict emotion, gender, age, smile, facial hair, hair, and
+     * makeup. Read more about this decision
+     * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
+     *
+     * *
+     * * No image will be stored. Only the extracted face feature(s) will be stored on server. The faceId is an
+     * identifier of the face feature and will be used in "Identify", "Verify", and "Find Similar". The stored face
+     * features will expire and be deleted at the time specified by faceIdTimeToLive after the original detection call.
+     * * Optional parameters include faceId, landmarks, and attributes. Attributes include headPose, glasses, occlusion,
+     * accessories, blur, exposure, noise, mask, and qualityForRecognition. Some of the results returned for specific
+     * attributes may not be highly accurate.
+     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
+     * * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
+     * dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
+     * * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
+     * * For optimal results when querying "Identify", "Verify", and "Find Similar" ('returnFaceId' is true), please use
+     * faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
+     * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
+     * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
+     * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
+     * * 'detection_03': Face attributes (mask, blur, and headPose) and landmarks are supported if you choose this
+     * detection model.
+     * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
+     * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
+     * for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need
+     * in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model.
+     * More details, please refer to
+     * https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-recognition-model.
+     *
+     * @param imageContent The input image binary.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<FaceDetectionResult>> detectImpl(BinaryData imageContent) {
+        // Generated convenience method for detectImplWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return detectImplWithResponse(imageContent, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT));
+    }
+
+    @Generated
+    private static final TypeReference<List<FaceDetectionResult>> TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT
+        = new TypeReference<List<FaceDetectionResult>>() {
+        };
 
     /**
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
@@ -2325,7 +1005,7 @@ public final class FaceAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<FaceDetectionResult>> detect(BinaryData imageContent, DetectOptions options) {
-        return this.detect(imageContent, options.getDetectionModel(), options.getRecognitionModel(),
+        return this.detectImpl(imageContent, options.getDetectionModel(), options.getRecognitionModel(),
             options.isReturnFaceId(), options.getReturnFaceAttributes(), options.isReturnFaceLandmarks(),
             options.isReturnRecognitionModel(), options.getFaceIdTimeToLive());
     }
@@ -2391,12 +1071,8 @@ public final class FaceAsyncClient {
     public Mono<List<FaceDetectionResult>> detect(BinaryData imageContent, FaceDetectionModel detectionModel,
         FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes,
         Boolean returnFaceLandmarks, Boolean returnRecognitionModel, Integer faceIdTimeToLive) {
-        RequestOptions requestOptions = new RequestOptions();
-        addRequiredQueryParameterForDetection(requestOptions, detectionModel, recognitionModel, returnFaceId);
-        addOptionalQueryParameterForDetection(requestOptions, returnFaceAttributes, returnFaceLandmarks,
-            returnRecognitionModel, faceIdTimeToLive);
-        return detectWithResponse(imageContent, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT));
+        return this.detectImpl(imageContent, detectionModel, recognitionModel, returnFaceId, returnFaceAttributes,
+            returnFaceLandmarks, returnRecognitionModel, faceIdTimeToLive);
     }
 
     /**
@@ -2453,7 +1129,7 @@ public final class FaceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<FaceDetectionResult>> detect(BinaryData imageContent, FaceDetectionModel detectionModel,
         FaceRecognitionModel recognitionModel, boolean returnFaceId) {
-        return this.detect(imageContent, detectionModel, recognitionModel, returnFaceId, null, null, null, null);
+        return this.detectImpl(imageContent, detectionModel, recognitionModel, returnFaceId, null, null, null, null);
     }
 
     /**
@@ -2513,7 +1189,7 @@ public final class FaceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<FaceDetectionResult>> detect(BinaryData imageContent, FaceDetectionModel detectionModel,
         FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes) {
-        return this.detect(imageContent, detectionModel, recognitionModel, returnFaceId, returnFaceAttributes, null,
+        return this.detectImpl(imageContent, detectionModel, recognitionModel, returnFaceId, returnFaceAttributes, null,
             null, null);
     }
 
@@ -2562,10 +1238,10 @@ public final class FaceAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceDetectionResult>> detectFromUrl(String url, DetectOptions options) {
-        return this.detectFromUrl(url, options.getDetectionModel(), options.getRecognitionModel(),
-            options.isReturnFaceId(), options.getReturnFaceAttributes(), options.isReturnFaceLandmarks(),
-            options.isReturnRecognitionModel(), options.getFaceIdTimeToLive());
+    public Mono<List<FaceDetectionResult>> detect(String url, DetectOptions options) {
+        return this.detect(url, options.getDetectionModel(), options.getRecognitionModel(), options.isReturnFaceId(),
+            options.getReturnFaceAttributes(), options.isReturnFaceLandmarks(), options.isReturnRecognitionModel(),
+            options.getFaceIdTimeToLive());
     }
 
     /**
@@ -2626,16 +1302,16 @@ public final class FaceAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceDetectionResult>> detectFromUrl(String url, FaceDetectionModel detectionModel,
+    public Mono<List<FaceDetectionResult>> detect(String url, FaceDetectionModel detectionModel,
         FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes,
         Boolean returnFaceLandmarks, Boolean returnRecognitionModel, Integer faceIdTimeToLive) {
         RequestOptions requestOptions = new RequestOptions();
         addRequiredQueryParameterForDetection(requestOptions, detectionModel, recognitionModel, returnFaceId);
         addOptionalQueryParameterForDetection(requestOptions, returnFaceAttributes, returnFaceLandmarks,
             returnRecognitionModel, faceIdTimeToLive);
-        DetectFromUrlRequest requestObj = new DetectFromUrlRequest(url);
+        DetectFromUrlImplRequest requestObj = new DetectFromUrlImplRequest(url);
         BinaryData request = BinaryData.fromObject(requestObj);
-        return detectFromUrlWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
+        return detectFromUrlImplWithResponse(request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(TYPE_REFERENCE_LIST_FACE_DETECTION_RESULT));
     }
 
@@ -2690,9 +1366,9 @@ public final class FaceAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceDetectionResult>> detectFromUrl(String url, FaceDetectionModel detectionModel,
+    public Mono<List<FaceDetectionResult>> detect(String url, FaceDetectionModel detectionModel,
         FaceRecognitionModel recognitionModel, boolean returnFaceId) {
-        return this.detectFromUrl(url, detectionModel, recognitionModel, returnFaceId, null, null, null, null);
+        return this.detect(url, detectionModel, recognitionModel, returnFaceId, null, null, null, null);
     }
 
     /**
@@ -2749,9 +1425,8 @@ public final class FaceAsyncClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<FaceDetectionResult>> detectFromUrl(String url, FaceDetectionModel detectionModel,
+    public Mono<List<FaceDetectionResult>> detect(String url, FaceDetectionModel detectionModel,
         FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes) {
-        return this.detectFromUrl(url, detectionModel, recognitionModel, returnFaceId, returnFaceAttributes, null, null,
-            null);
+        return this.detect(url, detectionModel, recognitionModel, returnFaceId, returnFaceAttributes, null, null, null);
     }
 }
