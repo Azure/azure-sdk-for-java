@@ -561,7 +561,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
             this.deadLetteringOnMessageExpiration);
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT,
             "DeadLetteringOnFilterEvaluationExceptions", this.deadLetteringOnFilterEvaluationExceptions);
-        xmlWriter.writeXml(this.defaultRuleDescription, "RuleDescription");
+        xmlWriter.writeXml(this.defaultRuleDescription, "DefaultRuleDescription");
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MessageCount", this.messageCount);
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MaxDeliveryCount",
             this.maxDeliveryCount);
@@ -637,10 +637,10 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.deadLetteringOnFilterEvaluationExceptions
                         = reader.getNullableElement(Boolean::parseBoolean);
-                } else if ("RuleDescription".equals(elementName.getLocalPart())
+                } else if ("DefaultRuleDescription".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.defaultRuleDescription
-                        = RuleDescriptionImpl.fromXml(reader, "RuleDescription");
+                        = RuleDescriptionImpl.fromXml(reader, "DefaultRuleDescription");
                 } else if ("MessageCount".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.messageCount = reader.getNullableElement(Integer::parseInt);

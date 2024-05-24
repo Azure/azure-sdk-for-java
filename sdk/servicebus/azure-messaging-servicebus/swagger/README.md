@@ -208,25 +208,25 @@ directive:
     transform: >
       delete $.RuleDescription.xml.name;
 
-      let properties = $.CreateRuleBody.properties.content.properties; = $.CreateRuleBody.properties.content.properties.ruleDescription;
-      let newProperties = {};
-      Object.keys(properties).forEach(key => {
+      const contentProperties = $.CreateRuleBody.properties.content.properties;
+      const newContentProperties = {};
+      Object.keys(contentProperties).forEach(key => {
         if (key === "ruleDescription") {
-          newProperties["RuleDescription"] = properties[key];
+          newContentProperties["RuleDescription"] = contentProperties[key];
         } else {
-          newProperties[key] = properties[key];
+          newContentProperties[key] = contentProperties[key];
         }
       });
-      $.CreateRuleBody.properties.content.properties = newProperties;
+      $.CreateRuleBody.properties.content.properties = newContentProperties;
         
-      properties = $.SubscriptionDescription.properties;
-      newProperties = {};
-      Object.keys(properties).forEach(key => {
+      const subscriptionProperties = $.SubscriptionDescription.properties;
+      const newSubscriptionProperties = {};
+      Object.keys(subscriptionProperties).forEach(key => {
         if (key === "defaultRuleDescription") {
-          newProperties["DefaultRuleDescription"] = properties[key];
+          newSubscriptionProperties["DefaultRuleDescription"] = subscriptionProperties[key];
         } else {
-          newProperties[key] = properties[key];
+          newSubscriptionProperties[key] = subscriptionProperties[key];
         }
       });
-      $.SubscriptionDescription.properties = newProperties;
+      $.SubscriptionDescription.properties = newSubscriptionProperties;
 ```
