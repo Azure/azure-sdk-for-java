@@ -9,9 +9,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
  */
 public final class BackupResourceVaultConfigsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/
-     * Common/BackupResourceVaultConfigs_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Common/BackupResourceVaultConfigs_Get.json
      */
     /**
      * Sample code: Get Vault Security Config.
@@ -20,7 +18,7 @@ public final class BackupResourceVaultConfigsGetSamples {
      */
     public static void
         getVaultSecurityConfig(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupResourceVaultConfigs().getWithResponse("SwaggerTest", "SwaggerTestRg",
-            com.azure.core.util.Context.NONE);
+        manager.backupResourceVaultConfigs()
+            .getWithResponse("SwaggerTest", "SwaggerTestRg", com.azure.core.util.Context.NONE);
     }
 }

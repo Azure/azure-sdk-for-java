@@ -1,6 +1,6 @@
 # Release History
 
-## 1.4.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,589 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0 (2024-05-23)
+
+- Azure Resource Manager RecoveryServicesBackup client library for Java. This package contains Microsoft Azure SDK for RecoveryServicesBackup Management SDK. Open API 2.0 Specs for Azure RecoveryServices Backup service. Package tag package-2024-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+- IMPORTANT: use `AuxiliaryAuthenticationPolicy` from "azure-resourcemanager-resources" module via `RecoveryServicesBackupManager.configure().withPolicy(..)`, for setting "x-ms-authorization-auxiliary" header.
+
+### Features Added
+
+* `models.IaasVMSnapshotConsistencyType` was added
+
+#### `models.AzureWorkloadSqlPointInTimeRecoveryPoint` was modified
+
+* `objectType()` was added
+
+#### `models.AzureIaaSClassicComputeVMContainer` was modified
+
+* `containerType()` was added
+
+#### `models.IaaSvmContainer` was modified
+
+* `containerType()` was added
+
+#### `models.OperationStatusExtendedInfo` was modified
+
+* `objectType()` was added
+
+#### `models.AzureIaaSComputeVMProtectedItem` was modified
+
+* `protectedItemType()` was added
+
+#### `models.AzureWorkloadPointInTimeRecoveryPoint` was modified
+
+* `objectType()` was added
+
+#### `models.AzureFileShareProvisionIlrRequest` was modified
+
+* `objectType()` was added
+
+#### `models.AzureVmWorkloadSapHanaHsr` was modified
+
+* `protectableItemType()` was added
+
+#### `models.AzureWorkloadRecoveryPoint` was modified
+
+* `objectType()` was added
+
+#### `models.OperationStatusValidateOperationExtendedInfo` was modified
+
+* `objectType()` was added
+
+#### `models.AzureVMAppContainerProtectableContainer` was modified
+
+* `protectableContainerType()` was added
+
+#### `models.AzureVmWorkloadSapHanaSystemWorkloadItem` was modified
+
+* `workloadItemType()` was added
+
+#### `models.IaasVMRestoreRequest` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `objectType()` was added
+
+#### `models.OperationStatusProvisionIlrExtendedInfo` was modified
+
+* `objectType()` was added
+
+#### `models.AzureVmWorkloadSapHanaDatabaseWorkloadItem` was modified
+
+* `workloadItemType()` was added
+
+#### `models.MabFileFolderProtectedItem` was modified
+
+* `protectedItemType()` was added
+
+#### `models.GenericRecoveryPoint` was modified
+
+* `objectType()` was added
+
+#### `models.IaasVMBackupRequest` was modified
+
+* `objectType()` was added
+
+#### `models.DpmBackupEngine` was modified
+
+* `backupEngineType()` was added
+
+#### `models.AzureWorkloadSqlRecoveryPoint` was modified
+
+* `objectType()` was added
+
+#### `models.AzureStorageProtectableContainer` was modified
+
+* `protectableContainerType()` was added
+
+#### `models.AzureVmWorkloadSapHanaDBInstance` was modified
+
+* `protectableItemType()` was added
+
+#### `models.FetchTieringCostInfoForRehydrationRequest` was modified
+
+* `objectType()` was added
+
+#### `models.BackupEngineBase` was modified
+
+* `backupEngineType()` was added
+
+#### `models.RestoreRequest` was modified
+
+* `objectType()` was added
+* `resourceGuardOperationRequests()` was added
+* `withResourceGuardOperationRequests(java.util.List)` was added
+
+#### `models.ProtectableContainer` was modified
+
+* `protectableContainerType()` was added
+
+#### `models.AzureFileShareBackupRequest` was modified
+
+* `objectType()` was added
+
+#### `models.AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `objectType()` was added
+
+#### `models.AzureVmWorkloadSapHanaDatabaseProtectedItem` was modified
+
+* `protectedItemType()` was added
+
+#### `models.LongTermSchedulePolicy` was modified
+
+* `schedulePolicyType()` was added
+
+#### `models.AzureVmWorkloadSqlInstanceProtectableItem` was modified
+
+* `protectableItemType()` was added
+
+#### `models.AzureVmWorkloadSqlAvailabilityGroupProtectableItem` was modified
+
+* `protectableItemType()` was added
+
+#### `models.AzureVmWorkloadSapAseDatabaseProtectedItem` was modified
+
+* `protectedItemType()` was added
+
+#### `models.AzureFileShareProtectableItem` was modified
+
+* `protectableItemType()` was added
+
+#### `models.AzureWorkloadSqlRestoreWithRehydrateRequest` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `objectType()` was added
+
+#### `models.MabContainer` was modified
+
+* `containerType()` was added
+
+#### `models.GenericProtectionPolicy` was modified
+
+* `backupManagementType()` was added
+
+#### `models.IaasVMRestoreWithRehydrationRequest` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `objectType()` was added
+
+#### `models.ValidateOperationRequest` was modified
+
+* `objectType()` was added
+
+#### `models.AzureWorkloadSapHanaPointInTimeRestoreRequest` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `objectType()` was added
+
+#### `models.AzureWorkloadSqlPointInTimeRestoreRequest` was modified
+
+* `objectType()` was added
+* `withResourceGuardOperationRequests(java.util.List)` was added
+
+#### `models.AzureWorkloadSqlAutoProtectionIntent` was modified
+
+* `protectionIntentItemType()` was added
+
+#### `models.BackupRequest` was modified
+
+* `objectType()` was added
+
+#### `models.TieringCostInfo` was modified
+
+* `objectType()` was added
+
+#### `models.MabJob` was modified
+
+* `jobType()` was added
+
+#### `models.AzureFileShareRestoreRequest` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `objectType()` was added
+
+#### `models.ProtectionContainer` was modified
+
+* `containerType()` was added
+
+#### `models.AzureWorkloadSapHanaPointInTimeRecoveryPoint` was modified
+
+* `objectType()` was added
+
+#### `models.AzureIaaSComputeVMProtectableItem` was modified
+
+* `protectableItemType()` was added
+
+#### `models.RetentionPolicy` was modified
+
+* `retentionPolicyType()` was added
+
+#### `models.AzureWorkloadSapHanaRestoreWithRehydrateRequest` was modified
+
+* `objectType()` was added
+* `withResourceGuardOperationRequests(java.util.List)` was added
+
+#### `models.AzureIaaSvmProtectedItem` was modified
+
+* `protectedItemType()` was added
+
+#### `models.AzureWorkloadContainerAutoProtectionIntent` was modified
+
+* `protectionIntentItemType()` was added
+
+#### `models.ProtectionPolicy` was modified
+
+* `backupManagementType()` was added
+
+#### `models.WorkloadItem` was modified
+
+* `workloadItemType()` was added
+
+#### `models.AzureWorkloadJob` was modified
+
+* `jobType()` was added
+
+#### `models.OperationResultInfoBase` was modified
+
+* `objectType()` was added
+
+#### `models.AzureIaaSvmJob` was modified
+
+* `jobType()` was added
+
+#### `models.FetchTieringCostSavingsInfoForVaultRequest` was modified
+
+* `objectType()` was added
+
+#### `models.SimpleRetentionPolicy` was modified
+
+* `retentionPolicyType()` was added
+
+#### `models.AzureIaaSvmProtectionPolicy` was modified
+
+* `snapshotConsistencyType()` was added
+* `backupManagementType()` was added
+* `withSnapshotConsistencyType(models.IaasVMSnapshotConsistencyType)` was added
+
+#### `models.LongTermRetentionPolicy` was modified
+
+* `retentionPolicyType()` was added
+
+#### `models.AzureVmWorkloadSapAseSystemWorkloadItem` was modified
+
+* `workloadItemType()` was added
+
+#### `models.IaasVmilrRegistrationRequest` was modified
+
+* `objectType()` was added
+
+#### `models.AzureSqlProtectionPolicy` was modified
+
+* `backupManagementType()` was added
+
+#### `models.ValidateIaasVMRestoreOperationRequest` was modified
+
+* `objectType()` was added
+
+#### `models.AzureStorageJob` was modified
+
+* `jobType()` was added
+
+#### `models.AzureVmWorkloadSqlDatabaseProtectedItem` was modified
+
+* `protectedItemType()` was added
+
+#### `models.WorkloadProtectableItem` was modified
+
+* `protectableItemType()` was added
+
+#### `models.SimpleSchedulePolicyV2` was modified
+
+* `schedulePolicyType()` was added
+
+#### `models.AzureVmWorkloadProtectedItem` was modified
+
+* `protectedItemType()` was added
+
+#### `models.AzureVmWorkloadItem` was modified
+
+* `workloadItemType()` was added
+
+#### `models.AzureVmWorkloadSqlInstanceWorkloadItem` was modified
+
+* `workloadItemType()` was added
+
+#### `models.AzureVmWorkloadProtectionPolicy` was modified
+
+* `backupManagementType()` was added
+
+#### `models.SchedulePolicy` was modified
+
+* `schedulePolicyType()` was added
+
+#### `models.ProtectionIntent` was modified
+
+* `protectionIntentItemType()` was added
+
+#### `models.AzureResourceProtectionIntent` was modified
+
+* `protectionIntentItemType()` was added
+
+#### `models.ProtectedItem` was modified
+
+* `protectedItemType()` was added
+
+#### `models.AzureSqlContainer` was modified
+
+* `containerType()` was added
+
+#### `models.AzureVmWorkloadSapHanaSystemProtectableItem` was modified
+
+* `protectableItemType()` was added
+
+#### `models.AzureSqlagWorkloadContainerProtectionContainer` was modified
+
+* `containerType()` was added
+
+#### `models.AzureVmWorkloadSapAseDatabaseWorkloadItem` was modified
+
+* `workloadItemType()` was added
+
+#### `models.AzureWorkloadRestoreRequest` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `objectType()` was added
+
+#### `models.VaultJob` was modified
+
+* `jobType()` was added
+
+#### `models.IlrRequest` was modified
+
+* `objectType()` was added
+
+#### `models.AzureVmWorkloadSqlDatabaseWorkloadItem` was modified
+
+* `workloadItemType()` was added
+
+#### `models.AzureVmWorkloadProtectableItem` was modified
+
+* `protectableItemType()` was added
+
+#### `models.GenericContainer` was modified
+
+* `containerType()` was added
+
+#### `models.AzureVMAppContainerProtectionContainer` was modified
+
+* `containerType()` was added
+
+#### `models.TieringCostRehydrationInfo` was modified
+
+* `objectType()` was added
+
+#### `models.IaasVMRecoveryPoint` was modified
+
+* `objectType()` was added
+
+#### `models.AzureVmWorkloadSapHanaDBInstanceProtectedItem` was modified
+
+* `protectedItemType()` was added
+
+#### `models.IaaSvmProtectableItem` was modified
+
+* `protectableItemType()` was added
+
+#### `models.AzureBackupServerContainer` was modified
+
+* `containerType()` was added
+
+#### `models.AzureBackupServerEngine` was modified
+
+* `backupEngineType()` was added
+
+#### `models.AzureIaaSClassicComputeVMProtectableItem` was modified
+
+* `protectableItemType()` was added
+
+#### `models.ExportJobsOperationResultInfo` was modified
+
+* `objectType()` was added
+
+#### `models.AzureFileShareRecoveryPoint` was modified
+
+* `objectType()` was added
+
+#### `models.OperationStatusJobExtendedInfo` was modified
+
+* `objectType()` was added
+
+#### `models.AzureWorkloadBackupRequest` was modified
+
+* `objectType()` was added
+
+#### `models.AzureWorkloadContainer` was modified
+
+* `containerType()` was added
+
+#### `models.FeatureSupportRequest` was modified
+
+* `featureType()` was added
+
+#### `models.ValidateRestoreOperationRequest` was modified
+
+* `objectType()` was added
+
+#### `models.AzureWorkloadAutoProtectionIntent` was modified
+
+* `protectionIntentItemType()` was added
+
+#### `models.FetchTieringCostInfoRequest` was modified
+
+* `objectType()` was added
+
+#### `models.DpmJob` was modified
+
+* `jobType()` was added
+
+#### `models.AzureVMResourceFeatureSupportRequest` was modified
+
+* `featureType()` was added
+
+#### `models.AzureIaaSClassicComputeVMProtectedItem` was modified
+
+* `protectedItemType()` was added
+
+#### `models.GenericProtectedItem` was modified
+
+* `protectedItemType()` was added
+
+#### `models.AzureWorkloadSapHanaRecoveryPoint` was modified
+
+* `objectType()` was added
+
+#### `models.OperationStatusJobsExtendedInfo` was modified
+
+* `objectType()` was added
+
+#### `models.RecoveryPoint` was modified
+
+* `objectType()` was added
+
+#### `models.AzureBackupGoalFeatureSupportRequest` was modified
+
+* `featureType()` was added
+
+#### `models.AzureVmWorkloadSqlDatabaseProtectableItem` was modified
+
+* `protectableItemType()` was added
+
+#### `models.SimpleSchedulePolicy` was modified
+
+* `schedulePolicyType()` was added
+
+#### `models.AzureVmWorkloadSapAseSystemProtectableItem` was modified
+
+* `protectableItemType()` was added
+
+#### `models.MabProtectionPolicy` was modified
+
+* `backupManagementType()` was added
+
+#### `models.AzureFileshareProtectedItem` was modified
+
+* `protectedItemType()` was added
+
+#### `models.Job` was modified
+
+* `jobType()` was added
+
+#### `models.AzureRecoveryServiceVaultProtectionIntent` was modified
+
+* `protectionIntentItemType()` was added
+
+#### `models.AzureFileShareProtectionPolicy` was modified
+
+* `backupManagementType()` was added
+
+#### `models.FetchTieringCostSavingsInfoForProtectedItemRequest` was modified
+
+* `objectType()` was added
+
+#### `models.AzureSqlProtectedItem` was modified
+
+* `protectedItemType()` was added
+
+#### `models.OperationResultInfo` was modified
+
+* `objectType()` was added
+
+#### `models.AzureWorkloadSapHanaRestoreRequest` was modified
+
+* `withResourceGuardOperationRequests(java.util.List)` was added
+* `objectType()` was added
+
+#### `models.LogSchedulePolicy` was modified
+
+* `schedulePolicyType()` was added
+
+#### `models.AzureWorkloadSqlPointInTimeRestoreWithRehydrateRequest` was modified
+
+* `objectType()` was added
+* `withResourceGuardOperationRequests(java.util.List)` was added
+
+#### `models.VaultStorageConfigOperationResultResponse` was modified
+
+* `objectType()` was added
+
+#### `models.AzureWorkloadPointInTimeRestoreRequest` was modified
+
+* `objectType()` was added
+* `withResourceGuardOperationRequests(java.util.List)` was added
+
+#### `models.AzureWorkloadSqlRestoreRequest` was modified
+
+* `objectType()` was added
+* `withResourceGuardOperationRequests(java.util.List)` was added
+
+#### `models.AzureIaaSvmJobV2` was modified
+
+* `jobType()` was added
+
+#### `models.PrepareDataMoveResponse` was modified
+
+* `objectType()` was added
+
+#### `models.AzureStorageContainer` was modified
+
+* `containerType()` was added
+
+#### `models.TieringCostSavingInfo` was modified
+
+* `objectType()` was added
+
+#### `models.FetchTieringCostSavingsInfoForPolicyRequest` was modified
+
+* `objectType()` was added
+
+#### `models.AzureIaaSComputeVMContainer` was modified
+
+* `containerType()` was added
+
+#### `models.DpmContainer` was modified
+
+* `containerType()` was added
+
+#### `models.DpmProtectedItem` was modified
+
+* `protectedItemType()` was added
+
+#### `models.AzureVmWorkloadSapHanaDatabaseProtectableItem` was modified
+
+* `protectableItemType()` was added
 
 ## 1.3.0 (2024-01-24)
 

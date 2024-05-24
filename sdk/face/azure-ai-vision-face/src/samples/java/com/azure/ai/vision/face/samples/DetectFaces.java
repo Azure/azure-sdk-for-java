@@ -37,7 +37,7 @@ public class DetectFaces {
             FaceDetectionModel.DETECTION_03,
             FaceRecognitionModel.RECOGNITION_04,
             true,
-            Arrays.asList(Detection03.HEAD_POSE, Detection03.MASK, Recognition04.QUALITY_FOR_RECOGNITION),
+            Arrays.asList(Detection03.HEAD_POSE, Detection03.MASK, Detection03.BLUR, Recognition04.QUALITY_FOR_RECOGNITION),
             false,
             true,
             120);
@@ -48,7 +48,7 @@ public class DetectFaces {
             .setReturnFaceAttributes(Arrays.asList(Detection01.ACCESSORIES, Detection01.GLASSES, Detection01.EXPOSURE, Detection01.NOISE))
             .setReturnFaceLandmarks(true);
 
-        detectResult = client.detectFromUrl(Resources.TEST_IMAGE_URL_DETECT_SAMPLE, options);
+        detectResult = client.detect(Resources.TEST_IMAGE_URL_DETECT_SAMPLE, options);
         detectResult.forEach(face -> log("Detected Faces from URL:" + Utils.toString(face) + "\n"));
     }
 }

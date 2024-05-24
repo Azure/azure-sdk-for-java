@@ -132,7 +132,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
      * Get the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
      * message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
      * minute.
-     * 
+     *
      * @return the lockDuration value.
      */
     public Duration getLockDuration() {
@@ -143,7 +143,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
      * Set the lockDuration property: ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the
      * message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1
      * minute.
-     * 
+     *
      * @param lockDuration the lockDuration value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -155,7 +155,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Get the requiresSession property: A value that indicates whether the subscription supports the concept of
      * sessions.
-     * 
+     *
      * @return the requiresSession value.
      */
     public Boolean isRequiresSession() {
@@ -165,7 +165,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Set the requiresSession property: A value that indicates whether the subscription supports the concept of
      * sessions.
-     * 
+     *
      * @param requiresSession the requiresSession value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -178,7 +178,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
      * Get the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
      * used when TimeToLive is not set on a message itself.
-     * 
+     *
      * @return the defaultMessageTimeToLive value.
      */
     public Duration getDefaultMessageTimeToLive() {
@@ -189,7 +189,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
      * Set the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
      * used when TimeToLive is not set on a message itself.
-     * 
+     *
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -201,7 +201,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Get the deadLetteringOnMessageExpiration property: A value that indicates whether this subscription has dead
      * letter support when a message expires.
-     * 
+     *
      * @return the deadLetteringOnMessageExpiration value.
      */
     public Boolean isDeadLetteringOnMessageExpiration() {
@@ -211,7 +211,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Set the deadLetteringOnMessageExpiration property: A value that indicates whether this subscription has dead
      * letter support when a message expires.
-     * 
+     *
      * @param deadLetteringOnMessageExpiration the deadLetteringOnMessageExpiration value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -223,7 +223,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Get the deadLetteringOnFilterEvaluationExceptions property: A value that indicates whether this subscription has
      * dead letter support when a message expires.
-     * 
+     *
      * @return the deadLetteringOnFilterEvaluationExceptions value.
      */
     public Boolean isDeadLetteringOnFilterEvaluationExceptions() {
@@ -233,7 +233,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Set the deadLetteringOnFilterEvaluationExceptions property: A value that indicates whether this subscription has
      * dead letter support when a message expires.
-     * 
+     *
      * @param deadLetteringOnFilterEvaluationExceptions the deadLetteringOnFilterEvaluationExceptions value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -245,7 +245,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Get the messageCount property: The number of messages in the subscription.
-     * 
+     *
      * @return the messageCount value.
      */
     public Integer getMessageCount() {
@@ -254,7 +254,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Set the messageCount property: The number of messages in the subscription.
-     * 
+     *
      * @param messageCount the messageCount value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -266,7 +266,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Get the maxDeliveryCount property: The maximum delivery count. A message is automatically deadlettered after this
      * number of deliveries. Default value is 10.
-     * 
+     *
      * @return the maxDeliveryCount value.
      */
     public Integer getMaxDeliveryCount() {
@@ -276,7 +276,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Set the maxDeliveryCount property: The maximum delivery count. A message is automatically deadlettered after this
      * number of deliveries. Default value is 10.
-     * 
+     *
      * @param maxDeliveryCount the maxDeliveryCount value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -288,7 +288,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Get the enableBatchedOperations property: Value that indicates whether server-side batched operations are
      * enabled.
-     * 
+     *
      * @return the enableBatchedOperations value.
      */
     public Boolean isEnableBatchedOperations() {
@@ -298,7 +298,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Set the enableBatchedOperations property: Value that indicates whether server-side batched operations are
      * enabled.
-     * 
+     *
      * @param enableBatchedOperations the enableBatchedOperations value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -309,7 +309,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Get the status property: Status of a Service Bus resource.
-     * 
+     *
      * @return the status value.
      */
     public EntityStatus getStatus() {
@@ -318,7 +318,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Set the status property: Status of a Service Bus resource.
-     * 
+     *
      * @param status the status value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -330,7 +330,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Get the forwardTo property: The name of the recipient entity to which all the messages sent to the subscription
      * are forwarded to.
-     * 
+     *
      * @return the forwardTo value.
      */
     public String getForwardTo() {
@@ -340,7 +340,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Set the forwardTo property: The name of the recipient entity to which all the messages sent to the subscription
      * are forwarded to.
-     * 
+     *
      * @param forwardTo the forwardTo value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -351,7 +351,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Get the createdAt property: The exact time the subscription was created.
-     * 
+     *
      * @return the createdAt value.
      */
     public OffsetDateTime getCreatedAt() {
@@ -360,7 +360,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Set the createdAt property: The exact time the subscription was created.
-     * 
+     *
      * @param createdAt the createdAt value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -371,7 +371,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Get the updatedAt property: The exact time a message was updated in the subscription.
-     * 
+     *
      * @return the updatedAt value.
      */
     public OffsetDateTime getUpdatedAt() {
@@ -380,7 +380,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Set the updatedAt property: The exact time a message was updated in the subscription.
-     * 
+     *
      * @param updatedAt the updatedAt value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -392,7 +392,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Get the accessedAt property: Last time a message was sent, or the last time there was a receive request to this
      * subscription.
-     * 
+     *
      * @return the accessedAt value.
      */
     public OffsetDateTime getAccessedAt() {
@@ -402,7 +402,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Set the accessedAt property: Last time a message was sent, or the last time there was a receive request to this
      * subscription.
-     * 
+     *
      * @param accessedAt the accessedAt value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -413,7 +413,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Get the messageCountDetails property: Details about the message counts in entity.
-     * 
+     *
      * @return the messageCountDetails value.
      */
     public MessageCountDetailsImpl getMessageCountDetails() {
@@ -422,7 +422,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Set the messageCountDetails property: Details about the message counts in entity.
-     * 
+     *
      * @param messageCountDetails the messageCountDetails value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -433,7 +433,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Get the userMetadata property: Metadata associated with the subscription. Maximum number of characters is 1024.
-     * 
+     *
      * @return the userMetadata value.
      */
     public String getUserMetadata() {
@@ -442,7 +442,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Set the userMetadata property: Metadata associated with the subscription. Maximum number of characters is 1024.
-     * 
+     *
      * @param userMetadata the userMetadata value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -454,7 +454,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Get the forwardDeadLetteredMessagesTo property: The name of the recipient entity to which all the messages sent
      * to the subscription are forwarded to.
-     * 
+     *
      * @return the forwardDeadLetteredMessagesTo value.
      */
     public String getForwardDeadLetteredMessagesTo() {
@@ -464,7 +464,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Set the forwardDeadLetteredMessagesTo property: The name of the recipient entity to which all the messages sent
      * to the subscription are forwarded to.
-     * 
+     *
      * @param forwardDeadLetteredMessagesTo the forwardDeadLetteredMessagesTo value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -476,7 +476,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Get the autoDeleteOnIdle property: ISO 8601 timeSpan idle interval after which the subscription is automatically
      * deleted. The minimum duration is 5 minutes.
-     * 
+     *
      * @return the autoDeleteOnIdle value.
      */
     public Duration getAutoDeleteOnIdle() {
@@ -486,7 +486,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     /**
      * Set the autoDeleteOnIdle property: ISO 8601 timeSpan idle interval after which the subscription is automatically
      * deleted. The minimum duration is 5 minutes.
-     * 
+     *
      * @param autoDeleteOnIdle the autoDeleteOnIdle value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -497,7 +497,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Get the entityAvailabilityStatus property: Availability status of the entity.
-     * 
+     *
      * @return the entityAvailabilityStatus value.
      */
     public EntityAvailabilityStatusImpl getEntityAvailabilityStatus() {
@@ -506,7 +506,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Set the entityAvailabilityStatus property: Availability status of the entity.
-     * 
+     *
      * @param entityAvailabilityStatus the entityAvailabilityStatus value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -518,7 +518,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Get the defaultRuleDescription property: The default rule description.
-     * 
+     *
      * @return the defaultRuleDescription value.
      */
     public RuleDescriptionImpl getDefaultRuleDescription() {
@@ -527,7 +527,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Set the defaultRuleDescription property: The default rule description.
-     * 
+     *
      * @param defaultRuleDescription the defaultRuleDescription value to set.
      * @return the SubscriptionDescription object itself.
      */
@@ -556,6 +556,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
             this.deadLetteringOnMessageExpiration);
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT,
             "DeadLetteringOnFilterEvaluationExceptions", this.deadLetteringOnFilterEvaluationExceptions);
+        xmlWriter.writeXml(this.defaultRuleDescription, "DefaultRuleDescription");
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MessageCount", this.messageCount);
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MaxDeliveryCount",
             this.maxDeliveryCount);
@@ -578,13 +579,12 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
             CoreUtils.durationToStringWithDays(this.autoDeleteOnIdle));
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "EntityAvailabilityStatus",
             this.entityAvailabilityStatus == null ? null : this.entityAvailabilityStatus.toString());
-        xmlWriter.writeXml(this.defaultRuleDescription, "DefaultRuleDescription");
         return xmlWriter.writeEndElement();
     }
 
     /**
      * Reads an instance of SubscriptionDescription from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @return An instance of SubscriptionDescription if the XmlReader was pointing to an instance of it, or null if it
      * was pointing to XML null.
@@ -596,7 +596,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Reads an instance of SubscriptionDescription from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.

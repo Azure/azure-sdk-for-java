@@ -9,8 +9,7 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
 
 - It uses the Azure AI Vision Face service `v1.1-preview.1` API.
 - Three client design:
-    - `FaceClient` provides functionality for face detection and recognition, including 'detect', 'verify', 'findsimilar', 'group' and 'identify'
-    - `FaceAdministrationClient` to build and manage data collection of face features for face recognition, including 'Person Directory', 'LargePersonGroup' 'LargeFaceList', 'PersonGroup', 'Face List'
+    - `FaceClient` provides functionality for face detection and recognition, including 'detect', 'verify', 'findsimilar' and 'group'
     - `FaceSessionClient` to orchestrate with mobile client application to perform liveness check and verification
 - Authentication with API key supported using `AzureKeyCredential("<api_key>")` from `com.azure.core.credential`
 - Authentication with AAD using `DefaultAzureCredentialBuilder()` from `com.azure.identity`
