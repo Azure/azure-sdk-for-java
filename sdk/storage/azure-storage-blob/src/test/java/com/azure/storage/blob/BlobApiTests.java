@@ -1381,8 +1381,7 @@ public class BlobApiTests extends BlobTestBase {
             "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca");
 
         // There is a sas token attached at the end. Only check that the path is the same.
-        // disable recording copy source URL since the URL is redacted in playback mode
-        assertNotNull(destProperties.getCopySource());
+        assertTrue(destProperties.getCopySource().contains(new URL(sourceBlob.getBlobUrl()).getPath()));
         assertEquals(destProperties.getObjectReplicationDestinationPolicyId(), "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80");
         assertEquals(destDownloadHeaders.getDeserializedHeaders().getObjectReplicationDestinationPolicyId(),
             "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80");
@@ -1886,8 +1885,7 @@ public class BlobApiTests extends BlobTestBase {
             assertNotNull(it.getValue());
             assertNotNull(it.getValue().getCopyId());
             if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
-                // disable recording copy source URL since the URL is redacted in playback mode
-                assertNotNull(it.getValue().getCopySourceUrl());
+                assertEquals(redactUrl(bc.getBlobUrl()), it.getValue().getCopySourceUrl());
             } else {
                 assertEquals(bc.getBlobUrl(), it.getValue().getCopySourceUrl());
             }
@@ -1907,8 +1905,7 @@ public class BlobApiTests extends BlobTestBase {
             assertNotNull(it.getValue());
             assertNotNull(it.getValue().getCopyId());
             if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
-                // disable recording copy source URL since the URL is redacted in playback mode
-                assertNotNull(it.getValue().getCopySourceUrl());
+                assertEquals(redactUrl(bc.getBlobUrl()), it.getValue().getCopySourceUrl());
             } else {
                 assertEquals(bc.getBlobUrl(), it.getValue().getCopySourceUrl());
             }

@@ -8,7 +8,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
@@ -946,9 +945,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
-    @LiveOnly
     public void canEnableMSIOnVirtualMachineScaleSetWithoutRoleAssignment() throws Exception {
-        // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
         final String vmssName = generateRandomResourceName("vmss", 10);
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
 

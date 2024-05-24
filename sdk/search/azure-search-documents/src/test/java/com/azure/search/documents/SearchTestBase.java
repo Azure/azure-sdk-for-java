@@ -123,17 +123,12 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             .httpClient(getHttpClient(true, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
-//        // Disable `("$..token")` sanitizer
-//        if (!interceptorManager.isLiveMode()) {
-//            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3431"));
-//        }
-
         if (interceptorManager.isPlaybackMode()) {
             addPolicies(builder);
             return builder;
         }
 
-        if (interceptorManager.isRecordMode()) {
+        if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -154,7 +149,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             return builder;
         }
 
-        if (interceptorManager.isRecordMode()) {
+        if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -194,7 +189,7 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             return builder;
         }
 
-        if (interceptorManager.isRecordMode()) {
+        if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 

@@ -27,7 +27,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -98,10 +97,6 @@ public abstract class SparkClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isRecordMode()) {
             policies.add(interceptorManager.getRecordPolicy());
-        }
-
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3425"));
         }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()

@@ -211,7 +211,7 @@ public class KeyVaultAccessControlClientTest extends KeyVaultAccessControlClient
             KeyVaultRoleAssignmentProperties properties = createdRoleAssignment.getProperties();
 
             assertNotNull(properties);
-            assertNotNull(properties.getPrincipalId());
+            assertEquals(servicePrincipalId, properties.getPrincipalId());
             assertEquals(createdRoleDefinition.getId(), properties.getRoleDefinitionId());
             assertEquals(KeyVaultRoleScope.GLOBAL, properties.getScope());
         } finally {

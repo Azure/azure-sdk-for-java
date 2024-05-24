@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.compute;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
@@ -22,9 +21,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-@LiveOnly
 public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest {
-    // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
     private String rgName = "";
     private Region region = Region.US_WEST_CENTRAL;
     private final String vmName = "javavm";
@@ -37,6 +34,7 @@ public class VirtualMachineEMSILMSIOperationsTests extends ComputeManagementTest
     @Test
     public void canCreateUpdateVirtualMachineWithEMSI() {
         // this.resourceManager.resourceGroups().beginDeleteByName("41522c6e938c4f6");
+
         rgName = generateRandomResourceName("java-emsi-c-rg", 15);
         String identityName1 = generateRandomResourceName("msi-id", 15);
         String identityName2 = generateRandomResourceName("msi-id", 15);

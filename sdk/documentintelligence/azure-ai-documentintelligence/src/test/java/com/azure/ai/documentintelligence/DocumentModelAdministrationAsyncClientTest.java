@@ -327,8 +327,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
             validateClassifierModelData(buildModelPoller.getFinalResult());
             assertNotNull(documentClassifierDetails.getDocTypes());
             documentClassifierDetails.getDocTypes().forEach((s, classifierDocumentTypeDetails)
-                -> assertNotNull((classifierDocumentTypeDetails.getAzureBlobSource())
-                .getContainerUrl()));
+                -> assertTrue((classifierDocumentTypeDetails.getAzureBlobSource())
+                .getContainerUrl().contains("training-data-classifier")));
         });
     }
 
@@ -365,8 +365,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentAdminist
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
             assertNotNull(documentClassifierDetails.getDocTypes());
             documentClassifierDetails.getDocTypes().forEach((s, classifierDocumentTypeDetails)
-                -> assertNotNull((classifierDocumentTypeDetails.getAzureBlobFileListSource())
-                .getContainerUrl()));
+                -> assertTrue((classifierDocumentTypeDetails.getAzureBlobFileListSource())
+                .getContainerUrl().contains("training-data-classifier")));
 
             validateClassifierModelData(buildModelPoller.getFinalResult());
         });

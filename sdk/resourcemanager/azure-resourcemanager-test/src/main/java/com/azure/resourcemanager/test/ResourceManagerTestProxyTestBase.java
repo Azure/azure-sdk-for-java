@@ -254,7 +254,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 interceptorManager.getPlaybackClient());
             if (!testContextManager.doNotRecordTest()) {
                 // don't match api-version when matching url
-                interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version")).setExcludedHeaders(Arrays.asList("If-Match"))));
+                interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))));
                 addSanitizers();
             }
         } else {

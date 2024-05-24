@@ -31,7 +31,6 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -90,10 +89,6 @@ public class AppServiceTest extends ResourceManagerTestProxyTestBase {
         resourceManager = appServiceManager.resourceManager();
         setInternalContext(internalContext, appServiceManager, msiManager);
 
-        if (!interceptorManager.isLiveMode()) {
-            // Disable `$..appkey` sanitizer for these tests
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3466"));
-        }
         // useExistingDomainAndCertificate();
         // createNewDomainAndCertificate();
     }

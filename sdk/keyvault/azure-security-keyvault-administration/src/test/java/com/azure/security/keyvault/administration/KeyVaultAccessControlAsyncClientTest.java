@@ -217,7 +217,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
                     KeyVaultRoleAssignmentProperties properties = roleAssignment.getProperties();
 
                     assertNotNull(properties);
-                    assertNotNull(properties.getPrincipalId());
+                    assertEquals(servicePrincipalId, properties.getPrincipalId());
                     assertEquals(KeyVaultRoleScope.GLOBAL, properties.getScope());
 
                     KeyVaultRoleDefinition roleDefinition = tuple.getT1();

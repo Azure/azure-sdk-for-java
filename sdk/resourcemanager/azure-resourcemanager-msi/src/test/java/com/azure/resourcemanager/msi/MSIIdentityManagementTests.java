@@ -11,7 +11,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.msi.models.Identity;
@@ -126,7 +125,6 @@ public class MSIIdentityManagementTests extends ResourceManagerTestProxyTestBase
     }
 
     @Test
-    @LiveOnly
     public void canAssignCurrentResourceGroupAccessRoleToIdentity() throws Exception {
         rgName = generateRandomResourceName("javaismrg", 15);
         String identityName = generateRandomResourceName("msi-id", 15);

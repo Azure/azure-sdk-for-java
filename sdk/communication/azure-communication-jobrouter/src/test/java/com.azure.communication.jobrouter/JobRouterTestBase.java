@@ -57,10 +57,6 @@ class JobRouterTestBase extends TestProxyTestBase {
             .endpoint(connectionString.getEndpoint())
             .pipeline(httpPipeline)
             .buildClient();
-        // Disable `$..etag` sanitizer
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3490"));
-        }
         return jobRouterAdministrationClient;
     }
 
@@ -71,10 +67,6 @@ class JobRouterTestBase extends TestProxyTestBase {
             .endpoint(connectionString.getEndpoint())
             .pipeline(httpPipeline)
             .buildAsyncClient();
-        // Disable `$..etag` sanitizer
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3490"));
-        }
         return jobRouterAdministrationAsyncClient;
     }
 

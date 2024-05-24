@@ -3,7 +3,6 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.TypeReference;
@@ -307,7 +306,6 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void indexManyDocumentsSmallDocumentSets() {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
 
@@ -355,7 +353,6 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void indexManyDocumentsSmallDocumentSetsAsync() {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
 
@@ -404,7 +401,6 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void indexManyDocumentsOneLargeDocumentSet() {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
 
@@ -453,7 +449,6 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     }
 
     @Test
-    @LiveOnly
     public void indexManyDocumentsOneLargeDocumentSetAsync() {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
 

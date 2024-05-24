@@ -4,7 +4,6 @@ package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationSignerCollection;
@@ -27,9 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-@LiveOnly
 public class AttestationPolicyManagementTests extends AttestationClientTestBase {
-    // LiveOnly because "JWT cannot be stored in recordings."
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void testGetPolicyManagementCertificates(HttpClient httpClient, String clientUri) {
