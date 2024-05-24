@@ -8,10 +8,11 @@ SUBSCRIPTIONID=$5
 TENANTID=$6
 RESOURCEGROUPNAME=$7
 CLIENTID=$8
-CLIENTSECRET=$9
-CLIENTCERTPEM=${10}
-COSMOSCONTAINERNAME=${11}
-COSMOSDATABASENAME=${12}
+CLIENTIDCERT=$9
+CLIENTSECRET=${10}
+CLIENTCERTPEM=${11}
+COSMOSCONTAINERNAME=${12}
+COSMOSDATABASENAME=${13}
 [[ -z "$CLUSTER_NAME" ]] && exit 1
 [[ -z "$NOTEBOOKSFOLDER" ]] && exit 1
 [[ -z "$COSMOSENDPOINT" ]] && exit 1
@@ -20,6 +21,7 @@ COSMOSDATABASENAME=${12}
 [[ -z "$TENANTID" ]] && exit 1
 [[ -z "$RESOURCEGROUPNAME" ]] && exit 1
 [[ -z "$CLIENTID" ]] && exit 1
+[[ -z "$CLIENTIDCERT" ]] && exit 1
 [[ -z "$CLIENTSECRET" ]] && exit 1
 [[ -z "$CLIENTCERTPEM" ]] && exit 1
 [[ -z "$COSMOSCONTAINERNAME" ]] && exit 1
@@ -46,7 +48,7 @@ do
 	fi
 
 	echo "Creating run for job $JOB_ID"
-	RUN_ID=$(databricks jobs run-now --job-id $JOB_ID --notebook-params "{\"cosmosEndpoint\": \"$COSMOSENDPOINT\",\"cosmosMasterKey\": \"$COSMOSKEY\",\"subscriptionId\": \"$SUBSCRIPTIONID\",\"tenantId\": \"$TENANTID\",\"resourceGroupName\": \"$RESOURCEGROUPNAME\",\"clientId\": \"$CLIENTID\",\"clientSecret\": \"$CLIENTSECRET\",\"clientCertPem\": \"$CLIENTCERTPEM\",\"cosmosContainerName\": \"$COSMOSCONTAINERNAME\", \"cosmosDatabaseName\": \"$COSMOSDATABASENAME\"}" | jq -r '.run_id')
+	RUN_ID=$(databricks jobs run-now --job-id $JOB_ID --notebook-params "{\"cosmosEndpoint\": \"$COSMOSENDPOINT\",\"cosmosMasterKey\": \"$COSMOSKEY\",\"subscriptionId\": \"$SUBSCRIPTIONID\",\"tenantId\": \"$TENANTID\",\"resourceGroupName\": \"$RESOURCEGROUPNAME\",\"clientIdCert\": \"$CLIENTID\",\"clientId\": \"$CLIENTIDCERT\",\"clientSecret\": \"$CLIENTSECRET\",\"clientCertPem\": \"$CLIENTCERTPEM\",\"cosmosContainerName\": \"$COSMOSCONTAINERNAME\", \"cosmosDatabaseName\": \"$COSMOSDATABASENAME\"}" | jq -r '.run_id')
 
 	if [[ -z "$RUN_ID" ]]
 	then
