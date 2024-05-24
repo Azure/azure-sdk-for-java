@@ -1,6 +1,6 @@
 # Release History
 
-## 2.39.0-beta.1 (Unreleased)
+## 2.39.0 (2024-05-24)
 
 ### Features Added
 
