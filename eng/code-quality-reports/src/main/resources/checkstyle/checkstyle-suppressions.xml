@@ -332,7 +332,9 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Checkstyle suppression for OpenAI client APIs that use Flux instead of PagedFlux for methods that return a collection -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.openai.(OpenAIClient|OpenAIAsyncClient).java"/>
-
+  <!-- Checkstyle suppression for OpenAI Assistants client APIs that use Flux instead of PagedFlux for methods that return a collection -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.ai.openai.assistants.(AssistantsClient|AssistantsAsyncClient).java"/>
+  
   <!-- jdbc sdk suppression -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.identity.extensions.jdbc.(mysql|postgresql).(AzureMysqlAuthenticationPlugin|AzurePostgresqlAuthenticationPlugin).java"/>
