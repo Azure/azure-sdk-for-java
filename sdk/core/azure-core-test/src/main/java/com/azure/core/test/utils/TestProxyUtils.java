@@ -58,13 +58,17 @@ public class TestProxyUtils {
         "privateKey", "fencingClientPassword", "acrToken", "scriptUrlSasToken", "azureBlobSource.containerUrl",
         "properties.DOCKER_REGISTRY_SEVER_PASSWORD");
 
+    public static final String HOST_NAME_REGEX = "(?<=http://|https://)(?<host>[^/?\\\\.]+)";
     private static final List<TestProxySanitizer> HEADER_KEY_REGEX_TO_REDACT = Arrays.asList(
-
         new TestProxySanitizer("ServiceBusDlqSupplementaryAuthorization",
             "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]+)", REDACTED_VALUE, TestProxySanitizerType.HEADER)
                 .setGroupForReplace("secret"),
         new TestProxySanitizer("ServiceBusSupplementaryAuthorization", "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]+)",
-            REDACTED_VALUE, TestProxySanitizerType.HEADER).setGroupForReplace("secret"));
+            REDACTED_VALUE, TestProxySanitizerType.HEADER).setGroupForReplace("secret"),
+        new TestProxySanitizer("operation-location", HOST_NAME_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER)
+            .setGroupForReplace("host"),
+        new TestProxySanitizer("Location", HOST_NAME_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER)
+            .setGroupForReplace("host"));
 
     // Values in this list must have a capture group named "secret" for the redaction to work.
     private static final List<String> BODY_REGEXES_TO_REDACT

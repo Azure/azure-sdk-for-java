@@ -64,6 +64,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AssistantsClientTestBase extends TestProxyTestBase {
+    // Remove the `id` and `name` sanitizers from the list of common sanitizers.
+    private static final String[] REMOVE_SANITIZER_ID = {"AZSDK3430", "AZSDK3493", "AZSDK2015"};
 
     private static final String JAVA_SDK_TESTS_ASSISTANTS_TXT =  "java_sdk_tests_assistants.txt";
     private static final String JAVA_SDK_TESTS_FINE_TUNING_JSON = "java_sdk_tests_fine_tuning.json";
@@ -119,8 +121,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
-            // Disable "Set-Cookie"=AZSDK2015 for non-azure client only.
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK2015"));
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
         }
 
         return builder;
@@ -143,6 +144,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
         }
 
         return builder;

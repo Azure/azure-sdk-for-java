@@ -95,6 +95,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class OpenAIClientTestBase extends TestProxyTestBase {
+    private boolean sanitizersRemoved = false;
 
     OpenAIClientBuilder getOpenAIClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
@@ -104,14 +105,11 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         if (testMode != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
-        }
-
-        // TODO: Remove this block once the azure-core-test has fixed the issue.
-        // AZSDK3430 is already in the default remove list:
-        // https://github.com/Azure/azure-sdk-for-java/blob/f0d4e21415eb49400a989d09bc5e5af97f0cc438/sdk/core/azure-core-test/src/main/java/com/azure/core/test/utils/TestProxyUtils.java#L50
-        if (getTestMode() == TestMode.RECORD) {
-            // Disable "$..id"=AZSDK3430 sanitizers for both azure and non-azure clients.
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3430"));
+            // Disable "$..id"=AZSDK3430, "Set-Cookie"=AZSDK2015 for both azure and non-azure clients from the list of common sanitizers.
+            if (!sanitizersRemoved) {
+                interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+                sanitizersRemoved = true;
+            }
         }
 
         if (testMode == TestMode.PLAYBACK) {
@@ -138,16 +136,11 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
-            // Disable "Set-Cookie"=AZSDK2015 for non-azure client only.
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK2015"));
-        }
-
-        // TODO: Remove this block once the azure-core-test has fixed the issue.
-        // AZSDK3430 is already in the default remove list:
-        // https://github.com/Azure/azure-sdk-for-java/blob/f0d4e21415eb49400a989d09bc5e5af97f0cc438/sdk/core/azure-core-test/src/main/java/com/azure/core/test/utils/TestProxyUtils.java#L50
-        if (getTestMode() == TestMode.RECORD) {
-            // Disable "$..id"=AZSDK3430 sanitizers for both azure and non-azure clients.
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3430"));
+            // Disable "$..id"=AZSDK3430, "Set-Cookie"=AZSDK2015 for both azure and non-azure clients from the list of common sanitizers.
+            if (!sanitizersRemoved) {
+                interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493", "AZSDK2015");
+                sanitizersRemoved = true;
+            }
         }
 
         if (getTestMode() == TestMode.PLAYBACK) {
