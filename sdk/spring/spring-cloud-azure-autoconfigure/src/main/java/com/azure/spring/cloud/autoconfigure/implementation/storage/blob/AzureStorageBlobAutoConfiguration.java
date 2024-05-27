@@ -58,6 +58,12 @@ public class AzureStorageBlobAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(AzureStorageBlobConnectionDetails.class)
+    PropertiesAzureStorageBlobConnectionDetails azureStorageBlobConnectionDetails(AzureStorageBlobProperties properties) {
+        return new PropertiesAzureStorageBlobConnectionDetails(properties);
+    }
+
+    @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageBlobProperties.PREFIX, name = "blob-name")
     BlobAsyncClient blobAsyncClient(AzureStorageBlobProperties properties,
@@ -107,6 +113,7 @@ public class AzureStorageBlobAutoConfiguration {
     @ConditionalOnMissingBean(name = STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
     BlobServiceClientBuilderFactory blobServiceClientBuilderFactory(
         AzureStorageBlobProperties properties,
+        AzureStorageBlobConnectionDetails connectionDetails,
         ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.StorageBlob>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<BlobServiceClientBuilder>> customizers) {
         BlobServiceClientBuilderFactory factory = new BlobServiceClientBuilderFactory(properties);
@@ -127,8 +134,22 @@ public class AzureStorageBlobAutoConfiguration {
     @Bean
     @ConditionalOnAnyProperty(prefixes = { AzureStorageBlobProperties.PREFIX, AzureStorageProperties.PREFIX }, name = { "connection-string" })
     StaticConnectionStringProvider<AzureServiceType.StorageBlob> staticStorageBlobConnectionStringProvider(
-        AzureStorageBlobProperties properties) {
-        return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_BLOB, properties.getConnectionString());
+        AzureStorageBlobConnectionDetails connectionDetails) {
+        return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_BLOB, connectionDetails.getConnectionString());
+    }
+
+    static class PropertiesAzureStorageBlobConnectionDetails implements AzureStorageBlobConnectionDetails {
+
+        private final AzureStorageProperties properties;
+
+        PropertiesAzureStorageBlobConnectionDetails(AzureStorageProperties properties) {
+            this.properties = properties;
+        }
+
+        @Override
+        public String getConnectionString() {
+            return this.properties.getConnectionString();
+        }
     }
 
 }

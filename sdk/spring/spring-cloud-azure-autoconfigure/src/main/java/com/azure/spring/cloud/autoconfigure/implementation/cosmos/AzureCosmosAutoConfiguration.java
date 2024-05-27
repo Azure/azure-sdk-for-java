@@ -42,6 +42,12 @@ public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase 
     }
 
     @Bean
+    @ConditionalOnMissingBean(AzureCosmosConnectionDetails.class)
+    PropertiesAzureCosmosConnectionDetails azureCosmosConnectionDetails() {
+        return new PropertiesAzureCosmosConnectionDetails(loadProperties(getAzureGlobalProperties(), new AzureCosmosProperties()));
+    }
+
+    @Bean
     @ConditionalOnMissingBean
     CosmosClient azureCosmosClient(CosmosClientBuilder builder) {
         return builder.buildClient();
@@ -68,6 +74,25 @@ public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_COSMOS);
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
+    }
+
+    static class PropertiesAzureCosmosConnectionDetails implements AzureCosmosConnectionDetails {
+
+        private final AzureCosmosProperties properties;
+
+        PropertiesAzureCosmosConnectionDetails(AzureCosmosProperties properties) {
+            this.properties = properties;
+        }
+
+        @Override
+        public String getEndpoint() {
+            return this.properties.getEndpoint();
+        }
+
+        @Override
+        public String getKey() {
+            return this.properties.getKey();
+        }
     }
 
 }
