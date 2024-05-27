@@ -187,7 +187,7 @@ String imagePathString = Resources.TEST_IMAGE_PATH_DETECT_SAMPLE_IMAGE;
 Path path = Paths.get(imagePathString);
 BinaryData imageData = BinaryData.fromFile(path);
 List<FaceAttributeType> attributeTypes = Arrays.asList(
-    FaceAttributeType.Detection03.HEAD_POSE, FaceAttributeType.Detection03.MASK, FaceAttributeType.Recognition04.QUALITY_FOR_RECOGNITION);
+    FaceAttributeType.ModelDetection03.HEAD_POSE, FaceAttributeType.ModelDetection03.MASK, FaceAttributeType.ModelRecognition04.QUALITY_FOR_RECOGNITION);
 
 List<FaceDetectionResult> results = client.detect(
     imageData, FaceDetectionModel.DETECTION_03, FaceRecognitionModel.RECOGNITION_04, true,

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.1 (Unreleased)
+## 1.0.0-beta.1 (2024-05-28)
 
 Version 1.0.0-beta.1 is a preview of our efforts in creating a client library for Azure AI Vision Face Service that is developer-friendly
 and idiomatic to the Java ecosystem. The principles that guide
@@ -13,11 +13,3 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
     - `FaceSessionClient` to orchestrate with mobile client application to perform liveness check and verification
 - Authentication with API key supported using `AzureKeyCredential("<api_key>")` from `com.azure.core.credential`
 - Authentication with AAD using `DefaultAzureCredentialBuilder()` from `com.azure.identity`
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
