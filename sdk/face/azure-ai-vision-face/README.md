@@ -48,7 +48,6 @@ Azure AI Face supports both [multi-service][azure_cognitive_service_account] and
 
 In order to interact with the Face service, you will need to create an instance of a client class,
 [FaceAsyncClient][face_client_async] or [FaceClient][face_client] by using [FaceClientBuilder][face_client_builder].
-[FaceAdministrationAsyncClient][face_administration_client_async] or [FaceAdministrationClient][face_administration_client] by using [FaceAdministrationClientBuilder][face_administration_client_builder].
 [FaceSessionAsyncClient][face_session_client_async] or [FaceSessionClient][face_session_client] by using [FaceSessionClientBuilder][face_session_client_builder].
 
 An **endpoint** and **credential** are necessary to instantiate the client object.
@@ -188,7 +187,7 @@ String imagePathString = Resources.TEST_IMAGE_PATH_DETECT_SAMPLE_IMAGE;
 Path path = Paths.get(imagePathString);
 BinaryData imageData = BinaryData.fromFile(path);
 List<FaceAttributeType> attributeTypes = Arrays.asList(
-    FaceAttributeType.Detection03.HEAD_POSE, FaceAttributeType.Detection03.MASK, FaceAttributeType.Recognition04.QUALITY_FOR_RECOGNITION);
+    FaceAttributeType.ModelDetection03.HEAD_POSE, FaceAttributeType.ModelDetection03.MASK, FaceAttributeType.ModelRecognition04.QUALITY_FOR_RECOGNITION);
 
 List<FaceDetectionResult> results = client.detect(
     imageData, FaceDetectionModel.DETECTION_03, FaceRecognitionModel.RECOGNITION_04, true,
@@ -200,87 +199,6 @@ for (int i = 0, size = results.size(); i < size; i++) {
     System.out.println("Face ID:" + result.getFaceId());
     // Do what you need for the result
 }
-```
-
-### Face Recognition from LargePersonGroup
-Identify a face against a defined LargePersonGroup.
-
-First, we have to use `FaceAdministrationClient` to create a LargePersonGroup, add a few Person to it,
-and then register faces with these Person.
-
-```java com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.createPersonGroup
-FaceAdministrationClient administrationClient = new FaceAdministrationClientBuilder()
-    .endpoint(endpoint)
-    .credential(new KeyCredential(accountKey))
-    .buildClient();
-
-// Stage 1: Create a LargePersonGroup and make it ready for identification.
-// Step 1-1: Create LargePersonGroup.
-String largePersonGroupId = "lpg_family";
-administrationClient.createLargePersonGroup(
-    largePersonGroupId, "Family1", "Family Group 1", FaceRecognitionModel.RECOGNITION_04);
-
-// Step 1-2: Create a LargePersonGroupPerson named 'Bill' and add a face to him.
-CreatePersonResult createPersonResult = administrationClient
-    .createLargePersonGroupPerson(largePersonGroupId, "Bill", "Dad");
-String personId = createPersonResult.getPersonId();
-
-administrationClient.addPersonGroupPersonFace(
-    largePersonGroupId, personId, faceOfBill, null, FaceDetectionModel.DETECTION_03, "Dad-0001");
-
-
-// Step 1-3: Create another LargePersonGroupPerson named 'Clare' and add a face to her.
-createPersonResult = administrationClient
-    .createLargePersonGroupPerson(largePersonGroupId, "Clare", "Mon");
-personId = createPersonResult.getPersonId();
-
-administrationClient.addPersonGroupPersonFace(
-    largePersonGroupId, personId, faceOfClare, null, FaceDetectionModel.DETECTION_03, "Mom-0001");
-```
-
-Before doing the identification, we need to train the LargePersonGroup first.
-```java com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.train
-// Step 1-4: Train the LargePersonGroup to make all the newly added LargePersonGroupPersons available for identification.
-SyncPoller<FaceCollectionTrainingResult, Void> poller = administrationClient
-    .beginTrainLargePersonGroup(largePersonGroupId);
-
-PollResponse<FaceCollectionTrainingResult> pollResponse = poller.waitForCompletion();
-FaceOperationStatus status = pollResponse.getValue().getStatus();
-
-if (status != FaceOperationStatus.SUCCEEDED) {
-    throw new IllegalStateException("Fail to train");
-}
-```
-
-Detect faces in a image for detect.
-```java com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.detect
-// Stage 2: detect an image
-FaceClient client = new FaceClientBuilder()
-    .endpoint(endpoint)
-    .credential(new KeyCredential(accountKey))
-    .buildClient();
-
-List<FaceDetectionResult> detectResults = client.detect(
-    imageFromDetect, FaceDetectionModel.DETECTION_03, FaceRecognitionModel.RECOGNITION_04, true);
-List<String> faceIds = detectResults.stream().map(FaceDetectionResult::getFaceId).collect(Collectors.toList());
-```
-
-When the training operation is completed successfully, we can identify the faces in this LargePersonGroup through
-`FaceClient`.
-```java com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.identify
-// Stage 3: identification
-List<FaceIdentificationResult> results = client.identifyFromLargePersonGroup(faceIds, largePersonGroupId);
-for (FaceIdentificationResult result : results) {
-    System.out.println("Identification result for " + result.getFaceId());
-    for (FaceIdentificationCandidate identificationCandidate : result.getCandidates()) {
-        System.out.println("Found:" + identificationCandidate.getPersonId() + ", confidence: " + identificationCandidate.getConfidence());
-    }
-}
-```
-
-Finally, use `FaceAdministrationClient` to remove the large person group if you don't need it anymore.
-```java com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.deleteLargePersonGroup
-administrationClient.deleteLargePersonGroup(largePersonGroupId);
 ```
 
 ### Liveness detection
@@ -409,9 +327,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [face_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAsyncClient.java
 [face_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceClient.java
 [face_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceClientBuilder.java
-[face_administration_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAdministrationAsyncClient.java
-[face_administration_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAdministrationClient.java
-[face_administration_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAdministrationClientBuilder.java
 [face_session_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionAsyncClient.java
 [face_session_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionClient.java
 [face_session_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionClientBuilder.java

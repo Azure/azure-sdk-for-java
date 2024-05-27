@@ -28,7 +28,6 @@ import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
-import com.azure.cosmos.implementation.clienttelemetry.ShowQueryOptions;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -62,6 +61,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -963,12 +963,12 @@ public class CosmosAsyncContainer {
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
             
-            ShowQueryOptions showQueryOptions = clientTelemetryConfigAccessor.showQueryOptions(client.getClientTelemetryConfig());
+            ShowQueryMode showQueryMode = clientTelemetryConfigAccessor.showQueryMode(client.getClientTelemetryConfig());
 
-            if(ShowQueryOptions.PARAMETERIZED_ONLY.equals(showQueryOptions) && isParameterized) {
+            if(ShowQueryMode.PARAMETERIZED_ONLY.equals(showQueryMode) && isParameterized) {
 
                     pagedFluxOptions.setQueryText(sqlQuerySpec.getQueryText());
-            } else if (ShowQueryOptions.ALL.equals(showQueryOptions)) {
+            } else if (ShowQueryMode.ALL.equals(showQueryMode)) {
 
                     pagedFluxOptions.setQueryText(sqlQuerySpec.getQueryText());
             }
