@@ -4,6 +4,11 @@
 
 - GA release
 
+### Features Added
+
+- Added sample code for all Inference types
+- Added tests for all Inference types
+
 ### Breaking Changes
 
 - Request changes:
@@ -17,6 +22,8 @@
 - Response changes:
     - Class `FhirR4Extendible1` renamed into `RadiologyInsightsInference`
     - Method `FollowupCommunicationInference.getDateTime()` renamed into `FollowupCommunicationInference.getCommunicatedAt()`
+    - Method `FollowupCommunicationInference.isWasAcknowledged()` renamed into `FollowupCommunicationInference.isAcknowledged()`
+    - Method `FollowupRecommendationInference.getEffectiveDateTime()` renamed into `FollowupRecommendationInference.getEffectiveAt()`
     - Method `RadiologyInsightsJob.getCreatedDateTime()` renamed into `RadiologyInsightsJob.getCreatedAt()`
     - Method `RadiologyInsightsJob.getExpirationDateTime()` renamed into `RadiologyInsightsJob.getExpiresAt()`
     - Method `RadiologyInsightsJob.getLastUpdateDateTime()` renamed into `RadiologyInsightsJob.getUpdatedAt()`
