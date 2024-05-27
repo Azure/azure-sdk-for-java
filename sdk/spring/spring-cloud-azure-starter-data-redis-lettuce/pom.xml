@@ -100,7 +100,7 @@
     <dependency>
       <groupId>io.lettuce</groupId>
       <artifactId>lettuce-core</artifactId>
-      <version>6.3.2.RELEASE</version>
+      <version>6.3.2.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
