@@ -32,4 +32,17 @@ public class QueueAdapter {
             .setDistributionPolicyId(createQueueOptions.getDistributionPolicyId())
             .setExceptionPolicyId(createQueueOptions.getExceptionPolicyId());
     }
+
+    public static RouterQueueInternal convertRouterQueueToRouterQueueInternal(RouterQueue routerQueue) {
+        Map<String, Object> labels = routerQueue.getLabels() != null ? routerQueue.getLabels()
+            .entrySet().stream()
+            .collect(Collectors.toMap(entry -> entry.getKey(), entry -> RouterValueAdapter.getValue(entry.getValue()))) : null;
+        return new RouterQueueInternal()
+            .setEtag(routerQueue.getEtag())
+            .setId(routerQueue.getId())
+            .setName(routerQueue.getName())
+            .setLabels(labels)
+            .setExceptionPolicyId(routerQueue.getExceptionPolicyId())
+            .setDistributionPolicyId(routerQueue.getDistributionPolicyId());
+    }
 }

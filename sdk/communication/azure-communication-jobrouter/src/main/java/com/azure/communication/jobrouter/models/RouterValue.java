@@ -3,7 +3,8 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterValueConstructorProxy;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,8 +18,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 3. doubleValue.
  * 4. boolValue.
  */
-@Immutable
 public final class RouterValue {
+    private static final ClientLogger LOGGER = new ClientLogger(RouterValue.class);
 
     /**
      * String Value to pass to server.
@@ -62,6 +63,10 @@ public final class RouterValue {
         this.boolValue = boolValue;
     }
 
+    static {
+        RouterValueConstructorProxy.setAccessor(internal -> new RouterValue(internal));
+    }
+
     /**
      * String constructor.
      * @param stringValue stringValue.
@@ -92,6 +97,25 @@ public final class RouterValue {
      */
     public RouterValue(Boolean boolValue) {
         this(null, null, null, boolValue);
+    }
+
+    /**
+     * Package-protected constructor.
+     * @param objectValue objectValue.
+     */
+    RouterValue(Object objectValue) {
+        if (objectValue.getClass() == String.class) {
+            this.stringValue = (String) objectValue;
+        }
+        if (objectValue.getClass() == Integer.class) {
+            this.intValue = (int) objectValue;
+        }
+        if (objectValue.getClass() == Double.class) {
+            this.doubleValue = (double) objectValue;
+        }
+        if (objectValue.getClass() == Boolean.class) {
+            this.boolValue = (Boolean) objectValue;
+        }
     }
 
     /**

@@ -19,14 +19,14 @@ public final class UnassignJobResult {
      */
     @Generated
     @JsonProperty(value = "jobId")
-    private final String jobId;
+    private String jobId;
 
     /*
      * The number of times a job is unassigned. At a maximum 3.
      */
     @Generated
     @JsonProperty(value = "unassignmentCount")
-    private final int unassignmentCount;
+    private int unassignmentCount;
 
     /**
      * Creates an instance of UnassignJobResult class.

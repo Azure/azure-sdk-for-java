@@ -45,7 +45,7 @@ class JobRouterTestBase extends TestProxyTestBase {
     protected String getConnectionString() {
         String connectionString = interceptorManager.isPlaybackMode()
             ? "endpoint=https://REDACTED.int.communication.azure.net;accessKey=secret"
-            : Configuration.getGlobalConfiguration().get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING");
+            : Configuration.getGlobalConfiguration().get("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
         Objects.requireNonNull(connectionString);
         return connectionString;
     }
@@ -57,10 +57,6 @@ class JobRouterTestBase extends TestProxyTestBase {
             .endpoint(connectionString.getEndpoint())
             .pipeline(httpPipeline)
             .buildClient();
-        // Disable `$..etag` sanitizer
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3490"));
-        }
         return jobRouterAdministrationClient;
     }
 
@@ -71,10 +67,6 @@ class JobRouterTestBase extends TestProxyTestBase {
             .endpoint(connectionString.getEndpoint())
             .pipeline(httpPipeline)
             .buildAsyncClient();
-        // Disable `$..etag` sanitizer
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3490"));
-        }
         return jobRouterAdministrationAsyncClient;
     }
 
@@ -159,7 +151,7 @@ class JobRouterTestBase extends TestProxyTestBase {
 
         CreateDistributionPolicyOptions createDistributionPolicyOptions = new CreateDistributionPolicyOptions(
             id,
-            Duration.ofSeconds(100),
+            Duration.ofSeconds(10),
             new LongestIdleMode()
                 .setMinConcurrentOffers(1)
                 .setMaxConcurrentOffers(10)
@@ -176,7 +168,8 @@ class JobRouterTestBase extends TestProxyTestBase {
             .setRequestedWorkerSelectors(
                 new ArrayList<RouterWorkerSelector>() {
                     {
-                        new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN, new RouterValue(10));
+                        new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN)
+                            .setValue(new RouterValue(10));
                     }
                 }
             );

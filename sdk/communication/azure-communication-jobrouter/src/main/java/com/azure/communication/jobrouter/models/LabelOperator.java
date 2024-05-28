@@ -32,22 +32,10 @@ public final class LabelOperator extends ExpandableStringEnum<LabelOperator> {
     public static final LabelOperator LESS_THAN = fromString("lessThan");
 
     /**
-     * Less than or equal.
-     */
-    @Generated
-    public static final LabelOperator LESS_THAN_OR_EQUAL = fromString("lessThanOrEqual");
-
-    /**
      * Greater than.
      */
     @Generated
     public static final LabelOperator GREATER_THAN = fromString("greaterThan");
-
-    /**
-     * Greater than or equal.
-     */
-    @Generated
-    public static final LabelOperator GREATER_THAN_OR_EQUAL = fromString("greaterThanOrEqual");
 
     /**
      * Creates a new instance of LabelOperator value.
@@ -80,4 +68,16 @@ public final class LabelOperator extends ExpandableStringEnum<LabelOperator> {
     public static Collection<LabelOperator> values() {
         return values(LabelOperator.class);
     }
+
+    /**
+     * Less than or equal.
+     */
+    @Generated
+    public static final LabelOperator LESS_THAN_OR_EQUAL = fromString("lessThanOrEqual");
+
+    /**
+     * Greater than or equal.
+     */
+    @Generated
+    public static final LabelOperator GREATER_THAN_OR_EQUAL = fromString("greaterThanOrEqual");
 }
