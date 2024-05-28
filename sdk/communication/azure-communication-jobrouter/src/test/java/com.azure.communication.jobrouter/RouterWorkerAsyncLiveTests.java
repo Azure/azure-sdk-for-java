@@ -13,6 +13,7 @@ import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.communication.jobrouter.models.RouterValue;
 import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -31,6 +32,7 @@ public class RouterWorkerAsyncLiveTests extends JobRouterTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void createWorker(HttpClient httpClient) {
         // Setup
         routerAsyncClient = getRouterAsyncClient(httpClient);
