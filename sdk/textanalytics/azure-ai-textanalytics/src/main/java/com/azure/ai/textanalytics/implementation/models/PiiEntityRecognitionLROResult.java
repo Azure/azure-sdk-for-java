@@ -5,19 +5,20 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 /** The PiiEntityRecognitionLROResult model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("PiiEntityRecognitionLROResults")
 @Fluent
 public final class PiiEntityRecognitionLROResult extends AnalyzeTextLROResult {
     /*
      * The results property.
      */
+    @JsonProperty(value = "results", required = true)
     private PiiResult results;
 
     /** Creates an instance of PiiEntityRecognitionLROResult class. */
@@ -62,63 +63,5 @@ public final class PiiEntityRecognitionLROResult extends AnalyzeTextLROResult {
     public PiiEntityRecognitionLROResult setStatus(State status) {
         super.setStatus(status);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField(
-                "kind", Objects.toString(AnalyzeTextLROResultsKind.PII_ENTITY_RECOGNITION_LRORESULTS, null));
-        jsonWriter.writeStringField("lastUpdateDateTime", Objects.toString(getLastUpdateDateTime(), null));
-        jsonWriter.writeStringField("status", Objects.toString(getStatus(), null));
-        jsonWriter.writeStringField("taskName", getTaskName());
-        jsonWriter.writeJsonField("results", this.results);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of PiiEntityRecognitionLROResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of PiiEntityRecognitionLROResult if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the PiiEntityRecognitionLROResult.
-     */
-    public static PiiEntityRecognitionLROResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    PiiEntityRecognitionLROResult deserializedPiiEntityRecognitionLROResult =
-                            new PiiEntityRecognitionLROResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("kind".equals(fieldName)) {
-                            String kind = reader.getString();
-                            if (!"PiiEntityRecognitionLROResults".equals(kind)) {
-                                throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to 'PiiEntityRecognitionLROResults'. The found 'kind' was '"
-                                                + kind
-                                                + "'.");
-                            }
-                        } else if ("lastUpdateDateTime".equals(fieldName)) {
-                            deserializedPiiEntityRecognitionLROResult.setLastUpdateDateTime(
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
-                        } else if ("status".equals(fieldName)) {
-                            deserializedPiiEntityRecognitionLROResult.setStatus(State.fromString(reader.getString()));
-                        } else if ("taskName".equals(fieldName)) {
-                            deserializedPiiEntityRecognitionLROResult.setTaskName(reader.getString());
-                        } else if ("results".equals(fieldName)) {
-                            deserializedPiiEntityRecognitionLROResult.results = PiiResult.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedPiiEntityRecognitionLROResult;
-                });
     }
 }
