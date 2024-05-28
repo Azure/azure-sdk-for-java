@@ -5,43 +5,43 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The MetadataTableColumnsItem model.
  */
 @Fluent
-public final class MetadataTableColumnsItem implements JsonSerializable<MetadataTableColumnsItem> {
+public final class MetadataTableColumnsItem {
     /*
      * The name of the column
      */
-    private final String name;
+    @JsonProperty(value = "name", required = true)
+    private String name;
 
     /*
      * The description of the column
      */
+    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The data type of the column
      */
-    private final MetadataColumnDataType type;
+    @JsonProperty(value = "type", required = true)
+    private MetadataColumnDataType type;
 
     /*
      * A flag indicating this column is a preferred facet
      */
+    @JsonProperty(value = "isPreferredFacet")
     private Boolean isPreferredFacet;
 
     /*
      * an indication of the source of the column, used only when multiple workspaces have conflicting definition for
      * the column
      */
+    @JsonProperty(value = "source")
     private Object source;
 
     /**
@@ -50,7 +50,9 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
      * @param name the name value to set.
      * @param type the type value to set.
      */
-    public MetadataTableColumnsItem(String name, MetadataColumnDataType type) {
+    @JsonCreator
+    public MetadataTableColumnsItem(@JsonProperty(value = "name", required = true) String name,
+        @JsonProperty(value = "type", required = true) MetadataColumnDataType type) {
         this.name = name;
         this.type = type;
     }
@@ -133,76 +135,5 @@ public final class MetadataTableColumnsItem implements JsonSerializable<Metadata
     public MetadataTableColumnsItem setSource(Object source) {
         this.source = source;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeBooleanField("isPreferredFacet", this.isPreferredFacet);
-        jsonWriter.writeUntypedField("source", this.source);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of MetadataTableColumnsItem from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MetadataTableColumnsItem if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MetadataTableColumnsItem.
-     */
-    public static MetadataTableColumnsItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            boolean typeFound = false;
-            MetadataColumnDataType type = null;
-            String description = null;
-            Boolean isPreferredFacet = null;
-            Object source = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("type".equals(fieldName)) {
-                    type = MetadataColumnDataType.fromString(reader.getString());
-                    typeFound = true;
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("isPreferredFacet".equals(fieldName)) {
-                    isPreferredFacet = reader.getNullable(JsonReader::getBoolean);
-                } else if ("source".equals(fieldName)) {
-                    source = reader.readUntyped();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound && typeFound) {
-                MetadataTableColumnsItem deserializedMetadataTableColumnsItem
-                    = new MetadataTableColumnsItem(name, type);
-                deserializedMetadataTableColumnsItem.description = description;
-                deserializedMetadataTableColumnsItem.isPreferredFacet = isPreferredFacet;
-                deserializedMetadataTableColumnsItem.source = source;
-
-                return deserializedMetadataTableColumnsItem;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!nameFound) {
-                missingProperties.add("name");
-            }
-            if (!typeFound) {
-                missingProperties.add("type");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
     }
 }
