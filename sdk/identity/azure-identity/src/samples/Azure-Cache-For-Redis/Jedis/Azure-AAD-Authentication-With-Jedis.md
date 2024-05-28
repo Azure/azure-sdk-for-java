@@ -54,7 +54,6 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
 // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
-// Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
 String token = defaultAzureCredential
     .getToken(new TokenRequestContext()
         .addScopes("https://redis.azure.com/.default")).block().getToken();
@@ -63,12 +62,13 @@ String token = defaultAzureCredential
 boolean useSsl = true;
 // TODO: Replace Host Name with Azure Cache for Redis Host Name.
 String cacheHostname = "<HOST_NAME>";
+String username = extractUsernameFromToken(token);
 
 // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
 // Note, Redis Cache Host Name and Port are required below
 Jedis jedis = new Jedis(cacheHostname, 6380, DefaultJedisClientConfig.builder()
     .password(token) // Microsoft Entra access token as password is required.
-    .user("<USERNAME>") // Username is Required
+    .user(username) // Username is Required
     .ssl(useSsl) // SSL Connection is Required
     .build());
 
@@ -78,6 +78,27 @@ System.out.println(jedis.get("Az:key"));
 
 // Close the Jedis Client
 jedis.close();
+
+
+private static String extractUsernameFromToken(String token) {
+    String[] parts = token.split("\\.");
+    String base64 = parts[1];
+
+    switch (base64.length() % 4) {
+        case 2:
+            base64 += "==";
+            break;
+        case 3:
+            base64 += "=";
+            break;
+    }
+
+    byte[] jsonBytes = Base64.getDecoder().decode(base64);
+    String json = new String(jsonBytes, StandardCharsets.UTF_8);
+    JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+    return jwt.get("oid").getAsString();
+    }
 ```
 
 ##### Supported Token Credentials for Microsoft Entra Authentication
@@ -102,7 +123,6 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
 // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
-// Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
 TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
@@ -110,10 +130,11 @@ AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 boolean useSsl = true;
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
 String cacheHostname = "<HOST_NAME>";
+String username = extractUsernameFromToken(accessToken.getToken());
 
 // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
 // Note: Cache Host Name, Port, Username, Microsoft Entra access token and SSL connections are required below.
-Jedis jedis = createJedisClient(cacheHostname, 6380, "<USERNAME>", accessToken, useSsl);
+Jedis jedis = createJedisClient(cacheHostname, 6380, username, accessToken, useSsl);
 
 int maxTries = 3;
 int i = 0;
@@ -133,7 +154,8 @@ while (i < maxTries) {
         // Check if the client is broken, if it is then close and recreate it to create a new healthy connection.
         if (jedis.isBroken()) {
             jedis.close();
-            jedis = createJedisClient(cacheHostname, 6380, "USERNAME", getAccessToken(defaultAzureCredential, trc), useSsl);
+            accessToken = getAccessToken(defaultAzureCredential, trc);
+            jedis = createJedisClient(cacheHostname, 6380, extractUsernameFromToken(accessToken.getToken()), accessToken, useSsl);
         }
     }
     i++;
@@ -154,6 +176,26 @@ private static Jedis createJedisClient(String cacheHostname, int port, String us
 private static AccessToken getAccessToken(TokenCredential tokenCredential, TokenRequestContext trc) {
     return tokenCredential.getToken(trc).block();
 }
+
+private static String extractUsernameFromToken(String token) {
+    String[] parts = token.split("\\.");
+    String base64 = parts[1];
+
+    switch (base64.length() % 4) {
+        case 2:
+            base64 += "==";
+            break;
+        case 3:
+            base64 += "=";
+            break;
+    }
+
+    byte[] jsonBytes = Base64.getDecoder().decode(base64);
+    String json = new String(jsonBytes, StandardCharsets.UTF_8);
+    JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+    return jwt.get("oid").getAsString();
+}
 ```
 
 #### Authenticate with Microsoft Entra ID: Using Token Cache
@@ -168,7 +210,6 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
 // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
-// Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
 TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
 AccessToken accessToken = tokenRefreshCache.getAccessToken();
@@ -177,15 +218,16 @@ AccessToken accessToken = tokenRefreshCache.getAccessToken();
 boolean useSsl = true;
 // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
 String cacheHostname = "<HOST_NAME>";
+String username = extractUsernameFromToken(accessToken.getToken());
 
 // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
 // Note: Cache Host Name, Port, Username, Microsoft Entra access token and SSL connections are required below.
-Jedis jedis = createJedisClient(cacheHostname, 6380, "<USERNAME>", accessToken, useSsl);
+Jedis jedis = createJedisClient(cacheHostname, 6380, username, accessToken, useSsl);
 
 // Configure the jedis instance for proactive authentication before token expires.
 tokenRefreshCache
     .setJedisInstanceToAuthenticate(jedis)
-    .setUsername("<USERNAME>");
+    .setUsername(username);
     
 int maxTries = 3;
 int i = 0;
@@ -205,7 +247,13 @@ while (i < maxTries) {
         // Check if the client is broken, if it is then close and recreate it to create a new healthy connection.
         if (jedis.isBroken()) {
             jedis.close();
-            jedis = createJedisClient(cacheHostname, 6380, "<USERNAME>", tokenRefreshCache.getAccessToken(), useSsl);
+            accessToken = tokenRefreshCache.getAccessToken();
+            jedis = createJedisClient(cacheHostname, 6380, extractUsernameFromToken(accessToken.getToken()), accessToken, useSsl);
+            
+            // Configure the jedis instance for proactive authentication before token expires.
+            tokenRefreshCache
+                .setJedisInstanceToAuthenticate(jedis)
+                .setUsername(username);
         }
     }
     i++;
@@ -220,6 +268,26 @@ private static Jedis createJedisClient(String cacheHostname, int port, String us
         .user(username)
         .ssl(useSsl)
         .build());
+}
+
+private static String extractUsernameFromToken(String token) {
+    String[] parts = token.split("\\.");
+    String base64 = parts[1];
+
+    switch (base64.length() % 4) {
+        case 2:
+            base64 += "==";
+            break;
+        case 3:
+            base64 += "=";
+            break;
+    }
+
+    byte[] jsonBytes = Base64.getDecoder().decode(base64);
+    String json = new String(jsonBytes, StandardCharsets.UTF_8);
+    JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+    return jwt.get("oid").getAsString();
 }
 
 /**
@@ -356,7 +424,6 @@ Jedis jedisClient = new AzureJedisClientBuilder()
     .cacheHostName("<HOST_NAME>") // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
     .port(6380) // Port is requried.
     .useSSL(true) // SSL Connection is required.
-    .username("<USERNAME>") // Username is required.
     .credential(defaultAzureCredential) // A Token Credential is required to fetch Microsoft Entra access tokens.
     .build();
 
