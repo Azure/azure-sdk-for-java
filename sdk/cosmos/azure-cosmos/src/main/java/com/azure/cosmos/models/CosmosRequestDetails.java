@@ -1,15 +1,11 @@
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsContext;
-import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.implementation.ResourceType;
 
-public class CosmosRequestOptionsTransformer {
+public class CosmosRequestDetails {
 
 
     private final RequestOptions requestOptions;
@@ -17,14 +13,13 @@ public class CosmosRequestOptionsTransformer {
     private final CosmosDiagnosticsContext cosmosDiagnosticsContext;
 
 
-    CosmosRequestOptionsTransformer(RequestOptions requestOptions, CosmosQueryRequestOptionsImpl queryRequestOptions, CosmosDiagnosticsContext cosmosDiagnosticsContext) {
+    CosmosRequestDetails(RequestOptions requestOptions, CosmosQueryRequestOptionsImpl queryRequestOptions, CosmosDiagnosticsContext cosmosDiagnosticsContext) {
         this.requestOptions= requestOptions;
         this.queryRequestOptions = queryRequestOptions;
         this.cosmosDiagnosticsContext = cosmosDiagnosticsContext;
     }
 
-    public void applyOverride(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
-        // check they did not give us a RequestOption
+    public void setCommonOptions(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
         requestOptions.override(cosmosCommonRequestOptions);
     }
 
@@ -32,7 +27,7 @@ public class CosmosRequestOptionsTransformer {
         return requestOptions;
     }
 
-    public CosmosDiagnosticsContext getCosmosDiagnosticsContext() {
+    public CosmosDiagnosticsContext getDiagnosticsContext() {
         return cosmosDiagnosticsContext;
     }
 
@@ -47,9 +42,9 @@ public class CosmosRequestOptionsTransformer {
                     .CosmosRequestOptionsTransformerHelper.CosmosRequestOptionsTransformerAccessor() {
 
                     @Override
-                    public CosmosRequestOptionsTransformer create(RequestOptions requestOptions, CosmosQueryRequestOptionsImpl queryRequestOptions,
-                                                                  CosmosDiagnosticsContext cosmosDiagnosticsContext) {
-                        return new CosmosRequestOptionsTransformer(requestOptions, queryRequestOptions, cosmosDiagnosticsContext);
+                    public CosmosRequestDetails create(RequestOptions requestOptions, CosmosQueryRequestOptionsImpl queryRequestOptions,
+                                                       CosmosDiagnosticsContext cosmosDiagnosticsContext) {
+                        return new CosmosRequestDetails(requestOptions, queryRequestOptions, cosmosDiagnosticsContext);
                     }
                 });
     }

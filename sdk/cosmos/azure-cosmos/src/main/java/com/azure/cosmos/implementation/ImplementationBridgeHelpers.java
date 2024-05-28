@@ -68,7 +68,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
-import com.azure.cosmos.models.CosmosRequestOptionsTransformer;
+import com.azure.cosmos.models.CosmosRequestDetails;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -771,8 +771,8 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosRequestOptionsTransformerAccessor {
-            CosmosRequestOptionsTransformer create(RequestOptions requestOptions,
-                CosmosQueryRequestOptionsImpl queryRequestOptions, CosmosDiagnosticsContext diagnosticsContext);
+            CosmosRequestDetails create(RequestOptions requestOptions,
+                                        CosmosQueryRequestOptionsImpl queryRequestOptions, CosmosDiagnosticsContext diagnosticsContext);
         }
     }
 
@@ -1385,7 +1385,7 @@ public class ImplementationBridgeHelpers {
                 CosmosDiagnosticsThresholds operationLevelThresholds);
 
             DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient client);
-            Consumer<CosmosRequestOptionsTransformer> getRequestOptionsTransformer(CosmosAsyncClient client);
+            Consumer<CosmosRequestDetails> getRequestOptionsTransformer(CosmosAsyncClient client);
 
             CosmosItemSerializer getEffectiveItemSerializer(
                 CosmosAsyncClient client,

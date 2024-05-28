@@ -141,7 +141,7 @@ public final class CosmosReadManyRequestOptions {
      * @return the {@link CosmosReadManyRequestOptions}
      */
     public CosmosReadManyRequestOptions setExcludedRegions(List<String> excludeRegions) {
-        this.actualRequestOptions.setExcludedRegions(excludeRegions);
+        this.actualRequestOptions.setExcludeRegions(excludeRegions);
         return this;
     }
 
@@ -152,7 +152,7 @@ public final class CosmosReadManyRequestOptions {
      * @return a list of excluded regions
      * */
     public List<String> getExcludedRegions() {
-        return this.actualRequestOptions.getExcludedRegions();
+        return this.actualRequestOptions.getExcludeRegions();
     }
 
     /**

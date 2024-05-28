@@ -41,7 +41,7 @@ import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.CosmosRequestOptionsTransformer;
+import com.azure.cosmos.models.CosmosRequestDetails;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -107,7 +107,7 @@ public final class CosmosAsyncClient implements Closeable {
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
     private final ConsistencyLevel accountConsistencyLevel;
     private final WriteRetryPolicy nonIdempotentWriteRetryPolicy;
-    private Consumer<CosmosRequestOptionsTransformer> requestOptionsTransformer;
+    private Consumer<CosmosRequestDetails> requestOptionsTransformer;
     private final CosmosItemSerializer defaultCustomSerializer;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
@@ -908,7 +908,7 @@ public final class CosmosAsyncClient implements Closeable {
                 }
 
                 @Override
-                public Consumer<CosmosRequestOptionsTransformer> getRequestOptionsTransformer(CosmosAsyncClient client) {
+                public Consumer<CosmosRequestDetails> getRequestOptionsTransformer(CosmosAsyncClient client) {
                     return client.requestOptionsTransformer;
                 }
 

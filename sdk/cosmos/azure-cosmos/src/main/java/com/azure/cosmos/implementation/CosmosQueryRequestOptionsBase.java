@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
+import com.azure.cosmos.models.ICosmosCommonRequestOptions;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ import java.util.UUID;
  * Specifies the options associated with readMany methods
  * in the Azure Cosmos DB database service.
  */
-public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequestOptionsBase<?>> {
+public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequestOptionsBase<?>> implements ICosmosCommonRequestOptions {
     private final static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor thresholdsAccessor =
         ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
 
@@ -187,6 +188,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      *
      * @return return set ResponseContinuationTokenLimitInKb, or 0 if not set
      */
+    @Override
     public int getResponseContinuationTokenLimitInKb() {
         return responseContinuationTokenLimitInKb;
     }
@@ -223,6 +225,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      *
      * @return a list of excluded regions
      * */
+    @Override
     public List<String> getExcludedRegions() {
         if (this.excludeRegions == null) {
             return null;
@@ -235,6 +238,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      *
      * @return whether to enable populate query metrics (default: true)
      */
+    @Override
     public boolean isQueryMetricsEnabled() {
         return queryMetricsEnabled;
     }
@@ -371,6 +375,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      *
      * @return indexMetricsEnabled (default: false)
      */
+    @Override
     public boolean isIndexMetricsEnabled() {
         return indexMetricsEnabled;
     }
@@ -458,7 +463,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
             requestOptions.setDiagnosticsThresholds(this.thresholds);
         }
         requestOptions.setCosmosEndToEndLatencyPolicyConfig(this.cosmosEndToEndOperationLatencyPolicyConfig);
-        requestOptions.setExcludeRegions(this.excludeRegions);
+        requestOptions.setExcludedRegions(this.excludeRegions);
 
         if (this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {

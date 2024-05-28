@@ -148,6 +148,7 @@ public class RequestOptions implements ICosmosCommonRequestOptions {
         return this;
     }
 
+    @Override
     public boolean getNonIdempotentWriteRetriesEnabled() {
         return this.nonIdempotentWriteRetriesEnabled;
     }
@@ -255,6 +256,7 @@ public class RequestOptions implements ICosmosCommonRequestOptions {
      *
      * @return the consistency level.
      */
+    @Override
     public ConsistencyLevel getConsistencyLevel() {
         return this.consistencyLevel;
     }
@@ -273,6 +275,7 @@ public class RequestOptions implements ICosmosCommonRequestOptions {
      *
      * @return the session token.
      */
+    @Override
     public String getSessionToken() {
         return this.sessionToken;
     }
@@ -460,6 +463,7 @@ public class RequestOptions implements ICosmosCommonRequestOptions {
      *
      * @return a boolean indicating whether payload will be included in the response or not for this request.
      */
+    @Override
     public Boolean isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
     }
@@ -486,6 +490,7 @@ public class RequestOptions implements ICosmosCommonRequestOptions {
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
     }
 
+    @Override
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }
@@ -494,6 +499,7 @@ public class RequestOptions implements ICosmosCommonRequestOptions {
         this.throughputControlGroupName = throughputControlGroupName;
     }
 
+    @Override
     public DedicatedGatewayRequestOptions getDedicatedGatewayRequestOptions() {
         return dedicatedGatewayRequestOptions;
     }
@@ -502,6 +508,7 @@ public class RequestOptions implements ICosmosCommonRequestOptions {
         this.dedicatedGatewayRequestOptions = dedicatedGatewayRequestOptions;
     }
 
+    @Override
     public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
         return this.thresholds;
     }
@@ -532,11 +539,12 @@ public class RequestOptions implements ICosmosCommonRequestOptions {
         return this.endToEndOperationLatencyConfig;
     }
 
-    public List<String> getExcludeRegions() {
+    @Override
+    public List<String> getExcludedRegions() {
         return this.excludeRegions;
     }
 
-    public void setExcludeRegions(List<String> excludeRegions) {
+    public void setExcludedRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
     }
 

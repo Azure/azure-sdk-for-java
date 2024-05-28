@@ -95,6 +95,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      *
      * @return the option of enable scan in query.
      */
+    @Override
     public Boolean isScanInQueryEnabled() {
         return this.scanInQueryEnabled;
     }
@@ -140,6 +141,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * @return number of concurrent operations run client side during parallel query
      * execution.
      */
+    @Override
     public int getMaxDegreeOfParallelism() {
         return maxDegreeOfParallelism;
     }
@@ -163,6 +165,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * @return maximum number of items that can be buffered client side during
      * parallel query execution.
      */
+    @Override
     public int getMaxBufferedItemCount() {
         return maxBufferedItemCount;
     }
@@ -185,7 +188,8 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      *
      * @return the max number of items.
      */
-    public Integer getMaxItemCount() {
+    @Override
+    public int getMaxItemCount() {
         return this.maxItemCount;
     }
 
@@ -311,6 +315,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * @param defaultQueryName the default query name that should be used if none is specified on request options
      * @return the logical query name
      */
+    @Override
     public String getQueryNameOrDefault(String defaultQueryName) {
         return !Strings.isNullOrWhiteSpace(queryName) ? queryName : defaultQueryName;
     }

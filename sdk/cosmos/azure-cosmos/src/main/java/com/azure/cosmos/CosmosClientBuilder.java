@@ -23,7 +23,7 @@ import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.cosmos.models.CosmosRequestOptionsTransformer;
+import com.azure.cosmos.models.CosmosRequestDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -146,7 +146,7 @@ public class CosmosClientBuilder implements
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private SessionRetryOptions sessionRetryOptions;
     private Supplier<CosmosExcludedRegions> cosmosExcludedRegionsSupplier;
-    private Consumer<CosmosRequestOptionsTransformer> requestOptionsTransformer;
+    private List<CosmosRequestPolicy> requestPolicies;
     private CosmosItemSerializer defaultCustomSerializer;
     private boolean isRegionScopedSessionCapturingEnabled = false;
 
@@ -234,13 +234,13 @@ public class CosmosClientBuilder implements
         return this;
     }
 
-    public CosmosClientBuilder setRequestOptionsTransformer(Consumer<CosmosRequestOptionsTransformer> requestOptionsTransformer) {
-        this.requestOptionsTransformer = requestOptionsTransformer;
+    public CosmosClientBuilder addPolicy(CosmosRequestPolicy policy) {
+        this.requestPolicies.add(policy);
         return this;
     }
 
-    Consumer<CosmosRequestOptionsTransformer> getRequestOptionsTransformer() {
-        return requestOptionsTransformer;
+    List<CosmosRequestPolicy> getPolicies() {
+        return requestPolicies;
     }
 
     /**

@@ -34,7 +34,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * Encapsulates options that can be specified for an operation within a change feed request.
  */
-public final class CosmosChangeFeedRequestOptions {
+public final class CosmosChangeFeedRequestOptions implements ICosmosCommonRequestOptions {
     private static final int DEFAULT_MAX_ITEM_COUNT = 100;
     private static final int DEFAULT_MAX_PREFETCH_PAGE_COUNT = 1;
     private final ChangeFeedState continuationState;
@@ -127,6 +127,7 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return the max number of items.
      */
+    @Override
     public int getMaxItemCount() {
         return this.maxItemCount;
     }
@@ -155,6 +156,7 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return the modified change feed request options.
      */
+    @Override
     public int getMaxPrefetchPageCount() {
         return this.maxPrefetchPageCount;
     }
@@ -220,6 +222,7 @@ public final class CosmosChangeFeedRequestOptions {
      * thresholds specified at the client-level will be used.
      * @return the diagnostic thresholds used as an override for a specific operation.
      */
+    @Override
     public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
         return this.thresholds;
     }
@@ -546,6 +549,7 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return The throughput control group name.
      */
+    @Override
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }
@@ -579,6 +583,7 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return a list of excluded regions
      * */
+    @Override
     public List<String> getExcludedRegions() {
         if (this.excludeRegions == null) {
             return null;

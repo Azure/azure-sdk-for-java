@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
@@ -137,7 +136,7 @@ implements IDocumentQueryExecutionContext<T> {
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
         }
         request.requestContext.setExcludeRegions(
-            qryOptAccessor.getImpl(cosmosQueryRequestOptions).getExcludedRegions());
+            qryOptAccessor.getImpl(cosmosQueryRequestOptions).getExcludeRegions());
 
         request.requestContext.setIsRequestCancelledOnTimeout(this.isQueryCancelledOnTimeout);
         return request;

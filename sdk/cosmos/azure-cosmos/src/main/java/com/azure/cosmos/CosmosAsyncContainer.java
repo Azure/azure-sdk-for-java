@@ -62,7 +62,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.CosmosRequestOptionsTransformer;
+import com.azure.cosmos.models.CosmosRequestDetails;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -560,9 +560,10 @@ public class CosmosAsyncContainer {
             trackingId,
             clientAccessor.getConnectionMode(client),
             clientAccessor.getUserAgent(client),
+            null,
             null);
 
-        CosmosRequestOptionsTransformer requestOptionsTransformer = requestOptionsTransformerAccessor.create(requestOptions, null, cosmosCtx);
+        CosmosRequestDetails requestOptionsTransformer = requestOptionsTransformerAccessor.create(requestOptions, null, cosmosCtx);
         clientAccessor.getRequestOptionsTransformer(client).accept(requestOptionsTransformer);
         requestOptions = (RequestOptions) requestOptionsTransformer.getRequestOptions();
 
@@ -988,10 +989,10 @@ public class CosmosAsyncContainer {
         CosmosAsyncClient client = this.getDatabase().getClient();
         CosmosQueryRequestOptions options =
             cosmosQueryRequestOptions != null ? cosmosQueryRequestOptions : new CosmosQueryRequestOptions();
-        
+
         Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
             String spanName = this.queryItemsSpanName;
-            
+
             ShowQueryOptions showQueryOptions = clientTelemetryConfigAccessor.showQueryOptions(client.getClientTelemetryConfig());
 
             if(ShowQueryOptions.PARAMETERIZED_ONLY.equals(showQueryOptions) && isParameterized) {
