@@ -5,22 +5,7 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
-import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
-import com.azure.search.documents.indexes.models.IndexingSchedule;
-import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
-import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.SearchField;
-import com.azure.search.documents.indexes.models.SearchFieldDataType;
-import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.indexes.models.SearchIndexer;
-import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
-import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
-import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
-import com.azure.search.documents.indexes.models.SearchIndexerSkill;
-import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
-import com.azure.search.documents.indexes.models.SearchSuggester;
+import com.azure.search.documents.indexes.models.*;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -123,7 +108,7 @@ public class LifecycleSetupExample {
         );
 
 
-        SearchIndexerSkill skill = new EntityRecognitionSkill(inputs, outputs)
+        SearchIndexerSkill skill = new EntityRecognitionSkill(inputs, outputs, EntityRecognitionSkillVersion.V3)
             .setName("#1")
             .setDescription("Entity Recognition Skill")
             .setContext("/document/Description");
