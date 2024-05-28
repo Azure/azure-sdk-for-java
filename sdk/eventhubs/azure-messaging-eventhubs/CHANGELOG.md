@@ -1,5 +1,15 @@
 # Release History
 
+## 5.18.4 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.9.3` to version `2.9.4`.
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+
+
 ## 5.18.3 (2024-04-23)
 
 ### Other Changes
