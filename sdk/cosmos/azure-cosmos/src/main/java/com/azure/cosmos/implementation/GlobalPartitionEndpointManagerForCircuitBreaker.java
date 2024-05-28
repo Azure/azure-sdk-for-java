@@ -131,15 +131,19 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
         URI succeededLocation = request.requestContext.locationEndpointToRoute;
 
-        PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfoSnapshot
-            = this.partitionKeyRangeToFailoverInfo.get(partitionKeyRangeWrapper);
+        this.partitionKeyRangeToFailoverInfo.compute(partitionKeyRangeWrapper, (partitionKeyRangeWrapperAsKey, partitionKeyRangeToFailoverInfoAsVal) -> {
 
-        if (partitionLevelLocationUnavailabilityInfoSnapshot != null) {
-            partitionLevelLocationUnavailabilityInfoSnapshot.handleSuccess(
+            if (partitionKeyRangeToFailoverInfoAsVal == null) {
+                partitionKeyRangeToFailoverInfoAsVal = new PartitionLevelLocationUnavailabilityInfo();
+            }
+
+            partitionKeyRangeToFailoverInfoAsVal.handleSuccess(
                 partitionKeyRangeWrapper,
                 succeededLocation,
                 request.isReadOnlyRequest());
-        }
+
+            return partitionKeyRangeToFailoverInfoAsVal;
+        });
     }
 
     public List<URI> getUnavailableLocationEndpointsForPartitionKeyRange(String resourceId, PartitionKeyRange partitionKeyRange) {
@@ -155,7 +159,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             this.partitionKeyRangeToFailoverInfo.get(partitionKeyRangeWrapper);
 
         List<URI> unavailableLocations = new ArrayList<>();
-        boolean doesPartitionHaveUnhealthyLocations = false;
 
         if (partitionLevelLocationUnavailabilityInfoSnapshot != null) {
             Map<URI, LocationSpecificContext> locationEndpointToFailureMetricsForPartition =
@@ -165,19 +168,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                 URI location = pair.getKey();
                 LocationSpecificContext locationSpecificContext = pair.getValue();
 
-                if (locationSpecificContext.locationUnavailabilityStatus == LocationUnavailabilityStatus.FreshUnavailable) {
+                if (locationSpecificContext.locationUnavailabilityStatus == LocationUnavailabilityStatus.Unavailable) {
                     unavailableLocations.add(location);
-                    doesPartitionHaveUnhealthyLocations = true;
-                } else if (locationSpecificContext.locationUnavailabilityStatus == LocationUnavailabilityStatus.StaleUnavailable) {
-                    doesPartitionHaveUnhealthyLocations = true;
-                } else if (locationSpecificContext.exceptionCountForWrite >= 1 || locationSpecificContext.exceptionCountForRead >= 1) {
-                    doesPartitionHaveUnhealthyLocations = true;
                 }
             }
-        }
-
-        if (!doesPartitionHaveUnhealthyLocations) {
-            this.partitionKeyRangeToFailoverInfo.remove(partitionKeyRangeWrapper);
         }
 
         return UnmodifiableList.unmodifiableList(unavailableLocations);
@@ -246,7 +240,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                         0,
                         0,
                         Instant.MAX,
-                        LocationUnavailabilityStatus.Available,
+                        LocationUnavailabilityStatus.Healthy,
                         false);
                 }
 
@@ -267,17 +261,28 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         public void handleSuccess(PartitionKeyRangeWrapper partitionKeyRangeWrapper, URI succeededLocation, boolean isReadOnlyRequest) {
             this.locationEndpointToLocationSpecificContextForPartition.compute(succeededLocation, (locationAsKey, locationSpecificContextAsVal) -> {
 
-                if (locationSpecificContextAsVal != null) {
-                    locationSpecificContextAsVal = GlobalPartitionEndpointManagerForCircuitBreaker
-                        .this.locationContextTransitionHandler.handleSuccess(
-                        locationSpecificContextAsVal,
-                        partitionKeyRangeWrapper,
-                        succeededLocation,
-                        false,
-                        isReadOnlyRequest);
+                LocationSpecificContext locationSpecificContextAfterTransition;
+
+                if (locationSpecificContextAsVal == null) {
+                    locationSpecificContextAsVal = new LocationSpecificContext(
+                        0,
+                        0,
+                        0,
+                        0,
+                        Instant.MAX,
+                        LocationUnavailabilityStatus.Healthy,
+                        false);
                 }
 
-                return locationSpecificContextAsVal;
+                locationSpecificContextAfterTransition = GlobalPartitionEndpointManagerForCircuitBreaker
+                    .this.locationContextTransitionHandler.handleSuccess(
+                    locationSpecificContextAsVal,
+                    partitionKeyRangeWrapper,
+                    succeededLocation,
+                    false,
+                    isReadOnlyRequest);
+
+                return locationSpecificContextAfterTransition;
             });
         }
 
@@ -369,7 +374,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         }
 
         public boolean isRegionAvailableToProcessRequests() {
-            return this.locationUnavailabilityStatus == LocationUnavailabilityStatus.Available ||
+            return this.locationUnavailabilityStatus == LocationUnavailabilityStatus.Healthy ||
+                this.locationUnavailabilityStatus == LocationUnavailabilityStatus.HealthyWithFailures ||
                 this.locationUnavailabilityStatus == LocationUnavailabilityStatus.StaleUnavailable;
         }
     }
@@ -394,7 +400,9 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             int successCountActual = isReadOnlyRequest ? locationSpecificContext.exceptionCountForRead : locationSpecificContext.successCountForWrite;
 
             switch (currentStatusSnapshot) {
-                case Available:
+                case Healthy:
+                    break;
+                case HealthyWithFailures:
                     if (!forceStatusChange) {
                         if (exceptionCountActual > 0) {
 
@@ -421,8 +429,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                             }
                         }
                     }
-
                     break;
+
                 case StaleUnavailable:
                     if (!forceStatusChange) {
 
@@ -437,7 +445,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                                 partitionKeyRangeWrapper.resourceId,
                                 GlobalPartitionEndpointManagerForCircuitBreaker.this.globalEndpointManager
                                     .getRegionName(locationWithSuccess, isReadOnlyRequest ? OperationType.Read : OperationType.Create));
-                            return this.transitionHealthStatus(LocationUnavailabilityStatus.Available);
+                            return this.transitionHealthStatus(LocationUnavailabilityStatus.Healthy);
                         } else {
 
                             if (isReadOnlyRequest) {
@@ -462,7 +470,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                         }
                     }
                     break;
-                case FreshUnavailable:
+                case Unavailable:
                     Instant unavailableSinceActual = locationSpecificContext.unavailableSince;
                     if (!forceStatusChange) {
                         if (Duration.between(unavailableSinceActual, Instant.now()).compareTo(Duration.ofSeconds(30)) > 0) {
@@ -501,12 +509,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             logger.warn("Handling exception");
 
             LocationUnavailabilityStatus currentStatusSnapshot = locationSpecificContext.locationUnavailabilityStatus;
-            int allowedExceptionCount = getAllowedExceptionCount(currentStatusSnapshot, isReadOnlyRequest);
+            int allowedExceptionCount = getAllowedExceptionCountToMaintainStatus(currentStatusSnapshot, isReadOnlyRequest);
 
             int exceptionCountActual = isReadOnlyRequest ? locationSpecificContext.exceptionCountForRead : locationSpecificContext.exceptionCountForWrite;
 
             switch (currentStatusSnapshot) {
-                case Available:
+                case Healthy:
+                    return this.transitionHealthStatus(LocationUnavailabilityStatus.HealthyWithFailures);
+                case HealthyWithFailures:
                     if (exceptionCountActual < allowedExceptionCount) {
 
                         exceptionCountActual += 1;
@@ -541,7 +551,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                             partitionKeyRangeWrapper.resourceId,
                             GlobalPartitionEndpointManagerForCircuitBreaker.this.globalEndpointManager
                                 .getRegionName(locationWithException, OperationType.Read));
-                        return this.transitionHealthStatus(LocationUnavailabilityStatus.FreshUnavailable);
+                        return this.transitionHealthStatus(LocationUnavailabilityStatus.Unavailable);
                     }
                 case StaleUnavailable:
                     if (exceptionCountActual < allowedExceptionCount) {
@@ -574,7 +584,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                             partitionKeyRangeWrapper.resourceId,
                             GlobalPartitionEndpointManagerForCircuitBreaker.this.globalEndpointManager
                                 .getRegionName(locationWithException, OperationType.Read));
-                        return this.transitionHealthStatus(LocationUnavailabilityStatus.FreshUnavailable);
+                        return this.transitionHealthStatus(LocationUnavailabilityStatus.Unavailable);
                     }
                 default:
                     throw new IllegalStateException("Unsupported health status: " + currentStatusSnapshot);
@@ -584,23 +594,32 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         public LocationSpecificContext transitionHealthStatus(LocationUnavailabilityStatus newStatus) {
 
             switch (newStatus) {
-                case Available:
+                case Healthy:
                     return new LocationSpecificContext(
                         0,
                         0,
                         0,
                         0,
                         Instant.MAX,
-                        LocationUnavailabilityStatus.Available,
+                        LocationUnavailabilityStatus.Healthy,
                         false);
-                case FreshUnavailable:
+                case HealthyWithFailures:
+                    return new LocationSpecificContext(
+                        0,
+                        0,
+                        0,
+                        0,
+                        Instant.MAX,
+                        LocationUnavailabilityStatus.HealthyWithFailures,
+                        false);
+                case Unavailable:
                     return new LocationSpecificContext(
                         0,
                         0,
                         0,
                         0,
                         Instant.now(),
-                        LocationUnavailabilityStatus.FreshUnavailable,
+                        LocationUnavailabilityStatus.Unavailable,
                         true);
                 case StaleUnavailable:
                     return new LocationSpecificContext(
@@ -610,8 +629,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                         0,
                         Instant.MAX,
                         LocationUnavailabilityStatus.StaleUnavailable,
-                        false
-                    );
+                        false);
                 default:
                     throw new IllegalStateException("Unsupported health status: " + newStatus);
             }
@@ -642,14 +660,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
     }
 
     private enum LocationUnavailabilityStatus {
-        Available, FreshUnavailable, StaleUnavailable;
+        Healthy, HealthyWithFailures, Unavailable, StaleUnavailable
     }
 
     private static double getAllowedExceptionToSuccessRatio(LocationUnavailabilityStatus status, boolean isReadOnlyRequest) {
 
         if (isReadOnlyRequest) {
             switch (status) {
-                case Available:
+                case HealthyWithFailures:
                     return 0.3d;
                 case StaleUnavailable:
                     return 0.1d;
@@ -658,7 +676,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             }
         } else {
             switch (status) {
-                case Available:
+                case HealthyWithFailures:
                     return 0.2d;
                 case StaleUnavailable:
                     return 0.05d;
@@ -668,23 +686,27 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         }
     }
 
-    private static int getAllowedExceptionCount(LocationUnavailabilityStatus status, boolean isReadOnlyRequest) {
+    private static int getAllowedExceptionCountToMaintainStatus(LocationUnavailabilityStatus status, boolean isReadOnlyRequest) {
 
         if (isReadOnlyRequest) {
             switch (status) {
-                case Available:
+                case HealthyWithFailures:
                     return 10;
                 case StaleUnavailable:
                     return 5;
+                case Healthy:
+                    return 0;
                 default:
                     throw new IllegalStateException("Unsupported health status: " + status);
             }
         } else {
             switch (status) {
-                case Available:
+                case HealthyWithFailures:
                     return 5;
                 case StaleUnavailable:
                     return 2;
+                case Healthy:
+                    return 0;
                 default:
                     throw new IllegalStateException("Unsupported health status: " + status);
             }
@@ -696,8 +718,9 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             switch (status) {
                 case StaleUnavailable:
                     return 5;
-                case FreshUnavailable:
-                case Available:
+                case Unavailable:
+                case HealthyWithFailures:
+                case Healthy:
                     return 0;
                 default:
                     throw new IllegalStateException("Unsupported health status: " + status);
@@ -706,8 +729,9 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             switch (status) {
                 case StaleUnavailable:
                     return 10;
-                case FreshUnavailable:
-                case Available:
+                case Unavailable:
+                case HealthyWithFailures:
+                case Healthy:
                     return 0;
                 default:
                     throw new IllegalStateException("Unsupported health status: " + status);

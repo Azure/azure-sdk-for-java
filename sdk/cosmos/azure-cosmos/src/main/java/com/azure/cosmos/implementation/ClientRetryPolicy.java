@@ -164,6 +164,20 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 clientException);
         }
 
+        if (clientException != null && Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.REQUEST_TIMEOUT)) {
+            logger.info(
+                "Request timeout - IsReadRequest {}, IsWebExceptionRetriable {}, NonIdempotentWriteRetriesEnabled {}",
+                this.isReadRequest,
+                false,
+                this.request.getNonIdempotentWriteRetriesEnabled(),
+                e);
+
+            return this.shouldRetryOnRequestTimeout(
+                this.isReadRequest,
+                this.request.getNonIdempotentWriteRetriesEnabled()
+            );
+        }
+
         return this.throttlingRetry.shouldRetry(e);
     }
 
@@ -373,6 +387,22 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         // RetryCount is used as zero-based index
         this.retryContext = new RetryContext(this.serviceUnavailableRetryCount, true);
         return Mono.just(ShouldRetryResult.retryAfter(Duration.ZERO));
+    }
+
+    private Mono<ShouldRetryResult> shouldRetryOnRequestTimeout(
+        boolean isReadRequest,
+        boolean nonIdempotentWriteRetriesEnabled) {
+
+        if (Configs.isPartitionLevelCircuitBreakerEnabled() &&
+            !isReadRequest &&
+            !nonIdempotentWriteRetriesEnabled) {
+
+            this.globalPartitionEndpointManager.handleLocationExceptionForPartitionKeyRange(
+                request,
+                request.requestContext.locationEndpointToRoute);
+        }
+
+        return Mono.just(ShouldRetryResult.NO_RETRY);
     }
 
     @Override
