@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public final class TrafficSelectorPolicy {
 
     /**
      * Get the localAddressRanges property: A collection of local address spaces in CIDR format.
-     * 
+     *
      * @return the localAddressRanges value.
      */
     public List<String> localAddressRanges() {
@@ -43,7 +44,7 @@ public final class TrafficSelectorPolicy {
 
     /**
      * Set the localAddressRanges property: A collection of local address spaces in CIDR format.
-     * 
+     *
      * @param localAddressRanges the localAddressRanges value to set.
      * @return the TrafficSelectorPolicy object itself.
      */
@@ -54,7 +55,7 @@ public final class TrafficSelectorPolicy {
 
     /**
      * Get the remoteAddressRanges property: A collection of remote address spaces in CIDR format.
-     * 
+     *
      * @return the remoteAddressRanges value.
      */
     public List<String> remoteAddressRanges() {
@@ -63,7 +64,7 @@ public final class TrafficSelectorPolicy {
 
     /**
      * Set the remoteAddressRanges property: A collection of remote address spaces in CIDR format.
-     * 
+     *
      * @param remoteAddressRanges the remoteAddressRanges value to set.
      * @return the TrafficSelectorPolicy object itself.
      */
@@ -74,17 +75,19 @@ public final class TrafficSelectorPolicy {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (localAddressRanges() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property localAddressRanges in model TrafficSelectorPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property localAddressRanges in model TrafficSelectorPolicy"));
         }
         if (remoteAddressRanges() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property remoteAddressRanges in model TrafficSelectorPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property remoteAddressRanges in model TrafficSelectorPolicy"));
         }
     }
 

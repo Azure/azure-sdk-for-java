@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class RouteTablesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/RouteTableGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/RouteTableGet.json
      */
     /**
      * Sample code: Get route table.
@@ -18,7 +17,10 @@ public final class RouteTablesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getRouteTable(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getRouteTables().getByResourceGroupWithResponse("rg1", "testrt",
-            null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getRouteTables()
+            .getByResourceGroupWithResponse("rg1", "testrt", null, com.azure.core.util.Context.NONE);
     }
 }

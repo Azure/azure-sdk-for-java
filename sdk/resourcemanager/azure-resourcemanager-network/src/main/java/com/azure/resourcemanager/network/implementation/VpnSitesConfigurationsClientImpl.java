@@ -27,9 +27,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.VpnSitesConfigurationsClient;
 import com.azure.resourcemanager.network.models.GetVpnSitesConfigurationRequest;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in VpnSitesConfigurationsClient.
@@ -47,7 +48,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
 
     /**
      * Initializes an instance of VpnSitesConfigurationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VpnSitesConfigurationsClientImpl(NetworkManagementClientImpl client) {
@@ -57,8 +58,8 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientVpnSitesConfigurations to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for NetworkManagementClientVpnSitesConfigurations to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
@@ -77,7 +78,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -109,7 +110,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.download(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -119,7 +120,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -152,7 +153,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.download(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -161,7 +162,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -180,7 +181,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -202,7 +203,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -219,7 +220,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -237,7 +238,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -255,7 +256,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -274,7 +275,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -289,7 +290,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.

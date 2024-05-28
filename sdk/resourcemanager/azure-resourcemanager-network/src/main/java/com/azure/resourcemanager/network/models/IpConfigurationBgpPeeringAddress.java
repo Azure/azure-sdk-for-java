@@ -74,8 +74,7 @@ public final class IpConfigurationBgpPeeringAddress {
     }
 
     /**
-     * Get the customBgpIpAddresses property: The list of custom BGP peering addresses which belong to IP
-     * configuration.
+     * Get the customBgpIpAddresses property: The list of custom BGP peering addresses which belong to IP configuration.
      * 
      * @return the customBgpIpAddresses value.
      */
@@ -84,8 +83,7 @@ public final class IpConfigurationBgpPeeringAddress {
     }
 
     /**
-     * Set the customBgpIpAddresses property: The list of custom BGP peering addresses which belong to IP
-     * configuration.
+     * Set the customBgpIpAddresses property: The list of custom BGP peering addresses which belong to IP configuration.
      * 
      * @param customBgpIpAddresses the customBgpIpAddresses value to set.
      * @return the IpConfigurationBgpPeeringAddress object itself.

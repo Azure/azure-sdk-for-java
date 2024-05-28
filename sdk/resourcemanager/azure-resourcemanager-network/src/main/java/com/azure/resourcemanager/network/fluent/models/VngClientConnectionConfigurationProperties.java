@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -42,9 +43,9 @@ public final class VngClientConnectionConfigurationProperties {
     }
 
     /**
-     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address
-     * space for P2S VpnClient.
-     * 
+     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address space
+     * for P2S VpnClient.
+     *
      * @return the vpnClientAddressPool value.
      */
     public AddressSpace vpnClientAddressPool() {
@@ -52,9 +53,9 @@ public final class VngClientConnectionConfigurationProperties {
     }
 
     /**
-     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address
-     * space for P2S VpnClient.
-     * 
+     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address space
+     * for P2S VpnClient.
+     *
      * @param vpnClientAddressPool the vpnClientAddressPool value to set.
      * @return the VngClientConnectionConfigurationProperties object itself.
      */
@@ -65,7 +66,7 @@ public final class VngClientConnectionConfigurationProperties {
 
     /**
      * Get the virtualNetworkGatewayPolicyGroups property: List of references to virtualNetworkGatewayPolicyGroups.
-     * 
+     *
      * @return the virtualNetworkGatewayPolicyGroups value.
      */
     public List<SubResource> virtualNetworkGatewayPolicyGroups() {
@@ -74,7 +75,7 @@ public final class VngClientConnectionConfigurationProperties {
 
     /**
      * Set the virtualNetworkGatewayPolicyGroups property: List of references to virtualNetworkGatewayPolicyGroups.
-     * 
+     *
      * @param virtualNetworkGatewayPolicyGroups the virtualNetworkGatewayPolicyGroups value to set.
      * @return the VngClientConnectionConfigurationProperties object itself.
      */
@@ -86,7 +87,7 @@ public final class VngClientConnectionConfigurationProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the VngClientConnectionConfiguration resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -95,19 +96,21 @@ public final class VngClientConnectionConfigurationProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (vpnClientAddressPool() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property vpnClientAddressPool in model VngClientConnectionConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property vpnClientAddressPool in model VngClientConnectionConfigurationProperties"));
         } else {
             vpnClientAddressPool().validate();
         }
         if (virtualNetworkGatewayPolicyGroups() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property virtualNetworkGatewayPolicyGroups in model VngClientConnectionConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualNetworkGatewayPolicyGroups in model VngClientConnectionConfigurationProperties"));
         }
     }
 

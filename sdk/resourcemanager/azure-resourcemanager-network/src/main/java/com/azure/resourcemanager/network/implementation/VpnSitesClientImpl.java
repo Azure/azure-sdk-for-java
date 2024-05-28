@@ -39,9 +39,10 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in VpnSitesClient.
@@ -60,7 +61,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Initializes an instance of VpnSitesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VpnSitesClientImpl(NetworkManagementClientImpl client) {
@@ -148,7 +149,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Retrieves the details of a VPN site.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,7 +175,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(),
@@ -184,7 +185,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Retrieves the details of a VPN site.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being retrieved.
      * @param context The context to associate with this operation.
@@ -211,7 +212,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -220,7 +221,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Retrieves the details of a VPN site.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +237,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Retrieves the details of a VPN site.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being retrieved.
      * @param context The context to associate with this operation.
@@ -253,7 +254,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Retrieves the details of a VPN site.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -268,7 +269,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters Parameters supplied to create or update VpnSite.
@@ -301,7 +302,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
         } else {
             vpnSiteParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -311,7 +312,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters Parameters supplied to create or update VpnSite.
@@ -345,7 +346,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
         } else {
             vpnSiteParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -354,7 +355,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters Parameters supplied to create or update VpnSite.
@@ -374,7 +375,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters Parameters supplied to create or update VpnSite.
@@ -396,7 +397,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters Parameters supplied to create or update VpnSite.
@@ -413,7 +414,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters Parameters supplied to create or update VpnSite.
@@ -432,7 +433,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters Parameters supplied to create or update VpnSite.
@@ -450,7 +451,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters Parameters supplied to create or update VpnSite.
@@ -469,7 +470,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters Parameters supplied to create or update VpnSite.
@@ -485,7 +486,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being created or updated.
      * @param vpnSiteParameters Parameters supplied to create or update VpnSite.
@@ -503,7 +504,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Updates VpnSite tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being updated.
      * @param vpnSiteParameters Parameters supplied to update VpnSite tags.
@@ -536,7 +537,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
         } else {
             vpnSiteParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -546,7 +547,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Updates VpnSite tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being updated.
      * @param vpnSiteParameters Parameters supplied to update VpnSite tags.
@@ -580,7 +581,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
         } else {
             vpnSiteParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -589,7 +590,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Updates VpnSite tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being updated.
      * @param vpnSiteParameters Parameters supplied to update VpnSite tags.
@@ -607,7 +608,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Updates VpnSite tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being updated.
      * @param vpnSiteParameters Parameters supplied to update VpnSite tags.
@@ -625,7 +626,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Updates VpnSite tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being updated.
      * @param vpnSiteParameters Parameters supplied to update VpnSite tags.
@@ -641,7 +642,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Deletes a VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -666,7 +667,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -676,7 +677,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Deletes a VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @param context The context to associate with this operation.
@@ -703,7 +704,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -712,7 +713,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Deletes a VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -729,7 +730,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Deletes a VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @param context The context to associate with this operation.
@@ -749,7 +750,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Deletes a VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -764,7 +765,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Deletes a VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @param context The context to associate with this operation.
@@ -781,7 +782,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Deletes a VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -796,7 +797,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Deletes a VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @param context The context to associate with this operation.
@@ -813,7 +814,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Deletes a VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -827,7 +828,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Deletes a VpnSite.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param vpnSiteName The name of the VpnSite being deleted.
      * @param context The context to associate with this operation.
@@ -842,7 +843,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Lists all the vpnSites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -864,7 +865,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -876,7 +877,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Lists all the vpnSites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -900,7 +901,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -912,7 +913,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Lists all the vpnSites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -927,7 +928,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Lists all the vpnSites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -943,7 +944,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Lists all the vpnSites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -957,7 +958,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Lists all the vpnSites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnSite.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -972,7 +973,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Lists all the VpnSites in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites along with {@link PagedResponse} on successful completion of
@@ -988,7 +989,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -1000,7 +1001,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Lists all the VpnSites in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1018,7 +1019,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -1028,7 +1029,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Lists all the VpnSites in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites as paginated response with {@link PagedFlux}.
@@ -1040,7 +1041,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Lists all the VpnSites in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1055,7 +1056,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Lists all the VpnSites in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites as paginated response with {@link PagedIterable}.
@@ -1067,7 +1068,7 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Lists all the VpnSites in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1081,9 +1082,9 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1111,9 +1112,9 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1140,9 +1141,9 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1168,9 +1169,9 @@ public final class VpnSitesClientImpl implements InnerSupportsGet<VpnSiteInner>,
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

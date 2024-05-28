@@ -37,9 +37,10 @@ import com.azure.resourcemanager.network.fluent.models.SubnetInner;
 import com.azure.resourcemanager.network.models.PrepareNetworkPoliciesRequest;
 import com.azure.resourcemanager.network.models.SubnetListResult;
 import com.azure.resourcemanager.network.models.UnprepareNetworkPoliciesRequest;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in SubnetsClient.
@@ -57,7 +58,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Initializes an instance of SubnetsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     SubnetsClientImpl(NetworkManagementClientImpl client) {
@@ -144,7 +145,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -175,7 +176,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -185,7 +186,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -217,7 +218,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, subnetName, apiVersion,
@@ -226,7 +227,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -246,7 +247,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -268,7 +269,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -285,7 +286,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -303,7 +304,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -320,7 +321,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -339,7 +340,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -354,7 +355,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -370,7 +371,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -403,7 +404,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -413,7 +414,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -447,7 +448,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, subnetName, apiVersion,
@@ -456,7 +457,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -474,7 +475,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -493,7 +494,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -510,7 +511,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -549,7 +550,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             subnetParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -560,7 +561,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -600,7 +601,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             subnetParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, subnetName,
@@ -609,7 +610,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -630,7 +631,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -653,7 +654,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -672,7 +673,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -693,7 +694,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -712,7 +713,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -727,12 +728,13 @@ public final class SubnetsClientImpl implements SubnetsClient {
     private Mono<SubnetInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName,
         String subnetName, SubnetInner subnetParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkName, subnetName, subnetParameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -750,7 +752,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -770,7 +772,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Prepares a subnet by applying network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -810,7 +812,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             prepareNetworkPoliciesRequestParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.prepareNetworkPolicies(this.client.getEndpoint(), resourceGroupName,
@@ -821,7 +823,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Prepares a subnet by applying network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -862,7 +864,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             prepareNetworkPoliciesRequestParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.prepareNetworkPolicies(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -872,7 +874,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Prepares a subnet by applying network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -895,7 +897,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Prepares a subnet by applying network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -920,7 +922,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Prepares a subnet by applying network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -935,13 +937,15 @@ public final class SubnetsClientImpl implements SubnetsClient {
     public SyncPoller<PollResult<Void>, Void> beginPrepareNetworkPolicies(String resourceGroupName,
         String virtualNetworkName, String subnetName,
         PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
-        return this.beginPrepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
-            prepareNetworkPoliciesRequestParameters).getSyncPoller();
+        return this
+            .beginPrepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
+                prepareNetworkPoliciesRequestParameters)
+            .getSyncPoller();
     }
 
     /**
      * Prepares a subnet by applying network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -957,13 +961,15 @@ public final class SubnetsClientImpl implements SubnetsClient {
     public SyncPoller<PollResult<Void>, Void> beginPrepareNetworkPolicies(String resourceGroupName,
         String virtualNetworkName, String subnetName,
         PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters, Context context) {
-        return this.beginPrepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
-            prepareNetworkPoliciesRequestParameters, context).getSyncPoller();
+        return this
+            .beginPrepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
+                prepareNetworkPoliciesRequestParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Prepares a subnet by applying network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -983,7 +989,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Prepares a subnet by applying network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -1004,7 +1010,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Prepares a subnet by applying network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -1023,7 +1029,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Prepares a subnet by applying network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -1043,7 +1049,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Unprepares a subnet by removing network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -1083,7 +1089,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             unprepareNetworkPoliciesRequestParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.unprepareNetworkPolicies(this.client.getEndpoint(), resourceGroupName,
@@ -1094,7 +1100,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Unprepares a subnet by removing network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -1135,7 +1141,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             unprepareNetworkPoliciesRequestParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.unprepareNetworkPolicies(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -1145,7 +1151,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Unprepares a subnet by removing network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -1168,7 +1174,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Unprepares a subnet by removing network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -1193,7 +1199,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Unprepares a subnet by removing network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -1208,13 +1214,15 @@ public final class SubnetsClientImpl implements SubnetsClient {
     public SyncPoller<PollResult<Void>, Void> beginUnprepareNetworkPolicies(String resourceGroupName,
         String virtualNetworkName, String subnetName,
         UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters) {
-        return this.beginUnprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
-            unprepareNetworkPoliciesRequestParameters).getSyncPoller();
+        return this
+            .beginUnprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
+                unprepareNetworkPoliciesRequestParameters)
+            .getSyncPoller();
     }
 
     /**
      * Unprepares a subnet by removing network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -1230,13 +1238,15 @@ public final class SubnetsClientImpl implements SubnetsClient {
     public SyncPoller<PollResult<Void>, Void> beginUnprepareNetworkPolicies(String resourceGroupName,
         String virtualNetworkName, String subnetName,
         UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters, Context context) {
-        return this.beginUnprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
-            unprepareNetworkPoliciesRequestParameters, context).getSyncPoller();
+        return this
+            .beginUnprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName,
+                unprepareNetworkPoliciesRequestParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Unprepares a subnet by removing network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -1256,7 +1266,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Unprepares a subnet by removing network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -1277,7 +1287,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Unprepares a subnet by removing network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -1296,7 +1306,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Unprepares a subnet by removing network intent policies.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -1316,7 +1326,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets all subnets in a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1343,7 +1353,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -1355,7 +1365,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets all subnets in a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -1384,7 +1394,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1396,7 +1406,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets all subnets in a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1412,7 +1422,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets all subnets in a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -1429,7 +1439,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets all subnets in a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1444,7 +1454,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Gets all subnets in a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -1460,9 +1470,9 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1488,9 +1498,9 @@ public final class SubnetsClientImpl implements SubnetsClient {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

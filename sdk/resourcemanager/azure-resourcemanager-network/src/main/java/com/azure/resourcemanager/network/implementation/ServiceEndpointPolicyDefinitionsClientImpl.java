@@ -34,9 +34,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.ServiceEndpointPolicyDefinitionsClient;
 import com.azure.resourcemanager.network.fluent.models.ServiceEndpointPolicyDefinitionInner;
 import com.azure.resourcemanager.network.models.ServiceEndpointPolicyDefinitionListResult;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in ServiceEndpointPolicyDefinitionsClient.
@@ -54,7 +55,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Initializes an instance of ServiceEndpointPolicyDefinitionsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ServiceEndpointPolicyDefinitionsClientImpl(NetworkManagementClientImpl client) {
@@ -64,8 +65,8 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientServiceEndpointPolicyDefinitions to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for NetworkManagementClientServiceEndpointPolicyDefinitions to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
@@ -125,7 +126,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Deletes the specified ServiceEndpoint policy definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
@@ -157,7 +158,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -168,7 +169,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Deletes the specified ServiceEndpoint policy definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
@@ -201,7 +202,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, serviceEndpointPolicyName,
@@ -210,7 +211,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Deletes the specified ServiceEndpoint policy definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
@@ -230,7 +231,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Deletes the specified ServiceEndpoint policy definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
@@ -252,7 +253,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Deletes the specified ServiceEndpoint policy definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
@@ -270,7 +271,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Deletes the specified ServiceEndpoint policy definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
@@ -283,13 +284,15 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceEndpointPolicyName,
         String serviceEndpointPolicyDefinitionName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName,
-            context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName,
+                context)
+            .getSyncPoller();
     }
 
     /**
      * Deletes the specified ServiceEndpoint policy definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
@@ -302,12 +305,13 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
     public Mono<Void> deleteAsync(String resourceGroupName, String serviceEndpointPolicyName,
         String serviceEndpointPolicyDefinitionName) {
         return beginDeleteAsync(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified ServiceEndpoint policy definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
@@ -326,7 +330,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Deletes the specified ServiceEndpoint policy definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
@@ -342,7 +346,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Deletes the specified ServiceEndpoint policy definitions.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the Service Endpoint Policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition.
@@ -359,7 +363,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Get the specified service endpoint policy definitions from service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy name.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -392,7 +396,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serviceEndpointPolicyName,
@@ -402,7 +406,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Get the specified service endpoint policy definitions from service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy name.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -436,7 +440,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, serviceEndpointPolicyName,
@@ -445,7 +449,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Get the specified service endpoint policy definitions from service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy name.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -464,7 +468,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Get the specified service endpoint policy definitions from service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy name.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -484,7 +488,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Get the specified service endpoint policy definitions from service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy name.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -502,7 +506,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -543,7 +547,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
         } else {
             serviceEndpointPolicyDefinitions.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -554,7 +558,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -596,7 +600,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
         } else {
             serviceEndpointPolicyDefinitions.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceEndpointPolicyName,
@@ -606,7 +610,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -631,7 +635,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -658,7 +662,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -674,13 +678,15 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
         beginCreateOrUpdate(String resourceGroupName, String serviceEndpointPolicyName,
             String serviceEndpointPolicyDefinitionName,
             ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceEndpointPolicyName,
-            serviceEndpointPolicyDefinitionName, serviceEndpointPolicyDefinitions).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName,
+                serviceEndpointPolicyDefinitions)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -697,13 +703,15 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
         beginCreateOrUpdate(String resourceGroupName, String serviceEndpointPolicyName,
             String serviceEndpointPolicyDefinitionName,
             ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceEndpointPolicyName,
-            serviceEndpointPolicyDefinitionName, serviceEndpointPolicyDefinitions, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName,
+                serviceEndpointPolicyDefinitions, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -725,7 +733,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -748,7 +756,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -769,7 +777,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Creates or updates a service endpoint policy definition in the specified service endpoint policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param serviceEndpointPolicyDefinitionName The name of the service endpoint policy definition name.
@@ -791,7 +799,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Gets all service endpoint policy definitions in a service end point policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -819,7 +827,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -831,7 +839,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Gets all service endpoint policy definitions in a service end point policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy name.
      * @param context The context to associate with this operation.
@@ -860,7 +868,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -872,7 +880,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Gets all service endpoint policy definitions in a service end point policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -890,7 +898,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Gets all service endpoint policy definitions in a service end point policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy name.
      * @param context The context to associate with this operation.
@@ -910,7 +918,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Gets all service endpoint policy definitions in a service end point policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -927,7 +935,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Gets all service endpoint policy definitions in a service end point policy.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy name.
      * @param context The context to associate with this operation.
@@ -945,9 +953,9 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -976,9 +984,9 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

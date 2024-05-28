@@ -157,7 +157,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -200,7 +200,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, tapConfigurationName,
@@ -388,7 +388,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -432,7 +432,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, tapConfigurationName,
@@ -535,7 +535,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
         } else {
             tapConfigurationParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -588,7 +588,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
         } else {
             tapConfigurationParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -660,8 +660,10 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
     public SyncPoller<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
         beginCreateOrUpdate(String resourceGroupName, String networkInterfaceName, String tapConfigurationName,
             NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, tapConfigurationName,
-            tapConfigurationParameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, tapConfigurationName,
+                tapConfigurationParameters)
+            .getSyncPoller();
     }
 
     /**
@@ -681,8 +683,10 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
     public SyncPoller<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
         beginCreateOrUpdate(String resourceGroupName, String networkInterfaceName, String tapConfigurationName,
             NetworkInterfaceTapConfigurationInner tapConfigurationParameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, tapConfigurationName,
-            tapConfigurationParameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, tapConfigurationName,
+                tapConfigurationParameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -796,7 +800,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, networkInterfaceName,
@@ -837,7 +841,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

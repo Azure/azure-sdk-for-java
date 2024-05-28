@@ -34,9 +34,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayNatRulesClient;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayNatRuleInner;
 import com.azure.resourcemanager.network.models.ListVirtualNetworkGatewayNatRulesResult;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in VirtualNetworkGatewayNatRulesClient.
@@ -54,7 +55,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Initializes an instance of VirtualNetworkGatewayNatRulesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualNetworkGatewayNatRulesClientImpl(NetworkManagementClientImpl client) {
@@ -125,7 +126,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Retrieves the details of a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -157,7 +158,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -167,7 +168,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Retrieves the details of a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -200,7 +201,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -209,7 +210,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Retrieves the details of a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -227,7 +228,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Retrieves the details of a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -245,7 +246,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Retrieves the details of a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -262,7 +263,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -301,7 +302,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         } else {
             natRuleParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -312,7 +313,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -353,7 +354,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         } else {
             natRuleParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -362,7 +363,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -385,7 +386,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -410,7 +411,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -431,7 +432,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -446,13 +447,15 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
     public SyncPoller<PollResult<VirtualNetworkGatewayNatRuleInner>, VirtualNetworkGatewayNatRuleInner>
         beginCreateOrUpdate(String resourceGroupName, String virtualNetworkGatewayName, String natRuleName,
             VirtualNetworkGatewayNatRuleInner natRuleParameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName,
-            natRuleParameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName, natRuleParameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
      * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -466,12 +469,13 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
     public Mono<VirtualNetworkGatewayNatRuleInner> createOrUpdateAsync(String resourceGroupName,
         String virtualNetworkGatewayName, String natRuleName, VirtualNetworkGatewayNatRuleInner natRuleParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkGatewayName, natRuleName, natRuleParameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -492,7 +496,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -511,7 +515,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Creates a nat rule to a scalable virtual network gateway if it doesn't exist else updates the existing nat rules.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -531,7 +535,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Deletes a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -562,7 +566,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -572,7 +576,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Deletes a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -604,7 +608,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
         if (natRuleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter natRuleName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -613,7 +617,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Deletes a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -633,7 +637,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Deletes a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -655,7 +659,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Deletes a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -672,7 +676,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Deletes a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -691,7 +695,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Deletes a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -708,7 +712,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Deletes a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -727,7 +731,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Deletes a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -742,7 +746,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Deletes a nat rule.
-     * 
+     *
      * @param resourceGroupName The resource group name of the Virtual Network Gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param natRuleName The name of the nat rule.
@@ -759,7 +763,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Retrieves all nat rules for a particular virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the virtual network gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -787,7 +791,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             return Mono.error(
                 new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listByVirtualNetworkGateway(this.client.getEndpoint(),
             this.client.getSubscriptionId(), resourceGroupName, virtualNetworkGatewayName, apiVersion, accept, context))
@@ -798,7 +802,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Retrieves all nat rules for a particular virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the virtual network gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -827,7 +831,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
             return Mono.error(
                 new IllegalArgumentException("Parameter virtualNetworkGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -839,7 +843,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Retrieves all nat rules for a particular virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the virtual network gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -858,7 +862,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Retrieves all nat rules for a particular virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the virtual network gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -878,7 +882,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Retrieves all nat rules for a particular virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the virtual network gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -895,7 +899,7 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Retrieves all nat rules for a particular virtual network gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the virtual network gateway.
      * @param virtualNetworkGatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -914,9 +918,9 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -944,9 +948,9 @@ public final class VirtualNetworkGatewayNatRulesClientImpl implements VirtualNet
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

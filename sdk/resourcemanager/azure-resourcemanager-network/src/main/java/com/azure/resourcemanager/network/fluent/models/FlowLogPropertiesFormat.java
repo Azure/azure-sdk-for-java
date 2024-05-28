@@ -217,12 +217,14 @@ public final class FlowLogPropertiesFormat {
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property targetResourceId in model FlowLogPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetResourceId in model FlowLogPropertiesFormat"));
         }
         if (storageId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property storageId in model FlowLogPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageId in model FlowLogPropertiesFormat"));
         }
         if (retentionPolicy() != null) {
             retentionPolicy().validate();

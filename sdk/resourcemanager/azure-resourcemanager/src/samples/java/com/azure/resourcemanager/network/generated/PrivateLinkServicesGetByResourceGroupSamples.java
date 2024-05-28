@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class PrivateLinkServicesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/PrivateLinkServiceGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/PrivateLinkServiceGet.json
      */
     /**
      * Sample code: Get private link service.
@@ -18,7 +17,10 @@ public final class PrivateLinkServicesGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getPrivateLinkService(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getPrivateLinkServices().getByResourceGroupWithResponse("rg1",
-            "testPls", null, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkServices()
+            .getByResourceGroupWithResponse("rg1", "testPls", null, com.azure.core.util.Context.NONE);
     }
 }

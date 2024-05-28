@@ -53,8 +53,7 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
     private List<NatRulePortMapping> inboundNatRulesPortMapping;
 
     /*
-     * A list of administrative states which once set can override health probe so that Load Balancer will always
-     * forward new connections to backend, or deny new connections and reset existing connections.
+     * A list of administrative states which once set can override health probe so that Load Balancer will always forward new connections to backend, or deny new connections and reset existing connections.
      */
     @JsonProperty(value = "adminState")
     private LoadBalancerBackendAddressAdminState adminState;

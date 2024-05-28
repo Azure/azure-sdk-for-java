@@ -34,9 +34,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.VirtualApplianceSitesClient;
 import com.azure.resourcemanager.network.fluent.models.VirtualApplianceSiteInner;
 import com.azure.resourcemanager.network.models.NetworkVirtualApplianceSiteListResult;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in VirtualApplianceSitesClient.
@@ -54,7 +55,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Initializes an instance of VirtualApplianceSitesClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualApplianceSitesClientImpl(NetworkManagementClientImpl client) {
@@ -123,7 +124,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Deletes the specified site from a Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -154,7 +155,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -164,7 +165,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Deletes the specified site from a Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -196,7 +197,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName, siteName,
@@ -205,7 +206,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Deletes the specified site from a Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -225,7 +226,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Deletes the specified site from a Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -247,7 +248,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Deletes the specified site from a Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -264,7 +265,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Deletes the specified site from a Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -282,7 +283,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Deletes the specified site from a Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -299,7 +300,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Deletes the specified site from a Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -318,7 +319,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Deletes the specified site from a Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -333,7 +334,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Deletes the specified site from a Virtual Appliance.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -349,7 +350,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Gets the specified Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -381,7 +382,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName,
@@ -391,7 +392,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Gets the specified Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -424,7 +425,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName, siteName,
@@ -433,7 +434,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Gets the specified Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -451,7 +452,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Gets the specified Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -469,7 +470,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Gets the specified Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -486,7 +487,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Creates or updates the specified Network Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -523,7 +524,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -534,7 +535,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Creates or updates the specified Network Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -572,7 +573,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName,
@@ -581,7 +582,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Creates or updates the specified Network Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -604,7 +605,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Creates or updates the specified Network Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -628,7 +629,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Creates or updates the specified Network Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -648,7 +649,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Creates or updates the specified Network Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -670,7 +671,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Creates or updates the specified Network Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -689,7 +690,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Creates or updates the specified Network Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -704,12 +705,13 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
     private Mono<VirtualApplianceSiteInner> createOrUpdateAsync(String resourceGroupName,
         String networkVirtualApplianceName, String siteName, VirtualApplianceSiteInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, siteName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates the specified Network Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -727,7 +729,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Creates or updates the specified Network Virtual Appliance Site.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param siteName The name of the site.
@@ -747,7 +749,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Lists all Network Virtual Appliance Sites in a Network Virtual Appliance resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -775,7 +777,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName,
@@ -787,7 +789,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Lists all Network Virtual Appliance Sites in a Network Virtual Appliance resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param context The context to associate with this operation.
@@ -816,7 +818,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -828,7 +830,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Lists all Network Virtual Appliance Sites in a Network Virtual Appliance resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -846,7 +848,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Lists all Network Virtual Appliance Sites in a Network Virtual Appliance resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param context The context to associate with this operation.
@@ -865,7 +867,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Lists all Network Virtual Appliance Sites in a Network Virtual Appliance resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -881,7 +883,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Lists all Network Virtual Appliance Sites in a Network Virtual Appliance resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
      * @param context The context to associate with this operation.
@@ -899,9 +901,9 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -927,9 +929,9 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

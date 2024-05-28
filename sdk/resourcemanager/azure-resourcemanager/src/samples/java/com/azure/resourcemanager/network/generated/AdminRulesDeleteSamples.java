@@ -9,9 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AdminRulesDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkManagerAdminRuleDelete
-     * .json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerAdminRuleDelete.json
      */
     /**
      * Sample code: Deletes an admin rule.
@@ -19,7 +17,11 @@ public final class AdminRulesDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deletesAnAdminRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getAdminRules().delete("rg1", "testNetworkManager",
-            "myTestSecurityConfig", "testRuleCollection", "SampleAdminRule", false, com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getAdminRules()
+            .delete("rg1", "testNetworkManager", "myTestSecurityConfig", "testRuleCollection", "SampleAdminRule", false,
+                com.azure.core.util.Context.NONE);
     }
 }

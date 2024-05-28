@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.models.TagsObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,18 +14,20 @@ import java.util.Map;
  */
 public final class SecurityPartnerProvidersUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * SecurityPartnerProviderUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/SecurityPartnerProviderUpdateTags.json
      */
     /**
      * Sample code: Update Security Partner Provider Tags.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateSecurityPartnerProviderTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getSecurityPartnerProviders().updateTagsWithResponse("rg1",
-            "securityPartnerProvider", new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getSecurityPartnerProviders()
+            .updateTagsWithResponse("rg1", "securityPartnerProvider",
+                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

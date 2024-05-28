@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayPolicyGroupMember;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -55,7 +56,7 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Get the isDefault property: Shows if this is a Default VirtualNetworkGatewayPolicyGroup or not.
-     * 
+     *
      * @return the isDefault value.
      */
     public boolean isDefault() {
@@ -64,7 +65,7 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Set the isDefault property: Shows if this is a Default VirtualNetworkGatewayPolicyGroup or not.
-     * 
+     *
      * @param isDefault the isDefault value to set.
      * @return the VirtualNetworkGatewayPolicyGroupProperties object itself.
      */
@@ -75,7 +76,7 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Get the priority property: Priority for VirtualNetworkGatewayPolicyGroup.
-     * 
+     *
      * @return the priority value.
      */
     public int priority() {
@@ -84,7 +85,7 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Set the priority property: Priority for VirtualNetworkGatewayPolicyGroup.
-     * 
+     *
      * @param priority the priority value to set.
      * @return the VirtualNetworkGatewayPolicyGroupProperties object itself.
      */
@@ -95,7 +96,7 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Get the policyMembers property: Multiple PolicyMembers for VirtualNetworkGatewayPolicyGroup.
-     * 
+     *
      * @return the policyMembers value.
      */
     public List<VirtualNetworkGatewayPolicyGroupMember> policyMembers() {
@@ -104,7 +105,7 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Set the policyMembers property: Multiple PolicyMembers for VirtualNetworkGatewayPolicyGroup.
-     * 
+     *
      * @param policyMembers the policyMembers value to set.
      * @return the VirtualNetworkGatewayPolicyGroupProperties object itself.
      */
@@ -116,7 +117,7 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Get the vngClientConnectionConfigurations property: List of references to vngClientConnectionConfigurations.
-     * 
+     *
      * @return the vngClientConnectionConfigurations value.
      */
     public List<SubResource> vngClientConnectionConfigurations() {
@@ -125,7 +126,7 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the VirtualNetworkGatewayPolicyGroup resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -134,13 +135,14 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (policyMembers() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property policyMembers in model VirtualNetworkGatewayPolicyGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property policyMembers in model VirtualNetworkGatewayPolicyGroupProperties"));
         } else {
             policyMembers().forEach(e -> e.validate());
         }

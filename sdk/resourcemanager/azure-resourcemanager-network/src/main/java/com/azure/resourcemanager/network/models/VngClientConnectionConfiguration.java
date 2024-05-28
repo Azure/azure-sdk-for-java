@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.VngClientConnectionConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public final class VngClientConnectionConfiguration extends SubResource {
 
     /**
      * Get the innerProperties property: Properties of the vpn client root certificate.
-     * 
+     *
      * @return the innerProperties value.
      */
     private VngClientConnectionConfigurationProperties innerProperties() {
@@ -51,7 +52,7 @@ public final class VngClientConnectionConfiguration extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -61,7 +62,7 @@ public final class VngClientConnectionConfiguration extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     * 
+     *
      * @param name the name value to set.
      * @return the VngClientConnectionConfiguration object itself.
      */
@@ -72,7 +73,7 @@ public final class VngClientConnectionConfiguration extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -89,9 +90,9 @@ public final class VngClientConnectionConfiguration extends SubResource {
     }
 
     /**
-     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address
-     * space for P2S VpnClient.
-     * 
+     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address space
+     * for P2S VpnClient.
+     *
      * @return the vpnClientAddressPool value.
      */
     public AddressSpace vpnClientAddressPool() {
@@ -99,9 +100,9 @@ public final class VngClientConnectionConfiguration extends SubResource {
     }
 
     /**
-     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address
-     * space for P2S VpnClient.
-     * 
+     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address space
+     * for P2S VpnClient.
+     *
      * @param vpnClientAddressPool the vpnClientAddressPool value to set.
      * @return the VngClientConnectionConfiguration object itself.
      */
@@ -115,7 +116,7 @@ public final class VngClientConnectionConfiguration extends SubResource {
 
     /**
      * Get the virtualNetworkGatewayPolicyGroups property: List of references to virtualNetworkGatewayPolicyGroups.
-     * 
+     *
      * @return the virtualNetworkGatewayPolicyGroups value.
      */
     public List<SubResource> virtualNetworkGatewayPolicyGroups() {
@@ -124,7 +125,7 @@ public final class VngClientConnectionConfiguration extends SubResource {
 
     /**
      * Set the virtualNetworkGatewayPolicyGroups property: List of references to virtualNetworkGatewayPolicyGroups.
-     * 
+     *
      * @param virtualNetworkGatewayPolicyGroups the virtualNetworkGatewayPolicyGroups value to set.
      * @return the VngClientConnectionConfiguration object itself.
      */
@@ -139,7 +140,7 @@ public final class VngClientConnectionConfiguration extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the VngClientConnectionConfiguration resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -148,7 +149,7 @@ public final class VngClientConnectionConfiguration extends SubResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

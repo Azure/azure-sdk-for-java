@@ -117,7 +117,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -169,7 +169,7 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkVirtualApplianceName,
@@ -265,8 +265,10 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
     public SyncPoller<PollResult<InboundSecurityRuleInner>, InboundSecurityRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String networkVirtualApplianceName, String ruleCollectionName,
         InboundSecurityRuleInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, ruleCollectionName,
-            parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, ruleCollectionName, parameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -286,7 +288,8 @@ public final class InboundSecurityRuleOperationsClientImpl implements InboundSec
     public Mono<InboundSecurityRuleInner> createOrUpdateAsync(String resourceGroupName,
         String networkVirtualApplianceName, String ruleCollectionName, InboundSecurityRuleInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, networkVirtualApplianceName, ruleCollectionName, parameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

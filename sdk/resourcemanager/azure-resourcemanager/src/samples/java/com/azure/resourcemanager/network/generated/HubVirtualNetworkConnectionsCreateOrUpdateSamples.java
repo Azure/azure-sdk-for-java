@@ -19,8 +19,7 @@ import java.util.Arrays;
  */
 public final class HubVirtualNetworkConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * HubVirtualNetworkConnectionPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/HubVirtualNetworkConnectionPut.json
      */
     /**
      * Sample code: HubVirtualNetworkConnectionPut.
@@ -28,7 +27,10 @@ public final class HubVirtualNetworkConnectionsCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void hubVirtualNetworkConnectionPut(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getHubVirtualNetworkConnections()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getHubVirtualNetworkConnections()
             .createOrUpdate("rg1", "virtualHub1", "connection1", new HubVirtualNetworkConnectionInner()
                 .withRemoteVirtualNetwork(new SubResource().withId(
                     "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/SpokeVnet1"))

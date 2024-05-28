@@ -9,9 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class LoadBalancerOutboundRulesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/LoadBalancerOutboundRuleList.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LoadBalancerOutboundRuleList.json
      */
     /**
      * Sample code: LoadBalancerOutboundRuleList.
@@ -19,7 +17,10 @@ public final class LoadBalancerOutboundRulesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void loadBalancerOutboundRuleList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancerOutboundRules().list("testrg", "lb1",
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancerOutboundRules()
+            .list("testrg", "lb1", com.azure.core.util.Context.NONE);
     }
 }

@@ -45,9 +45,10 @@ import com.azure.resourcemanager.network.models.VirtualNetworkListUsageResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in VirtualNetworksClient.
@@ -66,7 +67,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Initializes an instance of VirtualNetworksClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualNetworksClientImpl(NetworkManagementClientImpl client) {
@@ -202,7 +203,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Deletes the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -229,7 +230,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -239,7 +240,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Deletes the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -267,7 +268,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, apiVersion,
@@ -276,7 +277,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Deletes the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -293,7 +294,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Deletes the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -313,7 +314,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Deletes the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -328,7 +329,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Deletes the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -345,7 +346,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Deletes the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -361,7 +362,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Deletes the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -378,7 +379,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Deletes the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -392,7 +393,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Deletes the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -407,7 +408,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets the specified virtual network by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param expand Expands referenced resources.
@@ -436,7 +437,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -446,7 +447,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets the specified virtual network by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param expand Expands referenced resources.
@@ -476,7 +477,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, apiVersion,
@@ -485,7 +486,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets the specified virtual network by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -502,7 +503,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets the specified virtual network by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param expand Expands referenced resources.
@@ -520,7 +521,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets the specified virtual network by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -536,7 +537,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -569,7 +570,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -579,7 +580,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -613,7 +614,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, apiVersion,
@@ -622,7 +623,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -642,7 +643,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -664,7 +665,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -681,7 +682,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -700,7 +701,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -718,7 +719,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -737,7 +738,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -754,7 +755,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -772,7 +773,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Updates a virtual network tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to update virtual network tags.
@@ -805,7 +806,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -815,7 +816,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Updates a virtual network tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to update virtual network tags.
@@ -849,7 +850,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, apiVersion,
@@ -858,7 +859,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Updates a virtual network tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to update virtual network tags.
@@ -876,7 +877,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Updates a virtual network tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to update virtual network tags.
@@ -894,7 +895,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Updates a virtual network tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to update virtual network tags.
@@ -910,7 +911,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all virtual networks in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all virtual networks in a subscription along with {@link PagedResponse} on successful completion of
@@ -926,7 +927,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -938,7 +939,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all virtual networks in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -956,7 +957,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -966,7 +967,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all virtual networks in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all virtual networks in a subscription as paginated response with {@link PagedFlux}.
@@ -978,7 +979,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all virtual networks in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -993,7 +994,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all virtual networks in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all virtual networks in a subscription as paginated response with {@link PagedIterable}.
@@ -1005,7 +1006,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all virtual networks in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1019,7 +1020,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all virtual networks in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1041,7 +1042,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1053,7 +1054,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all virtual networks in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1077,7 +1078,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1089,7 +1090,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all virtual networks in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1104,7 +1105,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all virtual networks in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1120,7 +1121,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all virtual networks in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1134,7 +1135,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets all virtual networks in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1149,7 +1150,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Checks whether a private IP address is available for use.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
@@ -1181,7 +1182,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkIpAddressAvailability(this.client.getEndpoint(), resourceGroupName,
@@ -1191,7 +1192,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Checks whether a private IP address is available for use.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
@@ -1224,7 +1225,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.checkIpAddressAvailability(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -1233,7 +1234,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Checks whether a private IP address is available for use.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
@@ -1251,7 +1252,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Checks whether a private IP address is available for use.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
@@ -1270,7 +1271,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Checks whether a private IP address is available for use.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
@@ -1288,7 +1289,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Lists usage stats.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1316,7 +1317,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listUsage(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
@@ -1328,7 +1329,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Lists usage stats.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -1357,7 +1358,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1369,7 +1370,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Lists usage stats.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1385,7 +1386,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Lists usage stats.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -1403,7 +1404,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Lists usage stats.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1419,7 +1420,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Lists usage stats.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -1437,7 +1438,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param top The max number of ip addresses to return.
@@ -1467,27 +1468,30 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
-            Mono<Response<Flux<ByteBuffer>>> mono
-                = service.listDdosProtectionStatus(this.client.getEndpoint(), resourceGroupName, virtualNetworkName,
-                    top, skipToken, apiVersion, this.client.getSubscriptionId(), accept, context).cache();
+            Mono<Response<Flux<ByteBuffer>>> mono = service
+                .listDdosProtectionStatus(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, top,
+                    skipToken, apiVersion, this.client.getSubscriptionId(), accept, context)
+                .cache();
             return Mono.zip(mono,
                 this.client
                     .<VirtualNetworkDdosProtectionStatusResult, VirtualNetworkDdosProtectionStatusResult>getLroResult(
                         mono, this.client.getHttpPipeline(), VirtualNetworkDdosProtectionStatusResult.class,
                         VirtualNetworkDdosProtectionStatusResult.class, this.client.getContext())
-                    .last().flatMap(this.client::getLroFinalResultOrError));
-        }).<PagedResponse<PublicIpDdosProtectionStatusResultInner>>map(
-            res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
-                res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null))
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError));
+        })
+            .<PagedResponse<PublicIpDdosProtectionStatusResultInner>>map(
+                res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
+                    res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param top The max number of ip addresses to return.
@@ -1518,26 +1522,28 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = service.listDdosProtectionStatus(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, top,
-                skipToken, apiVersion, this.client.getSubscriptionId(), accept, context).cache();
+        Mono<Response<Flux<ByteBuffer>>> mono = service
+            .listDdosProtectionStatus(this.client.getEndpoint(), resourceGroupName, virtualNetworkName, top, skipToken,
+                apiVersion, this.client.getSubscriptionId(), accept, context)
+            .cache();
         return Mono
             .zip(mono,
                 this.client
                     .<VirtualNetworkDdosProtectionStatusResult, VirtualNetworkDdosProtectionStatusResult>getLroResult(
                         mono, this.client.getHttpPipeline(), VirtualNetworkDdosProtectionStatusResult.class,
                         VirtualNetworkDdosProtectionStatusResult.class, context)
-                    .last().flatMap(this.client::getLroFinalResultOrError))
+                    .last()
+                    .flatMap(this.client::getLroFinalResultOrError))
             .map(res -> new PagedResponseBase<>(res.getT1().getRequest(), res.getT1().getStatusCode(),
                 res.getT1().getHeaders(), res.getT2().value(), res.getT2().nextLink(), null));
     }
 
     /**
      * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param top The max number of ip addresses to return.
@@ -1558,7 +1564,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1579,7 +1585,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param top The max number of ip addresses to return.
@@ -1600,7 +1606,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1620,7 +1626,7 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param top The max number of ip addresses to return.
@@ -1641,9 +1647,9 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1670,9 +1676,9 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1699,9 +1705,9 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1727,9 +1733,9 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1756,9 +1762,9 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1785,9 +1791,9 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1815,9 +1821,9 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1847,9 +1853,9 @@ public final class VirtualNetworksClientImpl implements InnerSupportsGet<Virtual
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

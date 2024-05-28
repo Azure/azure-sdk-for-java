@@ -11,9 +11,11 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ResourceNavigationLink;
 import com.azure.resourcemanager.network.models.ServiceAssociationLink;
 import com.azure.resourcemanager.network.models.ServiceEndpointPropertiesFormat;
+import com.azure.resourcemanager.network.models.SharingScope;
 import com.azure.resourcemanager.network.models.VirtualNetworkPrivateEndpointNetworkPolicies;
 import com.azure.resourcemanager.network.models.VirtualNetworkPrivateLinkServiceNetworkPolicies;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -106,8 +108,7 @@ public final class SubnetPropertiesFormatInner {
     private List<Delegation> delegations;
 
     /*
-     * A read-only string identifying the intention of use for this subnet based on delegations and other user-defined
-     * properties.
+     * A read-only string identifying the intention of use for this subnet based on delegations and other user-defined properties.
      */
     @JsonProperty(value = "purpose", access = JsonProperty.Access.WRITE_ONLY)
     private String purpose;
@@ -137,8 +138,13 @@ public final class SubnetPropertiesFormatInner {
     private List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations;
 
     /*
-     * Set this property to false to disable default outbound connectivity for all VMs in the subnet. This property can
-     * only be set at the time of subnet creation and cannot be updated for an existing subnet.
+     * Set this property to Tenant to allow sharing subnet with other subscriptions in your AAD tenant. This property can only be set if defaultOutboundAccess is set to false, both properties can only be set if subnet is empty.
+     */
+    @JsonProperty(value = "sharingScope")
+    private SharingScope sharingScope;
+
+    /*
+     * Set this property to false to disable default outbound connectivity for all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an existing subnet.
      */
     @JsonProperty(value = "defaultOutboundAccess")
     private Boolean defaultOutboundAccess;
@@ -151,7 +157,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the addressPrefix property: The address prefix for the subnet.
-     * 
+     *
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -160,7 +166,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Set the addressPrefix property: The address prefix for the subnet.
-     * 
+     *
      * @param addressPrefix the addressPrefix value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -171,7 +177,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the addressPrefixes property: List of address prefixes for the subnet.
-     * 
+     *
      * @return the addressPrefixes value.
      */
     public List<String> addressPrefixes() {
@@ -180,7 +186,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Set the addressPrefixes property: List of address prefixes for the subnet.
-     * 
+     *
      * @param addressPrefixes the addressPrefixes value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -191,7 +197,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the networkSecurityGroup property: The reference to the NetworkSecurityGroup resource.
-     * 
+     *
      * @return the networkSecurityGroup value.
      */
     public NetworkSecurityGroupInner networkSecurityGroup() {
@@ -200,7 +206,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Set the networkSecurityGroup property: The reference to the NetworkSecurityGroup resource.
-     * 
+     *
      * @param networkSecurityGroup the networkSecurityGroup value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -211,7 +217,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the routeTable property: The reference to the RouteTable resource.
-     * 
+     *
      * @return the routeTable value.
      */
     public RouteTableInner routeTable() {
@@ -220,7 +226,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Set the routeTable property: The reference to the RouteTable resource.
-     * 
+     *
      * @param routeTable the routeTable value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -231,7 +237,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the natGateway property: Nat gateway associated with this subnet.
-     * 
+     *
      * @return the natGateway value.
      */
     public SubResource natGateway() {
@@ -240,7 +246,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Set the natGateway property: Nat gateway associated with this subnet.
-     * 
+     *
      * @param natGateway the natGateway value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -251,7 +257,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the serviceEndpoints property: An array of service endpoints.
-     * 
+     *
      * @return the serviceEndpoints value.
      */
     public List<ServiceEndpointPropertiesFormat> serviceEndpoints() {
@@ -260,7 +266,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Set the serviceEndpoints property: An array of service endpoints.
-     * 
+     *
      * @param serviceEndpoints the serviceEndpoints value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -271,7 +277,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the serviceEndpointPolicies property: An array of service endpoint policies.
-     * 
+     *
      * @return the serviceEndpointPolicies value.
      */
     public List<ServiceEndpointPolicyInner> serviceEndpointPolicies() {
@@ -280,7 +286,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Set the serviceEndpointPolicies property: An array of service endpoint policies.
-     * 
+     *
      * @param serviceEndpointPolicies the serviceEndpointPolicies value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -292,7 +298,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the privateEndpoints property: An array of references to private endpoints.
-     * 
+     *
      * @return the privateEndpoints value.
      */
     public List<PrivateEndpointInner> privateEndpoints() {
@@ -302,7 +308,7 @@ public final class SubnetPropertiesFormatInner {
     /**
      * Get the ipConfigurations property: An array of references to the network interface IP configurations using
      * subnet.
-     * 
+     *
      * @return the ipConfigurations value.
      */
     public List<IpConfigurationInner> ipConfigurations() {
@@ -311,7 +317,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the ipConfigurationProfiles property: Array of IP configuration profiles which reference this subnet.
-     * 
+     *
      * @return the ipConfigurationProfiles value.
      */
     public List<IpConfigurationProfileInner> ipConfigurationProfiles() {
@@ -320,7 +326,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the ipAllocations property: Array of IpAllocation which reference this subnet.
-     * 
+     *
      * @return the ipAllocations value.
      */
     public List<SubResource> ipAllocations() {
@@ -329,7 +335,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Set the ipAllocations property: Array of IpAllocation which reference this subnet.
-     * 
+     *
      * @param ipAllocations the ipAllocations value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -340,7 +346,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the resourceNavigationLinks property: An array of references to the external resources using subnet.
-     * 
+     *
      * @return the resourceNavigationLinks value.
      */
     public List<ResourceNavigationLink> resourceNavigationLinks() {
@@ -349,7 +355,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the serviceAssociationLinks property: An array of references to services injecting into this subnet.
-     * 
+     *
      * @return the serviceAssociationLinks value.
      */
     public List<ServiceAssociationLink> serviceAssociationLinks() {
@@ -358,7 +364,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the delegations property: An array of references to the delegations on the subnet.
-     * 
+     *
      * @return the delegations value.
      */
     public List<Delegation> delegations() {
@@ -367,7 +373,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Set the delegations property: An array of references to the delegations on the subnet.
-     * 
+     *
      * @param delegations the delegations value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -379,7 +385,7 @@ public final class SubnetPropertiesFormatInner {
     /**
      * Get the purpose property: A read-only string identifying the intention of use for this subnet based on
      * delegations and other user-defined properties.
-     * 
+     *
      * @return the purpose value.
      */
     public String purpose() {
@@ -388,7 +394,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the provisioningState property: The provisioning state of the subnet resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -396,9 +402,9 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Get the privateEndpointNetworkPolicies property: Enable or Disable apply network policies on private end point
-     * in the subnet.
-     * 
+     * Get the privateEndpointNetworkPolicies property: Enable or Disable apply network policies on private end point in
+     * the subnet.
+     *
      * @return the privateEndpointNetworkPolicies value.
      */
     public VirtualNetworkPrivateEndpointNetworkPolicies privateEndpointNetworkPolicies() {
@@ -406,9 +412,9 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Set the privateEndpointNetworkPolicies property: Enable or Disable apply network policies on private end point
-     * in the subnet.
-     * 
+     * Set the privateEndpointNetworkPolicies property: Enable or Disable apply network policies on private end point in
+     * the subnet.
+     *
      * @param privateEndpointNetworkPolicies the privateEndpointNetworkPolicies value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -421,7 +427,7 @@ public final class SubnetPropertiesFormatInner {
     /**
      * Get the privateLinkServiceNetworkPolicies property: Enable or Disable apply network policies on private link
      * service in the subnet.
-     * 
+     *
      * @return the privateLinkServiceNetworkPolicies value.
      */
     public VirtualNetworkPrivateLinkServiceNetworkPolicies privateLinkServiceNetworkPolicies() {
@@ -431,7 +437,7 @@ public final class SubnetPropertiesFormatInner {
     /**
      * Set the privateLinkServiceNetworkPolicies property: Enable or Disable apply network policies on private link
      * service in the subnet.
-     * 
+     *
      * @param privateLinkServiceNetworkPolicies the privateLinkServiceNetworkPolicies value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -444,7 +450,7 @@ public final class SubnetPropertiesFormatInner {
     /**
      * Get the applicationGatewayIpConfigurations property: Application gateway IP configurations of virtual network
      * resource.
-     * 
+     *
      * @return the applicationGatewayIpConfigurations value.
      */
     public List<ApplicationGatewayIpConfigurationInner> applicationGatewayIpConfigurations() {
@@ -454,7 +460,7 @@ public final class SubnetPropertiesFormatInner {
     /**
      * Set the applicationGatewayIpConfigurations property: Application gateway IP configurations of virtual network
      * resource.
-     * 
+     *
      * @param applicationGatewayIpConfigurations the applicationGatewayIpConfigurations value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -465,10 +471,34 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
+     * Get the sharingScope property: Set this property to Tenant to allow sharing subnet with other subscriptions in
+     * your AAD tenant. This property can only be set if defaultOutboundAccess is set to false, both properties can only
+     * be set if subnet is empty.
+     *
+     * @return the sharingScope value.
+     */
+    public SharingScope sharingScope() {
+        return this.sharingScope;
+    }
+
+    /**
+     * Set the sharingScope property: Set this property to Tenant to allow sharing subnet with other subscriptions in
+     * your AAD tenant. This property can only be set if defaultOutboundAccess is set to false, both properties can only
+     * be set if subnet is empty.
+     *
+     * @param sharingScope the sharingScope value to set.
+     * @return the SubnetPropertiesFormatInner object itself.
+     */
+    public SubnetPropertiesFormatInner withSharingScope(SharingScope sharingScope) {
+        this.sharingScope = sharingScope;
+        return this;
+    }
+
+    /**
      * Get the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
      * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
      * existing subnet.
-     * 
+     *
      * @return the defaultOutboundAccess value.
      */
     public Boolean defaultOutboundAccess() {
@@ -479,7 +509,7 @@ public final class SubnetPropertiesFormatInner {
      * Set the defaultOutboundAccess property: Set this property to false to disable default outbound connectivity for
      * all VMs in the subnet. This property can only be set at the time of subnet creation and cannot be updated for an
      * existing subnet.
-     * 
+     *
      * @param defaultOutboundAccess the defaultOutboundAccess value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -490,7 +520,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

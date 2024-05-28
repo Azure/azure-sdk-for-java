@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -26,15 +27,13 @@ public final class VpnClientParameters {
     private AuthenticationMethod authenticationMethod;
 
     /*
-     * The public certificate data for the radius server authentication certificate as a Base-64 encoded string.
-     * Required only if external radius authentication has been configured with EAPTLS authentication.
+     * The public certificate data for the radius server authentication certificate as a Base-64 encoded string. Required only if external radius authentication has been configured with EAPTLS authentication.
      */
     @JsonProperty(value = "radiusServerAuthCertificate")
     private String radiusServerAuthCertificate;
 
     /*
-     * A list of client root certificates public certificate data encoded as Base-64 strings. Optional parameter for
-     * external radius based authentication with EAPTLS.
+     * A list of client root certificates public certificate data encoded as Base-64 strings. Optional parameter for external radius based authentication with EAPTLS.
      */
     @JsonProperty(value = "clientRootCertificates")
     private List<String> clientRootCertificates;
@@ -47,7 +46,7 @@ public final class VpnClientParameters {
 
     /**
      * Get the processorArchitecture property: VPN client Processor Architecture.
-     * 
+     *
      * @return the processorArchitecture value.
      */
     public ProcessorArchitecture processorArchitecture() {
@@ -56,7 +55,7 @@ public final class VpnClientParameters {
 
     /**
      * Set the processorArchitecture property: VPN client Processor Architecture.
-     * 
+     *
      * @param processorArchitecture the processorArchitecture value to set.
      * @return the VpnClientParameters object itself.
      */
@@ -67,7 +66,7 @@ public final class VpnClientParameters {
 
     /**
      * Get the authenticationMethod property: VPN client authentication method.
-     * 
+     *
      * @return the authenticationMethod value.
      */
     public AuthenticationMethod authenticationMethod() {
@@ -76,7 +75,7 @@ public final class VpnClientParameters {
 
     /**
      * Set the authenticationMethod property: VPN client authentication method.
-     * 
+     *
      * @param authenticationMethod the authenticationMethod value to set.
      * @return the VpnClientParameters object itself.
      */
@@ -87,9 +86,9 @@ public final class VpnClientParameters {
 
     /**
      * Get the radiusServerAuthCertificate property: The public certificate data for the radius server authentication
-     * certificate as a Base-64 encoded string. Required only if external radius authentication has been configured
-     * with EAPTLS authentication.
-     * 
+     * certificate as a Base-64 encoded string. Required only if external radius authentication has been configured with
+     * EAPTLS authentication.
+     *
      * @return the radiusServerAuthCertificate value.
      */
     public String radiusServerAuthCertificate() {
@@ -98,9 +97,9 @@ public final class VpnClientParameters {
 
     /**
      * Set the radiusServerAuthCertificate property: The public certificate data for the radius server authentication
-     * certificate as a Base-64 encoded string. Required only if external radius authentication has been configured
-     * with EAPTLS authentication.
-     * 
+     * certificate as a Base-64 encoded string. Required only if external radius authentication has been configured with
+     * EAPTLS authentication.
+     *
      * @param radiusServerAuthCertificate the radiusServerAuthCertificate value to set.
      * @return the VpnClientParameters object itself.
      */
@@ -112,7 +111,7 @@ public final class VpnClientParameters {
     /**
      * Get the clientRootCertificates property: A list of client root certificates public certificate data encoded as
      * Base-64 strings. Optional parameter for external radius based authentication with EAPTLS.
-     * 
+     *
      * @return the clientRootCertificates value.
      */
     public List<String> clientRootCertificates() {
@@ -122,7 +121,7 @@ public final class VpnClientParameters {
     /**
      * Set the clientRootCertificates property: A list of client root certificates public certificate data encoded as
      * Base-64 strings. Optional parameter for external radius based authentication with EAPTLS.
-     * 
+     *
      * @param clientRootCertificates the clientRootCertificates value to set.
      * @return the VpnClientParameters object itself.
      */
@@ -133,7 +132,7 @@ public final class VpnClientParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

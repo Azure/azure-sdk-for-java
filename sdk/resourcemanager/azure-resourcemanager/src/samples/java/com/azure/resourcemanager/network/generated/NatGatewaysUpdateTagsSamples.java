@@ -13,8 +13,7 @@ import java.util.Map;
  */
 public final class NatGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NatGatewayUpdateTags.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NatGatewayUpdateTags.json
      */
     /**
      * Sample code: Update nat gateway tags.
@@ -22,8 +21,12 @@ public final class NatGatewaysUpdateTagsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateNatGatewayTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNatGateways().updateTagsWithResponse("rg1", "test-natGateway",
-            new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNatGateways()
+            .updateTagsWithResponse("rg1", "test-natGateway",
+                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

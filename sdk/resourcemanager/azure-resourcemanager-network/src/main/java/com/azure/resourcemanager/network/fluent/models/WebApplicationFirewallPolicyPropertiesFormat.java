@@ -13,6 +13,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallCustomRule;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicyResourceState;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -76,7 +77,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
 
     /**
      * Get the policySettings property: The PolicySettings for policy.
-     * 
+     *
      * @return the policySettings value.
      */
     public PolicySettings policySettings() {
@@ -85,7 +86,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
 
     /**
      * Set the policySettings property: The PolicySettings for policy.
-     * 
+     *
      * @param policySettings the policySettings value to set.
      * @return the WebApplicationFirewallPolicyPropertiesFormat object itself.
      */
@@ -96,7 +97,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
 
     /**
      * Get the customRules property: The custom rules inside the policy.
-     * 
+     *
      * @return the customRules value.
      */
     public List<WebApplicationFirewallCustomRule> customRules() {
@@ -105,7 +106,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
 
     /**
      * Set the customRules property: The custom rules inside the policy.
-     * 
+     *
      * @param customRules the customRules value to set.
      * @return the WebApplicationFirewallPolicyPropertiesFormat object itself.
      */
@@ -117,7 +118,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
 
     /**
      * Get the applicationGateways property: A collection of references to application gateways.
-     * 
+     *
      * @return the applicationGateways value.
      */
     public List<ApplicationGatewayInner> applicationGateways() {
@@ -126,7 +127,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the web application firewall policy resource.
-     * 
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -135,7 +136,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
 
     /**
      * Get the resourceState property: Resource status of the policy.
-     * 
+     *
      * @return the resourceState value.
      */
     public WebApplicationFirewallPolicyResourceState resourceState() {
@@ -144,7 +145,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
 
     /**
      * Get the managedRules property: Describes the managedRules structure.
-     * 
+     *
      * @return the managedRules value.
      */
     public ManagedRulesDefinition managedRules() {
@@ -153,7 +154,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
 
     /**
      * Set the managedRules property: Describes the managedRules structure.
-     * 
+     *
      * @param managedRules the managedRules value to set.
      * @return the WebApplicationFirewallPolicyPropertiesFormat object itself.
      */
@@ -164,7 +165,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
 
     /**
      * Get the httpListeners property: A collection of references to application gateway http listeners.
-     * 
+     *
      * @return the httpListeners value.
      */
     public List<SubResource> httpListeners() {
@@ -173,7 +174,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
 
     /**
      * Get the pathBasedRules property: A collection of references to application gateway path rules.
-     * 
+     *
      * @return the pathBasedRules value.
      */
     public List<SubResource> pathBasedRules() {
@@ -182,7 +183,7 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -196,8 +197,9 @@ public final class WebApplicationFirewallPolicyPropertiesFormat {
             applicationGateways().forEach(e -> e.validate());
         }
         if (managedRules() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property managedRules in model WebApplicationFirewallPolicyPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property managedRules in model WebApplicationFirewallPolicyPropertiesFormat"));
         } else {
             managedRules().validate();
         }

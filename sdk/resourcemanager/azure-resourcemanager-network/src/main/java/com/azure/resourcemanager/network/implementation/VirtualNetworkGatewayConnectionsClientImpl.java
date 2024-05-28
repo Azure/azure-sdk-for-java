@@ -44,9 +44,10 @@ import com.azure.resourcemanager.network.models.VpnPacketCaptureStartParameters;
 import com.azure.resourcemanager.network.models.VpnPacketCaptureStopParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in VirtualNetworkGatewayConnectionsClient.
@@ -66,7 +67,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Initializes an instance of VirtualNetworkGatewayConnectionsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     VirtualNetworkGatewayConnectionsClientImpl(NetworkManagementClientImpl client) {
@@ -76,8 +77,8 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientVirtualNetworkGatewayConnections to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for NetworkManagementClientVirtualNetworkGatewayConnections to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
@@ -218,7 +219,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
@@ -252,7 +253,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
@@ -263,7 +264,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
@@ -298,7 +299,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayConnectionName,
@@ -307,7 +308,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
@@ -329,7 +330,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
@@ -353,7 +354,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
@@ -372,7 +373,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
@@ -393,7 +394,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
@@ -411,7 +412,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
@@ -425,12 +426,13 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     private Mono<VirtualNetworkGatewayConnectionInner> createOrUpdateAsync(String resourceGroupName,
         String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnectionInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
@@ -447,7 +449,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
@@ -465,7 +467,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Gets the specified virtual network gateway connection by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -493,7 +495,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -503,7 +505,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Gets the specified virtual network gateway connection by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param context The context to associate with this operation.
@@ -532,7 +534,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -541,7 +543,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Gets the specified virtual network gateway connection by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -559,7 +561,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Gets the specified virtual network gateway connection by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param context The context to associate with this operation.
@@ -577,7 +579,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Gets the specified virtual network gateway connection by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -594,7 +596,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -621,7 +623,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
@@ -631,7 +633,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param context The context to associate with this operation.
@@ -659,7 +661,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayConnectionName,
@@ -668,7 +670,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -687,7 +689,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param context The context to associate with this operation.
@@ -708,7 +710,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -724,7 +726,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param context The context to associate with this operation.
@@ -741,7 +743,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -757,7 +759,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param context The context to associate with this operation.
@@ -775,7 +777,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -789,7 +791,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param context The context to associate with this operation.
@@ -804,7 +806,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -838,7 +840,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
@@ -849,7 +851,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -884,7 +886,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayConnectionName,
@@ -893,7 +895,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -915,7 +917,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -939,7 +941,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -957,7 +959,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -977,7 +979,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -995,7 +997,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -1014,7 +1016,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -1031,7 +1033,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -1050,7 +1052,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
      * for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
      * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
@@ -1085,7 +1087,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.setSharedKey(this.client.getEndpoint(), resourceGroupName,
@@ -1097,7 +1099,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
      * for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
      * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
@@ -1133,7 +1135,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.setSharedKey(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayConnectionName,
@@ -1143,7 +1145,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
      * for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
      * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
@@ -1166,7 +1168,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
      * for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
      * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
@@ -1191,7 +1193,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
      * for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
      * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
@@ -1211,7 +1213,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
      * for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
      * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
@@ -1233,7 +1235,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
      * for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
      * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
@@ -1253,7 +1255,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
      * for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
      * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
@@ -1268,13 +1270,14 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     private Mono<ConnectionSharedKeyInner> setSharedKeyAsync(String resourceGroupName,
         String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters, Context context) {
         return beginSetSharedKeyAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
      * for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
      * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
@@ -1293,7 +1296,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
      * for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
      * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
@@ -1313,7 +1316,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual
      * network gateway connection shared key through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection shared key name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1341,7 +1344,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getSharedKey(this.client.getEndpoint(), resourceGroupName,
@@ -1352,7 +1355,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual
      * network gateway connection shared key through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection shared key name.
      * @param context The context to associate with this operation.
@@ -1381,7 +1384,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getSharedKey(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayConnectionName,
@@ -1391,7 +1394,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual
      * network gateway connection shared key through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection shared key name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1409,7 +1412,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual
      * network gateway connection shared key through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection shared key name.
      * @param context The context to associate with this operation.
@@ -1427,7 +1430,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual
      * network gateway connection shared key through Network resource provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection shared key name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1444,7 +1447,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections
      * created.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1467,7 +1470,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
@@ -1480,7 +1483,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections
      * created.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1504,7 +1507,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1517,7 +1520,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections
      * created.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1534,7 +1537,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections
      * created.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1553,7 +1556,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections
      * created.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1569,7 +1572,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     /**
      * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections
      * created.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1588,7 +1591,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
      * key for passed virtual network gateway connection in the specified resource group through Network resource
      * provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
      * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
@@ -1623,7 +1626,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resetSharedKey(this.client.getEndpoint(), resourceGroupName,
@@ -1636,7 +1639,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
      * key for passed virtual network gateway connection in the specified resource group through Network resource
      * provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
      * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
@@ -1672,7 +1675,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resetSharedKey(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayConnectionName,
@@ -1683,7 +1686,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
      * key for passed virtual network gateway connection in the specified resource group through Network resource
      * provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
      * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
@@ -1708,7 +1711,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
      * key for passed virtual network gateway connection in the specified resource group through Network resource
      * provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
      * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
@@ -1735,7 +1738,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
      * key for passed virtual network gateway connection in the specified resource group through Network resource
      * provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
      * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
@@ -1757,7 +1760,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
      * key for passed virtual network gateway connection in the specified resource group through Network resource
      * provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
      * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
@@ -1781,7 +1784,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
      * key for passed virtual network gateway connection in the specified resource group through Network resource
      * provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
      * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
@@ -1802,7 +1805,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
      * key for passed virtual network gateway connection in the specified resource group through Network resource
      * provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
      * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
@@ -1817,14 +1820,15 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     private Mono<ConnectionResetSharedKeyInner> resetSharedKeyAsync(String resourceGroupName,
         String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters, Context context) {
         return beginResetSharedKeyAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
      * key for passed virtual network gateway connection in the specified resource group through Network resource
      * provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
      * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
@@ -1844,7 +1848,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
      * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
      * key for passed virtual network gateway connection in the specified resource group through Network resource
      * provider.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
      * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
@@ -1863,7 +1867,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
@@ -1895,7 +1899,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.startPacketCapture(this.client.getEndpoint(), resourceGroupName,
@@ -1906,7 +1910,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
@@ -1939,7 +1943,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.startPacketCapture(this.client.getEndpoint(), resourceGroupName,
@@ -1949,7 +1953,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
@@ -1970,7 +1974,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1990,7 +1994,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
@@ -2013,7 +2017,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2031,7 +2035,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
@@ -2052,7 +2056,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
@@ -2071,7 +2075,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2088,7 +2092,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
@@ -2103,12 +2107,13 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     private Mono<String> startPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName,
         VpnPacketCaptureStartParameters parameters, Context context) {
         return beginStartPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2124,7 +2129,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Starts packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to start packet capture on gateway
@@ -2144,7 +2149,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
@@ -2178,7 +2183,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stopPacketCapture(this.client.getEndpoint(), resourceGroupName,
@@ -2189,7 +2194,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
@@ -2224,7 +2229,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.stopPacketCapture(this.client.getEndpoint(), resourceGroupName,
@@ -2234,7 +2239,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
@@ -2255,7 +2260,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
@@ -2278,7 +2283,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
@@ -2297,7 +2302,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
@@ -2318,7 +2323,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
@@ -2337,7 +2342,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
@@ -2352,12 +2357,13 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
     private Mono<String> stopPacketCaptureAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName,
         VpnPacketCaptureStopParameters parameters, Context context) {
         return beginStopPacketCaptureAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
@@ -2375,7 +2381,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param parameters Virtual network gateway packet capture parameters supplied to stop packet capture on gateway
@@ -2395,7 +2401,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2422,7 +2428,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getIkeSas(this.client.getEndpoint(), resourceGroupName,
@@ -2432,7 +2438,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param context The context to associate with this operation.
@@ -2460,7 +2466,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getIkeSas(this.client.getEndpoint(), resourceGroupName, virtualNetworkGatewayConnectionName,
@@ -2469,7 +2475,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2488,7 +2494,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param context The context to associate with this operation.
@@ -2509,7 +2515,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2525,7 +2531,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param context The context to associate with this operation.
@@ -2543,7 +2549,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2559,7 +2565,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param context The context to associate with this operation.
@@ -2577,7 +2583,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2592,7 +2598,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Lists IKE Security Associations for the virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param context The context to associate with this operation.
@@ -2608,7 +2614,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Resets the virtual network gateway connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2635,7 +2641,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resetConnection(this.client.getEndpoint(), resourceGroupName,
@@ -2645,7 +2651,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Resets the virtual network gateway connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param context The context to associate with this operation.
@@ -2673,7 +2679,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resetConnection(this.client.getEndpoint(), resourceGroupName,
@@ -2682,7 +2688,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Resets the virtual network gateway connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2701,7 +2707,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Resets the virtual network gateway connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param context The context to associate with this operation.
@@ -2722,7 +2728,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Resets the virtual network gateway connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2738,7 +2744,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Resets the virtual network gateway connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param context The context to associate with this operation.
@@ -2756,7 +2762,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Resets the virtual network gateway connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2772,7 +2778,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Resets the virtual network gateway connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param context The context to associate with this operation.
@@ -2790,7 +2796,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Resets the virtual network gateway connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2804,7 +2810,7 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Resets the virtual network gateway connection specified.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param context The context to associate with this operation.
@@ -2819,9 +2825,9 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2847,9 +2853,9 @@ public final class VirtualNetworkGatewayConnectionsClientImpl
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
