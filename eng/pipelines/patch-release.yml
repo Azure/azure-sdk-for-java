@@ -4,16 +4,100 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
     artifacts:
-    - name: azure-sdk-template
+    - name: azure-containers-containerregistry
       groupId: com.azure
-      safeName: azuresdktemplate
-      ServiceDirectory: template
-    - name: azure-sdk-template-two
+      safeName: azurecontainerscontainerregistry
+      ServiceDirectory: containerregistry
+    - name: azure-ai-formrecognizer
       groupId: com.azure
-      safeName: azuresdktemplatetwo
-      ServiceDirectory: template
-    - name: azure-sdk-template-three
+      safeName: azureaiformrecognizer
+      ServiceDirectory: formrecognizer
+    - name: azure-security-confidentialledger
       groupId: com.azure
-      safeName: azuresdktemplatethree
-      ServiceDirectory: template
+      safeName: azuresecurityconfidentialledger
+      ServiceDirectory: confidentialledger
+    - name: azure-messaging-webpubsub
+      groupId: com.azure
+      safeName: azuremessagingwebpubsub
+      ServiceDirectory: webpubsub
+    - name: azure-digitaltwins-core
+      groupId: com.azure
+      safeName: azuredigitaltwinscore
+      ServiceDirectory: digitaltwins
+    - name: azure-security-attestation
+      groupId: com.azure
+      safeName: azuresecurityattestation
+      ServiceDirectory: attestation
+    - name: azure-communication-phonenumbers
+      groupId: com.azure
+      safeName: azurecommunicationphonenumbers
+      ServiceDirectory: communication
+    - name: azure-iot-deviceupdate
+      groupId: com.azure
+      safeName: azureiotdeviceupdate
+      ServiceDirectory: deviceupdate
+    - name: azure-ai-textanalytics
+      groupId: com.azure
+      safeName: azureaitextanalytics
+      ServiceDirectory: textanalytics
+    - name: azure-communication-jobrouter
+      groupId: com.azure
+      safeName: azurecommunicationjobrouterclient
+      ServiceDirectory: communication
+    - name: azure-identity-extensions
+      groupId: com.azure
+      safeName: azureidentityextensions
+      ServiceDirectory: identity
+    - name: azure-mixedreality-authentication
+      groupId: com.azure
+      safeName: azuremixedrealityauthentication
+      ServiceDirectory: mixedreality
+    - name: azure-mixedreality-remoterendering
+      groupId: com.azure
+      safeName: azuremixedrealityremoterendering
+      ServiceDirectory: remoterendering
+    - name: azure-messaging-webpubsub-client
+      groupId: com.azure
+      safeName: azuremessagingwebpubsubclient
+      ServiceDirectory: webpubsub
+    - name: azure-search-documents
+      groupId: com.azure
+      safeName: azuresearch
+      ServiceDirectory: search
+    - name: azure-communication-common
+      groupId: com.azure
+      safeName: azurecommunicationcommon
+      ServiceDirectory: communication
+    - name: azure-developer-loadtesting
+      groupId: com.azure
+      safeName: azuredeveloperloadtesting
+      ServiceDirectory: loadtesting
+    - name: azure-communication-sms
+      groupId: com.azure
+      safeName: azurecommunicationsms
+      ServiceDirectory: communication
+    - name: azure-communication-callautomation
+      groupId: com.azure
+      safeName: azurecommunicationcallautomation
+      ServiceDirectory: communication
+    - name: azure-ai-contentsafety
+      groupId: com.azure
+      safeName: azureaicontentsafety
+      ServiceDirectory: contentsafety
+    - name: azure-communication-messages
+      groupId: com.azure
+      safeName: azurecommunicationmessages
+      ServiceDirectory: communication
+    - name: azure-data-tables
+      groupId: com.azure
+      safeName: azuredatatables
+      ServiceDirectory: tables
+    - name: azure-communication-email
+      groupId: com.azure
+      safeName: azurecommunicationemail
+      ServiceDirectory: communication
+    - name: azure-communication-chat
+      groupId: com.azure
+      safeName: azurecommunicationchatclient
+      ServiceDirectory: communication
 
