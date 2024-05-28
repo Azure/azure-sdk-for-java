@@ -8,6 +8,7 @@ import com.azure.ai.metricsadvisor.administration.models.DataSourceAuthenticatio
 import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -26,6 +27,7 @@ public class DatasourceCredentialTest extends DatasourceCredentialTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     void createSqlConnectionString(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> credentialId = new AtomicReference<>();
         try {
@@ -51,6 +53,7 @@ public class DatasourceCredentialTest extends DatasourceCredentialTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     void createDataLakeGen2SharedKey(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> credentialId = new AtomicReference<>();
         try {
@@ -76,6 +79,7 @@ public class DatasourceCredentialTest extends DatasourceCredentialTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     void createServicePrincipal(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> credentialId = new AtomicReference<>();
         try {
@@ -124,6 +128,7 @@ public class DatasourceCredentialTest extends DatasourceCredentialTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     void testListDataSourceCredentials(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         AtomicReference<List<String>> createdCredentialIdList = new AtomicReference<>();
         try {
