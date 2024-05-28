@@ -5,39 +5,31 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Request contract for compose operation.
- */
+/** Request contract for compose operation. */
 @Fluent
-public final class ComposeRequest implements JsonSerializable<ComposeRequest> {
+public final class ComposeRequest {
     /*
      * List of model ids to compose.
      */
+    @JsonProperty(value = "modelIds", required = true)
     private List<UUID> modelIds;
 
     /*
      * Optional user defined model name (max length: 1024).
      */
+    @JsonProperty(value = "modelName")
     private String modelName;
 
-    /**
-     * Creates an instance of ComposeRequest class.
-     */
-    public ComposeRequest() {
-    }
+    /** Creates an instance of ComposeRequest class. */
+    public ComposeRequest() {}
 
     /**
      * Get the modelIds property: List of model ids to compose.
-     * 
+     *
      * @return the modelIds value.
      */
     public List<UUID> getModelIds() {
@@ -46,7 +38,7 @@ public final class ComposeRequest implements JsonSerializable<ComposeRequest> {
 
     /**
      * Set the modelIds property: List of model ids to compose.
-     * 
+     *
      * @param modelIds the modelIds value to set.
      * @return the ComposeRequest object itself.
      */
@@ -57,7 +49,7 @@ public final class ComposeRequest implements JsonSerializable<ComposeRequest> {
 
     /**
      * Get the modelName property: Optional user defined model name (max length: 1024).
-     * 
+     *
      * @return the modelName value.
      */
     public String getModelName() {
@@ -66,52 +58,12 @@ public final class ComposeRequest implements JsonSerializable<ComposeRequest> {
 
     /**
      * Set the modelName property: Optional user defined model name (max length: 1024).
-     * 
+     *
      * @param modelName the modelName value to set.
      * @return the ComposeRequest object itself.
      */
     public ComposeRequest setModelName(String modelName) {
         this.modelName = modelName;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("modelIds", this.modelIds,
-            (writer, element) -> writer.writeString(Objects.toString(element, null)));
-        jsonWriter.writeStringField("modelName", this.modelName);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ComposeRequest from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ComposeRequest if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ComposeRequest.
-     */
-    public static ComposeRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ComposeRequest deserializedComposeRequest = new ComposeRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("modelIds".equals(fieldName)) {
-                    List<UUID> modelIds = reader.readArray(
-                        reader1 -> reader1.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
-                    deserializedComposeRequest.modelIds = modelIds;
-                } else if ("modelName".equals(fieldName)) {
-                    deserializedComposeRequest.modelName = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedComposeRequest;
-        });
     }
 }

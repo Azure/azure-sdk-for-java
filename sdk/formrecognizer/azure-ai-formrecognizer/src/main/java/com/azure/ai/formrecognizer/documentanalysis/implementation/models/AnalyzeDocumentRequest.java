@@ -6,36 +6,29 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Document analysis parameters.
- */
+/** Document analysis parameters. */
 @Fluent
-public final class AnalyzeDocumentRequest implements JsonSerializable<AnalyzeDocumentRequest> {
+public final class AnalyzeDocumentRequest {
     /*
-     * Document URL to analyze. Either urlSource or base64Source must be specified.
+     * Document URL to analyze.  Either urlSource or base64Source must be specified.
      */
+    @JsonProperty(value = "urlSource")
     private String urlSource;
 
     /*
-     * Base64 encoding of the document to analyze. Either urlSource or base64Source must be specified.
+     * Base64 encoding of the document to analyze.  Either urlSource or base64Source must be specified.
      */
+    @JsonProperty(value = "base64Source")
     private byte[] base64Source;
 
-    /**
-     * Creates an instance of AnalyzeDocumentRequest class.
-     */
-    public AnalyzeDocumentRequest() {
-    }
+    /** Creates an instance of AnalyzeDocumentRequest class. */
+    public AnalyzeDocumentRequest() {}
 
     /**
      * Get the urlSource property: Document URL to analyze. Either urlSource or base64Source must be specified.
-     * 
+     *
      * @return the urlSource value.
      */
     public String getUrlSource() {
@@ -44,7 +37,7 @@ public final class AnalyzeDocumentRequest implements JsonSerializable<AnalyzeDoc
 
     /**
      * Set the urlSource property: Document URL to analyze. Either urlSource or base64Source must be specified.
-     * 
+     *
      * @param urlSource the urlSource value to set.
      * @return the AnalyzeDocumentRequest object itself.
      */
@@ -54,9 +47,9 @@ public final class AnalyzeDocumentRequest implements JsonSerializable<AnalyzeDoc
     }
 
     /**
-     * Get the base64Source property: Base64 encoding of the document to analyze. Either urlSource or base64Source
-     * must be specified.
-     * 
+     * Get the base64Source property: Base64 encoding of the document to analyze. Either urlSource or base64Source must
+     * be specified.
+     *
      * @return the base64Source value.
      */
     public byte[] getBase64Source() {
@@ -64,50 +57,14 @@ public final class AnalyzeDocumentRequest implements JsonSerializable<AnalyzeDoc
     }
 
     /**
-     * Set the base64Source property: Base64 encoding of the document to analyze. Either urlSource or base64Source
-     * must be specified.
-     * 
+     * Set the base64Source property: Base64 encoding of the document to analyze. Either urlSource or base64Source must
+     * be specified.
+     *
      * @param base64Source the base64Source value to set.
      * @return the AnalyzeDocumentRequest object itself.
      */
     public AnalyzeDocumentRequest setBase64Source(byte[] base64Source) {
         this.base64Source = CoreUtils.clone(base64Source);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("urlSource", this.urlSource);
-        jsonWriter.writeBinaryField("base64Source", this.base64Source);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AnalyzeDocumentRequest from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeDocumentRequest if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AnalyzeDocumentRequest.
-     */
-    public static AnalyzeDocumentRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AnalyzeDocumentRequest deserializedAnalyzeDocumentRequest = new AnalyzeDocumentRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("urlSource".equals(fieldName)) {
-                    deserializedAnalyzeDocumentRequest.urlSource = reader.getString();
-                } else if ("base64Source".equals(fieldName)) {
-                    deserializedAnalyzeDocumentRequest.base64Source = reader.getBinary();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAnalyzeDocumentRequest;
-        });
     }
 }

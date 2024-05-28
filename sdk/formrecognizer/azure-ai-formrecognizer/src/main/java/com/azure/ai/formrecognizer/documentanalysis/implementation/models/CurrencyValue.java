@@ -4,45 +4,44 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Currency field value.
- */
-@Fluent
-public final class CurrencyValue implements JsonSerializable<CurrencyValue> {
+/** Currency field value. */
+@Immutable
+public final class CurrencyValue {
     /*
      * Currency amount.
      */
-    private final double amount;
+    @JsonProperty(value = "amount", required = true)
+    private double amount;
 
     /*
      * Currency symbol label, if any.
      */
+    @JsonProperty(value = "currencySymbol")
     private String currencySymbol;
 
     /*
      * Resolved currency code (ISO 4217), if any.
      */
+    @JsonProperty(value = "currencyCode")
     private String currencyCode;
 
     /**
      * Creates an instance of CurrencyValue class.
-     * 
+     *
      * @param amount the amount value to set.
      */
-    public CurrencyValue(double amount) {
+    @JsonCreator
+    private CurrencyValue(@JsonProperty(value = "amount", required = true) double amount) {
         this.amount = amount;
     }
 
     /**
      * Get the amount property: Currency amount.
-     * 
+     *
      * @return the amount value.
      */
     public double getAmount() {
@@ -51,7 +50,7 @@ public final class CurrencyValue implements JsonSerializable<CurrencyValue> {
 
     /**
      * Get the currencySymbol property: Currency symbol label, if any.
-     * 
+     *
      * @return the currencySymbol value.
      */
     public String getCurrencySymbol() {
@@ -59,83 +58,11 @@ public final class CurrencyValue implements JsonSerializable<CurrencyValue> {
     }
 
     /**
-     * Set the currencySymbol property: Currency symbol label, if any.
-     * 
-     * @param currencySymbol the currencySymbol value to set.
-     * @return the CurrencyValue object itself.
-     */
-    public CurrencyValue setCurrencySymbol(String currencySymbol) {
-        this.currencySymbol = currencySymbol;
-        return this;
-    }
-
-    /**
      * Get the currencyCode property: Resolved currency code (ISO 4217), if any.
-     * 
+     *
      * @return the currencyCode value.
      */
     public String getCurrencyCode() {
         return this.currencyCode;
-    }
-
-    /**
-     * Set the currencyCode property: Resolved currency code (ISO 4217), if any.
-     * 
-     * @param currencyCode the currencyCode value to set.
-     * @return the CurrencyValue object itself.
-     */
-    public CurrencyValue setCurrencyCode(String currencyCode) {
-        this.currencyCode = currencyCode;
-        return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeDoubleField("amount", this.amount);
-        jsonWriter.writeStringField("currencySymbol", this.currencySymbol);
-        jsonWriter.writeStringField("currencyCode", this.currencyCode);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CurrencyValue from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CurrencyValue if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CurrencyValue.
-     */
-    public static CurrencyValue fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean amountFound = false;
-            double amount = 0.0;
-            String currencySymbol = null;
-            String currencyCode = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("amount".equals(fieldName)) {
-                    amount = reader.getDouble();
-                    amountFound = true;
-                } else if ("currencySymbol".equals(fieldName)) {
-                    currencySymbol = reader.getString();
-                } else if ("currencyCode".equals(fieldName)) {
-                    currencyCode = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (amountFound) {
-                CurrencyValue deserializedCurrencyValue = new CurrencyValue(amount);
-                deserializedCurrencyValue.currencySymbol = currencySymbol;
-                deserializedCurrencyValue.currencyCode = currencyCode;
-
-                return deserializedCurrencyValue;
-            }
-            throw new IllegalStateException("Missing required property: amount");
-        });
     }
 }

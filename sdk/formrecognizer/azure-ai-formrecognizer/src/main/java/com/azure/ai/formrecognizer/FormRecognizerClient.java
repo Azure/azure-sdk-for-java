@@ -35,15 +35,18 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
  * <ol>
  *   <li>Custom Form Analysis: Extraction and analysis of data from forms and documents specific to distinct business
  *   data and use cases. Use the custom trained model by passing its modelId into the
- *   {@link #beginRecognizeCustomForms(String, InputStream, long) beginRecognizeCustomForms} method.</li>
+ *   {@link com.azure.ai.formrecognizer.FormRecognizerClient#beginRecognizeCustomForms(String, InputStream, long)
+ *   beginRecognizeCustomForms}
+ *   method.</li>
  *   <li>Prebuilt Model Analysis: Analyze receipts, business cards, invoices and other documents with
  *   <a href="https://aka.ms/form-recognizer-service-2.1.0">supported prebuilt models</a>
  *   Use the
- *   {@link #beginRecognizeReceipts(InputStream, long, RecognizeReceiptsOptions, Context) beginRecognizeReceipts}
+ *   {@link com.azure.ai.formrecognizer.FormRecognizerClient#beginRecognizeReceipts(InputStream, long, RecognizeReceiptsOptions, Context) beginRecognizeReceipts}
  *   method to recognize receipt information.</li>
  *   <li>Layout Analysis: Extraction and analysis of text, selection marks, tables, and bounding box coordinates,
- *   from forms and documents. Use {@link #beginRecognizeContent(InputStream, long) beginRecognizeContent} method too
- *   perform layout analysis.</li>
+ *   from forms and documents. Use
+ *   {@link com.azure.ai.formrecognizer.FormRecognizerClient#beginRecognizeContent(InputStream, long) beginRecognizeContent}
+ *   method tpo perform layout analysis.</li>
  *   <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
  *   operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
@@ -52,10 +55,10 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
  * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md">Migration guide</a> to use API versions 2022-08-31 and up.</strong></p>
  *
  * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
- * {@link FormRecognizerClient} is the synchronous service client and {@link FormRecognizerAsyncClient} is the
- * asynchronous service client. The examples shown in this document use a credential object named DefaultAzureCredential
- * for authentication, which is appropriate for most scenarios, including local development and production environments.
- * Additionally, we recommend using
+ * {@link com.azure.ai.formrecognizer.FormRecognizerClient} is the synchronous service client and
+ * {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient} is the asynchronous service client.  The examples
+ * shown in this document use a credential object named DefaultAzureCredential for authentication, which is appropriate
+ * for most scenarios, including local development and production environments. Additionally, we recommend using
  * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
  * for authentication in production environments.
  * You can find more information on different ways of authenticating and their corresponding credential types in the
@@ -64,8 +67,9 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
  *
  * <p><strong>Sample: Construct a FormRecognizerClient with DefaultAzureCredential</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a {@link FormRecognizerClient}, using the
- * `DefaultAzureCredentialBuilder` to configure it.</p>
+ * <p>The following code sample demonstrates the creation of a
+ * {@link com.azure.ai.formrecognizer.FormRecognizerClient}, using
+ * the `DefaultAzureCredentialBuilder` to configure it.</p>
  *
  * <!-- src_embed readme-sample-createFormRecognizerClientWithAAD -->
  * <pre>
@@ -186,10 +190,11 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeCustomFormsFromUrl(
-        String modelId, String formUrl, RecognizeCustomFormsOptions recognizeCustomFormsOptions, Context context) {
-        return client.beginRecognizeCustomFormsFromUrl(formUrl, modelId, recognizeCustomFormsOptions, context)
-            .getSyncPoller();
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeCustomFormsFromUrl(String modelId, String formUrl,
+        RecognizeCustomFormsOptions recognizeCustomFormsOptions, Context context) {
+        return client.beginRecognizeCustomFormsFromUrl(formUrl, modelId,
+            recognizeCustomFormsOptions, context).getSyncPoller();
     }
 
     /**
@@ -231,8 +236,8 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code form}, {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeCustomForms(String modelId,
-        InputStream form, long length) {
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeCustomForms(String modelId, InputStream form, long length) {
         return beginRecognizeCustomForms(modelId, form, length, null, Context.NONE);
     }
 
@@ -282,11 +287,12 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code form}, {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeCustomForms(String modelId,
-        InputStream form, long length, RecognizeCustomFormsOptions recognizeCustomFormsOptions, Context context) {
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeCustomForms(String modelId, InputStream form, long length,
+        RecognizeCustomFormsOptions recognizeCustomFormsOptions, Context context) {
         Flux<ByteBuffer> buffer = toFluxByteBuffer(form);
-        return client.beginRecognizeCustomForms(modelId, buffer, length, recognizeCustomFormsOptions, context)
-            .getSyncPoller();
+        return client.beginRecognizeCustomForms(modelId, buffer, length,
+            recognizeCustomFormsOptions, context).getSyncPoller();
     }
 
     /**
@@ -368,7 +374,8 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code formUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContentFromUrl(String formUrl,
+    public SyncPoller<FormRecognizerOperationResult, List<FormPage>>
+        beginRecognizeContentFromUrl(String formUrl,
         RecognizeContentOptions recognizeContentOptions, Context context) {
         return client.beginRecognizeContentFromUrl(formUrl, recognizeContentOptions, context).getSyncPoller();
     }
@@ -409,8 +416,8 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code form} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContent(InputStream form,
-        long length) {
+    public SyncPoller<FormRecognizerOperationResult, List<FormPage>>
+        beginRecognizeContent(InputStream form, long length) {
         return beginRecognizeContent(form, length, null, Context.NONE);
     }
 
@@ -538,8 +545,8 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code receiptUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeReceiptsFromUrl(
-        String receiptUrl) {
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeReceiptsFromUrl(String receiptUrl) {
         return beginRecognizeReceiptsFromUrl(receiptUrl, null, Context.NONE);
     }
 
@@ -622,8 +629,9 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code receiptUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeReceiptsFromUrl(
-        String receiptUrl, RecognizeReceiptsOptions recognizeReceiptsOptions, Context context) {
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeReceiptsFromUrl(String receiptUrl,
+        RecognizeReceiptsOptions recognizeReceiptsOptions, Context context) {
         return client.beginRecognizeReceiptsFromUrl(receiptUrl, recognizeReceiptsOptions, context).getSyncPoller();
     }
 
@@ -704,8 +712,8 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code receipt} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeReceipts(InputStream receipt,
-        long length) {
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeReceipts(InputStream receipt, long length) {
         return beginRecognizeReceipts(receipt, length, null, Context.NONE);
     }
 
@@ -792,8 +800,9 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code receipt} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeReceipts(InputStream receipt,
-        long length, RecognizeReceiptsOptions recognizeReceiptsOptions, Context context) {
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeReceipts(InputStream receipt, long length,
+        RecognizeReceiptsOptions recognizeReceiptsOptions, Context context) {
         Flux<ByteBuffer> buffer = toFluxByteBuffer(receipt);
         return client.beginRecognizeReceipts(buffer, length, recognizeReceiptsOptions, context).getSyncPoller();
     }
@@ -948,7 +957,7 @@ public final class FormRecognizerClient {
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrl(
         String businessCardUrl, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions, Context context) {
         return client.beginRecognizeBusinessCardsFromUrl(businessCardUrl, recognizeBusinessCardsOptions, context)
-            .getSyncPoller();
+                   .getSyncPoller();
     }
 
     /**
@@ -1112,8 +1121,8 @@ public final class FormRecognizerClient {
     public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
         InputStream businessCard, long length, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions,
         Context context) {
-        return client.beginRecognizeBusinessCards(toFluxByteBuffer(businessCard), length, recognizeBusinessCardsOptions,
-            context).getSyncPoller();
+        return client.beginRecognizeBusinessCards(toFluxByteBuffer(businessCard), length,
+            recognizeBusinessCardsOptions, context).getSyncPoller();
     }
 
     /**
@@ -1160,8 +1169,8 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code invoiceUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeInvoicesFromUrl(
-        String invoiceUrl) {
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoicesFromUrl(String invoiceUrl) {
         return beginRecognizeInvoicesFromUrl(invoiceUrl, null, Context.NONE);
     }
 
@@ -1215,8 +1224,9 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code invoiceUrl} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeInvoicesFromUrl(
-        String invoiceUrl, RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoicesFromUrl(String invoiceUrl,
+        RecognizeInvoicesOptions recognizeInvoicesOptions, Context context) {
         return client.beginRecognizeInvoicesFromUrl(invoiceUrl, recognizeInvoicesOptions, context).getSyncPoller();
     }
 
@@ -1266,8 +1276,8 @@ public final class FormRecognizerClient {
      * @throws NullPointerException If {@code invoice} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeInvoices(InputStream invoice,
-        long length) {
+    public SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>>
+        beginRecognizeInvoices(InputStream invoice, long length) {
         return beginRecognizeInvoices(invoice, length, null, Context.NONE);
     }
 
@@ -1691,6 +1701,6 @@ public final class FormRecognizerClient {
         InputStream identityDocument, long length, RecognizeIdentityDocumentOptions recognizeIdentityDocumentOptions,
         Context context) {
         return client.beginRecognizeIdentityDocuments(toFluxByteBuffer(identityDocument), length,
-            recognizeIdentityDocumentOptions, context).getSyncPoller();
+                recognizeIdentityDocumentOptions, context).getSyncPoller();
     }
 }

@@ -5,44 +5,39 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Custom document model build mode.
- */
+/** Custom document model build mode. */
 public final class DocumentBuildMode extends ExpandableStringEnum<DocumentBuildMode> {
-    /**
-     * Target documents with similar visual templates.
-     */
+    /** Static value template for DocumentBuildMode. */
     public static final DocumentBuildMode TEMPLATE = fromString("template");
 
-    /**
-     * Support documents with diverse visual templates.
-     */
+    /** Static value neural for DocumentBuildMode. */
     public static final DocumentBuildMode NEURAL = fromString("neural");
 
     /**
      * Creates a new instance of DocumentBuildMode value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public DocumentBuildMode() {
-    }
+    public DocumentBuildMode() {}
 
     /**
      * Creates or finds a DocumentBuildMode from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding DocumentBuildMode.
      */
+    @JsonCreator
     public static DocumentBuildMode fromString(String name) {
         return fromString(name, DocumentBuildMode.class);
     }
 
     /**
      * Gets known DocumentBuildMode values.
-     * 
+     *
      * @return known DocumentBuildMode values.
      */
     public static Collection<DocumentBuildMode> values() {
