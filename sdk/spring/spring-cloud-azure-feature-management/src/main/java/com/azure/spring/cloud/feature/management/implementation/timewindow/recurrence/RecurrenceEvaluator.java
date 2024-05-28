@@ -27,7 +27,7 @@ public class RecurrenceEvaluator {
             return false;
         }
 
-        final ZonedDateTime previousOccurrence = getPreviousOccurrence(settings, now).previousOccurrence;
+        final ZonedDateTime previousOccurrence = getPreviousOccurrence(settings, now);
         if (previousOccurrence == null) {
             return false;
         }
@@ -42,11 +42,10 @@ public class RecurrenceEvaluator {
      *
      * @return The closest previous occurrence.
      */
-    private static OccurrenceInfo getPreviousOccurrence(TimeWindowFilterSettings settings, ZonedDateTime now) {
+    private static ZonedDateTime getPreviousOccurrence(TimeWindowFilterSettings settings, ZonedDateTime now) {
         ZonedDateTime start = settings.getStart();
-        OccurrenceInfo emptyOccurrence = new OccurrenceInfo();
         if (now.isBefore(start)) {
-            return emptyOccurrence;
+            return null;
         }
 
         final RecurrencePatternType patternType = settings.getRecurrence().getPattern().getType();
@@ -61,14 +60,14 @@ public class RecurrenceEvaluator {
         if (range.getType() == RecurrenceRangeType.ENDDATE
             && occurrenceInfo.previousOccurrence != null
             && occurrenceInfo.previousOccurrence.isAfter(range.getEndDate())) {
-            return emptyOccurrence;
+            return null;
         }
         if (range.getType() == RecurrenceRangeType.NUMBERED
             && occurrenceInfo.numberOfOccurrences > range.getNumberOfRecurrences()) {
-            return emptyOccurrence;
+            return null;
         }
 
-        return occurrenceInfo;
+        return occurrenceInfo.previousOccurrence;
     }
 
     /**
@@ -144,11 +143,6 @@ public class RecurrenceEvaluator {
     private static class OccurrenceInfo {
         private final ZonedDateTime previousOccurrence;
         private final int numberOfOccurrences;
-
-        OccurrenceInfo() {
-            this.previousOccurrence = null;
-            this.numberOfOccurrences = 0;
-        }
 
         OccurrenceInfo(ZonedDateTime dateTime, int num) {
             this.previousOccurrence = dateTime;
