@@ -1,34 +1,12 @@
 # Release History
 
-## 1.20.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.20.0-beta.1 (2024-05-21)
-
-### Features Added
-
-- Adds support for persisting replication segment in `Checkpoint`.
-
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-messaging-eventhubs` from `5.18.3` to version `5.19.0-beta.1`.
-
 ## 1.19.3 (2024-04-23)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `azure-messaging-eventhubs` from `5.18.2` to version `5.18.3`.
+- Upgraded `azure-messaging-eventhubs` from `5.18.2` to version `5.19.0-beta.1`.
 - Upgraded `azure-storage-blob` from `12.25.2` to version `12.25.3`.
 
 
@@ -38,7 +16,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-messaging-eventhubs` from `5.18.1` to version `5.18.2`.
+- Upgraded `azure-messaging-eventhubs` from `5.18.1` to version `5.19.0-beta.1`.
 - Upgraded `azure-storage-blob` from `12.25.1` to version `12.25.2`.
 
 
