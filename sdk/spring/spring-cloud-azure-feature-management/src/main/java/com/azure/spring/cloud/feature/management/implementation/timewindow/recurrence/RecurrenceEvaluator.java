@@ -23,9 +23,7 @@ public class RecurrenceEvaluator {
      */
     public static boolean isMatch(TimeWindowFilterSettings settings, ZonedDateTime now) {
         final RecurrenceValidator validator = new RecurrenceValidator(settings);
-        if (!validator.validateSettings()) {
-            return false;
-        }
+        validator.validateSettings();
 
         final ZonedDateTime previousOccurrence = getPreviousOccurrence(settings, now);
         if (previousOccurrence == null) {

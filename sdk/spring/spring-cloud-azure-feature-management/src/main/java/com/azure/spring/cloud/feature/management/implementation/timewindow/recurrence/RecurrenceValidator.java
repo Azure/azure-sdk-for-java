@@ -21,142 +21,110 @@ import static com.azure.spring.cloud.feature.management.models.FilterParameters.
 import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
 
 public class RecurrenceValidator {
-    private String paramName;
-    private String reason;
     private TimeWindowFilterSettings settings;
 
     public RecurrenceValidator(TimeWindowFilterSettings settings) {
         this.settings = settings;
     }
 
-    public boolean validateSettings() {
-        if (validateRecurrenceRequiredParameter()
-            && validateRecurrencePattern()
-            && validateRecurrenceRange()) {
-            return true;
-        } else {
-            throw new IllegalArgumentException(String.format(reason, paramName));
-        }
+    public void validateSettings() {
+        validateRecurrenceRequiredParameter();
+        validateRecurrencePattern();
+        validateRecurrenceRange();
     }
 
-    private boolean validateRecurrenceRequiredParameter() {
+    private void validateRecurrenceRequiredParameter() {
         final Recurrence recurrence = settings.getRecurrence();
+        String paramName = "";
+        String reason = "";
         if (recurrence.getPattern() == null) {
             paramName = String.format("%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_PATTERN);
             reason = RecurrenceConstants.REQUIRED_PARAMETER;
-            return false;
         }
         if (recurrence.getRange() == null) {
             paramName = String.format("%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE);
             reason = RecurrenceConstants.REQUIRED_PARAMETER;
-            return false;
         }
         if (settings.getEnd().isBefore(settings.getStart())) {
             paramName = TIME_WINDOW_FILTER_SETTING_END;
             reason = RecurrenceConstants.OUT_OF_RANGE;
-            return false;
         }
         if (settings.getEnd().isAfter(settings.getStart().plusDays(RecurrenceConstants.TEN_YEARS))) {
             paramName = TIME_WINDOW_FILTER_SETTING_END;
             reason = RecurrenceConstants.TIME_WINDOW_DURATION_OUT_OF_RANGE;
-            return false;
         }
 
-        return true;
+        if (!paramName.isEmpty()) {
+            throw new IllegalArgumentException(String.format(reason, paramName));
+        }
     }
 
-    private boolean validateRecurrencePattern() {
+    private void validateRecurrencePattern() {
         final RecurrencePatternType patternType = settings.getRecurrence().getPattern().getType();
 
         if (patternType == RecurrencePatternType.DAILY) {
-            return validateDailyRecurrencePattern();
+            validateDailyRecurrencePattern();
         } else {
-            return validateWeeklyRecurrencePattern();
+            validateWeeklyRecurrencePattern();
         }
     }
 
-    private boolean validateRecurrenceRange() {
+    private void validateRecurrenceRange() {
         RecurrenceRangeType rangeType = settings.getRecurrence().getRange().getType();
-
-        switch (rangeType) {
-            case ENDDATE:
-                return validateEndDate();
-            default:
-                return true;
+        if (RecurrenceRangeType.ENDDATE.equals(rangeType)) {
+            validateEndDate();
         }
     }
 
-    private boolean validateDailyRecurrencePattern() {
+    private void validateDailyRecurrencePattern() {
         // "Start" is always a valid first occurrence for "Daily" pattern.
         // Only need to check if time window validated
         final Duration intervalDuration = Duration.ofDays(settings.getRecurrence().getPattern().getInterval());
-        return validateTimeWindowDuration(intervalDuration);
+        validateTimeWindowDuration(intervalDuration);
     }
 
-    private boolean validateWeeklyRecurrencePattern() {
-        final RecurrencePattern pattern = settings.getRecurrence().getPattern();
+    private void validateWeeklyRecurrencePattern() {
+        validateDaysOfWeek();
 
-        if (!validateDaysOfWeek()) {
-            return false;
+        // Check whether "Start" is a valid first occurrence
+        final RecurrencePattern pattern = settings.getRecurrence().getPattern();
+        if (pattern.getDaysOfWeek().stream().noneMatch((dayOfWeekStr) ->
+            settings.getStart().getDayOfWeek() == dayOfWeekStr)) {
+            throw new IllegalArgumentException(String.format(RecurrenceConstants.NOT_MATCHED, TIME_WINDOW_FILTER_SETTING_START));
         }
 
         // Time window duration must be shorter than how frequently it occurs
         final Duration intervalDuration = Duration.ofDays((long) pattern.getInterval() * RecurrenceConstants.DAYS_PER_WEEK);
         final Duration timeWindowDuration = Duration.between(settings.getStart(), settings.getEnd());
-        if (!validateTimeWindowDuration(intervalDuration)) {
-            return false;
-        }
-
-        // Check whether "Start" is a valid first occurrence
-        if (pattern.getDaysOfWeek().stream().noneMatch((dayOfWeekStr) ->
-            settings.getStart().getDayOfWeek() == dayOfWeekStr)) {
-            paramName = TIME_WINDOW_FILTER_SETTING_START;
-            reason = RecurrenceConstants.NOT_MATCHED;
-            return false;
-        }
+        validateTimeWindowDuration(intervalDuration);
 
         // Check whether the time window duration is shorter than the minimum gap between days of week
         if (!isDurationCompliantWithDaysOfWeek(timeWindowDuration, pattern.getInterval(), pattern.getDaysOfWeek(), pattern.getFirstDayOfWeek())) {
-            paramName = TIME_WINDOW_FILTER_SETTING_END;
-            reason = RecurrenceConstants.OUT_OF_RANGE;
-            return false;
+            throw new IllegalArgumentException("The time window between Start and End should be shorter than the minimum gap between Recurrence.Pattern.DaysOfWeek");
         }
-        return true;
     }
 
     /**
      * Validate if time window duration is shorter than how frequently it occurs
      */
-    private boolean validateTimeWindowDuration(Duration intervalDuration) {
+    private void validateTimeWindowDuration(Duration intervalDuration) {
         final Duration timeWindowDuration = Duration.between(settings.getStart(), settings.getEnd());
         if (timeWindowDuration.compareTo(intervalDuration) > 0) {
-            paramName = TIME_WINDOW_FILTER_SETTING_END;
-            reason = RecurrenceConstants.OUT_OF_RANGE;
-            return false;
+           throw new IllegalArgumentException("The time window between Start and End should be shorter than the Interval");
         }
-        return true;
     }
 
-    private boolean validateDaysOfWeek() {
-        paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_PATTERN,
-            RecurrenceConstants.RECURRENCE_PATTERN_DAYS_OF_WEEK);
+    private void validateDaysOfWeek() {
         final List<DayOfWeek> daysOfWeek = settings.getRecurrence().getPattern().getDaysOfWeek();
         if (daysOfWeek == null || daysOfWeek.size() == 0) {
-            reason = RecurrenceConstants.REQUIRED_PARAMETER;
-            return false;
+            throw new IllegalArgumentException(String.format(RecurrenceConstants.REQUIRED_PARAMETER, "Recurrence.Pattern.DaysOfWeek"));
         }
-
-        return true;
     }
 
-    private boolean validateEndDate() {
+    private void validateEndDate() {
         if (settings.getRecurrence().getRange().getEndDate().isBefore(settings.getStart())) {
-            paramName = String.format("%s.%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE,
-                RecurrenceConstants.RECURRENCE_RANGE_EDN_DATE);
-            reason = RecurrenceConstants.OUT_OF_RANGE;
-            return false;
+            throw new IllegalArgumentException("The Recurrence.Range.EndDate should be after the Start");
         }
-        return true;
     }
 
     /**
