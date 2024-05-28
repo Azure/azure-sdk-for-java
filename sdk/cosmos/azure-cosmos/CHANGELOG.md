@@ -32,11 +32,6 @@
 #### Other Changes
 * Load Blackbird or Afterburner into the ObjectMapper depending upon Java version and presence of modules in classpath. Make Afterburner and Blackbird optional maven dependencies. See - [PR 39689](https://github.com/Azure/azure-sdk-for-java/pull/39689)
 
-### 4.53.5-hotfix (2024-04-25)
-
-#### Bugs Fixed
-* Fixed an issue in QuorumReader when quorum could not be selected even though 1 secondary and Primary are reachable and in sync. - See [PR 38832](https://github.com/Azure/azure-sdk-for-java/pull/38832)
-
 ### 4.58.0 (2024-04-16)
 #### Other Changes
 * Changed initial `targetBatchSize` to be capped by both `initialBatchSize` and `maxBatchSize` configured in `CosmosBulkExecutionOptions` - See[39500](https://github.com/Azure/azure-sdk-for-java/pull/39500)
@@ -85,13 +80,6 @@
 * Using customized `subStatusCodes` for client generated `InternalServerErrorException`. - See [PR 38518](https://github.com/Azure/azure-sdk-for-java/pull/38518)
 * Added an option to opt-out of E2E timeout defined in CosmosClientBuilder for non-point operations via system property or environment variable. - See [PR 38388](https://github.com/Azure/azure-sdk-for-java/pull/38388)
 * Using `ConnectionTimeout` as the `RNTBD` connection `acquisitionTimeout`. - See [PR 38695](https://github.com/Azure/azure-sdk-for-java/pull/38695)
-
-### 4.53.2-hotfix (2024-02-04)
-
-#### Other Changes
-* Reduced CPU overhead slightly for workloads with high throughput of point operations - especially when diagnostics like traces or metrics are enabled. - See [PR 38232](https://github.com/Azure/azure-sdk-for-java/pull/38232)
-* Changed to add `transportRequestChannelAcquisitionContext` in CosmosDiagnostics based on duration in `channelAcquisitionStarted` stage. By default, if `channelAcquisitionStarted` took more than 1s, `transportRequestChannelAcquisitionContext` will be added. - See [PR 38416](https://github.com/Azure/azure-sdk-for-java/pull/38416)
-* Added an option to opt-out of E2E timeout defined in CosmosClientBuilder for non-point operations via system property or environment variable. - See [PR 38388](https://github.com/Azure/azure-sdk-for-java/pull/38388)
 
 ### 4.54.0 (2024-01-03)
 
@@ -647,6 +635,10 @@ there are non-existent document IDs also passed through the API - See [PR 35513]
 #### Bugs Fixed
 * Fixed issue with bulk reads when `contentResponseOnWrite` is not explicitly enabled on the cosmos client.
 
+### 4.20.0-beta.1 (2021-09-22)
+#### Features Added
+* Added support to config retry count for `openConnectionsAndInitCaches`.
+
 ### 4.19.1 (2021-09-24)
 #### Features Added
 * Added support to config retry count for `openConnectionsAndInitCaches`.
@@ -655,10 +647,6 @@ there are non-existent document IDs also passed through the API - See [PR 35513]
 * Fixed ReadMany Api on partition split.
 * Removed full exception trace from 404 error on open telemetry.
 * Fixed issue with onErrorDropped being called when using concatWith in QuorumReader.
-
-### 4.20.0-beta.1 (2021-09-22)
-#### Features Added
-* Added support to config retry count for `openConnectionsAndInitCaches`.
 
 ### 4.19.0 (2021-09-09)
 #### New Features
