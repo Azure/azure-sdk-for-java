@@ -10,7 +10,7 @@ public abstract class StreamUpdate {
     /**
      * The kind of stream update. This can take any value of the {@link AssistantStreamEvent} enum.
      */
-    protected final AssistantStreamEvent kind;
+    private final AssistantStreamEvent kind;
 
     /**
      * We always want to know to which {@link AssistantStreamEvent} this StreamUpdate is associated, therefore we enforce
@@ -18,7 +18,7 @@ public abstract class StreamUpdate {
      *
      * @param kind The kind of stream update.
      */
-    protected StreamUpdate(AssistantStreamEvent kind) {
+    public StreamUpdate(AssistantStreamEvent kind) {
         this.kind = kind;
     }
 
