@@ -5,54 +5,45 @@
 package com.azure.ai.metricsadvisor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * feedback type.
- */
+/** feedback type. */
 public final class FeedbackType extends ExpandableStringEnum<FeedbackType> {
-    /**
-     * Static value Anomaly for FeedbackType.
-     */
+    /** Static value Anomaly for FeedbackType. */
     public static final FeedbackType ANOMALY = fromString("Anomaly");
 
-    /**
-     * Static value ChangePoint for FeedbackType.
-     */
+    /** Static value ChangePoint for FeedbackType. */
     public static final FeedbackType CHANGE_POINT = fromString("ChangePoint");
 
-    /**
-     * Static value Period for FeedbackType.
-     */
+    /** Static value Period for FeedbackType. */
     public static final FeedbackType PERIOD = fromString("Period");
 
-    /**
-     * Static value Comment for FeedbackType.
-     */
+    /** Static value Comment for FeedbackType. */
     public static final FeedbackType COMMENT = fromString("Comment");
 
     /**
      * Creates a new instance of FeedbackType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public FeedbackType() {
-    }
+    public FeedbackType() {}
 
     /**
      * Creates or finds a FeedbackType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding FeedbackType.
      */
+    @JsonCreator
     public static FeedbackType fromString(String name) {
         return fromString(name, FeedbackType.class);
     }
 
     /**
      * Gets known FeedbackType values.
-     * 
+     *
      * @return known FeedbackType values.
      */
     public static Collection<FeedbackType> values() {

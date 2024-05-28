@@ -5,46 +5,39 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/**
- * The DetectionSeriesQuery model.
- */
+/** The DetectionSeriesQuery model. */
 @Fluent
-public final class DetectionSeriesQuery implements JsonSerializable<DetectionSeriesQuery> {
+public final class DetectionSeriesQuery {
     /*
      * This is inclusive. The maximum number of data points (series number * time range) is 10000.
      */
+    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * This is exclusive. The maximum number of data points (series number * time range) is 10000.
      */
+    @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
      * The series to be queried. The identity must be able to define one single time series instead of a group of time
      * series. The maximum number of series is 100.
      */
+    @JsonProperty(value = "series", required = true)
     private List<SeriesIdentity> series;
 
-    /**
-     * Creates an instance of DetectionSeriesQuery class.
-     */
-    public DetectionSeriesQuery() {
-    }
+    /** Creates an instance of DetectionSeriesQuery class. */
+    public DetectionSeriesQuery() {}
 
     /**
      * Get the startTime property: This is inclusive. The maximum number of data points (series number * time range) is
      * 10000.
-     * 
+     *
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -54,7 +47,7 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
     /**
      * Set the startTime property: This is inclusive. The maximum number of data points (series number * time range) is
      * 10000.
-     * 
+     *
      * @param startTime the startTime value to set.
      * @return the DetectionSeriesQuery object itself.
      */
@@ -66,7 +59,7 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
     /**
      * Get the endTime property: This is exclusive. The maximum number of data points (series number * time range) is
      * 10000.
-     * 
+     *
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -76,7 +69,7 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
     /**
      * Set the endTime property: This is exclusive. The maximum number of data points (series number * time range) is
      * 10000.
-     * 
+     *
      * @param endTime the endTime value to set.
      * @return the DetectionSeriesQuery object itself.
      */
@@ -88,7 +81,7 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
     /**
      * Get the series property: The series to be queried. The identity must be able to define one single time series
      * instead of a group of time series. The maximum number of series is 100.
-     * 
+     *
      * @return the series value.
      */
     public List<SeriesIdentity> getSeries() {
@@ -98,57 +91,12 @@ public final class DetectionSeriesQuery implements JsonSerializable<DetectionSer
     /**
      * Set the series property: The series to be queried. The identity must be able to define one single time series
      * instead of a group of time series. The maximum number of series is 100.
-     * 
+     *
      * @param series the series value to set.
      * @return the DetectionSeriesQuery object itself.
      */
     public DetectionSeriesQuery setSeries(List<SeriesIdentity> series) {
         this.series = series;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("startTime",
-            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
-        jsonWriter.writeStringField("endTime",
-            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
-        jsonWriter.writeArrayField("series", this.series, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DetectionSeriesQuery from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DetectionSeriesQuery if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DetectionSeriesQuery.
-     */
-    public static DetectionSeriesQuery fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            DetectionSeriesQuery deserializedDetectionSeriesQuery = new DetectionSeriesQuery();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("startTime".equals(fieldName)) {
-                    deserializedDetectionSeriesQuery.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("endTime".equals(fieldName)) {
-                    deserializedDetectionSeriesQuery.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("series".equals(fieldName)) {
-                    List<SeriesIdentity> series = reader.readArray(reader1 -> SeriesIdentity.fromJson(reader1));
-                    deserializedDetectionSeriesQuery.series = series;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedDetectionSeriesQuery;
-        });
     }
 }

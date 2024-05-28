@@ -5,25 +5,21 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ChangeThresholdCondition model.
- */
+/** The ChangeThresholdCondition model. */
 @Fluent
-public final class ChangeThresholdCondition implements JsonSerializable<ChangeThresholdCondition> {
+public final class ChangeThresholdCondition {
     /*
      * change percentage, value range : [0, +∞)
      */
+    @JsonProperty(value = "changePercentage", required = true)
     private double changePercentage;
 
     /*
      * shift point, value range : [1, +∞)
      */
+    @JsonProperty(value = "shiftPoint", required = true)
     private int shiftPoint;
 
     /*
@@ -31,27 +27,27 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
      * anomalyDetectorDirection must be Both
      * if the withinRange = false, detected data is abnormal when the value falls out of the range
      */
+    @JsonProperty(value = "withinRange", required = true)
     private boolean withinRange;
 
     /*
      * detection direction
      */
+    @JsonProperty(value = "anomalyDetectorDirection", required = true)
     private AnomalyDetectorDirection anomalyDetectorDirection;
 
     /*
      * The suppressCondition property.
      */
+    @JsonProperty(value = "suppressCondition", required = true)
     private SuppressCondition suppressCondition;
 
-    /**
-     * Creates an instance of ChangeThresholdCondition class.
-     */
-    public ChangeThresholdCondition() {
-    }
+    /** Creates an instance of ChangeThresholdCondition class. */
+    public ChangeThresholdCondition() {}
 
     /**
      * Get the changePercentage property: change percentage, value range : [0, +∞).
-     * 
+     *
      * @return the changePercentage value.
      */
     public double getChangePercentage() {
@@ -60,7 +56,7 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
 
     /**
      * Set the changePercentage property: change percentage, value range : [0, +∞).
-     * 
+     *
      * @param changePercentage the changePercentage value to set.
      * @return the ChangeThresholdCondition object itself.
      */
@@ -71,7 +67,7 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
 
     /**
      * Get the shiftPoint property: shift point, value range : [1, +∞).
-     * 
+     *
      * @return the shiftPoint value.
      */
     public int getShiftPoint() {
@@ -80,7 +76,7 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
 
     /**
      * Set the shiftPoint property: shift point, value range : [1, +∞).
-     * 
+     *
      * @param shiftPoint the shiftPoint value to set.
      * @return the ChangeThresholdCondition object itself.
      */
@@ -91,9 +87,9 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
 
     /**
      * Get the withinRange property: if the withinRange = true, detected data is abnormal when the value falls in the
-     * range, in this case anomalyDetectorDirection must be Both
-     * if the withinRange = false, detected data is abnormal when the value falls out of the range.
-     * 
+     * range, in this case anomalyDetectorDirection must be Both if the withinRange = false, detected data is abnormal
+     * when the value falls out of the range.
+     *
      * @return the withinRange value.
      */
     public boolean isWithinRange() {
@@ -102,9 +98,9 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
 
     /**
      * Set the withinRange property: if the withinRange = true, detected data is abnormal when the value falls in the
-     * range, in this case anomalyDetectorDirection must be Both
-     * if the withinRange = false, detected data is abnormal when the value falls out of the range.
-     * 
+     * range, in this case anomalyDetectorDirection must be Both if the withinRange = false, detected data is abnormal
+     * when the value falls out of the range.
+     *
      * @param withinRange the withinRange value to set.
      * @return the ChangeThresholdCondition object itself.
      */
@@ -115,7 +111,7 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
 
     /**
      * Get the anomalyDetectorDirection property: detection direction.
-     * 
+     *
      * @return the anomalyDetectorDirection value.
      */
     public AnomalyDetectorDirection getAnomalyDetectorDirection() {
@@ -124,7 +120,7 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
 
     /**
      * Set the anomalyDetectorDirection property: detection direction.
-     * 
+     *
      * @param anomalyDetectorDirection the anomalyDetectorDirection value to set.
      * @return the ChangeThresholdCondition object itself.
      */
@@ -135,7 +131,7 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
 
     /**
      * Get the suppressCondition property: The suppressCondition property.
-     * 
+     *
      * @return the suppressCondition value.
      */
     public SuppressCondition getSuppressCondition() {
@@ -144,60 +140,12 @@ public final class ChangeThresholdCondition implements JsonSerializable<ChangeTh
 
     /**
      * Set the suppressCondition property: The suppressCondition property.
-     * 
+     *
      * @param suppressCondition the suppressCondition value to set.
      * @return the ChangeThresholdCondition object itself.
      */
     public ChangeThresholdCondition setSuppressCondition(SuppressCondition suppressCondition) {
         this.suppressCondition = suppressCondition;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeDoubleField("changePercentage", this.changePercentage);
-        jsonWriter.writeIntField("shiftPoint", this.shiftPoint);
-        jsonWriter.writeBooleanField("withinRange", this.withinRange);
-        jsonWriter.writeStringField("anomalyDetectorDirection",
-            this.anomalyDetectorDirection == null ? null : this.anomalyDetectorDirection.toString());
-        jsonWriter.writeJsonField("suppressCondition", this.suppressCondition);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ChangeThresholdCondition from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ChangeThresholdCondition if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ChangeThresholdCondition.
-     */
-    public static ChangeThresholdCondition fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ChangeThresholdCondition deserializedChangeThresholdCondition = new ChangeThresholdCondition();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("changePercentage".equals(fieldName)) {
-                    deserializedChangeThresholdCondition.changePercentage = reader.getDouble();
-                } else if ("shiftPoint".equals(fieldName)) {
-                    deserializedChangeThresholdCondition.shiftPoint = reader.getInt();
-                } else if ("withinRange".equals(fieldName)) {
-                    deserializedChangeThresholdCondition.withinRange = reader.getBoolean();
-                } else if ("anomalyDetectorDirection".equals(fieldName)) {
-                    deserializedChangeThresholdCondition.anomalyDetectorDirection
-                        = AnomalyDetectorDirection.fromString(reader.getString());
-                } else if ("suppressCondition".equals(fieldName)) {
-                    deserializedChangeThresholdCondition.suppressCondition = SuppressCondition.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedChangeThresholdCondition;
-        });
     }
 }
