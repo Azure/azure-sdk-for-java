@@ -507,6 +507,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void deleteConfigurationSettingNullKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         assertRunnableThrowsException(() -> client.deleteConfigurationSetting(null, null), IllegalArgumentException.class);
@@ -1251,6 +1252,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void recoverSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot

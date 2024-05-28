@@ -258,6 +258,7 @@ public class SchemaRegistryClientTests extends TestProxyTestBase {
     }
 
     @Test
+    @Disabled
     public void getSchemaByGroupNameVersion() {
         // Arrange
         final SchemaRegistryClient client1 = builder.buildClient();

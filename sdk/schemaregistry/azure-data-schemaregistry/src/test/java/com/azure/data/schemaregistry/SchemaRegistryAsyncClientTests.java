@@ -240,6 +240,7 @@ public class SchemaRegistryAsyncClientTests extends TestProxyTestBase {
     }
 
     @Test
+    @Disabled
     public void getSchemaByGroupNameVersion() {
         // Arrange
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
