@@ -79,8 +79,7 @@ public class RecurrenceValidator {
     private void validateDailyRecurrencePattern() {
         // "Start" is always a valid first occurrence for "Daily" pattern.
         // Only need to check if time window validated
-        final Duration intervalDuration = Duration.ofDays(settings.getRecurrence().getPattern().getInterval());
-        validateTimeWindowDuration(intervalDuration);
+        validateTimeWindowDuration();
     }
 
     private void validateWeeklyRecurrencePattern() {
@@ -94,11 +93,10 @@ public class RecurrenceValidator {
         }
 
         // Time window duration must be shorter than how frequently it occurs
-        final Duration intervalDuration = Duration.ofDays((long) pattern.getInterval() * RecurrenceConstants.DAYS_PER_WEEK);
-        final Duration timeWindowDuration = Duration.between(settings.getStart(), settings.getEnd());
-        validateTimeWindowDuration(intervalDuration);
+        validateTimeWindowDuration();
 
         // Check whether the time window duration is shorter than the minimum gap between days of week
+        final Duration timeWindowDuration = Duration.between(settings.getStart(), settings.getEnd());
         if (!isDurationCompliantWithDaysOfWeek(timeWindowDuration, pattern.getInterval(), pattern.getDaysOfWeek(), pattern.getFirstDayOfWeek())) {
             throw new IllegalArgumentException("The time window between Start and End should be shorter than the minimum gap between Recurrence.Pattern.DaysOfWeek");
         }
@@ -107,7 +105,11 @@ public class RecurrenceValidator {
     /**
      * Validate if time window duration is shorter than how frequently it occurs
      */
-    private void validateTimeWindowDuration(Duration intervalDuration) {
+    private void validateTimeWindowDuration() {
+        final RecurrencePattern pattern = settings.getRecurrence().getPattern();
+        final Duration intervalDuration = RecurrencePatternType.DAILY.equals(pattern.getType()) ?
+            Duration.ofDays(pattern.getInterval()) :
+            Duration.ofDays((long) pattern.getInterval() * RecurrenceConstants.DAYS_PER_WEEK);
         final Duration timeWindowDuration = Duration.between(settings.getStart(), settings.getEnd());
         if (timeWindowDuration.compareTo(intervalDuration) > 0) {
            throw new IllegalArgumentException("The time window between Start and End should be shorter than the Interval");
