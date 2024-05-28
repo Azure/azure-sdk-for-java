@@ -74,31 +74,23 @@ public final class PhoneNumberAdminClientImpl {
         return this.phoneNumbers;
     }
 
-    /**
-     * Initializes an instance of PhoneNumberAdminClient client.
-     *
-     * @param endpoint The communication resource, for example https://resourcename.communication.azure.com.
-     * @param apiVersion Api Version.
-     */
-    PhoneNumberAdminClientImpl(String endpoint, String apiVersion) {
+    /** Initializes an instance of PhoneNumberAdminClient client. */
+    PhoneNumberAdminClientImpl(String endpoint) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                apiVersion);
+                endpoint);
     }
 
     /**
      * Initializes an instance of PhoneNumberAdminClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param endpoint The communication resource, for example https://resourcename.communication.azure.com.
-     * @param apiVersion Api Version.
      */
-    PhoneNumberAdminClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
+    PhoneNumberAdminClientImpl(HttpPipeline httpPipeline, String endpoint) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
     }
 
     /**
@@ -106,15 +98,12 @@ public final class PhoneNumberAdminClientImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param endpoint The communication resource, for example https://resourcename.communication.azure.com.
-     * @param apiVersion Api Version.
      */
-    PhoneNumberAdminClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+    PhoneNumberAdminClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
+        this.apiVersion = "2022-12-01";
         this.phoneNumbers = new PhoneNumbersImpl(this);
     }
 }

@@ -7,7 +7,7 @@ package com.azure.communication.phonenumbers.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a locality. */
+/** The PhoneNumberLocality model. */
 @Immutable
 public final class PhoneNumberLocality {
     /*
