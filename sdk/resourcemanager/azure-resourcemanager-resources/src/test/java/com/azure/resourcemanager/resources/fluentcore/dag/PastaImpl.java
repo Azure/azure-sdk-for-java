@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreateUpdateTask;
@@ -19,6 +21,8 @@ import java.util.List;
 class PastaImpl
         extends CreatableUpdatableImpl<IPasta, PastaInner, PastaImpl>
         implements IPasta {
+    private static final ClientLogger LOGGER = new ClientLogger(PastaImpl.class);
+
     final List<Creatable<IPasta>> delayedPastas;
     final long eventDelayInMilliseconds;
     final Throwable errorToThrow;
@@ -74,19 +78,19 @@ class PastaImpl
             this.addDependency(pancake);
         }
         int newCount = this.taskGroup().getNode(this.key()).dependencyKeys().size();
-        System.out.println("Pasta(" + this.name() + ")::beforeGroupCreateOrUpdate() 'delayedSize':" + this.delayedPastas.size()
-                + " 'dependency count [old, new]': [" + oldCount + "," + newCount + "]");
+        LOGGER.log(LogLevel.VERBOSE, () -> "Pasta(" + this.name() + ")::beforeGroupCreateOrUpdate() 'delayedSize':"
+            + this.delayedPastas.size() + " 'dependency count [old, new]': [" + oldCount + "," + newCount + "]");
     }
 
     @Override
     public Mono<IPasta> createResourceAsync() {
         if (this.errorToThrow == null) {
-            System.out.println("Pasta(" + this.name() + ")::createResourceAsync() 'onNext()'");
+            LOGGER.log(LogLevel.VERBOSE, () -> "Pasta(" + this.name() + ")::createResourceAsync() 'onNext()'");
             return Mono.just(this)
                     .delayElement(Duration.ofMillis(this.eventDelayInMilliseconds))
                     .map(pasta -> pasta);
         } else {
-            System.out.println("Pasta(" + this.name() + ")::createResourceAsync() 'onError()'");
+            LOGGER.log(LogLevel.VERBOSE, () -> "Pasta(" + this.name() + ")::createResourceAsync() 'onError()'");
             return Mono.just(this)
                     .delayElement(Duration.ofMillis(this.eventDelayInMilliseconds))
                     .flatMap(pasta -> toErrorObservable(errorToThrow));

@@ -11,7 +11,7 @@ public final class AssessmentLinksTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AssessmentLinks model
-            = BinaryData.fromString("{\"azurePortalUri\":\"krhwieh\"}").toObject(AssessmentLinks.class);
+            = BinaryData.fromString("{\"azurePortalUri\":\"krepdqhqyhwqwem\"}").toObject(AssessmentLinks.class);
     }
 
     @org.junit.jupiter.api.Test

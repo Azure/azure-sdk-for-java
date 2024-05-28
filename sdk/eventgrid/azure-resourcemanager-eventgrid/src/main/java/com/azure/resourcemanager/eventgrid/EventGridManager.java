@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -29,15 +29,15 @@ import com.azure.resourcemanager.eventgrid.implementation.ChannelsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.ClientGroupsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.ClientsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.DomainEventSubscriptionsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.DomainsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.DomainTopicEventSubscriptionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.DomainTopicsImpl;
-import com.azure.resourcemanager.eventgrid.implementation.DomainsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.EventGridManagementClientBuilder;
 import com.azure.resourcemanager.eventgrid.implementation.EventSubscriptionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.ExtensionTopicsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.NamespacesImpl;
 import com.azure.resourcemanager.eventgrid.implementation.NamespaceTopicEventSubscriptionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.NamespaceTopicsImpl;
-import com.azure.resourcemanager.eventgrid.implementation.NamespacesImpl;
 import com.azure.resourcemanager.eventgrid.implementation.NetworkSecurityPerimeterConfigurationsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.OperationsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PartnerConfigurationsImpl;
@@ -52,23 +52,23 @@ import com.azure.resourcemanager.eventgrid.implementation.PrivateLinkResourcesIm
 import com.azure.resourcemanager.eventgrid.implementation.SystemTopicEventSubscriptionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.SystemTopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.TopicEventSubscriptionsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.TopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.TopicSpacesImpl;
 import com.azure.resourcemanager.eventgrid.implementation.TopicTypesImpl;
-import com.azure.resourcemanager.eventgrid.implementation.TopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.VerifiedPartnersImpl;
 import com.azure.resourcemanager.eventgrid.models.CaCertificates;
 import com.azure.resourcemanager.eventgrid.models.Channels;
 import com.azure.resourcemanager.eventgrid.models.ClientGroups;
 import com.azure.resourcemanager.eventgrid.models.Clients;
 import com.azure.resourcemanager.eventgrid.models.DomainEventSubscriptions;
+import com.azure.resourcemanager.eventgrid.models.Domains;
 import com.azure.resourcemanager.eventgrid.models.DomainTopicEventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.DomainTopics;
-import com.azure.resourcemanager.eventgrid.models.Domains;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.ExtensionTopics;
+import com.azure.resourcemanager.eventgrid.models.Namespaces;
 import com.azure.resourcemanager.eventgrid.models.NamespaceTopicEventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.NamespaceTopics;
-import com.azure.resourcemanager.eventgrid.models.Namespaces;
 import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterConfigurations;
 import com.azure.resourcemanager.eventgrid.models.Operations;
 import com.azure.resourcemanager.eventgrid.models.PartnerConfigurations;
@@ -83,9 +83,9 @@ import com.azure.resourcemanager.eventgrid.models.PrivateLinkResources;
 import com.azure.resourcemanager.eventgrid.models.SystemTopicEventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.SystemTopics;
 import com.azure.resourcemanager.eventgrid.models.TopicEventSubscriptions;
+import com.azure.resourcemanager.eventgrid.models.Topics;
 import com.azure.resourcemanager.eventgrid.models.TopicSpaces;
 import com.azure.resourcemanager.eventgrid.models.TopicTypes;
-import com.azure.resourcemanager.eventgrid.models.Topics;
 import com.azure.resourcemanager.eventgrid.models.VerifiedPartners;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -167,8 +167,10 @@ public final class EventGridManager {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new EventGridManagementClientBuilder().pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
-            .defaultPollInterval(defaultPollInterval).buildClient();
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -319,12 +321,19 @@ public final class EventGridManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.eventgrid").append("/")
-                .append("1.2.0-beta.5");
+            userAgentBuilder.append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.eventgrid")
+                .append("/")
+                .append("1.2.0-beta.6");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
+                userAgentBuilder.append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -343,18 +352,21 @@ public final class EventGridManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new EventGridManager(httpPipeline, profile, defaultPollInterval);
         }
     }

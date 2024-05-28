@@ -58,8 +58,8 @@ public final class FetchTieringCostsClientImpl implements FetchTieringCostsClien
     }
 
     /**
-     * The interface defining all the services for RecoveryServicesBackupClientFetchTieringCosts to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for RecoveryServicesBackupClientFetchTieringCosts to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")

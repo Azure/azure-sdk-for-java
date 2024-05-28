@@ -6,6 +6,8 @@ package com.azure.resourcemanager.compute;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
@@ -31,6 +33,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManagementTest {
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineRelatedResourcesDeletionTests.class);
 
     private String rgName = "";
 
@@ -166,7 +169,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
                 createdResource -> {
                     if (createdResource instanceof Resource) {
                         Resource resource = (Resource) createdResource;
-                        System.out.println("Created: " + resource.id());
+                        LOGGER.log(LogLevel.VERBOSE, () -> "Created: " + resource.id());
                         if (resource instanceof VirtualMachine) {
                             VirtualMachine virtualMachine = (VirtualMachine) resource;
 
@@ -220,22 +223,23 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
 
         // Show any errors
         for (Throwable error : errors) {
-            System.out.println("\n### ERROR ###\n");
+            LOGGER.log(LogLevel.VERBOSE, () -> "\n### ERROR ###\n");
             if (error instanceof ManagementException) {
                 ManagementException ce = (ManagementException) error;
-                System.out.println("CLOUD EXCEPTION: " + ce.getMessage());
+                LOGGER.log(LogLevel.VERBOSE, () -> "CLOUD EXCEPTION: " + ce.getMessage());
             } else {
-                error.printStackTrace();
+                LOGGER.log(LogLevel.VERBOSE, () -> "Only expected ManagementExceptions", error);
             }
         }
 
-        System.out.println("Number of failed/cleaned up VM creations: " + vmNonNicResourceDefinitions.size());
+        LOGGER.log(LogLevel.VERBOSE,
+            () -> "Number of failed/cleaned up VM creations: " + vmNonNicResourceDefinitions.size());
 
         // Verifications
         final int successfulVMCount = desiredVMCount - vmNonNicResourceDefinitions.size();
         final int actualVMCount =
             TestUtilities.getSize(computeManager.virtualMachines().listByResourceGroup(resourceGroupName));
-        System.out.println("Number of actual successful VMs: " + actualVMCount);
+        LOGGER.log(LogLevel.VERBOSE, () -> "Number of actual successful VMs: " + actualVMCount);
 
         Assertions.assertEquals(successfulVMCount, actualVMCount);
         final int actualNicCount =

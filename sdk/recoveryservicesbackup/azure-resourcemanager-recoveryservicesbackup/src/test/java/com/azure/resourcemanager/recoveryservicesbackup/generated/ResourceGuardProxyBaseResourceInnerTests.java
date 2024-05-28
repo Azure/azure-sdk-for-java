@@ -33,13 +33,16 @@ public final class ResourceGuardProxyBaseResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceGuardProxyBaseResourceInner model = new ResourceGuardProxyBaseResourceInner()
-            .withLocation("pnsxkmcwaek").withTags(mapOf("ikkx", "reafxtsgumhjg", "qpvuzlmvfelf", "slol", "crpw", "tgp"))
-            .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("ejvegrhbpnaixex")
-                .withResourceGuardOperationDetails(Arrays.asList(new ResourceGuardOperationDetail()
-                    .withVaultCriticalOperation("reaxhcexdr").withDefaultResourceRequest("qahqkghtpwijn")))
-                .withLastUpdatedTime("jsvfycxzbfvoowv").withDescription("mtg"))
-            .withEtag("ppyostronzmyhgf");
+        ResourceGuardProxyBaseResourceInner model
+            = new ResourceGuardProxyBaseResourceInner().withLocation("pnsxkmcwaek")
+                .withTags(mapOf("ikkx", "reafxtsgumhjg", "qpvuzlmvfelf", "slol", "crpw", "tgp"))
+                .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId("ejvegrhbpnaixex")
+                    .withResourceGuardOperationDetails(
+                        Arrays.asList(new ResourceGuardOperationDetail().withVaultCriticalOperation("reaxhcexdr")
+                            .withDefaultResourceRequest("qahqkghtpwijn")))
+                    .withLastUpdatedTime("jsvfycxzbfvoowv")
+                    .withDescription("mtg"))
+                .withEtag("ppyostronzmyhgf");
         model = BinaryData.fromObject(model).toObject(ResourceGuardProxyBaseResourceInner.class);
         Assertions.assertEquals("pnsxkmcwaek", model.location());
         Assertions.assertEquals("reafxtsgumhjg", model.tags().get("ikkx"));

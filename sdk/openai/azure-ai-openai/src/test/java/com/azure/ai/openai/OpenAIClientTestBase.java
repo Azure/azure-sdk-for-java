@@ -4,9 +4,9 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.functions.FutureTemperatureArguments;
-import com.azure.ai.openai.functions.FutureTemperatureParameters;
-import com.azure.ai.openai.functions.Parameters;
+import com.azure.ai.openai.implementation.FutureTemperatureArguments;
+import com.azure.ai.openai.implementation.FutureTemperatureParameters;
+import com.azure.ai.openai.implementation.Parameters;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
@@ -152,7 +152,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     private void addCustomMatchers() {
-        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Cookie", "Set-Cookie")));
+        interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie")));
     }
 
     protected String getAzureCognitiveSearchKey() {
@@ -264,7 +264,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getChatFunctionRunnerForNonAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
-        testRunner.accept("gpt-3.5-turbo-0613", getChatMessagesWithFunction());
+        testRunner.accept("gpt-4", getChatMessagesWithFunction());
     }
 
     void getChatFunctionForRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {

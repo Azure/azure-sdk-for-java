@@ -8,30 +8,24 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Indicates whether operation status is running, completed, canceled or failed.
+ * Enum describing allowed operation states.
  */
 public final class DevCenterOperationStatus extends ExpandableStringEnum<DevCenterOperationStatus> {
 
     /**
-     * Operation is in progress.
+     * The operation is in progress.
      */
     @Generated
     public static final DevCenterOperationStatus RUNNING = fromString("Running");
 
     /**
-     * Operation is completed with success.
-     */
-    @Generated
-    public static final DevCenterOperationStatus COMPLETED = fromString("Completed");
-
-    /**
-     * Operation was canceled.
+     * The operation has been canceled by the user.
      */
     @Generated
     public static final DevCenterOperationStatus CANCELED = fromString("Canceled");
 
     /**
-     * Operation failed.
+     * The operation has failed.
      */
     @Generated
     public static final DevCenterOperationStatus FAILED = fromString("Failed");
@@ -66,4 +60,16 @@ public final class DevCenterOperationStatus extends ExpandableStringEnum<DevCent
     public static Collection<DevCenterOperationStatus> values() {
         return values(DevCenterOperationStatus.class);
     }
+
+    /**
+     * The operation has not started.
+     */
+    @Generated
+    public static final DevCenterOperationStatus NOT_STARTED = fromString("NotStarted");
+
+    /**
+     * The operation has completed successfully.
+     */
+    @Generated
+    public static final DevCenterOperationStatus SUCCEEDED = fromString("Succeeded");
 }

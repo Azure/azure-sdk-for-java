@@ -8,11 +8,8 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.IdentityClient;
-import com.azure.identity.implementation.IdentityClientBuilder;
+import com.azure.identity.implementation.ClientAssertionCredentialHelper;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.IdentitySyncClient;
-import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Supplier;
@@ -83,8 +80,8 @@ import java.util.function.Supplier;
 @Immutable
 public class ClientAssertionCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(ClientAssertionCredential.class);
-    private final IdentityClient identityClient;
-    private final IdentitySyncClient identitySyncClient;
+    private final ClientAssertionCredentialHelper clientAssertionCredentialHelper;
+
     /**
      * Creates an instance of ClientAssertionCredential.
      *
@@ -95,43 +92,16 @@ public class ClientAssertionCredential implements TokenCredential {
      */
     ClientAssertionCredential(String clientId, String tenantId, Supplier<String> clientAssertion,
                               IdentityClientOptions identityClientOptions) {
-        IdentityClientBuilder builder = new IdentityClientBuilder()
-            .tenantId(tenantId)
-            .clientId(clientId)
-            .clientAssertionSupplier(clientAssertion)
-            .identityClientOptions(identityClientOptions);
-
-        identityClient = builder.build();
-        identitySyncClient = builder.buildSyncClient();
+        clientAssertionCredentialHelper = new ClientAssertionCredentialHelper(clientId, tenantId, identityClientOptions, clientAssertion);
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
-        return identityClient.authenticateWithConfidentialClientCache(request)
-            .onErrorResume(t -> Mono.empty())
-            .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
-                error));
+        return clientAssertionCredentialHelper.getToken(request);
     }
 
     @Override
     public AccessToken getTokenSync(TokenRequestContext request) {
-        try {
-            AccessToken token = identitySyncClient.authenticateWithConfidentialClientCache(request);
-            if (token != null) {
-                LoggingUtil.logTokenSuccess(LOGGER, request);
-                return token;
-            }
-        } catch (Exception e) { }
-
-        try {
-            AccessToken token = identitySyncClient.authenticateWithConfidentialClient(request);
-            LoggingUtil.logTokenSuccess(LOGGER, request);
-            return token;
-        } catch (Exception e) {
-            LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
-            throw e;
-        }
+        return clientAssertionCredentialHelper.getTokenSync(request);
     }
 }

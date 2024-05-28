@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.storage.file.share.implementation.accesshelpers.FileSmbPropertiesHelper;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 
 import java.time.OffsetDateTime;
@@ -227,5 +228,14 @@ public class FileSmbProperties {
         this.fileChangeTime = fileChange == null ? null : OffsetDateTime.parse(fileChange);
         this.fileId = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_ID);
         this.parentId = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_PARENT_ID);
+    }
+
+    static {
+        FileSmbPropertiesHelper.setAccessor(new FileSmbPropertiesHelper.FileSmbPropertiesAccessor() {
+            @Override
+            public FileSmbProperties create(HttpHeaders httpHeaders) {
+                return new FileSmbProperties(httpHeaders);
+            }
+        });
     }
 }

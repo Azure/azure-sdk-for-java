@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents ValidateBackup API Response. */
+/**
+ * Represents ValidateBackup API Response.
+ */
 @Fluent
 public final class ValidateBackupResponseInner {
     /*
@@ -16,13 +18,15 @@ public final class ValidateBackupResponseInner {
     @JsonProperty(value = "properties")
     private ValidateBackupResponseProperties innerProperties;
 
-    /** Creates an instance of ValidateBackupResponseInner class. */
+    /**
+     * Creates an instance of ValidateBackupResponseInner class.
+     */
     public ValidateBackupResponseInner() {
     }
 
     /**
      * Get the innerProperties property: The response properties of a pre backup operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ValidateBackupResponseProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class ValidateBackupResponseInner {
     /**
      * Get the numberOfContainers property: Estimated no of storage containers required for resource data to be backed
      * up.
-     *
+     * 
      * @return the numberOfContainers value.
      */
     public Integer numberOfContainers() {
@@ -42,7 +46,7 @@ public final class ValidateBackupResponseInner {
     /**
      * Set the numberOfContainers property: Estimated no of storage containers required for resource data to be backed
      * up.
-     *
+     * 
      * @param numberOfContainers the numberOfContainers value to set.
      * @return the ValidateBackupResponseInner object itself.
      */
@@ -56,7 +60,7 @@ public final class ValidateBackupResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

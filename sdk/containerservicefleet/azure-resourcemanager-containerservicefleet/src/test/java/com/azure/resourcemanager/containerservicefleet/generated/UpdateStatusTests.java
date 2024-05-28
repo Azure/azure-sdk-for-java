@@ -11,7 +11,7 @@ public final class UpdateStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateStatus model = BinaryData.fromString(
-            "{\"startTime\":\"2021-01-29T02:12:36Z\",\"completedTime\":\"2021-10-23T12:01:36Z\",\"state\":\"Stopped\"}")
+            "{\"startTime\":\"2021-10-14T07:23:56Z\",\"completedTime\":\"2021-10-13T04:47:14Z\",\"state\":\"Running\"}")
             .toObject(UpdateStatus.class);
     }
 

@@ -25,8 +25,7 @@ public final class SubRequest {
     private String resourceType;
 
     /*
-     * Quota limit units, such as Count and Bytes. When requesting quota, use the **unit** value returned in the GET
-     * response in the request body of your PUT operation.
+     *  Quota limit units, such as Count and Bytes. When requesting quota, use the **unit** value returned in the GET response in the request body of your PUT operation.
      */
     @JsonProperty(value = "unit")
     private String unit;
@@ -91,8 +90,8 @@ public final class SubRequest {
     }
 
     /**
-     * Get the unit property: Quota limit units, such as Count and Bytes. When requesting quota, use the **unit**
-     * value returned in the GET response in the request body of your PUT operation.
+     * Get the unit property: Quota limit units, such as Count and Bytes. When requesting quota, use the **unit** value
+     * returned in the GET response in the request body of your PUT operation.
      * 
      * @return the unit value.
      */
@@ -101,8 +100,8 @@ public final class SubRequest {
     }
 
     /**
-     * Set the unit property: Quota limit units, such as Count and Bytes. When requesting quota, use the **unit**
-     * value returned in the GET response in the request body of your PUT operation.
+     * Set the unit property: Quota limit units, such as Count and Bytes. When requesting quota, use the **unit** value
+     * returned in the GET response in the request body of your PUT operation.
      * 
      * @param unit the unit value to set.
      * @return the SubRequest object itself.

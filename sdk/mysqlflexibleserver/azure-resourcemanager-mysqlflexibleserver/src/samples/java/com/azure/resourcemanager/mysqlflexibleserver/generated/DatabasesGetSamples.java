@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-/** Samples for Databases Get. */
+/**
+ * Samples for Databases Get.
+ */
 public final class DatabasesGetSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Databases/preview/2021-12-01-preview/examples/DatabaseGet.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Databases/preview/2023-06-01-preview/examples/DatabaseGet.json
      */
     /**
      * Sample code: Get a database.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void getADatabase(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {

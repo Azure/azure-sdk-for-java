@@ -3,7 +3,6 @@
 
 package com.azure.ai.translation.text;
 
-import com.azure.ai.translation.text.models.InputTextItem;
 import org.junit.jupiter.api.Test;
 import com.azure.ai.translation.text.models.BreakSentenceItem;
 
@@ -16,46 +15,39 @@ public class BreakSentenceTests extends TextTranslationClientBase {
 
     @Test
     public void breakSentenceWithAutoDetect() {
-        ArrayList<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("hello world"));
-
-        List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content);
-        assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
-        assertEquals(0.98, response.get(0).getDetectedLanguage().getScore());
-        assertEquals(11, response.get(0).getSentLen().get(0));
+        BreakSentenceItem response = getTranslationClient().findSentenceBoundaries("hello world");
+        assertEquals("en", response.getDetectedLanguage().getLanguage());
+        assertEquals(0.98, response.getDetectedLanguage().getConfidence());
+        assertEquals(11, response.getSentencesLengths().get(0));
     }
 
     @Test
     public void breakSentenceWithLanguage() {
-        ArrayList<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("Mi familia es muy muy bonita. no padre .mi madre es bonita y muy bajo . mi hermano es alto. Me gusta mi familia."));
+        String content = "Mi familia es muy muy bonita. no padre .mi madre es bonita y muy bajo . mi hermano es alto. Me gusta mi familia.";
 
-        List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content, null, "es", null);
+        BreakSentenceItem response = getTranslationClient().findSentenceBoundaries(content, "es", null);
         int[] expectedLengths = new int[]{ 30, 42, 20, 20 };
         for (int i = 0; i < expectedLengths.length; i++) {
-            assertEquals(expectedLengths[i], response.get(0).getSentLen().get(i));
+            assertEquals(expectedLengths[i], response.getSentencesLengths().get(i));
         }
     }
 
     @Test
     public void breakSentenceWithLanguageAndScript() {
-        ArrayList<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("zhè shì gè cè shì。"));
-
-        List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content, null, "zh-Hans", "Latn");
-        assertEquals(18, response.get(0).getSentLen().get(0));
+        BreakSentenceItem response = getTranslationClient().findSentenceBoundaries("zhè shì gè cè shì。", "zh-Hans", "Latn");
+        assertEquals(18, response.getSentencesLengths().get(0));
     }
 
     @Test
     public void breakSentenceWithMultipleLanguages() {
-        ArrayList<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("hello world"));
-        content.add(new InputTextItem("العالم هو مكان مثير جدا للاهتمام"));
+        ArrayList<String> content = new ArrayList<>();
+        content.add("hello world");
+        content.add("العالم هو مكان مثير جدا للاهتمام");
 
         List<BreakSentenceItem> response = getTranslationClient().findSentenceBoundaries(content);
         assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
         assertEquals("ar", response.get(1).getDetectedLanguage().getLanguage());
-        assertEquals(11, response.get(0).getSentLen().get(0));
-        assertEquals(32, response.get(1).getSentLen().get(0));
+        assertEquals(11, response.get(0).getSentencesLengths().get(0));
+        assertEquals(32, response.get(1).getSentencesLengths().get(0));
     }
 }

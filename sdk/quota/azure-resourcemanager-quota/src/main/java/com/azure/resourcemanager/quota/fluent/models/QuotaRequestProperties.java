@@ -36,8 +36,7 @@ public final class QuotaRequestProperties {
     private ServiceErrorDetail error;
 
     /*
-     * The quota request submission time. The date conforms to the following format specified by the ISO 8601 standard:
-     * yyyy-MM-ddTHH:mm:ssZ
+     * The quota request submission time. The date conforms to the following format specified by the ISO 8601 standard: yyyy-MM-ddTHH:mm:ssZ
      */
     @JsonProperty(value = "requestSubmitTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime requestSubmitTime;

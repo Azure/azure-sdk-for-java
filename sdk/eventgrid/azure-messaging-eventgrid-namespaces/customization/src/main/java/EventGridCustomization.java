@@ -1,40 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
-import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.azure.autorest.customization.PropertyCustomization;
-import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.Modifier.Keyword;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.Parameter;
-import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
-import com.github.javaparser.javadoc.Javadoc;
-import com.github.javaparser.javadoc.description.JavadocDescription;
-import com.github.javaparser.javadoc.description.JavadocSnippet;
+import com.github.javaparser.ast.body.EnumConstantDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
 import org.slf4j.Logger;
 
-import java.lang.reflect.Modifier;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalQueries;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static com.github.javaparser.StaticJavaParser.parseBlock;
-import static com.github.javaparser.StaticJavaParser.parseExpression;
 
 /**
  * This class contains the customization code to customize the AutoRest generated code for Event Grid.
@@ -53,11 +28,29 @@ public class EventGridCustomization extends Customization {
             PackageCustomization packageCustomization = customization.getPackage(p);
             packageCustomization.listClasses().forEach(c -> {
                 c.customizeAst(comp -> {
-                    logger.info("Got here");
-                    comp.getImports().removeIf(i -> i.getNameAsString().equals("com.azure.messaging.eventgrid.namespaces.implementation.models.CloudEvent"));
-                    comp.addImport("com.azure.core.models.CloudEvent");
+                    if (comp.getImports().removeIf(i -> i.getNameAsString().equals("com.azure.messaging.eventgrid.namespaces.models.CloudEvent"))) {
+                        logger.info("Removed CloudEvent import from " + c.getClassName());
+                        comp.addImport("com.azure.core.models.CloudEvent");
+                    }
                 });
             });
+        });
+        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/models/PublishResult.java");
+        customization.getRawEditor().removeFile("src/main/java/com/azure/messaging/eventgrid/namespaces/models/CloudEvent.java");
+
+        // add preview ServiceVersion
+        PackageCustomization packageCustomization = customization.getPackage("com.azure.messaging.eventgrid.namespaces");
+        ClassCustomization classCustomization = packageCustomization.getClass("EventGridServiceVersion");
+        classCustomization.customizeAst(compilationUnit -> {
+            EnumDeclaration clazz = compilationUnit.getEnumByName("EventGridServiceVersion").get();
+            clazz.getEntries().add(0, new EnumConstantDeclaration("/**\n" +
+                " * Enum value 2023-10-01-preview.\n" +
+                " */\n" +
+                "V2023_10_01_PREVIEW(\"2023-10-01-preview\")"));
+            clazz.getEntries().add(0, new EnumConstantDeclaration("/**\n" +
+                " * Enum value 2023-06-01-preview.\n" +
+                " */\n" +
+                "V2023_06_01_PREVIEW(\"2023-06-01-preview\")"));
         });
     }
 }

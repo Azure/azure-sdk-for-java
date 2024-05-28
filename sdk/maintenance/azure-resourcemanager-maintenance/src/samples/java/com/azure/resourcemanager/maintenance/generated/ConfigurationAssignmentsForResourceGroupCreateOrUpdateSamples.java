@@ -12,40 +12,32 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ConfigurationAssignmentsForResourceGroup CreateOrUpdate. */
+/**
+ * Samples for ConfigurationAssignmentsForResourceGroup CreateOrUpdate.
+ */
 public final class ConfigurationAssignmentsForResourceGroupCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/ConfigurationAssignmentsForResourceGroup_CreateOrUpdate.json
+     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/ConfigurationAssignmentsForResourceGroup_CreateOrUpdate.json
      */
     /**
      * Sample code: ConfigurationAssignmentsForResourceGroup_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to MaintenanceManager.
      */
     public static void configurationAssignmentsForResourceGroupCreateOrUpdate(
         com.azure.resourcemanager.maintenance.MaintenanceManager manager) {
-        manager
-            .configurationAssignmentsForResourceGroups()
-            .createOrUpdateWithResponse(
-                "examplerg",
-                "workervmConfiguration",
-                new ConfigurationAssignmentInner()
-                    .withMaintenanceConfigurationId(
-                        "/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1")
-                    .withFilter(
-                        new ConfigurationAssignmentFilterProperties()
-                            .withResourceTypes(
-                                Arrays.asList("Microsoft.HybridCompute/machines", "Microsoft.Compute/virtualMachines"))
-                            .withLocations(Arrays.asList("Japan East", "UK South"))
-                            .withTagSettings(
-                                new TagSettingsProperties()
-                                    .withTags(
-                                        mapOf(
-                                            "tag1",
-                                            Arrays.asList("tag1Value1", "tag1Value2", "tag1Value3"),
-                                            "tag2",
-                                            Arrays.asList("tag2Value1", "tag2Value2", "tag2Value3")))
-                                    .withFilterOperator(TagOperators.ANY))),
+        manager.configurationAssignmentsForResourceGroups()
+            .createOrUpdateWithResponse("examplerg", "workervmConfiguration",
+                new ConfigurationAssignmentInner().withMaintenanceConfigurationId(
+                    "/subscriptions/5b4b650e-28b9-4790-b3ab-ddbd88d727c4/resourcegroups/examplerg/providers/Microsoft.Maintenance/maintenanceConfigurations/configuration1")
+                    .withFilter(new ConfigurationAssignmentFilterProperties()
+                        .withResourceTypes(
+                            Arrays.asList("Microsoft.HybridCompute/machines", "Microsoft.Compute/virtualMachines"))
+                        .withLocations(Arrays.asList("Japan East", "UK South"))
+                        .withTagSettings(new TagSettingsProperties()
+                            .withTags(mapOf("tag1", Arrays.asList("tag1Value1", "tag1Value2", "tag1Value3"), "tag2",
+                                Arrays.asList("tag2Value1", "tag2Value2", "tag2Value3")))
+                            .withFilterOperator(TagOperators.ANY))),
                 com.azure.core.util.Context.NONE);
     }
 

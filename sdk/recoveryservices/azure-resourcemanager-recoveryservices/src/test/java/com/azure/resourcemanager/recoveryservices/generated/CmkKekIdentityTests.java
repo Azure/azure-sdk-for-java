@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CmkKekIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CmkKekIdentity model =
-            BinaryData
-                .fromString("{\"useSystemAssignedIdentity\":false,\"userAssignedIdentity\":\"moryocfsfksym\"}")
+        CmkKekIdentity model
+            = BinaryData.fromString("{\"useSystemAssignedIdentity\":false,\"userAssignedIdentity\":\"moryocfsfksym\"}")
                 .toObject(CmkKekIdentity.class);
         Assertions.assertEquals(false, model.useSystemAssignedIdentity());
         Assertions.assertEquals("moryocfsfksym", model.userAssignedIdentity());
@@ -21,8 +20,8 @@ public final class CmkKekIdentityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CmkKekIdentity model =
-            new CmkKekIdentity().withUseSystemAssignedIdentity(false).withUserAssignedIdentity("moryocfsfksym");
+        CmkKekIdentity model
+            = new CmkKekIdentity().withUseSystemAssignedIdentity(false).withUserAssignedIdentity("moryocfsfksym");
         model = BinaryData.fromObject(model).toObject(CmkKekIdentity.class);
         Assertions.assertEquals(false, model.useSystemAssignedIdentity());
         Assertions.assertEquals("moryocfsfksym", model.userAssignedIdentity());

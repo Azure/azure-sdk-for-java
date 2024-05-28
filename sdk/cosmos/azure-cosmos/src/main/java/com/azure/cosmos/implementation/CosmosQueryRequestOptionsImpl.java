@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,13 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     private Integer maxItemCount;
     private String requestContinuation;
     private PartitionKey partitionkey;
+    private PartitionKeyDefinition partitionKeyDefinition;
     private boolean emptyPagesAllowed;
     private FeedRange feedRange;
     private boolean queryPlanRetrievalDisallowed;
     private boolean emptyPageDiagnosticsEnabled;
     private String queryName;
+    private Integer maxItemCountForVectorSearch;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
 
     /**
@@ -56,12 +59,14 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.maxItemCount = options.maxItemCount;
         this.requestContinuation = options.requestContinuation;
         this.partitionkey = options.partitionkey;
+        this.partitionKeyDefinition = options.partitionKeyDefinition;
         this.emptyPagesAllowed = options.emptyPagesAllowed;
         this.queryPlanRetrievalDisallowed = options.queryPlanRetrievalDisallowed;
         this.emptyPageDiagnosticsEnabled = options.emptyPageDiagnosticsEnabled;
         this.queryName = options.queryName;
         this.feedRange = options.feedRange;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
+        this.maxItemCountForVectorSearch = options.maxItemCountForVectorSearch;
     }
 
     /**
@@ -197,6 +202,29 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     }
 
     /**
+     * Gets the maximum item size to fetch during non-streaming order by queries.
+     *
+     * @return the max number of items for vector search.
+     */
+    public Integer getMaxItemCountForVectorSearch() {
+        if (this.maxItemCountForVectorSearch == null) {
+            this.maxItemCountForVectorSearch = Configs.DEFAULT_MAX_ITEM_COUNT_FOR_VECTOR_SEARCH;
+        }
+        return this.maxItemCountForVectorSearch;
+    }
+
+    /**
+     * Sets the maximum item size to fetch during non-streaming order by queries.
+     *
+     * @param maxItemCountForVectorSearch the max number of items for vector search.
+     * return the CosmosQueryRequestOptions.
+     */
+    public CosmosQueryRequestOptionsImpl setMaxItemCountForVectorSearch(Integer maxItemCountForVectorSearch) {
+        this.maxItemCountForVectorSearch = maxItemCountForVectorSearch;
+        return this;
+    }
+
+    /**
      * Gets the request continuation token.
      *
      * @return the request continuation.
@@ -319,5 +347,13 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
 
     public void setCancelledRequestDiagnosticsTracker(List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
         this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
+    }
+
+    public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.partitionKeyDefinition = partitionKeyDefinition;
+    }
+
+    public PartitionKeyDefinition getPartitionKeyDefinition() {
+        return this.partitionKeyDefinition;
     }
 }

@@ -14,17 +14,15 @@ public final class TagsResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TagsResource model
-            = BinaryData.fromString("{\"tags\":{\"jroumzzn\":\"hafratqxm\",\"jrhuzgf\":\"al\",\"tpusllywp\":\"on\"}}")
-                .toObject(TagsResource.class);
-        Assertions.assertEquals("hafratqxm", model.tags().get("jroumzzn"));
+            = BinaryData.fromString("{\"tags\":{\"ycjimryvwgcwwpbm\":\"oafcluqvox\"}}").toObject(TagsResource.class);
+        Assertions.assertEquals("oafcluqvox", model.tags().get("ycjimryvwgcwwpbm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagsResource model
-            = new TagsResource().withTags(mapOf("jroumzzn", "hafratqxm", "jrhuzgf", "al", "tpusllywp", "on"));
+        TagsResource model = new TagsResource().withTags(mapOf("ycjimryvwgcwwpbm", "oafcluqvox"));
         model = BinaryData.fromObject(model).toObject(TagsResource.class);
-        Assertions.assertEquals("hafratqxm", model.tags().get("jroumzzn"));
+        Assertions.assertEquals("oafcluqvox", model.tags().get("ycjimryvwgcwwpbm"));
     }
 
     // Use "Map.of" if available

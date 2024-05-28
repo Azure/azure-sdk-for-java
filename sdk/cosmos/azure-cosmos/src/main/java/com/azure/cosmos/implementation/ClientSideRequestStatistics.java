@@ -56,6 +56,7 @@ public class ClientSideRequestStatistics {
     private final String userAgent;
 
     private double samplingRateSnapshot = 1;
+    private long approximateInsertionCountInBloomFilter = 0;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
@@ -75,6 +76,7 @@ public class ClientSideRequestStatistics {
         this.requestPayloadSizeInBytes = 0;
         this.userAgent = diagnosticsClientContext.getUserAgent();
         this.samplingRateSnapshot = 1;
+        this.approximateInsertionCountInBloomFilter = 0;
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -97,6 +99,7 @@ public class ClientSideRequestStatistics {
         this.requestPayloadSizeInBytes = toBeCloned.requestPayloadSizeInBytes;
         this.userAgent = toBeCloned.userAgent;
         this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
+        this.approximateInsertionCountInBloomFilter = toBeCloned.approximateInsertionCountInBloomFilter;
     }
 
     @JsonIgnore
@@ -153,6 +156,10 @@ public class ClientSideRequestStatistics {
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {
+
+            this.approximateInsertionCountInBloomFilter = request.requestContext.getApproximateBloomFilterInsertionCount();
+            storeResponseStatistics.sessionTokenEvaluationResults = request.requestContext.getSessionTokenEvaluationResults();
+
             if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() != null) {
                 storeResponseStatistics.e2ePolicyCfg =
                     request.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
@@ -202,6 +209,7 @@ public class ClientSideRequestStatistics {
             URI locationEndPoint = null;
             if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
                 locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
+                this.approximateInsertionCountInBloomFilter = rxDocumentServiceRequest.requestContext.getApproximateBloomFilterInsertionCount();
             }
             this.recordRetryContextEndTime();
 
@@ -215,6 +223,10 @@ public class ClientSideRequestStatistics {
                 gatewayStatistics.operationType = rxDocumentServiceRequest.getOperationType();
                 gatewayStatistics.resourceType = rxDocumentServiceRequest.getResourceType();
                 this.requestPayloadSizeInBytes = rxDocumentServiceRequest.getContentLength();
+
+                if (rxDocumentServiceRequest.requestContext != null) {
+                    gatewayStatistics.sessionTokenEvaluationResults = rxDocumentServiceRequest.requestContext.getSessionTokenEvaluationResults();
+                }
             }
             gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
             gatewayStatistics.subStatusCode = storeResponseDiagnostics.getSubStatusCode();
@@ -607,6 +619,9 @@ public class ClientSideRequestStatistics {
         @JsonIgnore
         private String regionName;
 
+        @JsonSerialize
+        private Set<String> sessionTokenEvaluationResults;
+
         public String getExcludedRegions() { return this.excludedRegions; }
 
         public StoreResultDiagnostics getStoreResult() {
@@ -632,6 +647,10 @@ public class ClientSideRequestStatistics {
         public String getRegionName() { return regionName; }
 
         public String getRequestSessionToken() { return requestSessionToken; }
+
+        public Set<String> getSessionTokenEvaluationResults() {
+            return sessionTokenEvaluationResults;
+        }
 
         @JsonIgnore
         public Duration getDuration() {
@@ -679,6 +698,7 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
             generator.writeObjectField("gatewayStatisticsList", statistics.gatewayStatisticsList);
             generator.writeObjectField("samplingRateSnapshot", statistics.samplingRateSnapshot);
+            generator.writeNumberField("bloomFilterInsertionCountSnapshot", statistics.approximateInsertionCountInBloomFilter);
 
             try {
                 CosmosDiagnosticsSystemUsageSnapshot systemInformation = fetchSystemInformation();
@@ -789,6 +809,7 @@ public class ClientSideRequestStatistics {
         private int responsePayloadSizeInBytes;
         private String faultInjectionRuleId;
         private List<String> faultInjectionEvaluationResults;
+        private Set<String> sessionTokenEvaluationResults;
 
         public String getSessionToken() {
             return sessionToken;
@@ -842,6 +863,10 @@ public class ClientSideRequestStatistics {
             return faultInjectionEvaluationResults;
         }
 
+        public Set<String> getSessionTokenEvaluationResults() {
+            return sessionTokenEvaluationResults;
+        }
+
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
             private static final long serialVersionUID = 1L;
 
@@ -874,6 +899,7 @@ public class ClientSideRequestStatistics {
                         gatewayStatistics.getFaultInjectionEvaluationResults());
                 }
 
+                this.writeNonEmptyStringSetField(jsonGenerator, "sessionTokenEvaluationResults", gatewayStatistics.getSessionTokenEvaluationResults());
                 jsonGenerator.writeEndObject();
             }
 
@@ -891,6 +917,14 @@ public class ClientSideRequestStatistics {
                 }
 
                 jsonGenerator.writeObjectField(fieldName, values);
+            }
+
+            private void writeNonEmptyStringSetField(JsonGenerator jsonGenerator, String fieldName, Set<String> values) throws IOException {
+                if (values == null || values.isEmpty()) {
+                    return;
+                }
+
+                jsonGenerator.writePOJOField(fieldName, values);
             }
         }
     }

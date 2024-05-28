@@ -47,6 +47,9 @@ public final class SharePermission implements JsonSerializable<SharePermission> 
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

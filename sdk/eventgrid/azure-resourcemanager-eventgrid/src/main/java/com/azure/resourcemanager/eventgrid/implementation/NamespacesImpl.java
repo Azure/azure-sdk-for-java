@@ -10,12 +10,14 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.NamespacesClient;
+import com.azure.resourcemanager.eventgrid.fluent.models.CustomDomainOwnershipValidationResultInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.NamespaceInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.NamespaceSharedAccessKeysInner;
+import com.azure.resourcemanager.eventgrid.models.CustomDomainOwnershipValidationResult;
 import com.azure.resourcemanager.eventgrid.models.Namespace;
 import com.azure.resourcemanager.eventgrid.models.NamespaceRegenerateKeyRequest;
-import com.azure.resourcemanager.eventgrid.models.NamespaceSharedAccessKeys;
 import com.azure.resourcemanager.eventgrid.models.Namespaces;
+import com.azure.resourcemanager.eventgrid.models.NamespaceSharedAccessKeys;
 
 public final class NamespacesImpl implements Namespaces {
     private static final ClientLogger LOGGER = new ClientLogger(NamespacesImpl.class);
@@ -61,24 +63,24 @@ public final class NamespacesImpl implements Namespaces {
 
     public PagedIterable<Namespace> list() {
         PagedIterable<NamespaceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new NamespaceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Namespace> list(String filter, Integer top, Context context) {
         PagedIterable<NamespaceInner> inner = this.serviceClient().list(filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new NamespaceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Namespace> listByResourceGroup(String resourceGroupName) {
         PagedIterable<NamespaceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new NamespaceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Namespace> listByResourceGroup(String resourceGroupName, String filter, Integer top,
         Context context) {
         PagedIterable<NamespaceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new NamespaceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NamespaceImpl(inner1, this.manager()));
     }
 
     public Response<NamespaceSharedAccessKeys> listSharedAccessKeysWithResponse(String resourceGroupName,
@@ -125,13 +127,35 @@ public final class NamespacesImpl implements Namespaces {
         }
     }
 
+    public CustomDomainOwnershipValidationResult validateCustomDomainOwnership(String resourceGroupName,
+        String namespaceName) {
+        CustomDomainOwnershipValidationResultInner inner
+            = this.serviceClient().validateCustomDomainOwnership(resourceGroupName, namespaceName);
+        if (inner != null) {
+            return new CustomDomainOwnershipValidationResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CustomDomainOwnershipValidationResult validateCustomDomainOwnership(String resourceGroupName,
+        String namespaceName, Context context) {
+        CustomDomainOwnershipValidationResultInner inner
+            = this.serviceClient().validateCustomDomainOwnership(resourceGroupName, namespaceName, context);
+        if (inner != null) {
+            return new CustomDomainOwnershipValidationResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Namespace getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
@@ -140,12 +164,12 @@ public final class NamespacesImpl implements Namespaces {
     }
 
     public Response<Namespace> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
@@ -154,12 +178,12 @@ public final class NamespacesImpl implements Namespaces {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
@@ -168,12 +192,12 @@ public final class NamespacesImpl implements Namespaces {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
+        String namespaceName = ResourceManagerUtils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));

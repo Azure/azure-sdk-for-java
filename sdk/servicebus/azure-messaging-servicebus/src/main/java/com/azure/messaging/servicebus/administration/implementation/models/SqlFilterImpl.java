@@ -26,6 +26,11 @@ public class SqlFilterImpl extends RuleFilterImpl {
         = "http://www.w3.org/2001/XMLSchema-instance";
 
     /*
+     * The type property.
+     */
+    private String type = "SqlFilter";
+
+    /*
      * The sqlExpression property.
      */
     private String sqlExpression;
@@ -49,6 +54,16 @@ public class SqlFilterImpl extends RuleFilterImpl {
      * Creates an instance of SqlFilter class.
      */
     public SqlFilterImpl() {
+    }
+
+    /**
+     * Get the type property: The type property.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -145,7 +160,7 @@ public class SqlFilterImpl extends RuleFilterImpl {
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT);
         xmlWriter.writeNamespace("xsi", WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE);
-        xmlWriter.writeStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type", "SqlFilter");
+        xmlWriter.writeStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type", this.type);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "SqlExpression", this.sqlExpression);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "CompatibilityLevel",
             this.compatibilityLevel);
@@ -167,7 +182,6 @@ public class SqlFilterImpl extends RuleFilterImpl {
      * @param xmlReader The XmlReader being read.
      * @return An instance of SqlFilter if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      * @throws XMLStreamException If an error occurs while reading the SqlFilter.
      */
     public static SqlFilterImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -182,7 +196,6 @@ public class SqlFilterImpl extends RuleFilterImpl {
      * cases where the model can deserialize from different root element names.
      * @return An instance of SqlFilter if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      * @throws XMLStreamException If an error occurs while reading the SqlFilter.
      */
     public static SqlFilterImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
@@ -192,36 +205,22 @@ public class SqlFilterImpl extends RuleFilterImpl {
             String discriminatorValue
                 = reader.getStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type");
             // Use the discriminator value to determine which subtype should be deserialized.
-            if (discriminatorValue == null || "SqlFilter".equals(discriminatorValue)) {
-                return fromXmlKnownDiscriminator(reader, finalRootElementName);
-            } else if ("TrueFilter".equals(discriminatorValue)) {
+            if ("TrueFilter".equals(discriminatorValue)) {
                 return TrueFilterImpl.fromXml(reader, finalRootElementName);
             } else if ("FalseFilter".equals(discriminatorValue)) {
                 return FalseFilterImpl.fromXml(reader, finalRootElementName);
             } else {
-                throw new IllegalStateException(
-                    "Discriminator field 'type' didn't match one of the expected values 'SqlFilter', 'TrueFilter', or 'FalseFilter'. It was: '"
-                        + discriminatorValue + "'.");
+                return fromXmlInternal(reader, finalRootElementName);
             }
         });
     }
 
-    public static SqlFilterImpl fromXmlKnownDiscriminator(XmlReader xmlReader) throws XMLStreamException {
-        return fromXmlKnownDiscriminator(xmlReader, null);
-    }
-
-    static SqlFilterImpl fromXmlKnownDiscriminator(XmlReader xmlReader, String rootElementName)
-        throws XMLStreamException {
+    static SqlFilterImpl fromXmlInternal(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Filter" : rootElementName;
         return xmlReader.readObject(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, finalRootElementName, reader -> {
             SqlFilterImpl deserializedSqlFilter = new SqlFilterImpl();
-            String discriminatorValue
+            deserializedSqlFilter.type
                 = reader.getStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type");
-            if (!"SqlFilter".equals(discriminatorValue)) {
-                throw new IllegalStateException(
-                    "'type' was expected to be non-null and equal to 'SqlFilter'. The found 'type' was '"
-                        + discriminatorValue + "'.");
-            }
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 

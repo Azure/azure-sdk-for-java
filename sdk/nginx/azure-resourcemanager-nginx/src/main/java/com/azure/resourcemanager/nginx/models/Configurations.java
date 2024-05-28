@@ -95,6 +95,37 @@ public interface Configurations {
     void delete(String resourceGroupName, String deploymentName, String configurationName, Context context);
 
     /**
+     * Analyze an NGINX configuration without applying it to the NGINXaaS deployment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted NGINX deployment.
+     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
+     * NGINX conf.
+     * @param body The NGINX configuration to analyze.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for an analysis request along with {@link Response}.
+     */
+    Response<AnalysisResult> analysisWithResponse(String resourceGroupName, String deploymentName,
+        String configurationName, AnalysisCreate body, Context context);
+
+    /**
+     * Analyze an NGINX configuration without applying it to the NGINXaaS deployment.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted NGINX deployment.
+     * @param configurationName The name of configuration, only 'default' is supported value due to the singleton of
+     * NGINX conf.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for an analysis request.
+     */
+    AnalysisResult analysis(String resourceGroupName, String deploymentName, String configurationName);
+
+    /**
      * Get the NGINX configuration of given NGINX deployment.
      * 
      * @param id the resource ID.

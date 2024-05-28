@@ -1,6 +1,6 @@
 # Release History
 
-## 1.15.0-beta.1 (Unreleased)
+## 1.16.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,21 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.15.0 (2024-05-01)
+
+### Bugs Fixed
+
+- Fixed a bug where mismatch Netty versions were always being reported, even if they were correct. ([#39591](https://github.com/Azure/azure-sdk-for-java/pull/39591))
+
+### Other Changes
+
+- If a Reactor Netty `HttpClient` is passed and has a `LoggingHandler` configured the 
+  `NettyAsyncHttpClientBuilder.wiretap` value is ignored, the builder method is now deprecated as well. ([#39976](https://github.com/Azure/azure-sdk-for-java/pull/39976))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
 
 ## 1.14.2 (2024-04-05)
 

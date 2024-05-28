@@ -96,13 +96,6 @@ public interface SecurityCenter {
     AlertsSuppressionRulesClient getAlertsSuppressionRules();
 
     /**
-     * Gets the AutomationsClient object to access its operations.
-     * 
-     * @return the AutomationsClient object.
-     */
-    AutomationsClient getAutomations();
-
-    /**
      * Gets the RegulatoryComplianceStandardsClient object to access its operations.
      * 
      * @return the RegulatoryComplianceStandardsClient object.
@@ -136,13 +129,6 @@ public interface SecurityCenter {
      * @return the ConnectorsClient object.
      */
     ConnectorsClient getConnectors();
-
-    /**
-     * Gets the SecurityContactsClient object to access its operations.
-     * 
-     * @return the SecurityContactsClient object.
-     */
-    SecurityContactsClient getSecurityContacts();
 
     /**
      * Gets the SoftwareInventoriesClient object to access its operations.
@@ -250,13 +236,6 @@ public interface SecurityCenter {
     SqlVulnerabilityAssessmentScanResultsClient getSqlVulnerabilityAssessmentScanResults();
 
     /**
-     * Gets the ResourceProvidersClient object to access its operations.
-     * 
-     * @return the ResourceProvidersClient object.
-     */
-    ResourceProvidersClient getResourceProviders();
-
-    /**
      * Gets the SensitivitySettingsClient object to access its operations.
      * 
      * @return the SensitivitySettingsClient object.
@@ -271,74 +250,18 @@ public interface SecurityCenter {
     HealthReportsClient getHealthReports();
 
     /**
-     * Gets the AzureDevOpsOrgsClient object to access its operations.
+     * Gets the AutomationsClient object to access its operations.
      * 
-     * @return the AzureDevOpsOrgsClient object.
+     * @return the AutomationsClient object.
      */
-    AzureDevOpsOrgsClient getAzureDevOpsOrgs();
+    AutomationsClient getAutomations();
 
     /**
-     * Gets the AzureDevOpsProjectsClient object to access its operations.
+     * Gets the SecurityContactsClient object to access its operations.
      * 
-     * @return the AzureDevOpsProjectsClient object.
+     * @return the SecurityContactsClient object.
      */
-    AzureDevOpsProjectsClient getAzureDevOpsProjects();
-
-    /**
-     * Gets the AzureDevOpsReposClient object to access its operations.
-     * 
-     * @return the AzureDevOpsReposClient object.
-     */
-    AzureDevOpsReposClient getAzureDevOpsRepos();
-
-    /**
-     * Gets the DevOpsConfigurationsClient object to access its operations.
-     * 
-     * @return the DevOpsConfigurationsClient object.
-     */
-    DevOpsConfigurationsClient getDevOpsConfigurations();
-
-    /**
-     * Gets the GitHubOwnersClient object to access its operations.
-     * 
-     * @return the GitHubOwnersClient object.
-     */
-    GitHubOwnersClient getGitHubOwners();
-
-    /**
-     * Gets the GitHubReposClient object to access its operations.
-     * 
-     * @return the GitHubReposClient object.
-     */
-    GitHubReposClient getGitHubRepos();
-
-    /**
-     * Gets the GitLabGroupsClient object to access its operations.
-     * 
-     * @return the GitLabGroupsClient object.
-     */
-    GitLabGroupsClient getGitLabGroups();
-
-    /**
-     * Gets the GitLabSubgroupsClient object to access its operations.
-     * 
-     * @return the GitLabSubgroupsClient object.
-     */
-    GitLabSubgroupsClient getGitLabSubgroups();
-
-    /**
-     * Gets the GitLabProjectsClient object to access its operations.
-     * 
-     * @return the GitLabProjectsClient object.
-     */
-    GitLabProjectsClient getGitLabProjects();
-
-    /**
-     * Gets the DevOpsOperationResultsClient object to access its operations.
-     * 
-     * @return the DevOpsOperationResultsClient object.
-     */
-    DevOpsOperationResultsClient getDevOpsOperationResults();
+    SecurityContactsClient getSecurityContacts();
 
     /**
      * Gets the SecurityConnectorsClient object to access its operations.
@@ -535,4 +458,74 @@ public interface SecurityCenter {
      * @return the PricingsClient object.
      */
     PricingsClient getPricings();
+
+    /**
+     * Gets the AzureDevOpsOrgsClient object to access its operations.
+     * 
+     * @return the AzureDevOpsOrgsClient object.
+     */
+    AzureDevOpsOrgsClient getAzureDevOpsOrgs();
+
+    /**
+     * Gets the AzureDevOpsProjectsClient object to access its operations.
+     * 
+     * @return the AzureDevOpsProjectsClient object.
+     */
+    AzureDevOpsProjectsClient getAzureDevOpsProjects();
+
+    /**
+     * Gets the AzureDevOpsReposClient object to access its operations.
+     * 
+     * @return the AzureDevOpsReposClient object.
+     */
+    AzureDevOpsReposClient getAzureDevOpsRepos();
+
+    /**
+     * Gets the DevOpsConfigurationsClient object to access its operations.
+     * 
+     * @return the DevOpsConfigurationsClient object.
+     */
+    DevOpsConfigurationsClient getDevOpsConfigurations();
+
+    /**
+     * Gets the GitHubOwnersClient object to access its operations.
+     * 
+     * @return the GitHubOwnersClient object.
+     */
+    GitHubOwnersClient getGitHubOwners();
+
+    /**
+     * Gets the GitHubReposClient object to access its operations.
+     * 
+     * @return the GitHubReposClient object.
+     */
+    GitHubReposClient getGitHubRepos();
+
+    /**
+     * Gets the GitLabGroupsClient object to access its operations.
+     * 
+     * @return the GitLabGroupsClient object.
+     */
+    GitLabGroupsClient getGitLabGroups();
+
+    /**
+     * Gets the GitLabSubgroupsClient object to access its operations.
+     * 
+     * @return the GitLabSubgroupsClient object.
+     */
+    GitLabSubgroupsClient getGitLabSubgroups();
+
+    /**
+     * Gets the GitLabProjectsClient object to access its operations.
+     * 
+     * @return the GitLabProjectsClient object.
+     */
+    GitLabProjectsClient getGitLabProjects();
+
+    /**
+     * Gets the DevOpsOperationResultsClient object to access its operations.
+     * 
+     * @return the DevOpsOperationResultsClient object.
+     */
+    DevOpsOperationResultsClient getDevOpsOperationResults();
 }

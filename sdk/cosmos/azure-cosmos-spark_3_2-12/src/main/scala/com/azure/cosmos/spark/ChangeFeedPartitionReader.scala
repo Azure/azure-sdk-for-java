@@ -176,7 +176,7 @@ private case class ChangeFeedPartitionReader
         changeFeedItemDeserializerV1
     }
 
-    options.setCustomSerializer(itemDeserializer)
+    options.setCustomItemSerializer(itemDeserializer)
   }
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)

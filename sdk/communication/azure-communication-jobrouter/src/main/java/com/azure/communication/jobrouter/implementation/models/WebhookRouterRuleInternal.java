@@ -32,7 +32,8 @@ public final class WebhookRouterRuleInternal extends RouterRuleInternal {
     private String authorizationServerUri;
 
     /*
-     * OAuth2.0 Credentials used to Contoso's Authorization server. Reference: https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/
+     * OAuth2.0 Credentials used to Contoso's Authorization server. Reference:
+     * https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/
      */
     @Generated
     @JsonProperty(value = "clientCredential")

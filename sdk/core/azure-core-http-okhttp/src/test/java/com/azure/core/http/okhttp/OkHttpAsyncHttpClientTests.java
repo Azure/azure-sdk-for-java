@@ -10,7 +10,9 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -23,6 +25,8 @@ import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -40,10 +44,14 @@ import java.util.concurrent.TimeUnit;
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.LONG_BODY;
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.RETURN_HEADERS_AS_IS_PATH;
 import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.SHORT_BODY;
+import static com.azure.core.http.okhttp.OkHttpClientLocalTestServer.TIMEOUT;
 import static com.azure.core.http.okhttp.TestUtils.createQuietDispatcher;
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
@@ -222,6 +230,46 @@ public class OkHttpAsyncHttpClientTests {
             })
             .expectComplete()
             .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    public void perCallTimeout() {
+        HttpClient client = new OkHttpAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(20)).build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
+
+        // Verify a smaller timeout sent through Context times out the request.
+        StepVerifier.create(client.send(request, new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofSeconds(1))))
+            .expectErrorMatches(e -> e instanceof InterruptedIOException)
+            .verify();
+
+        // Then verify not setting a timeout through Context does not time out the request.
+        StepVerifier.create(client.send(request)
+            .flatMap(response -> Mono.zip(FluxUtil.collectBytesInByteBufferStream(response.getBody()),
+                Mono.just(response.getStatusCode()))))
+            .assertNext(tuple -> {
+                assertArraysEqual(SHORT_BODY, tuple.getT1());
+                assertEquals(200, tuple.getT2());
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void perCallTimeoutSync() {
+        HttpClient client = new OkHttpAsyncHttpClientBuilder().responseTimeout(Duration.ofSeconds(20)).build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(TIMEOUT));
+
+        // Verify a smaller timeout sent through Context times out the request.
+        UncheckedIOException ex = assertThrows(UncheckedIOException.class,
+            () -> client.sendSync(request, new Context(HttpUtils.AZURE_RESPONSE_TIMEOUT, Duration.ofSeconds(1))));
+        assertInstanceOf(InterruptedIOException.class, ex.getCause());
+
+        // Then verify not setting a timeout through Context does not time out the request.
+        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+        }
     }
 
     private static Mono<HttpResponse> getResponse(String path) {

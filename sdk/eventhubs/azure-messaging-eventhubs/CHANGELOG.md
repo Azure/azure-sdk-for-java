@@ -1,6 +1,6 @@
 # Release History
 
-## 5.19.0-beta.1 (Unreleased)
+## 5.19.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,28 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 5.19.0-beta.1 (2024-05-21)
+
+### Features Added
+
+### Breaking Changes
+
+- `EventData.getOffset()`, `CheckpointStore.getOffset()`, `EventData.getOffset()`, and `LastEnqueuedEventProperties.getOffset()` are changed from `Long` to `String`.
+
+### Bugs Fixed
+
 - Fixed issue where creating EventProcessorClient instances using the same EventProcessorClientBuilder instance could result in incorrect properties. ([#29875](https://github.com/Azure/azure-sdk-for-java/issues/29875))
 
+## 5.18.3 (2024-04-23)
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-amqp` from `2.9.2` to version `2.9.3`.
 
 
 ## 5.18.2 (2024-03-20)

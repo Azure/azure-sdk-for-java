@@ -683,6 +683,8 @@ public class AddressResolver implements IAddressResolver {
             // GATEWAY will refresh its cache and retry.
             String effectivePartitionKey = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, collection.getPartitionKey());
 
+            request.setEffectivePartitionKey(effectivePartitionKey);
+
             // There should be exactly one range which contains a partition key. Always.
             return routingMap.getRangeByEffectivePartitionKey(effectivePartitionKey);
         }

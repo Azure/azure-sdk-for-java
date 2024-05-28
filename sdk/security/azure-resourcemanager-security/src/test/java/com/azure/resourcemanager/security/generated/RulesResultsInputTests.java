@@ -15,23 +15,23 @@ public final class RulesResultsInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RulesResultsInput model = BinaryData.fromString(
-            "{\"latestScan\":false,\"results\":{\"mmqtgqqqxhr\":[[\"iml\"],[\"ljxkcgxxlx\",\"ffgcvizqz\"],[\"l\",\"w\",\"youpfgfbkj\"],[\"dyhgkfminsg\",\"wzf\",\"tsttktlahbq\",\"ctxtgzukxi\"]],\"kqqfk\":[[\"xcpjuisavokqdzf\",\"azivjlfrqttbajl\",\"atnwxyiopi\"]]}}")
+            "{\"latestScan\":true,\"results\":{\"zhjjklffhmouwq\":[[\"sjabibs\"],[\"tawfsdjpvkvp\",\"jxbkzbzkdvn\",\"jabudurgkakmo\"]],\"bjbsybb\":[[\"rfzeey\",\"bizikayuhq\"]],\"slthaq\":[[\"vtldgmfpgvmpip\"]],\"hneuyowqkd\":[[\"smwutwbdsrezpd\"]]}}")
             .toObject(RulesResultsInput.class);
-        Assertions.assertEquals(false, model.latestScan());
-        Assertions.assertEquals("iml", model.results().get("mmqtgqqqxhr").get(0).get(0));
+        Assertions.assertEquals(true, model.latestScan());
+        Assertions.assertEquals("sjabibs", model.results().get("zhjjklffhmouwq").get(0).get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RulesResultsInput model = new RulesResultsInput().withLatestScan(false)
-            .withResults(mapOf("mmqtgqqqxhr",
-                Arrays.asList(Arrays.asList("iml"), Arrays.asList("ljxkcgxxlx", "ffgcvizqz"),
-                    Arrays.asList("l", "w", "youpfgfbkj"),
-                    Arrays.asList("dyhgkfminsg", "wzf", "tsttktlahbq", "ctxtgzukxi")),
-                "kqqfk", Arrays.asList(Arrays.asList("xcpjuisavokqdzf", "azivjlfrqttbajl", "atnwxyiopi"))));
+        RulesResultsInput model = new RulesResultsInput().withLatestScan(true)
+            .withResults(mapOf("zhjjklffhmouwq",
+                Arrays.asList(Arrays.asList("sjabibs"), Arrays.asList("tawfsdjpvkvp", "jxbkzbzkdvn", "jabudurgkakmo")),
+                "bjbsybb", Arrays.asList(Arrays.asList("rfzeey", "bizikayuhq")), "slthaq",
+                Arrays.asList(Arrays.asList("vtldgmfpgvmpip")), "hneuyowqkd",
+                Arrays.asList(Arrays.asList("smwutwbdsrezpd"))));
         model = BinaryData.fromObject(model).toObject(RulesResultsInput.class);
-        Assertions.assertEquals(false, model.latestScan());
-        Assertions.assertEquals("iml", model.results().get("mmqtgqqqxhr").get(0).get(0));
+        Assertions.assertEquals(true, model.latestScan());
+        Assertions.assertEquals("sjabibs", model.results().get("zhjjklffhmouwq").get(0).get(0));
     }
 
     // Use "Map.of" if available

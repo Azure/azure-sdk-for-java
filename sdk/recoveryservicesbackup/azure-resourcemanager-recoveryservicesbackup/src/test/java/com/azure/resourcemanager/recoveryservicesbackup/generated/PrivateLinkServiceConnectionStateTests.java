@@ -24,7 +24,8 @@ public final class PrivateLinkServiceConnectionStateTests {
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model
             = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointConnectionStatus.DISCONNECTED)
-                .withDescription("bjnpg").withActionRequired("ftadehxnltyfs");
+                .withDescription("bjnpg")
+                .withActionRequired("ftadehxnltyfs");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(PrivateEndpointConnectionStatus.DISCONNECTED, model.status());
         Assertions.assertEquals("bjnpg", model.description());

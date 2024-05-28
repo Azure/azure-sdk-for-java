@@ -7,7 +7,9 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ValidateBackup Response Properties. */
+/**
+ * ValidateBackup Response Properties.
+ */
 @Fluent
 public final class ValidateBackupResponseProperties {
     /*
@@ -16,14 +18,16 @@ public final class ValidateBackupResponseProperties {
     @JsonProperty(value = "numberOfContainers")
     private Integer numberOfContainers;
 
-    /** Creates an instance of ValidateBackupResponseProperties class. */
+    /**
+     * Creates an instance of ValidateBackupResponseProperties class.
+     */
     public ValidateBackupResponseProperties() {
     }
 
     /**
      * Get the numberOfContainers property: Estimated no of storage containers required for resource data to be backed
      * up.
-     *
+     * 
      * @return the numberOfContainers value.
      */
     public Integer numberOfContainers() {
@@ -33,7 +37,7 @@ public final class ValidateBackupResponseProperties {
     /**
      * Set the numberOfContainers property: Estimated no of storage containers required for resource data to be backed
      * up.
-     *
+     * 
      * @param numberOfContainers the numberOfContainers value to set.
      * @return the ValidateBackupResponseProperties object itself.
      */
@@ -44,7 +48,7 @@ public final class ValidateBackupResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,8 +10,8 @@ import com.azure.resourcemanager.security.fluent.models.ComplianceResultProperti
 public final class ComplianceResultPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComplianceResultProperties model
-            = BinaryData.fromString("{\"resourceStatus\":\"NotHealthy\"}").toObject(ComplianceResultProperties.class);
+        ComplianceResultProperties model = BinaryData.fromString("{\"resourceStatus\":\"NotApplicable\"}")
+            .toObject(ComplianceResultProperties.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -197,6 +197,36 @@ public interface Namespaces {
         NamespaceRegenerateKeyRequest regenerateKeyRequest, Context context);
 
     /**
+     * Validate ownership for all custom domains in a namespace.
+     * 
+     * Performs ownership validation via checking TXT records for all custom domains in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the Namespace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace custom domain ownership validation result.
+     */
+    CustomDomainOwnershipValidationResult validateCustomDomainOwnership(String resourceGroupName, String namespaceName);
+
+    /**
+     * Validate ownership for all custom domains in a namespace.
+     * 
+     * Performs ownership validation via checking TXT records for all custom domains in a namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param namespaceName Name of the Namespace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return namespace custom domain ownership validation result.
+     */
+    CustomDomainOwnershipValidationResult validateCustomDomainOwnership(String resourceGroupName, String namespaceName,
+        Context context);
+
+    /**
      * Get a namespace.
      * 
      * Get properties of a namespace.

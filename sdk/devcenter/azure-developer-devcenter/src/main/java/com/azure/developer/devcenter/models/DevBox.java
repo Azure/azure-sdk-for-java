@@ -21,13 +21,13 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 public final class DevBox implements JsonSerializable<DevBox> {
 
     /*
-     * Display name for the Dev Box
+     * Display name for the Dev Box.
      */
     @Generated
     private String name;
 
     /*
-     * Name of the project this Dev Box belongs to
+     * Name of the project this Dev Box belongs to.
      */
     @Generated
     private String projectName;
@@ -96,25 +96,25 @@ public final class DevBox implements JsonSerializable<DevBox> {
     private String userId;
 
     /*
-     * Information about the Dev Box's hardware resources
+     * Information about the Dev Box's hardware resources.
      */
     @Generated
     private DevBoxHardwareProfile hardwareProfile;
 
     /*
-     * Storage settings for this Dev Box
+     * Storage settings for this Dev Box.
      */
     @Generated
     private DevBoxStorageProfile storageProfile;
 
     /*
-     * Information about the image used for this Dev Box
+     * Information about the image used for this Dev Box.
      */
     @Generated
     private DevBoxImageReference imageReference;
 
     /*
-     * Creation time of this Dev Box
+     * Creation time of this Dev Box.
      */
     @Generated
     private OffsetDateTime createdTime;

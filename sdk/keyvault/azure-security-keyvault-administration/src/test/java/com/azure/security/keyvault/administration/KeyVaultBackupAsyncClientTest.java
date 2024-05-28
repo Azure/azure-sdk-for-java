@@ -5,24 +5,20 @@ package com.azure.security.keyvault.administration;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
-import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
-import com.azure.security.keyvault.administration.models.KeyVaultRestoreResult;
-import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
-import com.azure.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
-import com.azure.security.keyvault.keys.KeyAsyncClient;
+import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
-import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase {
@@ -49,13 +45,34 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     public void beginBackup(HttpClient httpClient) {
         getAsyncClient(httpClient, false);
 
-        AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
-            setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken)).blockLast();
+        StepVerifier.create(setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken))
+                .last()
+                .flatMap(AsyncPollResponse::getFinalResult))
+            .assertNext(backupBlobUri -> {
+                assertNotNull(backupBlobUri);
+                assertTrue(backupBlobUri.startsWith(blobStorageUrl));
+            })
+            .verifyComplete();
+    }
 
-        String backupBlobUri = backupPollResponse.getFinalResult().block();
+    /**
+     * Tests that a Key Vault or MHSM can be pre-backed up.
+     */
+    @SuppressWarnings("ConstantConditions")
+    @ParameterizedTest(name = DISPLAY_NAME)
+    @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
+    public void beginPreBackup(HttpClient httpClient) {
+        getAsyncClient(httpClient, false);
 
-        assertNotNull(backupBlobUri);
-        assertTrue(backupBlobUri.startsWith(blobStorageUrl));
+        StepVerifier.create(setPlaybackPollerFluxPollInterval(asyncClient.beginPreBackup(blobStorageUrl, sasToken))
+                .last()
+                .flatMap(AsyncPollResponse::getFinalResult)
+                .mapNotNull(backupBlobUri -> {
+                    assertNull(backupBlobUri);
+
+                    return backupBlobUri;
+                }))
+            .verifyComplete();
     }
 
     /**
@@ -67,26 +84,49 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     public void beginRestore(HttpClient httpClient) {
         getAsyncClient(httpClient, false);
 
-        // Create a backup
-        AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
-            setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken))
-                .takeUntil(asyncPollResponse ->
-                    asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                .blockLast();
+        StepVerifier.create(setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken))
+                .last()
+                .flatMap(AsyncPollResponse::getFinalResult)
+                .map(backupBlobUri -> {
+                    assertNotNull(backupBlobUri);
+                    assertTrue(backupBlobUri.startsWith(blobStorageUrl));
 
-        KeyVaultBackupOperation backupOperation = backupPollResponse.getValue();
-        assertNotNull(backupOperation);
+                    return backupBlobUri;
+                })
+                .map(backupBlobUri -> asyncClient.beginRestore(backupBlobUri, sasToken)
+                    .last()
+                    .map(AsyncPollResponse::getValue)))
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
 
-        // Restore the backup
-        String backupFolderUrl = backupOperation.getAzureStorageBlobContainerUrl();
-        AsyncPollResponse<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePollResponse =
-            setPlaybackPollerFluxPollInterval(asyncClient.beginRestore(backupFolderUrl, sasToken))
-                .takeUntil(asyncPollResponse ->
-                    asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                .blockLast();
+        // For some reason, the service might still think a restore operation is running even after returning a success
+        // signal. This gives it some time to "clear" the operation.
+        sleepIfRunningAgainstService(30000);
+    }
 
-        KeyVaultRestoreOperation restoreOperation = restorePollResponse.getValue();
-        assertNotNull(restoreOperation);
+    /**
+     * Tests that a Key Vault can be pre-restored from a backup.
+     */
+    @SuppressWarnings("ConstantConditions")
+    @ParameterizedTest(name = DISPLAY_NAME)
+    @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
+    public void beginPreRestore(HttpClient httpClient) {
+        getAsyncClient(httpClient, false);
+
+        StepVerifier.create(setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken))
+                .last()
+                .flatMap(AsyncPollResponse::getFinalResult)
+                .map(backupBlobUri -> {
+                    assertNotNull(backupBlobUri);
+                    assertTrue(backupBlobUri.startsWith(blobStorageUrl));
+
+                    return backupBlobUri;
+                })
+                .map(backupBlobUri -> asyncClient.beginPreRestore(backupBlobUri, sasToken)
+                    .last()
+                    .map(AsyncPollResponse::getValue)))
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
 
         // For some reason, the service might still think a restore operation is running even after returning a success
         // signal. This gives it some time to "clear" the operation.
@@ -100,42 +140,35 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void beginSelectiveKeyRestore(HttpClient httpClient) {
-        KeyAsyncClient keyClient = new KeyClientBuilder()
+        KeyClient keyClient = new KeyClientBuilder()
             .vaultUrl(getEndpoint())
-            .serviceVersion(KeyServiceVersion.V7_2)
             .pipeline(getPipeline(httpClient, false))
-            .buildAsyncClient();
+            .buildClient();
 
         String keyName = testResourceNamer.randomName("backupKey", 20);
         CreateRsaKeyOptions rsaKeyOptions = new CreateRsaKeyOptions(keyName)
             .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
             .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC));
 
-        KeyVaultKey createdKey = keyClient.createRsaKey(rsaKeyOptions).block();
+        KeyVaultKey createdKey = keyClient.createRsaKey(rsaKeyOptions);
 
         getAsyncClient(httpClient, false);
 
-        // Create a backup
-        AsyncPollResponse<KeyVaultBackupOperation, String> backupPollResponse =
-            setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken))
-                .takeUntil(asyncPollResponse ->
-                    asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                .blockLast();
+        StepVerifier.create(setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken))
+                .last()
+                .flatMap(AsyncPollResponse::getFinalResult)
+                .map(backupBlobUri -> {
+                    assertNotNull(backupBlobUri);
+                    assertTrue(backupBlobUri.startsWith(blobStorageUrl));
 
-        KeyVaultBackupOperation backupOperation = backupPollResponse.getValue();
-        assertNotNull(backupOperation);
-
-        // Restore the backup
-        String backupFolderUrl = backupOperation.getAzureStorageBlobContainerUrl();
-        AsyncPollResponse<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePollResponse =
-            setPlaybackPollerFluxPollInterval(asyncClient.beginSelectiveKeyRestore(createdKey.getName(),
-                backupFolderUrl, sasToken))
-                .takeUntil(asyncPollResponse ->
-                    asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-                .blockLast();
-
-        KeyVaultSelectiveKeyRestoreOperation restoreOperation = restorePollResponse.getValue();
-        assertNotNull(restoreOperation);
+                    return backupBlobUri;
+                })
+                .map(backupBlobUri ->
+                    asyncClient.beginSelectiveKeyRestore(createdKey.getName(), backupBlobUri, sasToken)
+                        .last()
+                        .map(AsyncPollResponse::getValue)))
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
 
         // For some reason, the service might still think a restore operation is running even after returning a success
         // signal. This gives it some time to "clear" the operation.

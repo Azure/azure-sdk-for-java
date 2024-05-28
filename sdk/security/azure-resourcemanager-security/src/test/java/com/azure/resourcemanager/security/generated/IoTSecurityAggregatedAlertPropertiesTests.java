@@ -11,7 +11,7 @@ public final class IoTSecurityAggregatedAlertPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTSecurityAggregatedAlertProperties model = BinaryData.fromString(
-            "{\"alertType\":\"gywezskiec\",\"alertDisplayName\":\"ygzmxieqvdsmak\",\"vendorName\":\"qcahyhxal\",\"reportedSeverity\":\"High\",\"remediationSteps\":\"woijpodtbl\",\"description\":\"kkwjdjodq\",\"count\":2151822412404776825,\"effectedResourceType\":\"cnre\",\"systemSource\":\"hllizhceumoq\",\"actionTaken\":\"kadppyibngq\",\"logAnalyticsQuery\":\"d\",\"topDevicesList\":[{\"deviceId\":\"whydt\",\"alertsCount\":8816509357070030186,\"lastOccurrence\":\"ds\"},{\"deviceId\":\"snuyemlowuowhl\",\"alertsCount\":9005545277468499123,\"lastOccurrence\":\"rmouvb\"},{\"deviceId\":\"mo\",\"alertsCount\":7638104837802960488,\"lastOccurrence\":\"rfowtdvrfmvlih\"}]}")
+            "{\"alertType\":\"idmhmwf\",\"alertDisplayName\":\"lfmu\",\"vendorName\":\"ck\",\"reportedSeverity\":\"Low\",\"remediationSteps\":\"vwe\",\"description\":\"xoy\",\"count\":275572615553249364,\"effectedResourceType\":\"aimmoiroqb\",\"systemSource\":\"hbragapyyr\",\"actionTaken\":\"svbpavbopfppdbwn\",\"logAnalyticsQuery\":\"gahxkumasjcaa\",\"topDevicesList\":[{\"deviceId\":\"mcp\",\"alertsCount\":1477885979521930288,\"lastOccurrence\":\"qepvufhbzeh\"},{\"deviceId\":\"hoqhnl\",\"alertsCount\":8263226324503910031,\"lastOccurrence\":\"dxeaclgsch\"},{\"deviceId\":\"imkrsrrmouc\",\"alertsCount\":1879165570822213378,\"lastOccurrence\":\"puviyfcaabe\"},{\"deviceId\":\"hbhlvbm\",\"alertsCount\":1945796688920432745,\"lastOccurrence\":\"s\"}]}")
             .toObject(IoTSecurityAggregatedAlertProperties.class);
     }
 

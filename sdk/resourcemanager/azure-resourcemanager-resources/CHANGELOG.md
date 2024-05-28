@@ -1,6 +1,6 @@
 # Release History
 
-## 2.39.0-beta.1 (Unreleased)
+## 2.40.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.39.0 (2024-05-24)
+
+### Features Added
+
+- Supported `mode` and `metadata` in `PolicyDefinition` class.
 
 ## 2.38.0 (2024-04-16)
 

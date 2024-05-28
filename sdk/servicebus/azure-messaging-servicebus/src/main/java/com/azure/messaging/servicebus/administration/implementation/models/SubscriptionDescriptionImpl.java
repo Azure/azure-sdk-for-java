@@ -4,10 +4,10 @@
 
 package com.azure.messaging.servicebus.administration.implementation.models;
 
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
+
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.messaging.servicebus.administration.implementation.CoreToCodegenBridgeUtils;
-import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
@@ -54,6 +54,11 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
      * A value that indicates whether this subscription has dead letter support when a message expires.
      */
     private Boolean deadLetteringOnFilterEvaluationExceptions;
+
+    /*
+     * The default rule description.
+     */
+    private RuleDescriptionImpl defaultRuleDescription;
 
     /*
      * The number of messages in the subscription.
@@ -122,11 +127,6 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
      */
     private EntityAvailabilityStatusImpl entityAvailabilityStatus;
 
-    /*
-     * The default rule description.
-     */
-    private RuleDescriptionImpl defaultRuleDescription;
-
     /**
      * Creates an instance of SubscriptionDescription class.
      */
@@ -181,8 +181,8 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Get the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
-     * after which the message expires, starting from when the message is sent to Service Bus. This is the default
-     * value used when TimeToLive is not set on a message itself.
+     * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
+     * used when TimeToLive is not set on a message itself.
      * 
      * @return the defaultMessageTimeToLive value.
      */
@@ -192,8 +192,8 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     /**
      * Set the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
-     * after which the message expires, starting from when the message is sent to Service Bus. This is the default
-     * value used when TimeToLive is not set on a message itself.
+     * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
+     * used when TimeToLive is not set on a message itself.
      * 
      * @param defaultMessageTimeToLive the defaultMessageTimeToLive value to set.
      * @return the SubscriptionDescription object itself.
@@ -249,6 +249,26 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     }
 
     /**
+     * Get the defaultRuleDescription property: The default rule description.
+     * 
+     * @return the defaultRuleDescription value.
+     */
+    public RuleDescriptionImpl getDefaultRuleDescription() {
+        return this.defaultRuleDescription;
+    }
+
+    /**
+     * Set the defaultRuleDescription property: The default rule description.
+     * 
+     * @param defaultRuleDescription the defaultRuleDescription value to set.
+     * @return the SubscriptionDescription object itself.
+     */
+    public SubscriptionDescriptionImpl setDefaultRuleDescription(RuleDescriptionImpl defaultRuleDescription) {
+        this.defaultRuleDescription = defaultRuleDescription;
+        return this;
+    }
+
+    /**
      * Get the messageCount property: The number of messages in the subscription.
      * 
      * @return the messageCount value.
@@ -269,8 +289,8 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     }
 
     /**
-     * Get the maxDeliveryCount property: The maximum delivery count. A message is automatically deadlettered after
-     * this number of deliveries. Default value is 10.
+     * Get the maxDeliveryCount property: The maximum delivery count. A message is automatically deadlettered after this
+     * number of deliveries. Default value is 10.
      * 
      * @return the maxDeliveryCount value.
      */
@@ -279,8 +299,8 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
     }
 
     /**
-     * Set the maxDeliveryCount property: The maximum delivery count. A message is automatically deadlettered after
-     * this number of deliveries. Default value is 10.
+     * Set the maxDeliveryCount property: The maximum delivery count. A message is automatically deadlettered after this
+     * number of deliveries. Default value is 10.
      * 
      * @param maxDeliveryCount the maxDeliveryCount value to set.
      * @return the SubscriptionDescription object itself.
@@ -521,26 +541,6 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
         return this;
     }
 
-    /**
-     * Get the defaultRuleDescription property: The default rule description.
-     * 
-     * @return the defaultRuleDescription value.
-     */
-    public RuleDescriptionImpl getDefaultRuleDescription() {
-        return this.defaultRuleDescription;
-    }
-
-    /**
-     * Set the defaultRuleDescription property: The default rule description.
-     * 
-     * @param defaultRuleDescription the defaultRuleDescription value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionDescriptionImpl setDefaultRuleDescription(RuleDescriptionImpl defaultRuleDescription) {
-        this.defaultRuleDescription = defaultRuleDescription;
-        return this;
-    }
-
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
@@ -552,15 +552,16 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "LockDuration",
-            CoreToCodegenBridgeUtils.durationToStringWithDays(this.lockDuration));
+            CoreUtils.durationToStringWithDays(this.lockDuration));
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "RequiresSession",
             this.requiresSession);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "DefaultMessageTimeToLive",
-            CoreToCodegenBridgeUtils.durationToStringWithDays(this.defaultMessageTimeToLive));
+            CoreUtils.durationToStringWithDays(this.defaultMessageTimeToLive));
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "DeadLetteringOnMessageExpiration",
             this.deadLetteringOnMessageExpiration);
         xmlWriter.writeBooleanElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT,
             "DeadLetteringOnFilterEvaluationExceptions", this.deadLetteringOnFilterEvaluationExceptions);
+        xmlWriter.writeXml(this.defaultRuleDescription, "DefaultRuleDescription");
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MessageCount", this.messageCount);
         xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MaxDeliveryCount",
             this.maxDeliveryCount);
@@ -580,10 +581,9 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "ForwardDeadLetteredMessagesTo",
             this.forwardDeadLetteredMessagesTo);
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "AutoDeleteOnIdle",
-            CoreToCodegenBridgeUtils.durationToStringWithDays(this.autoDeleteOnIdle));
+            CoreUtils.durationToStringWithDays(this.autoDeleteOnIdle));
         xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "EntityAvailabilityStatus",
             this.entityAvailabilityStatus == null ? null : this.entityAvailabilityStatus.toString());
-        xmlWriter.writeXml(this.defaultRuleDescription, "DefaultRuleDescription");
         return xmlWriter.writeEndElement();
     }
 
@@ -637,6 +637,10 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.deadLetteringOnFilterEvaluationExceptions
                         = reader.getNullableElement(Boolean::parseBoolean);
+                } else if ("DefaultRuleDescription".equals(elementName.getLocalPart())
+                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
+                    deserializedSubscriptionDescription.defaultRuleDescription
+                        = RuleDescriptionImpl.fromXml(reader, "DefaultRuleDescription");
                 } else if ("MessageCount".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.messageCount = reader.getNullableElement(Integer::parseInt);
@@ -682,10 +686,6 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedSubscriptionDescription.entityAvailabilityStatus
                         = EntityAvailabilityStatusImpl.fromString(reader.getStringElement());
-                } else if ("DefaultRuleDescription".equals(elementName.getLocalPart())
-                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
-                    deserializedSubscriptionDescription.defaultRuleDescription
-                        = RuleDescriptionImpl.fromXml(reader, "DefaultRuleDescription");
                 } else {
                     reader.skipElement();
                 }

@@ -24,13 +24,6 @@ public final class StopOnDisconnectConfiguration implements JsonSerializable<Sto
     @Generated
     private final StopOnDisconnectStatus status;
 
-    /*
-     * The specified time in minutes to wait before stopping a Dev Box once disconnect
-     * is detected.
-     */
-    @Generated
-    private Integer gracePeriodMinutes;
-
     /**
      * Creates an instance of StopOnDisconnectConfiguration class.
      *
@@ -53,18 +46,6 @@ public final class StopOnDisconnectConfiguration implements JsonSerializable<Sto
     }
 
     /**
-     * Get the gracePeriodMinutes property: The specified time in minutes to wait before stopping a Dev Box once
-     * disconnect
-     * is detected.
-     *
-     * @return the gracePeriodMinutes value.
-     */
-    @Generated
-    public Integer getGracePeriodMinutes() {
-        return this.gracePeriodMinutes;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -72,7 +53,7 @@ public final class StopOnDisconnectConfiguration implements JsonSerializable<Sto
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeNumberField("gracePeriodMinutes", this.gracePeriodMinutes);
+        jsonWriter.writeNumberField("gracePeriodMinutes", this.gracePeriodInMinutes);
         return jsonWriter.writeEndObject();
     }
 
@@ -89,22 +70,41 @@ public final class StopOnDisconnectConfiguration implements JsonSerializable<Sto
     public static StopOnDisconnectConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StopOnDisconnectStatus status = null;
-            Integer gracePeriodMinutes = null;
+            Integer gracePeriodInMinutes = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("status".equals(fieldName)) {
                     status = StopOnDisconnectStatus.fromString(reader.getString());
                 } else if ("gracePeriodMinutes".equals(fieldName)) {
-                    gracePeriodMinutes = reader.getNullable(JsonReader::getInt);
+                    gracePeriodInMinutes = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
             StopOnDisconnectConfiguration deserializedStopOnDisconnectConfiguration
                 = new StopOnDisconnectConfiguration(status);
-            deserializedStopOnDisconnectConfiguration.gracePeriodMinutes = gracePeriodMinutes;
+            deserializedStopOnDisconnectConfiguration.gracePeriodInMinutes = gracePeriodInMinutes;
             return deserializedStopOnDisconnectConfiguration;
         });
+    }
+
+    /*
+     * The specified time in minutes to wait before stopping a Dev Box once disconnect
+     * is detected.
+     */
+    @Generated
+    private Integer gracePeriodInMinutes;
+
+    /**
+     * Get the gracePeriodInMinutes property: The specified time in minutes to wait before stopping a Dev Box once
+     * disconnect
+     * is detected.
+     *
+     * @return the gracePeriodInMinutes value.
+     */
+    @Generated
+    public Integer getGracePeriodInMinutes() {
+        return this.gracePeriodInMinutes;
     }
 }

@@ -4,21 +4,22 @@
 
 package com.azure.resourcemanager.recoveryservices.generated;
 
-/** Samples for VaultExtendedInfo CreateOrUpdate. */
+/**
+ * Samples for VaultExtendedInfo CreateOrUpdate.
+ */
 public final class VaultExtendedInfoCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-04-01/examples/UpdateVaultExtendedInfo.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/UpdateVaultExtendedInfo.json
      */
     /**
      * Sample code: Put ExtendedInfo of Resource.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesManager.
      */
-    public static void putExtendedInfoOfResource(
-        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager
-            .vaultExtendedInfoes()
-            .createOrUpdateWithResponse(
-                "Default-RecoveryServices-ResourceGroup", "swaggerExample", null, com.azure.core.util.Context.NONE);
+    public static void
+        putExtendedInfoOfResource(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
+        manager.vaultExtendedInfoes()
+            .createOrUpdateWithResponse("Default-RecoveryServices-ResourceGroup", "swaggerExample", null,
+                com.azure.core.util.Context.NONE);
     }
 }
