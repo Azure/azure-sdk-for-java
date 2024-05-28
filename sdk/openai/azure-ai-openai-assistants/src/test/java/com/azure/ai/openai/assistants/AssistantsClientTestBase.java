@@ -19,7 +19,6 @@ import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.FunctionDefinition;
 import com.azure.ai.openai.assistants.models.FunctionToolDefinition;
-import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.PageableList;
@@ -27,7 +26,7 @@ import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
-import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolDefinition;
@@ -179,7 +178,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     void createRunRunner(Consumer<AssistantThreadCreationOptions> testRunner) {
         testRunner.accept(new AssistantThreadCreationOptions()
-                .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
+                .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
                         "I need to solve the equation `3x + 11 = 14`. Can you help me?"))));
     }
 
@@ -195,7 +194,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         testRunner.accept(
                 new CreateAndRunThreadOptions(assistantId)
                         .setThread(new AssistantThreadCreationOptions()
-                                .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
+                                .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
                                         "I need to solve the equation `3x + 11 = 14`. Can you help me?")))));
 
     }
@@ -204,7 +203,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         testRunner.accept(
             new CreateAndRunThreadOptions(assistantId)
                 .setThread(new AssistantThreadCreationOptions()
-                    .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
+                    .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
                         "Please make a graph for my boilerplate equation")))));
 
     }
@@ -567,25 +566,5 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         assertEquals("thread.message", threadMessage.getObject());
         assertEquals(MessageRole.USER, threadMessage.getRole());
         assertFalse(threadMessage.getContent().isEmpty());
-    }
-
-
-    void validateOpenAIPageableListOfMessageFile(PageableList<MessageFile> pageableList,
-                                                 String messageId, List<String> fileIdList) {
-        assertNotNull(pageableList);
-        assertEquals("list", pageableList.getObject());
-        List<MessageFile> messageFiles = pageableList.getData();
-        assertNotNull(messageFiles);
-        assertEquals(fileIdList.size(), messageFiles.size());
-        for (int i = 0; i < messageFiles.size(); i++) {
-            validateMessageFile(messageFiles.get(i), messageId, fileIdList.get(i));
-        }
-    }
-    void validateMessageFile(MessageFile messageFile, String messageId, String fileId) {
-        assertNotNull(messageFile);
-        assertNotNull(fileId, messageFile.getId());
-        assertNotNull(messageFile.getCreatedAt());
-        assertEquals("thread.message.file", messageFile.getObject());
-        assertEquals(messageId, messageFile.getMessageId());
     }
 }

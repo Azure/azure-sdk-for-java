@@ -9,6 +9,7 @@
 ### Breaking Changes
 
 - Removed method `uploadFile(FileDetails file, FilePurpose purpose)`. Use `uploadFile(FileDetails file, FilePurpose purpose, String fileName)` instead.
+- Renamed `ThreadInitializationMessage` to `ThreadMessageOptions`.
 
 ### Bugs Fixed
 

@@ -12,6 +12,7 @@ import com.azure.ai.openai.assistants.models.MessageTextContent;
 import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.implementation.AsyncUtils;
 import com.azure.core.http.HttpClient;
@@ -46,7 +47,8 @@ public class AzureRetrievalAsyncTest extends AssistantsClientTestBase {
                 .flatMap(openAIFile -> {
                     // Create assistant
                     AsyncUtils cleanUp = new AsyncUtils();
-                    assistantCreationOptions.setFileIds(Arrays.asList(openAIFile.getId()));
+                    // TODO - setup with VectorStore
+//                    assistantCreationOptions.setFileIds(Arrays.asList(openAIFile.getId()));
                     cleanUp.setFile(openAIFile);
                     return client.createAssistant(assistantCreationOptions).zipWith(Mono.just(cleanUp));
                 }).flatMap(tuple -> {
@@ -63,9 +65,10 @@ public class AzureRetrievalAsyncTest extends AssistantsClientTestBase {
 
                     return client.createMessage(
                         thread.getId(),
-                        MessageRole.USER,
-                        "Can you give me the documented codes for 'banana' and 'orange'?"
-                    ).flatMap(_message ->
+                        new ThreadMessageOptions(
+                            MessageRole.USER,
+                            "Can you give me the documented codes for 'banana' and 'orange'?"
+                    )).flatMap(_message ->
                         client.createRun(cleanUp.getThread(), cleanUp.getAssistant())
                             .flatMap(createdRun ->
                                 client.getRun(cleanUp.getThread().getId(), createdRun.getId()).zipWith(Mono.just(cleanUp))

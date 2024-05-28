@@ -9,6 +9,7 @@ import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
@@ -36,7 +37,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
-            ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, message);
+            ThreadMessage threadMessage = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message));
             validateThreadMessage(threadMessage, threadId);
             // Submit the message and run
             ThreadRun run = client.createRun(threadId, new CreateRunOptions(mathTutorAssistantId));
@@ -73,7 +74,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
-            ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, message);
+            ThreadMessage threadMessage = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message));
             validateThreadMessage(threadMessage, threadId);
             // Submit the message and run
             Response<BinaryData> runWithResponse = client.createRunWithResponse(threadId,

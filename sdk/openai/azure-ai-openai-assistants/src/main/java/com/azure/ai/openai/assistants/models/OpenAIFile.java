@@ -186,4 +186,38 @@ public final class OpenAIFile implements JsonSerializable<OpenAIFile> {
             return new OpenAIFile(id, bytes, filename, createdAt, purpose);
         });
     }
+
+    /*
+     * The state of the file. This field is available in Azure OpenAI only.
+     */
+    @Generated
+    private FileState status;
+
+    /*
+     * The error message with details in case processing of this file failed. This field is available in Azure OpenAI
+     * only.
+     */
+    @Generated
+    private String statusDetails;
+
+    /**
+     * Get the status property: The state of the file. This field is available in Azure OpenAI only.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public FileState getStatus() {
+        return this.status;
+    }
+
+    /**
+     * Get the statusDetails property: The error message with details in case processing of this file failed. This field
+     * is available in Azure OpenAI only.
+     *
+     * @return the statusDetails value.
+     */
+    @Generated
+    public String getStatusDetails() {
+        return this.statusDetails;
+    }
 }

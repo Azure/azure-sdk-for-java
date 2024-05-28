@@ -20,7 +20,7 @@ import com.azure.ai.openai.assistants.models.StreamRequiredAction;
 import com.azure.ai.openai.assistants.models.StreamRunCreation;
 import com.azure.ai.openai.assistants.models.StreamRunStepUpdate;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
-import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
@@ -63,7 +63,7 @@ public class StreamingFunctionCallExample {
                 System.out.println("Assistant created: " + assistant.getId());
                 return client.createThreadAndRunStream(new CreateAndRunThreadOptions(assistant.getId())
                     .setThread(new AssistantThreadCreationOptions()
-                        .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
+                        .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
                             "Please make a graph for my boilerplate equation")))));
             }).doOnNext(streamUpdate -> {
                 System.out.println("Stream update class name: " + streamUpdate.getClass().getSimpleName());

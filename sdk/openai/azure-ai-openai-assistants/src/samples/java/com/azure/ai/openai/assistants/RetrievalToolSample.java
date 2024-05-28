@@ -19,6 +19,7 @@ import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
@@ -60,7 +61,8 @@ public class RetrievalToolSample {
                 .setName("Java SDK Retrieval Sample")
                 .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
                 .setTools(Arrays.asList(new RetrievalToolDefinition()))
-                .setFileIds(Arrays.asList(openAIFile.getId()))
+            // TODO - setup with VectorStore
+//                .setFileIds(Arrays.asList(openAIFile.getId()))
         );
 
         // Create a thread with the assistant just created
@@ -69,8 +71,9 @@ public class RetrievalToolSample {
         // Assign message to thread
         client.createMessage(
             thread.getId(),
-            MessageRole.USER,
-            "Can you give me the documented codes for 'banana' and 'orange'?");
+            new ThreadMessageOptions(
+                MessageRole.USER,
+                "Can you give me the documented codes for 'banana' and 'orange'?"));
 
         // Pass the message to the assistant and start the run
         ThreadRun run = client.createRun(thread, assistant);

@@ -5,25 +5,21 @@ package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
 import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
-import com.azure.ai.openai.assistants.implementation.models.CreateAssistantFileRequest;
-import com.azure.ai.openai.assistants.implementation.models.CreateMessageRequest;
+import com.azure.ai.openai.assistants.implementation.models.CreateVectorStoreFileBatchRequest;
 import com.azure.ai.openai.assistants.implementation.models.FileListResponse;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistant;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistantFile;
-import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfMessageFile;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfRunStep;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadMessage;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfThreadRun;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfVectorStore;
+import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfVectorStoreFile;
 import com.azure.ai.openai.assistants.implementation.models.SubmitToolOutputsToRunRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateMessageRequest;
 import com.azure.ai.openai.assistants.implementation.models.UpdateRunRequest;
-import com.azure.ai.openai.assistants.implementation.models.UpdateThreadRequest;
 import com.azure.ai.openai.assistants.implementation.models.UploadFileRequest;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
-import com.azure.ai.openai.assistants.models.AssistantFile;
-import com.azure.ai.openai.assistants.models.AssistantFileDeletionStatus;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
@@ -32,15 +28,23 @@ import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.ListSortOrder;
-import com.azure.ai.openai.assistants.models.MessageFile;
-import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
+import com.azure.ai.openai.assistants.models.UpdateAssistantThreadOptions;
+import com.azure.ai.openai.assistants.models.VectorStore;
+import com.azure.ai.openai.assistants.models.VectorStoreDeletionStatus;
+import com.azure.ai.openai.assistants.models.VectorStoreFile;
+import com.azure.ai.openai.assistants.models.VectorStoreFileBatch;
+import com.azure.ai.openai.assistants.models.VectorStoreFileDeletionStatus;
+import com.azure.ai.openai.assistants.models.VectorStoreFileStatusFilter;
+import com.azure.ai.openai.assistants.models.VectorStoreOptions;
+import com.azure.ai.openai.assistants.models.VectorStoreUpdateOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -261,160 +265,6 @@ public final class AssistantsClient {
     }
 
     /**
-     * Attaches a previously uploaded file to an assistant for use by tools that can read files.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     *
-     * <pre>{@code
-     * {
-     *     file_id: String (Required)
-     * }
-     * }</pre>
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     assistant_id: String (Required)
-     * }
-     * }</pre>
-     *
-     * @param assistantId The ID of the assistant to attach the file to.
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attached to an assistant, as used by tools that can read files along with
-     * {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAssistantFileWithResponse(String assistantId, BinaryData request,
-        RequestOptions requestOptions) {
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.createAssistantFileWithResponse(assistantId, request, requestOptions);
-    }
-
-    /**
-     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     *
-     * <pre>{@code
-     * {
-     *     object: String (Required)
-     *     data (Required): [
-     *          (Required){
-     *             id: String (Required)
-     *             object: String (Required)
-     *             created_at: long (Required)
-     *             assistant_id: String (Required)
-     *         }
-     *     ]
-     *     first_id: String (Required)
-     *     last_id: String (Required)
-     *     has_more: boolean (Required)
-     * }
-     * }</pre>
-     *
-     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of files attached to a specific assistant, as used by tools that can read files along with
-     * {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.listAssistantFilesWithResponse(assistantId, requestOptions);
-    }
-
-    /**
-     * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
-     * files.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     deleted: boolean (Required)
-     *     object: String (Required)
-     * }
-     * }</pre>
-     *
-     * @param assistantId The ID of the assistant from which the specified file should be unlinked.
-     * @param fileId The ID of the file to unlink from the specified assistant.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the status of an assistant file deletion operation along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteAssistantFileWithResponse(String assistantId, String fileId,
-        RequestOptions requestOptions) {
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.deleteAssistantFileWithResponse(assistantId, fileId, requestOptions);
-    }
-
-    /**
      * Creates a new assistant.
      *
      * @param assistantCreationOptions The request details to use when creating a new assistant.
@@ -518,120 +368,6 @@ public final class AssistantsClient {
     }
 
     /**
-     * Attaches a previously uploaded file to an assistant for use by tools that can read files.
-     *
-     * @param assistantId The ID of the assistant to attach the file to.
-     * @param fileId The ID of the previously uploaded file to attach.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a file attached to an assistant, as used by tools that can read files.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssistantFile createAssistantFile(String assistantId, String fileId) {
-        // Generated convenience method for createAssistantFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAssistantFileRequest requestObj = new CreateAssistantFileRequest(fileId);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return createAssistantFileWithResponse(assistantId, request, requestOptions).getValue()
-            .toObject(AssistantFile.class);
-    }
-
-    /**
-     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
-     *
-     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
-     * is 20.
-     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
-     * descending order.
-     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
-     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
-     * include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
-     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
-     * include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of files attached to a specific assistant, as used by tools that can read files.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PageableList<AssistantFile> listAssistantFiles(String assistantId, Integer limit, ListSortOrder order,
-        String after, String before) {
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        OpenAIPageableListOfAssistantFile assistantFileList
-            = listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
-                .toObject(OpenAIPageableListOfAssistantFile.class);
-        return PageableListAccessHelper.create(assistantFileList.getData(), assistantFileList.getFirstId(),
-            assistantFileList.getLastId(), assistantFileList.isHasMore());
-    }
-
-    /**
-     * Gets a list of files attached to a specific assistant, as used by tools that can read files.
-     *
-     * @param assistantId The ID of the assistant to retrieve the list of attached files for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of files attached to a specific assistant, as used by tools that can read files.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PageableList<AssistantFile> listAssistantFiles(String assistantId) {
-        RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfAssistantFile assistantFileList
-            = listAssistantFilesWithResponse(assistantId, requestOptions).getValue()
-                .toObject(OpenAIPageableListOfAssistantFile.class);
-        return PageableListAccessHelper.create(assistantFileList.getData(), assistantFileList.getFirstId(),
-            assistantFileList.getLastId(), assistantFileList.isHasMore());
-    }
-
-    /**
-     * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
-     * files.
-     *
-     * @param assistantId The ID of the assistant from which the specified file should be unlinked.
-     * @param fileId The ID of the file to unlink from the specified assistant.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an assistant file deletion operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssistantFileDeletionStatus deleteAssistantFile(String assistantId, String fileId) {
-        // Generated convenience method for deleteAssistantFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return deleteAssistantFileWithResponse(assistantId, fileId, requestOptions).getValue()
-            .toObject(AssistantFileDeletionStatus.class);
-    }
-
-    /**
      * Initializes an instance of AssistantsClient class.
      *
      * @param serviceClient the service client implementation.
@@ -681,38 +417,6 @@ public final class AssistantsClient {
     public Response<BinaryData> getAssistantWithResponse(String assistantId, RequestOptions requestOptions) {
         addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getAssistantWithResponse(assistantId, requestOptions);
-    }
-
-    /**
-     * Retrieves a file attached to an assistant.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     assistant_id: String (Required)
-     * }
-     * }</pre>
-     *
-     * @param assistantId The ID of the assistant associated with the attached file.
-     * @param fileId The ID of the file to retrieve.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attached to an assistant, as used by tools that can read files along with
-     * {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAssistantFileWithResponse(String assistantId, String fileId,
-        RequestOptions requestOptions) {
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.getAssistantFileWithResponse(assistantId, fileId, requestOptions);
     }
 
     /**
@@ -1029,120 +733,6 @@ public final class AssistantsClient {
     }
 
     /**
-     * Gets a list of previously uploaded files associated with a message from a thread.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     *
-     * <pre>{@code
-     * {
-     *     object: String (Required)
-     *     data (Required): [
-     *          (Required){
-     *             id: String (Required)
-     *             object: String (Required)
-     *             created_at: long (Required)
-     *             message_id: String (Required)
-     *         }
-     *     ]
-     *     first_id: String (Required)
-     *     last_id: String (Required)
-     *     has_more: boolean (Required)
-     * }
-     * }</pre>
-     *
-     * @param threadId The ID of the thread containing the message to list files from.
-     * @param messageId The ID of the message to list files from.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of previously uploaded files associated with a message from a thread along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listMessageFilesWithResponse(String threadId, String messageId,
-        RequestOptions requestOptions) {
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.listMessageFilesWithResponse(threadId, messageId, requestOptions);
-    }
-
-    /**
-     * Gets information about a file attachment to a message within a thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Required)
-     *     object: String (Required)
-     *     created_at: long (Required)
-     *     message_id: String (Required)
-     * }
-     * }</pre>
-     *
-     * @param threadId The ID of the thread containing the message to get information from.
-     * @param messageId The ID of the message to get information from.
-     * @param fileId The ID of the file to get information about.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attachment to a message within a thread along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getMessageFileWithResponse(String threadId, String messageId, String fileId,
-        RequestOptions requestOptions) {
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
-        return this.serviceClient.getMessageFileWithResponse(threadId, messageId, fileId, requestOptions);
-    }
-
-    /**
      * Creates a new run for an assistant thread.
      * <p>
      * <strong>Request Body Schema</strong>
@@ -1211,6 +801,7 @@ public final class AssistantsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createRunWithResponse(String threadId, BinaryData createRunOptions,
         RequestOptions requestOptions) {
@@ -1848,28 +1439,6 @@ public final class AssistantsClient {
     }
 
     /**
-     * Retrieves a file attached to an assistant.
-     *
-     * @param assistantId The ID of the assistant associated with the attached file.
-     * @param fileId The ID of the file to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a file attached to an assistant, as used by tools that can read files.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssistantFile getAssistantFile(String assistantId, String fileId) {
-        // Generated convenience method for getAssistantFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getAssistantFileWithResponse(assistantId, fileId, requestOptions).getValue()
-            .toObject(AssistantFile.class);
-    }
-
-    /**
      * Creates a new thread. Threads contain messages and can be run by assistants.
      *
      * @param assistantThreadCreationOptions The details used to create a new assistant thread.
@@ -1929,61 +1498,6 @@ public final class AssistantsClient {
         // Generated convenience method for deleteThreadWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteThreadWithResponse(threadId, requestOptions).getValue().toObject(ThreadDeletionStatus.class);
-    }
-
-    /**
-     * Creates a new message on a specified thread.
-     *
-     * @param threadId The ID of the thread to create the new message on.
-     * @param role The role to associate with the new message.
-     * @param content The textual content for the new message.
-     * @param fileIds A list of up to 10 file IDs to associate with the message, as used by tools like
-     * 'code_interpreter' or 'retrieval' that can read files.
-     * @param metadata A set of up to 16 key/value pairs that can be attached to an object, used for storing additional
-     * information about that object in a structured format. Keys may be up to 64 characters in length and values may be
-     * up to 512 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single, existing message within an assistant thread.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreadMessage createMessage(String threadId, MessageRole role, String content, List<String> fileIds,
-        Map<String, String> metadata) {
-        // Generated convenience method for createMessageWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateMessageRequest requestObj
-            = new CreateMessageRequest(role, content).setFileIds(fileIds).setMetadata(metadata);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return createMessageWithResponse(threadId, request, requestOptions).getValue().toObject(ThreadMessage.class);
-    }
-
-    /**
-     * Creates a new message on a specified thread.
-     *
-     * @param threadId The ID of the thread to create the new message on.
-     * @param role The role to associate with the new message.
-     * @param content The textual content for the new message.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single, existing message within an assistant thread.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThreadMessage createMessage(String threadId, MessageRole role, String content) {
-        // Generated convenience method for createMessageWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateMessageRequest requestObj = new CreateMessageRequest(role, content);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return createMessageWithResponse(threadId, request, requestOptions).getValue().toObject(ThreadMessage.class);
     }
 
     /**
@@ -2072,98 +1586,6 @@ public final class AssistantsClient {
         // Generated convenience method for getMessageWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getMessageWithResponse(threadId, messageId, requestOptions).getValue().toObject(ThreadMessage.class);
-    }
-
-    /**
-     * Gets a list of previously uploaded files associated with a message from a thread.
-     *
-     * @param threadId The ID of the thread containing the message to list files from.
-     * @param messageId The ID of the message to list files from.
-     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
-     * is 20.
-     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
-     * descending order.
-     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
-     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
-     * include after=obj_foo in order to fetch the next page of the list.
-     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
-     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
-     * include before=obj_foo in order to fetch the previous page of the list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of previously uploaded files associated with a message from a thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PageableList<MessageFile> listMessageFiles(String threadId, String messageId, Integer limit,
-        ListSortOrder order, String after, String before) {
-        RequestOptions requestOptions = new RequestOptions();
-        if (limit != null) {
-            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
-        }
-        if (order != null) {
-            requestOptions.addQueryParam("order", order.toString(), false);
-        }
-        if (after != null) {
-            requestOptions.addQueryParam("after", after, false);
-        }
-        if (before != null) {
-            requestOptions.addQueryParam("before", before, false);
-        }
-        OpenAIPageableListOfMessageFile messageFileList
-            = listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue()
-                .toObject(OpenAIPageableListOfMessageFile.class);
-        return PageableListAccessHelper.create(messageFileList.getData(), messageFileList.getFirstId(),
-            messageFileList.getLastId(), messageFileList.isHasMore());
-    }
-
-    /**
-     * Gets a list of previously uploaded files associated with a message from a thread.
-     *
-     * @param threadId The ID of the thread containing the message to list files from.
-     * @param messageId The ID of the message to list files from.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of previously uploaded files associated with a message from a thread.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PageableList<MessageFile> listMessageFiles(String threadId, String messageId) {
-        RequestOptions requestOptions = new RequestOptions();
-        OpenAIPageableListOfMessageFile messageFileList
-            = listMessageFilesWithResponse(threadId, messageId, requestOptions).getValue()
-                .toObject(OpenAIPageableListOfMessageFile.class);
-        return PageableListAccessHelper.create(messageFileList.getData(), messageFileList.getFirstId(),
-            messageFileList.getLastId(), messageFileList.isHasMore());
-    }
-
-    /**
-     * Gets information about a file attachment to a message within a thread.
-     *
-     * @param threadId The ID of the thread containing the message to get information from.
-     * @param messageId The ID of the message to get information from.
-     * @param fileId The ID of the file to get information about.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a file attachment to a message within a thread.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MessageFile getMessageFile(String threadId, String messageId, String fileId) {
-        // Generated convenience method for getMessageFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getMessageFileWithResponse(threadId, messageId, fileId, requestOptions).getValue()
-            .toObject(MessageFile.class);
     }
 
     /**
@@ -2792,53 +2214,6 @@ public final class AssistantsClient {
     }
 
     /**
-     * Modifies an existing thread.
-     *
-     * @param threadId The ID of the thread to modify.
-     * @param metadata A set of up to 16 key/value pairs that can be attached to an object, used for storing additional
-     * information about that object in a structured format. Keys may be up to 64 characters in length and values may be
-     * up to 512 characters in length.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a single thread associated with an assistant.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssistantThread updateThread(String threadId, Map<String, String> metadata) {
-        // Generated convenience method for updateThreadWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateThreadRequest requestObj = new UpdateThreadRequest().setMetadata(metadata);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return updateThreadWithResponse(threadId, request, requestOptions).getValue().toObject(AssistantThread.class);
-    }
-
-    /**
-     * Modifies an existing thread.
-     *
-     * @param threadId The ID of the thread to modify.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a single thread associated with an assistant.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssistantThread updateThread(String threadId) {
-        // Generated convenience method for updateThreadWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateThreadRequest requestObj = new UpdateThreadRequest();
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return updateThreadWithResponse(threadId, request, requestOptions).getValue().toObject(AssistantThread.class);
-    }
-
-    /**
      * Modifies an existing message on an existing thread.
      *
      * @param threadId The ID of the thread containing the specified message to modify.
@@ -3109,7 +2484,7 @@ public final class AssistantsClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * byte[]
      * }</pre>
@@ -3228,5 +2603,1097 @@ public final class AssistantsClient {
         BinaryData request = BinaryData.fromObject(requestObj);
         return submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).getValue()
             .toObject(ThreadRun.class);
+    }
+
+    /**
+     * Returns a list of vector stores.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             name: String (Required)
+     *             usage_bytes: int (Required)
+     *             file_counts (Required): {
+     *                 in_progress: int (Required)
+     *                 completed: int (Required)
+     *                 failed: int (Required)
+     *                 cancelled: int (Required)
+     *                 total: int (Required)
+     *             }
+     *             status: String(expired/in_progress/completed) (Required)
+     *             expires_after (Optional): {
+     *                 anchor: String(last_active_at) (Required)
+     *                 days: int (Required)
+     *             }
+     *             expires_at: Long (Optional)
+     *             last_active_at: Long (Required)
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listVectorStoresWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.listVectorStoresWithResponse(requestOptions);
+    }
+
+    /**
+     * Creates a vector store.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     file_ids (Optional): [
+     *         String (Optional)
+     *     ]
+     *     name: String (Optional)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     usage_bytes: int (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     *     status: String(expired/in_progress/completed) (Required)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     expires_at: Long (Optional)
+     *     last_active_at: Long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param vectorStoreOptions Request object for creating a vector store.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
+     * {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createVectorStoreWithResponse(BinaryData vectorStoreOptions,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createVectorStoreWithResponse(vectorStoreOptions, requestOptions);
+    }
+
+    /**
+     * Returns the vector store object matching the specified ID.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     usage_bytes: int (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     *     status: String(expired/in_progress/completed) (Required)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     expires_at: Long (Optional)
+     *     last_active_at: Long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param vectorStoreId The ID of the vector store to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
+     * {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getVectorStoreWithResponse(String vectorStoreId, RequestOptions requestOptions) {
+        return this.serviceClient.getVectorStoreWithResponse(vectorStoreId, requestOptions);
+    }
+
+    /**
+     * The ID of the vector store to modify.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     name: String (Optional)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     name: String (Required)
+     *     usage_bytes: int (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     *     status: String(expired/in_progress/completed) (Required)
+     *     expires_after (Optional): {
+     *         anchor: String(last_active_at) (Required)
+     *         days: int (Required)
+     *     }
+     *     expires_at: Long (Optional)
+     *     last_active_at: Long (Required)
+     *     metadata (Required): {
+     *         String: String (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param vectorStoreId The ID of the vector store to modify.
+     * @param vectorStoreUpdateOptions Request object for updating a vector store.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
+     * {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> modifyVectorStoreWithResponse(String vectorStoreId, BinaryData vectorStoreUpdateOptions,
+        RequestOptions requestOptions) {
+        return this.serviceClient.modifyVectorStoreWithResponse(vectorStoreId, vectorStoreUpdateOptions,
+            requestOptions);
+    }
+
+    /**
+     * Deletes the vector store object matching the specified ID.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }</pre>
+     *
+     * @param vectorStoreId The ID of the vector store to delete.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response object for deleting a vector store along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteVectorStoreWithResponse(String vectorStoreId, RequestOptions requestOptions) {
+        return this.serviceClient.deleteVectorStoreWithResponse(vectorStoreId, requestOptions);
+    }
+
+    /**
+     * Returns a list of vector store files.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. One of `in_progress`, `completed`,
+     * `failed`, `cancelled`. Allowed values: "in_progress", "completed", "failed", "cancelled".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             usage_bytes: int (Required)
+     *             created_at: long (Required)
+     *             vector_store_id: String (Required)
+     *             status: String(in_progress/completed/failed/cancelled) (Required)
+     *             last_error (Required): {
+     *                 code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *                 message: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     *
+     * @param vectorStoreId The ID of the vector store that the files belong to.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listVectorStoreFilesWithResponse(String vectorStoreId, RequestOptions requestOptions) {
+        return this.serviceClient.listVectorStoreFilesWithResponse(vectorStoreId, requestOptions);
+    }
+
+    /**
+     * Create a vector store file by attaching a file to a vector store.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * String
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     usage_bytes: int (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/failed/cancelled) (Required)
+     *     last_error (Required): {
+     *         code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param vectorStoreId The ID of the vector store for which to create a File.
+     * @param fileId A File ID that the vector store should use. Useful for tools like `file_search` that can access
+     * files.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return description of a file attached to a vector store along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createVectorStoreFileWithResponse(String vectorStoreId, BinaryData fileId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createVectorStoreFileWithResponse(vectorStoreId, fileId, requestOptions);
+    }
+
+    /**
+     * Retrieves a vector store file.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     usage_bytes: int (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/failed/cancelled) (Required)
+     *     last_error (Required): {
+     *         code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *         message: String (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param vectorStoreId The ID of the vector store that the file belongs to.
+     * @param fileId The ID of the file being retrieved.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return description of a file attached to a vector store along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getVectorStoreFileWithResponse(String vectorStoreId, String fileId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getVectorStoreFileWithResponse(vectorStoreId, fileId, requestOptions);
+    }
+
+    /**
+     * Delete a vector store file. This will remove the file from the vector store but the file itself will not be
+     * deleted.
+     * To delete the file, use the delete file endpoint.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     deleted: boolean (Required)
+     *     object: String (Required)
+     * }
+     * }</pre>
+     *
+     * @param vectorStoreId The ID of the vector store that the file belongs to.
+     * @param fileId The ID of the file to delete its relationship to the vector store.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response object for deleting a vector store file relationship along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> deleteVectorStoreFileWithResponse(String vectorStoreId, String fileId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.deleteVectorStoreFileWithResponse(vectorStoreId, fileId, requestOptions);
+    }
+
+    /**
+     * Create a vector store file batch.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     file_ids (Required): [
+     *         String (Required)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/cancelled/failed) (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param vectorStoreId The ID of the vector store for which to create a File Batch.
+     * @param request The request parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a batch of files attached to a vector store along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createVectorStoreFileBatchWithResponse(String vectorStoreId, BinaryData request,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createVectorStoreFileBatchWithResponse(vectorStoreId, request, requestOptions);
+    }
+
+    /**
+     * Retrieve a vector store file batch.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/cancelled/failed) (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param vectorStoreId The ID of the vector store that the file batch belongs to.
+     * @param batchId The ID of the file batch being retrieved..
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a batch of files attached to a vector store along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getVectorStoreFileBatchWithResponse(String vectorStoreId, String batchId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getVectorStoreFileBatchWithResponse(vectorStoreId, batchId, requestOptions);
+    }
+
+    /**
+     * Cancel a vector store file batch. This attempts to cancel the processing of files in this batch as soon as
+     * possible.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     object: String (Required)
+     *     created_at: long (Required)
+     *     vector_store_id: String (Required)
+     *     status: String(in_progress/completed/cancelled/failed) (Required)
+     *     file_counts (Required): {
+     *         in_progress: int (Required)
+     *         completed: int (Required)
+     *         failed: int (Required)
+     *         cancelled: int (Required)
+     *         total: int (Required)
+     *     }
+     * }
+     * }</pre>
+     *
+     * @param vectorStoreId The ID of the vector store that the file batch belongs to.
+     * @param batchId The ID of the file batch to cancel.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a batch of files attached to a vector store along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> cancelVectorStoreFileBatchWithResponse(String vectorStoreId, String batchId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.cancelVectorStoreFileBatchWithResponse(vectorStoreId, batchId, requestOptions);
+    }
+
+    /**
+     * Returns a list of vector store files in a batch.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. One of `in_progress`, `completed`,
+     * `failed`, `cancelled`. Allowed values: "in_progress", "completed", "failed", "cancelled".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>{@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             usage_bytes: int (Required)
+     *             created_at: long (Required)
+     *             vector_store_id: String (Required)
+     *             status: String(in_progress/completed/failed/cancelled) (Required)
+     *             last_error (Required): {
+     *                 code: String(internal_error/file_not_found/parsing_error/unhandled_mime_type) (Required)
+     *                 message: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }</pre>
+     *
+     * @param vectorStoreId The ID of the vector store that the file batch belongs to.
+     * @param batchId The ID of the file batch that the files belong to.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listVectorStoreFileBatchFilesWithResponse(String vectorStoreId, String batchId,
+        RequestOptions requestOptions) {
+        return this.serviceClient.listVectorStoreFileBatchFilesWithResponse(vectorStoreId, batchId, requestOptions);
+    }
+
+    /**
+     * Modifies an existing thread.
+     *
+     * @param threadId The ID of the thread to modify.
+     * @param updateAssistantThreadOptions The details used to update an existing assistant thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a single thread associated with an assistant.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AssistantThread updateThread(String threadId, UpdateAssistantThreadOptions updateAssistantThreadOptions) {
+        // Generated convenience method for updateThreadWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return updateThreadWithResponse(threadId, BinaryData.fromObject(updateAssistantThreadOptions), requestOptions)
+            .getValue()
+            .toObject(AssistantThread.class);
+    }
+
+    /**
+     * Creates a new message on a specified thread.
+     *
+     * @param threadId The ID of the thread to create the new message on.
+     * @param threadMessageOptions A single message within an assistant thread, as provided during that thread's
+     * creation for its initial state.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single, existing message within an assistant thread.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThreadMessage createMessage(String threadId, ThreadMessageOptions threadMessageOptions) {
+        // Generated convenience method for createMessageWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createMessageWithResponse(threadId, BinaryData.fromObject(threadMessageOptions), requestOptions)
+            .getValue()
+            .toObject(ThreadMessage.class);
+    }
+
+    /**
+     * Returns a list of vector stores.
+     *
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
+     * is 20.
+     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
+     * descending order.
+     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OpenAIPageableListOfVectorStore listVectorStores(Integer limit, ListSortOrder order, String after,
+        String before) {
+        // Generated convenience method for listVectorStoresWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return listVectorStoresWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfVectorStore.class);
+    }
+
+    /**
+     * Returns a list of vector stores.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OpenAIPageableListOfVectorStore listVectorStores() {
+        // Generated convenience method for listVectorStoresWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return listVectorStoresWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfVectorStore.class);
+    }
+
+    /**
+     * Creates a vector store.
+     *
+     * @param vectorStoreOptions Request object for creating a vector store.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a vector store is a collection of processed files can be used by the `file_search` tool.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VectorStore createVectorStore(VectorStoreOptions vectorStoreOptions) {
+        // Generated convenience method for createVectorStoreWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createVectorStoreWithResponse(BinaryData.fromObject(vectorStoreOptions), requestOptions).getValue()
+            .toObject(VectorStore.class);
+    }
+
+    /**
+     * Returns the vector store object matching the specified ID.
+     *
+     * @param vectorStoreId The ID of the vector store to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a vector store is a collection of processed files can be used by the `file_search` tool.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VectorStore getVectorStore(String vectorStoreId) {
+        // Generated convenience method for getVectorStoreWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getVectorStoreWithResponse(vectorStoreId, requestOptions).getValue().toObject(VectorStore.class);
+    }
+
+    /**
+     * The ID of the vector store to modify.
+     *
+     * @param vectorStoreId The ID of the vector store to modify.
+     * @param vectorStoreUpdateOptions Request object for updating a vector store.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a vector store is a collection of processed files can be used by the `file_search` tool.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VectorStore modifyVectorStore(String vectorStoreId, VectorStoreUpdateOptions vectorStoreUpdateOptions) {
+        // Generated convenience method for modifyVectorStoreWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return modifyVectorStoreWithResponse(vectorStoreId, BinaryData.fromObject(vectorStoreUpdateOptions),
+            requestOptions).getValue().toObject(VectorStore.class);
+    }
+
+    /**
+     * Deletes the vector store object matching the specified ID.
+     *
+     * @param vectorStoreId The ID of the vector store to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response object for deleting a vector store.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VectorStoreDeletionStatus deleteVectorStore(String vectorStoreId) {
+        // Generated convenience method for deleteVectorStoreWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteVectorStoreWithResponse(vectorStoreId, requestOptions).getValue()
+            .toObject(VectorStoreDeletionStatus.class);
+    }
+
+    /**
+     * Returns a list of vector store files.
+     *
+     * @param vectorStoreId The ID of the vector store that the files belong to.
+     * @param filter Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
+     * is 20.
+     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
+     * descending order.
+     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OpenAIPageableListOfVectorStoreFile listVectorStoreFiles(String vectorStoreId,
+        VectorStoreFileStatusFilter filter, Integer limit, ListSortOrder order, String after, String before) {
+        // Generated convenience method for listVectorStoreFilesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter.toString(), false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return listVectorStoreFilesWithResponse(vectorStoreId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfVectorStoreFile.class);
+    }
+
+    /**
+     * Returns a list of vector store files.
+     *
+     * @param vectorStoreId The ID of the vector store that the files belong to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OpenAIPageableListOfVectorStoreFile listVectorStoreFiles(String vectorStoreId) {
+        // Generated convenience method for listVectorStoreFilesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return listVectorStoreFilesWithResponse(vectorStoreId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfVectorStoreFile.class);
+    }
+
+    /**
+     * Create a vector store file by attaching a file to a vector store.
+     *
+     * @param vectorStoreId The ID of the vector store for which to create a File.
+     * @param fileId A File ID that the vector store should use. Useful for tools like `file_search` that can access
+     * files.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a file attached to a vector store.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VectorStoreFile createVectorStoreFile(String vectorStoreId, String fileId) {
+        // Generated convenience method for createVectorStoreFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createVectorStoreFileWithResponse(vectorStoreId, BinaryData.fromObject(fileId), requestOptions)
+            .getValue()
+            .toObject(VectorStoreFile.class);
+    }
+
+    /**
+     * Retrieves a vector store file.
+     *
+     * @param vectorStoreId The ID of the vector store that the file belongs to.
+     * @param fileId The ID of the file being retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return description of a file attached to a vector store.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VectorStoreFile getVectorStoreFile(String vectorStoreId, String fileId) {
+        // Generated convenience method for getVectorStoreFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getVectorStoreFileWithResponse(vectorStoreId, fileId, requestOptions).getValue()
+            .toObject(VectorStoreFile.class);
+    }
+
+    /**
+     * Delete a vector store file. This will remove the file from the vector store but the file itself will not be
+     * deleted.
+     * To delete the file, use the delete file endpoint.
+     *
+     * @param vectorStoreId The ID of the vector store that the file belongs to.
+     * @param fileId The ID of the file to delete its relationship to the vector store.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response object for deleting a vector store file relationship.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VectorStoreFileDeletionStatus deleteVectorStoreFile(String vectorStoreId, String fileId) {
+        // Generated convenience method for deleteVectorStoreFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return deleteVectorStoreFileWithResponse(vectorStoreId, fileId, requestOptions).getValue()
+            .toObject(VectorStoreFileDeletionStatus.class);
+    }
+
+    /**
+     * Create a vector store file batch.
+     *
+     * @param vectorStoreId The ID of the vector store for which to create a File Batch.
+     * @param fileIds A list of File IDs that the vector store should use. Useful for tools like `file_search` that can
+     * access files.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a batch of files attached to a vector store.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VectorStoreFileBatch createVectorStoreFileBatch(String vectorStoreId, List<String> fileIds) {
+        // Generated convenience method for createVectorStoreFileBatchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateVectorStoreFileBatchRequest requestObj = new CreateVectorStoreFileBatchRequest(fileIds);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return createVectorStoreFileBatchWithResponse(vectorStoreId, request, requestOptions).getValue()
+            .toObject(VectorStoreFileBatch.class);
+    }
+
+    /**
+     * Retrieve a vector store file batch.
+     *
+     * @param vectorStoreId The ID of the vector store that the file batch belongs to.
+     * @param batchId The ID of the file batch being retrieved..
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a batch of files attached to a vector store.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VectorStoreFileBatch getVectorStoreFileBatch(String vectorStoreId, String batchId) {
+        // Generated convenience method for getVectorStoreFileBatchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getVectorStoreFileBatchWithResponse(vectorStoreId, batchId, requestOptions).getValue()
+            .toObject(VectorStoreFileBatch.class);
+    }
+
+    /**
+     * Cancel a vector store file batch. This attempts to cancel the processing of files in this batch as soon as
+     * possible.
+     *
+     * @param vectorStoreId The ID of the vector store that the file batch belongs to.
+     * @param batchId The ID of the file batch to cancel.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a batch of files attached to a vector store.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VectorStoreFileBatch cancelVectorStoreFileBatch(String vectorStoreId, String batchId) {
+        // Generated convenience method for cancelVectorStoreFileBatchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return cancelVectorStoreFileBatchWithResponse(vectorStoreId, batchId, requestOptions).getValue()
+            .toObject(VectorStoreFileBatch.class);
+    }
+
+    /**
+     * Returns a list of vector store files in a batch.
+     *
+     * @param vectorStoreId The ID of the vector store that the file batch belongs to.
+     * @param batchId The ID of the file batch that the files belong to.
+     * @param filter Filter by file status. One of `in_progress`, `completed`, `failed`, `cancelled`.
+     * @param limit A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default
+     * is 20.
+     * @param order Sort order by the created_at timestamp of the objects. asc for ascending order and desc for
+     * descending order.
+     * @param after A cursor for use in pagination. after is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include after=obj_foo in order to fetch the next page of the list.
+     * @param before A cursor for use in pagination. before is an object ID that defines your place in the list. For
+     * instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can
+     * include before=obj_foo in order to fetch the previous page of the list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OpenAIPageableListOfVectorStoreFile listVectorStoreFileBatchFiles(String vectorStoreId, String batchId,
+        VectorStoreFileStatusFilter filter, Integer limit, ListSortOrder order, String after, String before) {
+        // Generated convenience method for listVectorStoreFileBatchFilesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter.toString(), false);
+        }
+        if (limit != null) {
+            requestOptions.addQueryParam("limit", String.valueOf(limit), false);
+        }
+        if (order != null) {
+            requestOptions.addQueryParam("order", order.toString(), false);
+        }
+        if (after != null) {
+            requestOptions.addQueryParam("after", after, false);
+        }
+        if (before != null) {
+            requestOptions.addQueryParam("before", before, false);
+        }
+        return listVectorStoreFileBatchFilesWithResponse(vectorStoreId, batchId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfVectorStoreFile.class);
+    }
+
+    /**
+     * Returns a list of vector store files in a batch.
+     *
+     * @param vectorStoreId The ID of the vector store that the file batch belongs to.
+     * @param batchId The ID of the file batch that the files belong to.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response data for a requested list of items.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OpenAIPageableListOfVectorStoreFile listVectorStoreFileBatchFiles(String vectorStoreId, String batchId) {
+        // Generated convenience method for listVectorStoreFileBatchFilesWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return listVectorStoreFileBatchFilesWithResponse(vectorStoreId, batchId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfVectorStoreFile.class);
     }
 }

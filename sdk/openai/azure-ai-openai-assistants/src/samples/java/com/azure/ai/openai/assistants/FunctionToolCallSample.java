@@ -19,6 +19,7 @@ import com.azure.ai.openai.assistants.models.RequiredToolCall;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.core.credential.KeyCredential;
@@ -134,7 +135,7 @@ public class FunctionToolCallSample {
         return client.createRun(thread, assistant);
     }
     private static void sendUserMessage(String userMessage, String threadId, AssistantsClient client) {
-        client.createMessage(threadId, MessageRole.USER, userMessage);
+        client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, userMessage));
     }
 
     private static AssistantThread createAssistantThread(AssistantsClient client) {

@@ -27,7 +27,7 @@ import com.azure.ai.openai.assistants.models.RequiredToolCall;
 import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.SubmitToolOutputsAction;
-import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolOutput;
@@ -120,7 +120,7 @@ public final class ReadmeSamples {
 
         // BEGIN: readme-sample-createMessage
         String userMessage = "I need to solve the equation `3x + 11 = 14`. Can you help me?";
-        ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, userMessage);
+        ThreadMessage threadMessage = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, userMessage));
         // END: readme-sample-createMessage
 
         // BEGIN: readme-sample-createRun
@@ -130,7 +130,7 @@ public final class ReadmeSamples {
         // BEGIN: readme-sample-createThreadAndRun
         CreateAndRunThreadOptions createAndRunThreadOptions = new CreateAndRunThreadOptions(assistantId)
                 .setThread(new AssistantThreadCreationOptions()
-                        .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
+                        .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
                                 "I need to solve the equation `3x + 11 = 14`. Can you help me?"))));
         run = client.createThreadAndRun(createAndRunThreadOptions);
         // END: readme-sample-createThreadAndRun
@@ -179,7 +179,8 @@ public final class ReadmeSamples {
                 .setName("Java SDK Retrieval Sample")
                 .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
                 .setTools(Arrays.asList(new RetrievalToolDefinition()))
-                .setFileIds(Arrays.asList(openAIFile.getId()))
+                // TODO - setup with VectorStore
+//                .setFileIds(Arrays.asList(openAIFile.getId()))
         );
         // END: readme-sample-createRetrievalAssistant
 
@@ -188,8 +189,9 @@ public final class ReadmeSamples {
         // Assign message to thread
         client.createMessage(
             thread.getId(),
-            MessageRole.USER,
-            "Can you give me the documented codes for 'banana' and 'orange'?");
+            new ThreadMessageOptions(
+                MessageRole.USER,
+                "Can you give me the documented codes for 'banana' and 'orange'?"));
 
         // Pass the message to the assistant and start the run
         ThreadRun run = client.createRun(thread, assistant);
@@ -247,7 +249,7 @@ public final class ReadmeSamples {
         AssistantThread thread = client.createThread(new AssistantThreadCreationOptions());
 
         // capture user input
-        client.createMessage(thread.getId(), MessageRole.USER, "What is the weather like in my favorite city?");
+        client.createMessage(thread.getId(), new ThreadMessageOptions(MessageRole.USER, "What is the weather like in my favorite city?"));
 
         // Create a run
         ThreadRun run = client.createRun(thread, assistant);

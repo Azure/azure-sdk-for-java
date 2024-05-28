@@ -13,6 +13,7 @@ import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Disabled;
@@ -42,7 +43,8 @@ public class AzureRetrievalSyncTest extends AssistantsClientTestBase {
             OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
 
             // Create assistant
-            assistantCreationOptions.setFileIds(Arrays.asList(openAIFile.getId()));
+            // TODO - setup with VectorStore
+//            assistantCreationOptions.setFileIds(Arrays.asList(openAIFile.getId()));
             Assistant assistant = client.createAssistant(assistantCreationOptions);
 
             // Create thread
@@ -51,8 +53,9 @@ public class AzureRetrievalSyncTest extends AssistantsClientTestBase {
             // Assign message to thread
             client.createMessage(
                 thread.getId(),
-                MessageRole.USER,
-                "Can you give me the documented codes for 'banana' and 'orange'?");
+                new ThreadMessageOptions(
+                    MessageRole.USER,
+                    "Can you give me the documented codes for 'banana' and 'orange'?"));
 
             // Pass the message to the assistant and start the run
             ThreadRun run = client.createRun(thread, assistant);
