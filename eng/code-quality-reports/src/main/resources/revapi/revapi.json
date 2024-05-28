@@ -471,11 +471,17 @@
           "justification": "Removing Jackson annotations from Monitor Query in transition to stream-style."
         },
         {
+          "ignore": true,
           "regex": true,
-          "code": "java.annotation.removed",
-          "old": ".*? com.azure.storage.file.share.models.*",
-          "new": ".*? com.azure.storage.file.share.models.*",
-          "justification": "Removing Jackson annotations from Monitor Query in transition to stream-style."
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.storage\\.file\\.share\\.models.*",
+          "justification": "Removing Jackson annotations from Storage File Share in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.data\\.tables\\.models.*",
+          "justification": "Removing Jackson annotations from Tables in transition to stream-style."
         }
       ]
     }
