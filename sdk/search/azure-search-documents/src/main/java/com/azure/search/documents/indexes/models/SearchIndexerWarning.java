@@ -12,10 +12,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Represents an item-level warning.
- */
+/** Represents an item-level warning. */
 @Immutable
 public final class SearchIndexerWarning implements JsonSerializable<SearchIndexerWarning> {
     /*
@@ -47,7 +47,7 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
 
     /**
      * Creates an instance of SearchIndexerWarning class.
-     * 
+     *
      * @param message the message value to set.
      */
     public SearchIndexerWarning(String message) {
@@ -56,7 +56,7 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
 
     /**
      * Get the key property: The key of the item which generated a warning.
-     * 
+     *
      * @return the key value.
      */
     public String getKey() {
@@ -65,7 +65,7 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
 
     /**
      * Get the message property: The message describing the warning that occurred while processing the item.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -73,9 +73,9 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
     }
 
     /**
-     * Get the name property: The name of the source at which the warning originated. For example, this could refer to
-     * a particular skill in the attached skillset. This may not be always available.
-     * 
+     * Get the name property: The name of the source at which the warning originated. For example, this could refer to a
+     * particular skill in the attached skillset. This may not be always available.
+     *
      * @return the name value.
      */
     public String getName() {
@@ -85,7 +85,7 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
     /**
      * Get the details property: Additional, verbose details about the warning to assist in debugging the indexer. This
      * may not be always available.
-     * 
+     *
      * @return the details value.
      */
     public String getDetails() {
@@ -93,9 +93,9 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
     }
 
     /**
-     * Get the documentationLink property: A link to a troubleshooting guide for these classes of warnings. This may
-     * not be always available.
-     * 
+     * Get the documentationLink property: A link to a troubleshooting guide for these classes of warnings. This may not
+     * be always available.
+     *
      * @return the documentationLink value.
      */
     public String getDocumentationLink() {
@@ -110,50 +110,57 @@ public final class SearchIndexerWarning implements JsonSerializable<SearchIndexe
 
     /**
      * Reads an instance of SearchIndexerWarning from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexerWarning if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerWarning.
      */
     public static SearchIndexerWarning fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean messageFound = false;
-            String message = null;
-            String key = null;
-            String name = null;
-            String details = null;
-            String documentationLink = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean messageFound = false;
+                    String message = null;
+                    String key = null;
+                    String name = null;
+                    String details = null;
+                    String documentationLink = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("message".equals(fieldName)) {
-                    message = reader.getString();
-                    messageFound = true;
-                } else if ("key".equals(fieldName)) {
-                    key = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("details".equals(fieldName)) {
-                    details = reader.getString();
-                } else if ("documentationLink".equals(fieldName)) {
-                    documentationLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (messageFound) {
-                SearchIndexerWarning deserializedSearchIndexerWarning = new SearchIndexerWarning(message);
-                deserializedSearchIndexerWarning.key = key;
-                deserializedSearchIndexerWarning.name = name;
-                deserializedSearchIndexerWarning.details = details;
-                deserializedSearchIndexerWarning.documentationLink = documentationLink;
+                        if ("message".equals(fieldName)) {
+                            message = reader.getString();
+                            messageFound = true;
+                        } else if ("key".equals(fieldName)) {
+                            key = reader.getString();
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("details".equals(fieldName)) {
+                            details = reader.getString();
+                        } else if ("documentationLink".equals(fieldName)) {
+                            documentationLink = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (messageFound) {
+                        SearchIndexerWarning deserializedSearchIndexerWarning = new SearchIndexerWarning(message);
+                        deserializedSearchIndexerWarning.key = key;
+                        deserializedSearchIndexerWarning.name = name;
+                        deserializedSearchIndexerWarning.details = details;
+                        deserializedSearchIndexerWarning.documentationLink = documentationLink;
 
-                return deserializedSearchIndexerWarning;
-            }
-            throw new IllegalStateException("Missing required property: message");
-        });
+                        return deserializedSearchIndexerWarning;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!messageFound) {
+                        missingProperties.add("message");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

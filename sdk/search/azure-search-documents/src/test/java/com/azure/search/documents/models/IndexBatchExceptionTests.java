@@ -9,8 +9,6 @@ import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -19,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Execution(ExecutionMode.CONCURRENT)
+
 public class IndexBatchExceptionTests {
     private static final String KEY_FIELD_NAME = "key";
 

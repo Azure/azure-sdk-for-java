@@ -29,11 +29,11 @@ import java.util.List;
 
 /**
  * This scenario assumes an existing search solution and uses a pre-population data source with sample data set For more
- * information visit Azure AI Search Sample Data: https://docs.microsoft.com/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/
+ * information visit Azure Cognitive Search Sample Data: https://docs.microsoft.com/samples/azure-samples/azure-search-sample-data/azure-search-sample-data/
  */
 public class LifecycleSetupExample {
     /**
-     * From the Azure portal, get your Azure AI Search service URL and API admin key, and set the values of these
+     * From the Azure portal, get your Azure Cognitive Search service URL and API admin key, and set the values of these
      * environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration()

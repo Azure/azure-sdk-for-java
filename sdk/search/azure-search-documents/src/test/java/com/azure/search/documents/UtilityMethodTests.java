@@ -7,8 +7,6 @@ import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaption;
 import com.azure.search.documents.models.QueryCaptionType;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Test general utility methods.
  */
-@Execution(ExecutionMode.CONCURRENT)
 public class UtilityMethodTests {
     @ParameterizedTest
     @MethodSource("createSearchRequestAnswersTestsSupplier")

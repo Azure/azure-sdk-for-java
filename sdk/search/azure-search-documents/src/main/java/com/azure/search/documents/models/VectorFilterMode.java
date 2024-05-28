@@ -9,9 +9,7 @@ package com.azure.search.documents.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * Determines whether or not filters are applied before or after the vector search is performed.
- */
+/** Determines whether or not filters are applied before or after the vector search is performed. */
 public final class VectorFilterMode extends ExpandableStringEnum<VectorFilterMode> {
     /**
      * The filter will be applied after the candidate set of vector results is returned. Depending on the filter
@@ -19,23 +17,20 @@ public final class VectorFilterMode extends ExpandableStringEnum<VectorFilterMod
      */
     public static final VectorFilterMode POST_FILTER = fromString("postFilter");
 
-    /**
-     * The filter will be applied before the search query.
-     */
+    /** The filter will be applied before the search query. */
     public static final VectorFilterMode PRE_FILTER = fromString("preFilter");
 
     /**
      * Creates a new instance of VectorFilterMode value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public VectorFilterMode() {
-    }
+    public VectorFilterMode() {}
 
     /**
      * Creates or finds a VectorFilterMode from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding VectorFilterMode.
      */
@@ -45,7 +40,7 @@ public final class VectorFilterMode extends ExpandableStringEnum<VectorFilterMod
 
     /**
      * Gets known VectorFilterMode values.
-     * 
+     *
      * @return known VectorFilterMode values.
      */
     public static Collection<VectorFilterMode> values() {

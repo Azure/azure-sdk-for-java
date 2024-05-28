@@ -6,123 +6,75 @@
 
 package com.azure.search.documents.indexes.models;
 
-/**
- * The language to use for a Snowball token filter.
- */
+/** The language to use for a Snowball token filter. */
 public enum SnowballTokenFilterLanguage {
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Armenian.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Armenian. */
     ARMENIAN("armenian"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Basque.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Basque. */
     BASQUE("basque"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Catalan.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Catalan. */
     CATALAN("catalan"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Danish.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Danish. */
     DANISH("danish"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Dutch.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Dutch. */
     DUTCH("dutch"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for English.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for English. */
     ENGLISH("english"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Finnish.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Finnish. */
     FINNISH("finnish"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for French.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for French. */
     FRENCH("french"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for German.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for German. */
     GERMAN("german"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer that uses the German variant algorithm.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer that uses the German variant algorithm. */
     GERMAN2("german2"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Hungarian.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Hungarian. */
     HUNGARIAN("hungarian"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Italian.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Italian. */
     ITALIAN("italian"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Dutch that uses the Kraaij-Pohlmann stemming algorithm.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Dutch that uses the Kraaij-Pohlmann stemming algorithm. */
     KP("kp"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for English that uses the Lovins stemming algorithm.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for English that uses the Lovins stemming algorithm. */
     LOVINS("lovins"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Norwegian.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Norwegian. */
     NORWEGIAN("norwegian"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for English that uses the Porter stemming algorithm.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for English that uses the Porter stemming algorithm. */
     PORTER("porter"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Portuguese.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Portuguese. */
     PORTUGUESE("portuguese"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Romanian.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Romanian. */
     ROMANIAN("romanian"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Russian.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Russian. */
     RUSSIAN("russian"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Spanish.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Spanish. */
     SPANISH("spanish"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Swedish.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Swedish. */
     SWEDISH("swedish"),
 
-    /**
-     * Selects the Lucene Snowball stemming tokenizer for Turkish.
-     */
+    /** Selects the Lucene Snowball stemming tokenizer for Turkish. */
     TURKISH("turkish");
 
-    /**
-     * The actual serialized value for a SnowballTokenFilterLanguage instance.
-     */
+    /** The actual serialized value for a SnowballTokenFilterLanguage instance. */
     private final String value;
 
     SnowballTokenFilterLanguage(String value) {
@@ -131,7 +83,7 @@ public enum SnowballTokenFilterLanguage {
 
     /**
      * Parses a serialized value to a SnowballTokenFilterLanguage instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed SnowballTokenFilterLanguage object, or null if unable to parse.
      */
@@ -148,9 +100,7 @@ public enum SnowballTokenFilterLanguage {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

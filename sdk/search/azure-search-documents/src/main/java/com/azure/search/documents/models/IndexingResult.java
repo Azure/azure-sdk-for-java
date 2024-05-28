@@ -15,15 +15,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Status of an indexing operation for a single document.
- */
+/** Status of an indexing operation for a single document. */
 @Immutable
 public final class IndexingResult implements JsonSerializable<IndexingResult>, Serializable {
 
-    /**
-     * The key of a document that was in the indexing request.
-     */
+    /** The key of a document that was in the indexing request. */
     private final String key;
 
     /**
@@ -32,9 +28,7 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
      */
     private String errorMessage;
 
-    /**
-     * A value indicating whether the indexing operation succeeded for the document identified by the key.
-     */
+    /** A value indicating whether the indexing operation succeeded for the document identified by the key. */
     private final boolean succeeded;
 
     /**
@@ -109,55 +103,56 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of IndexingResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IndexingResult.
      */
     public static IndexingResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean keyFound = false;
-            String key = null;
-            boolean succeededFound = false;
-            boolean succeeded = false;
-            boolean statusCodeFound = false;
-            int statusCode = 0;
-            String errorMessage = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("key".equals(fieldName)) {
-                    key = reader.getString();
-                    keyFound = true;
-                } else if ("status".equals(fieldName)) {
-                    succeeded = reader.getBoolean();
-                    succeededFound = true;
-                } else if ("statusCode".equals(fieldName)) {
-                    statusCode = reader.getInt();
-                    statusCodeFound = true;
-                } else if ("errorMessage".equals(fieldName)) {
-                    errorMessage = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (keyFound && succeededFound && statusCodeFound) {
-                IndexingResult deserializedIndexingResult = new IndexingResult(key, succeeded, statusCode);
-                deserializedIndexingResult.errorMessage = errorMessage;
-                return deserializedIndexingResult;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!keyFound) {
-                missingProperties.add("key");
-            }
-            if (!succeededFound) {
-                missingProperties.add("status");
-            }
-            if (!statusCodeFound) {
-                missingProperties.add("statusCode");
-            }
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean keyFound = false;
+                    String key = null;
+                    boolean succeededFound = false;
+                    boolean succeeded = false;
+                    boolean statusCodeFound = false;
+                    int statusCode = 0;
+                    String errorMessage = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("key".equals(fieldName)) {
+                            key = reader.getString();
+                            keyFound = true;
+                        } else if ("status".equals(fieldName)) {
+                            succeeded = reader.getBoolean();
+                            succeededFound = true;
+                        } else if ("statusCode".equals(fieldName)) {
+                            statusCode = reader.getInt();
+                            statusCodeFound = true;
+                        } else if ("errorMessage".equals(fieldName)) {
+                            errorMessage = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (keyFound && succeededFound && statusCodeFound) {
+                        IndexingResult deserializedIndexingResult = new IndexingResult(key, succeeded, statusCode);
+                        deserializedIndexingResult.errorMessage = errorMessage;
+                        return deserializedIndexingResult;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!keyFound) {
+                        missingProperties.add("key");
+                    }
+                    if (!succeededFound) {
+                        missingProperties.add("status");
+                    }
+                    if (!statusCodeFound) {
+                        missingProperties.add("statusCode");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     private static final long serialVersionUID = -8604424005271188140L;

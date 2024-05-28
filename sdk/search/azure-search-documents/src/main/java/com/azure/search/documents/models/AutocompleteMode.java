@@ -30,9 +30,7 @@ public enum AutocompleteMode {
      */
     ONE_TERM_WITH_CONTEXT("oneTermWithContext");
 
-    /**
-     * The actual serialized value for a AutocompleteMode instance.
-     */
+    /** The actual serialized value for a AutocompleteMode instance. */
     private final String value;
 
     AutocompleteMode(String value) {
@@ -41,7 +39,7 @@ public enum AutocompleteMode {
 
     /**
      * Parses a serialized value to a AutocompleteMode instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed AutocompleteMode object, or null if unable to parse.
      */
@@ -58,9 +56,7 @@ public enum AutocompleteMode {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;
