@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import com.azure.core.util.BinaryData;
 
 /**
  * The input definition information for a function.
@@ -32,8 +33,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
     /*
      * The parameters the functions accepts, described as a JSON Schema object.
      */
-    @Generated
-    private final Object parameters;
+    private final BinaryData parameters;
 
     /**
      * Get the name property: The name of the function to be called.
@@ -61,21 +61,8 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      *
      * @return the parameters value.
      */
-    @Generated
-    public Object getParameters() {
+    public BinaryData getParameters() {
         return this.parameters;
-    }
-
-    /**
-     * Creates an instance of FunctionDefinition class.
-     *
-     * @param name the name value to set.
-     * @param parameters the parameters value to set.
-     */
-    @Generated
-    public FunctionDefinition(String name, Object parameters) {
-        this.name = name;
-        this.parameters = parameters;
     }
 
     /**
@@ -94,12 +81,11 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeUntypedField("parameters", this.parameters);
+        jsonWriter.writeRawField("parameters", this.parameters.toString());
         jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
     }
@@ -113,11 +99,10 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FunctionDefinition.
      */
-    @Generated
     public static FunctionDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            Object parameters = null;
+            BinaryData parameters = null;
             String description = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -125,7 +110,7 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("parameters".equals(fieldName)) {
-                    parameters = reader.readUntyped();
+                    parameters = BinaryData.fromObject(reader.readUntyped());
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else {
@@ -136,5 +121,16 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
             deserializedFunctionDefinition.description = description;
             return deserializedFunctionDefinition;
         });
+    }
+
+    /**
+     * Creates an instance of FunctionDefinition class.
+     *
+     * @param name the name value to set.
+     * @param parameters the parameters value to set.
+     */
+    public FunctionDefinition(String name, BinaryData parameters) {
+        this.name = name;
+        this.parameters = parameters;
     }
 }

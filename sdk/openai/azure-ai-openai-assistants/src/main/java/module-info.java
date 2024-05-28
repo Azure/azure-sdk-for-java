@@ -10,4 +10,5 @@ module com.azure.ai.openai.assistants {
     opens com.azure.ai.openai.assistants.models to com.azure.core;
     opens com.azure.ai.openai.assistants.implementation.models to com.azure.core;
     opens com.azure.ai.openai.assistants.implementation to com.azure.core;
+    opens com.azure.ai.openai.assistants.implementation.streaming to com.azure.core;
 }
