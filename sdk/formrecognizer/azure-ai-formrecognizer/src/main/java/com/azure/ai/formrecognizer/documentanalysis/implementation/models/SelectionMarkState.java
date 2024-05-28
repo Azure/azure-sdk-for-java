@@ -5,44 +5,39 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * State of the selection mark.
- */
+/** State of the selection mark. */
 public final class SelectionMarkState extends ExpandableStringEnum<SelectionMarkState> {
-    /**
-     * The selection mark is selected, often indicated by a check ✓ or cross X inside the selection mark.
-     */
+    /** Static value selected for SelectionMarkState. */
     public static final SelectionMarkState SELECTED = fromString("selected");
 
-    /**
-     * The selection mark is not selected.
-     */
+    /** Static value unselected for SelectionMarkState. */
     public static final SelectionMarkState UNSELECTED = fromString("unselected");
 
     /**
      * Creates a new instance of SelectionMarkState value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SelectionMarkState() {
-    }
+    public SelectionMarkState() {}
 
     /**
      * Creates or finds a SelectionMarkState from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SelectionMarkState.
      */
+    @JsonCreator
     public static SelectionMarkState fromString(String name) {
         return fromString(name, SelectionMarkState.class);
     }
 
     /**
      * Gets known SelectionMarkState values.
-     * 
+     *
      * @return known SelectionMarkState values.
      */
     public static Collection<SelectionMarkState> values() {

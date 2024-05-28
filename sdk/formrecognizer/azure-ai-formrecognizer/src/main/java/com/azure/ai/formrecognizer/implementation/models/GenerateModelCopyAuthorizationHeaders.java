@@ -7,21 +7,21 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The GenerateModelCopyAuthorizationHeaders model.
- */
+/** The GenerateModelCopyAuthorizationHeaders model. */
 @Fluent
 public final class GenerateModelCopyAuthorizationHeaders {
     /*
      * The Location property.
      */
+    @JsonProperty(value = "Location")
     private String location;
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of GenerateModelCopyAuthorizationHeaders class.
-     * 
+     *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public GenerateModelCopyAuthorizationHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +30,7 @@ public final class GenerateModelCopyAuthorizationHeaders {
 
     /**
      * Get the location property: The Location property.
-     * 
+     *
      * @return the location value.
      */
     public String getLocation() {
@@ -39,7 +39,7 @@ public final class GenerateModelCopyAuthorizationHeaders {
 
     /**
      * Set the location property: The Location property.
-     * 
+     *
      * @param location the location value to set.
      * @return the GenerateModelCopyAuthorizationHeaders object itself.
      */
