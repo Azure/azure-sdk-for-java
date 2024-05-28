@@ -119,6 +119,8 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
+            // Disable "Set-Cookie"=AZSDK2015 for non-azure client only.
+            interceptorManager.removeSanitizers(Arrays.asList("AZSDK2015"));
         }
 
         return builder;
