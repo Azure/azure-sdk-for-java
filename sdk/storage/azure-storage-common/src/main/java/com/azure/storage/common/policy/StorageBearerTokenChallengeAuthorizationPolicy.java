@@ -12,10 +12,10 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Locale;
 
 /**
  * The storage authorization policy which supports challenge.
@@ -23,10 +23,9 @@ import java.util.regex.Pattern;
 public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenAuthenticationPolicy {
 
     private static final String DEFAULT_SCOPE = "/.default";
-    private String[] scopes;
+    private static final String BEARER_TOKEN_PREFIX = "Bearer ";
 
-    private static final Pattern AUTHENTICATION_CHALLENGE_PATTERN
-        = Pattern.compile(" ((?:\\w+.*?))([a-z]+://[^ ]*)");
+    private String[] scopes;
 
     /**
      * Creates StorageBearerTokenChallengeAuthorizationPolicy.
@@ -63,7 +62,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-        Map<String, String> challenges = parseChallenges(authHeader);
+        Map<String, String> challenges = extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
 
         String scope = challenges.get("resource_id=");
         if (scope != null) {
@@ -78,9 +77,9 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
     @Override
     public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
         String authHeader = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-        Map<String, String> challenges = parseChallenges(authHeader);
+        Map<String, String> challenges = extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
 
-        String scope = challenges.get("resource_id=");
+        String scope = challenges.get("resource_id");
         if (scope != null) {
             scope += DEFAULT_SCOPE;
             scopes = new String[] { scope };
@@ -91,24 +90,31 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         return false;
     }
 
-    /**
-     * Gets the scopes for the specific request.
-     *
-     * @param context The request.
-     * @param scopes Default scopes used by the policy.
-     * @return The scopes for the specific request.
-     */
     String[] getScopes(HttpPipelineCallContext context, String[] scopes) {
         return CoreUtils.clone(scopes);
     }
 
-    Map<String, String> parseChallenges(String header) {
-        Matcher matcher = AUTHENTICATION_CHALLENGE_PATTERN.matcher(header);
-
-        Map<String, String> challenges = new HashMap<>();
-        while (matcher.find()) {
-            challenges.put(matcher.group(1), matcher.group(2));
+    Map<String, String> extractChallengeAttributes(String header, String authChallengePrefix) {
+        if (!isBearerChallenge(header, authChallengePrefix)) {
+            return Collections.emptyMap();
         }
-        return challenges;
+
+        header = header.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
+
+        String[] attributes = header.split(" ");
+        Map<String, String> attributeMap = new HashMap<>();
+
+        for (String pair : attributes) {
+            String[] keyValue = pair.split("=");
+
+            attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
+        }
+
+        return attributeMap;
+    }
+
+    static boolean isBearerChallenge(String authenticateHeader, String authChallengePrefix) {
+        return (!CoreUtils.isNullOrEmpty(authenticateHeader)
+            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
     }
 }
