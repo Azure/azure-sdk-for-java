@@ -204,7 +204,8 @@ public final class ClassificationPolicyInternal {
     }
 
     /**
-     * Get the workerSelectorAttachments property: Worker selector attachments used to attach worker selectors to a job.
+     * Get the workerSelectorAttachments property: Worker selector attachments used to attach worker selectors to a
+     * job.
      *
      * @return the workerSelectorAttachments value.
      */
@@ -214,7 +215,8 @@ public final class ClassificationPolicyInternal {
     }
 
     /**
-     * Set the workerSelectorAttachments property: Worker selector attachments used to attach worker selectors to a job.
+     * Set the workerSelectorAttachments property: Worker selector attachments used to attach worker selectors to a
+     * job.
      *
      * @param workerSelectorAttachments the workerSelectorAttachments value to set.
      * @return the ClassificationPolicyInternal object itself.

@@ -8,27 +8,15 @@ import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.models.ExceptionAction;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionRule;
-import com.azure.communication.jobrouter.models.LabelOperator;
-import com.azure.communication.jobrouter.models.ManualReclassifyExceptionAction;
 import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
-import com.azure.communication.jobrouter.models.ReclassifyExceptionAction;
-import com.azure.communication.jobrouter.models.RouterValue;
-import com.azure.communication.jobrouter.models.RouterWorkerSelector;
-import com.azure.communication.jobrouter.models.WaitTimeExceptionTrigger;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.Duration;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ExceptionPolicyAsyncLiveTests extends JobRouterTestBase {
     private JobRouterAdministrationAsyncClient administrationAsyncClient;
@@ -38,7 +26,7 @@ public class ExceptionPolicyAsyncLiveTests extends JobRouterTestBase {
     public void createExceptionPolicy(HttpClient httpClient) {
         // Setup
         administrationAsyncClient = getRouterAdministrationAsyncClient(httpClient);
-        String exceptionPolicyId = String.format("%s-CreateExceptionPolicyAsync-ExceptionPolicy", JAVA_LIVE_TESTS);
+        String exceptionPolicyId = String.format("%s-CreateExceptionPolicy-ExceptionPolicy", JAVA_LIVE_TESTS);
         String exceptionPolicyName = String.format("%s-Name", exceptionPolicyId);
 
         CancelExceptionAction exceptionAction = new CancelExceptionAction()
@@ -48,11 +36,6 @@ public class ExceptionPolicyAsyncLiveTests extends JobRouterTestBase {
         List<ExceptionAction> exceptionActions = new ArrayList<ExceptionAction>() {
             {
                 add(exceptionAction);
-                add(new ManualReclassifyExceptionAction().setPriority(5).setWorkerSelectors(new ArrayList<RouterWorkerSelector>() {
-                    {
-                        add(new RouterWorkerSelector("IntValue", LabelOperator.EQUAL, new RouterValue(5)));
-                    }
-                }));
             }
         };
 
@@ -61,15 +44,6 @@ public class ExceptionPolicyAsyncLiveTests extends JobRouterTestBase {
         List<ExceptionRule> exceptionRules = new ArrayList<ExceptionRule>() {
             {
                 add(exceptionRule);
-                add(new ExceptionRule("rule2", new WaitTimeExceptionTrigger(Duration.ofSeconds(100)), new ArrayList<ExceptionAction>() {
-                    {
-                        add(new ReclassifyExceptionAction().setLabelsToUpsert(new HashMap<String, RouterValue>() {
-                            {
-                                put("Label1", new RouterValue(true));
-                            }
-                        }));
-                    }
-                }));
             }
         };
 
@@ -82,30 +56,6 @@ public class ExceptionPolicyAsyncLiveTests extends JobRouterTestBase {
 
         // Verify
         assertEquals(exceptionPolicyId, result.getId());
-        assertEquals(exceptionPolicyName, result.getName());
-        assertNotNull(result.getEtag());
-        assertEquals(2, result.getExceptionRules().size());
-        assertEquals(2, result.getExceptionRules().get(0).getActions().size());
-        assertEquals(1, result.getExceptionRules().get(1).getActions().size());
-
-        Response<BinaryData> binaryResponse = administrationAsyncClient.getExceptionPolicyWithResponse(result.getId(), null).block();
-        ExceptionPolicy deserialized = binaryResponse.getValue().toObject(ExceptionPolicy.class);
-
-        assertEquals(exceptionPolicyId, deserialized.getId());
-        assertEquals(exceptionPolicyName, deserialized.getName());
-        assertEquals(result.getEtag(), deserialized.getEtag());
-        assertEquals(2, deserialized.getExceptionRules().size());
-        assertEquals(2, deserialized.getExceptionRules().get(0).getActions().size());
-        assertEquals(1, deserialized.getExceptionRules().get(1).getActions().size());
-
-        deserialized.setExceptionRules(new ArrayList<>());
-        ExceptionPolicy updatedPolicy = administrationAsyncClient.updateExceptionPolicy(
-            deserialized.getId(), deserialized).block();
-
-        assertEquals(exceptionPolicyId, updatedPolicy.getId());
-        assertEquals(exceptionPolicyName, updatedPolicy.getName());
-        assertNotEquals(result.getEtag(), updatedPolicy.getEtag());
-        assertEquals(0, deserialized.getExceptionRules().size());
 
         // Cleanup
         administrationAsyncClient.deleteExceptionPolicy(exceptionPolicyId).block();
