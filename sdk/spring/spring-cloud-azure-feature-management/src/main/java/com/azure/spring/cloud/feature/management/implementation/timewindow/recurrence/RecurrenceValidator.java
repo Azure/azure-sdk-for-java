@@ -137,7 +137,7 @@ public class RecurrenceValidator {
         // Get the date of first day of the week
         final ZonedDateTime today = ZonedDateTime.now();
         final DayOfWeek firstDayOfWeek = settings.getRecurrence().getPattern().getFirstDayOfWeek();
-        final int offset = TimeWindowUtils.daysPassedWeekStart(today.getDayOfWeek(), firstDayOfWeek);
+        final int offset = TimeWindowUtils.getPassedWeekDays(today.getDayOfWeek(), firstDayOfWeek);
         final ZonedDateTime firstDateOfWeek = today.minusDays(offset).truncatedTo(ChronoUnit.DAYS);
         final List<DayOfWeek> sortedDaysOfWeek = TimeWindowUtils.sortDaysOfWeek(daysOfWeek, firstDayOfWeek);
 
@@ -147,7 +147,7 @@ public class RecurrenceValidator {
         Duration minGap = Duration.ofDays(RecurrenceConstants.DAYS_PER_WEEK);
 
         for (DayOfWeek day: sortedDaysOfWeek) {
-            date = firstDateOfWeek.plusDays(TimeWindowUtils.daysPassedWeekStart(day, firstDayOfWeek));
+            date = firstDateOfWeek.plusDays(TimeWindowUtils.getPassedWeekDays(day, firstDayOfWeek));
             if (prevOccurrence != null) {
                 final Duration currentGap = Duration.between(prevOccurrence, date);
                 if (currentGap.compareTo(minGap) < 0) {
@@ -160,7 +160,7 @@ public class RecurrenceValidator {
         if (settings.getRecurrence().getPattern().getInterval() == 1) {
             // It may across weeks. Check the adjacent week
             date = firstDateOfWeek.plusDays(RecurrenceConstants.DAYS_PER_WEEK)
-                .plusDays(TimeWindowUtils.daysPassedWeekStart(sortedDaysOfWeek.get(0), firstDayOfWeek));
+                .plusDays(TimeWindowUtils.getPassedWeekDays(sortedDaysOfWeek.get(0), firstDayOfWeek));
             final Duration currentGap = Duration.between(prevOccurrence, date);
             if (currentGap.compareTo(minGap) < 0) {
                 minGap = currentGap;

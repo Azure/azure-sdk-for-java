@@ -32,7 +32,7 @@ public class TimeWindowUtils {
      * @param firstDayOfWeek the start day of the week
      * @return the number of days passed
      * */
-    public static int daysPassedWeekStart(DayOfWeek today, DayOfWeek firstDayOfWeek) {
+    public static int getPassedWeekDays(DayOfWeek today, DayOfWeek firstDayOfWeek) {
         int passedDays = (convertToWeekDayNumber(today) - convertToWeekDayNumber(firstDayOfWeek));
         if (passedDays < 0) {
             return passedDays + RecurrenceConstants.DAYS_PER_WEEK;
@@ -41,8 +41,8 @@ public class TimeWindowUtils {
         }
     }
 
-    public static int convertToWeekDayNumber(DayOfWeek dateTime) {
-        return dateTime.getValue() % 7;
+    public static int convertToWeekDayNumber(DayOfWeek dayOfWeek) {
+        return dayOfWeek.getValue() % 7;
     }
 
     public static List<DayOfWeek> sortDaysOfWeek(List<DayOfWeek> daysOfWeek, DayOfWeek firstDayOfWeek) {
