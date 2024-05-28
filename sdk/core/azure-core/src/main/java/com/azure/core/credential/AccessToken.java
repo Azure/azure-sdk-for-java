@@ -3,6 +3,7 @@
 
 package com.azure.core.credential;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
@@ -32,8 +33,11 @@ import java.time.OffsetDateTime;
  * @see com.azure.core.credential.TokenCredential
  */
 public class AccessToken {
+    private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
     private final String token;
     private final OffsetDateTime expiresAt;
+    private final OffsetDateTime refreshOn;
+
 
     /**
      * Creates an access token instance.
@@ -44,6 +48,20 @@ public class AccessToken {
     public AccessToken(String token, OffsetDateTime expiresAt) {
         this.token = token;
         this.expiresAt = expiresAt;
+        this.refreshOn = expiresAt.minus(REFRESH_OFFSET);
+    }
+
+    /**
+     * Creates an access token instance.
+     *
+     * @param token the token string.
+     * @param expiresAt the expiration time.
+     * @param refreshOn the token refresh time.
+     */
+    public AccessToken(String token, OffsetDateTime expiresAt, OffsetDateTime refreshOn) {
+        this.token = token;
+        this.expiresAt = expiresAt;
+        this.refreshOn = refreshOn;
     }
 
     /**
@@ -62,6 +80,15 @@ public class AccessToken {
      */
     public OffsetDateTime getExpiresAt() {
         return expiresAt;
+    }
+
+    /**
+     * Gets the time when the token should refresh, in UTC.
+     *
+     * @return The time when the token should refresh, in UTC.
+     */
+    public OffsetDateTime getRefreshOn() {
+        return refreshOn;
     }
 
     /**
