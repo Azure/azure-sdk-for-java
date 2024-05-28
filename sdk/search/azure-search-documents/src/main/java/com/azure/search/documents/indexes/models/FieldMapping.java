@@ -12,10 +12,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Defines a mapping between a field in a data source and a target field in an index.
- */
+/** Defines a mapping between a field in a data source and a target field in an index. */
 @Fluent
 public final class FieldMapping implements JsonSerializable<FieldMapping> {
     /*
@@ -35,7 +35,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
 
     /**
      * Creates an instance of FieldMapping class.
-     * 
+     *
      * @param sourceFieldName the sourceFieldName value to set.
      */
     public FieldMapping(String sourceFieldName) {
@@ -44,7 +44,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
 
     /**
      * Get the sourceFieldName property: The name of the field in the data source.
-     * 
+     *
      * @return the sourceFieldName value.
      */
     public String getSourceFieldName() {
@@ -54,7 +54,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
     /**
      * Get the targetFieldName property: The name of the target field in the index. Same as the source field name by
      * default.
-     * 
+     *
      * @return the targetFieldName value.
      */
     public String getTargetFieldName() {
@@ -64,7 +64,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
     /**
      * Set the targetFieldName property: The name of the target field in the index. Same as the source field name by
      * default.
-     * 
+     *
      * @param targetFieldName the targetFieldName value to set.
      * @return the FieldMapping object itself.
      */
@@ -75,7 +75,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
 
     /**
      * Get the mappingFunction property: A function to apply to each source field value before indexing.
-     * 
+     *
      * @return the mappingFunction value.
      */
     public FieldMappingFunction getMappingFunction() {
@@ -84,7 +84,7 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
 
     /**
      * Set the mappingFunction property: A function to apply to each source field value before indexing.
-     * 
+     *
      * @param mappingFunction the mappingFunction value to set.
      * @return the FieldMapping object itself.
      */
@@ -104,42 +104,49 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
 
     /**
      * Reads an instance of FieldMapping from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of FieldMapping if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FieldMapping.
      */
     public static FieldMapping fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean sourceFieldNameFound = false;
-            String sourceFieldName = null;
-            String targetFieldName = null;
-            FieldMappingFunction mappingFunction = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean sourceFieldNameFound = false;
+                    String sourceFieldName = null;
+                    String targetFieldName = null;
+                    FieldMappingFunction mappingFunction = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("sourceFieldName".equals(fieldName)) {
-                    sourceFieldName = reader.getString();
-                    sourceFieldNameFound = true;
-                } else if ("targetFieldName".equals(fieldName)) {
-                    targetFieldName = reader.getString();
-                } else if ("mappingFunction".equals(fieldName)) {
-                    mappingFunction = FieldMappingFunction.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (sourceFieldNameFound) {
-                FieldMapping deserializedFieldMapping = new FieldMapping(sourceFieldName);
-                deserializedFieldMapping.targetFieldName = targetFieldName;
-                deserializedFieldMapping.mappingFunction = mappingFunction;
+                        if ("sourceFieldName".equals(fieldName)) {
+                            sourceFieldName = reader.getString();
+                            sourceFieldNameFound = true;
+                        } else if ("targetFieldName".equals(fieldName)) {
+                            targetFieldName = reader.getString();
+                        } else if ("mappingFunction".equals(fieldName)) {
+                            mappingFunction = FieldMappingFunction.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (sourceFieldNameFound) {
+                        FieldMapping deserializedFieldMapping = new FieldMapping(sourceFieldName);
+                        deserializedFieldMapping.targetFieldName = targetFieldName;
+                        deserializedFieldMapping.mappingFunction = mappingFunction;
 
-                return deserializedFieldMapping;
-            }
-            throw new IllegalStateException("Missing required property: sourceFieldName");
-        });
+                        return deserializedFieldMapping;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!sourceFieldNameFound) {
+                        missingProperties.add("sourceFieldName");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

@@ -6,9 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
-/**
- * Represents the status of an individual indexer execution.
- */
+/** Represents the status of an individual indexer execution. */
 public enum IndexerExecutionStatus {
     /**
      * An indexer invocation has failed, but the failure may be transient. Indexer invocations will continue per
@@ -16,24 +14,16 @@ public enum IndexerExecutionStatus {
      */
     TRANSIENT_FAILURE("transientFailure"),
 
-    /**
-     * Indexer execution completed successfully.
-     */
+    /** Indexer execution completed successfully. */
     SUCCESS("success"),
 
-    /**
-     * Indexer execution is in progress.
-     */
+    /** Indexer execution is in progress. */
     IN_PROGRESS("inProgress"),
 
-    /**
-     * Indexer has been reset.
-     */
+    /** Indexer has been reset. */
     RESET("reset");
 
-    /**
-     * The actual serialized value for a IndexerExecutionStatus instance.
-     */
+    /** The actual serialized value for a IndexerExecutionStatus instance. */
     private final String value;
 
     IndexerExecutionStatus(String value) {
@@ -42,7 +32,7 @@ public enum IndexerExecutionStatus {
 
     /**
      * Parses a serialized value to a IndexerExecutionStatus instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed IndexerExecutionStatus object, or null if unable to parse.
      */
@@ -59,9 +49,7 @@ public enum IndexerExecutionStatus {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

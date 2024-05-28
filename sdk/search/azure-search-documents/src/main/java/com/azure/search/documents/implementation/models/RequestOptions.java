@@ -15,9 +15,7 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Parameter group.
- */
+/** Parameter group. */
 @Fluent
 public final class RequestOptions implements JsonSerializable<RequestOptions> {
     /*
@@ -25,15 +23,12 @@ public final class RequestOptions implements JsonSerializable<RequestOptions> {
      */
     private UUID xMsClientRequestId;
 
-    /**
-     * Creates an instance of RequestOptions class.
-     */
-    public RequestOptions() {
-    }
+    /** Creates an instance of RequestOptions class. */
+    public RequestOptions() {}
 
     /**
      * Get the xMsClientRequestId property: The tracking ID sent with the request to help with debugging.
-     * 
+     *
      * @return the xMsClientRequestId value.
      */
     public UUID getXMsClientRequestId() {
@@ -42,7 +37,7 @@ public final class RequestOptions implements JsonSerializable<RequestOptions> {
 
     /**
      * Set the xMsClientRequestId property: The tracking ID sent with the request to help with debugging.
-     * 
+     *
      * @param xMsClientRequestId the xMsClientRequestId value to set.
      * @return the RequestOptions object itself.
      */
@@ -60,28 +55,29 @@ public final class RequestOptions implements JsonSerializable<RequestOptions> {
 
     /**
      * Reads an instance of RequestOptions from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of RequestOptions if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the RequestOptions.
      */
     public static RequestOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RequestOptions deserializedRequestOptions = new RequestOptions();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    RequestOptions deserializedRequestOptions = new RequestOptions();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("x-ms-client-request-id".equals(fieldName)) {
-                    deserializedRequestOptions.xMsClientRequestId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("x-ms-client-request-id".equals(fieldName)) {
+                            deserializedRequestOptions.xMsClientRequestId =
+                                    reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedRequestOptions;
-        });
+                    return deserializedRequestOptions;
+                });
     }
 }

@@ -7,8 +7,6 @@ import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkillVersion;
 import com.azure.search.documents.indexes.models.SentimentSkill;
 import org.junit.jupiter.api.function.Executable;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -20,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Tests that multi-version skills throw an exception when an unsupported property is set.
  */
-@Execution(ExecutionMode.CONCURRENT)
 public class SkillsSupportedVersionsTests {
     @ParameterizedTest
     @MethodSource("throwsAsExpectedSupplier")

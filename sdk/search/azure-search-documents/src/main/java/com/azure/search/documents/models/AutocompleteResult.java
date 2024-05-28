@@ -12,11 +12,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The result of Autocomplete query.
- */
+/** The result of Autocomplete query. */
 @Immutable
 public final class AutocompleteResult implements JsonSerializable<AutocompleteResult> {
     /*
@@ -32,7 +31,7 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
 
     /**
      * Creates an instance of AutocompleteResult class.
-     * 
+     *
      * @param results the results value to set.
      */
     public AutocompleteResult(List<AutocompleteItem> results) {
@@ -40,9 +39,9 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
     }
 
     /**
-     * Get the coverage property: A value indicating the percentage of the index that was considered by the
-     * autocomplete request, or null if minimumCoverage was not specified in the request.
-     * 
+     * Get the coverage property: A value indicating the percentage of the index that was considered by the autocomplete
+     * request, or null if minimumCoverage was not specified in the request.
+     *
      * @return the coverage value.
      */
     public Double getCoverage() {
@@ -51,7 +50,7 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
 
     /**
      * Get the results property: The list of returned Autocompleted items.
-     * 
+     *
      * @return the results value.
      */
     public List<AutocompleteItem> getResults() {
@@ -66,38 +65,45 @@ public final class AutocompleteResult implements JsonSerializable<AutocompleteRe
 
     /**
      * Reads an instance of AutocompleteResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AutocompleteResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AutocompleteResult.
      */
     public static AutocompleteResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean resultsFound = false;
-            List<AutocompleteItem> results = null;
-            Double coverage = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean resultsFound = false;
+                    List<AutocompleteItem> results = null;
+                    Double coverage = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("value".equals(fieldName)) {
-                    results = reader.readArray(reader1 -> AutocompleteItem.fromJson(reader1));
-                    resultsFound = true;
-                } else if ("@search.coverage".equals(fieldName)) {
-                    coverage = reader.getNullable(JsonReader::getDouble);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (resultsFound) {
-                AutocompleteResult deserializedAutocompleteResult = new AutocompleteResult(results);
-                deserializedAutocompleteResult.coverage = coverage;
+                        if ("value".equals(fieldName)) {
+                            results = reader.readArray(reader1 -> AutocompleteItem.fromJson(reader1));
+                            resultsFound = true;
+                        } else if ("@search.coverage".equals(fieldName)) {
+                            coverage = reader.getNullable(JsonReader::getDouble);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (resultsFound) {
+                        AutocompleteResult deserializedAutocompleteResult = new AutocompleteResult(results);
+                        deserializedAutocompleteResult.coverage = coverage;
 
-                return deserializedAutocompleteResult;
-            }
-            throw new IllegalStateException("Missing required property: value");
-        });
+                        return deserializedAutocompleteResult;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!resultsFound) {
+                        missingProperties.add("value");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

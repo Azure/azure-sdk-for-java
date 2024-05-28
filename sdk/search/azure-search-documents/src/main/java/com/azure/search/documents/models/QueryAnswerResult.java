@@ -49,16 +49,13 @@ public final class QueryAnswerResult implements JsonSerializable<QueryAnswerResu
      */
     private Map<String, Object> additionalProperties;
 
-    /**
-     * Creates an instance of QueryAnswerResult class.
-     */
-    public QueryAnswerResult() {
-    }
+    /** Creates an instance of QueryAnswerResult class. */
+    public QueryAnswerResult() {}
 
     /**
      * Get the score property: The score value represents how relevant the answer is to the query relative to other
      * answers returned for the query.
-     * 
+     *
      * @return the score value.
      */
     public Double getScore() {
@@ -67,7 +64,7 @@ public final class QueryAnswerResult implements JsonSerializable<QueryAnswerResu
 
     /**
      * Get the key property: The key of the document the answer was extracted from.
-     * 
+     *
      * @return the key value.
      */
     public String getKey() {
@@ -76,7 +73,7 @@ public final class QueryAnswerResult implements JsonSerializable<QueryAnswerResu
 
     /**
      * Get the text property: The text passage extracted from the document contents as the answer.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -86,7 +83,7 @@ public final class QueryAnswerResult implements JsonSerializable<QueryAnswerResu
     /**
      * Get the highlights property: Same text passage as in the Text property with highlighted text phrases most
      * relevant to the query.
-     * 
+     *
      * @return the highlights value.
      */
     public String getHighlights() {
@@ -97,7 +94,7 @@ public final class QueryAnswerResult implements JsonSerializable<QueryAnswerResu
      * Get the additionalProperties property: An answer is a text passage extracted from the contents of the most
      * relevant documents that matched the query. Answers are extracted from the top search results. Answer candidates
      * are scored and the top answers are selected.
-     * 
+     *
      * @return the additionalProperties value.
      */
     public Map<String, Object> getAdditionalProperties() {
@@ -117,39 +114,40 @@ public final class QueryAnswerResult implements JsonSerializable<QueryAnswerResu
 
     /**
      * Reads an instance of QueryAnswerResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of QueryAnswerResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the QueryAnswerResult.
      */
     public static QueryAnswerResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            QueryAnswerResult deserializedQueryAnswerResult = new QueryAnswerResult();
-            Map<String, Object> additionalProperties = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    QueryAnswerResult deserializedQueryAnswerResult = new QueryAnswerResult();
+                    Map<String, Object> additionalProperties = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("score".equals(fieldName)) {
-                    deserializedQueryAnswerResult.score = reader.getNullable(JsonReader::getDouble);
-                } else if ("key".equals(fieldName)) {
-                    deserializedQueryAnswerResult.key = reader.getString();
-                } else if ("text".equals(fieldName)) {
-                    deserializedQueryAnswerResult.text = reader.getString();
-                } else if ("highlights".equals(fieldName)) {
-                    deserializedQueryAnswerResult.highlights = reader.getString();
-                } else {
-                    if (additionalProperties == null) {
-                        additionalProperties = new LinkedHashMap<>();
+                        if ("score".equals(fieldName)) {
+                            deserializedQueryAnswerResult.score = reader.getNullable(JsonReader::getDouble);
+                        } else if ("key".equals(fieldName)) {
+                            deserializedQueryAnswerResult.key = reader.getString();
+                        } else if ("text".equals(fieldName)) {
+                            deserializedQueryAnswerResult.text = reader.getString();
+                        } else if ("highlights".equals(fieldName)) {
+                            deserializedQueryAnswerResult.highlights = reader.getString();
+                        } else {
+                            if (additionalProperties == null) {
+                                additionalProperties = new LinkedHashMap<>();
+                            }
+
+                            additionalProperties.put(fieldName, reader.readUntyped());
+                        }
                     }
+                    deserializedQueryAnswerResult.additionalProperties = additionalProperties;
 
-                    additionalProperties.put(fieldName, reader.readUntyped());
-                }
-            }
-            deserializedQueryAnswerResult.additionalProperties = additionalProperties;
-
-            return deserializedQueryAnswerResult;
-        });
+                    return deserializedQueryAnswerResult;
+                });
     }
 }

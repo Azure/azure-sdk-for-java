@@ -19,12 +19,9 @@ import java.io.IOException;
  * rank the search results.
  */
 @Immutable
-public class SimilarityAlgorithm implements JsonSerializable<SimilarityAlgorithm> {
-    /**
-     * Creates an instance of SimilarityAlgorithm class.
-     */
-    public SimilarityAlgorithm() {
-    }
+public abstract class SimilarityAlgorithm implements JsonSerializable<SimilarityAlgorithm> {
+    /** Creates an instance of SimilarityAlgorithm class. */
+    public SimilarityAlgorithm() {}
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -34,51 +31,45 @@ public class SimilarityAlgorithm implements JsonSerializable<SimilarityAlgorithm
 
     /**
      * Reads an instance of SimilarityAlgorithm from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SimilarityAlgorithm if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the SimilarityAlgorithm.
      */
     public static SimilarityAlgorithm fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            JsonReader readerToUse = reader.bufferObject();
+        return jsonReader.readObject(
+                reader -> {
+                    String discriminatorValue = null;
+                    JsonReader readerToUse = reader.bufferObject();
 
-            readerToUse.nextToken(); // Prepare for reading
-            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = readerToUse.getFieldName();
-                readerToUse.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    discriminatorValue = readerToUse.getString();
-                    break;
-                } else {
-                    readerToUse.skipChildren();
-                }
-            }
-            // Use the discriminator value to determine which subtype should be deserialized.
-            if ("#Microsoft.Azure.Search.ClassicSimilarity".equals(discriminatorValue)) {
-                return ClassicSimilarityAlgorithm.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.BM25Similarity".equals(discriminatorValue)) {
-                return BM25SimilarityAlgorithm.fromJson(readerToUse.reset());
-            } else {
-                return fromJsonKnownDiscriminator(readerToUse.reset());
-            }
-        });
-    }
+                    readerToUse.nextToken(); // Prepare for reading
+                    while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = readerToUse.getFieldName();
+                        readerToUse.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            discriminatorValue = readerToUse.getString();
+                            break;
+                        } else {
+                            readerToUse.skipChildren();
+                        }
+                    }
 
-    static SimilarityAlgorithm fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SimilarityAlgorithm deserializedSimilarityAlgorithm = new SimilarityAlgorithm();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                reader.skipChildren();
-            }
-
-            return deserializedSimilarityAlgorithm;
-        });
+                    if (discriminatorValue != null) {
+                        readerToUse = readerToUse.reset();
+                    }
+                    // Use the discriminator value to determine which subtype should be deserialized.
+                    if ("#Microsoft.Azure.Search.ClassicSimilarity".equals(discriminatorValue)) {
+                        return ClassicSimilarityAlgorithm.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.BM25Similarity".equals(discriminatorValue)) {
+                        return BM25SimilarityAlgorithm.fromJson(readerToUse);
+                    } else {
+                        throw new IllegalStateException(
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.ClassicSimilarity', or '#Microsoft.Azure.Search.BM25Similarity'. It was: '"
+                                        + discriminatorValue
+                                        + "'.");
+                    }
+                });
     }
 }
