@@ -16,13 +16,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class OperationInner {
     /*
-     * The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
+     * The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action"
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure Resource Manager/control-plane operations.
+     * Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for Azure
+     * Resource Manager/control-plane operations.
      */
     @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDataAction;
@@ -34,13 +36,14 @@ public final class OperationInner {
     private OperationDisplay display;
 
     /*
-     * The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default value is "user,system"
+     * The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+     * value is "user,system"
      */
     @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private Origin origin;
 
     /*
-     * Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+     * Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
      */
     @JsonProperty(value = "actionType")
     private ActionType actionType;
@@ -91,8 +94,8 @@ public final class OperationInner {
     }
 
     /**
-     * Get the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
-     * only APIs.
+     * Get the actionType property: Extensible enum. Indicates the action type. "Internal" refers to actions that are
+     * for internal only APIs.
      * 
      * @return the actionType value.
      */

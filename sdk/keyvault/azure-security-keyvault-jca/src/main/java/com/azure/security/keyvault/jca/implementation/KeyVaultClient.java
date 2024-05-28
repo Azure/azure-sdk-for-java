@@ -18,6 +18,8 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -88,14 +90,14 @@ public class KeyVaultClient {
     private final String keyVaultBaseUri;
 
     /**
-     * Stores the Azure Key Vault URL.
+     * Stores the Azure Key Vault URI.
      */
-    private final String keyVaultUrl;
+    private final String keyVaultUri;
 
     /**
      * Stores the AAD authentication URL (or null to default to Azure Public Cloud).
      */
-    private final String aadAuthenticationUrl;
+    private final String aadAuthenticationUri;
 
     /**
      * Stores the tenant ID.
@@ -129,7 +131,7 @@ public class KeyVaultClient {
      * @param managedIdentity the user-assigned managed identity object ID.
      */
     KeyVaultClient(String keyVaultUri, String managedIdentity) {
-        this(keyVaultUri, null, null, null, managedIdentity);
+        this(keyVaultUri, null, null, null, null, managedIdentity);
     }
 
     /**
@@ -141,7 +143,7 @@ public class KeyVaultClient {
      * @param clientSecret the client secret.
      */
     public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret) {
-        this(keyVaultUri, tenantId, clientId, clientSecret, null);
+        this(keyVaultUri, null, tenantId, clientId, clientSecret, null);
     }
 
 
@@ -154,19 +156,25 @@ public class KeyVaultClient {
      * @param clientSecret the client secret.
      * @param managedIdentity the user-assigned managed identity object ID.
      */
-    public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret, String managedIdentity) {
+    public KeyVaultClient(String keyVaultUri, String loginUri, String tenantId, String clientId, String clientSecret,
+                          String managedIdentity) {
         LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
+
         if (!keyVaultUri.endsWith("/")) {
             keyVaultUri = keyVaultUri + "/";
         }
-        this.keyVaultUrl = keyVaultUri;
+
+        this.keyVaultUri = keyVaultUri;
         // Base Uri shouldn't end with a slash.
         String domainNameSuffix = Optional.of(keyVaultUri)
                                           .map(uri -> uri.split("\\.", 2)[1])
                                           .map(suffix -> suffix.substring(0, suffix.length() - 1))
                                           .orElse(null);
-        keyVaultBaseUri = HTTPS_PREFIX + domainNameSuffix;
-        aadAuthenticationUrl = getAADLoginURIByKeyVaultBaseUri(keyVaultBaseUri);
+        this.keyVaultBaseUri = validateUri(HTTPS_PREFIX + domainNameSuffix, "Key Vault URI");
+        this.aadAuthenticationUri = addTrailingSlashIfRequired(
+            loginUri != null
+                ? validateUri(loginUri, "Login URI") // Validate any user-provided login URI.
+                : getAADLoginURIByKeyVaultBaseUri(keyVaultBaseUri)); // These are all valid URIs.
 
         this.tenantId = tenantId;
         this.clientId = clientId;
@@ -176,11 +184,49 @@ public class KeyVaultClient {
 
     public static KeyVaultClient createKeyVaultClientBySystemProperty() {
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
+        String loginUri = System.getProperty("azure.login.uri");
         String tenantId = System.getProperty("azure.keyvault.tenant-id");
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
-        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
+
+        return new KeyVaultClient(keyVaultUri, loginUri, tenantId, clientId, clientSecret, managedIdentity);
+    }
+
+    private String validateUri(String uri, String propertyName) {
+        if (uri == null) { // Should the login URI be allowed to be null to default to Azure Public Cloud?
+            StringBuilder messageBuilder = new StringBuilder();
+
+            if (propertyName != null) {
+                messageBuilder.append(propertyName);
+            } else {
+                messageBuilder.append("Provided URI ");
+            }
+
+            messageBuilder.append("cannot be null.");
+
+            throw new NullPointerException(messageBuilder.toString());
+        }
+
+        if (!uri.startsWith(HTTPS_PREFIX)) {
+            throw new IllegalArgumentException("Provided URI '" + uri + "' must start with 'https://'.");
+        }
+
+        try {
+            new URI(uri);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Provided URI '" + uri + "' is not a valid URI.");
+        }
+
+        return uri;
+    }
+
+    private String addTrailingSlashIfRequired(String uri) {
+        if (!uri.endsWith("/")) {
+            return uri + "/";
+        }
+
+        return uri;
     }
 
     /**
@@ -211,7 +257,7 @@ public class KeyVaultClient {
             }
 
             if (tenantId != null && clientId != null && clientSecret != null) {
-                accessToken = AccessTokenUtil.getAccessToken(resource, aadAuthenticationUrl, tenantId, clientId,
+                accessToken = AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId,
                     clientSecret);
             } else {
                 accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
@@ -232,7 +278,7 @@ public class KeyVaultClient {
         ArrayList<String> result = new ArrayList<>();
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
-        String url = String.format("%scertificates%s", keyVaultUrl, API_VERSION_POSTFIX);
+        String url = String.format("%scertificates%s", keyVaultUri, API_VERSION_POSTFIX);
 
         while (url != null && url.length() != 0) {
             String response = HttpUtil.get(url, headers);
@@ -265,7 +311,7 @@ public class KeyVaultClient {
         CertificateBundle result = null;
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getAccessToken());
-        String url = String.format("%scertificates/%s%s", keyVaultUrl, alias, API_VERSION_POSTFIX);
+        String url = String.format("%scertificates/%s%s", keyVaultUri, alias, API_VERSION_POSTFIX);
         String response = HttpUtil.get(url, headers);
         if (response != null) {
             result = (CertificateBundle) JsonConverterUtil.fromJson(response, CertificateBundle.class);
@@ -442,7 +488,7 @@ public class KeyVaultClient {
         return keyVaultBaseUri;
     }
 
-    String getAadAuthenticationUrl() {
-        return aadAuthenticationUrl;
+    String getAadAuthenticationUri() {
+        return aadAuthenticationUri;
     }
 }

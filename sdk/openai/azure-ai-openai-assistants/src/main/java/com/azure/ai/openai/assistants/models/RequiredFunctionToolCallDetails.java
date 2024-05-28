@@ -25,7 +25,8 @@ public final class RequiredFunctionToolCallDetails implements JsonSerializable<R
     private final String name;
 
     /*
-     * The arguments to use when invoking the named function, as provided by the model. Arguments are presented as a JSON document that should be validated and parsed for evaluation.
+     * The arguments to use when invoking the named function, as provided by the model. Arguments are presented as a
+     * JSON document that should be validated and parsed for evaluation.
      */
     @Generated
     private final String arguments;

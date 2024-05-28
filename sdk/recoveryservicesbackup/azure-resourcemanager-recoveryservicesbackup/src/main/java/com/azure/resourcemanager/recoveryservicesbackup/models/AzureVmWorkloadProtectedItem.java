@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -19,9 +20,9 @@ import java.util.Map;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "protectedItemType",
-    defaultImpl = AzureVmWorkloadProtectedItem.class)
+    defaultImpl = AzureVmWorkloadProtectedItem.class,
+    visible = true)
 @JsonTypeName("AzureVmWorkloadProtectedItem")
 @JsonSubTypes({
     @JsonSubTypes.Type(
@@ -36,6 +37,13 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureVmWorkloadSQLDatabase", value = AzureVmWorkloadSqlDatabaseProtectedItem.class) })
 @Fluent
 public class AzureVmWorkloadProtectedItem extends ProtectedItem {
+    /*
+     * backup item type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "protectedItemType", required = true)
+    private String protectedItemType = "AzureVmWorkloadProtectedItem";
+
     /*
      * Friendly name of the DB represented by this backup item.
      */
@@ -125,6 +133,16 @@ public class AzureVmWorkloadProtectedItem extends ProtectedItem {
      * Creates an instance of AzureVmWorkloadProtectedItem class.
      */
     public AzureVmWorkloadProtectedItem() {
+    }
+
+    /**
+     * Get the protectedItemType property: backup item type.
+     * 
+     * @return the protectedItemType value.
+     */
+    @Override
+    public String protectedItemType() {
+        return this.protectedItemType;
     }
 
     /**

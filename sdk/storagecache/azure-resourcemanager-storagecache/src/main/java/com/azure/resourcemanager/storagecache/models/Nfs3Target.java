@@ -31,8 +31,7 @@ public final class Nfs3Target {
     private Integer verificationTimer;
 
     /*
-     * Amount of time (in seconds) the cache waits after the last file change before it copies the changed file to
-     * back-end storage.
+     * Amount of time (in seconds) the cache waits after the last file change before it copies the changed file to back-end storage.
      */
     @JsonProperty(value = "writeBackTimer")
     private Integer writeBackTimer;
@@ -106,8 +105,8 @@ public final class Nfs3Target {
     }
 
     /**
-     * Get the writeBackTimer property: Amount of time (in seconds) the cache waits after the last file change before
-     * it copies the changed file to back-end storage.
+     * Get the writeBackTimer property: Amount of time (in seconds) the cache waits after the last file change before it
+     * copies the changed file to back-end storage.
      * 
      * @return the writeBackTimer value.
      */
@@ -116,8 +115,8 @@ public final class Nfs3Target {
     }
 
     /**
-     * Set the writeBackTimer property: Amount of time (in seconds) the cache waits after the last file change before
-     * it copies the changed file to back-end storage.
+     * Set the writeBackTimer property: Amount of time (in seconds) the cache waits after the last file change before it
+     * copies the changed file to back-end storage.
      * 
      * @param writeBackTimer the writeBackTimer value to set.
      * @return the Nfs3Target object itself.

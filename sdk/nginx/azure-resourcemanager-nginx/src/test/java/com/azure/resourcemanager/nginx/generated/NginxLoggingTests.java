@@ -13,18 +13,18 @@ public final class NginxLoggingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NginxLogging model = BinaryData
-            .fromString("{\"storageAccount\":{\"accountName\":\"hfuiuaodsfc\",\"containerName\":\"vxodpu\"}}")
+            .fromString("{\"storageAccount\":{\"accountName\":\"scjeypv\",\"containerName\":\"zrkgqhcjrefovg\"}}")
             .toObject(NginxLogging.class);
-        Assertions.assertEquals("hfuiuaodsfc", model.storageAccount().accountName());
-        Assertions.assertEquals("vxodpu", model.storageAccount().containerName());
+        Assertions.assertEquals("scjeypv", model.storageAccount().accountName());
+        Assertions.assertEquals("zrkgqhcjrefovg", model.storageAccount().containerName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NginxLogging model = new NginxLogging()
-            .withStorageAccount(new NginxStorageAccount().withAccountName("hfuiuaodsfc").withContainerName("vxodpu"));
+        NginxLogging model = new NginxLogging().withStorageAccount(
+            new NginxStorageAccount().withAccountName("scjeypv").withContainerName("zrkgqhcjrefovg"));
         model = BinaryData.fromObject(model).toObject(NginxLogging.class);
-        Assertions.assertEquals("hfuiuaodsfc", model.storageAccount().accountName());
-        Assertions.assertEquals("vxodpu", model.storageAccount().containerName());
+        Assertions.assertEquals("scjeypv", model.storageAccount().accountName());
+        Assertions.assertEquals("zrkgqhcjrefovg", model.storageAccount().containerName());
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** BackupAndExport API Request. */
+/**
+ * BackupAndExport API Request.
+ */
 @Fluent
 public final class BackupAndExportRequest extends BackupRequestBase {
     /*
@@ -17,13 +19,15 @@ public final class BackupAndExportRequest extends BackupRequestBase {
     @JsonProperty(value = "targetDetails", required = true)
     private BackupStoreDetails targetDetails;
 
-    /** Creates an instance of BackupAndExportRequest class. */
+    /**
+     * Creates an instance of BackupAndExportRequest class.
+     */
     public BackupAndExportRequest() {
     }
 
     /**
      * Get the targetDetails property: Backup Target Store Details.
-     *
+     * 
      * @return the targetDetails value.
      */
     public BackupStoreDetails targetDetails() {
@@ -32,7 +36,7 @@ public final class BackupAndExportRequest extends BackupRequestBase {
 
     /**
      * Set the targetDetails property: Backup Target Store Details.
-     *
+     * 
      * @param targetDetails the targetDetails value to set.
      * @return the BackupAndExportRequest object itself.
      */
@@ -41,7 +45,9 @@ public final class BackupAndExportRequest extends BackupRequestBase {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupAndExportRequest withBackupSettings(BackupSettings backupSettings) {
         super.withBackupSettings(backupSettings);
@@ -50,17 +56,16 @@ public final class BackupAndExportRequest extends BackupRequestBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (targetDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetDetails in model BackupAndExportRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetDetails in model BackupAndExportRequest"));
         } else {
             targetDetails().validate();
         }

@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.fluent.models.OperationResourceInner;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultInner;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public interface ResourceProvidersClient {
     /**
      * Gets the operation status for a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param operationId The operationId parameter.
@@ -26,12 +28,12 @@ public interface ResourceProvidersClient {
      * @return the operation status for a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationResourceInner> getOperationStatusWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context);
+    Response<OperationResourceInner> getOperationStatusWithResponse(String resourceGroupName, String vaultName,
+        String operationId, Context context);
 
     /**
      * Gets the operation status for a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param operationId The operationId parameter.
@@ -45,7 +47,7 @@ public interface ResourceProvidersClient {
 
     /**
      * Gets the operation result for a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param operationId The operationId parameter.
@@ -56,12 +58,12 @@ public interface ResourceProvidersClient {
      * @return the operation result for a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VaultInner> getOperationResultWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context);
+    Response<VaultInner> getOperationResultWithResponse(String resourceGroupName, String vaultName, String operationId,
+        Context context);
 
     /**
      * Gets the operation result for a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param operationId The operationId parameter.

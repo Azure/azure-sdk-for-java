@@ -14,16 +14,17 @@ public final class RuleResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuleResultsInner model = BinaryData.fromString(
-            "{\"properties\":{\"results\":[[\"quwrbehwag\",\"hbuffkmrq\",\"mvvhmxtdrjfuta\"],[\"ebjvewzcjzn\"]]},\"id\":\"wcpmguaadraufac\",\"name\":\"kahzo\",\"type\":\"ajjziuxxpshne\"}")
+            "{\"properties\":{\"results\":[[\"ccnxqhuex\",\"ktt\",\"stvlzywemhzrnc\",\"dtclusiypb\"],[\"gytguslfead\",\"ygqukyhejh\",\"isxgfp\",\"lolp\"]]},\"id\":\"vk\",\"name\":\"r\",\"type\":\"qvujzraehtwdwrf\"}")
             .toObject(RuleResultsInner.class);
-        Assertions.assertEquals("quwrbehwag", model.properties().results().get(0).get(0));
+        Assertions.assertEquals("ccnxqhuex", model.properties().results().get(0).get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RuleResultsInner model = new RuleResultsInner().withProperties(new RuleResultsProperties().withResults(
-            Arrays.asList(Arrays.asList("quwrbehwag", "hbuffkmrq", "mvvhmxtdrjfuta"), Arrays.asList("ebjvewzcjzn"))));
+        RuleResultsInner model = new RuleResultsInner().withProperties(new RuleResultsProperties()
+            .withResults(Arrays.asList(Arrays.asList("ccnxqhuex", "ktt", "stvlzywemhzrnc", "dtclusiypb"),
+                Arrays.asList("gytguslfead", "ygqukyhejh", "isxgfp", "lolp"))));
         model = BinaryData.fromObject(model).toObject(RuleResultsInner.class);
-        Assertions.assertEquals("quwrbehwag", model.properties().results().get(0).get(0));
+        Assertions.assertEquals("ccnxqhuex", model.properties().results().get(0).get(0));
     }
 }

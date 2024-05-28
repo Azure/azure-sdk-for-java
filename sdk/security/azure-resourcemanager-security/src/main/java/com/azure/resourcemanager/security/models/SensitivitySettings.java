@@ -12,6 +12,50 @@ import com.azure.core.util.Context;
  */
 public interface SensitivitySettings {
     /**
+     * Create or update data sensitivity settings for sensitive data discovery.
+     * 
+     * @param sensitivitySettings The data sensitivity settings to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data sensitivity settings for sensitive data discovery along with {@link Response}.
+     */
+    Response<GetSensitivitySettingsResponse>
+        createOrUpdateWithResponse(UpdateSensitivitySettingsRequest sensitivitySettings, Context context);
+
+    /**
+     * Create or update data sensitivity settings for sensitive data discovery.
+     * 
+     * @param sensitivitySettings The data sensitivity settings to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data sensitivity settings for sensitive data discovery.
+     */
+    GetSensitivitySettingsResponse createOrUpdate(UpdateSensitivitySettingsRequest sensitivitySettings);
+
+    /**
+     * Gets data sensitivity settings for sensitive data discovery.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data sensitivity settings for sensitive data discovery along with {@link Response}.
+     */
+    Response<GetSensitivitySettingsResponse> getWithResponse(Context context);
+
+    /**
+     * Gets data sensitivity settings for sensitive data discovery.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data sensitivity settings for sensitive data discovery.
+     */
+    GetSensitivitySettingsResponse get();
+
+    /**
      * Gets a list with a single sensitivity settings resource.
      * 
      * @param context The context to associate with this operation.

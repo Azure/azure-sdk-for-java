@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Catalog resource validation status. */
+/**
+ * Catalog resource validation status.
+ */
 public final class CatalogResourceValidationStatus extends ExpandableStringEnum<CatalogResourceValidationStatus> {
-    /** Static value Unknown for CatalogResourceValidationStatus. */
+    /**
+     * Static value Unknown for CatalogResourceValidationStatus.
+     */
     public static final CatalogResourceValidationStatus UNKNOWN = fromString("Unknown");
 
-    /** Static value Pending for CatalogResourceValidationStatus. */
+    /**
+     * Static value Pending for CatalogResourceValidationStatus.
+     */
     public static final CatalogResourceValidationStatus PENDING = fromString("Pending");
 
-    /** Static value Succeeded for CatalogResourceValidationStatus. */
+    /**
+     * Static value Succeeded for CatalogResourceValidationStatus.
+     */
     public static final CatalogResourceValidationStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for CatalogResourceValidationStatus. */
+    /**
+     * Static value Failed for CatalogResourceValidationStatus.
+     */
     public static final CatalogResourceValidationStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of CatalogResourceValidationStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class CatalogResourceValidationStatus extends ExpandableStringEnum<
 
     /**
      * Creates or finds a CatalogResourceValidationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CatalogResourceValidationStatus.
      */
@@ -44,7 +54,7 @@ public final class CatalogResourceValidationStatus extends ExpandableStringEnum<
 
     /**
      * Gets known CatalogResourceValidationStatus values.
-     *
+     * 
      * @return known CatalogResourceValidationStatus values.
      */
     public static Collection<CatalogResourceValidationStatus> values() {

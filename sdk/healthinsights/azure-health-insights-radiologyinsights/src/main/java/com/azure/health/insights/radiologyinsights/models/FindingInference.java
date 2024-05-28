@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class FindingInference extends RadiologyInsightsInference {
 
     /*
-     * Inference type.
+     * The kind property.
      */
     @Generated
     @JsonTypeId
@@ -47,7 +47,7 @@ public final class FindingInference extends RadiologyInsightsInference {
     }
 
     /**
-     * Get the kind property: Inference type.
+     * Get the kind property: The kind property.
      *
      * @return the kind value.
      */

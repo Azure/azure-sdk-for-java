@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.core.credential.{AccessToken, TokenCredential, TokenRequestContext}
 import com.azure.core.management.AzureEnvironment
 import com.azure.core.management.profile.AzureProfile
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal, Strings}
@@ -10,14 +11,17 @@ import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, DirectConnectionConfig, GatewayConnectionConfig, ThrottlingRetryOptions}
-import com.azure.identity.ClientSecretCredentialBuilder
+import com.azure.identity.{ClientCertificateCredentialBuilder, ClientSecretCredentialBuilder, ManagedIdentityCredentialBuilder}
 import com.azure.resourcemanager.cosmos.CosmosManager
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkContext, TaskContext}
+import reactor.core.publisher.Mono
+import reactor.core.scheduler.{Scheduler, Schedulers}
 
+import java.io.ByteArrayInputStream
 import java.time.{Duration, Instant}
-import java.util.ConcurrentModificationException
+import java.util.{Base64, ConcurrentModificationException}
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
 import scala.collection.concurrent.TrieMap
@@ -49,6 +53,15 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     this.cleanupIntervalInSeconds,
     this.cleanupIntervalInSeconds,
     TimeUnit.SECONDS)
+
+  private val AAD_AUTH_BOUNDED_ELASTIC_THREAD_NAME = "cosmos-client-cache-auth-bounded-elastic"
+  private val TTL_FOR_SCHEDULER_WORKER_IN_SECONDS = 60 // same as BoundedElasticScheduler.DEFAULT_TTL_SECONDS
+
+  private val aadAuthBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+    AAD_AUTH_BOUNDED_ELASTIC_THREAD_NAME,
+    TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
   def apply(cosmosClientConfiguration: CosmosClientConfiguration,
             cosmosClientStateHandle: Option[CosmosClientMetadataCachesSnapshot],
@@ -135,7 +148,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         var sparkCatalogClient: CosmosCatalogClient = CosmosCatalogCosmosSDKClient(cosmosAsyncClient)
         // When using AAD auth, cosmos catalog will change to use management sdk instead of cosmos sdk
         cosmosClientConfiguration.authConfig match {
-            case aadAuthConfig: CosmosAadAuthConfig =>
+            case aadAuthConfig: CosmosServicePrincipalAuthConfig =>
                 sparkCatalogClient =
                     CosmosCatalogManagementSDKClient(
                         cosmosClientConfiguration.resourceGroupName.get,
@@ -145,6 +158,26 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                             new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
                             aadAuthConfig),
                         cosmosAsyncClient)
+            case managedIdentityAuth: CosmosManagedIdentityAuthConfig =>
+              sparkCatalogClient =
+                CosmosCatalogManagementSDKClient(
+                  cosmosClientConfiguration.resourceGroupName.get,
+                  cosmosClientConfiguration.databaseAccountName,
+                  createCosmosManagementClient(
+                    cosmosClientConfiguration.subscriptionId.get,
+                    new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
+                    managedIdentityAuth),
+                  cosmosAsyncClient)
+            case accessTokenProviderAuth: CosmosAccessTokenAuthConfig =>
+              sparkCatalogClient =
+                CosmosCatalogManagementSDKClient(
+                  cosmosClientConfiguration.resourceGroupName.get,
+                  cosmosClientConfiguration.databaseAccountName,
+                  createCosmosManagementClient(
+                    cosmosClientConfiguration.subscriptionId.get,
+                    new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
+                    accessTokenProviderAuth),
+                  cosmosAsyncClient)
             case _ =>
         }
 
@@ -174,6 +207,15 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   // scalastyle:off cyclomatic.complexity
   private[this] def createCosmosAsyncClient(cosmosClientConfiguration: CosmosClientConfiguration,
                                             cosmosClientStateHandle: Option[CosmosClientMetadataCachesSnapshot]): CosmosAsyncClient = {
+      if (cosmosClientConfiguration.enforceNativeTransport && !io.netty.channel.epoll.Epoll.isAvailable) {
+        throw new IllegalStateException(
+          "The enforcement of native transport is enabled in your configuration and native transport is not " +
+            "available. Either ensure `spark.cosmos.enforceNativeTransport` is set to false or make " +
+            "sure you use a Spark environment supporting native transport.",
+          io.netty.channel.epoll.Epoll.unavailabilityCause()
+        )
+      }
+
       var builder = new CosmosClientBuilder()
           .endpoint(cosmosClientConfiguration.endpoint)
           .userAgentSuffix(cosmosClientConfiguration.applicationName)
@@ -185,14 +227,30 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       val authConfig = cosmosClientConfiguration.authConfig
       authConfig match {
           case masterKeyAuthConfig: CosmosMasterKeyAuthConfig => builder.key(masterKeyAuthConfig.accountKey)
-          case aadAuthConfig: CosmosAadAuthConfig =>
-              val tokenCredential = new ClientSecretCredentialBuilder()
+          case servicePrincipalAuthConfig: CosmosServicePrincipalAuthConfig =>
+              val tokenCredential = if (servicePrincipalAuthConfig.clientCertPemBase64.isDefined) {
+                val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(servicePrincipalAuthConfig.clientCertPemBase64.get))
+                new ClientCertificateCredentialBuilder()
                   .authorityHost(new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints).getActiveDirectoryEndpoint())
-                  .tenantId(aadAuthConfig.tenantId)
-                  .clientId(aadAuthConfig.clientId)
-                  .clientSecret(aadAuthConfig.clientSecret)
+                  .tenantId(servicePrincipalAuthConfig.tenantId)
+                  .clientId(servicePrincipalAuthConfig.clientId)
+                  .pemCertificate(certInputStream)
+                  .sendCertificateChain(servicePrincipalAuthConfig.sendChain)
                   .build()
+              } else {
+                new ClientSecretCredentialBuilder()
+                  .authorityHost(new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints).getActiveDirectoryEndpoint())
+                  .tenantId(servicePrincipalAuthConfig.tenantId)
+                  .clientId(servicePrincipalAuthConfig.clientId)
+                  .clientSecret(servicePrincipalAuthConfig.clientSecret.get)
+                  .build()
+              }
+
               builder.credential(tokenCredential)
+          case managedIdentityAuthConfig: CosmosManagedIdentityAuthConfig =>
+            builder.credential(createTokenCredential(managedIdentityAuthConfig))
+          case accessTokenAuthConfig: CosmosAccessTokenAuthConfig =>
+            builder.credential(createTokenCredential(accessTokenAuthConfig))
           case _ => throw new IllegalArgumentException(s"Authorization type ${authConfig.getClass} is not supported")
       }
 
@@ -343,15 +401,73 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   private[this] def createCosmosManagementClient(
                                                     subscriptionId: String,
                                                     azureEnvironment: AzureEnvironment,
-                                                    authConfig: CosmosAadAuthConfig): CosmosManager = {
+                                                    authConfig: CosmosServicePrincipalAuthConfig): CosmosManager = {
       val azureProfile = new AzureProfile(authConfig.tenantId, subscriptionId, azureEnvironment)
-      val tokenCredential = new ClientSecretCredentialBuilder()
+      val tokenCredential = if (authConfig.clientCertPemBase64.isDefined) {
+        val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(authConfig.clientCertPemBase64.get))
+        new ClientCertificateCredentialBuilder()
           .authorityHost(azureEnvironment.getActiveDirectoryEndpoint())
           .tenantId(authConfig.tenantId)
           .clientId(authConfig.clientId)
-          .clientSecret(authConfig.clientSecret)
+          .pemCertificate(certInputStream)
+          .sendCertificateChain(authConfig.sendChain)
           .build()
+      } else {
+        new ClientSecretCredentialBuilder()
+          .authorityHost(azureEnvironment.getActiveDirectoryEndpoint())
+          .tenantId(authConfig.tenantId)
+          .clientId(authConfig.clientId)
+          .clientSecret(authConfig.clientSecret.get)
+          .build()
+      }
       CosmosManager.authenticate(tokenCredential, azureProfile)
+  }
+
+  private[this] def createCosmosManagementClient( subscriptionId: String,
+                                                  azureEnvironment: AzureEnvironment,
+                                                  authConfig: CosmosManagedIdentityAuthConfig): CosmosManager = {
+    val azureProfile = new AzureProfile(authConfig.tenantId, subscriptionId, azureEnvironment)
+
+    CosmosManager.authenticate(createTokenCredential(authConfig), azureProfile)
+  }
+
+  private[this] def createCosmosManagementClient(subscriptionId: String,
+                                                 azureEnvironment: AzureEnvironment,
+                                                 authConfig: CosmosAccessTokenAuthConfig): CosmosManager = {
+    val azureProfile = new AzureProfile(authConfig.tenantId, subscriptionId, azureEnvironment)
+
+    CosmosManager.authenticate(createTokenCredential(authConfig), azureProfile)
+  }
+
+  private[this] def createTokenCredential(authConfig: CosmosManagedIdentityAuthConfig): CosmosAccessTokenCredential = {
+    val tokenProvider: (List[String] => CosmosAccessToken) = {
+        val tokenCredentialBuilder = new ManagedIdentityCredentialBuilder()
+        if (authConfig.clientId.isDefined) {
+          tokenCredentialBuilder.clientId(authConfig.clientId.get)
+        }
+
+        if (authConfig.resourceId.isDefined) {
+          tokenCredentialBuilder.resourceId(authConfig.resourceId.get)
+        }
+
+        val tokenCredential = tokenCredentialBuilder.build()
+
+        (tokenRequestContextStrings: List[String]) => {
+          val tokenRequestContext = new TokenRequestContext
+          tokenRequestContext.setScopes(tokenRequestContextStrings.asJava)
+          val accessToken = tokenCredential
+            .getToken(tokenRequestContext)
+            .block()
+
+          CosmosAccessToken(accessToken.getToken, accessToken.getExpiresAt)
+        }
+    }
+
+    new CosmosAccessTokenCredential(tokenProvider)
+  }
+
+  private[this] def createTokenCredential(authConfig: CosmosAccessTokenAuthConfig): CosmosAccessTokenCredential = {
+    new CosmosAccessTokenCredential(authConfig.tokenProvider)
   }
 
   private[this] def onCleanup(): Unit = {
@@ -456,7 +572,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                                         useGatewayMode: Boolean,
                                                         // Intentionally not looking at proactive connection
                                                         // initialization to distinguish cache key
-                                                        // You would never want to clients just for the diffs
+                                                        // You would never want separate clients just for this
+                                                        // difference
                                                         httpConnectionPoolSize: Int,
                                                         useEventualConsistency: Boolean,
                                                         preferredRegionsList: String)
@@ -527,6 +644,19 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             logWarning(s"ApplicationEndListener:onApplicationEnd (${ctx.hashCode}) - not monitored anymore")
         }
 
+    }
+  }
+
+  private[this] class CosmosAccessTokenCredential(val tokenProvider: (List[String]) =>CosmosAccessToken) extends TokenCredential {
+    override def getToken(tokenRequestContext: TokenRequestContext): Mono[AccessToken] = {
+      val returnValue: Mono[AccessToken] = Mono.fromCallable(() => {
+        val token = tokenProvider
+          .apply(tokenRequestContext.getScopes.asScala.toList)
+
+        new AccessToken(token.token, token.Offset)
+      })
+
+      returnValue.publishOn(aadAuthBoundedElastic)
     }
   }
 }

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.maintenance.fluent.models.UpdateInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for Updates list. */
+/**
+ * Response for Updates list.
+ */
 @Fluent
 public final class ListUpdatesResult {
     /*
@@ -18,13 +20,15 @@ public final class ListUpdatesResult {
     @JsonProperty(value = "value")
     private List<UpdateInner> value;
 
-    /** Creates an instance of ListUpdatesResult class. */
+    /**
+     * Creates an instance of ListUpdatesResult class.
+     */
     public ListUpdatesResult() {
     }
 
     /**
      * Get the value property: The pending updates.
-     *
+     * 
      * @return the value value.
      */
     public List<UpdateInner> value() {
@@ -33,7 +37,7 @@ public final class ListUpdatesResult {
 
     /**
      * Set the value property: The pending updates.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListUpdatesResult object itself.
      */
@@ -44,7 +48,7 @@ public final class ListUpdatesResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

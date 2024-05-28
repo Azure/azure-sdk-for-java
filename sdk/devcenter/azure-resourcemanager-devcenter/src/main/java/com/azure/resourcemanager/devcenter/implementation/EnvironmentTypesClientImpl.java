@@ -35,22 +35,28 @@ import com.azure.resourcemanager.devcenter.models.EnvironmentTypeListResult;
 import com.azure.resourcemanager.devcenter.models.EnvironmentTypeUpdate;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EnvironmentTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EnvironmentTypesClient.
+ */
 public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EnvironmentTypesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of EnvironmentTypesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EnvironmentTypesClientImpl(DevCenterManagementClientImpl client) {
-        this.service =
-            RestProxy.create(EnvironmentTypesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(EnvironmentTypesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,97 +67,69 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
     @Host("{$host}")
     @ServiceInterface(name = "DevCenterManagementC")
     public interface EnvironmentTypesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EnvironmentTypeListResult>> listByDevCenter(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<EnvironmentTypeListResult>> listByDevCenter(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes/{environmentTypeName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<EnvironmentTypeInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
+            @PathParam("environmentTypeName") String environmentTypeName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes/{environmentTypeName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes/{environmentTypeName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EnvironmentTypeInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
+        Mono<Response<EnvironmentTypeInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
             @PathParam("environmentTypeName") String environmentTypeName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") EnvironmentTypeInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes/{environmentTypeName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes/{environmentTypeName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EnvironmentTypeInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
+        Mono<Response<EnvironmentTypeInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
             @PathParam("environmentTypeName") String environmentTypeName,
-            @BodyParam("application/json") EnvironmentTypeInner body,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") EnvironmentTypeUpdate body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes/{environmentTypeName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes/{environmentTypeName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EnvironmentTypeInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
-            @PathParam("environmentTypeName") String environmentTypeName,
-            @BodyParam("application/json") EnvironmentTypeUpdate body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("devCenterName") String devCenterName,
+            @PathParam("environmentTypeName") String environmentTypeName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes/{environmentTypeName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("devCenterName") String devCenterName,
-            @PathParam("environmentTypeName") String environmentTypeName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EnvironmentTypeListResult>> listByDevCenterNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists environment types for the devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -159,22 +137,18 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the environment type list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EnvironmentTypeInner>> listByDevCenterSinglePageAsync(
-        String resourceGroupName, String devCenterName, Integer top) {
+    private Mono<PagedResponse<EnvironmentTypeInner>> listByDevCenterSinglePageAsync(String resourceGroupName,
+        String devCenterName, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -185,33 +159,16 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDevCenter(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<EnvironmentTypeInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDevCenter(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, top, accept, context))
+            .<PagedResponse<EnvironmentTypeInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists environment types for the devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -220,22 +177,18 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the environment type list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EnvironmentTypeInner>> listByDevCenterSinglePageAsync(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
+    private Mono<PagedResponse<EnvironmentTypeInner>> listByDevCenterSinglePageAsync(String resourceGroupName,
+        String devCenterName, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -247,29 +200,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDevCenter(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDevCenter(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, devCenterName, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists environment types for the devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -279,16 +218,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return result of the environment type list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EnvironmentTypeInner> listByDevCenterAsync(
-        String resourceGroupName, String devCenterName, Integer top) {
-        return new PagedFlux<>(
-            () -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
+    private PagedFlux<EnvironmentTypeInner> listByDevCenterAsync(String resourceGroupName, String devCenterName,
+        Integer top) {
+        return new PagedFlux<>(() -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
             nextLink -> listByDevCenterNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists environment types for the devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,14 +237,13 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EnvironmentTypeInner> listByDevCenterAsync(String resourceGroupName, String devCenterName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
+        return new PagedFlux<>(() -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top),
             nextLink -> listByDevCenterNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists environment types for the devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -317,16 +254,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return result of the environment type list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EnvironmentTypeInner> listByDevCenterAsync(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top, context),
+    private PagedFlux<EnvironmentTypeInner> listByDevCenterAsync(String resourceGroupName, String devCenterName,
+        Integer top, Context context) {
+        return new PagedFlux<>(() -> listByDevCenterSinglePageAsync(resourceGroupName, devCenterName, top, context),
             nextLink -> listByDevCenterNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists environment types for the devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -342,7 +278,7 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
 
     /**
      * Lists environment types for the devcenter.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -353,14 +289,14 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return result of the environment type list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EnvironmentTypeInner> listByDevCenter(
-        String resourceGroupName, String devCenterName, Integer top, Context context) {
+    public PagedIterable<EnvironmentTypeInner> listByDevCenter(String resourceGroupName, String devCenterName,
+        Integer top, Context context) {
         return new PagedIterable<>(listByDevCenterAsync(resourceGroupName, devCenterName, top, context));
     }
 
     /**
      * Gets an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -370,19 +306,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return an environment type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentTypeInner>> getWithResponseAsync(
-        String resourceGroupName, String devCenterName, String environmentTypeName) {
+    private Mono<Response<EnvironmentTypeInner>> getWithResponseAsync(String resourceGroupName, String devCenterName,
+        String environmentTypeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -396,25 +328,14 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
                 .error(new IllegalArgumentException("Parameter environmentTypeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            environmentTypeName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, devCenterName, environmentTypeName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -425,19 +346,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return an environment type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentTypeInner>> getWithResponseAsync(
-        String resourceGroupName, String devCenterName, String environmentTypeName, Context context) {
+    private Mono<Response<EnvironmentTypeInner>> getWithResponseAsync(String resourceGroupName, String devCenterName,
+        String environmentTypeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -452,21 +369,13 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                environmentTypeName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, devCenterName, environmentTypeName, accept, context);
     }
 
     /**
      * Gets an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -476,15 +385,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return an environment type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EnvironmentTypeInner> getAsync(
-        String resourceGroupName, String devCenterName, String environmentTypeName) {
+    private Mono<EnvironmentTypeInner> getAsync(String resourceGroupName, String devCenterName,
+        String environmentTypeName) {
         return getWithResponseAsync(resourceGroupName, devCenterName, environmentTypeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -495,14 +404,14 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return an environment type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EnvironmentTypeInner> getWithResponse(
-        String resourceGroupName, String devCenterName, String environmentTypeName, Context context) {
+    public Response<EnvironmentTypeInner> getWithResponse(String resourceGroupName, String devCenterName,
+        String environmentTypeName, Context context) {
         return getWithResponseAsync(resourceGroupName, devCenterName, environmentTypeName, context).block();
     }
 
     /**
      * Gets an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -518,7 +427,7 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
 
     /**
      * Creates or updates an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -529,19 +438,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return represents an environment type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentTypeInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeInner body) {
+    private Mono<Response<EnvironmentTypeInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String devCenterName, String environmentTypeName, EnvironmentTypeInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -561,25 +466,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            environmentTypeName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, environmentTypeName, body, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -591,23 +486,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return represents an environment type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentTypeInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String devCenterName,
-        String environmentTypeName,
-        EnvironmentTypeInner body,
-        Context context) {
+    private Mono<Response<EnvironmentTypeInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String devCenterName, String environmentTypeName, EnvironmentTypeInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -627,22 +514,14 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                environmentTypeName,
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, devCenterName, environmentTypeName, body, accept,
+            context);
     }
 
     /**
      * Creates or updates an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -653,15 +532,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return represents an environment type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EnvironmentTypeInner> createOrUpdateAsync(
-        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeInner body) {
+    private Mono<EnvironmentTypeInner> createOrUpdateAsync(String resourceGroupName, String devCenterName,
+        String environmentTypeName, EnvironmentTypeInner body) {
         return createOrUpdateWithResponseAsync(resourceGroupName, devCenterName, environmentTypeName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -673,19 +552,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return represents an environment type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EnvironmentTypeInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String devCenterName,
-        String environmentTypeName,
-        EnvironmentTypeInner body,
-        Context context) {
+    public Response<EnvironmentTypeInner> createOrUpdateWithResponse(String resourceGroupName, String devCenterName,
+        String environmentTypeName, EnvironmentTypeInner body, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, devCenterName, environmentTypeName, body, context)
             .block();
     }
 
     /**
      * Creates or updates an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -696,15 +571,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return represents an environment type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EnvironmentTypeInner createOrUpdate(
-        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeInner body) {
+    public EnvironmentTypeInner createOrUpdate(String resourceGroupName, String devCenterName,
+        String environmentTypeName, EnvironmentTypeInner body) {
         return createOrUpdateWithResponse(resourceGroupName, devCenterName, environmentTypeName, body, Context.NONE)
             .getValue();
     }
 
     /**
      * Partially updates an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -715,19 +590,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return represents an environment type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentTypeInner>> updateWithResponseAsync(
-        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeUpdate body) {
+    private Mono<Response<EnvironmentTypeInner>> updateWithResponseAsync(String resourceGroupName, String devCenterName,
+        String environmentTypeName, EnvironmentTypeUpdate body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -747,25 +618,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            environmentTypeName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, devCenterName, environmentTypeName, body, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Partially updates an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -777,23 +638,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return represents an environment type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EnvironmentTypeInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String devCenterName,
-        String environmentTypeName,
-        EnvironmentTypeUpdate body,
-        Context context) {
+    private Mono<Response<EnvironmentTypeInner>> updateWithResponseAsync(String resourceGroupName, String devCenterName,
+        String environmentTypeName, EnvironmentTypeUpdate body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -813,22 +666,13 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                environmentTypeName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, devCenterName, environmentTypeName, body, accept, context);
     }
 
     /**
      * Partially updates an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -839,15 +683,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return represents an environment type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EnvironmentTypeInner> updateAsync(
-        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeUpdate body) {
+    private Mono<EnvironmentTypeInner> updateAsync(String resourceGroupName, String devCenterName,
+        String environmentTypeName, EnvironmentTypeUpdate body) {
         return updateWithResponseAsync(resourceGroupName, devCenterName, environmentTypeName, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Partially updates an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -859,18 +703,14 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return represents an environment type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EnvironmentTypeInner> updateWithResponse(
-        String resourceGroupName,
-        String devCenterName,
-        String environmentTypeName,
-        EnvironmentTypeUpdate body,
-        Context context) {
+    public Response<EnvironmentTypeInner> updateWithResponse(String resourceGroupName, String devCenterName,
+        String environmentTypeName, EnvironmentTypeUpdate body, Context context) {
         return updateWithResponseAsync(resourceGroupName, devCenterName, environmentTypeName, body, context).block();
     }
 
     /**
      * Partially updates an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -881,14 +721,14 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return represents an environment type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EnvironmentTypeInner update(
-        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeUpdate body) {
+    public EnvironmentTypeInner update(String resourceGroupName, String devCenterName, String environmentTypeName,
+        EnvironmentTypeUpdate body) {
         return updateWithResponse(resourceGroupName, devCenterName, environmentTypeName, body, Context.NONE).getValue();
     }
 
     /**
      * Deletes an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -898,19 +738,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String devCenterName, String environmentTypeName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String devCenterName,
+        String environmentTypeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -924,25 +760,14 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
                 .error(new IllegalArgumentException("Parameter environmentTypeName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            devCenterName,
-                            environmentTypeName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, devCenterName, environmentTypeName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -953,19 +778,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String devCenterName, String environmentTypeName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String devCenterName,
+        String environmentTypeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -980,21 +801,13 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                devCenterName,
-                environmentTypeName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, devCenterName, environmentTypeName, accept, context);
     }
 
     /**
      * Deletes an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -1011,7 +824,7 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
 
     /**
      * Deletes an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -1022,14 +835,14 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String devCenterName, String environmentTypeName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String devCenterName, String environmentTypeName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, devCenterName, environmentTypeName, context).block();
     }
 
     /**
      * Deletes an environment type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
@@ -1044,14 +857,15 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the environment type list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EnvironmentTypeInner>> listByDevCenterNextSinglePageAsync(String nextLink) {
@@ -1059,62 +873,44 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDevCenterNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EnvironmentTypeInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EnvironmentTypeInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the environment type list operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EnvironmentTypeInner>> listByDevCenterNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EnvironmentTypeInner>> listByDevCenterNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDevCenterNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDevCenterNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

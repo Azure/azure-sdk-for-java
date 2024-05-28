@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-/** Samples for Pools Delete. */
+/**
+ * Samples for Pools Delete.
+ */
 public final class PoolsDeleteSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Pools_Delete.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Pools_Delete.json
      */
     /**
      * Sample code: Pools_Delete.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void poolsDelete(com.azure.resourcemanager.devcenter.DevCenterManager manager) {

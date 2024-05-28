@@ -26,7 +26,6 @@ import com.azure.communication.jobrouter.models.StaticWorkerSelectorAttachment;
 import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -139,9 +138,7 @@ public class ClassificationPolicyAsyncLiveTests extends JobRouterTestBase {
                     }
                 })).block();
 
-        if (this.getTestMode() != TestMode.PLAYBACK) {
-            Thread.sleep(5000);
-        }
+        sleepIfRunningAgainstService(5000);
 
         // Verify
         assertEquals(classificationPolicyId, policy.getId());

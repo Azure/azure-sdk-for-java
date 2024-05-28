@@ -143,6 +143,11 @@ public class PartitionKey {
                     PartitionKeyInternal partitionKeyInternal = PartitionKeyInternal.fromObjectArray(values, strict);
                     return new PartitionKey(partitionKeyInternal);
                 }
+
+                @Override
+                public PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey) {
+                    return partitionKey.internalPartitionKey;
+                }
             }
         );
     }

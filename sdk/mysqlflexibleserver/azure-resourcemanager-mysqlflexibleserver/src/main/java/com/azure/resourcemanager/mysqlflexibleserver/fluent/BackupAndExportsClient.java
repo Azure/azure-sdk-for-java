@@ -14,11 +14,13 @@ import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.BackupAndExpo
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ValidateBackupResponseInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.BackupAndExportRequest;
 
-/** An instance of this class provides access to all the operations defined in BackupAndExportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupAndExportsClient.
+ */
 public interface BackupAndExportsClient {
     /**
      * Exports the backup of the given server by creating a backup if not existing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating and exporting backup of the given server.
@@ -28,12 +30,12 @@ public interface BackupAndExportsClient {
      * @return the {@link SyncPoller} for polling of represents BackupAndExport API Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BackupAndExportResponseInner>, BackupAndExportResponseInner> beginCreate(
-        String resourceGroupName, String serverName, BackupAndExportRequest parameters);
+    SyncPoller<PollResult<BackupAndExportResponseInner>, BackupAndExportResponseInner>
+        beginCreate(String resourceGroupName, String serverName, BackupAndExportRequest parameters);
 
     /**
      * Exports the backup of the given server by creating a backup if not existing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating and exporting backup of the given server.
@@ -44,12 +46,12 @@ public interface BackupAndExportsClient {
      * @return the {@link SyncPoller} for polling of represents BackupAndExport API Response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BackupAndExportResponseInner>, BackupAndExportResponseInner> beginCreate(
-        String resourceGroupName, String serverName, BackupAndExportRequest parameters, Context context);
+    SyncPoller<PollResult<BackupAndExportResponseInner>, BackupAndExportResponseInner>
+        beginCreate(String resourceGroupName, String serverName, BackupAndExportRequest parameters, Context context);
 
     /**
      * Exports the backup of the given server by creating a backup if not existing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating and exporting backup of the given server.
@@ -63,7 +65,7 @@ public interface BackupAndExportsClient {
 
     /**
      * Exports the backup of the given server by creating a backup if not existing.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for creating and exporting backup of the given server.
@@ -74,12 +76,12 @@ public interface BackupAndExportsClient {
      * @return represents BackupAndExport API Response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupAndExportResponseInner create(
-        String resourceGroupName, String serverName, BackupAndExportRequest parameters, Context context);
+    BackupAndExportResponseInner create(String resourceGroupName, String serverName, BackupAndExportRequest parameters,
+        Context context);
 
     /**
      * Validates if backup can be performed for given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -89,12 +91,12 @@ public interface BackupAndExportsClient {
      * @return represents ValidateBackup API Response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ValidateBackupResponseInner> validateBackupWithResponse(
-        String resourceGroupName, String serverName, Context context);
+    Response<ValidateBackupResponseInner> validateBackupWithResponse(String resourceGroupName, String serverName,
+        Context context);
 
     /**
      * Validates if backup can be performed for given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

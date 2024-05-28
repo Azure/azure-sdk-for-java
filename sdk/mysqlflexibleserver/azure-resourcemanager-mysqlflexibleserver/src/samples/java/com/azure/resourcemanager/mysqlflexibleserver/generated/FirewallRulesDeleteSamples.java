@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-/** Samples for FirewallRules Delete. */
+/**
+ * Samples for FirewallRules Delete.
+ */
 public final class FirewallRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Firewall/preview/2021-12-01-preview/examples/FirewallRuleDelete.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Firewall/preview/2023-06-01-preview/examples/FirewallRuleDelete.json
      */
     /**
      * Sample code: Delete a firewall rule.
-     *
+     * 
      * @param manager Entry point to MySqlManager.
      */
     public static void deleteAFirewallRule(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {

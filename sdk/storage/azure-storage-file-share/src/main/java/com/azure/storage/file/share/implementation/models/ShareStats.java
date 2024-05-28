@@ -19,8 +19,7 @@ import javax.xml.stream.XMLStreamException;
 @Fluent
 public final class ShareStats implements XmlSerializable<ShareStats> {
     /*
-     * The approximate size of the data stored in bytes, rounded up to the nearest gigabyte. Note that this value may
-     * not include all recently created or recently resized files.
+     * The approximate size of the data stored in bytes, rounded up to the nearest gigabyte. Note that this value may not include all recently created or recently resized files.
      */
     private long shareUsageBytes;
 

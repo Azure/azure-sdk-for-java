@@ -18,25 +18,25 @@ import java.io.IOException;
 public final class DevBoxPool implements JsonSerializable<DevBoxPool> {
 
     /*
-     * Pool name
+     * Pool name.
      */
     @Generated
     private String name;
 
     /*
-     * Azure region where Dev Boxes in the pool are located
+     * Azure region where Dev Boxes in the pool are located.
      */
     @Generated
     private final String location;
 
     /*
-     * The operating system type of Dev Boxes in this pool
+     * The operating system type of Dev Boxes in this pool.
      */
     @Generated
     private DevBoxOsType osType;
 
     /*
-     * Hardware settings for the Dev Boxes created in this pool
+     * Hardware settings for the Dev Boxes created in this pool.
      */
     @Generated
     private DevBoxHardwareProfile hardwareProfile;
@@ -48,13 +48,13 @@ public final class DevBoxPool implements JsonSerializable<DevBoxPool> {
     private HibernateSupport hibernateSupport;
 
     /*
-     * Storage settings for Dev Box created in this pool
+     * Storage settings for Dev Box created in this pool.
      */
     @Generated
     private DevBoxStorageProfile storageProfile;
 
     /*
-     * Image settings for Dev Boxes create in this pool
+     * Image settings for Dev Boxes create in this pool.
      */
     @Generated
     private DevBoxImageReference imageReference;

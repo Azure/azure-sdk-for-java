@@ -23,7 +23,8 @@ public final class Encounter {
 
     /*
      * Time period of the visit.
-     * In case of admission, use timePeriod.start to indicate the admission time and timePeriod.end to indicate the discharge time.
+     * In case of admission, use timePeriod.start to indicate the admission time and timePeriod.end to indicate the
+     * discharge time.
      */
     @Generated
     @JsonProperty(value = "period")

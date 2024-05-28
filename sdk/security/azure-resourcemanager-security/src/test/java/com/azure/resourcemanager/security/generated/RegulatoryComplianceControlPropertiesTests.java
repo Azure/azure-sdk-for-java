@@ -13,7 +13,7 @@ public final class RegulatoryComplianceControlPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegulatoryComplianceControlProperties model = BinaryData.fromString(
-            "{\"description\":\"nedgfbc\",\"state\":\"Skipped\",\"passedAssessments\":151041842,\"failedAssessments\":1225314706,\"skippedAssessments\":1206327897}")
+            "{\"description\":\"rqhakauha\",\"state\":\"Skipped\",\"passedAssessments\":706986266,\"failedAssessments\":949379958,\"skippedAssessments\":1405822792}")
             .toObject(RegulatoryComplianceControlProperties.class);
         Assertions.assertEquals(State.SKIPPED, model.state());
     }

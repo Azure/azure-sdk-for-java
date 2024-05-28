@@ -127,7 +127,7 @@
     "com.azure.developer.devcenter.models.DevCenterEnvironment": "DevCenterService.Environment",
     "com.azure.developer.devcenter.models.DevCenterEnvironmentType": "DevCenterService.EnvironmentType",
     "com.azure.developer.devcenter.models.DevCenterOperationDetails": "DevCenterService.OperationStatus",
-    "com.azure.developer.devcenter.models.DevCenterOperationStatus": "DevCenterService.OperationStatusValue",
+    "com.azure.developer.devcenter.models.DevCenterOperationStatus": "Azure.Core.Foundations.OperationState",
     "com.azure.developer.devcenter.models.DevCenterProject": "DevCenterService.Project",
     "com.azure.developer.devcenter.models.EnvironmentDefinition": "DevCenterService.EnvironmentDefinition",
     "com.azure.developer.devcenter.models.EnvironmentDefinitionParameter": "DevCenterService.EnvironmentDefinitionParameter",

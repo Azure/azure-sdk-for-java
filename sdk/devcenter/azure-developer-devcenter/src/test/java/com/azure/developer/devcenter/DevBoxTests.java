@@ -250,13 +250,13 @@ class DevBoxTests extends DevCenterClientTestBase {
         Assertions.assertNotNull(responseHardwareProfile);
         Assertions.assertEquals(8, responseHardwareProfile.getVCpus());
         Assertions.assertEquals(SkuName.GENERAL_I_8C32GB1024SSD_V2, responseHardwareProfile.getSkuName());
-        Assertions.assertEquals(32, responseHardwareProfile.getMemoryGb());
+        Assertions.assertEquals(32, responseHardwareProfile.getMemoryInGb());
         // verify property "storageProfile"
         DevBoxStorageProfile responseStorageProfile = devBox.getStorageProfile();
         Assertions.assertNotNull(responseStorageProfile);
         OsDisk responseStorageProfileOsDisk = responseStorageProfile.getOsDisk();
         Assertions.assertNotNull(responseStorageProfileOsDisk);
-        Assertions.assertEquals(1024, responseStorageProfileOsDisk.getDiskSizeGb());
+        Assertions.assertEquals(1024, responseStorageProfileOsDisk.getDiskSizeInGb());
         // verify property "imageReference"
         DevBoxImageReference responseImageReference = devBox.getImageReference();
         Assertions.assertNotNull(responseImageReference);
@@ -286,7 +286,7 @@ class DevBoxTests extends DevCenterClientTestBase {
         Assertions.assertNotNull(responseHardwareProfile);
         Assertions.assertEquals(8, responseHardwareProfile.getVCpus());
         Assertions.assertEquals(SkuName.GENERAL_I_8C32GB1024SSD_V2, responseHardwareProfile.getSkuName());
-        Assertions.assertEquals(32, responseHardwareProfile.getMemoryGb());
+        Assertions.assertEquals(32, responseHardwareProfile.getMemoryInGb());
         // verify property "hibernateSupport"
         Assertions.assertEquals(HibernateSupport.DISABLED, pool.getHibernateSupport());
         // verify property "storageProfile"
@@ -294,7 +294,7 @@ class DevBoxTests extends DevCenterClientTestBase {
         Assertions.assertNotNull(responseStorageProfile);
         OsDisk responseStorageProfileOsDisk = responseStorageProfile.getOsDisk();
         Assertions.assertNotNull(responseStorageProfileOsDisk);
-        Assertions.assertEquals(1024, responseStorageProfileOsDisk.getDiskSizeGb());
+        Assertions.assertEquals(1024, responseStorageProfileOsDisk.getDiskSizeInGb());
         // verify property "imageReference"
         DevBoxImageReference responseImageReference = pool.getImageReference();
         Assertions.assertNotNull(responseImageReference);

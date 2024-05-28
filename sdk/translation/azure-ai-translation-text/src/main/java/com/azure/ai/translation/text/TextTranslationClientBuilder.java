@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import com.azure.ai.translation.text.models.TextTranslationAudience;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import java.net.MalformedURLException;
@@ -59,7 +60,7 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
     @Generated
     private static final String SDK_VERSION = "version";
 
-    private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
+    private static final String DEFAULT_SCOPE = "/.default";
 
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
 
@@ -70,6 +71,8 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
     private String region;
 
     private String resourceId;
+
+    private TextTranslationAudience audience;
 
     private KeyCredential credential;
 
@@ -294,6 +297,19 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
     }
 
     /**
+     * Sets the Authentication audience used to authorize requests sent to the service.
+     *
+     * @param audience Token Audience.
+     * @return The updated {@link TextTranslationClientBuilder} object.
+     * @throws NullPointerException If {@code audience} is null.
+     */
+    public TextTranslationClientBuilder audience(TextTranslationAudience audience) {
+        Objects.requireNonNull(audience, "'audience' cannot be null.");
+        this.audience = audience;
+        return this;
+    }
+
+    /**
      * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
      * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
      * documentation for more details on proper usage of the {@link TokenCredential} type.
@@ -373,7 +389,11 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
+            TextTranslationAudience authAudience = TextTranslationAudience.AZURE_PUBLIC_CLOUD;
+            if (this.audience != null) {
+                authAudience = this.audience;
+            }
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, authAudience + DEFAULT_SCOPE));
             if (this.region != null || this.resourceId != null) {
                 HttpHeaders aadHeaders = new HttpHeaders();
                 aadHeaders.put(OCP_APIM_RESOURCE_ID_KEY, this.resourceId);

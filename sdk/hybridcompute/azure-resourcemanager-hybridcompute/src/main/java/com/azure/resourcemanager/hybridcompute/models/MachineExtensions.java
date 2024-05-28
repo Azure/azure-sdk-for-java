@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of MachineExtensions. */
+/**
+ * Resource collection API of MachineExtensions.
+ */
 public interface MachineExtensions {
     /**
      * The operation to delete the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be deleted.
      * @param extensionName The name of the machine extension.
@@ -24,7 +26,7 @@ public interface MachineExtensions {
 
     /**
      * The operation to delete the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine where the extension should be deleted.
      * @param extensionName The name of the machine extension.
@@ -37,7 +39,7 @@ public interface MachineExtensions {
 
     /**
      * The operation to get the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param extensionName The name of the machine extension.
@@ -47,12 +49,12 @@ public interface MachineExtensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Machine Extension along with {@link Response}.
      */
-    Response<MachineExtension> getWithResponse(
-        String resourceGroupName, String machineName, String extensionName, Context context);
+    Response<MachineExtension> getWithResponse(String resourceGroupName, String machineName, String extensionName,
+        Context context);
 
     /**
      * The operation to get the extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param extensionName The name of the machine extension.
@@ -65,7 +67,7 @@ public interface MachineExtensions {
 
     /**
      * The operation to get all extensions of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,7 +79,7 @@ public interface MachineExtensions {
 
     /**
      * The operation to get all extensions of a non-Azure machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the machine containing the extension.
      * @param expand The expand expression to apply on the operation.
@@ -91,7 +93,7 @@ public interface MachineExtensions {
 
     /**
      * The operation to get the extension.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,7 +104,7 @@ public interface MachineExtensions {
 
     /**
      * The operation to get the extension.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +116,7 @@ public interface MachineExtensions {
 
     /**
      * The operation to delete the extension.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,7 +126,7 @@ public interface MachineExtensions {
 
     /**
      * The operation to delete the extension.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +137,7 @@ public interface MachineExtensions {
 
     /**
      * Begins definition for a new MachineExtension resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new MachineExtension definition.
      */

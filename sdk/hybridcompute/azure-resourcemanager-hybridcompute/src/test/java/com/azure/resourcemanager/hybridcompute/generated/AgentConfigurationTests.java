@@ -10,11 +10,9 @@ import com.azure.resourcemanager.hybridcompute.models.AgentConfiguration;
 public final class AgentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"proxyUrl\":\"ocpcy\",\"incomingConnectionsPorts\":[\"rzafbljjgpbtoqcj\",\"klj\"],\"extensionsAllowList\":[{\"publisher\":\"idtqajzyu\",\"type\":\"kudjkrlkhb\"},{\"publisher\":\"fepgzgq\",\"type\":\"zloc\"}],\"extensionsBlockList\":[{\"publisher\":\"aierhhb\",\"type\":\"glu\"}],\"proxyBypass\":[\"jtjaodxobnbdxkq\"],\"extensionsEnabled\":\"okaj\",\"guestConfigurationEnabled\":\"npime\",\"configMode\":\"full\"}")
-                .toObject(AgentConfiguration.class);
+        AgentConfiguration model = BinaryData.fromString(
+            "{\"proxyUrl\":\"tyxolniwpwc\",\"incomingConnectionsPorts\":[\"fkgiawxk\",\"ryplwckbasyypn\",\"dhsgcba\"],\"extensionsAllowList\":[{\"publisher\":\"jkot\",\"type\":\"qgoulznd\"},{\"publisher\":\"kwy\",\"type\":\"gfgibm\"},{\"publisher\":\"gakeqsr\",\"type\":\"bzqqedqytbciq\"}],\"extensionsBlockList\":[{\"publisher\":\"lmmnkzsmodmglo\",\"type\":\"pbkwtmu\"},{\"publisher\":\"uqktap\",\"type\":\"wgcu\"}],\"proxyBypass\":[\"umkdosvqwhbmd\",\"bbjfddgmbmbexp\",\"bhtqqrolfpfpsa\",\"gbquxigj\"],\"extensionsEnabled\":\"gzjaoyfhrtxilne\",\"guestConfigurationEnabled\":\"ujysvle\",\"configMode\":\"monitor\"}")
+            .toObject(AgentConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test

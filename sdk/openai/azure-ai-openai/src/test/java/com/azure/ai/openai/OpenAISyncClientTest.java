@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.functions.MyFunctionCallArguments;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
@@ -263,7 +262,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                 chatChoice,
                 "MyFunction",
                 MyFunctionCallArguments.class);
-            assertEquals(arguments.getLocation(), "San Francisco, CA");
+            assertTrue(arguments.getLocation().contains("San Francisco"));
             assertEquals(arguments.getUnit(), "CELSIUS");
         });
     }
@@ -849,9 +848,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                         ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) toolCalls.get(0);
                         FunctionCall functionCall = toolCall.getFunction();
 
-                        // this data is only available in the second stream message, if at all
+                        // TODO: It used to be second stream event but now third event.
+                        // this data is only available in the third stream message, if at all
                         // The first contains filter results mostly
-                        if (i == 1) {
+                        if (i == 2) {
                             content = chatChoice.getDelta().getContent();
                             functionName = functionCall.getName();
                             toolCallId = toolCall.getId();

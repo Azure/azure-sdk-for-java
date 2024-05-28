@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -14,10 +15,21 @@ import java.util.List;
 /**
  * Simple policy schedule.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "schedulePolicyType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "schedulePolicyType",
+    defaultImpl = SimpleSchedulePolicy.class,
+    visible = true)
 @JsonTypeName("SimpleSchedulePolicy")
 @Fluent
 public final class SimpleSchedulePolicy extends SchedulePolicy {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "schedulePolicyType", required = true)
+    private String schedulePolicyType = "SimpleSchedulePolicy";
+
     /*
      * Frequency of the schedule operation of this policy.
      */
@@ -52,6 +64,17 @@ public final class SimpleSchedulePolicy extends SchedulePolicy {
      * Creates an instance of SimpleSchedulePolicy class.
      */
     public SimpleSchedulePolicy() {
+    }
+
+    /**
+     * Get the schedulePolicyType property: This property will be used as the discriminator for deciding the specific
+     * types in the polymorphic chain of types.
+     * 
+     * @return the schedulePolicyType value.
+     */
+    @Override
+    public String schedulePolicyType() {
+        return this.schedulePolicyType;
     }
 
     /**

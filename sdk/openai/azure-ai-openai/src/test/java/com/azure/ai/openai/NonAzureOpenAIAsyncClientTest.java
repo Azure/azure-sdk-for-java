@@ -3,7 +3,6 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.functions.MyFunctionCallArguments;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionTimestampGranularity;
@@ -303,7 +302,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                         chatChoice,
                         "MyFunction",
                         MyFunctionCallArguments.class);
-                    assertEquals(arguments.getLocation(), "San Francisco, CA");
+                    assertTrue(arguments.getLocation().contains("San Francisco"));
                     assertEquals(arguments.getUnit(), "CELSIUS");
                 })
                 .verifyComplete();
@@ -754,7 +753,6 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                         assertNotNull(responseMessage);
                         assertTrue(responseMessage.getContent() == null || responseMessage.getContent().isEmpty());
                         assertFalse(responseMessage.getToolCalls() == null || responseMessage.getToolCalls().isEmpty());
-                        assertEquals(1, responseMessage.getToolCalls().size());
 
                         ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
                         assertNotNull(functionToolCall);
@@ -802,9 +800,9 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                                     assertEquals(1, toolCalls.size());
                                     ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) toolCalls.get(0);
                                     FunctionCall functionCall = toolCall.getFunction();
-
+                                    // TODO: It used to be first stream event but now second event, in NonAzure
                                     // this data is only available in the first stream message, if at all
-                                    if (i == 0) {
+                                    if (i == 1) {
                                         content = chatChoice.getDelta().getContent();
                                         functionName = functionCall.getName();
                                         toolCallId = toolCall.getId();

@@ -12,7 +12,7 @@ import com.azure.core.util.Context;
  */
 public interface Operations {
     /**
-     * List all operations provided by Nginx.NginxPlus for the 2023-04-01 api version.
+     * List all operations provided by Nginx.NginxPlus for the 2024-01-01-preview api version.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -22,7 +22,7 @@ public interface Operations {
     PagedIterable<OperationResult> list();
 
     /**
-     * List all operations provided by Nginx.NginxPlus for the 2023-04-01 api version.
+     * List all operations provided by Nginx.NginxPlus for the 2024-01-01-preview api version.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

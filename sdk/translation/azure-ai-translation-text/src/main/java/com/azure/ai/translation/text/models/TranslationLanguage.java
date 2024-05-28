@@ -34,22 +34,23 @@ public final class TranslationLanguage {
      */
     @Generated
     @JsonProperty(value = "dir")
-    private final String dir;
+    private final LanguageDirectionality directionality;
 
     /**
      * Creates an instance of TranslationLanguage class.
      *
      * @param name the name value to set.
      * @param nativeName the nativeName value to set.
-     * @param dir the dir value to set.
+     * @param directionality the directionality value to set.
      */
     @Generated
     @JsonCreator
     private TranslationLanguage(@JsonProperty(value = "name") String name,
-        @JsonProperty(value = "nativeName") String nativeName, @JsonProperty(value = "dir") String dir) {
+        @JsonProperty(value = "nativeName") String nativeName,
+        @JsonProperty(value = "dir") LanguageDirectionality directionality) {
         this.name = name;
         this.nativeName = nativeName;
-        this.dir = dir;
+        this.directionality = directionality;
     }
 
     /**
@@ -73,13 +74,13 @@ public final class TranslationLanguage {
     }
 
     /**
-     * Get the dir property: Directionality, which is rtl for right-to-left languages or ltr for left-to-right
-     * languages.
+     * Get the directionality property: Directionality, which is rtl for right-to-left languages or ltr for
+     * left-to-right languages.
      *
-     * @return the dir value.
+     * @return the directionality value.
      */
     @Generated
-    public String getDir() {
-        return this.dir;
+    public LanguageDirectionality getDirectionality() {
+        return this.directionality;
     }
 }

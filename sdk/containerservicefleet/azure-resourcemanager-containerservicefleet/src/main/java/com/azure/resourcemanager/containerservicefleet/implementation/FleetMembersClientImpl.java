@@ -680,7 +680,8 @@ public final class FleetMembersClientImpl implements FleetMembersClient {
     private Mono<FleetMemberInner> createAsync(String resourceGroupName, String fleetName, String fleetMemberName,
         FleetMemberInner resource, String ifMatch, String ifNoneMatch, Context context) {
         return beginCreateAsync(resourceGroupName, fleetName, fleetMemberName, resource, ifMatch, ifNoneMatch, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

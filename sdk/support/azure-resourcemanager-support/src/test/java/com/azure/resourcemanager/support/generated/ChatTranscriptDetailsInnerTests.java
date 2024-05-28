@@ -14,20 +14,19 @@ public final class ChatTranscriptDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChatTranscriptDetailsInner model = BinaryData.fromString(
-            "{\"properties\":{\"messages\":[{\"communicationDirection\":\"outbound\",\"sender\":\"rgly\",\"body\":\"tddckcb\",\"createdDate\":\"2021-09-18T06:03:16Z\"},{\"communicationDirection\":\"outbound\",\"sender\":\"gciqibrh\",\"body\":\"sxsdqrhzoymibm\",\"createdDate\":\"2021-03-04T00:00:50Z\"},{\"communicationDirection\":\"outbound\",\"sender\":\"wfluszdt\",\"body\":\"hrkwo\",\"createdDate\":\"2021-08-13T05:08:08Z\"}],\"startTime\":\"2021-02-28T16:21:21Z\"},\"id\":\"acpie\",\"name\":\"pbtg\",\"type\":\"wbwo\"}")
+            "{\"properties\":{\"messages\":[{\"communicationDirection\":\"outbound\",\"sender\":\"jfdtwssotftpvj\",\"body\":\"exilzznfqqnvwpmq\",\"createdDate\":\"2021-06-07T17:58:08Z\"},{\"communicationDirection\":\"outbound\",\"sender\":\"mkcjhwqytjrybn\",\"body\":\"ewgdrjervn\",\"createdDate\":\"2021-09-08T11:50:32Z\"}],\"startTime\":\"2021-06-16T21:41:42Z\"},\"id\":\"hin\",\"name\":\"oygmift\",\"type\":\"nzdndslgna\"}")
             .toObject(ChatTranscriptDetailsInner.class);
-        Assertions.assertEquals("rgly", model.messages().get(0).sender());
-        Assertions.assertEquals("tddckcb", model.messages().get(0).body());
+        Assertions.assertEquals("jfdtwssotftpvj", model.messages().get(0).sender());
+        Assertions.assertEquals("exilzznfqqnvwpmq", model.messages().get(0).body());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChatTranscriptDetailsInner model = new ChatTranscriptDetailsInner()
-            .withMessages(Arrays.asList(new MessageProperties().withSender("rgly").withBody("tddckcb"),
-                new MessageProperties().withSender("gciqibrh").withBody("sxsdqrhzoymibm"),
-                new MessageProperties().withSender("wfluszdt").withBody("hrkwo")));
+        ChatTranscriptDetailsInner model = new ChatTranscriptDetailsInner().withMessages(
+            Arrays.asList(new MessageProperties().withSender("jfdtwssotftpvj").withBody("exilzznfqqnvwpmq"),
+                new MessageProperties().withSender("mkcjhwqytjrybn").withBody("ewgdrjervn")));
         model = BinaryData.fromObject(model).toObject(ChatTranscriptDetailsInner.class);
-        Assertions.assertEquals("rgly", model.messages().get(0).sender());
-        Assertions.assertEquals("tddckcb", model.messages().get(0).body());
+        Assertions.assertEquals("jfdtwssotftpvj", model.messages().get(0).sender());
+        Assertions.assertEquals("exilzznfqqnvwpmq", model.messages().get(0).body());
     }
 }

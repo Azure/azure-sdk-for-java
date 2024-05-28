@@ -21,6 +21,7 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosRegionSwitchHint;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.SessionRetryOptions;
@@ -37,10 +38,8 @@ import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnect
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -58,6 +57,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
@@ -67,6 +67,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
+import com.azure.cosmos.models.ShowQueryMode;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -147,6 +148,12 @@ public class ImplementationBridgeHelpers {
             ConsistencyLevel getConsistencyLevel(CosmosClientBuilder builder);
 
             String getEndpoint(CosmosClientBuilder builder);
+
+            CosmosItemSerializer getDefaultCustomSerializer(CosmosClientBuilder builder);
+
+            void setRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder, boolean isRegionScopedSessionCapturingEnabled);
+
+            boolean getRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder);
         }
     }
 
@@ -182,6 +189,7 @@ public class ImplementationBridgeHelpers {
         public interface PartitionKeyAccessor {
             PartitionKey toPartitionKey(PartitionKeyInternal partitionKeyInternal);
             PartitionKey toPartitionKey(List<Object> values, boolean strict);
+            PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey);
         }
     }
 
@@ -279,6 +287,12 @@ public class ImplementationBridgeHelpers {
             Integer getMaxItemCount(CosmosQueryRequestOptions options);
 
             String getRequestContinuation(CosmosQueryRequestOptions options);
+
+            Integer getMaxItemCountForVectorSearch(CosmosQueryRequestOptions options);
+
+            void setPartitionKeyDefinition(CosmosQueryRequestOptions options, PartitionKeyDefinition partitionKeyDefinition);
+
+            PartitionKeyDefinition getPartitionKeyDefinition(CosmosQueryRequestOptions options);
         }
     }
 
@@ -350,11 +364,11 @@ public class ImplementationBridgeHelpers {
             Map<String, String> getHeader(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
             void setOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
-            <T> Function<JsonNode, T> getItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions, Class<T> classOfT);
-            CosmosChangeFeedRequestOptions setItemFactoryMethod(CosmosChangeFeedRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosChangeFeedRequestOptions options);
             List<String> getExcludeRegions(CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions);
             CosmosChangeFeedRequestOptions createForProcessingFromContinuation(String continuation, FeedRange targetRange, String continuationLsn);
+
+            CosmosChangeFeedRequestOptions clone(CosmosChangeFeedRequestOptions toBeCloned);
         }
     }
 
@@ -388,6 +402,7 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosItemRequestOptionsAccessor {
+            RequestOptions toRequestOptions(CosmosItemRequestOptions itemRequestOptions, CosmosItemSerializer effectiveItemSerializer);
             void setOperationContext(CosmosItemRequestOptions queryRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosItemRequestOptions queryRequestOptions);
             CosmosItemRequestOptions clone(CosmosItemRequestOptions options);
@@ -405,6 +420,8 @@ public class ImplementationBridgeHelpers {
 
             CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
                 CosmosItemRequestOptions options);
+
+            CosmosPatchItemRequestOptions clonePatchItemRequestOptions(CosmosPatchItemRequestOptions options);
         }
     }
 
@@ -478,6 +495,8 @@ public class ImplementationBridgeHelpers {
             int getMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
             void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker);
             BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions);
+
+            CosmosBulkExecutionOptions clone(CosmosBulkExecutionOptions toBeCloned);
         }
     }
 
@@ -515,7 +534,11 @@ public class ImplementationBridgeHelpers {
         public interface CosmosItemResponseBuilderAccessor {
             <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosItemResponse<byte[]> response,
                                                                Class<T> classType,
-                                                               ItemDeserializer itemDeserializer);
+                                                               CosmosItemSerializer serializer);
+
+            <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response,
+                                                               Class<T> classType,
+                                                               CosmosItemSerializer serializer);
 
 
             <T> CosmosItemResponse<T> withRemappedStatusCode(
@@ -819,7 +842,8 @@ public class ImplementationBridgeHelpers {
                 String trackingId,
                 String connectionMode,
                 String userAgent,
-                Integer sequenceNumber);
+                Integer sequenceNumber,
+                String queryStatement);
 
             CosmosDiagnosticsSystemUsageSnapshot createSystemUsageSnapshot(
                 String cpu,
@@ -872,6 +896,9 @@ public class ImplementationBridgeHelpers {
             Integer getSequenceNumber(CosmosDiagnosticsContext ctx);
 
             boolean isEmptyCompletion(CosmosDiagnosticsContext ctx);
+
+            String getQueryStatement(CosmosDiagnosticsContext ctx);
+
         }
     }
 
@@ -989,6 +1016,13 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface FeedResponseAccessor {
+            <T> FeedResponse<T> createFeedResponse(RxDocumentServiceResponse response,
+                                                   CosmosItemSerializer itemSerializer,
+                                                   Class<T> cls);
+
+            <T> FeedResponse<T> createChangeFeedResponse(RxDocumentServiceResponse response,
+                                                   CosmosItemSerializer itemSerializer,
+                                                   Class<T> cls);
             <T> boolean getNoChanges(FeedResponse<T> feedResponse);
             <TNew, T> FeedResponse<TNew> convertGenericType(FeedResponse<T> feedResponse, Function<T, TNew> conversion);
             <T> FeedResponse<T> createFeedResponse(
@@ -1033,6 +1067,8 @@ public class ImplementationBridgeHelpers {
             CosmosBatchRequestOptions setHeader(CosmosBatchRequestOptions cosmosItemRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosBatchRequestOptions cosmosItemRequestOptions);
             List<String> getExcludeRegions(CosmosBatchRequestOptions cosmosBatchRequestOptions);
+
+            CosmosBatchRequestOptions clone(CosmosBatchRequestOptions toBeCloned);
         }
     }
 
@@ -1069,6 +1105,8 @@ public class ImplementationBridgeHelpers {
         public interface CosmosBatchOperationResultAccessor {
             ObjectNode getResourceObject(CosmosBatchOperationResult cosmosBatchOperationResult);
             void setResourceObject(CosmosBatchOperationResult cosmosBatchOperationResult, ObjectNode objectNode);
+            void setEffectiveItemSerializer(CosmosBatchOperationResult cosmosBatchOperationResult,
+                                            CosmosItemSerializer effectiveItemSerializer);
         }
     }
 
@@ -1177,6 +1215,9 @@ public class ImplementationBridgeHelpers {
 
             void setResourceObject(CosmosBulkItemResponse cosmosBulkItemResponse,
                                    ObjectNode objectNode);
+
+            void setEffectiveItemSerializer(CosmosBulkItemResponse cosmosBulkItemResponse,
+                                            CosmosItemSerializer effectiveItemSerializer);
         }
     }
 
@@ -1306,6 +1347,10 @@ public class ImplementationBridgeHelpers {
                 CosmosDiagnosticsThresholds operationLevelThresholds);
 
             DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient client);
+
+            CosmosItemSerializer getEffectiveItemSerializer(
+                CosmosAsyncClient client,
+                CosmosItemSerializer requestOptionsItemSerializer);
         }
     }
 
@@ -1459,6 +1504,10 @@ public class ImplementationBridgeHelpers {
             void setUseLegacyTracing(CosmosClientTelemetryConfig config, boolean useLegacyTracing);
             void setTracer(CosmosClientTelemetryConfig config, Tracer tracer);
             double getSamplingRate(CosmosClientTelemetryConfig config);
+            ShowQueryMode showQueryMode(CosmosClientTelemetryConfig config);
+            double[] getDefaultPercentiles(CosmosClientTelemetryConfig config);
+            boolean shouldPublishHistograms(CosmosClientTelemetryConfig config);
+            boolean shouldApplyDiagnosticThresholdsForTransportLevelMeters(CosmosClientTelemetryConfig config);
         }
     }
 

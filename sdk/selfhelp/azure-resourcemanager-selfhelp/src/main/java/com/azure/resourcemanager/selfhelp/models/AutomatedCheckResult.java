@@ -13,6 +13,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AutomatedCheckResult {
     /*
+     * Version for automated check result
+     */
+    @JsonProperty(value = "version")
+    private String version;
+
+    /*
+     * Status for automated check result
+     */
+    @JsonProperty(value = "status")
+    private String status;
+
+    /*
      * Insight Article Content
      */
     @JsonProperty(value = "result")
@@ -28,6 +40,46 @@ public final class AutomatedCheckResult {
      * Creates an instance of AutomatedCheckResult class.
      */
     public AutomatedCheckResult() {
+    }
+
+    /**
+     * Get the version property: Version for automated check result.
+     * 
+     * @return the version value.
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: Version for automated check result.
+     * 
+     * @param version the version value to set.
+     * @return the AutomatedCheckResult object itself.
+     */
+    public AutomatedCheckResult withVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
+     * Get the status property: Status for automated check result.
+     * 
+     * @return the status value.
+     */
+    public String status() {
+        return this.status;
+    }
+
+    /**
+     * Set the status property: Status for automated check result.
+     * 
+     * @param status the status value to set.
+     * @return the AutomatedCheckResult object itself.
+     */
+    public AutomatedCheckResult withStatus(String status) {
+        this.status = status;
+        return this;
     }
 
     /**

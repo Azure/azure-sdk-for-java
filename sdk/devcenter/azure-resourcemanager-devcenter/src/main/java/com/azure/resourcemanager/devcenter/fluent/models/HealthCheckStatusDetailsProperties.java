@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Health Check properties. */
+/**
+ * Health Check properties.
+ */
 @Immutable
 public final class HealthCheckStatusDetailsProperties {
     /*
@@ -31,13 +33,15 @@ public final class HealthCheckStatusDetailsProperties {
     @JsonProperty(value = "healthChecks", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthCheck> healthChecks;
 
-    /** Creates an instance of HealthCheckStatusDetailsProperties class. */
+    /**
+     * Creates an instance of HealthCheckStatusDetailsProperties class.
+     */
     public HealthCheckStatusDetailsProperties() {
     }
 
     /**
      * Get the startDateTime property: Start time of last execution of the health checks.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -46,7 +50,7 @@ public final class HealthCheckStatusDetailsProperties {
 
     /**
      * Get the endDateTime property: End time of last execution of the health checks.
-     *
+     * 
      * @return the endDateTime value.
      */
     public OffsetDateTime endDateTime() {
@@ -55,7 +59,7 @@ public final class HealthCheckStatusDetailsProperties {
 
     /**
      * Get the healthChecks property: Details for each health check item.
-     *
+     * 
      * @return the healthChecks value.
      */
     public List<HealthCheck> healthChecks() {
@@ -64,7 +68,7 @@ public final class HealthCheckStatusDetailsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

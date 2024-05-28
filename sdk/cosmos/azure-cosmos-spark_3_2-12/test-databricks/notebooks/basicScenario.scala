@@ -2,6 +2,8 @@
 // val cosmosEndpoint = "<inserted by environment>"
 // val cosmosMasterKey = "<inserted by environment>"
 
+println("SCENARIO: basicScenario")
+
 val cosmosEndpoint = dbutils.widgets.get("cosmosEndpoint")
 val cosmosMasterKey = dbutils.widgets.get("cosmosMasterKey")
 val cosmosContainerName = dbutils.widgets.get("cosmosContainerName")
@@ -13,14 +15,16 @@ val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
   "spark.cosmos.container" -> cosmosContainerName,
   "spark.cosmos.preferredRegionsList" -> "West US 2",
   "spark.cosmos.proactiveConnectionInitialization" -> s"$cosmosDatabaseName/$cosmosContainerName",
-  "spark.cosmos.proactiveConnectionInitializationDurationInSeconds" -> "10"
+  "spark.cosmos.proactiveConnectionInitializationDurationInSeconds" -> "10",
+  "spark.cosmos.enforceNativeTransport" -> "true"
 )
 
 val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
   "spark.cosmos.accountKey" -> cosmosMasterKey,
   "spark.cosmos.database" -> cosmosDatabaseName,
   "spark.cosmos.container" -> cosmosContainerName,
-  "spark.cosmos.read.inferSchema.enabled" -> "true"
+  "spark.cosmos.read.inferSchema.enabled" -> "true",
+  "spark.cosmos.enforceNativeTransport" -> "true"
 )
 
 // COMMAND ----------

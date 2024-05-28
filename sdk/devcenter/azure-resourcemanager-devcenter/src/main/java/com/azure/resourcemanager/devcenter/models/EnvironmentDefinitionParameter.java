@@ -7,7 +7,9 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of an Environment Definition parameter. */
+/**
+ * Properties of an Environment Definition parameter.
+ */
 @Immutable
 public final class EnvironmentDefinitionParameter {
     /*
@@ -46,13 +48,15 @@ public final class EnvironmentDefinitionParameter {
     @JsonProperty(value = "required", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean required;
 
-    /** Creates an instance of EnvironmentDefinitionParameter class. */
+    /**
+     * Creates an instance of EnvironmentDefinitionParameter class.
+     */
     public EnvironmentDefinitionParameter() {
     }
 
     /**
      * Get the id property: Unique ID of the parameter.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -61,7 +65,7 @@ public final class EnvironmentDefinitionParameter {
 
     /**
      * Get the name property: Display name of the parameter.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -70,7 +74,7 @@ public final class EnvironmentDefinitionParameter {
 
     /**
      * Get the description property: Description of the parameter.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -79,7 +83,7 @@ public final class EnvironmentDefinitionParameter {
 
     /**
      * Get the type property: A string of one of the basic JSON types (number, integer, array, object, boolean, string).
-     *
+     * 
      * @return the type value.
      */
     public ParameterType type() {
@@ -88,7 +92,7 @@ public final class EnvironmentDefinitionParameter {
 
     /**
      * Get the readOnly property: Whether or not this parameter is read-only. If true, default should have a value.
-     *
+     * 
      * @return the readOnly value.
      */
     public Boolean readOnly() {
@@ -97,7 +101,7 @@ public final class EnvironmentDefinitionParameter {
 
     /**
      * Get the required property: Whether or not this parameter is required.
-     *
+     * 
      * @return the required value.
      */
     public Boolean required() {
@@ -106,7 +110,7 @@ public final class EnvironmentDefinitionParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -18,7 +18,7 @@ import java.io.IOException;
 public final class DevCenterEnvironmentType implements JsonSerializable<DevCenterEnvironmentType> {
 
     /*
-     * Name of the environment type
+     * Name of the environment type.
      */
     @Generated
     private final String name;

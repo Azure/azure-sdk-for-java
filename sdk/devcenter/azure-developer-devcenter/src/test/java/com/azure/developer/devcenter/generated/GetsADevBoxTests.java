@@ -46,13 +46,13 @@ public final class GetsADevBoxTests extends DevCenterClientTestBase {
         DevBoxHardwareProfile responseHardwareProfile = response.getHardwareProfile();
         Assertions.assertNotNull(responseHardwareProfile);
         Assertions.assertEquals(8, responseHardwareProfile.getVCpus());
-        Assertions.assertEquals(32, responseHardwareProfile.getMemoryGb());
+        Assertions.assertEquals(32, responseHardwareProfile.getMemoryInGb());
         // verify property "storageProfile"
         DevBoxStorageProfile responseStorageProfile = response.getStorageProfile();
         Assertions.assertNotNull(responseStorageProfile);
         OsDisk responseStorageProfileOsDisk = responseStorageProfile.getOsDisk();
         Assertions.assertNotNull(responseStorageProfileOsDisk);
-        Assertions.assertEquals(1024, responseStorageProfileOsDisk.getDiskSizeGb());
+        Assertions.assertEquals(1024, responseStorageProfileOsDisk.getDiskSizeInGb());
         // verify property "imageReference"
         DevBoxImageReference responseImageReference = response.getImageReference();
         Assertions.assertNotNull(responseImageReference);
