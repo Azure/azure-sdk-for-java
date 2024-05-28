@@ -10,6 +10,7 @@ import com.azure.communication.jobrouter.models.ExceptionPolicy;
 import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -23,6 +24,7 @@ public class ExceptionPolicyAsyncLiveTests extends JobRouterTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void createExceptionPolicy(HttpClient httpClient) {
         // Setup
         administrationAsyncClient = getRouterAdministrationAsyncClient(httpClient);

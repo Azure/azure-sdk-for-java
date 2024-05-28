@@ -17,6 +17,7 @@ import com.azure.communication.jobrouter.models.StaticRouterRule;
 import com.azure.communication.jobrouter.models.StaticWorkerSelectorAttachment;
 import com.azure.communication.jobrouter.models.WorkerSelectorAttachment;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -30,6 +31,7 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void createClassificationPolicy(HttpClient httpClient) {
         // Setup
         routerAdminClient = getRouterAdministrationClient(httpClient);

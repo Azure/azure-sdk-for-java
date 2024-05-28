@@ -11,6 +11,7 @@ import com.azure.communication.jobrouter.models.FunctionRouterRuleCredential;
 import com.azure.communication.jobrouter.models.LongestIdleMode;
 import com.azure.communication.jobrouter.models.RoundRobinMode;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -23,6 +24,7 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void createDistributionPolicyBestWorkerDefaultScoringRule(HttpClient httpClient) {
         // Setup
         routerAdminClient = getRouterAdministrationClient(httpClient);
@@ -50,6 +52,7 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void createDistributionPolicyBestWorkerAzureFunctionRule(HttpClient httpClient) {
         // Setup
         routerAdminClient = getRouterAdministrationClient(httpClient);
@@ -83,6 +86,7 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void createDistributionPolicyLongestIdle(HttpClient httpClient) {
         // Setup
         routerAdminClient = getRouterAdministrationClient(httpClient);
@@ -110,6 +114,7 @@ public class DistributionPolicyLiveTests extends JobRouterTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void createDistributionPolicyRoundRobin(HttpClient httpClient) {
         // Setup
         routerAdminClient = getRouterAdministrationClient(httpClient);
