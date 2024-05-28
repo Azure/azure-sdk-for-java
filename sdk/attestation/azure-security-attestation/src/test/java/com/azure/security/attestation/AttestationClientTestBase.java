@@ -82,22 +82,20 @@ public class AttestationClientTestBase extends TestBase {
 //        Dotenv.configure().ignoreIfMissing().systemProperties().load();
     }
 
-    @Override
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
         GlobalOpenTelemetry.resetForTest();
-        super.setupTest(testInfo);
+//        super.setupTest(testInfo);
         String testMethod = testInfo.getTestMethod().isPresent()
             ? testInfo.getTestMethod().get().getName()
             : testInfo.getDisplayName();
         tracer = configureLoggingExporter(testMethod);
     }
 
-    @Override
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
         GlobalOpenTelemetry.resetForTest();
-        super.teardownTest(testInfo);
+//        super.teardownTest(testInfo);
     }
 
     public static Tracer configureLoggingExporter(String testName) {
