@@ -23,3 +23,8 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
     - `FaceSessionClient` to orchestrate with mobile client application to perform liveness check and verification
 - Authentication with API key supported using `AzureKeyCredential("<api_key>")` from `com.azure.core.credential`
 - Authentication with AAD using `DefaultAzureCredentialBuilder()` from `com.azure.identity`
+
+### Features Added
+
+- Added support for Liveness detection.
+- Added support for Face Detection, Group, Find Similar
