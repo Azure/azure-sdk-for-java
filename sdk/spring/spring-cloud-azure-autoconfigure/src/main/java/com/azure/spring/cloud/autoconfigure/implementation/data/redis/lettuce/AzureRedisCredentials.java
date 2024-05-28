@@ -9,7 +9,6 @@ import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import io.lettuce.core.RedisCredentials;
 
 import java.util.Objects;
-import java.util.Properties;
 
 public class AzureRedisCredentials implements RedisCredentials {
 
