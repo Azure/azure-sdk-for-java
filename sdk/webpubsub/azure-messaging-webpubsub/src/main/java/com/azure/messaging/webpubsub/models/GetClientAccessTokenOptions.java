@@ -22,12 +22,6 @@ public final class GetClientAccessTokenOptions {
     private List<String> groups;
 
     /**
-     * Creates an instance of GetClientAccessTokenOptions.
-     */
-    public GetClientAccessTokenOptions() {
-    }
-
-    /**
      * Specifies when the duration after which the requested authentication token will expire.
      *
      * @param expiresAfter The duration after which the requested authentication token will expire.
