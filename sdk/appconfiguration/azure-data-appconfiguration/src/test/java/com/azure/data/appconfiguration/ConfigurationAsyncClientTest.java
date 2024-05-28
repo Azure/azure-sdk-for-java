@@ -207,6 +207,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void addExistingSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         addExistingSettingRunner((expected) ->
@@ -412,6 +413,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void getConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         getConfigurationSettingRunner((expected) ->
@@ -815,6 +817,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void listWithKeyAndLabel(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String value = "myValue";
@@ -936,6 +939,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void listConfigurationSettingsSelectFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         listConfigurationSettingsSelectFieldsRunner((settings, selector) -> {
@@ -1039,6 +1043,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void listRevisions(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final String keyName = testResourceNamer.randomName(keyPrefix, 16);
@@ -1203,6 +1208,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void listRevisionsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         final int numberExpected = 50;
@@ -1396,6 +1402,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void getSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
@@ -1883,6 +1890,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void listSettingsWithPageETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         // Step 1: Prepare testing data.
