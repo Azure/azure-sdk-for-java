@@ -22,8 +22,7 @@ public class RecurrenceEvaluator {
      * @return True if the time stamp is within any recurring time window, false otherwise.
      */
     public static boolean isMatch(TimeWindowFilterSettings settings, ZonedDateTime now) {
-        final RecurrenceValidator validator = new RecurrenceValidator(settings);
-        validator.validateSettings();
+        RecurrenceValidator.validateSettings(settings);
 
         final ZonedDateTime previousOccurrence = getPreviousOccurrence(settings, now);
         if (previousOccurrence == null) {
