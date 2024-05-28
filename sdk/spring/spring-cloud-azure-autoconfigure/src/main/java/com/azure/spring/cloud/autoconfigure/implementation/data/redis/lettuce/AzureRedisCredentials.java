@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.data.redis.lettuce;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import io.lettuce.core.RedisCredentials;
@@ -24,6 +25,13 @@ public class AzureRedisCredentials implements RedisCredentials {
         this.username = username;
         azureAuthenticationTemplate = new AzureAuthenticationTemplate();
         azureAuthenticationTemplate.init(passwordlessProperties.toPasswordlessProperties());
+    }
+
+    public AzureRedisCredentials(String username, TokenCredential tokenCredential) {
+        Objects.requireNonNull(username, "Username is required");
+        Objects.requireNonNull(tokenCredential, "TokenCredential is required");
+        this.username = username;
+        this.azureAuthenticationTemplate = new AzureAuthenticationTemplate(() -> tokenCredential, null);
     }
 
     @Override
