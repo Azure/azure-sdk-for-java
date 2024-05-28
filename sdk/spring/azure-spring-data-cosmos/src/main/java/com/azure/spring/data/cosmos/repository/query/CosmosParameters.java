@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.query;
 
-import org.springframework.core.MethodParameter;
 import org.springframework.data.repository.query.Parameters;
-import org.springframework.data.repository.query.ParametersSource;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -19,8 +17,9 @@ public class CosmosParameters extends Parameters<CosmosParameters, CosmosParamet
      *
      * @param method must not be {@literal null}.
      */
+    @SuppressWarnings("removal")
     public CosmosParameters(Method method) {
-        super(ParametersSource.of(method), CosmosParameter::new);
+        super(method, CosmosParameter::new);
     }
 
     private CosmosParameters(List<CosmosParameter> parameters) {
