@@ -32,6 +32,13 @@ public interface Setting {
     String type();
 
     /**
+     * Gets the kind property: the kind of the settings string.
+     * 
+     * @return the kind value.
+     */
+    SettingKind kind();
+
+    /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.SettingInner object.
      * 
      * @return the inner object.

@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AzureDevOpsProjectsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-09-01-preview/examples/
-     * SecurityConnectorsDevOps/ListAzureDevOpsProjects_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListAzureDevOpsProjects_example.json
      */
     /**
      * Sample code: List_AzureDevOpsProjects.
@@ -19,7 +17,7 @@ public final class AzureDevOpsProjectsListSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void listAzureDevOpsProjects(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.azureDevOpsProjects().list("myRg", "mySecurityConnectorName", "myAzDevOpsOrg",
-            com.azure.core.util.Context.NONE);
+        manager.azureDevOpsProjects()
+            .list("myRg", "mySecurityConnectorName", "myAzDevOpsOrg", com.azure.core.util.Context.NONE);
     }
 }

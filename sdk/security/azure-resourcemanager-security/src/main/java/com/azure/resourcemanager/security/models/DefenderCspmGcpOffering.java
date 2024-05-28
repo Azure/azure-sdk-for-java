@@ -6,24 +6,36 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The CSPM P1 for GCP offering.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "offeringType",
+    defaultImpl = DefenderCspmGcpOffering.class,
+    visible = true)
 @JsonTypeName("DefenderCspmGcp")
 @Fluent
 public final class DefenderCspmGcpOffering extends CloudOffering {
     /*
-     * GCP Defenders CSPM Cloud infrastructure entitlement management (CIEM) discovery offering configurations
+     * The type of the security offering.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "offeringType", required = true)
+    private OfferingType offeringType = OfferingType.DEFENDER_CSPM_GCP;
+
+    /*
+     * GCP Defenders CSPM Permissions Management OIDC (Open ID connect) connection configurations
      */
     @JsonProperty(value = "ciemDiscovery")
     private DefenderCspmGcpOfferingCiemDiscovery ciemDiscovery;
 
     /*
-     * The Microsoft Defender for Server VM scanning configuration
+     * The Microsoft Defender for CSPM VM scanning configuration
      */
     @JsonProperty(value = "vmScanners")
     private DefenderCspmGcpOfferingVmScanners vmScanners;
@@ -53,8 +65,18 @@ public final class DefenderCspmGcpOffering extends CloudOffering {
     }
 
     /**
-     * Get the ciemDiscovery property: GCP Defenders CSPM Cloud infrastructure entitlement management (CIEM) discovery
-     * offering configurations.
+     * Get the offeringType property: The type of the security offering.
+     * 
+     * @return the offeringType value.
+     */
+    @Override
+    public OfferingType offeringType() {
+        return this.offeringType;
+    }
+
+    /**
+     * Get the ciemDiscovery property: GCP Defenders CSPM Permissions Management OIDC (Open ID connect) connection
+     * configurations.
      * 
      * @return the ciemDiscovery value.
      */
@@ -63,8 +85,8 @@ public final class DefenderCspmGcpOffering extends CloudOffering {
     }
 
     /**
-     * Set the ciemDiscovery property: GCP Defenders CSPM Cloud infrastructure entitlement management (CIEM) discovery
-     * offering configurations.
+     * Set the ciemDiscovery property: GCP Defenders CSPM Permissions Management OIDC (Open ID connect) connection
+     * configurations.
      * 
      * @param ciemDiscovery the ciemDiscovery value to set.
      * @return the DefenderCspmGcpOffering object itself.
@@ -75,7 +97,7 @@ public final class DefenderCspmGcpOffering extends CloudOffering {
     }
 
     /**
-     * Get the vmScanners property: The Microsoft Defender for Server VM scanning configuration.
+     * Get the vmScanners property: The Microsoft Defender for CSPM VM scanning configuration.
      * 
      * @return the vmScanners value.
      */
@@ -84,7 +106,7 @@ public final class DefenderCspmGcpOffering extends CloudOffering {
     }
 
     /**
-     * Set the vmScanners property: The Microsoft Defender for Server VM scanning configuration.
+     * Set the vmScanners property: The Microsoft Defender for CSPM VM scanning configuration.
      * 
      * @param vmScanners the vmScanners value to set.
      * @return the DefenderCspmGcpOffering object itself.

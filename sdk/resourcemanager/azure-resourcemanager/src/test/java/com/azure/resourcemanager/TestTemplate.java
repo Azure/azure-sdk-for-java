@@ -4,6 +4,8 @@ package com.azure.resourcemanager;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -23,11 +25,12 @@ import java.io.IOException;
  * @param <ResourceT> Top level resource type
  * @param <CollectionT> Type representing the collection of the top level resources
  */
-public abstract class TestTemplate<
-    ResourceT extends GroupableResource<? extends Manager<?>, ?>,
+public abstract class TestTemplate<ResourceT extends GroupableResource<? extends Manager<?>, ?>,
     CollectionT extends
         SupportsListing<ResourceT> & SupportsGettingByResourceGroup<ResourceT> & SupportsDeletingById
             & SupportsGettingById<ResourceT> & HasManager<?>> {
+
+    private static final ClientLogger LOGGER = new ClientLogger(TestTemplate.class);
 
     private ResourceT resource;
     private CollectionT collection;
@@ -64,7 +67,7 @@ public abstract class TestTemplate<
     public int verifyListing() throws ManagementException, IOException {
         PagedIterable<ResourceT> resources = this.collection.list();
         for (ResourceT r : resources) {
-            System.out.println("resource id: " + r.id());
+            LOGGER.log(LogLevel.VERBOSE, () -> "resource id: " + r.id());
         }
         return TestUtilities.getSize(resources);
     }
@@ -118,7 +121,7 @@ public abstract class TestTemplate<
 
         // Verify creation
         this.resource = createResource(collection);
-        System.out.println("\n------------\nAfter creation:\n");
+        LOGGER.log(LogLevel.VERBOSE, () -> "\n------------\nAfter creation:\n");
         print(this.resource);
 
         // Verify listing
@@ -127,7 +130,7 @@ public abstract class TestTemplate<
         // Verify getting
         this.resource = verifyGetting();
         Assertions.assertNotNull(this.resource);
-        System.out.println("\n------------\nRetrieved resource:\n");
+        LOGGER.log(LogLevel.VERBOSE, () -> "\n------------\nRetrieved resource:\n");
         print(this.resource);
 
         boolean failedUpdate = false;
@@ -136,11 +139,11 @@ public abstract class TestTemplate<
         try {
             this.resource = updateResource(this.resource);
             Assertions.assertNotNull(this.resource);
-            System.out.println("\n------------\nUpdated resource:\n");
+            LOGGER.log(LogLevel.VERBOSE, () -> "\n------------\nUpdated resource:\n");
             message = "Print failed";
             print(this.resource);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(LogLevel.VERBOSE, () -> "Update failed", e);
             failedUpdate = true;
         }
 
@@ -150,7 +153,7 @@ public abstract class TestTemplate<
             message = "Delete failed";
             verifyDeleting();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(LogLevel.VERBOSE, () -> "Delete failed", e);
             failedDelete = true;
         }
         Assertions.assertFalse(failedUpdate, message);

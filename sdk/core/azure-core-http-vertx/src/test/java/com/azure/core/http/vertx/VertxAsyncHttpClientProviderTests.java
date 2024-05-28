@@ -107,9 +107,8 @@ public class VertxAsyncHttpClientProviderTests {
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
 
         assertEquals(timeout.toMillis(), options.getConnectTimeout());
-        assertEquals(timeout.getSeconds(), options.getIdleTimeout());
-        assertEquals(timeout.getSeconds(), options.getReadIdleTimeout());
-        assertEquals(timeout.getSeconds(), options.getWriteIdleTimeout());
+        assertEquals(timeout.toMillis(), options.getReadIdleTimeout());
+        assertEquals(timeout.toMillis(), options.getWriteIdleTimeout());
     }
 
     @Test

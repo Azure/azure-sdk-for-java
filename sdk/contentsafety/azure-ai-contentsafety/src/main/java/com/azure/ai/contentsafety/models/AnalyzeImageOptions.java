@@ -25,13 +25,15 @@ public final class AnalyzeImageOptions implements JsonSerializable<AnalyzeImageO
     private final ContentSafetyImageData image;
 
     /*
-     * The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories will be returned.
+     * The categories will be analyzed. If they are not assigned, a default set of analysis results for the categories
+     * will be returned.
      */
     @Generated
     private List<ImageCategory> categories;
 
     /*
-     * This refers to the type of image analysis output. If no value is assigned, the default value will be "FourSeverityLevels".
+     * This refers to the type of image analysis output. If no value is assigned, the default value will be
+     * "FourSeverityLevels".
      */
     @Generated
     private AnalyzeImageOutputType outputType;

@@ -11,11 +11,11 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
-import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
-import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultResponseTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeout;
+import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 
 /**
  * General configuration options for {@link HttpClient HttpClients}.
@@ -24,28 +24,9 @@ import static com.azure.core.util.CoreUtils.getDefaultTimeoutFromEnvironment;
  */
 @Fluent
 public final class HttpClientOptions extends ClientOptions {
-    private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
-    private static final Duration DEFAULT_CONNECT_TIMEOUT;
-    private static final Duration DEFAULT_WRITE_TIMEOUT;
-    private static final Duration DEFAULT_RESPONSE_TIMEOUT;
-    private static final Duration DEFAULT_READ_TIMEOUT;
     private static final Duration DEFAULT_CONNECTION_IDLE_TIMEOUT = Duration.ofSeconds(60);
-    private static final Duration NO_TIMEOUT = Duration.ZERO;
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpClientOptions.class);
-
-    static {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-
-        DEFAULT_CONNECT_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, Duration.ofSeconds(10), LOGGER);
-        DEFAULT_WRITE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
-        DEFAULT_RESPONSE_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration,
-            PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, Duration.ofSeconds(60), LOGGER);
-        DEFAULT_READ_TIMEOUT = getDefaultTimeoutFromEnvironment(configuration, PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-            Duration.ofSeconds(60), LOGGER);
-    }
 
     private ProxyOptions proxyOptions;
     private Configuration configuration;
@@ -141,12 +122,20 @@ public final class HttpClientOptions extends ClientOptions {
     /**
      * Gets the connection timeout for a request to be sent.
      * <p>
+     * The connection timeout begins once the request attempts to connect to the remote host and finishes when the
+     * connection is resolved.
+     * <p>
+     * If {@code connectTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT} or a
+     * 10-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
+     * applied. When applying the timeout the greatest of one millisecond and the value of {@code connectTimeout} will
+     * be used.
+     * <p>
      * The default connection timeout is 10 seconds.
      *
      * @return The connection timeout of a request to be sent.
      */
     public Duration getConnectTimeout() {
-        return getTimeout(connectTimeout, DEFAULT_CONNECT_TIMEOUT);
+        return getTimeout(connectTimeout, getDefaultConnectTimeout());
     }
 
     /**
@@ -174,12 +163,21 @@ public final class HttpClientOptions extends ClientOptions {
     /**
      * Gets the writing timeout for a request to be sent.
      * <p>
+     * The writing timeout does not apply to the entire request but to each emission being sent over the wire. For
+     * example a request body which emits {@code 10} {@code 8KB} buffers will trigger {@code 10} write operations, the
+     * outbound buffer will be periodically checked to determine if it is still draining.
+     * <p>
+     * If {@code writeTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT} or a 60-second
+     * timeout will be used, if it is a {@link Duration} less than or equal to zero then no write timeout will be
+     * applied. When applying the timeout the greatest of one millisecond and the value of {@code writeTimeout} will be
+     * used.
+     * <p>
      * The default writing timeout is 60 seconds.
      *
      * @return The writing timeout of a request to be sent.
      */
     public Duration getWriteTimeout() {
-        return getTimeout(writeTimeout, DEFAULT_WRITE_TIMEOUT);
+        return getTimeout(writeTimeout, getDefaultWriteTimeout());
     }
 
     /**
@@ -227,12 +225,20 @@ public final class HttpClientOptions extends ClientOptions {
     /**
      * Gets the response timeout duration used when waiting for a server to reply.
      * <p>
+     * The response timeout begins once the request write completes and finishes once the first response read is
+     * triggered when the server response is received.
+     * <p>
+     * If {@code responseTimeout} is null either {@link Configuration#PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT} or a
+     * 60-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
+     * applied to the response. When applying the timeout the greatest of one millisecond and the value of
+     * {@code responseTimeout} will be used.
+     * <p>
      * The default response timeout is 60 seconds.
      *
      * @return The response timeout duration.
      */
     public Duration getResponseTimeout() {
-        return getTimeout(responseTimeout, DEFAULT_RESPONSE_TIMEOUT);
+        return getTimeout(responseTimeout, getDefaultResponseTimeout());
     }
 
     /**
@@ -287,7 +293,7 @@ public final class HttpClientOptions extends ClientOptions {
      * @return The read timeout duration.
      */
     public Duration getReadTimeout() {
-        return getTimeout(readTimeout, DEFAULT_READ_TIMEOUT);
+        return getTimeout(readTimeout, getDefaultReadTimeout());
     }
 
     /**
@@ -397,20 +403,5 @@ public final class HttpClientOptions extends ClientOptions {
      */
     public Class<? extends HttpClientProvider> getHttpClientProvider() {
         return httpClientProvider;
-    }
-
-    private static Duration getTimeout(Duration configuredTimeout, Duration defaultTimeout) {
-        // Timeout is null, use the default timeout.
-        if (configuredTimeout == null) {
-            return defaultTimeout;
-        }
-
-        // Timeout is less than or equal to zero, return no timeout.
-        if (configuredTimeout.isZero() || configuredTimeout.isNegative()) {
-            return NO_TIMEOUT;
-        }
-
-        // Return the maximum of the timeout period and the minimum allowed timeout period.
-        return configuredTimeout.compareTo(MINIMUM_TIMEOUT) > 0 ? configuredTimeout : MINIMUM_TIMEOUT;
     }
 }

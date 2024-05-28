@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.util.Beta;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -91,6 +92,7 @@ public final class CosmosDiagnostics {
      * Returns the associated CosmosDiagnosticsContext or null if not associated with any context yet.
      * @return the associated CosmosDiagnosticsContext or null if not associated with any context yet.
      */
+    @JsonIgnore
     public CosmosDiagnosticsContext getDiagnosticsContext() {
         return this.diagnosticsContext;
     }

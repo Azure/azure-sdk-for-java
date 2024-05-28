@@ -12,8 +12,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.TasksClient;
 import com.azure.resourcemanager.security.fluent.models.SecurityTaskInner;
 import com.azure.resourcemanager.security.models.SecurityTask;
-import com.azure.resourcemanager.security.models.TaskUpdateActionType;
 import com.azure.resourcemanager.security.models.Tasks;
+import com.azure.resourcemanager.security.models.TaskUpdateActionType;
 
 public final class TasksImpl implements Tasks {
     private static final ClientLogger LOGGER = new ClientLogger(TasksImpl.class);
@@ -70,8 +70,8 @@ public final class TasksImpl implements Tasks {
 
     public Response<Void> updateSubscriptionLevelTaskStateWithResponse(String ascLocation, String taskName,
         TaskUpdateActionType taskUpdateActionType, Context context) {
-        return this.serviceClient().updateSubscriptionLevelTaskStateWithResponse(ascLocation, taskName,
-            taskUpdateActionType, context);
+        return this.serviceClient()
+            .updateSubscriptionLevelTaskStateWithResponse(ascLocation, taskName, taskUpdateActionType, context);
     }
 
     public void updateSubscriptionLevelTaskState(String ascLocation, String taskName,
@@ -116,14 +116,15 @@ public final class TasksImpl implements Tasks {
 
     public Response<Void> updateResourceGroupLevelTaskStateWithResponse(String resourceGroupName, String ascLocation,
         String taskName, TaskUpdateActionType taskUpdateActionType, Context context) {
-        return this.serviceClient().updateResourceGroupLevelTaskStateWithResponse(resourceGroupName, ascLocation,
-            taskName, taskUpdateActionType, context);
+        return this.serviceClient()
+            .updateResourceGroupLevelTaskStateWithResponse(resourceGroupName, ascLocation, taskName,
+                taskUpdateActionType, context);
     }
 
     public void updateResourceGroupLevelTaskState(String resourceGroupName, String ascLocation, String taskName,
         TaskUpdateActionType taskUpdateActionType) {
-        this.serviceClient().updateResourceGroupLevelTaskState(resourceGroupName, ascLocation, taskName,
-            taskUpdateActionType);
+        this.serviceClient()
+            .updateResourceGroupLevelTaskState(resourceGroupName, ascLocation, taskName, taskUpdateActionType);
     }
 
     private TasksClient serviceClient() {

@@ -29,6 +29,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -45,6 +46,9 @@ public class TestProxyUtils {
     private static final HttpHeaderName X_RECORDING_SKIP = HttpHeaderName.fromString("x-recording-skip");
     private static final String REDACTED_VALUE = "REDACTED";
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
+    // Removing `Location`, `Operation-Location`, `$..id` and `$..name` from the default list of sanitizers as they are used in the SDK.
+    public static final List<String> DEFAULT_REMOVE_SANITIZER_LIST
+        = Collections.unmodifiableList(Arrays.asList("AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493"));
 
     // These are prepended with "$.." creating a Jsonpath expression.
     private static final List<String> JSON_BODY_KEYS_TO_REDACT = Arrays.asList("authHeader", "accountKey",
@@ -53,16 +57,13 @@ public class TestProxyUtils {
         "primaryKey", "secondaryKey", "adminPassword.value", "administratorLoginPassword", "runAsPassword",
         "adminPassword", "accessSAS", "WEBSITE_AUTH_ENCRYPTION_KEY", "decryptionKey", "primaryMasterKey",
         "primaryReadonlyMasterKey", "secondaryMasterKey", "secondaryReadonlyMasterKey", "certificatePassword",
-        "clientSecret", "keyVaultClientSecret", "authHeader", "httpHeader", "encryptedCredential", "appkey",
-        "functionKey", "atlasKafkaPrimaryEndpoint", "atlasKafkaSecondaryEndpoint", "certificatePassword",
-        "storageAccountPrimaryKey", "privateKey", "fencingClientPassword", "acrToken", "scriptUrlSasToken",
-        "azureBlobSource.containerUrl", "properties.DOCKER_REGISTRY_SEVER_PASSWORD");
+        "clientSecret", "keyVaultClientSecret", "authHeader", "httpHeader", "encryptedCredential", "functionKey",
+        "atlasKafkaPrimaryEndpoint", "atlasKafkaSecondaryEndpoint", "certificatePassword", "storageAccountPrimaryKey",
+        "privateKey", "fencingClientPassword", "acrToken", "scriptUrlSasToken", "azureBlobSource.containerUrl",
+        "properties.DOCKER_REGISTRY_SEVER_PASSWORD");
 
     private static final List<TestProxySanitizer> HEADER_KEY_REGEX_TO_REDACT = Arrays.asList(
 
-        // upper and lower case versions intentional
-        new TestProxySanitizer("Operation-location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER),
-        new TestProxySanitizer("Operation-Location", URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.HEADER),
         new TestProxySanitizer("ServiceBusDlqSupplementaryAuthorization",
             "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]+)", REDACTED_VALUE, TestProxySanitizerType.HEADER)
                 .setGroupForReplace("secret"),
@@ -78,7 +79,7 @@ public class TestProxyUtils {
             "<UserDelegationKey>.*?<Value>(?<secret>.*?)</Value>.*?</UserDelegationKey>",
             "SharedAccessKey=(?<secret>[^;\\\"]+)", "AccountKey=(?<secret>[^;\\\"]+)", "accesskey=(?<secret>[^;\\\"]+)",
             "AccessKey=(?<secret>[^;\\\"]+)", "Secret=(?<secret>[^;\\\"]+)", "access_token=(?<secret>.*?)(?=&|$)",
-            "refresh_token=(?<secret>.*?)(?=&|$)", "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]*)");
+            "refresh_token=(?<secret>.*?)(?=&|$)");
 
     private static final List<String> HEADER_KEYS_TO_REDACT = Arrays.asList("Ocp-Apim-Subscription-Key", "api-key",
         "x-api-key", "subscription-key", "x-ms-encryption-key", "sshPassword");
@@ -440,6 +441,16 @@ public class TestProxyUtils {
 
         String requestBody = "[" + CoreUtils.stringJoin(",", sanitizersJsonPayloads) + "]";
         return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/AddSanitizers").setBody(requestBody);
+    }
+
+    /**
+     * Creates a request to remove sanitizers from the request.
+     * @return The {@link HttpRequest request} to be sent.
+     */
+    public static HttpRequest getRemoveSanitizerRequest() {
+
+        return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/RemoveSanitizers")
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
     }
 
     private static HttpRequest createHttpRequest(String requestBody, String sanitizerType, URL proxyUrl) {

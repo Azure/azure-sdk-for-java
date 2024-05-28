@@ -33,7 +33,7 @@ public final class TargetDictionaryLanguage {
      */
     @Generated
     @JsonProperty(value = "dir")
-    private final String dir;
+    private final LanguageDirectionality directionality;
 
     /*
      * Language code identifying the target language.
@@ -47,17 +47,17 @@ public final class TargetDictionaryLanguage {
      *
      * @param name the name value to set.
      * @param nativeName the nativeName value to set.
-     * @param dir the dir value to set.
+     * @param directionality the directionality value to set.
      * @param code the code value to set.
      */
     @Generated
     @JsonCreator
     private TargetDictionaryLanguage(@JsonProperty(value = "name") String name,
-        @JsonProperty(value = "nativeName") String nativeName, @JsonProperty(value = "dir") String dir,
-        @JsonProperty(value = "code") String code) {
+        @JsonProperty(value = "nativeName") String nativeName,
+        @JsonProperty(value = "dir") LanguageDirectionality directionality, @JsonProperty(value = "code") String code) {
         this.name = name;
         this.nativeName = nativeName;
-        this.dir = dir;
+        this.directionality = directionality;
         this.code = code;
     }
 
@@ -82,14 +82,14 @@ public final class TargetDictionaryLanguage {
     }
 
     /**
-     * Get the dir property: Directionality, which is rtl for right-to-left languages or ltr for left-to-right
-     * languages.
+     * Get the directionality property: Directionality, which is rtl for right-to-left languages or ltr for
+     * left-to-right languages.
      *
-     * @return the dir value.
+     * @return the directionality value.
      */
     @Generated
-    public String getDir() {
-        return this.dir;
+    public LanguageDirectionality getDirectionality() {
+        return this.directionality;
     }
 
     /**

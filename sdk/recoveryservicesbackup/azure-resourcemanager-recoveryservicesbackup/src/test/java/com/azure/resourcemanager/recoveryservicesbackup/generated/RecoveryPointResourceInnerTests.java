@@ -25,7 +25,8 @@ public final class RecoveryPointResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPointResourceInner model = new RecoveryPointResourceInner().withLocation("ljyoxgvcltb")
-            .withTags(mapOf("hkjeszzhbi", "c", "vecxgodebfqkk", "htxfvgxbfsmxnehm")).withProperties(new RecoveryPoint())
+            .withTags(mapOf("hkjeszzhbi", "c", "vecxgodebfqkk", "htxfvgxbfsmxnehm"))
+            .withProperties(new RecoveryPoint())
             .withEtag("xjvuujqgidokg");
         model = BinaryData.fromObject(model).toObject(RecoveryPointResourceInner.class);
         Assertions.assertEquals("ljyoxgvcltb", model.location());

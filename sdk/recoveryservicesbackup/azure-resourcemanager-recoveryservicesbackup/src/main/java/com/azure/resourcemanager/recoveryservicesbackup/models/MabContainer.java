@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,20 @@ import java.util.List;
 /**
  * Container with items backed up using MAB backup engine.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "containerType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "containerType", defaultImpl = MabContainer.class, visible = true)
 @JsonTypeName("Windows")
 @Fluent
 public final class MabContainer extends ProtectionContainer {
+    /*
+     * Type of the container. The value of this property for: 1. Compute Azure VM is Microsoft.Compute/virtualMachines 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer
+     */
+    @JsonTypeId
+    @JsonProperty(value = "containerType", required = true)
+    private ProtectableContainerType containerType = ProtectableContainerType.WINDOWS;
+
     /*
      * Can the container be registered one more time.
      */
@@ -63,6 +74,20 @@ public final class MabContainer extends ProtectionContainer {
      * Creates an instance of MabContainer class.
      */
     public MabContainer() {
+    }
+
+    /**
+     * Get the containerType property: Type of the container. The value of this property for: 1. Compute Azure VM is
+     * Microsoft.Compute/virtualMachines 2.
+     * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines 3. Windows machines (like MAB, DPM etc) is
+     * Windows 4. Azure SQL instance is AzureSqlContainer. 5. Storage containers is StorageContainer. 6. Azure workload
+     * Backup is VMAppContainer.
+     * 
+     * @return the containerType value.
+     */
+    @Override
+    public ProtectableContainerType containerType() {
+        return this.containerType;
     }
 
     /**

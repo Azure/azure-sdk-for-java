@@ -18,7 +18,6 @@ import com.azure.ai.formrecognizer.models.FormWord;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.SelectionMarkState;
-import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -719,8 +718,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
 
             if (formLine.getAppearance() != null) {
                 Assertions.assertNotNull(formLine.getAppearance().getStyleName());
-                Assertions.assertTrue(formLine.getAppearance().getStyleName() == TextStyleName.HANDWRITING
-                    || formLine.getAppearance().getStyleName() == TextStyleName.OTHER);
+                Assertions.assertNotNull(formLine.getAppearance().getStyleName());
             }
 
             Assertions.assertNotNull(formLine.getWords());

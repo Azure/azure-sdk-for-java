@@ -122,7 +122,8 @@ class CosmosCatalogBase
                     .sparkCatalogClient
                     .readAllDatabases()
                     .map(Array(_))
-                    .blockLast()
+                    .collectSeq()
+                    .block()
                     .toArray
             })
     }
@@ -316,7 +317,8 @@ class CosmosCatalogBase
                             .sparkCatalogClient
                             .readAllContainers(databaseName)
                             .map(containerId => getContainerIdentifier(namespace.head, containerId))
-                            .blockLast()
+                            .collectSeq()
+                            .block()
                             .toList
                     })
 

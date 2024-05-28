@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set
- * of results.
+ * A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of
+ * results.
  */
 @Immutable
 public final class OperationListResult {

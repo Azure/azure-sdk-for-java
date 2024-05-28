@@ -11,9 +11,7 @@ import com.azure.resourcemanager.security.models.SettingName;
  */
 public final class DefenderForStorageCreateSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2022-12-01-preview/examples/DefenderForStorage
-     * /PutDefenderForStorageSettings_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-12-01-preview/examples/DefenderForStorage/PutDefenderForStorageSettings_example.json
      */
     /**
      * Sample code: Creates or updates the Defender for Storage settings on a specified resource.
@@ -22,12 +20,17 @@ public final class DefenderForStorageCreateSamples {
      */
     public static void createsOrUpdatesTheDefenderForStorageSettingsOnASpecifiedResource(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.defenderForStorages().define(SettingName.CURRENT).withExistingResourceId(
-            "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount")
-            .withIsEnabled(true).withOverrideSubscriptionLevelSettings(true)
+        manager.defenderForStorages()
+            .define(SettingName.CURRENT)
+            .withExistingResourceId(
+                "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount")
+            .withIsEnabled(true)
+            .withOverrideSubscriptionLevelSettings(true)
             .withScanResultsEventGridTopicResourceId(
                 "/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.EventGrid/topics/sampletopic")
-            .withIsEnabledMalwareScanningIsEnabled(true).withCapGBPerMonth(-1)
-            .withIsEnabledSensitiveDataDiscoveryIsEnabled(true).create();
+            .withIsEnabledMalwareScanningIsEnabled(true)
+            .withCapGBPerMonth(-1)
+            .withIsEnabledSensitiveDataDiscoveryIsEnabled(true)
+            .create();
     }
 }

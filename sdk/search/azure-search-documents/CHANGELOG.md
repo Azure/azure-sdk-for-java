@@ -1,6 +1,6 @@
 # Release History
 
-## 11.7.0-beta.3 (Unreleased)
+## 11.7.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,27 @@
 
 ### Other Changes
 
+## 11.7.0-beta.3 (2024-05-07)
+
+### Features Added
+
+- Added support for `Byte[]` and `List<Byte>` in `FieldBuilder`
+- Added support for `HybridSearch`
+- Index models added: `AIServicesVisionParameters`, `AIServicesVisionVectorizer`, `AIStudioModelCatalogName`,
+  `AzureMachineLearningParameters`, `AzureMachineLearningVectorizer`, `AzureOpenAIModelName`, `VectorEncodingFormat`,
+ `VisionVectorizeSkill`
+- Search models added: `HybridCountAndFacetMode`, `HybridSearch`, `SearchScoreThreshold`, `VectorSimilarityThreshold`, 
+ `VectorThreshold`, `VectorThresholdKind`, `VectorizableImageBinaryQuery`, `VectorizableImageUrlQuery`
+
+### Other Changes
+
+- Sample added for creating a vector fields index with reduced dimensions.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.11` to version `1.4.12`.
 
 ## 11.6.4 (2024-04-23)
 

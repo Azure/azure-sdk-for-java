@@ -92,6 +92,12 @@
       <groupId>com.squareup.okhttp3</groupId>
       <artifactId>okhttp</artifactId>
       <version>4.12.0</version> <!-- {x-version-update;com.squareup.okhttp3:okhttp;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.squareup.okio</groupId>
+          <artifactId>okio</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using OkHttp -->

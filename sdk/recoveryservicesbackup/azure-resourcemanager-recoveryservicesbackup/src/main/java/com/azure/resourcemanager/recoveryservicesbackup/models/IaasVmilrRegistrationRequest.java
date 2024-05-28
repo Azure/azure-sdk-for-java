@@ -6,16 +6,28 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Restore files/folders from a backup copy of IaaS VM.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "objectType",
+    defaultImpl = IaasVmilrRegistrationRequest.class,
+    visible = true)
 @JsonTypeName("IaasVMILRRegistrationRequest")
 @Fluent
 public final class IaasVmilrRegistrationRequest extends IlrRequest {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "objectType", required = true)
+    private String objectType = "IaasVMILRRegistrationRequest";
+
     /*
      * ID of the IaaS VM backup copy from where the files/folders have to be restored.
      */
@@ -47,8 +59,18 @@ public final class IaasVmilrRegistrationRequest extends IlrRequest {
     }
 
     /**
-     * Get the recoveryPointId property: ID of the IaaS VM backup copy from where the files/folders have to be
-     * restored.
+     * Get the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
+     * Get the recoveryPointId property: ID of the IaaS VM backup copy from where the files/folders have to be restored.
      * 
      * @return the recoveryPointId value.
      */
@@ -57,8 +79,7 @@ public final class IaasVmilrRegistrationRequest extends IlrRequest {
     }
 
     /**
-     * Set the recoveryPointId property: ID of the IaaS VM backup copy from where the files/folders have to be
-     * restored.
+     * Set the recoveryPointId property: ID of the IaaS VM backup copy from where the files/folders have to be restored.
      * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the IaasVmilrRegistrationRequest object itself.

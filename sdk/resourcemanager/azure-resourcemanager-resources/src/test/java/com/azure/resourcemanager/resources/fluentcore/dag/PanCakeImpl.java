@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreateUpdateTask;
@@ -19,6 +21,8 @@ import java.util.List;
 class PancakeImpl
         extends CreatableUpdatableImpl<IPancake, PancakeInner, PancakeImpl>
         implements IPancake {
+    private static final ClientLogger LOGGER = new ClientLogger(PancakeImpl.class);
+
     final List<Creatable<IPancake>> delayedPancakes;
     final long eventDelayInMilliseconds;
     final Throwable errorToThrow;
@@ -73,19 +77,19 @@ class PancakeImpl
             this.addDependency(pancake);
         }
         int newCount = this.taskGroup().getNode(this.key()).dependencyKeys().size();
-        System.out.println("Pancake(" + this.name() + ")::beforeGroupCreateOrUpdate() 'delayedSize':" + this.delayedPancakes.size()
-                + " 'dependency count [old, new]': [" + oldCount + "," + newCount + "]");
+        LOGGER.log(LogLevel.VERBOSE, () -> "Pancake(" + this.name() + ")::beforeGroupCreateOrUpdate() 'delayedSize':"
+            + this.delayedPancakes.size() + " 'dependency count [old, new]': [" + oldCount + "," + newCount + "]");
     }
 
     @Override
     public Mono<IPancake> createResourceAsync() {
         if (this.errorToThrow == null) {
-            System.out.println("Pancake(" + this.name() + ")::createResourceAsync() 'onNext()'");
+            LOGGER.log(LogLevel.VERBOSE, () -> "Pancake(" + this.name() + ")::createResourceAsync() 'onNext()'");
             return Mono.just(this)
                     .delayElement(Duration.ofMillis(this.eventDelayInMilliseconds))
                     .map(pancake -> pancake);
         } else {
-            System.out.println("Pancake(" + this.name() + ")::createResourceAsync() 'onError()'");
+            LOGGER.log(LogLevel.VERBOSE, () -> "Pancake(" + this.name() + ")::createResourceAsync() 'onError()'");
             return Mono.just(this)
                     .delayElement(Duration.ofMillis(this.eventDelayInMilliseconds))
                     .flatMap(pancake -> toErrorMono(errorToThrow));

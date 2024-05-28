@@ -176,7 +176,8 @@ public final class DefenderForStorageSettingInner extends ProxyResource {
      * @return the isEnabledSensitiveDataDiscoveryIsEnabled value.
      */
     public Boolean isEnabledSensitiveDataDiscoveryIsEnabled() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().isEnabledSensitiveDataDiscoveryIsEnabled();
     }
 
@@ -203,7 +204,8 @@ public final class DefenderForStorageSettingInner extends ProxyResource {
      * @return the operationStatusSensitiveDataDiscoveryOperationStatus value.
      */
     public OperationStatus operationStatusSensitiveDataDiscoveryOperationStatus() {
-        return this.innerProperties() == null ? null
+        return this.innerProperties() == null
+            ? null
             : this.innerProperties().operationStatusSensitiveDataDiscoveryOperationStatus();
     }
 

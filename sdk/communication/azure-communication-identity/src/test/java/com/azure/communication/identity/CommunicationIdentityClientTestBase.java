@@ -19,6 +19,8 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
@@ -33,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(CommunicationIdentityClientTestBase.class);
 
     private static final String REDACTED = "REDACTED";
     private static final String URI_IDENTITY_REPLACER_REGEX = "/identities/([^/?]+)";
@@ -159,7 +162,7 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
                     final HttpResponse bufferedResponse = httpResponse.buffer();
 
                     // Should sanitize printed reponse url
-                    System.out.println("MS-CV header for " + testName + " request "
+                    LOGGER.log(LogLevel.VERBOSE, () -> "MS-CV header for " + testName + " request "
                             + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                     return Mono.just(bufferedResponse);
                 });

@@ -183,20 +183,24 @@ public final class TriggerDataMoveRequest {
      */
     public void validate() {
         if (sourceResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property sourceResourceId in model TriggerDataMoveRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceResourceId in model TriggerDataMoveRequest"));
         }
         if (sourceRegion() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sourceRegion in model TriggerDataMoveRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceRegion in model TriggerDataMoveRequest"));
         }
         if (dataMoveLevel() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property dataMoveLevel in model TriggerDataMoveRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataMoveLevel in model TriggerDataMoveRequest"));
         }
         if (correlationId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property correlationId in model TriggerDataMoveRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property correlationId in model TriggerDataMoveRequest"));
         }
     }
 

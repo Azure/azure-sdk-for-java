@@ -20,7 +20,9 @@ public final class AssetStatus {
     private List<AssetStatusError> errors;
 
     /*
-     * A read only incremental counter indicating the number of times the configuration has been modified from the perspective of the current actual (Edge) state of the Asset. Edge would be the only writer of this value and would sync back up to the cloud. In steady state, this should equal version.
+     * A read only incremental counter indicating the number of times the configuration has been modified from the
+     * perspective of the current actual (Edge) state of the Asset. Edge would be the only writer of this value and
+     * would sync back up to the cloud. In steady state, this should equal version.
      */
     @JsonProperty(value = "version")
     private Integer version;

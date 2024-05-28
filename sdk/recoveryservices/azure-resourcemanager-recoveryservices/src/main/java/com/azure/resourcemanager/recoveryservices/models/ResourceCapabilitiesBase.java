@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Base class for request and response capabilities information for Microsoft.RecoveryServices. */
+/**
+ * Base class for request and response capabilities information for Microsoft.RecoveryServices.
+ */
 @Fluent
 public class ResourceCapabilitiesBase {
     /*
@@ -17,13 +19,15 @@ public class ResourceCapabilitiesBase {
     @JsonProperty(value = "type", required = true)
     private String type;
 
-    /** Creates an instance of ResourceCapabilitiesBase class. */
+    /**
+     * Creates an instance of ResourceCapabilitiesBase class.
+     */
     public ResourceCapabilitiesBase() {
     }
 
     /**
      * Get the type property: Describes the Resource type: Microsoft.RecoveryServices/Vaults.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -32,7 +36,7 @@ public class ResourceCapabilitiesBase {
 
     /**
      * Set the type property: Describes the Resource type: Microsoft.RecoveryServices/Vaults.
-     *
+     * 
      * @param type the type value to set.
      * @return the ResourceCapabilitiesBase object itself.
      */
@@ -43,14 +47,13 @@ public class ResourceCapabilitiesBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ResourceCapabilitiesBase"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ResourceCapabilitiesBase"));
         }
     }
 

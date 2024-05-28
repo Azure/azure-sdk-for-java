@@ -15,19 +15,19 @@ public final class GitLabProjectInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitLabProjectInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningStatusMessage\":\"w\",\"provisioningStatusUpdateTimeUtc\":\"2021-07-24T11:19:34Z\",\"provisioningState\":\"PendingDeletion\",\"fullyQualifiedName\":\"ypivlsbb\",\"fullyQualifiedFriendlyName\":\"mcub\",\"fullyQualifiedParentGroupName\":\"ifoxxkubvphav\",\"url\":\"h\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"qgvgovpbbtt\",\"name\":\"fjoknss\",\"type\":\"yzqedikdfrd\"}")
+            "{\"properties\":{\"provisioningStatusMessage\":\"kejcgwfsgqksty\",\"provisioningStatusUpdateTimeUtc\":\"2021-01-04T11:34Z\",\"provisioningState\":\"Failed\",\"fullyQualifiedName\":\"ijpardavsjcf\",\"fullyQualifiedFriendlyName\":\"zpzdqwuzvcmcokx\",\"fullyQualifiedParentGroupName\":\"ekuvfrjwuca\",\"url\":\"zvajbvbnkrdem\",\"onboardingState\":\"NotApplicable\"},\"id\":\"ackzidgzw\",\"name\":\"ydamisvpztdivykp\",\"type\":\"kqejtpjfojiunr\"}")
             .toObject(GitLabProjectInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.PENDING_DELETION, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.properties().onboardingState());
+        Assertions.assertEquals(DevOpsProvisioningState.FAILED, model.properties().provisioningState());
+        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.properties().onboardingState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GitLabProjectInner model = new GitLabProjectInner().withProperties(
-            new GitLabProjectProperties().withProvisioningState(DevOpsProvisioningState.PENDING_DELETION)
-                .withOnboardingState(OnboardingState.NOT_ONBOARDED));
+        GitLabProjectInner model = new GitLabProjectInner()
+            .withProperties(new GitLabProjectProperties().withProvisioningState(DevOpsProvisioningState.FAILED)
+                .withOnboardingState(OnboardingState.NOT_APPLICABLE));
         model = BinaryData.fromObject(model).toObject(GitLabProjectInner.class);
-        Assertions.assertEquals(DevOpsProvisioningState.PENDING_DELETION, model.properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_ONBOARDED, model.properties().onboardingState());
+        Assertions.assertEquals(DevOpsProvisioningState.FAILED, model.properties().provisioningState());
+        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.properties().onboardingState());
     }
 }

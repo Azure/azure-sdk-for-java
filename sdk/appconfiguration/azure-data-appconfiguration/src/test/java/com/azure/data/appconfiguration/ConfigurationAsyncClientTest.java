@@ -86,7 +86,12 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             } else if (interceptorManager.isPlaybackMode()) {
                 interceptorManager.addMatchers(Collections.singletonList(
-                    new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Sync-Token"))));
+                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token", "If-Match"))));
+            }
+
+            // Disable `$.key` snanitizer
+            if (!interceptorManager.isLiveMode()) {
+                interceptorManager.removeSanitizers(Arrays.asList("AZSDK3447"));
             }
             return builder.buildAsyncClient();
         });

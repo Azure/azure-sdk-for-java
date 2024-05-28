@@ -7,6 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
@@ -583,7 +584,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @LiveOnly
     public void canGetSqlServerCapabilitiesAndCreateIdentity() throws Exception {
+        // LiveOnly because "test timing out after latest test proxy update"
         String sqlServerAdminName = "sqladmin";
         String sqlServerAdminPassword = password();
         String databaseName = "db-from-sample";
@@ -1651,7 +1654,9 @@ public class SqlServerOperationsTests extends SqlServerTest {
     }
 
     @Test
+    @LiveOnly
     public void testRandomSku() {
+        // LiveOnly because "test timing out after latest test proxy update"
         // "M" series is not supported in this region
         List<DatabaseSku> databaseSkus = DatabaseSku.getAll().stream().filter(sku -> !"M".equals(sku.toSku().family())).collect(Collectors.toCollection(LinkedList::new));
         Collections.shuffle(databaseSkus);

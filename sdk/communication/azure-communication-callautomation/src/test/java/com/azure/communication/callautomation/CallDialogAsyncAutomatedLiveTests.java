@@ -12,6 +12,7 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.DoNotRecord;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CallDialogAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
 
+    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(

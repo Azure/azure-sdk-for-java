@@ -66,18 +66,20 @@ public final class CustomEntityStoreAssignmentImpl
     }
 
     public CustomEntityStoreAssignment create() {
-        this.innerObject
-            = serviceManager
-                .serviceClient().getCustomEntityStoreAssignments().createWithResponse(resourceGroupName,
-                    customEntityStoreAssignmentName, createCustomEntityStoreAssignmentRequestBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomEntityStoreAssignments()
+            .createWithResponse(resourceGroupName, customEntityStoreAssignmentName,
+                createCustomEntityStoreAssignmentRequestBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CustomEntityStoreAssignment create(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getCustomEntityStoreAssignments().createWithResponse(resourceGroupName,
-                customEntityStoreAssignmentName, createCustomEntityStoreAssignmentRequestBody, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomEntityStoreAssignments()
+            .createWithResponse(resourceGroupName, customEntityStoreAssignmentName,
+                createCustomEntityStoreAssignmentRequestBody, context)
+            .getValue();
         return this;
     }
 
@@ -89,15 +91,18 @@ public final class CustomEntityStoreAssignmentImpl
     }
 
     public CustomEntityStoreAssignment refresh() {
-        this.innerObject = serviceManager.serviceClient().getCustomEntityStoreAssignments()
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomEntityStoreAssignments()
             .getByResourceGroupWithResponse(resourceGroupName, customEntityStoreAssignmentName, Context.NONE)
             .getValue();
         return this;
     }
 
     public CustomEntityStoreAssignment refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCustomEntityStoreAssignments()
-            .getByResourceGroupWithResponse(resourceGroupName, customEntityStoreAssignmentName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomEntityStoreAssignments()
+            .getByResourceGroupWithResponse(resourceGroupName, customEntityStoreAssignmentName, context)
+            .getValue();
         return this;
     }
 

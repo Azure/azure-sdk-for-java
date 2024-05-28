@@ -11,7 +11,7 @@ public final class AuthenticationDetailsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AuthenticationDetailsProperties model = BinaryData.fromString(
-            "{\"authenticationType\":\"AuthenticationDetailsProperties\",\"authenticationProvisioningState\":\"Invalid\",\"grantedPermissions\":[\"AWS::AWSSecurityHubReadOnlyAccess\",\"AWS::SecurityAudit\"]}")
+            "{\"authenticationType\":\"AuthenticationDetailsProperties\",\"authenticationProvisioningState\":\"Valid\",\"grantedPermissions\":[\"AWS::SecurityAudit\",\"AWS::SecurityAudit\",\"AWS::AWSSecurityHubReadOnlyAccess\"]}")
             .toObject(AuthenticationDetailsProperties.class);
     }
 

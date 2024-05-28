@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class ApplicationOperationDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/
-     * DeleteApplication_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-07-01-preview/examples/Applications/DeleteApplication_example.json
      */
     /**
      * Sample code: Delete security Application.
@@ -19,7 +17,7 @@ public final class ApplicationOperationDeleteSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void deleteSecurityApplication(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.applicationOperations().deleteWithResponse("ad9a8e26-29d9-4829-bb30-e597a58cdbb8",
-            com.azure.core.util.Context.NONE);
+        manager.applicationOperations()
+            .deleteWithResponse("ad9a8e26-29d9-4829-bb30-e597a58cdbb8", com.azure.core.util.Context.NONE);
     }
 }
