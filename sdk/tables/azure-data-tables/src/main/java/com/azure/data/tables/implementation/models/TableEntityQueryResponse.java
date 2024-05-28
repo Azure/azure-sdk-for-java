@@ -74,9 +74,6 @@ public final class TableEntityQueryResponse implements JsonSerializable<TableEnt
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
