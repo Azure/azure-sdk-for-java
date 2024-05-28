@@ -139,6 +139,7 @@ public class ReadmeSamples {
         public String getId () {
             return id;
         }
+
         public String getSensitiveString() {
             return sensitiveString;
         }
