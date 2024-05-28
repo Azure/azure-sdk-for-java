@@ -14,9 +14,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusException;
@@ -24,7 +21,6 @@ import com.azure.messaging.servicebus.ServiceBusFailureReason;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,21 +28,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
 
 public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(CallAutomationAutomatedLiveTestBase.class);
-
     protected ConcurrentHashMap<String, ServiceBusProcessorClient> processorStore;
     // Key: callerId + receiverId, Value: incomingCallContext
     protected ConcurrentHashMap<String, String> incomingCallContextStore;
@@ -60,27 +53,9 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         .get("DISPATCHER_ENDPOINT",
             "https://incomingcalldispatcher.azurewebsites.net");
     protected static final String DISPATCHER_CALLBACK = DISPATCHER_ENDPOINT + "/api/servicebuscallback/events";
-    protected static final String BOT_APP_ID = Configuration.getGlobalConfiguration()
-        .get("BOT_APP_ID", "REDACTED-bedb-REDACTED-b8c6-REDACTED");
-
-    private static final StringJoiner JSON_PROPERTIES_TO_REDACT
-        = new StringJoiner("\":\"|\"", "\"", "\":\"")
-        .add("value")
-        .add("rawId")
-        .add("id")
-        .add("callbackUri")
-        .add("botAppId")
-        .add("ivrContext")
-        .add("incomingCallContext")
-        .add("serverCallId");
-
-    protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
-        = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
-        Pattern.CASE_INSENSITIVE);
-
-    protected static final String URL_REGEX = "(?<=http:\\/\\/|https:\\/\\/)([^\\/?]+)";
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void beforeTest() {
         super.beforeTest();
         processorStore = new ConcurrentHashMap<>();
@@ -91,40 +66,33 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         // Load persisted events back to memory when in playback mode
         if (getTestMode() == TestMode.PLAYBACK) {
             try {
-                String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName() + ".json";
-                FileInputStream fileInputStream = new FileInputStream(fileName);
-                byte[] jsonData = new byte[fileInputStream.available()];
-                fileInputStream.read(jsonData);
-                fileInputStream.close();
-                String jsonString = new String(jsonData, StandardCharsets.UTF_8);
-                ObjectMapper objectMapper = new ObjectMapper();
-                List<String> persistedEvents = objectMapper.readValue(jsonString, new TypeReference<List<String>>() {});
+                String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName();
+                ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
+                ArrayList<String> persistedEvents = (ArrayList<String>) objectInputStream.readObject();
                 persistedEvents.forEach(this::messageBodyHandler);
-            } catch (IOException e) {
+                objectInputStream.close();
+            } catch (IOException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }
+
     }
 
     @Override
     protected void afterTest() {
         super.afterTest();
-        if (processorStore != null) {
-            processorStore.forEach((key, value) -> value.close());
-        }
+        processorStore.forEach((key, value) -> value.close());
 
         // In recording mode, manually store events from event dispatcher into local disk as the callAutomationClient doesn't do so
         if (getTestMode() == TestMode.RECORD) {
             try {
-                String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName() + ".json";
-
-                ObjectMapper objectMapper = new ObjectMapper();
-                String jsonString = objectMapper.writeValueAsString(eventsToPersist);
+                String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName();
                 new FileOutputStream(fileName).close();
                 FileOutputStream fileOutputStream = new FileOutputStream(fileName, false);
-                fileOutputStream.write(jsonString.getBytes());
-                fileOutputStream.flush();
-                fileOutputStream.close();
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                objectOutputStream.writeObject(eventsToPersist);
+                objectOutputStream.flush();
+                objectOutputStream.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -141,25 +109,25 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         String callerId = parseIdsFromIdentifier(caller);
         String receiverId = parseIdsFromIdentifier(receiver);
         String uniqueId = callerId + receiverId;
-        if (getTestMode() != TestMode.PLAYBACK) {
-            // subscribe
-            HttpClient httpClient = HttpClient.createDefault();
-            String dispatcherUrl = DISPATCHER_ENDPOINT + String.format("/api/servicebuscallback/subscribe?q=%s", uniqueId);
-            HttpRequest request = new HttpRequest(HttpMethod.POST, dispatcherUrl);
-            HttpResponse response = httpClient.send(request).block();
-            assert response != null;
 
-            // create a service bus processor
-            ServiceBusProcessorClient serviceBusProcessorClient = createServiceBusClientBuilderWithConnectionString()
-                .processor()
-                .queueName(uniqueId)
-                .processMessage(this::messageHandler)
-                .processError(serviceBusErrorContext -> errorHandler(serviceBusErrorContext, new CountDownLatch(1)))
-                .buildProcessorClient();
+        // subscribe
+        HttpClient httpClient = HttpClient.createDefault();
+        String dispatcherUrl = DISPATCHER_ENDPOINT + String.format("/api/servicebuscallback/subscribe?q=%s", uniqueId);
+        HttpRequest request = new HttpRequest(HttpMethod.POST, dispatcherUrl);
+        HttpResponse response = httpClient.send(request).block();
+        assert response != null;
+        System.out.println(String.format("Subscription to dispatcher of %s: ", uniqueId) + response.getStatusCode());
 
-            serviceBusProcessorClient.start();
-            processorStore.put(uniqueId, serviceBusProcessorClient);
-        }
+        // create a service bus processor
+        ServiceBusProcessorClient serviceBusProcessorClient = createServiceBusClientBuilderWithConnectionString()
+            .processor()
+            .queueName(uniqueId)
+            .processMessage(this::messageHandler)
+            .processError(serviceBusErrorContext -> errorHandler(serviceBusErrorContext, new CountDownLatch(1)))
+            .buildProcessorClient();
+
+        serviceBusProcessorClient.start();
+        processorStore.put(uniqueId, serviceBusProcessorClient);
         return uniqueId;
     }
 
@@ -167,6 +135,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         // receive message from dispatcher
         ServiceBusReceivedMessage message = context.getMessage();
         String body = message.getBody().toString();
+        System.out.println(body);
 
         // When in recording mode, save incoming events into memory for future use
         if (getTestMode() == TestMode.RECORD) {
@@ -209,12 +178,11 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     }
 
     protected void errorHandler(ServiceBusErrorContext context, CountDownLatch countdownLatch) {
-        LOGGER.log(LogLevel.VERBOSE, () -> String.format(
-            "Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
-            context.getFullyQualifiedNamespace(), context.getEntityPath()));
+        System.out.printf("Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
+            context.getFullyQualifiedNamespace(), context.getEntityPath());
 
         if (!(context.getException() instanceof ServiceBusException)) {
-            LOGGER.log(LogLevel.VERBOSE, () -> "Non-ServiceBusException occurred: " + context.getException());
+            System.out.printf("Non-ServiceBusException occurred: %s%n", context.getException());
             return;
         }
 
@@ -224,20 +192,22 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         if (reason == ServiceBusFailureReason.MESSAGING_ENTITY_DISABLED
             || reason == ServiceBusFailureReason.MESSAGING_ENTITY_NOT_FOUND
             || reason == ServiceBusFailureReason.UNAUTHORIZED) {
-            LOGGER.log(LogLevel.VERBOSE, () -> String.format(
-                "An unrecoverable error occurred. Stopping processing with reason %s: %s%n",
-                reason, exception.getMessage()));
+            System.out.printf("An unrecoverable error occurred. Stopping processing with reason %s: %s%n",
+                reason, exception.getMessage());
 
             countdownLatch.countDown();
         } else if (reason == ServiceBusFailureReason.MESSAGE_LOCK_LOST) {
-            LOGGER.log(LogLevel.VERBOSE,
-                () -> String.format("Message lock lost for message: %s%n", context.getException()));
+            System.out.printf("Message lock lost for message: %s%n", context.getException());
         } else if (reason == ServiceBusFailureReason.SERVICE_BUSY) {
-            // Choosing an arbitrary amount of time to wait until trying again.
-            sleepIfRunningAgainstService(1000);
+            try {
+                // Choosing an arbitrary amount of time to wait until trying again.
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                System.err.println("Unable to sleep for period of time");
+            }
         } else {
-            LOGGER.log(LogLevel.VERBOSE, () -> String.format("Error source %s, reason %s, message: %s%n",
-                context.getErrorSource(), reason, context.getException()));
+            System.out.printf("Error source %s, reason %s, message: %s%n", context.getErrorSource(),
+                reason, context.getException());
         }
     }
 
@@ -262,7 +232,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             if (incomingCallContext != null) {
                 return incomingCallContext;
             }
-            sleepIfRunningAgainstService(1000);
+            Thread.sleep(1000);
         }
         return null;
     }
@@ -277,18 +247,8 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
                     return event;
                 }
             }
-            sleepIfRunningAgainstService(1000);
+            Thread.sleep(1000);
         }
         return null;
-    }
-
-    protected String redact(String content, Matcher matcher) {
-        while (matcher.find()) {
-            String captureGroup = matcher.group(1);
-            if (!CoreUtils.isNullOrEmpty(captureGroup)) {
-                content = content.replace(matcher.group(1), "REDACTED");
-            }
-        }
-        return content;
     }
 }
