@@ -5,8 +5,6 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient.BufferedProducerClientOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,8 +29,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 public class EventDataAggregatorTest {
-    private static final ClientLogger LOGGER = new ClientLogger(EventDataAggregatorTest.class);
-
     private static final String NAMESPACE = "test.namespace";
     private static final String PARTITION_ID = "test-id";
 
@@ -179,7 +175,7 @@ public class EventDataAggregatorTest {
                 case 1:
                     return batch2;
                 default:
-                    LOGGER.log(LogLevel.VERBOSE, () -> "Invoked get batch for the xth time:" + current);
+                    System.out.println("Invoked get batch for the xth time:" + current);
                     return batch3;
             }
         };
