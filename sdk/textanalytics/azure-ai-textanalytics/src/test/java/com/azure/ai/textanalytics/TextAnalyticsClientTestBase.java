@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryContext;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryOptions;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
@@ -23,6 +24,7 @@ import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.ExtractiveSummaryAction;
@@ -32,6 +34,7 @@ import com.azure.ai.textanalytics.models.ExtractiveSummaryResult;
 import com.azure.ai.textanalytics.models.ExtractiveSummarySentence;
 import com.azure.ai.textanalytics.models.ExtractiveSummarySentencesOrder;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.LinkedEntity;
@@ -107,6 +110,7 @@ import static com.azure.ai.textanalytics.TestUtils.SUMMARY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.getDuplicateTextDocumentInputs;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static java.util.Arrays.asList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -241,6 +245,10 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
 
     @Test
     abstract void recognizeEntitiesEmoji(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeEntitiesBatchWithResponseEmoji(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeEntitiesEmojiWithSkinToneModifier(HttpClient httpClient,
@@ -724,12 +732,6 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
     abstract void analyzeExtractSummaryActionMaxSentenceCountInvalidRangeException(
         HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
-    @Test
-    abstract void beginAbstractSummaryStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void beginAbstractSummaryMaxOverload(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
         TextAnalyticsRequestOptions> testRunner) {
@@ -1076,6 +1078,7 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
                 .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
                 .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction())
                 .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
+                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction())
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction()));
     }
 
@@ -1089,6 +1092,7 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
                 .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
                 .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction())
                 .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction())
+                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction())
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction())
         );
     }
@@ -1122,7 +1126,9 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
                 .setRecognizeEntitiesActions(new RecognizeEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
                 .setRecognizePiiEntitiesActions(new RecognizePiiEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
                 .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction().setActionName(CUSTOM_ACTION_NAME))
+                .setRecognizeLinkedEntitiesActions(new RecognizeLinkedEntitiesAction().setActionName(CUSTOM_ACTION_NAME))
                 .setAnalyzeSentimentActions(new AnalyzeSentimentAction().setActionName(CUSTOM_ACTION_NAME))
+                .setExtractiveSummaryActions(new ExtractiveSummaryAction().setActionName(CUSTOM_ACTION_NAME))
             // TODO: https://github.com/Azure/azure-sdk-for-java/issues/24908
 
 //                .setRecognizeCustomEntitiesActions(
@@ -1338,130 +1344,201 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
     }
 
     static void validateDetectLanguageResultCollectionWithResponse(boolean showStatistics,
+        DetectLanguageResultCollection expected, int expectedStatusCode,
         Response<DetectLanguageResultCollection> response) {
         assertNotNull(response);
-        validateDetectLanguageResultCollection(showStatistics, response.getValue());
+        assertEquals(expectedStatusCode, response.getStatusCode());
+        validateDetectLanguageResultCollection(showStatistics, expected, response.getValue());
     }
 
-    static void validateDetectLanguageResultCollection(boolean showStatistics, DetectLanguageResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, actual, (actualItem) ->
-            validatePrimaryLanguage(actualItem.getPrimaryLanguage()));
+    static void validateDetectLanguageResultCollection(boolean showStatistics,
+        DetectLanguageResultCollection expected, DetectLanguageResultCollection actual) {
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+            validatePrimaryLanguage(expectedItem.getPrimaryLanguage(), actualItem.getPrimaryLanguage()));
     }
 
     static void validateCategorizedEntitiesResultCollectionWithResponse(boolean showStatistics,
+        RecognizeEntitiesResultCollection expected, int expectedStatusCode,
         Response<RecognizeEntitiesResultCollection> response) {
         assertNotNull(response);
-        validateCategorizedEntitiesResultCollection(showStatistics, response.getValue());
+        assertEquals(expectedStatusCode, response.getStatusCode());
+        validateCategorizedEntitiesResultCollection(showStatistics, expected, response.getValue());
     }
 
-    static void validateCategorizedEntitiesResultCollection(boolean showStatistics, RecognizeEntitiesResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, actual, (actualItem) ->
+    static void validateCategorizedEntitiesResultCollection(boolean showStatistics,
+        RecognizeEntitiesResultCollection expected, RecognizeEntitiesResultCollection actual) {
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateCategorizedEntities(actualItem.getEntities().stream().collect(Collectors.toList())));
     }
 
     static void validatePiiEntitiesResultCollectionWithResponse(boolean showStatistics,
-                                                                Response<RecognizePiiEntitiesResultCollection> response) {
+        RecognizePiiEntitiesResultCollection expected, int expectedStatusCode,
+        Response<RecognizePiiEntitiesResultCollection> response) {
         assertNotNull(response);
-        validatePiiEntitiesResultCollection(showStatistics, response.getValue());
+        assertEquals(expectedStatusCode, response.getStatusCode());
+        validatePiiEntitiesResultCollection(showStatistics, expected, response.getValue());
     }
 
-    static void validatePiiEntitiesResultCollection(boolean showStatistics, RecognizePiiEntitiesResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, actual, (actualItem) -> {
+    static void validatePiiEntitiesResultCollection(boolean showStatistics,
+        RecognizePiiEntitiesResultCollection expected, RecognizePiiEntitiesResultCollection actual) {
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
+            final PiiEntityCollection expectedPiiEntityCollection = expectedItem.getEntities();
             final PiiEntityCollection actualPiiEntityCollection = actualItem.getEntities();
-            assertNotNull(actualPiiEntityCollection.getRedactedText());
-            validatePiiEntities(actualPiiEntityCollection.stream().collect(Collectors.toList()));
+            assertEquals(expectedPiiEntityCollection.getRedactedText(), actualPiiEntityCollection.getRedactedText());
+            validatePiiEntities(
+                expectedPiiEntityCollection.stream().collect(Collectors.toList()),
+                actualPiiEntityCollection.stream().collect(Collectors.toList()));
         });
     }
 
     static void validateLinkedEntitiesResultCollectionWithResponse(boolean showStatistics,
+        RecognizeLinkedEntitiesResultCollection expected, int expectedStatusCode,
         Response<RecognizeLinkedEntitiesResultCollection> response) {
         assertNotNull(response);
-        validateLinkedEntitiesResultCollection(showStatistics, response.getValue());
+        assertEquals(expectedStatusCode, response.getStatusCode());
+        validateLinkedEntitiesResultCollection(showStatistics, expected, response.getValue());
     }
 
     static void validateLinkedEntitiesResultCollection(boolean showStatistics,
-                                                       RecognizeLinkedEntitiesResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, actual, (actualItem) ->
-            validateLinkedEntities(actualItem.getEntities().stream().collect(Collectors.toList())));
+        RecognizeLinkedEntitiesResultCollection expected, RecognizeLinkedEntitiesResultCollection actual) {
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+            validateLinkedEntities(
+                expectedItem.getEntities().stream().collect(Collectors.toList()),
+                actualItem.getEntities().stream().collect(Collectors.toList())));
     }
 
     static void validateExtractKeyPhrasesResultCollectionWithResponse(boolean showStatistics,
+        ExtractKeyPhrasesResultCollection expected, int expectedStatusCode,
         Response<ExtractKeyPhrasesResultCollection> response) {
         assertNotNull(response);
-        validateExtractKeyPhrasesResultCollection(showStatistics, response.getValue());
+        assertEquals(expectedStatusCode, response.getStatusCode());
+        validateExtractKeyPhrasesResultCollection(showStatistics, expected, response.getValue());
     }
 
-    static void validateClassifyDocumentResult(ClassifyDocumentResult actual) {
-        assertNotNull(actual.getId());
+    static void validateClassifyDocumentResult(ClassifyDocumentResult expect, ClassifyDocumentResult actual) {
+        assertEquals(expect.getId(), actual.getId());
 
-        if (actual.isError()) {
+        if (expect.isError()) {
+            assertNotNull(actual.isError());
+        } else {
             assertNull(actual.getError());
             List<ClassificationCategory> actualClassifications =
                 actual.getClassifications().stream().collect(Collectors.toList());
-            for (ClassificationCategory actualClassification : actualClassifications) {
-                assertNotNull(actualClassification.getCategory());
+            List<ClassificationCategory> expectClassifications =
+                expect.getClassifications().stream().collect(Collectors.toList());
+            assertEquals(expectClassifications.size(), actualClassifications.size());
+            for (int i = 0; i < expectClassifications.size(); i++) {
+                validateClassificationCategory(expectClassifications.get(i), actualClassifications.get(i));
             }
         }
     }
 
+    static void validateClassificationCategory(ClassificationCategory expect, ClassificationCategory actual) {
+        assertEquals(expect.getCategory(), actual.getCategory());
+        assertNotNull(actual.getConfidenceScore());
+    }
+
     static void validateExtractKeyPhrasesResultCollection(boolean showStatistics,
-                                                          ExtractKeyPhrasesResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, actual, (actualItem) ->
-            validateKeyPhrases(actualItem.getKeyPhrases().stream().collect(Collectors.toList())));
+        ExtractKeyPhrasesResultCollection expected, ExtractKeyPhrasesResultCollection actual) {
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+            validateKeyPhrases(
+                expectedItem.getKeyPhrases().stream().collect(Collectors.toList()),
+                actualItem.getKeyPhrases().stream().collect(Collectors.toList())));
     }
 
     static void validateAnalyzeSentimentResultCollectionWithResponse(boolean showStatistics,
-        boolean includeOpinionMining, Response<AnalyzeSentimentResultCollection> response) {
+        boolean includeOpinionMining, AnalyzeSentimentResultCollection expected,
+        int expectedStatusCode, Response<AnalyzeSentimentResultCollection> response) {
         assertNotNull(response);
-        validateAnalyzeSentimentResultCollection(showStatistics, includeOpinionMining, response.getValue());
+        assertEquals(expectedStatusCode, response.getStatusCode());
+        validateAnalyzeSentimentResultCollection(showStatistics, includeOpinionMining, expected, response.getValue());
     }
 
     static void validateAnalyzeSentimentResultCollection(boolean showStatistics, boolean includeOpinionMining,
-                                                         AnalyzeSentimentResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, actual, (actualItem) ->
-            validateDocumentSentiment(includeOpinionMining, actualItem.getDocumentSentiment()));
+        AnalyzeSentimentResultCollection expected, AnalyzeSentimentResultCollection actual) {
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+            validateDocumentSentiment(includeOpinionMining, expectedItem.getDocumentSentiment(),
+                actualItem.getDocumentSentiment()));
     }
 
     static void validateAnalyzeHealthcareEntitiesResultCollection(boolean showStatistics,
-                                                                  AnalyzeHealthcareEntitiesResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, actual,
-            (actualItem) -> validateHealthcareEntityDocumentResult(actualItem));
+        AnalyzeHealthcareEntitiesResultCollection expected, AnalyzeHealthcareEntitiesResultCollection actual) {
+        validateTextAnalyticsResult(showStatistics, expected, actual,
+            (expectedItem, actualItem) -> validateHealthcareEntityDocumentResult(expectedItem, actualItem));
     }
 
     /**
      * Helper method to validate a single detected language.
      *
+     * @param expectedLanguage detectedLanguage returned by the service.
      * @param actualLanguage detectedLanguage returned by the API.
      */
-    static void validatePrimaryLanguage(DetectedLanguage actualLanguage) {
-        assertNotNull(actualLanguage.getName());
-        assertNotNull(actualLanguage.getIso6391Name());
+    static void validatePrimaryLanguage(DetectedLanguage expectedLanguage, DetectedLanguage actualLanguage) {
+        assertEquals(expectedLanguage.getName(), actualLanguage.getName());
+        assertEquals(expectedLanguage.getIso6391Name(), actualLanguage.getIso6391Name());
+        assertNotNull(actualLanguage.getConfidenceScore());
+    }
+
+    /**
+     * Helper method to validate a single categorized entity.
+     *
+     * @param actualCategorizedEntity CategorizedEntity returned by the API.
+     */
+    static void validateCategorizedEntity(CategorizedEntity actualCategorizedEntity) {
+        assertNotNull(actualCategorizedEntity.getText());
+        assertNotNull(actualCategorizedEntity.getOffset());
+        assertNotNull(actualCategorizedEntity.getCategory());
+        assertNotNull(actualCategorizedEntity.getConfidenceScore());
+    }
+
+    /**
+     * Helper method to validate a single Personally Identifiable Information entity.
+     *
+     * @param expectedPiiEntity PiiEntity returned by the service.
+     * @param actualPiiEntity PiiEntity returned by the API.
+     */
+    static void validatePiiEntity(PiiEntity expectedPiiEntity, PiiEntity actualPiiEntity) {
+        assertEquals(expectedPiiEntity.getOffset(), actualPiiEntity.getOffset());
+        assertEquals(expectedPiiEntity.getSubcategory(), actualPiiEntity.getSubcategory());
+        assertEquals(expectedPiiEntity.getText(), actualPiiEntity.getText());
+        assertEquals(expectedPiiEntity.getCategory(), actualPiiEntity.getCategory());
+        assertNotNull(actualPiiEntity.getConfidenceScore());
     }
 
     /**
      * Helper method to validate a single linked entity.
      *
+     * @param expectedLinkedEntity LinkedEntity returned by the service.
      * @param actualLinkedEntity LinkedEntity returned by the API.
      */
-    static void validateLinkedEntity(LinkedEntity actualLinkedEntity) {
-        assertNotNull(actualLinkedEntity.getName());
-        assertNotNull(actualLinkedEntity.getDataSource());
-        assertNotNull(actualLinkedEntity.getLanguage());
-        assertNotNull(actualLinkedEntity.getUrl());
-        assertNotNull(actualLinkedEntity.getDataSourceEntityId());
+    static void validateLinkedEntity(LinkedEntity expectedLinkedEntity, LinkedEntity actualLinkedEntity) {
+        assertEquals(expectedLinkedEntity.getName(), actualLinkedEntity.getName());
+        assertEquals(expectedLinkedEntity.getDataSource(), actualLinkedEntity.getDataSource());
+        assertEquals(expectedLinkedEntity.getLanguage(), actualLinkedEntity.getLanguage());
+        if (interceptorManagerTestBase.isPlaybackMode()) {
+            assertEquals(REDACTED, actualLinkedEntity.getUrl());
+        } else {
+            assertEquals(expectedLinkedEntity.getUrl(), actualLinkedEntity.getUrl());
+        }
+        assertEquals(expectedLinkedEntity.getDataSourceEntityId(), actualLinkedEntity.getDataSourceEntityId());
         // TODO: Bing ID is missing. https://github.com/Azure/azure-sdk-for-java/issues/22208
         // assertEquals(expectedLinkedEntity.getBingEntitySearchApiId(), actualLinkedEntity.getBingEntitySearchApiId());
-        validateLinkedEntityMatches(actualLinkedEntity.getMatches().stream().collect(Collectors.toList()));
+        validateLinkedEntityMatches(expectedLinkedEntity.getMatches().stream().collect(Collectors.toList()),
+            actualLinkedEntity.getMatches().stream().collect(Collectors.toList()));
     }
 
     /**
      * Helper method to validate a single key phrase.
      *
+     * @param expectedKeyPhrases key phrases returned by the service.
      * @param actualKeyPhrases key phrases returned by the API.
      */
-    static void validateKeyPhrases(List<String> actualKeyPhrases) {
-        for (int i = 0; i < actualKeyPhrases.size(); i++) {
-            assertNotNull(actualKeyPhrases.get(i));
+    static void validateKeyPhrases(List<String> expectedKeyPhrases, List<String> actualKeyPhrases) {
+        assertEquals(expectedKeyPhrases.size(), actualKeyPhrases.size());
+        Collections.sort(expectedKeyPhrases);
+        Collections.sort(actualKeyPhrases);
+        for (int i = 0; i < expectedKeyPhrases.size(); i++) {
+            assertEquals(expectedKeyPhrases.get(i), actualKeyPhrases.get(i));
         }
     }
 
@@ -1471,32 +1548,45 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
      * @param actualCategorizedEntityList categorizedEntities returned by the API.
      */
     static void validateCategorizedEntities(List<CategorizedEntity> actualCategorizedEntityList) {
-        for (CategorizedEntity categorizedEntity : actualCategorizedEntityList) {
-            assertNotNull(categorizedEntity.getText());
-            assertNotNull(categorizedEntity.getCategory());
+        for (int i = 0; i < actualCategorizedEntityList.size(); i++) {
+            validateCategorizedEntity(actualCategorizedEntityList.get(i));
         }
     }
 
     /**
      * Helper method to validate the list of Personally Identifiable Information entities.
      *
+     * @param expectedPiiEntityList piiEntities returned by the service.
      * @param actualPiiEntityList piiEntities returned by the API.
      */
-    static void validatePiiEntities(List<PiiEntity> actualPiiEntityList) {
-        for (PiiEntity actualPiiEntity : actualPiiEntityList) {
-            assertNotNull(actualPiiEntity.getText());
-            assertNotNull(actualPiiEntity.getCategory());
+    static void validatePiiEntities(List<PiiEntity> expectedPiiEntityList, List<PiiEntity> actualPiiEntityList) {
+        assertEquals(expectedPiiEntityList.size(), actualPiiEntityList.size());
+        expectedPiiEntityList.sort(Comparator.comparing(PiiEntity::getText));
+        actualPiiEntityList.sort(Comparator.comparing(PiiEntity::getText));
+
+        for (int i = 0; i < expectedPiiEntityList.size(); i++) {
+            PiiEntity expectedPiiEntity = expectedPiiEntityList.get(i);
+            PiiEntity actualPiiEntity = actualPiiEntityList.get(i);
+            validatePiiEntity(expectedPiiEntity, actualPiiEntity);
         }
     }
 
     /**
      * Helper method to validate the list of linked entities.
      *
+     * @param expectedLinkedEntityList linkedEntities returned by the service.
      * @param actualLinkedEntityList linkedEntities returned by the API.
      */
-    static void validateLinkedEntities(List<LinkedEntity> actualLinkedEntityList) {
-        for (LinkedEntity actualLinkedEntity : actualLinkedEntityList) {
-            validateLinkedEntity(actualLinkedEntity);
+    static void validateLinkedEntities(List<LinkedEntity> expectedLinkedEntityList,
+        List<LinkedEntity> actualLinkedEntityList) {
+        assertEquals(expectedLinkedEntityList.size(), actualLinkedEntityList.size());
+        expectedLinkedEntityList.sort(Comparator.comparing(LinkedEntity::getName));
+        actualLinkedEntityList.sort(Comparator.comparing(LinkedEntity::getName));
+
+        for (int i = 0; i < expectedLinkedEntityList.size(); i++) {
+            LinkedEntity expectedLinkedEntity = expectedLinkedEntityList.get(i);
+            LinkedEntity actualLinkedEntity = actualLinkedEntityList.get(i);
+            validateLinkedEntity(expectedLinkedEntity, actualLinkedEntity);
         }
     }
 
@@ -1504,11 +1594,15 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
      * Helper method to validate the list of sentence sentiment. Can't really validate score numbers because it
      * frequently changed by background model computation.
      *
+     * @param expectedSentimentList a list of analyzed sentence sentiment returned by the service.
      * @param actualSentimentList a list of analyzed sentence sentiment returned by the API.
      */
-    static void validateSentenceSentimentList(boolean includeOpinionMining, List<SentenceSentiment> actualSentimentList) {
-        for (SentenceSentiment sentenceSentiment : actualSentimentList) {
-            validateSentenceSentiment(includeOpinionMining, sentenceSentiment);
+    static void validateSentenceSentimentList(boolean includeOpinionMining, List<SentenceSentiment> expectedSentimentList,
+        List<SentenceSentiment> actualSentimentList) {
+
+        assertEquals(expectedSentimentList.size(), actualSentimentList.size());
+        for (int i = 0; i < expectedSentimentList.size(); i++) {
+            validateSentenceSentiment(includeOpinionMining, expectedSentimentList.get(i), actualSentimentList.get(i));
         }
     }
 
@@ -1516,14 +1610,19 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
      * Helper method to validate one pair of analyzed sentiments. Can't really validate score numbers because it
      * frequently changed by background model computation.
      *
+     * @param expectedSentiment analyzed sentence sentiment returned by the service.
      * @param actualSentiment analyzed sentence sentiment returned by the API.
      */
-    static void validateSentenceSentiment(boolean includeOpinionMining, SentenceSentiment actualSentiment) {
-        assertNotNull(actualSentiment.getSentiment());
-        assertNotNull(actualSentiment.getText());
+    static void validateSentenceSentiment(boolean includeOpinionMining, SentenceSentiment expectedSentiment,
+        SentenceSentiment actualSentiment) {
+        assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
+        assertEquals(expectedSentiment.getText(), actualSentiment.getText());
+        assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
+        assertEquals(expectedSentiment.getLength(), actualSentiment.getLength());
 
         if (includeOpinionMining) {
-            validateSentenceOpinions(actualSentiment.getOpinions().stream().collect(Collectors.toList()));
+            validateSentenceOpinions(expectedSentiment.getOpinions().stream().collect(Collectors.toList()),
+                actualSentiment.getOpinions().stream().collect(Collectors.toList()));
         } else {
             assertNull(actualSentiment.getOpinions());
         }
@@ -1532,56 +1631,71 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
     /**
      * Helper method to validate sentence's opinions.
      *
+     * @param expectedSentenceOpinions a list of sentence opinions returned by the service.
      * @param actualSentenceOpinions a list of sentence opinions returned by the API.
      */
-    static void validateSentenceOpinions(List<SentenceOpinion> actualSentenceOpinions) {
+    static void validateSentenceOpinions(List<SentenceOpinion> expectedSentenceOpinions,
+        List<SentenceOpinion> actualSentenceOpinions) {
+        assertEquals(expectedSentenceOpinions.size(), actualSentenceOpinions.size());
         for (int i = 0; i < actualSentenceOpinions.size(); i++) {
+            final SentenceOpinion expectedSentenceOpinion = expectedSentenceOpinions.get(i);
             final SentenceOpinion actualSentenceOpinion = actualSentenceOpinions.get(i);
-            validateTargetSentiment(actualSentenceOpinion.getTarget());
-            validateAssessmentList(actualSentenceOpinion.getAssessments().stream().collect(Collectors.toList()));
+            validateTargetSentiment(expectedSentenceOpinion.getTarget(), actualSentenceOpinion.getTarget());
+            validateAssessmentList(expectedSentenceOpinion.getAssessments().stream().collect(Collectors.toList()),
+                actualSentenceOpinion.getAssessments().stream().collect(Collectors.toList()));
         }
     }
 
     /**
      * Helper method to validate target sentiment.
      *
+     * @param expected An expected target sentiment.
      * @param actual An actual target sentiment.
      */
-    static void validateTargetSentiment(TargetSentiment actual) {
-        assertNotNull(actual.getSentiment());
-        assertNotNull(actual.getText());
+    static void validateTargetSentiment(TargetSentiment expected, TargetSentiment actual) {
+        assertEquals(expected.getSentiment(), actual.getSentiment());
+        assertEquals(expected.getText(), actual.getText());
+        assertEquals(expected.getOffset(), actual.getOffset());
     }
 
     /**
      * Helper method to validate a list of {@link AssessmentSentiment}.
      *
+     * @param expected A list of expected assessment sentiments.
      * @param actual A list of actual assessment sentiments.
      */
-    static void validateAssessmentList(List<AssessmentSentiment> actual) {
-        for (AssessmentSentiment assessmentSentiment : actual) {
-            validateAssessmentSentiment(assessmentSentiment);
+    static void validateAssessmentList(List<AssessmentSentiment> expected, List<AssessmentSentiment> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < expected.size(); i++) {
+            validateAssessmentSentiment(expected.get(i), actual.get(i));
         }
     }
 
     /**
      * Helper method to validate assessment sentiment.
      *
+     * @param expect An expected assessment sentiment.
      * @param actual An actual assessment sentiment.
      */
-    static void validateAssessmentSentiment(AssessmentSentiment actual) {
-        assertNotNull(actual.getSentiment());
-        assertNotNull(actual.getText());
+    static void validateAssessmentSentiment(AssessmentSentiment expect, AssessmentSentiment actual) {
+        assertEquals(expect.getSentiment(), actual.getSentiment());
+        assertEquals(expect.getText(), actual.getText());
+        assertEquals(expect.isNegated(), actual.isNegated());
+        assertEquals(expect.getOffset(), actual.getOffset());
     }
 
     /**
      * Helper method to validate one pair of analyzed sentiments. Can't really validate score numbers because it
      * frequently changed by background model computation.
      *
+     * @param expectedSentiment analyzed document sentiment returned by the service.
      * @param actualSentiment analyzed document sentiment returned by the API.
      */
-    static void validateDocumentSentiment(boolean includeOpinionMining, DocumentSentiment actualSentiment) {
-        assertNotNull(actualSentiment.getSentiment());
+    static void validateDocumentSentiment(boolean includeOpinionMining, DocumentSentiment expectedSentiment,
+        DocumentSentiment actualSentiment) {
+        assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
         validateSentenceSentimentList(includeOpinionMining,
+            expectedSentiment.getSentences().stream().collect(Collectors.toList()),
             actualSentiment.getSentences().stream().collect(Collectors.toList()));
     }
 
@@ -1592,68 +1706,108 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
         } else {
             assertNull(documentResult.getError());
             for (ClassificationCategory classification : documentResult.getClassifications()) {
-                assertNotNull(classification.getCategory());
+                validateDocumentClassification(classification);
             }
         }
     }
 
+    static void validateDocumentClassification(ClassificationCategory classificationCategory) {
+        assertNotNull(classificationCategory.getCategory());
+        assertNotNull(classificationCategory.getConfidenceScore());
+    }
+
     // Healthcare task
-    static void validateHealthcareEntity(HealthcareEntity actual) {
-        assertNotNull(actual.getCategory());
-        // It is petty easy to change the text of the entity, so we don't validate it. The service is responsible for
-        // the text extraction. We just validate the text exist.
-        assertNotNull(actual.getText());
+    static void validateHealthcareEntity(HealthcareEntity expected, HealthcareEntity actual) {
+        assertEquals(expected.getCategory(), actual.getCategory());
+        assertEquals(expected.getText(), actual.getText());
+        // TODO: https://github.com/Azure/azure-sdk-for-java/issues/31438
+//        assertEquals(expected.getOffset(), actual.getOffset());
+//        assertEquals(expected.getLength(), actual.getLength());
+        assertEquals(expected.getNormalizedText(), actual.getNormalizedText());
+        assertEquals(expected.getSubcategory(), actual.getSubcategory());
+        validateEntityAssertion(expected.getAssertion(), actual.getAssertion());
+        validateEntityDataSourceList(expected.getDataSources(), actual.getDataSources());
     }
 
-
-    static void validateHealthcareEntityDocumentResult(AnalyzeHealthcareEntitiesResult actual) {
-        validateHealthcareEntityRelations(actual.getEntityRelations().stream().collect(Collectors.toList()));
-        validateHealthcareEntities(actual.getEntities().stream().collect(Collectors.toList()));
+    static void validateEntityAssertion(HealthcareEntityAssertion expected, HealthcareEntityAssertion actual) {
+        if (actual == expected) {
+            return;
+        }
+        assertEquals(expected.getConditionality(), actual.getConditionality());
+        assertEquals(expected.getAssociation(), actual.getAssociation());
+        assertEquals(expected.getCertainty(), actual.getCertainty());
     }
 
-    static void validateHealthcareEntityRelations(List<HealthcareEntityRelation> actual) {
-        for (int i = 0; i < actual.size(); i++) {
-            validateHealthcareEntityRelation(actual.get(i));
+    static void validateEntityDataSourceList(IterableStream<EntityDataSource> expected,
+        IterableStream<EntityDataSource> actual) {
+        if (expected == actual) {
+            return;
+        } else if (expected == null || actual == null) {
+            assertTrue(false);
         }
     }
 
-    static void validateHealthcareEntityRelation(HealthcareEntityRelation actual) {
+    static void validateHealthcareEntityDocumentResult(AnalyzeHealthcareEntitiesResult expected,
+        AnalyzeHealthcareEntitiesResult actual) {
+        validateHealthcareEntityRelations(expected.getEntityRelations().stream().collect(Collectors.toList()),
+            actual.getEntityRelations().stream().collect(Collectors.toList()));
+        validateHealthcareEntities(expected.getEntities().stream().collect(Collectors.toList()),
+            actual.getEntities().stream().collect(Collectors.toList()));
+    }
+
+    static void validateHealthcareEntityRelations(List<HealthcareEntityRelation> expected,
+        List<HealthcareEntityRelation> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < expected.size(); i++) {
+            validateHealthcareEntityRelation(expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateHealthcareEntityRelation(HealthcareEntityRelation expected, HealthcareEntityRelation actual) {
+        final List<HealthcareEntityRelationRole> expectedRoles = expected.getRoles().stream().collect(Collectors.toList());
         final List<HealthcareEntityRelationRole> actualRoles = actual.getRoles().stream().collect(Collectors.toList());
-        assertNotNull(actual.getRelationType());
-        for (HealthcareEntityRelationRole actualRole : actualRoles) {
-            validateHealthcareEntityRelationRole(actualRole);
+        assertEquals(expected.getRelationType(), actual.getRelationType());
+        assertNotNull(actual.getConfidenceScore());
+        for (int i = 0; i < expectedRoles.size(); i++) {
+            validateHealthcareEntityRelationRole(expectedRoles.get(i), actualRoles.get(i));
         }
     }
 
-    static void validateHealthcareEntityRelationRole(HealthcareEntityRelationRole actual) {
-        assertNotNull(actual.getName());
-        validateHealthcareEntity(actual.getEntity());
+    static void validateHealthcareEntityRelationRole(HealthcareEntityRelationRole expected,
+                                                     HealthcareEntityRelationRole actual) {
+        assertEquals(expected.getName(), actual.getName());
+        validateHealthcareEntity(expected.getEntity(), actual.getEntity());
     }
 
-    static void validateHealthcareEntities(List<HealthcareEntity> actual) {
+    static void validateHealthcareEntities(List<HealthcareEntity> expected, List<HealthcareEntity> actual) {
+        assertEquals(expected.size(), actual.size());
+        expected.sort(Comparator.comparing(HealthcareEntity::getText));
         actual.sort(Comparator.comparing(HealthcareEntity::getText));
-        for (HealthcareEntity healthcareEntity : actual) {
-            validateHealthcareEntity(healthcareEntity);
+        for (int i = 0; i < expected.size(); i++) {
+            validateHealthcareEntity(expected.get(i), actual.get(i));
         }
     }
 
     static void validateAnalyzeHealthcareEntitiesResultCollectionList(boolean showStatistics,
+        List<AnalyzeHealthcareEntitiesResultCollection> expected,
         List<AnalyzeHealthcareEntitiesResultCollection> actual) {
-        for (AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResults : actual) {
-            validateAnalyzeHealthcareEntitiesResultCollection(showStatistics, analyzeHealthcareEntitiesResults);
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateAnalyzeHealthcareEntitiesResultCollection(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
     // Analyze tasks
     static void validateAnalyzeBatchActionsResultList(boolean showStatistics, boolean includeOpinionMining,
-                                                      List<AnalyzeActionsResult> actual) {
-        for (AnalyzeActionsResult analyzeActionsResult : actual) {
-            validateAnalyzeActionsResult(showStatistics, includeOpinionMining, analyzeActionsResult);
+        List<AnalyzeActionsResult> expected, List<AnalyzeActionsResult> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateAnalyzeActionsResult(showStatistics, includeOpinionMining, expected.get(i), actual.get(i));
         }
     }
 
     static void validateAnalyzeActionsResult(boolean showStatistics, boolean includeOpinionMining,
-                                             AnalyzeActionsResult actual) {
+        AnalyzeActionsResult expected, AnalyzeActionsResult actual) {
         // TODO: batch actions has return non statistics.
         // Issue: https://github.com/Azure/azure-sdk-for-java/issues/19672
 //        final TextDocumentBatchStatistics expectedOperationStatistics = expected.getStatistics();
@@ -1669,121 +1823,169 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
 //        }
 
         validateRecognizeEntitiesActionResults(showStatistics,
+            expected.getRecognizeEntitiesResults().stream().collect(Collectors.toList()),
             actual.getRecognizeEntitiesResults().stream().collect(Collectors.toList()));
         validateRecognizeLinkedEntitiesActionResults(showStatistics,
+            expected.getRecognizeLinkedEntitiesResults().stream().collect(Collectors.toList()),
             actual.getRecognizeLinkedEntitiesResults().stream().collect(Collectors.toList()));
         validateRecognizePiiEntitiesActionResults(showStatistics,
+            expected.getRecognizePiiEntitiesResults().stream().collect(Collectors.toList()),
             actual.getRecognizePiiEntitiesResults().stream().collect(Collectors.toList()));
         validateAnalyzeHealthcareEntitiesActionResults(showStatistics,
+            expected.getAnalyzeHealthcareEntitiesResults().stream().collect(Collectors.toList()),
             actual.getAnalyzeHealthcareEntitiesResults().stream().collect(Collectors.toList()));
         validateExtractKeyPhrasesActionResults(showStatistics,
+            expected.getExtractKeyPhrasesResults().stream().collect(Collectors.toList()),
             actual.getExtractKeyPhrasesResults().stream().collect(Collectors.toList()));
         validateAnalyzeSentimentActionResults(showStatistics, includeOpinionMining,
+            expected.getAnalyzeSentimentResults().stream().collect(Collectors.toList()),
             actual.getAnalyzeSentimentResults().stream().collect(Collectors.toList()));
         validateExtractiveSummaryActionResults(showStatistics,
+            expected.getExtractiveSummaryResults().stream().collect(Collectors.toList()),
             actual.getExtractiveSummaryResults().stream().collect(Collectors.toList()));
         validateAbstractiveSummaryActionResults(showStatistics,
+            expected.getAbstractiveSummaryResults().stream().collect(Collectors.toList()),
             actual.getAbstractiveSummaryResults().stream().collect(Collectors.toList()));
     }
 
     // Action results validation
-    static void validateRecognizeEntitiesActionResults(boolean showStatistics, List<RecognizeEntitiesActionResult> actual) {
-        for (RecognizeEntitiesActionResult recognizeEntitiesActionResult : actual) {
-            validateRecognizeEntitiesActionResult(showStatistics, recognizeEntitiesActionResult);
+    static void validateRecognizeEntitiesActionResults(boolean showStatistics,
+        List<RecognizeEntitiesActionResult> expected, List<RecognizeEntitiesActionResult> actual) {
+        for (int i = 0; i < actual.size(); i++) {
+            validateRecognizeEntitiesActionResult(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
     static void validateRecognizeLinkedEntitiesActionResults(boolean showStatistics,
-                                                             List<RecognizeLinkedEntitiesActionResult> actual) {
-        for (RecognizeLinkedEntitiesActionResult recognizeLinkedEntitiesActionResult : actual) {
-            validateRecognizeLinkedEntitiesActionResult(showStatistics, recognizeLinkedEntitiesActionResult);
+        List<RecognizeLinkedEntitiesActionResult> expected, List<RecognizeLinkedEntitiesActionResult> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateRecognizeLinkedEntitiesActionResult(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
     static void validateRecognizePiiEntitiesActionResults(boolean showStatistics,
-                                                          List<RecognizePiiEntitiesActionResult> actual) {
-        for (RecognizePiiEntitiesActionResult recognizePiiEntitiesActionResult : actual) {
-            validateRecognizePiiEntitiesActionResult(showStatistics, recognizePiiEntitiesActionResult);
+        List<RecognizePiiEntitiesActionResult> expected, List<RecognizePiiEntitiesActionResult> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateRecognizePiiEntitiesActionResult(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
     static void validateAnalyzeHealthcareEntitiesActionResults(boolean showStatistics,
-                                                               List<AnalyzeHealthcareEntitiesActionResult> actual) {
-        for (AnalyzeHealthcareEntitiesActionResult analyzeHealthcareEntitiesActionResult : actual) {
-            validateAnalyzeHealthcareEntitiesActionResult(showStatistics, analyzeHealthcareEntitiesActionResult);
+        List<AnalyzeHealthcareEntitiesActionResult> expected, List<AnalyzeHealthcareEntitiesActionResult> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateAnalyzeHealthcareEntitiesActionResult(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
     static void validateExtractKeyPhrasesActionResults(boolean showStatistics,
-                                                       List<ExtractKeyPhrasesActionResult> actual) {
-        for (ExtractKeyPhrasesActionResult extractKeyPhrasesActionResult : actual) {
-            validateExtractKeyPhrasesActionResult(showStatistics, extractKeyPhrasesActionResult);
+        List<ExtractKeyPhrasesActionResult> expected, List<ExtractKeyPhrasesActionResult> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateExtractKeyPhrasesActionResult(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
     static void validateAnalyzeSentimentActionResults(boolean showStatistics, boolean includeOpinionMining,
-                                                      List<AnalyzeSentimentActionResult> actual) {
-        for (AnalyzeSentimentActionResult analyzeSentimentActionResult : actual) {
-            validateAnalyzeSentimentActionResult(showStatistics, includeOpinionMining, analyzeSentimentActionResult);
+        List<AnalyzeSentimentActionResult> expected, List<AnalyzeSentimentActionResult> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateAnalyzeSentimentActionResult(showStatistics, includeOpinionMining, expected.get(i), actual.get(i));
         }
     }
 
     // Action result validation
-    static void validateRecognizeEntitiesActionResult(boolean showStatistics, RecognizeEntitiesActionResult actual) {
+    static void validateRecognizeEntitiesActionResult(boolean showStatistics,
+        RecognizeEntitiesActionResult expected, RecognizeEntitiesActionResult actual) {
+        assertEquals(expected.isError(), actual.isError());
         if (actual.isError()) {
-            assertNotNull(actual.getError());
-            validateErrorDocument(actual.getError());
+            if (expected.getError() == null) {
+                assertNull(actual.getError());
+            } else {
+                assertNotNull(actual.getError());
+                validateErrorDocument(expected.getError(), actual.getError());
+            }
         } else {
-            validateCategorizedEntitiesResultCollection(showStatistics, actual.getDocumentsResults());
+            validateCategorizedEntitiesResultCollection(showStatistics, expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
     static void validateRecognizeLinkedEntitiesActionResult(boolean showStatistics,
-                                                            RecognizeLinkedEntitiesActionResult actual) {
+        RecognizeLinkedEntitiesActionResult expected, RecognizeLinkedEntitiesActionResult actual) {
+        assertEquals(expected.isError(), actual.isError());
         if (actual.isError()) {
-            assertNotNull(actual.getError());
-            validateErrorDocument(actual.getError());
+            if (expected.getError() == null) {
+                assertNull(actual.getError());
+            } else {
+                assertNotNull(actual.getError());
+                validateErrorDocument(expected.getError(), actual.getError());
+            }
         } else {
-            validateLinkedEntitiesResultCollection(showStatistics, actual.getDocumentsResults());
+            validateLinkedEntitiesResultCollection(showStatistics, expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
     static void validateRecognizePiiEntitiesActionResult(boolean showStatistics,
-                                                         RecognizePiiEntitiesActionResult actual) {
+        RecognizePiiEntitiesActionResult expected, RecognizePiiEntitiesActionResult actual) {
+        assertEquals(expected.isError(), actual.isError());
         if (actual.isError()) {
-            assertNotNull(actual.getError());
-            validateErrorDocument(actual.getError());
+            if (expected.getError() == null) {
+                assertNull(actual.getError());
+            } else {
+                assertNotNull(actual.getError());
+                validateErrorDocument(expected.getError(), actual.getError());
+            }
         } else {
-            validatePiiEntitiesResultCollection(showStatistics, actual.getDocumentsResults());
+            validatePiiEntitiesResultCollection(showStatistics, expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
     static void validateAnalyzeHealthcareEntitiesActionResult(boolean showStatistics,
-                                                              AnalyzeHealthcareEntitiesActionResult actual) {
+        AnalyzeHealthcareEntitiesActionResult expected, AnalyzeHealthcareEntitiesActionResult actual) {
+        assertEquals(expected.isError(), actual.isError());
         if (actual.isError()) {
-            assertNotNull(actual.getError());
-            validateErrorDocument(actual.getError());
+            if (expected.getError() == null) {
+                assertNull(actual.getError());
+            } else {
+                assertNotNull(actual.getError());
+                validateErrorDocument(expected.getError(), actual.getError());
+            }
         } else {
-            validateAnalyzeHealthcareEntitiesResultCollection(showStatistics, actual.getDocumentsResults());
+            validateAnalyzeHealthcareEntitiesResultCollection(showStatistics,
+                expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
-    static void validateExtractKeyPhrasesActionResult(boolean showStatistics, ExtractKeyPhrasesActionResult actual) {
+    static void validateExtractKeyPhrasesActionResult(boolean showStatistics,
+        ExtractKeyPhrasesActionResult expected, ExtractKeyPhrasesActionResult actual) {
+        assertEquals(expected.isError(), actual.isError());
         if (actual.isError()) {
-            assertNotNull(actual.getError());
-            validateErrorDocument(actual.getError());
+            if (expected.getError() == null) {
+                assertNull(actual.getError());
+            } else {
+                assertNotNull(actual.getError());
+                validateErrorDocument(expected.getError(), actual.getError());
+            }
         } else {
-            validateExtractKeyPhrasesResultCollection(showStatistics, actual.getDocumentsResults());
+            validateExtractKeyPhrasesResultCollection(showStatistics, expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
     static void validateAnalyzeSentimentActionResult(boolean showStatistics, boolean includeOpinionMining,
-                                                     AnalyzeSentimentActionResult actual) {
+        AnalyzeSentimentActionResult expected, AnalyzeSentimentActionResult actual) {
+        assertEquals(expected.isError(), actual.isError());
         if (actual.isError()) {
-            assertNotNull(actual.getError());
-            validateErrorDocument(actual.getError());
+            if (expected.getError() == null) {
+                assertNull(actual.getError());
+            } else {
+                assertNotNull(actual.getError());
+                validateErrorDocument(expected.getError(), actual.getError());
+            }
         } else {
-            validateAnalyzeSentimentResultCollection(showStatistics, includeOpinionMining, actual.getDocumentsResults());
+            validateAnalyzeSentimentResultCollection(showStatistics, includeOpinionMining,
+                expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
@@ -1791,156 +1993,201 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
      * Helper method to verify {@link TextAnalyticsResult documents} returned in a batch request.
      */
     static <T extends TextAnalyticsResult, H extends IterableStream<T>> void validateTextAnalyticsResult(
-        boolean showStatistics, H actualResults, Consumer<T> additionalAssertions) {
+        boolean showStatistics, H expectedResults, H actualResults, BiConsumer<T, T> additionalAssertions) {
 
+        final Map<String, T> expected = expectedResults.stream().collect(
+            Collectors.toMap(TextAnalyticsResult::getId, r -> r));
         final Map<String, T> actual = actualResults.stream().collect(
             Collectors.toMap(TextAnalyticsResult::getId, r -> r));
 
+        assertEquals(expected.size(), actual.size());
 
         if (showStatistics) {
-            if (actualResults instanceof AnalyzeHealthcareEntitiesResultCollection) {
-                validateBatchStatistics(((AnalyzeHealthcareEntitiesResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof AnalyzeSentimentResultCollection) {
-                validateBatchStatistics(((AnalyzeSentimentResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof ClassifyDocumentResultCollection) {
-                validateBatchStatistics(((ClassifyDocumentResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof DetectLanguageResultCollection) {
-                validateBatchStatistics(((DetectLanguageResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof ExtractKeyPhrasesResultCollection) {
-                validateBatchStatistics(((ExtractKeyPhrasesResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof ExtractiveSummaryResultCollection) {
-                validateBatchStatistics(((ExtractiveSummaryResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof RecognizeCustomEntitiesResultCollection) {
-                validateBatchStatistics(((RecognizeCustomEntitiesResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof RecognizeEntitiesResultCollection) {
-                validateBatchStatistics(((RecognizeEntitiesResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof RecognizeLinkedEntitiesResultCollection) {
-                validateBatchStatistics(((RecognizeLinkedEntitiesResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof RecognizePiiEntitiesResultCollection) {
-                validateBatchStatistics(((RecognizePiiEntitiesResultCollection) actualResults).getStatistics());
+            if (expectedResults instanceof AnalyzeHealthcareEntitiesResultCollection) {
+                validateBatchStatistics(((AnalyzeHealthcareEntitiesResultCollection) expectedResults).getStatistics(),
+                    ((AnalyzeHealthcareEntitiesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof AnalyzeSentimentResultCollection) {
+                validateBatchStatistics(((AnalyzeSentimentResultCollection) expectedResults).getStatistics(),
+                    ((AnalyzeSentimentResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof ClassifyDocumentResultCollection) {
+                validateBatchStatistics(((ClassifyDocumentResultCollection) expectedResults).getStatistics(),
+                    ((ClassifyDocumentResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof DetectLanguageResultCollection) {
+                validateBatchStatistics(((DetectLanguageResultCollection) expectedResults).getStatistics(),
+                    ((DetectLanguageResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof ExtractKeyPhrasesResultCollection) {
+                validateBatchStatistics(((ExtractKeyPhrasesResultCollection) expectedResults).getStatistics(),
+                    ((ExtractKeyPhrasesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof ExtractiveSummaryResultCollection) {
+                validateBatchStatistics(((ExtractiveSummaryResultCollection) expectedResults).getStatistics(),
+                    ((ExtractiveSummaryResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof RecognizeCustomEntitiesResultCollection) {
+                validateBatchStatistics(((RecognizeCustomEntitiesResultCollection) expectedResults).getStatistics(),
+                    ((RecognizeCustomEntitiesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof RecognizeEntitiesResultCollection) {
+                validateBatchStatistics(((RecognizeEntitiesResultCollection) expectedResults).getStatistics(),
+                    ((RecognizeEntitiesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof RecognizeLinkedEntitiesResultCollection) {
+                validateBatchStatistics(((RecognizeLinkedEntitiesResultCollection) expectedResults).getStatistics(),
+                    ((RecognizeLinkedEntitiesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof RecognizePiiEntitiesResultCollection) {
+                validateBatchStatistics(((RecognizePiiEntitiesResultCollection) expectedResults).getStatistics(),
+                    ((RecognizePiiEntitiesResultCollection) actualResults).getStatistics());
             }
         } else {
-            if (actualResults instanceof AnalyzeHealthcareEntitiesResultCollection) {
+            if (expectedResults instanceof AnalyzeHealthcareEntitiesResultCollection) {
                 assertNull(((AnalyzeHealthcareEntitiesResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof AnalyzeSentimentResultCollection) {
+            } else if (expectedResults instanceof AnalyzeSentimentResultCollection) {
                 assertNull(((AnalyzeSentimentResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof ClassifyDocumentResultCollection) {
+            } else if (expectedResults instanceof ClassifyDocumentResultCollection) {
                 assertNull(((ClassifyDocumentResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof DetectLanguageResultCollection) {
+            } else if (expectedResults instanceof DetectLanguageResultCollection) {
                 assertNull(((DetectLanguageResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof ExtractKeyPhrasesResultCollection) {
+            } else if (expectedResults instanceof ExtractKeyPhrasesResultCollection) {
                 assertNull(((ExtractKeyPhrasesResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof ExtractiveSummaryResultCollection) {
+            } else if (expectedResults instanceof ExtractiveSummaryResultCollection) {
                 assertNull(((ExtractiveSummaryResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof RecognizeCustomEntitiesResultCollection) {
+            } else if (expectedResults instanceof RecognizeCustomEntitiesResultCollection) {
                 assertNull(((RecognizeCustomEntitiesResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof RecognizeEntitiesResultCollection) {
+            } else if (expectedResults instanceof RecognizeEntitiesResultCollection) {
                 assertNull(((RecognizeEntitiesResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof RecognizeLinkedEntitiesResultCollection) {
+            } else if (expectedResults instanceof RecognizeLinkedEntitiesResultCollection) {
                 assertNull(((RecognizeLinkedEntitiesResultCollection) actualResults).getStatistics());
-            } else if (actualResults instanceof RecognizePiiEntitiesResultCollection) {
+            } else if (expectedResults instanceof RecognizePiiEntitiesResultCollection) {
                 assertNull(((RecognizePiiEntitiesResultCollection) actualResults).getStatistics());
             }
         }
 
-        actual.forEach((key, actualValue) -> {
+        expected.forEach((key, expectedValue) -> {
+            T actualValue = actual.get(key);
             assertNotNull(actualValue);
 
             if (showStatistics) {
-                validateDocumentStatistics(actualValue.getStatistics());
+                validateDocumentStatistics(expectedValue.getStatistics(), actualValue.getStatistics());
             }
 
-            if (actualValue.getError() == null) {
+            if (expectedValue.getError() == null) {
                 assertNull(actualValue.getError());
             } else {
                 assertNotNull(actualValue.getError());
-                assertNotNull(actualValue.getError().getErrorCode());
+                assertEquals(expectedValue.getError().getErrorCode(), actualValue.getError().getErrorCode());
 
-                validateErrorDocument(actualValue.getError());
+                validateErrorDocument(expectedValue.getError(), actualValue.getError());
             }
 
-            additionalAssertions.accept(actualValue);
+            additionalAssertions.accept(expectedValue, actualValue);
         });
     }
 
     /**
      * Helper method to verify TextBatchStatistics.
      *
+     * @param expectedStatistics the expected value for TextBatchStatistics.
      * @param actualStatistics the value returned by API.
      */
-    private static void validateBatchStatistics(TextDocumentBatchStatistics actualStatistics) {
-        int documentCount = actualStatistics.getDocumentCount();
-        int invalidDocumentCount = actualStatistics.getInvalidDocumentCount();
-        int validDocumentCount = actualStatistics.getValidDocumentCount();
-        if (documentCount > 0) {
-            assertTrue(documentCount >= invalidDocumentCount);
-            assertTrue(documentCount >= validDocumentCount);
-        }
-        assertTrue(actualStatistics.getTransactionCount() > 0);
+    private static void validateBatchStatistics(TextDocumentBatchStatistics expectedStatistics,
+         TextDocumentBatchStatistics actualStatistics) {
+        assertEquals(expectedStatistics.getDocumentCount(), actualStatistics.getDocumentCount());
+        assertEquals(expectedStatistics.getInvalidDocumentCount(), actualStatistics.getInvalidDocumentCount());
+        assertEquals(expectedStatistics.getValidDocumentCount(), actualStatistics.getValidDocumentCount());
+        assertEquals(expectedStatistics.getTransactionCount(), actualStatistics.getTransactionCount());
     }
 
     /**
      * Helper method to verify TextDocumentStatistics.
      *
+     * @param expected the expected value for TextDocumentStatistics.
      * @param actual the value returned by API.
      */
-    private static void validateDocumentStatistics(TextDocumentStatistics actual) {
-        assertTrue(actual.getCharacterCount() > 0);
-        assertTrue(actual.getTransactionCount() > 0);
+    private static void validateDocumentStatistics(TextDocumentStatistics expected, TextDocumentStatistics actual) {
+        assertEquals(expected.getCharacterCount(), actual.getCharacterCount());
+        assertEquals(expected.getTransactionCount(), actual.getTransactionCount());
     }
 
     /**
      * Helper method to verify LinkedEntityMatches.
      *
+     * @param expectedLinkedEntityMatches the expected value for LinkedEntityMatches.
      * @param actualLinkedEntityMatches the value returned by API.
      */
-    private static void validateLinkedEntityMatches(List<LinkedEntityMatch> actualLinkedEntityMatches) {
-        for (LinkedEntityMatch actualLinkedEntity : actualLinkedEntityMatches) {
-            assertNotNull(actualLinkedEntity.getText());
+    private static void validateLinkedEntityMatches(List<LinkedEntityMatch> expectedLinkedEntityMatches,
+        List<LinkedEntityMatch> actualLinkedEntityMatches) {
+        assertEquals(expectedLinkedEntityMatches.size(), actualLinkedEntityMatches.size());
+        expectedLinkedEntityMatches.sort(Comparator.comparing(LinkedEntityMatch::getText));
+        actualLinkedEntityMatches.sort(Comparator.comparing(LinkedEntityMatch::getText));
+
+        for (int i = 0; i < expectedLinkedEntityMatches.size(); i++) {
+            LinkedEntityMatch expectedLinkedEntity = expectedLinkedEntityMatches.get(i);
+            LinkedEntityMatch actualLinkedEntity = actualLinkedEntityMatches.get(i);
+            assertEquals(expectedLinkedEntity.getText(), actualLinkedEntity.getText());
+            assertEquals(expectedLinkedEntity.getOffset(), actualLinkedEntity.getOffset());
+            assertNotNull(actualLinkedEntity.getConfidenceScore());
         }
     }
 
     /**
      * Helper method to verify the error document.
      *
+     * @param expectedError the Error returned from the service.
      * @param actualError the Error returned from the API.
      */
-    static void validateErrorDocument(TextAnalyticsError actualError) {
-        assertNotNull(actualError.getErrorCode());
+    static void validateErrorDocument(TextAnalyticsError expectedError, TextAnalyticsError actualError) {
+        assertEquals(expectedError.getErrorCode(), actualError.getErrorCode());
         assertNotNull(actualError.getMessage());
     }
 
     static void validateExtractiveSummaryResultCollection(boolean showStatistics,
-                                                          ExtractiveSummaryResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, actual,
-            (actualItem) -> validateDocumentExtractiveSummaryResult(actualItem));
+        ExtractiveSummaryResultCollection expected, ExtractiveSummaryResultCollection actual) {
+        validateTextAnalyticsResult(showStatistics, expected, actual,
+            (expectedItem, actualItem) -> validateDocumentExtractiveSummaryResult(expectedItem, actualItem));
     }
 
-    static void validateDocumentExtractiveSummaryResult(ExtractiveSummaryResult actual) {
-        validateExtractiveSummarySentenceList(actual.getSentences().stream().collect(Collectors.toList()));
+    static void validateDocumentExtractiveSummaryResult(ExtractiveSummaryResult expect,
+                                                        ExtractiveSummaryResult actual) {
+        validateExtractiveSummarySentenceList(
+            expect.getSentences().stream().collect(Collectors.toList()),
+            actual.getSentences().stream().collect(Collectors.toList())
+        );
     }
 
     static void validateExtractiveSummaryActionResults(boolean showStatistics,
-                                                       List<ExtractiveSummaryActionResult> actual) {
-        for (ExtractiveSummaryActionResult extractiveSummaryActionResult : actual) {
-            validateExtractiveSummaryActionResult(showStatistics, extractiveSummaryActionResult);
+                                                       List<ExtractiveSummaryActionResult> expected, List<ExtractiveSummaryActionResult> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateExtractiveSummaryActionResult(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
     static void validateExtractiveSummaryActionResult(boolean showStatistics,
+                                                      ExtractiveSummaryActionResult expected,
                                                       ExtractiveSummaryActionResult actual) {
+        assertEquals(expected.isError(), actual.isError());
         if (actual.isError()) {
-            assertNotNull(actual.getError());
-            validateErrorDocument(actual.getError());
+            if (expected.getError() == null) {
+                assertNull(actual.getError());
+            } else {
+                assertNotNull(actual.getError());
+                validateErrorDocument(expected.getError(), actual.getError());
+            }
         } else {
-            validateExtractiveSummaryResultCollection(showStatistics, actual.getDocumentsResults());
+            validateExtractiveSummaryResultCollection(showStatistics,
+                expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
-    static void validateExtractiveSummarySentenceList(List<ExtractiveSummarySentence> actual) {
-        for (ExtractiveSummarySentence extractiveSummarySentence : actual) {
-            assertNotNull(extractiveSummarySentence.getText());
+    static void validateExtractiveSummarySentenceList(List<ExtractiveSummarySentence> expect,
+                                                      List<ExtractiveSummarySentence> actual) {
+        assertEquals(expect.size(), actual.size());
+        for (int i = 0; i < expect.size(); i++) {
+            validateExtractiveSummarySentence(expect.get(i), actual.get(i));
         }
+    }
+
+    static void validateExtractiveSummarySentence(ExtractiveSummarySentence expect, ExtractiveSummarySentence actual) {
+        assertEquals(expect.getText(), actual.getText());
+        assertEquals(expect.getOffset(), actual.getOffset());
+        assertEquals(expect.getLength(), actual.getLength());
+        assertNotNull(actual.getRankScore());
     }
 
     static boolean isAscendingOrderByOffSet(List<ExtractiveSummarySentence> extractiveSummarySentences) {
@@ -1967,25 +2214,34 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
         return true;
     }
 
-    static void validateAbstractiveSummaryActionResults(boolean showStatistics, List<AbstractiveSummaryActionResult> actual) {
-        for (AbstractiveSummaryActionResult abstractiveSummaryActionResult : actual) {
-            validateAbstractiveSummaryActionResult(showStatistics, abstractiveSummaryActionResult);
+    static void validateAbstractiveSummaryActionResults(boolean showStatistics,
+        List<AbstractiveSummaryActionResult> expected, List<AbstractiveSummaryActionResult> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateAbstractiveSummaryActionResult(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
-    static void validateAbstractiveSummaryActionResult(boolean showStatistics, AbstractiveSummaryActionResult actual) {
+    static void validateAbstractiveSummaryActionResult(boolean showStatistics,
+        AbstractiveSummaryActionResult expected, AbstractiveSummaryActionResult actual) {
+        assertEquals(expected.isError(), actual.isError());
         if (actual.isError()) {
-            assertNotNull(actual.getError());
-            validateErrorDocument(actual.getError());
+            if (expected.getError() == null) {
+                assertNull(actual.getError());
+            } else {
+                assertNotNull(actual.getError());
+                validateErrorDocument(expected.getError(), actual.getError());
+            }
         } else {
-            validateAbstractiveSummaryResultCollection(showStatistics, actual.getDocumentsResults());
+            validateAbstractiveSummaryResultCollection(showStatistics,
+                    expected.getDocumentsResults(), actual.getDocumentsResults());
         }
     }
 
     static void validateAbstractiveSummaryResultCollection(boolean showStatistics,
-                                                           AbstractiveSummaryResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, actual,
-                (actualItem) -> validateDocumentAbstractiveSummaryResult(actualItem));
+                                                           AbstractiveSummaryResultCollection expected, AbstractiveSummaryResultCollection actual) {
+        validateTextAnalyticsResult(showStatistics, expected, actual,
+                (expectedItem, actualItem) -> validateDocumentAbstractiveSummaryResult(actualItem));
     }
 
     static void validateDocumentAbstractiveSummaryResult(AbstractiveSummaryResult actual) {
@@ -1993,8 +2249,19 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
     }
 
     static void validateAbstractiveSummaries(List<AbstractiveSummary> actual) {
-        for (final AbstractiveSummary abstractiveSummary : actual) {
+        for (int i = 0; i < actual.size(); i++) {
+            final AbstractiveSummary abstractiveSummary = actual.get(i);
             assertNotNull(abstractiveSummary.getText());
+            validateSummaryContextList(
+                abstractiveSummary.getContexts().stream().collect(Collectors.toList()));
+        }
+    }
+
+    static void validateSummaryContextList(List<AbstractiveSummaryContext> actual) {
+        for (int i = 0; i < actual.size(); i++) {
+            AbstractiveSummaryContext actualAbstractiveSummaryContext = actual.get(i);
+            assertNotNull(actualAbstractiveSummaryContext.getOffset());
+            assertNotNull(actualAbstractiveSummaryContext.getLength());
         }
     }
 }

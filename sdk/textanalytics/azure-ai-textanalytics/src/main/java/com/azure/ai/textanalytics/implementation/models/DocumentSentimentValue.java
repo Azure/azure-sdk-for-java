@@ -4,6 +4,9 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /** Predicted sentiment for document (Negative, Neutral, Positive, or Mixed). */
 public enum DocumentSentimentValue {
     /** Enum value positive. */
@@ -31,6 +34,7 @@ public enum DocumentSentimentValue {
      * @param value the serialized value to parse.
      * @return the parsed DocumentSentimentValue object, or null if unable to parse.
      */
+    @JsonCreator
     public static DocumentSentimentValue fromString(String value) {
         if (value == null) {
             return null;
@@ -45,6 +49,7 @@ public enum DocumentSentimentValue {
     }
 
     /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

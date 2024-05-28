@@ -5,73 +5,27 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The AnalyzeTextTaskResult model. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "kind",
+        defaultImpl = AnalyzeTextTaskResult.class)
+@JsonTypeName("AnalyzeTextTaskResult")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "SentimentAnalysisResults", value = SentimentTaskResult.class),
+    @JsonSubTypes.Type(name = "EntityRecognitionResults", value = EntitiesTaskResult.class),
+    @JsonSubTypes.Type(name = "EntityLinkingResults", value = EntityLinkingTaskResult.class),
+    @JsonSubTypes.Type(name = "PiiEntityRecognitionResults", value = PiiTaskResult.class),
+    @JsonSubTypes.Type(name = "KeyPhraseExtractionResults", value = KeyPhraseTaskResult.class),
+    @JsonSubTypes.Type(name = "LanguageDetectionResults", value = LanguageDetectionTaskResult.class)
+})
 @Immutable
-public class AnalyzeTextTaskResult implements JsonSerializable<AnalyzeTextTaskResult> {
+public class AnalyzeTextTaskResult {
     /** Creates an instance of AnalyzeTextTaskResult class. */
     public AnalyzeTextTaskResult() {}
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AnalyzeTextTaskResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeTextTaskResult if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the AnalyzeTextTaskResult.
-     */
-    public static AnalyzeTextTaskResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    String discriminatorValue = null;
-                    JsonReader readerToUse = reader.bufferObject();
-
-                    readerToUse.nextToken(); // Prepare for reading
-                    while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = readerToUse.getFieldName();
-                        readerToUse.nextToken();
-                        if ("kind".equals(fieldName)) {
-                            discriminatorValue = readerToUse.getString();
-                            break;
-                        } else {
-                            readerToUse.skipChildren();
-                        }
-                    }
-
-                    if (discriminatorValue != null) {
-                        readerToUse = readerToUse.reset();
-                    }
-                    // Use the discriminator value to determine which subtype should be deserialized.
-                    if ("SentimentAnalysisResults".equals(discriminatorValue)) {
-                        return SentimentTaskResult.fromJson(readerToUse);
-                    } else if ("EntityRecognitionResults".equals(discriminatorValue)) {
-                        return EntitiesTaskResult.fromJson(readerToUse);
-                    } else if ("EntityLinkingResults".equals(discriminatorValue)) {
-                        return EntityLinkingTaskResult.fromJson(readerToUse);
-                    } else if ("PiiEntityRecognitionResults".equals(discriminatorValue)) {
-                        return PiiTaskResult.fromJson(readerToUse);
-                    } else if ("KeyPhraseExtractionResults".equals(discriminatorValue)) {
-                        return KeyPhraseTaskResult.fromJson(readerToUse);
-                    } else if ("LanguageDetectionResults".equals(discriminatorValue)) {
-                        return LanguageDetectionTaskResult.fromJson(readerToUse);
-                    } else {
-                        throw new IllegalStateException(
-                                "Discriminator field 'kind' didn't match one of the expected values 'SentimentAnalysisResults', 'EntityRecognitionResults', 'EntityLinkingResults', 'PiiEntityRecognitionResults', 'KeyPhraseExtractionResults', or 'LanguageDetectionResults'. It was: '"
-                                        + discriminatorValue
-                                        + "'.");
-                    }
-                });
-    }
 }
