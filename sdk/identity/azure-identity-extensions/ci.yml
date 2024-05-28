@@ -26,10 +26,10 @@ pr:
       - sdk/identity/azure-identity-extensions/pom.xml
 
 parameters:
-- name: release_azureidentityextensions
-  displayName: 'azure-identity-extensions'
-  type: boolean
-  default: true
+  - name: release_azureidentityextensions
+    displayName: 'azure-identity-extensions'
+    type: boolean
+    default: true
 
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
