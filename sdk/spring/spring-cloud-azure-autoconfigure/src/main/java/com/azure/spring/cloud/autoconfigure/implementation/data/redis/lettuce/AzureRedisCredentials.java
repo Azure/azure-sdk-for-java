@@ -9,6 +9,7 @@ import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import io.lettuce.core.RedisCredentials;
 
 import java.util.Objects;
+import java.util.Properties;
 
 public class AzureRedisCredentials implements RedisCredentials {
 
@@ -27,11 +28,13 @@ public class AzureRedisCredentials implements RedisCredentials {
         azureAuthenticationTemplate.init(passwordlessProperties.toPasswordlessProperties());
     }
 
-    public AzureRedisCredentials(String username, TokenCredential tokenCredential) {
+    public AzureRedisCredentials(String username, PasswordlessProperties passwordlessProperties, TokenCredential tokenCredential) {
         Objects.requireNonNull(username, "Username is required");
+        Objects.requireNonNull(passwordlessProperties, "PasswordlessProperties is required");
         Objects.requireNonNull(tokenCredential, "TokenCredential is required");
         this.username = username;
         this.azureAuthenticationTemplate = new AzureAuthenticationTemplate(() -> tokenCredential, null);
+        this.azureAuthenticationTemplate.init(passwordlessProperties.toPasswordlessProperties());
     }
 
     @Override
