@@ -10,11 +10,9 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosReadManyRequestOptionsImpl;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Specifies the options associated with read many operation
