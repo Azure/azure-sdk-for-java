@@ -97,6 +97,7 @@ steps:
         displayName: 'Run tests (Federated Auth)'
       inputs:
         azureSubscription: ${{ parameters.ServiceConnection }}
+        pwsh: true
         ScriptType: InlineScript
         Inline: >-
           mvn -f pom.xml
@@ -106,10 +107,10 @@ steps:
           ${{ parameters.TestOptions }}
           -T ${{ parameters.TestParallelization }}
           ${{ parameters.TestGoals }}
-        env:
-          JAVA_HOME: $(PowerShellJavaTestVersion)
-          MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
-          ${{ insert }}: ${{ parameters.TestEnvVars }}
+      env:
+        JAVA_HOME: $(PowerShellJavaTestVersion)
+        MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
+        ${{ insert }}: ${{ parameters.TestEnvVars }}
 
   - ${{ else }}:
     - task: Maven@3
@@ -170,11 +171,20 @@ steps:
 
 
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
+    - ${{ if eq(parameters.IsLiveTest, 'true') }}:
+      - pwsh: |
+          Write-Host "##vso[task.setvariable variable=LiveTestSourceParams]"
+        displayName: Use empty live test source params
+    - ${{ else }}:
+      - pwsh: |
+          Write-Host "##vso[task.setvariable variable=LiveTestSourceParams]-amd"
+        displayName: Set live test source params (-amd)
     - task: AzurePowerShell@5
       displayName: 'Run tests for From Source run (Federated Auth)'
       condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
       inputs:
         azureSubscription: ${{ parameters.ServiceConnection }}
+        pwsh: true
         ScriptType: InlineScript
         Inline: >-
           mvn -f ClientFromSourcePom.xml
@@ -182,6 +192,7 @@ steps:
           -DAZURE_TEST_DEBUG=$(IsDebug)
           -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }}
           ${{ parameters.TestOptions }}
+          $(LiveTestSourceParams)
           -T ${{ parameters.TestParallelization }}
           ${{ parameters.TestGoals }}
         env:
