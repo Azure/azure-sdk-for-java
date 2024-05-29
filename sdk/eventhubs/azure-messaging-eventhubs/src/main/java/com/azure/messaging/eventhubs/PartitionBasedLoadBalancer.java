@@ -323,7 +323,7 @@ final class PartitionBasedLoadBalancer {
             // this is an idempotent operation, calling close on an already closed client is just a no-op.
             this.eventHubAsyncClient.close();
         } catch (Exception ex) {
-            LOGGER.atInfo()
+            LOGGER.atWarning()
                 .addKeyValue(OWNER_ID_KEY, ownerId)
                 .log("Failed to close the client", ex);
         }
