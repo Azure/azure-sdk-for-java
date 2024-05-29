@@ -1174,6 +1174,14 @@
       "ignoreRegExpList": [
         "/\/\/\\s*(BEGIN:|END:).*/"
       ]
+    },
+    {
+      "filename": "sdk/tables/azure-data-tables/**",
+      "words": [
+        "upserts",
+        "upserted",
+        "raud"
+      ]
     }
   ],
   "allowCompoundWords": true
