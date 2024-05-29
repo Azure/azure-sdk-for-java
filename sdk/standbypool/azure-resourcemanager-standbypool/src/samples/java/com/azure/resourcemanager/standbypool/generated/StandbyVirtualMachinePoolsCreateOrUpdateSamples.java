@@ -14,6 +14,10 @@ import java.util.Map;
  * Samples for StandbyVirtualMachinePools CreateOrUpdate.
  */
 public final class StandbyVirtualMachinePoolsCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/
+     * StandbyVirtualMachinePools_CreateOrUpdate.json
+     */
     /**
      * Sample code: StandbyVirtualMachinePools_CreateOrUpdate.
      * 
