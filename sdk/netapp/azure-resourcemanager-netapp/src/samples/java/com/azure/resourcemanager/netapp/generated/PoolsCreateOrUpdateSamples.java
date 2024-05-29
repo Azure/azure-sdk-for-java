@@ -12,8 +12,7 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
  */
 public final class PoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-07-01/examples/Pools_CreateOrUpdate.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/Pools_CreateOrUpdate.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.
@@ -21,7 +20,13 @@ public final class PoolsCreateOrUpdateSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void poolsCreateOrUpdate(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.pools().define("pool1").withRegion("eastus").withExistingNetAppAccount("myRG", "account1")
-            .withSize(4398046511104L).withServiceLevel(ServiceLevel.PREMIUM).withQosType(QosType.AUTO).create();
+        manager.pools()
+            .define("pool1")
+            .withRegion("eastus")
+            .withExistingNetAppAccount("myRG", "account1")
+            .withSize(4398046511104L)
+            .withServiceLevel(ServiceLevel.PREMIUM)
+            .withQosType(QosType.AUTO)
+            .create();
     }
 }

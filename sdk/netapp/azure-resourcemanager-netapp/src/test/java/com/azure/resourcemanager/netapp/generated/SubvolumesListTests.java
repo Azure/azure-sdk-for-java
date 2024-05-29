@@ -14,23 +14,24 @@ public final class SubvolumesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubvolumesList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"path\":\"nhlmctlpdng\",\"size\":5842965141303303723,\"parentPath\":\"mhrixkwmyijejve\",\"provisioningState\":\"hbpnaixexccbd\"},\"id\":\"ax\",\"name\":\"cexdrrvqa\",\"type\":\"qkghtpwijnhy\"}],\"nextLink\":\"vfycxzb\"}")
+            "{\"value\":[{\"properties\":{\"path\":\"aeqphchqnr\",\"size\":4162908248726599775,\"parentPath\":\"huwrykqgaifm\",\"provisioningState\":\"klbydv\"},\"id\":\"bejdznxcv\",\"name\":\"srhnjivo\",\"type\":\"v\"}],\"nextLink\":\"ovqfzge\"}")
             .toObject(SubvolumesList.class);
-        Assertions.assertEquals("nhlmctlpdng", model.value().get(0).path());
-        Assertions.assertEquals(5842965141303303723L, model.value().get(0).size());
-        Assertions.assertEquals("mhrixkwmyijejve", model.value().get(0).parentPath());
-        Assertions.assertEquals("vfycxzb", model.nextLink());
+        Assertions.assertEquals("aeqphchqnr", model.value().get(0).path());
+        Assertions.assertEquals(4162908248726599775L, model.value().get(0).size());
+        Assertions.assertEquals("huwrykqgaifm", model.value().get(0).parentPath());
+        Assertions.assertEquals("ovqfzge", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SubvolumesList model
-            = new SubvolumesList().withValue(Arrays.asList(new SubvolumeInfoInner().withPath("nhlmctlpdng")
-                .withSize(5842965141303303723L).withParentPath("mhrixkwmyijejve"))).withNextLink("vfycxzb");
+            = new SubvolumesList().withValue(Arrays.asList(new SubvolumeInfoInner().withPath("aeqphchqnr")
+                .withSize(4162908248726599775L)
+                .withParentPath("huwrykqgaifm"))).withNextLink("ovqfzge");
         model = BinaryData.fromObject(model).toObject(SubvolumesList.class);
-        Assertions.assertEquals("nhlmctlpdng", model.value().get(0).path());
-        Assertions.assertEquals(5842965141303303723L, model.value().get(0).size());
-        Assertions.assertEquals("mhrixkwmyijejve", model.value().get(0).parentPath());
-        Assertions.assertEquals("vfycxzb", model.nextLink());
+        Assertions.assertEquals("aeqphchqnr", model.value().get(0).path());
+        Assertions.assertEquals(4162908248726599775L, model.value().get(0).size());
+        Assertions.assertEquals("huwrykqgaifm", model.value().get(0).parentPath());
+        Assertions.assertEquals("ovqfzge", model.nextLink());
     }
 }
