@@ -6,6 +6,7 @@ package com.azure.ai.documentintelligence;
 
 import com.azure.ai.documentintelligence.implementation.DocumentIntelligenceClientImpl;
 import com.azure.ai.documentintelligence.models.AnalyzeDocumentRequest;
+import com.azure.ai.documentintelligence.models.AnalyzeResult;
 import com.azure.ai.documentintelligence.models.AnalyzeResultOperation;
 import com.azure.ai.documentintelligence.models.ClassifyDocumentRequest;
 import com.azure.ai.documentintelligence.models.ContentFormat;
@@ -148,7 +149,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginAnalyzeDocument(String modelId, String pages,
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocument(String modelId, String pages,
         String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
         List<String> queryFields, ContentFormat outputContentFormat, AnalyzeDocumentRequest analyzeRequest) {
         // Generated convenience method for beginAnalyzeDocumentWithModel
@@ -199,7 +200,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginAnalyzeDocument(String modelId) {
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginAnalyzeDocument(String modelId) {
         // Generated convenience method for beginAnalyzeDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginAnalyzeDocumentWithModelAsync(modelId, requestOptions);
@@ -222,7 +223,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginClassifyDocument(String classifierId,
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
         ClassifyDocumentRequest classifyRequest, StringIndexType stringIndexType, SplitMode split) {
         // Generated convenience method for beginClassifyDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -251,7 +252,7 @@ public final class DocumentIntelligenceAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> beginClassifyDocument(String classifierId,
+    public PollerFlux<AnalyzeResultOperation, AnalyzeResult> beginClassifyDocument(String classifierId,
         ClassifyDocumentRequest classifyRequest) {
         // Generated convenience method for beginClassifyDocumentWithModel
         RequestOptions requestOptions = new RequestOptions();
