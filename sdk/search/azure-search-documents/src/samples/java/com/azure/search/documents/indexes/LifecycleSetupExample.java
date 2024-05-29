@@ -6,6 +6,7 @@ package com.azure.search.documents.indexes;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
+import com.azure.search.documents.indexes.models.EntityRecognitionSkillVersion;
 import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
 import com.azure.search.documents.indexes.models.IndexingSchedule;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
@@ -123,7 +124,7 @@ public class LifecycleSetupExample {
         );
 
 
-        SearchIndexerSkill skill = new EntityRecognitionSkill(inputs, outputs)
+        SearchIndexerSkill skill = new EntityRecognitionSkill(inputs, outputs, EntityRecognitionSkillVersion.V3)
             .setName("#1")
             .setDescription("Entity Recognition Skill")
             .setContext("/document/Description");

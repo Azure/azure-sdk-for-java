@@ -190,33 +190,6 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
     }
 
     /**
-     * Creates an instance of ThreadMessage class.
-     *
-     * @param id the id value to set.
-     * @param createdAt the createdAt value to set.
-     * @param threadId the threadId value to set.
-     * @param role the role value to set.
-     * @param content the content value to set.
-     * @param fileIds the fileIds value to set.
-     * @param metadata the metadata value to set.
-     */
-    @Generated
-    private ThreadMessage(String id, OffsetDateTime createdAt, String threadId, MessageRole role,
-        List<MessageContent> content, List<String> fileIds, Map<String, String> metadata) {
-        this.id = id;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        this.threadId = threadId;
-        this.role = role;
-        this.content = content;
-        this.fileIds = fileIds;
-        this.metadata = metadata;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -227,6 +200,11 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
         jsonWriter.writeStringField("object", this.object);
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeStringField("thread_id", this.threadId);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("incomplete_details",
+            this.incompleteDetails == null ? null : this.incompleteDetails.toString());
+        jsonWriter.writeNumberField("completed_at", this.completedAt);
+        jsonWriter.writeNumberField("incomplete_at", this.incompleteAt);
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeArrayField("content", this.content, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("file_ids", this.fileIds, (writer, element) -> writer.writeString(element));
@@ -251,6 +229,10 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
             String id = null;
             OffsetDateTime createdAt = null;
             String threadId = null;
+            MessageStatus status = null;
+            MessageIncompleteDetailsReason incompleteDetails = null;
+            OffsetDateTime completedAt = null;
+            OffsetDateTime incompleteAt = null;
             MessageRole role = null;
             List<MessageContent> content = null;
             List<String> fileIds = null;
@@ -266,6 +248,22 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
                     createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("thread_id".equals(fieldName)) {
                     threadId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    status = MessageStatus.fromString(reader.getString());
+                } else if ("incomplete_details".equals(fieldName)) {
+                    incompleteDetails = MessageIncompleteDetailsReason.fromString(reader.getString());
+                } else if ("completed_at".equals(fieldName)) {
+                    Long completedAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (completedAtHolder != null) {
+                        completedAt
+                            = OffsetDateTime.ofInstant(Instant.ofEpochSecond(completedAtHolder), ZoneOffset.UTC);
+                    }
+                } else if ("incomplete_at".equals(fieldName)) {
+                    Long incompleteAtHolder = reader.getNullable(JsonReader::getLong);
+                    if (incompleteAtHolder != null) {
+                        incompleteAt
+                            = OffsetDateTime.ofInstant(Instant.ofEpochSecond(incompleteAtHolder), ZoneOffset.UTC);
+                    }
                 } else if ("role".equals(fieldName)) {
                     role = MessageRole.fromString(reader.getString());
                 } else if ("content".equals(fieldName)) {
@@ -282,11 +280,125 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
                     reader.skipChildren();
                 }
             }
-            ThreadMessage deserializedThreadMessage
-                = new ThreadMessage(id, createdAt, threadId, role, content, fileIds, metadata);
+            ThreadMessage deserializedThreadMessage = new ThreadMessage(id, createdAt, threadId, status,
+                incompleteDetails, completedAt, incompleteAt, role, content, fileIds, metadata);
             deserializedThreadMessage.assistantId = assistantId;
             deserializedThreadMessage.runId = runId;
             return deserializedThreadMessage;
         });
+    }
+
+    /*
+     * The status of the message.
+     */
+    @Generated
+    private final MessageStatus status;
+
+    /*
+     * On an incomplete message, details about why the message is incomplete.
+     */
+    @Generated
+    private final MessageIncompleteDetailsReason incompleteDetails;
+
+    /*
+     * The Unix timestamp (in seconds) for when the message was completed.
+     */
+    @Generated
+    private final Long completedAt;
+
+    /*
+     * The Unix timestamp (in seconds) for when the message was marked as incomplete.
+     */
+    @Generated
+    private final Long incompleteAt;
+
+    /**
+     * Creates an instance of ThreadMessage class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param threadId the threadId value to set.
+     * @param status the status value to set.
+     * @param incompleteDetails the incompleteDetails value to set.
+     * @param completedAt the completedAt value to set.
+     * @param incompleteAt the incompleteAt value to set.
+     * @param role the role value to set.
+     * @param content the content value to set.
+     * @param fileIds the fileIds value to set.
+     * @param metadata the metadata value to set.
+     */
+    @Generated
+    private ThreadMessage(String id, OffsetDateTime createdAt, String threadId, MessageStatus status,
+        MessageIncompleteDetailsReason incompleteDetails, OffsetDateTime completedAt, OffsetDateTime incompleteAt,
+        MessageRole role, List<MessageContent> content, List<String> fileIds, Map<String, String> metadata) {
+        this.id = id;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        this.threadId = threadId;
+        this.status = status;
+        this.incompleteDetails = incompleteDetails;
+        if (completedAt == null) {
+            this.completedAt = null;
+        } else {
+            this.completedAt = completedAt.toEpochSecond();
+        }
+        if (incompleteAt == null) {
+            this.incompleteAt = null;
+        } else {
+            this.incompleteAt = incompleteAt.toEpochSecond();
+        }
+        this.role = role;
+        this.content = content;
+        this.fileIds = fileIds;
+        this.metadata = metadata;
+    }
+
+    /**
+     * Get the status property: The status of the message.
+     *
+     * @return the status value.
+     */
+    @Generated
+    public MessageStatus getStatus() {
+        return this.status;
+    }
+
+    /**
+     * Get the incompleteDetails property: On an incomplete message, details about why the message is incomplete.
+     *
+     * @return the incompleteDetails value.
+     */
+    @Generated
+    public MessageIncompleteDetailsReason getIncompleteDetails() {
+        return this.incompleteDetails;
+    }
+
+    /**
+     * Get the completedAt property: The Unix timestamp (in seconds) for when the message was completed.
+     *
+     * @return the completedAt value.
+     */
+    @Generated
+    public OffsetDateTime getCompletedAt() {
+        if (this.completedAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.completedAt), ZoneOffset.UTC);
+    }
+
+    /**
+     * Get the incompleteAt property: The Unix timestamp (in seconds) for when the message was marked as incomplete.
+     *
+     * @return the incompleteAt value.
+     */
+    @Generated
+    public OffsetDateTime getIncompleteAt() {
+        if (this.incompleteAt == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.incompleteAt), ZoneOffset.UTC);
     }
 }

@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -114,13 +115,13 @@ public final class BatchJobScheduleExecutionInfo implements JsonSerializable<Bat
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("nextRunTime".equals(fieldName)) {
-                    deserializedBatchJobScheduleExecutionInfo.nextRunTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchJobScheduleExecutionInfo.nextRunTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("recentJob".equals(fieldName)) {
                     deserializedBatchJobScheduleExecutionInfo.recentJob = RecentBatchJob.fromJson(reader);
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedBatchJobScheduleExecutionInfo.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchJobScheduleExecutionInfo.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }
