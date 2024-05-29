@@ -734,30 +734,71 @@ public final class AssistantsClient {
 
     /**
      * Creates a new run for an assistant thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     *
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
      *     model: String (Optional)
      *     instructions: String (Optional)
      *     additional_instructions: String (Optional)
-     *     tools (Optional): [
+     *     additional_messages (Optional): [
      *          (Optional){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             thread_id: String (Required)
+     *             status: String(in_progress/incomplete/completed) (Required)
+     *             incomplete_details (Required): {
+     *                 reason: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *             }
+     *             completed_at: Long (Required)
+     *             incomplete_at: Long (Required)
+     *             role: String(user/assistant) (Required)
+     *             content (Required): [
+     *                  (Required){
+     *                     type: String (Required)
+     *                 }
+     *             ]
+     *             assistant_id: String (Required)
+     *             run_id: String (Required)
+     *             attachments (Required): [
+     *                  (Required){
+     *                     file_id: String (Required)
+     *                     tools (Required): [
+     *                         BinaryData (Required)
+     *                     ]
+     *                 }
+     *             ]
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
      *         }
      *     ]
+     *     tools (Optional): [
+     *          (Optional){
+     *             type: String (Required)
+     *         }
+     *     ]
+     *     stream: Boolean (Optional)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Optional)
+     *     max_completion_tokens: Integer (Optional)
+     *     truncation_strategy (Optional): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Optional)
+     *     response_format: BinaryData (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
      * }</pre>
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
-     *
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -766,6 +807,7 @@ public final class AssistantsClient {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Required)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -775,17 +817,31 @@ public final class AssistantsClient {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
-     *     file_ids (Required): [
-     *         String (Required)
-     *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
+     *     max_prompt_tokens: Integer (Required)
+     *     max_completion_tokens: Integer (Required)
+     *     truncation_strategy (Required): {
+     *         type: String(auto/last_messages) (Required)
+     *         last_messages: Integer (Optional)
+     *     }
+     *     tool_choice: BinaryData (Required)
+     *     response_format: BinaryData (Required)
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -805,7 +861,6 @@ public final class AssistantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createRunWithResponse(String threadId, BinaryData createRunOptions,
         RequestOptions requestOptions) {
-        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createRunWithResponse(threadId, createRunOptions, requestOptions);
     }
 
@@ -2484,7 +2539,7 @@ public final class AssistantsClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * byte[]
      * }</pre>
@@ -2625,7 +2680,7 @@ public final class AssistantsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2677,7 +2732,7 @@ public final class AssistantsClient {
     /**
      * Creates a vector store.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     file_ids (Optional): [
@@ -2693,9 +2748,9 @@ public final class AssistantsClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2742,7 +2797,7 @@ public final class AssistantsClient {
     /**
      * Returns the vector store object matching the specified ID.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2788,7 +2843,7 @@ public final class AssistantsClient {
     /**
      * The ID of the vector store to modify.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -2801,9 +2856,9 @@ public final class AssistantsClient {
      *     }
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2852,7 +2907,7 @@ public final class AssistantsClient {
     /**
      * Deletes the vector store object matching the specified ID.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2897,7 +2952,7 @@ public final class AssistantsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2938,13 +2993,13 @@ public final class AssistantsClient {
     /**
      * Create a vector store file by attaching a file to a vector store.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * String
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2980,7 +3035,7 @@ public final class AssistantsClient {
     /**
      * Retrieves a vector store file.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3017,7 +3072,7 @@ public final class AssistantsClient {
      * deleted.
      * To delete the file, use the delete file endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3045,7 +3100,7 @@ public final class AssistantsClient {
     /**
      * Create a vector store file batch.
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     file_ids (Required): [
@@ -3053,9 +3108,9 @@ public final class AssistantsClient {
      *     ]
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3092,7 +3147,7 @@ public final class AssistantsClient {
     /**
      * Retrieve a vector store file batch.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3130,7 +3185,7 @@ public final class AssistantsClient {
      * Cancel a vector store file batch. This attempts to cancel the processing of files in this batch as soon as
      * possible.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3186,7 +3241,7 @@ public final class AssistantsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
