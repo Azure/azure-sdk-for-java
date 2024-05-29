@@ -12,18 +12,11 @@ public final class RecurrenceConstants {
 
     // parameters
     public static final String RECURRENCE_PATTERN = "Pattern";
-    public static final String RECURRENCE_PATTERN_TYPE = "Type";
-    public static final String RECURRENCE_PATTERN_INTERVAL = "Interval";
     public static final String RECURRENCE_PATTERN_DAYS_OF_WEEK = "DaysOfWeek";
-    public static final String RECURRENCE_PATTERN_FIRST_DAY_OF_WEEK = "FirstDayOfWeek";
     public static final String RECURRENCE_RANGE = "Range";
-    public static final String RECURRENCE_RANGE_TYPE = "Type";
-    public static final String RECURRENCE_RANGE_NUMBER_OF_OCCURRENCES = "NumberOfOccurrences";
-    public static final String RECURRENCE_RANGE_EDN_DATE = "EndDate";
 
     // Error Message
     public static final String OUT_OF_RANGE = "The value of parameter %s is out of the accepted range.";
-    public static final String UNRECOGNIZED_VALUE = "The value of parameter %s is unrecognizable.";
     public static final String REQUIRED_PARAMETER = "Value cannot be null for required parameter: %s";
     public static final String NOT_MATCHED = "%s date is not a valid first occurrence.";
     public static final String TIME_WINDOW_DURATION_OUT_OF_RANGE = "Time window duration cannot be longer than how frequently it occurs or be longer than 10 years.";
