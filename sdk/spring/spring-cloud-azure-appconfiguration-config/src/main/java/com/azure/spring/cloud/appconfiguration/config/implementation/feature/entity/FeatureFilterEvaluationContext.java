@@ -2,11 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Context passed into Feature Filters used for evaluation.
@@ -22,10 +21,7 @@ public final class FeatureFilterEvaluationContext {
 
     private String name;
 
-    @JsonProperty("parameters")
     private Map<String, Object> parameters;
-
-    private String featureName;
 
     /**
      * Return the name
@@ -61,22 +57,6 @@ public final class FeatureFilterEvaluationContext {
      */
     public void setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
-    }
-
-    /**
-     * Return the featureName
-     * @return the featureName
-     */
-    public String getFeatureName() {
-        return featureName;
-    }
-
-    /**
-     * Set the featureName
-     * @param featureName the featureName to set
-     */
-    public void setFeatureName(String featureName) {
-        this.featureName = featureName;
     }
 
 }

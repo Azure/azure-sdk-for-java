@@ -23,6 +23,8 @@ import com.azure.data.appconfiguration.models.SnapshotComposition;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 
+import io.netty.handler.codec.http.HttpResponseStatus;
+
 /**
  * Client for connecting to App Configuration when multiple replicas are in use.
  */
@@ -97,14 +99,7 @@ class AppConfigurationReplicaClient {
             this.failedAttempts = 0;
             return watchKey;
         } catch (HttpResponseException e) {
-            if (e.getResponse() != null) {
-                int statusCode = e.getResponse().getStatusCode();
-
-                if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
-                    throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
-                }
-            }
-            throw e;
+            throw hanndleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
@@ -128,21 +123,13 @@ class AppConfigurationReplicaClient {
             this.failedAttempts = 0;
             return configurationSettings;
         } catch (HttpResponseException e) {
-            if (e.getResponse() != null) {
-                int statusCode = e.getResponse().getStatusCode();
-
-                if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
-                    throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
-                }
-            }
-            throw e;
+            throw hanndleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
     }
 
-    FeatureFlags listFeatureFlags(SettingSelector settingSelector)
-        throws HttpResponseException {
+    FeatureFlags listFeatureFlags(SettingSelector settingSelector) throws HttpResponseException {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         List<MatchConditions> checks = new ArrayList<>();
         try {
@@ -160,14 +147,7 @@ class AppConfigurationReplicaClient {
             settingSelector.setMatchConditions(checks);
             return new FeatureFlags(settingSelector, configurationSettings);
         } catch (HttpResponseException e) {
-            if (e.getResponse() != null) {
-                int statusCode = e.getResponse().getStatusCode();
-
-                if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
-                    throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
-                }
-            }
-            throw e;
+            throw hanndleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
@@ -186,14 +166,7 @@ class AppConfigurationReplicaClient {
             settings.forEach(setting -> configurationSettings.add(NormalizeNull.normalizeNullLabel(setting)));
             return configurationSettings;
         } catch (HttpResponseException e) {
-            if (e.getResponse() != null) {
-                int statusCode = e.getResponse().getStatusCode();
-
-                if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
-                    throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
-                }
-            }
-            throw e;
+            throw hanndleHttpResponseException(e);
         } catch (UncheckedIOException e) {
             throw new AppConfigurationStatusException(e.getMessage(), null, null);
         }
@@ -213,6 +186,19 @@ class AppConfigurationReplicaClient {
         if (StringUtils.hasText(syncToken)) {
             client.updateSyncToken(syncToken);
         }
+    }
+
+    private HttpResponseException hanndleHttpResponseException(HttpResponseException e) {
+        if (e.getResponse() != null) {
+            int statusCode = e.getResponse().getStatusCode();
+
+            if (statusCode == HttpResponseStatus.TOO_MANY_REQUESTS.code()
+                || statusCode == HttpResponseStatus.REQUEST_TIMEOUT.code()
+                || statusCode >= HttpResponseStatus.INTERNAL_SERVER_ERROR.code()) {
+                return new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
+            }
+        }
+        return e;
     }
 
     TracingInfo getTracingInfo() {
