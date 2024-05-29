@@ -4,6 +4,9 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /** The type related to the target. */
 public enum TargetRelationType {
     /** Enum value assessment. */
@@ -25,6 +28,7 @@ public enum TargetRelationType {
      * @param value the serialized value to parse.
      * @return the parsed TargetRelationType object, or null if unable to parse.
      */
+    @JsonCreator
     public static TargetRelationType fromString(String value) {
         if (value == null) {
             return null;
@@ -39,6 +43,7 @@ public enum TargetRelationType {
     }
 
     /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;
