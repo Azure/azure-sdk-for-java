@@ -229,7 +229,7 @@ public class RecurrenceValidatorTest {
         pattern3.put("DaysOfWeek", List.of("Monday"));
         final HashMap<String, Object> range3 = new HashMap<>();
         range3.put("Type", "NoEnd");
-        final HashMap<String, Object> recurrence3= new HashMap<>();
+        final HashMap<String, Object> recurrence3 = new HashMap<>();
         recurrence3.put("Pattern", pattern3);
         recurrence3.put("Range", range3);
         final Map<String, Object> parameters3 = new LinkedHashMap<>();
@@ -245,7 +245,7 @@ public class RecurrenceValidatorTest {
         pattern4.put("DaysOfWeek", List.of("Monday", "Thursday", "Sunday"));
         final HashMap<String, Object> range4 = new HashMap<>();
         range4.put("Type", "NoEnd");
-        final HashMap<String, Object> recurrence4= new HashMap<>();
+        final HashMap<String, Object> recurrence4 = new HashMap<>();
         recurrence4.put("Pattern", pattern4);
         recurrence4.put("Range", range4);
         final Map<String, Object> parameters4 = new LinkedHashMap<>();
@@ -260,7 +260,7 @@ public class RecurrenceValidatorTest {
         final HashMap<String, Object> range5 = new HashMap<>();
         range5.put("Type", "EndDate");
         range5.put("EndDate", "2023-08-31T00:00:00+08:00");
-        final HashMap<String, Object> recurrence5= new HashMap<>();
+        final HashMap<String, Object> recurrence5 = new HashMap<>();
         recurrence5.put("Pattern", pattern5);
         recurrence5.put("Range", range5);
         final Map<String, Object> parameters5 = new LinkedHashMap<>();

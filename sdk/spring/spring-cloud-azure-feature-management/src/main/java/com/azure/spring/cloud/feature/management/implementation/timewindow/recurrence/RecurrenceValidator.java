@@ -100,12 +100,12 @@ public class RecurrenceValidator {
      */
     private static void validateTimeWindowDuration(TimeWindowFilterSettings settings) {
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
-        final Duration intervalDuration = RecurrencePatternType.DAILY.equals(pattern.getType()) ?
-            Duration.ofDays(pattern.getInterval()) :
-            Duration.ofDays((long) pattern.getInterval() * RecurrenceConstants.DAYS_PER_WEEK);
+        final Duration intervalDuration = RecurrencePatternType.DAILY.equals(pattern.getType())
+            ? Duration.ofDays(pattern.getInterval())
+            : Duration.ofDays((long) pattern.getInterval() * RecurrenceConstants.DAYS_PER_WEEK);
         final Duration timeWindowDuration = Duration.between(settings.getStart(), settings.getEnd());
         if (timeWindowDuration.compareTo(intervalDuration) > 0) {
-           throw new IllegalArgumentException("The time window between Start and End should be shorter than the Interval");
+            throw new IllegalArgumentException("The time window between Start and End should be shorter than the Interval");
         }
     }
 
