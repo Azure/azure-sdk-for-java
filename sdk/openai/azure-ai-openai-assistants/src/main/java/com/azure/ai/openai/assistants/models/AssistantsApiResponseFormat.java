@@ -28,8 +28,16 @@ public final class AssistantsApiResponseFormat implements JsonSerializable<Assis
     /**
      * Creates an instance of AssistantsApiResponseFormat class.
      */
-    @Generated
-    public AssistantsApiResponseFormat() {
+    private AssistantsApiResponseFormat() {
+    }
+
+    /**
+     * Creates an instance of AssistantsApiResponseFormat class.
+     *
+     * @param type Must be one of `text` or `json_object`.
+     */
+    public AssistantsApiResponseFormat(ApiResponseFormat type) {
+        this.type = type;
     }
 
     /**
