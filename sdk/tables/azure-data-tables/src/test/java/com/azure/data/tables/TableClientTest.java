@@ -33,8 +33,6 @@ import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasPermission;
 import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
-import com.azure.identity.AzureCliCredential;
-import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
 import com.azure.identity.DefaultAzureCredential;
@@ -76,7 +74,7 @@ public class TableClientTest extends TableClientTestBase {
 
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
-        final String endpoint = "https://tb914c4cd1614894eprim.table.core.windows.net";
+        final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         tableClient = getClientBuilder(tableName, endpoint, credential, true).buildClient();
         tableClient.createTable();
