@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The RunError model.
+ * The details of an error as encountered by an assistant thread run.
  */
 @Immutable
 public final class RunError implements JsonSerializable<RunError> {
