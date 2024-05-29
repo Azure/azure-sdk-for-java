@@ -27,18 +27,44 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Collections;
 
 class DocumentTranslationClientTestBase extends TestProxyTestBase {
-
-    private final String defaultEndpoint = "https://fakeendpoint.cognitiveservices.azure.com";
-    private final String defaultApiKey = "fakeZmFrZV9hY29jdW50X2tleQ==";
-    private final String defaultStorageName = "redacted";
-    private final String defaultStorageKey = "fakeZmFrZV9hY29jdW50X2tleQ==";
-
+    
+    private final String endpoint = Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_ENDPOINT");
+    private final String apiKey = Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_API_KEY");
+    private final String storageName = Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_STORAGE_NAME");
+    private final String connectionString = Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_CONNECTION_STRING");
+    
+    // NOT REAL ACCOUNT DETAILS
+    private final String playbackEndpoint = "https://fakeendpoint.cognitiveservices.azure.com";
+    private final String playbackApiKey = "Sanitized";
+    private final String playbackStorageName = "Sanitized";
+    private final String playbackConnectionString = "DefaultEndpointsProtocol=https;AccountName=fakeStorageName;AccountKey=Secret;EndpointSuffix=core.windows.net";    
+    public static final String HOST_NAME_REGEX = "(?<=http://|https://)(?<host>[^/?\\\\.]+)";  
+    
+    @Override
+    public void beforeTest() {
+        super.beforeTest();
+        List<TestProxySanitizer> customSanitizers = new ArrayList<>();
+        if (!interceptorManager.isLiveMode()) {
+            customSanitizers.add(new TestProxySanitizer("$..sourceUrl", null, "REDACTED_VALUE", TestProxySanitizerType.BODY_KEY));
+            customSanitizers.add(new TestProxySanitizer("$..targetUrl", null, "REDACTED_VALUE", TestProxySanitizerType.BODY_KEY));
+            customSanitizers.add(new TestProxySanitizer("$..glossaryUrl", null, "REDACTED_VALUE", TestProxySanitizerType.BODY_KEY));           
+            customSanitizers.add(new TestProxySanitizer("Operation-Location", HOST_NAME_REGEX, "REDACTED_VALUE", TestProxySanitizerType.HEADER));
+            interceptorManager.addSanitizers(customSanitizers);
+            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3430"));
+        }
+    }
+    
     DocumentTranslationClient getDocumentTranslationClient() {
         return getDTClient(getEndpoint(), getKey());
     }
@@ -54,6 +80,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         } else if (interceptorManager.isRecordMode()) {
             documentTranslationClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
+        
         return documentTranslationClientbuilder.buildClient();
     }
 
@@ -77,30 +104,26 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
     String getEndpoint() {
         return interceptorManager.isPlaybackMode()
-                ? defaultEndpoint
-                : Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_ENDPOINT");
+            ? this.playbackEndpoint
+            : this.endpoint;
     }
 
     private String getKey() {
         return interceptorManager.isPlaybackMode()
-                ? defaultApiKey
-                : Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_API_KEY");
+            ? this.playbackApiKey
+            : this.apiKey;
     }
 
     String getStorageName() {
         return interceptorManager.isPlaybackMode()
-                ? defaultStorageName
-                : Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_STORAGE_NAME");
-    }
-
-    String getStorageKey() {
-        return interceptorManager.isPlaybackMode()
-                ? defaultStorageKey
-                : Configuration.getGlobalConfiguration().get("DOCUMENT_TRANSLATION_STORAGE_KEY");
+            ? this.playbackStorageName
+            : this.storageName;
     }
 
     String getConnectionString() {
-        return "DefaultEndpointsProtocol=https;AccountName=" + getStorageName() + ";AccountKey=" + getStorageKey() + ";EndpointSuffix=core.windows.net";
+        return interceptorManager.isPlaybackMode()
+            ? this.playbackConnectionString
+            : this.connectionString;
     }
 
     BlobContainerClient getBlobContainerClient(String containerName) {
