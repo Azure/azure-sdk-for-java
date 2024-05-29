@@ -230,12 +230,66 @@ class AzureStorageBlobAutoConfigurationTests extends AbstractAzureServiceConfigu
             });
     }
 
+    @Test
+    void connectionDetailsShouldBind() {
+        String accountName = "test-account-name";
+        String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
+        String endpoint = String.format("https://%s.blob.core.windows.net", accountName);
+        String customerProvidedKey = "fakekey";
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.blob.endpoint=" + endpoint,
+                "spring.cloud.azure.storage.blob.account-key=test-key",
+                "spring.cloud.azure.storage.blob.sas-token=test-sas-token",
+                "spring.cloud.azure.storage.blob.account-name=test-account-name",
+                "spring.cloud.azure.storage.blob.customer-provided-key=" + customerProvidedKey,
+                "spring.cloud.azure.storage.blob.encryption-scope=test-scope",
+                "spring.cloud.azure.storage.blob.service-version=V2020_08_04",
+                "spring.cloud.azure.storage.blob.container-name=test-container",
+                "spring.cloud.azure.storage.blob.blob-name=test-blob"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(BlobServiceAsyncClient.class, () -> mock(BlobServiceAsyncClient.class))
+            .withBean(BlobServiceClient.class, () -> mock(BlobServiceClient.class))
+            .withBean(BlobAsyncClient.class, () -> mock(BlobAsyncClient.class))
+            .withBean(BlobClient.class, () -> mock(BlobClient.class))
+            .withBean(AzureStorageBlobConnectionDetails.class, () -> new CustomAzureStorageBlobConnectionDetails(connectionString))
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureStorageBlobProperties.class);
+                AzureStorageBlobProperties properties = context.getBean(AzureStorageBlobProperties.class);
+                assertEquals(endpoint, properties.getEndpoint());
+                assertEquals("test-key", properties.getAccountKey());
+                assertEquals("test-sas-token", properties.getSasToken());
+                assertEquals(connectionString, properties.getConnectionString());
+                assertEquals(accountName, properties.getAccountName());
+                assertEquals(customerProvidedKey, properties.getCustomerProvidedKey());
+                assertEquals("test-scope", properties.getEncryptionScope());
+                assertEquals(BlobServiceVersion.V2020_08_04, properties.getServiceVersion());
+                assertEquals("test-container", properties.getContainerName());
+                assertEquals("test-blob", properties.getBlobName());
+            });
+    }
+
     private static class BlobServiceClientBuilderCustomizer extends TestBuilderCustomizer<BlobServiceClientBuilder> {
 
     }
 
     private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
 
+    }
+
+    static class CustomAzureStorageBlobConnectionDetails implements AzureStorageBlobConnectionDetails {
+
+        private final String connectionString;
+
+        CustomAzureStorageBlobConnectionDetails(String connectionString) {
+            this.connectionString = connectionString;
+        }
+
+        @Override
+        public String getConnectionString() {
+            return this.connectionString;
+        }
     }
 
 }

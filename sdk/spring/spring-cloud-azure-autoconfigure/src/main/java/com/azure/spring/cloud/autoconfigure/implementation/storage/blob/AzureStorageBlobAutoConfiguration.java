@@ -24,12 +24,15 @@ import com.azure.storage.blob.BlobServiceClientBuilder;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -45,9 +48,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
 @EnableConfigurationProperties
 @ConditionalOnClass(BlobServiceClientBuilder.class)
 @ConditionalOnProperty(value = { "spring.cloud.azure.storage.blob.enabled",  "spring.cloud.azure.storage.enabled" }, havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(
-    prefixes = { "spring.cloud.azure.storage.blob", "spring.cloud.azure.storage" },
-    name = { "account-name", "endpoint", "connection-string" })
+@Conditional(AzureStorageBlobAutoConfiguration.AzureStorageBlobCondition.class)
 @Import(AzureStorageConfiguration.class)
 public class AzureStorageBlobAutoConfiguration {
 
@@ -116,6 +117,9 @@ public class AzureStorageBlobAutoConfiguration {
         AzureStorageBlobConnectionDetails connectionDetails,
         ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.StorageBlob>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<BlobServiceClientBuilder>> customizers) {
+        if (!(connectionDetails instanceof PropertiesAzureStorageBlobConnectionDetails)) {
+            properties.setConnectionString(connectionDetails.getConnectionString());
+        }
         BlobServiceClientBuilderFactory factory = new BlobServiceClientBuilderFactory(properties);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_STORAGE_BLOB);
@@ -136,6 +140,25 @@ public class AzureStorageBlobAutoConfiguration {
     StaticConnectionStringProvider<AzureServiceType.StorageBlob> staticStorageBlobConnectionStringProvider(
         AzureStorageBlobConnectionDetails connectionDetails) {
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_BLOB, connectionDetails.getConnectionString());
+    }
+
+    static class AzureStorageBlobCondition extends AnyNestedCondition {
+
+        AzureStorageBlobCondition() {
+            super(ConfigurationPhase.REGISTER_BEAN);
+        }
+
+        @ConditionalOnAnyProperty(
+            prefixes = { "spring.cloud.azure.storage.blob", "spring.cloud.azure.storage" },
+            name = { "account-name", "endpoint", "connection-string" })
+        static class PropertiesCondition {
+
+        }
+
+        @ConditionalOnBean(AzureStorageBlobConnectionDetails.class)
+        static class ConnectionDetailsBeanCondition {
+
+        }
     }
 
     static class PropertiesAzureStorageBlobConnectionDetails implements AzureStorageBlobConnectionDetails {
