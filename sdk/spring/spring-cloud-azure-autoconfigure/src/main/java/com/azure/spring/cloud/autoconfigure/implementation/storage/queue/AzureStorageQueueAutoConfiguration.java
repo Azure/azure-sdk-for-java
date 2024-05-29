@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.storage.queue;
 import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.AzureStorageConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.AzureStorageBlobConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
@@ -22,6 +23,8 @@ import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -40,9 +43,6 @@ import org.springframework.context.annotation.Import;
 @EnableConfigurationProperties
 @ConditionalOnClass(QueueServiceClientBuilder.class)
 @ConditionalOnProperty(value = { "spring.cloud.azure.storage.queue.enabled", "spring.cloud.azure.storage.enabled" }, havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(
-    prefixes = { "spring.cloud.azure.storage.queue", "spring.cloud.azure.storage" },
-    name = { "account-name", "endpoint", "connection-string" })
 @Import(AzureStorageConfiguration.class)
 public class AzureStorageQueueAutoConfiguration {
 
@@ -92,6 +92,10 @@ public class AzureStorageQueueAutoConfiguration {
         AzureStorageQueueConnectionDetails connectionDetails,
         ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.StorageQueue>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<QueueServiceClientBuilder>> customizers) {
+        if (!(connectionDetails instanceof PropertiesAzureStorageQueueConnectionDetails)) {
+            properties.setEndpoint(connectionDetails.getEndpoint());
+            properties.setConnectionString(connectionDetails.getConnectionString());
+        }
         final QueueServiceClientBuilderFactory factory = new QueueServiceClientBuilderFactory(properties);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_STORAGE_QUEUE);
@@ -113,6 +117,25 @@ public class AzureStorageQueueAutoConfiguration {
 
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_QUEUE,
                                                     connectionDetails.getConnectionString());
+    }
+
+    static class AzureStorageQueueCondition extends AnyNestedCondition {
+
+        AzureStorageQueueCondition() {
+            super(ConfigurationPhase.REGISTER_BEAN);
+        }
+
+        @ConditionalOnAnyProperty(
+            prefixes = { "spring.cloud.azure.storage.queue", "spring.cloud.azure.storage" },
+            name = { "account-name", "endpoint", "connection-string" })
+        static class PropertiesCondition {
+
+        }
+
+        @ConditionalOnBean(AzureStorageQueueConnectionDetails.class)
+        static class ConnectionDetailsBeanCondition {
+
+        }
     }
 
     static class PropertiesAzureStorageQueueConnectionDetails implements AzureStorageQueueConnectionDetails {

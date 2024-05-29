@@ -190,11 +190,63 @@ class AzureStorageQueueAutoConfigurationTests extends AbstractAzureServiceConfig
             });
     }
 
+    @Test
+    void connectionDetailsShouldBind() {
+        String accountName = "test-account-name";
+        String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
+        String endpoint = String.format("https://%s.file.core.windows.net", accountName);
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.storage.queue.account-key=test-key",
+                "spring.cloud.azure.storage.queue.sas-token=test-sas-token",
+                "spring.cloud.azure.storage.queue.account-name=test-account-name",
+                "spring.cloud.azure.storage.queue.service-version=V2019_02_02",
+                "spring.cloud.azure.storage.queue.message-encoding=BASE64",
+                "spring.cloud.azure.storage.queue.queueName=test-queue"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(AzureStorageQueueConnectionDetails.class, () -> new CustomAzureStorageQueueConnectionDetails(connectionString, endpoint))
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureStorageQueueProperties.class);
+                AzureStorageQueueProperties properties = context.getBean(AzureStorageQueueProperties.class);
+                assertEquals(endpoint, properties.getEndpoint());
+                assertEquals("test-key", properties.getAccountKey());
+                assertEquals("test-sas-token", properties.getSasToken());
+                assertEquals(connectionString, properties.getConnectionString());
+                assertEquals(accountName, properties.getAccountName());
+                assertEquals(QueueServiceVersion.V2019_02_02, properties.getServiceVersion());
+                assertEquals(QueueMessageEncoding.BASE64, properties.getMessageEncoding());
+                assertEquals("test-queue", properties.getQueueName());
+            });
+    }
+
     private static class QueueServiceClientBuilderCustomizer extends TestBuilderCustomizer<QueueServiceClientBuilder> {
 
     }
 
     private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
 
+    }
+
+    static class CustomAzureStorageQueueConnectionDetails implements AzureStorageQueueConnectionDetails {
+
+        private final String connectionString;
+
+        private final String endpoint;
+
+        public CustomAzureStorageQueueConnectionDetails(String connectionString, String endpoint) {
+            this.connectionString = connectionString;
+            this.endpoint = endpoint;
+        }
+
+        @Override
+        public String getConnectionString() {
+            return this.connectionString;
+        }
+
+        @Override
+        public String getEndpoint() {
+            return this.endpoint;
+        }
     }
 }
