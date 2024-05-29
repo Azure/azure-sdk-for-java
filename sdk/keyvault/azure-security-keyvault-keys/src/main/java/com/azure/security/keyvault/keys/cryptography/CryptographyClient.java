@@ -137,7 +137,7 @@ import static com.azure.security.keyvault.keys.cryptography.implementation.Crypt
 public class CryptographyClient {
     private static final ClientLogger LOGGER = new ClientLogger(CryptographyClient.class);
 
-    private volatile boolean attemptedToInitializeLocalClient = false;
+    private volatile boolean attemptedToInitializeLocalClient;
     private volatile LocalKeyCryptographyClient localKeyCryptographyClient;
 
     final CryptographyClientImpl implClient;
@@ -149,10 +149,14 @@ public class CryptographyClient {
      * @param keyId The Azure Key Vault key identifier to use for cryptography operations.
      * @param pipeline {@link HttpPipeline} that the HTTP requests and responses flow through.
      * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
+     * @param disableLocalCryptography Indicates if the the ability to perform cryptographic operations locally is
+     * disabled.
      */
-    CryptographyClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
+    CryptographyClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version,
+                       boolean disableLocalCryptography) {
         this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
         this.keyId = keyId;
+        this.attemptedToInitializeLocalClient = disableLocalCryptography;
     }
 
     /**

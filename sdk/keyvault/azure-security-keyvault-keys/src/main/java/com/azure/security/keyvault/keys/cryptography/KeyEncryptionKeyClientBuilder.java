@@ -62,6 +62,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     private static final ClientLogger LOGGER = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
 
     private final CryptographyClientBuilder builder;
+    private boolean disableLocalCryptography = false;
 
     /**
      * The constructor with defaults.
@@ -101,7 +102,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
             builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
 
         if (builder.getPipeline() != null) {
-            return new KeyEncryptionKeyClient(keyId, builder.getPipeline(), serviceVersion);
+            return new KeyEncryptionKeyClient(keyId, builder.getPipeline(), serviceVersion, disableLocalCryptography);
         }
 
         if (builder.getCredential() == null) {
@@ -111,7 +112,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
 
         HttpPipeline pipeline = builder.setupPipeline();
 
-        return new KeyEncryptionKeyClient(keyId, pipeline, serviceVersion);
+        return new KeyEncryptionKeyClient(keyId, pipeline, serviceVersion, disableLocalCryptography);
     }
 
     /**
@@ -171,10 +172,13 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
                     + "client."));
         }
 
-        CryptographyServiceVersion serviceVersion = builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
+        CryptographyServiceVersion serviceVersion =
+            builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
 
         if (builder.getPipeline() != null) {
-            return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, builder.getPipeline(), serviceVersion)));
+            return Mono.defer(() ->
+                Mono.just(new KeyEncryptionKeyAsyncClient(keyId, builder.getPipeline(), serviceVersion,
+                    disableLocalCryptography)));
         }
 
         if (builder.getCredential() == null) {
@@ -184,7 +188,8 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
 
         HttpPipeline pipeline = builder.setupPipeline();
 
-        return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline, serviceVersion)));
+        return Mono.defer(() ->
+            Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline, serviceVersion, disableLocalCryptography)));
     }
 
     /**
@@ -435,6 +440,22 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      */
     public KeyEncryptionKeyClientBuilder disableChallengeResourceVerification() {
         builder.disableChallengeResourceVerification();
+
+        return this;
+    }
+
+    /**
+     * Disables the ability to perform cryptographic operations locally, performing all cryptographic operations on the
+     * service side instead.
+     *
+     * <p>This method will have no effect if
+     * {@link KeyEncryptionKeyClientBuilder#buildAsyncKeyEncryptionKey(JsonWebKey)} or
+     * {@link KeyEncryptionKeyClientBuilder#buildKeyEncryptionKey(JsonWebKey)} are used to create a client.</p>
+     *
+     * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
+     */
+    public KeyEncryptionKeyClientBuilder disableLocalCryptography() {
+        this.disableLocalCryptography = true;
 
         return this;
     }

@@ -143,7 +143,7 @@ public class CryptographyAsyncClient {
 
     private final HttpPipeline pipeline;
 
-    private volatile boolean attemptedToInitializeLocalClient = false;
+    private volatile boolean attemptedToInitializeLocalClient;
     private volatile LocalKeyCryptographyClient localKeyCryptographyClient;
 
     final CryptographyClientImpl implClient;
@@ -155,11 +155,15 @@ public class CryptographyAsyncClient {
      * @param keyId The Azure Key Vault key identifier to use for cryptography operations.
      * @param pipeline {@link HttpPipeline} that the HTTP requests and responses flow through.
      * @param version {@link CryptographyServiceVersion} of the service to be used when making requests.
+     * @param disableLocalCryptography Indicates if the the ability to perform cryptographic operations locally is
+     * disabled.
      */
-    CryptographyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
+    CryptographyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version,
+                            boolean disableLocalCryptography) {
         this.keyId = keyId;
         this.pipeline = pipeline;
         this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
+        this.attemptedToInitializeLocalClient = disableLocalCryptography;
     }
 
     /**
