@@ -1446,7 +1446,7 @@ public final class TableClient {
      * Executes all {@link TableTransactionAction actions} within the list inside a transaction. When the call
      * completes, either all {@link TableTransactionAction actions} in the transaction will succeed, or if a failure
      * occurs, all {@link TableTransactionAction actions} in the transaction will be rolled back.
-     * {@link TableTransactionAction Actions} are executed sequantially. Each {@link TableTransactionAction action}
+     * {@link TableTransactionAction Actions} are executed sequentially. Each {@link TableTransactionAction action}
      * must operate on a distinct row key. Attempting to pass multiple {@link TableTransactionAction actions} that
      * share the same row key will cause an error.
      *
@@ -1534,7 +1534,7 @@ public final class TableClient {
      * Executes all {@link TableTransactionAction actions} within the list inside a transaction. When the call
      * completes, either all {@link TableTransactionAction actions} in the transaction will succeed, or if a failure
      * occurs, all {@link TableTransactionAction actions} in the transaction will be rolled back.
-     * {@link TableTransactionAction Actions} are executed sequantially. Each {@link TableTransactionAction action}
+     * {@link TableTransactionAction Actions} are executed sequentially. Each {@link TableTransactionAction action}
      * must operate on a distinct row key. Attempting to pass multiple {@link TableTransactionAction actions} that
      * share the same row key will cause an error.
      *
