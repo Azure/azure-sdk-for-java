@@ -6,6 +6,7 @@ package io.clientcore.core.shared;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
+import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 import org.eclipse.jetty.server.Response;
@@ -21,6 +22,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
@@ -223,7 +225,39 @@ public class HttpClientTestsServer {
             responseBody.headers(headers);
         }
 
+        if (!CoreUtils.isNullOrEmpty(req.getQueryString())) {
+            Map<String, List<String>> queryParams = parseQueryParams(req);
+
+            responseBody.queryParams(queryParams);
+        }
+
         handleRequest(resp, contentType, SERIALIZER.serializeToBytes(responseBody));
+    }
+
+    private static Map<String, List<String>> parseQueryParams(HttpServletRequest req) {
+        String[] queryParams = req.getQueryString().split("&");
+        Map<String, List<String>> queryParamsMap = new HashMap<>();
+
+        for (String queryParam : queryParams) {
+            String[] queryParamParts = queryParam.split("=");
+            String paramName = queryParamParts[0];
+            String paramValue = queryParamParts[1];
+
+            queryParamsMap.compute(paramName, (key, value) -> {
+                if (value == null) {
+                    List<String> valueList = new ArrayList<>();
+
+                    valueList.add(paramValue);
+
+                    return valueList;
+                }
+
+                value.add(paramValue);
+
+                return value;
+            });
+        }
+        return queryParamsMap;
     }
 
     private static String cleanseUrl(HttpServletRequest req) {

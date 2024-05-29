@@ -1954,6 +1954,59 @@ public abstract class HttpClientTests {
         }
     }
 
+    @ServiceInterface(name = "Service31", host = "{url}")
+    private interface Service31 {
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "param1=value1", "param2=value2"})
+        HttpBinJSON get(@HostParam("url") String url, @QueryParam("param3") String queryParam);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "param1=value1", "param1=value2"})
+        HttpBinJSON anotherGet(@HostParam("url") String url, @QueryParam("param1") String queryParam);
+    }
+
+    @Test
+    public void queryParamsRequest() {
+        final HttpBinJSON json = createService(Service31.class).get(getRequestUri(), "value3");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.url().substring(0, json.url().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(3, queryParams.size());
+        assertEquals(1, queryParams.get("param1").size());
+        assertEquals("value1", queryParams.get("param1").get(0));
+        assertEquals(1, queryParams.get("param2").size());
+        assertEquals("value2", queryParams.get("param2").get(0));
+        assertEquals(1, queryParams.get("param3").size());
+        assertEquals("value3", queryParams.get("param3").get(0));
+    }
+
+    @Test
+    public void queryParamsRequestWithMultipleValuesForSameName() {
+        final HttpBinJSON json = createService(Service31.class).anotherGet(getRequestUri(), "value3");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.url().substring(0, json.url().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertEquals(3, queryParams.get("param1").size());
+        assertEquals("value1", queryParams.get("param1").get(0));
+        assertEquals("value2", queryParams.get("param1").get(1));
+        assertEquals("value3", queryParams.get("param1").get(2));
+    }
+
     // Helpers
     protected <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = getHttpClient();
