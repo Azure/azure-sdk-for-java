@@ -123,7 +123,6 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     // These are overridden because we don't use the Interceptor Manager.
-    @Override
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
         System.out.printf("----- [%s]: Performing test clean-up. -----%n", testInfo.getDisplayName());
