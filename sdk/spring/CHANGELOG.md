@@ -1,8 +1,12 @@
 # Release History
 ## 5.13.0-beta.1 (Unreleased)
 
+New module `spring-cloud-azure-testcontainers`
+
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+- Add ConnectionDetails for Cosmos, Storage Blob and Storage Queue
 
 ### Bugs Fixed
 - Fixed `IllegalArgumentException: Subscription cannot be null` error when only configured one subscription name of `AzureServiceBusConsumerClient` or `AzureServiceBusProcessorClient` [#40264](https://github.com/Azure/azure-sdk-for-java/pull/40264).
