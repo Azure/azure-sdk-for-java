@@ -15,13 +15,11 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.faultinjection.FaultInjectionTestBase;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -49,7 +47,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -61,6 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -100,23 +98,145 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
     @DataProvider(name = "partitionLevelCircuitBreakerTestConfigs")
     public Object[][] partitionLevelCircuitBreakerTestConfigs() {
+
+        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> serviceUnavailableRulesGenerator
+            = PartitionLevelCircuitBreakerTests::buildServiceUnavailableRules;
+
+        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> serverGeneratedGoneRuleGenerator
+            = PartitionLevelCircuitBreakerTests::buildServerGeneratedGoneRules;
+
+        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> transitTimeoutRuleGenerator
+            = PartitionLevelCircuitBreakerTests::buildTransitTimeoutRules;
+
         return new Object[][] {
-            {FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
-            {FaultInjectionOperationType.UPSERT_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
-            {FaultInjectionOperationType.REPLACE_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
-            {FaultInjectionOperationType.DELETE_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
-            {FaultInjectionOperationType.PATCH_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
-            {FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
-            {FaultInjectionOperationType.QUERY_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
-            {FaultInjectionOperationType.BATCH_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
-            {FaultInjectionOperationType.READ_FEED_ITEM, FaultInjectionServerErrorType.SERVICE_UNAVAILABLE, 11, Duration.ofSeconds(0), false, false},
-            {FaultInjectionOperationType.READ_ITEM, FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false},
-            {FaultInjectionOperationType.UPSERT_ITEM, FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false},
-            {FaultInjectionOperationType.REPLACE_ITEM, FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false},
-            {FaultInjectionOperationType.DELETE_ITEM, FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false},
-            {FaultInjectionOperationType.PATCH_ITEM, FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false},
-            {FaultInjectionOperationType.CREATE_ITEM, FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false},
-            {FaultInjectionOperationType.QUERY_ITEM, FaultInjectionServerErrorType.GONE, Integer.MIN_VALUE, Duration.ofSeconds(60), true, false}
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+//                    .withHitLimit(12),
+//                serviceUnavailableRulesGenerator,
+//                null
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+//                    .withHitLimit(7),
+//                serviceUnavailableRulesGenerator,
+//                null
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+//                    .withHitLimit(7),
+//                serviceUnavailableRulesGenerator,
+//                null
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+//                    .withHitLimit(7),
+//                serviceUnavailableRulesGenerator,
+//                null
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+//                    .withHitLimit(7),
+//                serviceUnavailableRulesGenerator,
+//                null
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+//                    .withHitLimit(7),
+//                serviceUnavailableRulesGenerator,
+//                null
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+//                    .withHitLimit(7),
+//                serviceUnavailableRulesGenerator,
+//                null
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+//                    .withHitLimit(7),
+//                serviceUnavailableRulesGenerator,
+//                null
+//            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
+                    .withHitLimit(12),
+                serviceUnavailableRulesGenerator,
+                null
+            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+//                serverGeneratedGoneRuleGenerator,
+//                TWO_SECOND_TIMEOUT
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+//                serverGeneratedGoneRuleGenerator,
+//                TWO_SECOND_TIMEOUT
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+//                serverGeneratedGoneRuleGenerator,
+//                TWO_SECOND_TIMEOUT
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+//                serverGeneratedGoneRuleGenerator,
+//                TWO_SECOND_TIMEOUT
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+//                serverGeneratedGoneRuleGenerator,
+//                TWO_SECOND_TIMEOUT
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+//                serverGeneratedGoneRuleGenerator,
+//                TWO_SECOND_TIMEOUT
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+//                serverGeneratedGoneRuleGenerator,
+//                TWO_SECOND_TIMEOUT
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+//                    .withFaultInjectionDuration(Duration.ofSeconds(60))
+//                    .withResponseDelay(Duration.ofSeconds(6)),
+//                transitTimeoutRuleGenerator,
+//                null
+//            },
+//            new Object[] {
+//                new FaultInjectionRuleParamsWrapper()
+//                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+//                    .withFaultInjectionDuration(Duration.ofSeconds(60))
+//                    .withResponseDelay(Duration.ofSeconds(6)),
+//                transitTimeoutRuleGenerator,
+//                null
+//            }
         };
     }
 
@@ -132,14 +252,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
     @Test(groups = {"multi-master"}, dataProvider = "partitionLevelCircuitBreakerTestConfigs")
     public void operationHitsTerminalExceptionInFirstPreferredRegion(
-        FaultInjectionOperationType faultInjectionOperationType,
-        FaultInjectionServerErrorType faultInjectionServerErrorType,
-        int faultInjectionHitCount,
-        Duration faultInjectionDuration,
-        boolean shouldEndToEndTimeoutBeInjected,
-        boolean shouldThresholdBasedAvailabilityStrategyBeEnabled) {
+        FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
+        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> faultInjectionRuleGenerator,
+        CosmosEndToEndOperationLatencyPolicyConfig e2eLatencyPolicyCfg) {
 
-        logger.info("Checking circuit breaking behavior for {}", faultInjectionOperationType);
+        logger.info("Checking circuit breaking behavior for {}", faultInjectionRuleParamsWrapper.getFaultInjectionOperationType());
 
         List<String> preferredRegions = this.writeRegions;
         CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
@@ -157,7 +274,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         CosmosAsyncContainer container = null;
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(multiPartitionContainerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(getProvisionedThroughputForContainer(faultInjectionOperationType));
+        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(getProvisionedThroughputForContainer(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType()));
 
         OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
 
@@ -170,7 +287,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
             Thread.sleep(10_000);
 
-            int testObjCountToBootstrapFrom = getTestObjectCountToBootstrapFrom(faultInjectionOperationType, 15);
+            int testObjCountToBootstrapFrom = getTestObjectCountToBootstrapFrom(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType(), 15);
             List<TestObject> testObjects = new ArrayList<>();
 
             for (int i = 1; i <= testObjCountToBootstrapFrom; i++) {
@@ -187,47 +304,21 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 faultyFeedRange = FeedRange.forLogicalPartition(new PartitionKey(testObjects.get(0).getId()));
             }
 
-            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
-                .operationType(faultInjectionOperationType)
-                .connectionType(FaultInjectionConnectionType.DIRECT)
-                .endpoints(new FaultInjectionEndpointBuilder(faultyFeedRange).build())
-                .region(preferredRegions.get(0))
-                .build();
+            faultInjectionRuleParamsWrapper.withFaultInjectionApplicableFeedRange(faultyFeedRange);
+            faultInjectionRuleParamsWrapper.withFaultInjectionApplicableAsyncContainer(container);
+            faultInjectionRuleParamsWrapper.withFaultInjectionApplicableRegions(Arrays.asList(preferredRegions.get(0)));
 
-            FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
-                .getResultBuilder(faultInjectionServerErrorType)
-                .build();
+            List<FaultInjectionRule> faultInjectionRules = faultInjectionRuleGenerator.apply(faultInjectionRuleParamsWrapper);
 
-            FaultInjectionRule faultInjectionRule = null;
-
-            if (faultInjectionServerErrorType == FaultInjectionServerErrorType.GONE) {
-                faultInjectionRule = new FaultInjectionRuleBuilder("gone-rule-" + UUID.randomUUID())
-                    .condition(faultInjectionCondition)
-                    .result(faultInjectionServerErrorResult)
-                    .duration(faultInjectionDuration)
-                    .build();
-            } else if (faultInjectionServerErrorType == FaultInjectionServerErrorType.SERVICE_UNAVAILABLE) {
-                faultInjectionRule = new FaultInjectionRuleBuilder("service-unavailable-rule-" + UUID.randomUUID())
-                    .condition(faultInjectionCondition)
-                    .result(faultInjectionServerErrorResult)
-                    .hitLimit(faultInjectionHitCount)
-                    .build();
-            }
-
-            if (faultInjectionRule != null) {
+            if (faultInjectionRules != null && !faultInjectionRules.isEmpty()) {
 
                 Function<OperationInvocationParamsWrapper, OperationExecutionResult<?>> faultInjectedFunc =
-                    generateOperation(faultInjectionOperationType);
+                    generateOperation(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType());
 
                 assertThat(faultInjectedFunc).isNotNull().as("faultInjectedFunc cannot be null!");
 
 
-                if (shouldEndToEndTimeoutBeInjected) {
-
-                    CosmosEndToEndOperationLatencyPolicyConfig e2eLatencyPolicyCfg = (shouldThresholdBasedAvailabilityStrategyBeEnabled) ?
-                        TWO_SECOND_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY :
-                        TWO_SECOND_TIMEOUT;
-
+                if (e2eLatencyPolicyCfg != null) {
                     operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions()
                         .setCosmosEndToEndOperationLatencyPolicyConfig(e2eLatencyPolicyCfg);
 
@@ -242,13 +333,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 operationInvocationParamsWrapper.feedRangeToDrainForChangeFeed = faultyFeedRange;
 
                 CosmosFaultInjectionHelper
-                    .configureFaultInjectionRules(operationInvocationParamsWrapper.asyncContainer, Arrays.asList(faultInjectionRule))
+                    .configureFaultInjectionRules(faultInjectionRuleParamsWrapper.getFaultInjectionApplicableAsyncContainer(), faultInjectionRules)
                     .block();
 
                 for (int i = 1; i <= 15; i++) {
                     operationInvocationParamsWrapper.createdTestObject = testObjects.isEmpty() ? null : testObjects.get(i % testObjects.size());
                     OperationExecutionResult<?> response = faultInjectedFunc.apply(operationInvocationParamsWrapper);
-                    logger.info("Hit count : {}", faultInjectionRule.getHitCount());
+
+                    logger.info("Hit count : {}", faultInjectionRules.stream().mapToLong(FaultInjectionRule::getHitCount).sum());
 
                     if (response.cosmosItemResponse != null) {
                         assertThat(response.cosmosItemResponse).isNotNull();
@@ -288,7 +380,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     operationInvocationParamsWrapper.createdTestObject = testObjects.isEmpty() ? null : testObjects.get(i % testObjects.size());
                     OperationExecutionResult<?> response = faultInjectedFunc.apply(operationInvocationParamsWrapper);
 
-                    logger.info("Hit count : {}", faultInjectionRule.getHitCount());
+                    logger.info("Hit count : {}", faultInjectionRules.stream().mapToLong(FaultInjectionRule::getHitCount).sum());
 
                     if (response.cosmosItemResponse != null) {
                         assertThat(response.cosmosItemResponse).isNotNull();
@@ -1048,6 +1140,80 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         public FeedRange feedRangeToDrainForChangeFeed;
     }
 
+    private static class FaultInjectionRuleParamsWrapper {
+
+        private CosmosAsyncContainer faultInjectionApplicableAsyncContainer;
+        private Integer hitLimit;
+        private Duration responseDelay;
+        private Duration faultInjectionDuration;
+        private List<String> faultInjectionApplicableRegions;
+        private FeedRange faultInjectionApplicableFeedRange;
+        private FaultInjectionOperationType faultInjectionOperationType;
+
+        public CosmosAsyncContainer getFaultInjectionApplicableAsyncContainer() {
+            return faultInjectionApplicableAsyncContainer;
+        }
+
+        public FaultInjectionRuleParamsWrapper withFaultInjectionApplicableAsyncContainer(CosmosAsyncContainer faultInjectionApplicableAsyncContainer) {
+            this.faultInjectionApplicableAsyncContainer = faultInjectionApplicableAsyncContainer;
+            return this;
+        }
+
+        public Integer getHitLimit() {
+            return hitLimit;
+        }
+
+        public FaultInjectionRuleParamsWrapper withHitLimit(Integer hitLimit) {
+            this.hitLimit = hitLimit;
+            return this;
+        }
+
+        public Duration getResponseDelay() {
+            return responseDelay;
+        }
+
+        public FaultInjectionRuleParamsWrapper withResponseDelay(Duration responseDelay) {
+            this.responseDelay = responseDelay;
+            return this;
+        }
+
+        public Duration getFaultInjectionDuration() {
+            return faultInjectionDuration;
+        }
+
+        public FaultInjectionRuleParamsWrapper withFaultInjectionDuration(Duration faultInjectionDuration) {
+            this.faultInjectionDuration = faultInjectionDuration;
+            return this;
+        }
+
+        public List<String> getFaultInjectionApplicableRegions() {
+            return faultInjectionApplicableRegions;
+        }
+
+        public FaultInjectionRuleParamsWrapper withFaultInjectionApplicableRegions(List<String> faultInjectionApplicableRegions) {
+            this.faultInjectionApplicableRegions = faultInjectionApplicableRegions;
+            return this;
+        }
+
+        public FeedRange getFaultInjectionApplicableFeedRange() {
+            return faultInjectionApplicableFeedRange;
+        }
+
+        public FaultInjectionRuleParamsWrapper withFaultInjectionApplicableFeedRange(FeedRange faultInjectionApplicableFeedRange) {
+            this.faultInjectionApplicableFeedRange = faultInjectionApplicableFeedRange;
+            return this;
+        }
+
+        public FaultInjectionOperationType getFaultInjectionOperationType() {
+            return faultInjectionOperationType;
+        }
+
+        public FaultInjectionRuleParamsWrapper withFaultInjectionOperationType(FaultInjectionOperationType faultInjectionOperationType) {
+            this.faultInjectionOperationType = faultInjectionOperationType;
+            return this;
+        }
+    }
+
     private static Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
         Iterator<DatabaseAccountLocation> locationIterator =
             writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
@@ -1059,5 +1225,94 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
 
         return regionMap;
+    }
+
+    private static List<FaultInjectionRule> buildServiceUnavailableRules(FaultInjectionRuleParamsWrapper paramsWrapper) {
+
+        List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
+
+        for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
+
+            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
+                .operationType(paramsWrapper.getFaultInjectionOperationType())
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
+                .region(applicableRegion)
+                .build();
+
+            FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.SERVICE_UNAVAILABLE)
+                .build();
+
+            FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("service-unavailable-rule-" + UUID.randomUUID())
+                .condition(faultInjectionCondition)
+                .result(faultInjectionServerErrorResult)
+                .hitLimit(paramsWrapper.getHitLimit())
+                .build();
+
+            faultInjectionRules.add(faultInjectionRule);
+        }
+
+        return faultInjectionRules;
+    }
+
+    private static List<FaultInjectionRule> buildServerGeneratedGoneRules(FaultInjectionRuleParamsWrapper paramsWrapper) {
+
+        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.GONE)
+            .build();
+
+        List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
+
+        for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
+
+            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
+                .operationType(paramsWrapper.getFaultInjectionOperationType())
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
+                .region(applicableRegion)
+                .build();
+
+            FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("gone-rule-" + UUID.randomUUID())
+                .condition(faultInjectionCondition)
+                .result(faultInjectionServerErrorResult)
+                .duration(paramsWrapper.getFaultInjectionDuration())
+                .build();
+
+            faultInjectionRules.add(faultInjectionRule);
+        }
+
+        return faultInjectionRules;
+    }
+
+    private static List<FaultInjectionRule> buildTransitTimeoutRules(FaultInjectionRuleParamsWrapper paramsWrapper) {
+
+        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+            .delay(paramsWrapper.getResponseDelay())
+            .suppressServiceRequests(false)
+            .build();
+
+        List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
+
+        for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
+
+            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
+                .operationType(paramsWrapper.getFaultInjectionOperationType())
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
+                .region(applicableRegion)
+                .build();
+
+            FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("response-delay-rule-" + UUID.randomUUID())
+                .condition(faultInjectionCondition)
+                .result(faultInjectionServerErrorResult)
+                .duration(paramsWrapper.getFaultInjectionDuration())
+                .build();
+
+            faultInjectionRules.add(faultInjectionRule);
+        }
+
+        return faultInjectionRules;
     }
 }

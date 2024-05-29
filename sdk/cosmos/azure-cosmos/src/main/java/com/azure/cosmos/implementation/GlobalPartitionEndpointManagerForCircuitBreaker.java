@@ -62,31 +62,13 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         AtomicBoolean isFailoverPossible = new AtomicBoolean(true);
         AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
 
-        PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfoSnapshot = this.partitionKeyRangeToFailoverInfo.get(partitionKeyRangeWrapper);
+        this.partitionKeyRangeToFailoverInfo.compute(partitionKeyRangeWrapper, (partitionKeyRangeWrapperAsKey, partitionLevelLocationUnavailabilityInfoAsVal) -> {
 
-        if (partitionLevelLocationUnavailabilityInfoSnapshot == null) {
-            this.partitionKeyRangeToFailoverInfo.compute(partitionKeyRangeWrapper, (partitionKeyRangeWrapperAsKey, partitionKeyRangeFailoverInfoAsVal) -> {
+            if (partitionLevelLocationUnavailabilityInfoAsVal == null) {
+                partitionLevelLocationUnavailabilityInfoAsVal = new PartitionLevelLocationUnavailabilityInfo();
+            }
 
-                if (partitionKeyRangeFailoverInfoAsVal == null) {
-                    partitionKeyRangeFailoverInfoAsVal = new PartitionLevelLocationUnavailabilityInfo();
-                }
-
-                isFailureThresholdBreached.set(partitionKeyRangeFailoverInfoAsVal.handleException(partitionKeyRangeWrapperAsKey, failedLocation, request.isReadOnlyRequest()));
-
-                if (isFailureThresholdBreached.get()) {
-
-                    UnmodifiableList<URI> applicableEndpoints = request.isReadOnlyRequest() ?
-                        this.globalEndpointManager.getApplicableReadEndpoints(request.requestContext.getExcludeRegions()) :
-                        this.globalEndpointManager.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions());
-
-                    isFailoverPossible.set(
-                        partitionKeyRangeFailoverInfoAsVal.areLocationsAvailableForPartitionKeyRange(partitionKeyRangeWrapperAsKey, applicableEndpoints, request.isReadOnlyRequest()));
-                }
-
-                return partitionKeyRangeFailoverInfoAsVal;
-            });
-        } else {
-            isFailureThresholdBreached.set(partitionLevelLocationUnavailabilityInfoSnapshot.handleException(partitionKeyRangeWrapper, failedLocation, request.isReadOnlyRequest()));
+            isFailureThresholdBreached.set(partitionLevelLocationUnavailabilityInfoAsVal.handleException(partitionKeyRangeWrapperAsKey, failedLocation, request.isReadOnlyRequest()));
 
             if (isFailureThresholdBreached.get()) {
 
@@ -95,12 +77,11 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     this.globalEndpointManager.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions());
 
                 isFailoverPossible.set(
-                    partitionLevelLocationUnavailabilityInfoSnapshot.areLocationsAvailableForPartitionKeyRange(
-                        partitionKeyRangeWrapper,
-                        applicableEndpoints,
-                        request.isReadOnlyRequest()));
+                    partitionLevelLocationUnavailabilityInfoAsVal.areLocationsAvailableForPartitionKeyRange(partitionKeyRangeWrapperAsKey, applicableEndpoints, request.isReadOnlyRequest()));
             }
-        }
+
+            return partitionLevelLocationUnavailabilityInfoAsVal;
+        });
 
         // set to true if and only if failure threshold exceeded for the region
         // and if failover is possible
@@ -240,7 +221,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                         0,
                         0,
                         Instant.MAX,
-                        LocationUnavailabilityStatus.Healthy,
+                        LocationUnavailabilityStatus.HealthyWithFailures,
                         false);
                 }
 
@@ -397,7 +378,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
             int minSuccessCountForStatusUpgrade = getMinimumSuccessCountForStatusUpgrade(currentStatusSnapshot, isReadOnlyRequest);
 
             int exceptionCountActual = isReadOnlyRequest ? locationSpecificContext.exceptionCountForRead : locationSpecificContext.exceptionCountForWrite;
-            int successCountActual = isReadOnlyRequest ? locationSpecificContext.exceptionCountForRead : locationSpecificContext.successCountForWrite;
+            int successCountActual = isReadOnlyRequest ? locationSpecificContext.successCountForRead : locationSpecificContext.successCountForWrite;
 
             switch (currentStatusSnapshot) {
                 case Healthy:
@@ -438,13 +419,13 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
                         logger.info("Try to switch to Available but actual success count : {}", successCountActual);
 
-                        if (successCountActual > minSuccessCountForStatusUpgrade && (double) exceptionCountActual / (double) successCountActual < allowedFailureRatio) {
+                        if (successCountActual >= minSuccessCountForStatusUpgrade && (double) exceptionCountActual / (double) successCountActual < allowedFailureRatio) {
                             logger.info("Partition {}-{} of collection : {} marked as Available from StaleUnavailable for region : {}",
                                 partitionKeyRangeWrapper.partitionKeyRange.getMinInclusive(),
                                 partitionKeyRangeWrapper.partitionKeyRange.getMaxExclusive(),
                                 partitionKeyRangeWrapper.resourceId,
                                 GlobalPartitionEndpointManagerForCircuitBreaker.this.globalEndpointManager
-                                    .getRegionName(locationWithSuccess, isReadOnlyRequest ? OperationType.Read : OperationType.Create));
+                                    .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                             return this.transitionHealthStatus(LocationUnavailabilityStatus.Healthy);
                         } else {
 
@@ -474,12 +455,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     Instant unavailableSinceActual = locationSpecificContext.unavailableSince;
                     if (!forceStatusChange) {
                         if (Duration.between(unavailableSinceActual, Instant.now()).compareTo(Duration.ofSeconds(30)) > 0) {
-                            logger.info("Partition {}-{} of collection : {} marked as StaleUnavailable from FreshUnavailable for region : {}",
+                            logger.info("Partition {}-{} of collection : {} marked as StaleUnavailable from Unavailable for region : {}",
                                 partitionKeyRangeWrapper.partitionKeyRange.getMinInclusive(),
                                 partitionKeyRangeWrapper.partitionKeyRange.getMaxExclusive(),
                                 partitionKeyRangeWrapper.resourceId,
                                 GlobalPartitionEndpointManagerForCircuitBreaker.this.globalEndpointManager
-                                    .getRegionName(locationWithSuccess, isReadOnlyRequest ? OperationType.Read : OperationType.Create));
+                                    .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
 
                             return this.transitionHealthStatus(LocationUnavailabilityStatus.StaleUnavailable);
                         }
@@ -489,7 +470,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                             partitionKeyRangeWrapper.partitionKeyRange.getMaxExclusive(),
                             partitionKeyRangeWrapper.resourceId,
                             GlobalPartitionEndpointManagerForCircuitBreaker.this.globalEndpointManager
-                                .getRegionName(locationWithSuccess, isReadOnlyRequest ? OperationType.Read : OperationType.Create));
+                                .getRegionName(locationWithSuccess, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                         return this.transitionHealthStatus(LocationUnavailabilityStatus.StaleUnavailable);
                     }
                     break;
@@ -515,6 +496,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
             switch (currentStatusSnapshot) {
                 case Healthy:
+                    logger.info("Partition {}-{} of collection : {} marked as HealthyWithFailures from Healthy for region : {}",
+                        partitionKeyRangeWrapper.partitionKeyRange.getMinInclusive(),
+                        partitionKeyRangeWrapper.partitionKeyRange.getMaxExclusive(),
+                        partitionKeyRangeWrapper.resourceId,
+                        GlobalPartitionEndpointManagerForCircuitBreaker.this.globalEndpointManager
+                            .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                     return this.transitionHealthStatus(LocationUnavailabilityStatus.HealthyWithFailures);
                 case HealthyWithFailures:
                     if (exceptionCountActual < allowedExceptionCount) {
@@ -545,12 +532,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     } else {
                         GlobalPartitionEndpointManagerForCircuitBreaker
                             .this.partitionsWithPossibleUnavailableRegions.put(partitionKeyRangeWrapper, partitionKeyRangeWrapper);
-                        logger.info("Partition {}-{} of collection : {} marked as FreshUnavailable from Available for region : {}",
+                        logger.info("Partition {}-{} of collection : {} marked as Unavailable from HealthyWithFailures for region : {}",
                             partitionKeyRangeWrapper.partitionKeyRange.getMinInclusive(),
                             partitionKeyRangeWrapper.partitionKeyRange.getMaxExclusive(),
                             partitionKeyRangeWrapper.resourceId,
                             GlobalPartitionEndpointManagerForCircuitBreaker.this.globalEndpointManager
-                                .getRegionName(locationWithException, OperationType.Read));
+                                .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                         return this.transitionHealthStatus(LocationUnavailabilityStatus.Unavailable);
                     }
                 case StaleUnavailable:
@@ -578,12 +565,12 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                                 locationSpecificContext.isExceptionThresholdBreached);
                         }
                     } else {
-                        logger.info("Partition {}-{} of collection : {} marked as FreshUnavailable from StaleUnavailable for region : {}",
+                        logger.info("Partition {}-{} of collection : {} marked as Unavailable from StaleUnavailable for region : {}",
                             partitionKeyRangeWrapper.partitionKeyRange.getMinInclusive(),
                             partitionKeyRangeWrapper.partitionKeyRange.getMaxExclusive(),
                             partitionKeyRangeWrapper.resourceId,
                             GlobalPartitionEndpointManagerForCircuitBreaker.this.globalEndpointManager
-                                .getRegionName(locationWithException, OperationType.Read));
+                                .getRegionName(locationWithException, (isReadOnlyRequest) ? OperationType.Read : OperationType.Create));
                         return this.transitionHealthStatus(LocationUnavailabilityStatus.Unavailable);
                     }
                 default:

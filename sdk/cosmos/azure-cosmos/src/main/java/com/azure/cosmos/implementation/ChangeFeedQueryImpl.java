@@ -179,7 +179,7 @@ class ChangeFeedQueryImpl<T> {
                             });
                     }))
                 .flatMap(client::readFeed)
-                .map(rsp -> feedResponseAccessor.createChangeFeedResponse(rsp, this.itemSerializer, klass));
+                .map(rsp -> feedResponseAccessor.createChangeFeedResponse(rsp, this.itemSerializer, klass, rsp.getCosmosDiagnostics()));
         } else {
             final OperationListener listener = operationContextAndListener.getOperationListener();
             final OperationContext operationContext = operationContextAndListener.getOperationContext();
@@ -219,7 +219,7 @@ class ChangeFeedQueryImpl<T> {
                              listener.responseListener(operationContext, rsp);
 
                              final FeedResponse<T> feedResponse = feedResponseAccessor.createChangeFeedResponse(
-                                 rsp, this.itemSerializer, klass);
+                                 rsp, this.itemSerializer, klass, rsp.getCosmosDiagnostics());
 
                              Map<String, String> rspHeaders = feedResponse.getResponseHeaders();
                              String requestPkRangeId = null;

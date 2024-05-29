@@ -1037,6 +1037,12 @@ public class ImplementationBridgeHelpers {
             <T> FeedResponse<T> createChangeFeedResponse(RxDocumentServiceResponse response,
                                                    CosmosItemSerializer itemSerializer,
                                                    Class<T> cls);
+
+            <T> FeedResponse<T> createChangeFeedResponse(RxDocumentServiceResponse response,
+                                                         CosmosItemSerializer itemSerializer,
+                                                         Class<T> cls,
+                                                         CosmosDiagnostics diagnostics);
+
             <T> boolean getNoChanges(FeedResponse<T> feedResponse);
             <TNew, T> FeedResponse<TNew> convertGenericType(FeedResponse<T> feedResponse, Function<T, TNew> conversion);
             <T> FeedResponse<T> createFeedResponse(
