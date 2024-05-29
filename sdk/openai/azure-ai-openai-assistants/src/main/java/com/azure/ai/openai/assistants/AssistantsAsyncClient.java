@@ -3330,11 +3330,9 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfVectorStore> listVectorStores(Integer limit, ListSortOrder order, String after,
+    public Mono<PageableList<VectorStore>> listVectorStores(Integer limit, ListSortOrder order, String after,
         String before) {
-        // Generated convenience method for listVectorStoresWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -3349,7 +3347,9 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listVectorStoresWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfVectorStore.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfVectorStore.class))
+            .map(vectorStoreList -> PageableListAccessHelper.create(vectorStoreList.getData(),
+                vectorStoreList.getFirstId(), vectorStoreList.getLastId(), vectorStoreList.isHasMore()));
     }
 
     /**
@@ -3362,13 +3362,13 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfVectorStore> listVectorStores() {
-        // Generated convenience method for listVectorStoresWithResponse
+    public Mono<PageableList<VectorStore>> listVectorStores() {
         RequestOptions requestOptions = new RequestOptions();
         return listVectorStoresWithResponse(requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfVectorStore.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfVectorStore.class))
+            .map(vectorStoreList -> PageableListAccessHelper.create(vectorStoreList.getData(),
+                vectorStoreList.getFirstId(), vectorStoreList.getLastId(), vectorStoreList.isHasMore()));
     }
 
     /**
@@ -3485,11 +3485,9 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfVectorStoreFile> listVectorStoreFiles(String vectorStoreId,
+    public Mono<PageableList<VectorStoreFile>> listVectorStoreFiles(String vectorStoreId,
         VectorStoreFileStatusFilter filter, Integer limit, ListSortOrder order, String after, String before) {
-        // Generated convenience method for listVectorStoreFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (filter != null) {
             requestOptions.addQueryParam("filter", filter.toString(), false);
@@ -3507,7 +3505,9 @@ public final class AssistantsAsyncClient {
             requestOptions.addQueryParam("before", before, false);
         }
         return listVectorStoreFilesWithResponse(vectorStoreId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfVectorStoreFile.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfVectorStoreFile.class))
+            .map(vectorStoreFileList -> PageableListAccessHelper.create(vectorStoreFileList.getData(),
+                vectorStoreFileList.getFirstId(), vectorStoreFileList.getLastId(), vectorStoreFileList.isHasMore()));
     }
 
     /**
@@ -3522,13 +3522,13 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfVectorStoreFile> listVectorStoreFiles(String vectorStoreId) {
-        // Generated convenience method for listVectorStoreFilesWithResponse
+    public Mono<PageableList<VectorStoreFile>> listVectorStoreFiles(String vectorStoreId) {
         RequestOptions requestOptions = new RequestOptions();
         return listVectorStoreFilesWithResponse(vectorStoreId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfVectorStoreFile.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfVectorStoreFile.class))
+            .map(vectorStoreFileList -> PageableListAccessHelper.create(vectorStoreFileList.getData(),
+                vectorStoreFileList.getFirstId(), vectorStoreFileList.getLastId(), vectorStoreFileList.isHasMore()));
     }
 
     /**
@@ -3695,11 +3695,9 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfVectorStoreFile> listVectorStoreFileBatchFiles(String vectorStoreId, String batchId,
+    public Mono<PageableList<VectorStoreFile>> listVectorStoreFileBatchFiles(String vectorStoreId, String batchId,
         VectorStoreFileStatusFilter filter, Integer limit, ListSortOrder order, String after, String before) {
-        // Generated convenience method for listVectorStoreFileBatchFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (filter != null) {
             requestOptions.addQueryParam("filter", filter.toString(), false);
@@ -3718,7 +3716,9 @@ public final class AssistantsAsyncClient {
         }
         return listVectorStoreFileBatchFilesWithResponse(vectorStoreId, batchId, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfVectorStoreFile.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfVectorStoreFile.class))
+            .map(vectorStoreFileList -> PageableListAccessHelper.create(vectorStoreFileList.getData(),
+                vectorStoreFileList.getFirstId(), vectorStoreFileList.getLastId(), vectorStoreFileList.isHasMore()));
     }
 
     /**
@@ -3734,14 +3734,13 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIPageableListOfVectorStoreFile> listVectorStoreFileBatchFiles(String vectorStoreId,
-        String batchId) {
-        // Generated convenience method for listVectorStoreFileBatchFilesWithResponse
+    public Mono<PageableList<VectorStoreFile>> listVectorStoreFileBatchFiles(String vectorStoreId, String batchId) {
         RequestOptions requestOptions = new RequestOptions();
         return listVectorStoreFileBatchFilesWithResponse(vectorStoreId, batchId, requestOptions)
             .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfVectorStoreFile.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfVectorStoreFile.class))
+            .map(vectorStoreFileList -> PageableListAccessHelper.create(vectorStoreFileList.getData(),
+                vectorStoreFileList.getFirstId(), vectorStoreFileList.getLastId(), vectorStoreFileList.isHasMore()));
     }
 }
