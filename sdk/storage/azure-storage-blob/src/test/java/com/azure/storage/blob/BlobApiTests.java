@@ -3076,7 +3076,7 @@ public class BlobApiTests extends BlobTestBase {
     @LiveOnly
     @Test
     /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
-    the default audience, and the request gets retried with this default audience, making everything function as expected.
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
      */
     public void audienceErrorBearerChallengeRetry() {
         BlobClient aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl())

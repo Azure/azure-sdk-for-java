@@ -711,6 +711,9 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2024-08-04")
     @LiveOnly
     @Test
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
     public void audienceErrorBearerChallengeRetry() {
         DataLakeServiceAsyncClient aadServiceClient = getOAuthServiceClientBuilder()
             .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
