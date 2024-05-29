@@ -3072,15 +3072,18 @@ public class BlobApiTests extends BlobTestBase {
         assertTrue(aadBlob.exists());
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
-        BlobClient aadBlob = instrument(new BlobClientBuilder().endpoint(bc.getBlobUrl())
-            .credential(new MockTokenCredential())
-            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience")))
+    /* This test tests if the bearer challenge is working properly. A bad audience is passed in, the service returns
+    the default audience, and the request gets retried with this default audience, making the call function as expected.
+     */
+    public void audienceErrorBearerChallengeRetry() {
+        BlobClient aadBlob = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl())
+            .audience(BlobAudience.createBlobServiceAccountAudience("badAudience"))
             .buildClient();
 
-        BlobStorageException e = assertThrows(BlobStorageException.class, aadBlob::exists);
-        assertTrue(e.getErrorCode() == BlobErrorCode.INVALID_AUTHENTICATION_INFO);
+        assertNotNull(aadBlob.getProperties());
     }
 
     @Test
