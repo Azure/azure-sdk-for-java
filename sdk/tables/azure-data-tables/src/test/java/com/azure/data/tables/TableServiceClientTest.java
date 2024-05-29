@@ -31,7 +31,10 @@ import com.azure.data.tables.sas.TableAccountSasSignatureValues;
 import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -71,8 +74,9 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
 
     @Override
     protected void beforeTest() {
-        final String connectionString = TestUtils.getConnectionString(interceptorManager.isPlaybackMode());
-        serviceClient = getClientBuilder(connectionString).buildClient();
+        final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        serviceClient = getClientBuilder(endpoint, credential, true).buildClient();
     }
 
     @Test
@@ -88,7 +92,9 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
      * Tests that a table and entity can be created while having a different tenant ID than the one that will be
      * provided in the authentication challenge.
      */
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
+
     public void serviceCreateTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.
         Assumptions.assumeTrue(serviceClient.getServiceEndpoint().contains("core.windows.net")
@@ -287,6 +293,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         TableClientTest.getEntityWithResponseImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
     }
 
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void generateAccountSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -315,6 +322,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         );
     }
 
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void generateAccountSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -350,6 +358,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         );
     }
 
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
         final OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);

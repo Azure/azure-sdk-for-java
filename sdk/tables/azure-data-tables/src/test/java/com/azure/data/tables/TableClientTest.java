@@ -39,6 +39,7 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -100,6 +101,7 @@ public class TableClientTest extends TableClientTestBase {
      * Tests that a table and entity can be created while having a different tenant ID than the one that will be
      * provided in the authentication challenge.
      */
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void createTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.
@@ -1124,6 +1126,7 @@ public class TableClientTest extends TableClientTestBase {
     }
 
 
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void generateSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -1149,6 +1152,7 @@ public class TableClientTest extends TableClientTestBase {
         );
     }
 
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void generateSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -1193,6 +1197,7 @@ public class TableClientTest extends TableClientTestBase {
         );
     }
 
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
         // SAS tokens at the table level have not been working with Cosmos endpoints.
@@ -1239,6 +1244,7 @@ public class TableClientTest extends TableClientTestBase {
         assertEquals(expectedStatusCode, newTableClient.createEntityWithResponse(entity, null, null).getStatusCode());
     }
 
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void setAndListAccessPolicies() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,
@@ -1277,6 +1283,7 @@ public class TableClientTest extends TableClientTestBase {
         assertEquals(id, signedIdentifier.getId());
     }
 
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void setAndListMultipleAccessPolicies() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,

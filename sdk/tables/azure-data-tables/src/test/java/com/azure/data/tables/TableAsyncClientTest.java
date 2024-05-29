@@ -36,6 +36,7 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -98,6 +99,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
      * Tests that a table and entity can be created while having a different tenant ID than the one that will be
      * provided in the authentication challenge.
      */
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void createTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.
@@ -990,6 +992,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         }
     }
 
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void generateSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -1015,6 +1018,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         );
     }
 
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void generateSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -1059,6 +1063,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         );
     }
 
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
         // SAS tokens at the table level have not been working with Cosmos endpoints.
@@ -1109,6 +1114,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .verify(DEFAULT_TIMEOUT);
     }
 
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void setAndListAccessPolicies() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,
@@ -1150,6 +1156,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .verify(DEFAULT_TIMEOUT);
     }
 
+    @Disabled("This test is disabled because it is not supported using MI.")
     @Test
     public void setAndListMultipleAccessPolicies() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,
@@ -1270,7 +1277,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .addProperty("stringField", s);
 
         // Act
-        tableClient.createEntity(tableEntity);
+        tableClient.createEntity(tableEntity).block();
 
         // Assert
         final TableEntity retrievedEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block();
@@ -1314,25 +1321,24 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .addProperty("longField", l)
             .addProperty("stringField", s);
 
-        tableClient.createEntity(tableEntity);
+        tableClient.createEntity(tableEntity).block();
 
         // Act
-        final Iterator<TableEntity> iterator = tableClient.listEntities().toIterable().iterator();
-        assertTrue(iterator.hasNext());
-
-        final TableEntity retrievedEntity = iterator.next();
-
-        // Assert
-        //assertEquals(binaryData, (BinaryData) retrievedEntity.getProperties().get("binaryField"));
-
-        Assertions.assertArrayEquals(bytes, (byte[]) retrievedEntity.getProperties().get("byteField"));
-        assertEquals(b, (boolean) retrievedEntity.getProperties().get("booleanField"));
-        assertTrue(dateTime.isEqual((OffsetDateTime) retrievedEntity.getProperties().get("dateTimeField")));
-        assertEquals(d, (double) retrievedEntity.getProperties().get("doubleField"));
-        assertEquals(0, uuid.compareTo((UUID) retrievedEntity.getProperties().get("uuidField")));
-        assertEquals(i, (int) retrievedEntity.getProperties().get("intField"));
-        assertEquals(l, (long) retrievedEntity.getProperties().get("longField"));
-        assertEquals(s, (String) retrievedEntity.getProperties().get("stringField"));
+        StepVerifier.create(tableClient.listEntities())
+            //.expectNextCount(1)
+            .assertNext(returnEntity -> {
+                //assertEquals(binaryData, (BinaryData) returnEntity.getProperties().get("binaryField"));
+                Assertions.assertArrayEquals(bytes, (byte[]) returnEntity.getProperties().get("byteField"));
+                assertEquals(b, (boolean) returnEntity.getProperties().get("booleanField"));
+                assertTrue(dateTime.isEqual((OffsetDateTime) returnEntity.getProperties().get("dateTimeField")));
+                assertEquals(d, (double) returnEntity.getProperties().get("doubleField"));
+                assertEquals(0, uuid.compareTo((UUID) returnEntity.getProperties().get("uuidField")));
+                assertEquals(i, (int) returnEntity.getProperties().get("intField"));
+                assertEquals(l, (long) returnEntity.getProperties().get("longField"));
+                assertEquals(s, (String) returnEntity.getProperties().get("stringField"));
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
     }
 
     /**
@@ -1364,7 +1370,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
             .addProperty("longField", l)
             .addProperty("stringField", s);
 
-        tableClient.createEntity(tableEntity);
+        tableClient.createEntity(tableEntity).block();
 
         // Act
         final TableEntity retrievedEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue).block();
