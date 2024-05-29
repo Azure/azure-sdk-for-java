@@ -103,7 +103,7 @@ String threadId = thread.getId();
 With a thread created, a message can be created on it:
 ```java readme-sample-createMessage
 String userMessage = "I need to solve the equation `3x + 11 = 14`. Can you help me?";
-ThreadMessage threadMessage = client.createMessage(threadId, MessageRole.USER, userMessage);
+ThreadMessage threadMessage = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, userMessage));
 ```
 
 As we have a thread and message, we can create a run:
@@ -115,7 +115,7 @@ There is also a convenience method to create a thread and message, and then run 
 ```java readme-sample-createThreadAndRun
 CreateAndRunThreadOptions createAndRunThreadOptions = new CreateAndRunThreadOptions(assistantId)
         .setThread(new AssistantThreadCreationOptions()
-                .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
+                .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
                         "I need to solve the equation `3x + 11 = 14`. Can you help me?"))));
 run = client.createThreadAndRun(createAndRunThreadOptions);
 ```
@@ -163,13 +163,14 @@ Once uploaded, the file ID can then be provided to an assistant upon creation. N
 an appropriate tool like Code Interpreter or Retrieval is enabled.
 
 ```java readme-sample-createRetrievalAssistant
-Assistant assistant = client.createAssistant(
-    new AssistantCreationOptions(deploymentOrModelId)
-        .setName("Java SDK Retrieval Sample")
-        .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
-        .setTools(Arrays.asList(new RetrievalToolDefinition()))
-        .setFileIds(Arrays.asList(openAIFile.getId()))
-);
+        Assistant assistant = client.createAssistant(
+            new AssistantCreationOptions(deploymentOrModelId)
+                .setName("Java SDK Retrieval Sample")
+                .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
+                .setTools(Arrays.asList(new RetrievalToolDefinition()))
+                // TODO - setup with VectorStore
+//                .setFileIds(Arrays.asList(openAIFile.getId()))
+        );
 ```
 
 With a file ID association and a supported tool enabled, the assistant will then be able to consume the associated data 
