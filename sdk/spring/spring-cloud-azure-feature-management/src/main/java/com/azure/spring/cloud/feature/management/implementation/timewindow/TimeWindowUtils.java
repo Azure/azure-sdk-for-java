@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class TimeWindowUtils {
@@ -33,22 +34,13 @@ public class TimeWindowUtils {
      * @return the number of days passed
      * */
     public static int getPassedWeekDays(DayOfWeek today, DayOfWeek firstDayOfWeek) {
-        int passedDays = (today.getValue() - firstDayOfWeek.getValue());
-        if (passedDays < 0) {
-            return passedDays + RecurrenceConstants.DAYS_PER_WEEK;
-        } else {
-            return passedDays;
-        }
+        return (today.getValue() - firstDayOfWeek.getValue() + RecurrenceConstants.DAYS_PER_WEEK) % 7;
     }
 
     public static List<DayOfWeek> sortDaysOfWeek(List<DayOfWeek> daysOfWeek, DayOfWeek firstDayOfWeek) {
         final List<DayOfWeek> result = new ArrayList<>(daysOfWeek);
 
-        Collections.sort(result, (a, b) -> {
-            int aIndex = (a.getValue() - firstDayOfWeek.getValue() + RecurrenceConstants.DAYS_PER_WEEK) % 7;
-            int bIndex = (b.getValue() - firstDayOfWeek.getValue() + RecurrenceConstants.DAYS_PER_WEEK) % 7;
-            return aIndex - bIndex;
-        });
+        Collections.sort(result, Comparator.comparingInt(a -> getPassedWeekDays(a, firstDayOfWeek)));
         return result;
     }
 }
