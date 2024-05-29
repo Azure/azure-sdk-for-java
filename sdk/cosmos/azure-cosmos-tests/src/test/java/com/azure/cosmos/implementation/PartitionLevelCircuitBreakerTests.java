@@ -109,62 +109,62 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             = PartitionLevelCircuitBreakerTests::buildTransitTimeoutRules;
 
         return new Object[][] {
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-//                    .withHitLimit(12),
-//                serviceUnavailableRulesGenerator,
-//                null
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
-//                    .withHitLimit(7),
-//                serviceUnavailableRulesGenerator,
-//                null
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
-//                    .withHitLimit(7),
-//                serviceUnavailableRulesGenerator,
-//                null
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
-//                    .withHitLimit(7),
-//                serviceUnavailableRulesGenerator,
-//                null
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
-//                    .withHitLimit(7),
-//                serviceUnavailableRulesGenerator,
-//                null
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-//                    .withHitLimit(7),
-//                serviceUnavailableRulesGenerator,
-//                null
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-//                    .withHitLimit(7),
-//                serviceUnavailableRulesGenerator,
-//                null
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
-//                    .withHitLimit(7),
-//                serviceUnavailableRulesGenerator,
-//                null
-//            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withHitLimit(12),
+                serviceUnavailableRulesGenerator,
+                null
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                    .withHitLimit(7),
+                serviceUnavailableRulesGenerator,
+                null
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withHitLimit(7),
+                serviceUnavailableRulesGenerator,
+                null
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                    .withHitLimit(7),
+                serviceUnavailableRulesGenerator,
+                null
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                    .withHitLimit(7),
+                serviceUnavailableRulesGenerator,
+                null
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withHitLimit(7),
+                serviceUnavailableRulesGenerator,
+                null
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withHitLimit(7),
+                serviceUnavailableRulesGenerator,
+                null
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                    .withHitLimit(7),
+                serviceUnavailableRulesGenerator,
+                null
+            },
             new Object[] {
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
@@ -172,71 +172,71 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 serviceUnavailableRulesGenerator,
                 null
             },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-//                serverGeneratedGoneRuleGenerator,
-//                TWO_SECOND_TIMEOUT
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-//                serverGeneratedGoneRuleGenerator,
-//                TWO_SECOND_TIMEOUT
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-//                serverGeneratedGoneRuleGenerator,
-//                TWO_SECOND_TIMEOUT
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-//                serverGeneratedGoneRuleGenerator,
-//                TWO_SECOND_TIMEOUT
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-//                serverGeneratedGoneRuleGenerator,
-//                TWO_SECOND_TIMEOUT
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-//                serverGeneratedGoneRuleGenerator,
-//                TWO_SECOND_TIMEOUT
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-//                serverGeneratedGoneRuleGenerator,
-//                TWO_SECOND_TIMEOUT
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60))
-//                    .withResponseDelay(Duration.ofSeconds(6)),
-//                transitTimeoutRuleGenerator,
-//                null
-//            },
-//            new Object[] {
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60))
-//                    .withResponseDelay(Duration.ofSeconds(6)),
-//                transitTimeoutRuleGenerator,
-//                null
-//            }
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                serverGeneratedGoneRuleGenerator,
+                TWO_SECOND_TIMEOUT
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                serverGeneratedGoneRuleGenerator,
+                TWO_SECOND_TIMEOUT
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                serverGeneratedGoneRuleGenerator,
+                TWO_SECOND_TIMEOUT
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                serverGeneratedGoneRuleGenerator,
+                TWO_SECOND_TIMEOUT
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                serverGeneratedGoneRuleGenerator,
+                TWO_SECOND_TIMEOUT
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                serverGeneratedGoneRuleGenerator,
+                TWO_SECOND_TIMEOUT
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                serverGeneratedGoneRuleGenerator,
+                TWO_SECOND_TIMEOUT
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60))
+                    .withResponseDelay(Duration.ofSeconds(6)),
+                transitTimeoutRuleGenerator,
+                null
+            },
+            new Object[] {
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60))
+                    .withResponseDelay(Duration.ofSeconds(6)),
+                transitTimeoutRuleGenerator,
+                null
+            }
         };
     }
 
