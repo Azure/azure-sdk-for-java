@@ -64,6 +64,9 @@ parameters:
     default: $(TestVersionSupport)
   - name: OSName
     type: string
+  - name: UseFederatedAuth
+    type: boolean
+    default: false
 
 jobs:
   - job:
@@ -134,6 +137,10 @@ jobs:
                       ServiceDirectory: '${{ directory }}'
                       SubscriptionConfiguration: $(SubscriptionConfiguration)
                       ArmTemplateParameters: $(ArmTemplateParameters)
+                      UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+                      ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
+                      SubscriptionConfigurationFilePath: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePath }}
+
           - ${{ if not(parameters.TestResourceDirectories) }}:
               - template: /eng/common/TestResources/deploy-test-resources.yml
                 parameters:
@@ -142,6 +149,10 @@ jobs:
                   ServiceDirectory: '${{ parameters.ServiceDirectory }}'
                   SubscriptionConfiguration: $(SubscriptionConfiguration)
                   ArmTemplateParameters: $(ArmTemplateParameters)
+                  UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+                  ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
+                  SubscriptionConfigurationFilePath: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePath }}
+
 
       - ${{ parameters.PreSteps }}
 
@@ -169,8 +180,14 @@ jobs:
                     parameters:
                       ServiceDirectory: '${{ directory }}'
                       SubscriptionConfiguration: $(SubscriptionConfiguration)
+                      UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+                      ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
+                      SubscriptionConfigurationFilePath: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePath }}
           - ${{ if not(parameters.TestResourceDirectories) }}:
               - template: /eng/common/TestResources/remove-test-resources.yml
                 parameters:
                   ServiceDirectory: '${{ parameters.ServiceDirectory }}'
                   SubscriptionConfiguration: $(SubscriptionConfiguration)
+                  UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+                  ServiceConnection: ${{ parameters.CloudConfig.ServiceConnection }}
+                  SubscriptionConfigurationFilePath: ${{ parameters.CloudConfig.SubscriptionConfigurationFilePath }}

@@ -13,6 +13,7 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-native-tests.yml
   parameters:
     ServiceDirectory: appconfiguration
+    UseFederatedAuth: true
     Artifacts:
     - name: azure-data-appconfiguration
       groupId: com.azure
