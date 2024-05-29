@@ -104,12 +104,14 @@ public final class SecurityAssessmentMetadataPartnerData {
      */
     public void validate() {
         if (partnerName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property partnerName in model SecurityAssessmentMetadataPartnerData"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property partnerName in model SecurityAssessmentMetadataPartnerData"));
         }
         if (secret() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property secret in model SecurityAssessmentMetadataPartnerData"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property secret in model SecurityAssessmentMetadataPartnerData"));
         }
     }
 

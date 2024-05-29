@@ -13,19 +13,19 @@ public final class CspmMonitorGcpOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CspmMonitorGcpOffering model = BinaryData.fromString(
-            "{\"offeringType\":\"CspmMonitorGcp\",\"nativeCloudConnection\":{\"workloadIdentityProviderId\":\"xvzfffhtjnwos\",\"serviceAccountEmailAddress\":\"fjxtvlxxzqfc\"},\"description\":\"riomxeezwyhj\"}")
+            "{\"offeringType\":\"CspmMonitorGcp\",\"nativeCloudConnection\":{\"workloadIdentityProviderId\":\"sudyh\",\"serviceAccountEmailAddress\":\"jjtalxrdsj\"},\"description\":\"oluqwgusxxhdo\"}")
             .toObject(CspmMonitorGcpOffering.class);
-        Assertions.assertEquals("xvzfffhtjnwos", model.nativeCloudConnection().workloadIdentityProviderId());
-        Assertions.assertEquals("fjxtvlxxzqfc", model.nativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("sudyh", model.nativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals("jjtalxrdsj", model.nativeCloudConnection().serviceAccountEmailAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CspmMonitorGcpOffering model
-            = new CspmMonitorGcpOffering().withNativeCloudConnection(new CspmMonitorGcpOfferingNativeCloudConnection()
-                .withWorkloadIdentityProviderId("xvzfffhtjnwos").withServiceAccountEmailAddress("fjxtvlxxzqfc"));
+        CspmMonitorGcpOffering model = new CspmMonitorGcpOffering().withNativeCloudConnection(
+            new CspmMonitorGcpOfferingNativeCloudConnection().withWorkloadIdentityProviderId("sudyh")
+                .withServiceAccountEmailAddress("jjtalxrdsj"));
         model = BinaryData.fromObject(model).toObject(CspmMonitorGcpOffering.class);
-        Assertions.assertEquals("xvzfffhtjnwos", model.nativeCloudConnection().workloadIdentityProviderId());
-        Assertions.assertEquals("fjxtvlxxzqfc", model.nativeCloudConnection().serviceAccountEmailAddress());
+        Assertions.assertEquals("sudyh", model.nativeCloudConnection().workloadIdentityProviderId());
+        Assertions.assertEquals("jjtalxrdsj", model.nativeCloudConnection().serviceAccountEmailAddress());
     }
 }

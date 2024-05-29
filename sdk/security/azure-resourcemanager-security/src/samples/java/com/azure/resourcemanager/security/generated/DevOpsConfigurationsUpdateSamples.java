@@ -13,9 +13,7 @@ import com.azure.resourcemanager.security.models.DevOpsConfigurationProperties;
  */
 public final class DevOpsConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-09-01-preview/examples/
-     * SecurityConnectorsDevOps/UpdateDevOpsConfigurations_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/UpdateDevOpsConfigurations_example.json
      */
     /**
      * Sample code: Update_DevOpsConfigurations.
@@ -23,9 +21,10 @@ public final class DevOpsConfigurationsUpdateSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void updateDevOpsConfigurations(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.devOpsConfigurations().update("myRg", "mySecurityConnectorName",
-            new DevOpsConfigurationInner()
-                .withProperties(new DevOpsConfigurationProperties().withAutoDiscovery(AutoDiscovery.ENABLED)),
-            com.azure.core.util.Context.NONE);
+        manager.devOpsConfigurations()
+            .update("myRg", "mySecurityConnectorName",
+                new DevOpsConfigurationInner()
+                    .withProperties(new DevOpsConfigurationProperties().withAutoDiscovery(AutoDiscovery.ENABLED)),
+                com.azure.core.util.Context.NONE);
     }
 }

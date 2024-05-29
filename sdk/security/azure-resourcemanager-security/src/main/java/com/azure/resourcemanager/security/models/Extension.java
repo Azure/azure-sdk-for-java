@@ -16,18 +16,10 @@ import java.util.Map;
 @Fluent
 public final class Extension {
     /*
-     * The extension name. Supported values are: <br><br>**AgentlessDiscoveryForKubernetes** - API-based discovery of
-     * information about Kubernetes cluster architecture, workload objects, and setup. Required for Kubernetes
-     * inventory, identity and network exposure detection, attack path analysis and risk hunting as part of the cloud
-     * security explorer.
-     * Available for CloudPosture plan.<br><br>**OnUploadMalwareScanning** - Limits the GB to be scanned per month for
-     * each storage account within the subscription. Once this limit reached on a given storage account, Blobs won't be
-     * scanned during current calendar month.
-     * Available for StorageAccounts plan.<br><br>**SensitiveDataDiscovery** - Sensitive data discovery identifies Blob
-     * storage container with sensitive data such as credentials, credit cards, and more, to help prioritize and
-     * investigate security events.
-     * Available for StorageAccounts and CloudPosture plans.<br><br>**ContainerRegistriesVulnerabilityAssessments** -
-     * Provides vulnerability management for images stored in your container registries.
+     * The extension name. Supported values are: <br><br>**AgentlessDiscoveryForKubernetes** - API-based discovery of information about Kubernetes cluster architecture, workload objects, and setup. Required for Kubernetes inventory, identity and network exposure detection, attack path analysis and risk hunting as part of the cloud security explorer.
+     * Available for CloudPosture plan.<br><br>**OnUploadMalwareScanning** - Limits the GB to be scanned per month for each storage account within the subscription. Once this limit reached on a given storage account, Blobs won't be scanned during current calendar month.
+     * Available for StorageAccounts plan.<br><br>**SensitiveDataDiscovery** - Sensitive data discovery identifies Blob storage container with sensitive data such as credentials, credit cards, and more, to help prioritize and investigate security events.
+     * Available for StorageAccounts and CloudPosture plans.<br><br>**ContainerRegistriesVulnerabilityAssessments** - Provides vulnerability management for images stored in your container registries.
      * Available for CloudPosture and Containers plans.
      */
     @JsonProperty(value = "name", required = true)
@@ -63,15 +55,15 @@ public final class Extension {
      * &lt;br&gt;&lt;br&gt;**AgentlessDiscoveryForKubernetes** - API-based discovery of information about Kubernetes
      * cluster architecture, workload objects, and setup. Required for Kubernetes inventory, identity and network
      * exposure detection, attack path analysis and risk hunting as part of the cloud security explorer.
-     * Available for CloudPosture plan.&lt;br&gt;&lt;br&gt;**OnUploadMalwareScanning** - Limits the GB to be scanned
-     * per month for each storage account within the subscription. Once this limit reached on a given storage account,
-     * Blobs won't be scanned during current calendar month.
+     * Available for CloudPosture plan.&lt;br&gt;&lt;br&gt;**OnUploadMalwareScanning** - Limits the GB to be scanned per
+     * month for each storage account within the subscription. Once this limit reached on a given storage account, Blobs
+     * won't be scanned during current calendar month.
      * Available for StorageAccounts plan.&lt;br&gt;&lt;br&gt;**SensitiveDataDiscovery** - Sensitive data discovery
      * identifies Blob storage container with sensitive data such as credentials, credit cards, and more, to help
      * prioritize and investigate security events.
      * Available for StorageAccounts and CloudPosture
-     * plans.&lt;br&gt;&lt;br&gt;**ContainerRegistriesVulnerabilityAssessments** - Provides vulnerability management
-     * for images stored in your container registries.
+     * plans.&lt;br&gt;&lt;br&gt;**ContainerRegistriesVulnerabilityAssessments** - Provides vulnerability management for
+     * images stored in your container registries.
      * Available for CloudPosture and Containers plans.
      * 
      * @return the name value.
@@ -85,15 +77,15 @@ public final class Extension {
      * &lt;br&gt;&lt;br&gt;**AgentlessDiscoveryForKubernetes** - API-based discovery of information about Kubernetes
      * cluster architecture, workload objects, and setup. Required for Kubernetes inventory, identity and network
      * exposure detection, attack path analysis and risk hunting as part of the cloud security explorer.
-     * Available for CloudPosture plan.&lt;br&gt;&lt;br&gt;**OnUploadMalwareScanning** - Limits the GB to be scanned
-     * per month for each storage account within the subscription. Once this limit reached on a given storage account,
-     * Blobs won't be scanned during current calendar month.
+     * Available for CloudPosture plan.&lt;br&gt;&lt;br&gt;**OnUploadMalwareScanning** - Limits the GB to be scanned per
+     * month for each storage account within the subscription. Once this limit reached on a given storage account, Blobs
+     * won't be scanned during current calendar month.
      * Available for StorageAccounts plan.&lt;br&gt;&lt;br&gt;**SensitiveDataDiscovery** - Sensitive data discovery
      * identifies Blob storage container with sensitive data such as credentials, credit cards, and more, to help
      * prioritize and investigate security events.
      * Available for StorageAccounts and CloudPosture
-     * plans.&lt;br&gt;&lt;br&gt;**ContainerRegistriesVulnerabilityAssessments** - Provides vulnerability management
-     * for images stored in your container registries.
+     * plans.&lt;br&gt;&lt;br&gt;**ContainerRegistriesVulnerabilityAssessments** - Provides vulnerability management for
+     * images stored in your container registries.
      * Available for CloudPosture and Containers plans.
      * 
      * @param name the name value to set.
@@ -161,12 +153,12 @@ public final class Extension {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Extension"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model Extension"));
         }
         if (isEnabled() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property isEnabled in model Extension"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property isEnabled in model Extension"));
         }
         if (operationStatus() != null) {
             operationStatus().validate();

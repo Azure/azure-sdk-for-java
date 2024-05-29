@@ -7,6 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,15 +16,24 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "protectableContainerType",
-    defaultImpl = ProtectableContainer.class)
+    defaultImpl = ProtectableContainer.class,
+    visible = true)
 @JsonTypeName("ProtectableContainer")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "StorageContainer", value = AzureStorageProtectableContainer.class),
     @JsonSubTypes.Type(name = "VMAppContainer", value = AzureVMAppContainerProtectableContainer.class) })
 @Fluent
 public class ProtectableContainer {
+    /*
+     * Type of the container. The value of this property for
+     * 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+     * 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
+     */
+    @JsonTypeId
+    @JsonProperty(value = "protectableContainerType", required = true)
+    private ProtectableContainerType protectableContainerType;
+
     /*
      * Friendly name of the container.
      */
@@ -52,6 +62,18 @@ public class ProtectableContainer {
      * Creates an instance of ProtectableContainer class.
      */
     public ProtectableContainer() {
+        this.protectableContainerType = ProtectableContainerType.fromString("ProtectableContainer");
+    }
+
+    /**
+     * Get the protectableContainerType property: Type of the container. The value of this property for
+     * 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+     * 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines.
+     * 
+     * @return the protectableContainerType value.
+     */
+    public ProtectableContainerType protectableContainerType() {
+        return this.protectableContainerType;
     }
 
     /**

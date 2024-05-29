@@ -8,19 +8,24 @@ import com.azure.ai.openai.assistants.implementation.accesshelpers.PageableListA
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
+import com.azure.ai.openai.assistants.models.AssistantStreamEvent;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CodeInterpreterToolDefinition;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
+import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
+import com.azure.ai.openai.assistants.models.FunctionDefinition;
+import com.azure.ai.openai.assistants.models.FunctionToolDefinition;
 import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStep;
+import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
 import com.azure.ai.openai.assistants.models.ThreadInitializationMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
@@ -59,6 +64,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AssistantsClientTestBase extends TestProxyTestBase {
+
+    private static final String JAVA_SDK_TESTS_ASSISTANTS_TXT =  "java_sdk_tests_assistants.txt";
+    private static final String JAVA_SDK_TESTS_FINE_TUNING_JSON = "java_sdk_tests_fine_tuning.json";
+    private static final String MS_LOGO_PNG = "ms_logo.png";
 
     AssistantsAsyncClient getAssistantsAsyncClient(HttpClient httpClient) {
         return getAssistantsClientBuilder(buildAssertingClient(
@@ -110,6 +119,8 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
+            // Disable "Set-Cookie"=AZSDK2015 for non-azure client only.
+            interceptorManager.removeSanitizers(Arrays.asList("AZSDK2015"));
         }
 
         return builder;
@@ -166,7 +177,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                         .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
     }
 
-    void createThreadRunner(Consumer<AssistantThreadCreationOptions> testRunner) {
+    void createRunRunner(Consumer<AssistantThreadCreationOptions> testRunner) {
         testRunner.accept(new AssistantThreadCreationOptions()
                 .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
                         "I need to solve the equation `3x + 11 = 14`. Can you help me?"))));
@@ -187,6 +198,19 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                                 .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
                                         "I need to solve the equation `3x + 11 = 14`. Can you help me?")))));
 
+    }
+
+    void createThreadRunWithFunctionCallRunner(Consumer<CreateAndRunThreadOptions> testRunner, String assistantId) {
+        testRunner.accept(
+            new CreateAndRunThreadOptions(assistantId)
+                .setThread(new AssistantThreadCreationOptions()
+                    .setMessages(Arrays.asList(new ThreadInitializationMessage(MessageRole.USER,
+                        "Please make a graph for my boilerplate equation")))));
+
+    }
+
+    void createRunRunner(Consumer<CreateRunOptions> testRunner, String assistantId) {
+        testRunner.accept(new CreateRunOptions(assistantId));
     }
 
     void createRetrievalRunner(BiConsumer<FileDetails, AssistantCreationOptions> testRunner) {
@@ -220,17 +244,23 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     void uploadAssistantTextFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt")));
+        String fileName = JAVA_SDK_TESTS_ASSISTANTS_TXT;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
+            .setFilename(fileName);
         testRunner.accept(fileDetails, FilePurpose.ASSISTANTS);
     }
 
     void uploadAssistantImageFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile("ms_logo.png")));
+        String fileName = MS_LOGO_PNG;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
+            .setFilename(fileName);
         testRunner.accept(fileDetails, FilePurpose.ASSISTANTS);
     }
 
     void uploadFineTuningJsonFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
-        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_fine_tuning.json")));
+        String fileName = JAVA_SDK_TESTS_FINE_TUNING_JSON;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
+            .setFilename(fileName);
         testRunner.accept(fileDetails, FilePurpose.FINE_TUNE);
     }
 
@@ -296,7 +326,13 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         assertEquals(expected.getCreatedAt(), actual.getCreatedAt());
     }
 
-    protected static Path openResourceFile(String fileName) {
+    public static void assertStreamUpdate(StreamUpdate event) {
+        assertNotNull(event);
+        assertNotNull(event.getKind());
+        assertTrue(AssistantStreamEvent.values().contains(event.getKind()));
+    }
+
+    public static Path openResourceFile(String fileName) {
         return Paths.get("src", "test", "resources", fileName);
     }
 
@@ -305,6 +341,34 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                 .setName("Math Tutor")
                 .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
                 .setTools(Arrays.asList(new CodeInterpreterToolDefinition()));
+        return createAssistant(client, assistantCreationOptions);
+    }
+
+    String createMathTutorAssistantWithFunctionTool(AssistantsClient client) {
+        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
+                .setName("Math Tutor")
+                .setInstructions("You are a helpful math assistant that helps with visualizing equations. Use the code "
+                    + "interpreter tool when asked to generate images. Use provided functions to resolve appropriate unknown values")
+                .setTools(Arrays.asList(
+                    new CodeInterpreterToolDefinition(),
+                    new FunctionToolDefinition(
+                        new FunctionDefinition("get_boilerplate_equation", BinaryData.fromString("{\"type\":\"object\",\"properties\":{}}"))
+                            .setDescription("Retrieves a predefined 'boilerplate equation' from the caller")
+                )));
+        return createAssistant(client, assistantCreationOptions);
+    }
+
+    String createMathTutorAssistantWithFunctionTool(AssistantsAsyncClient client) {
+        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
+            .setName("Math Tutor")
+            .setInstructions("You are a helpful math assistant that helps with visualizing equations. Use the code "
+                + "interpreter tool when asked to generate images. Use provided functions to resolve appropriate unknown values")
+            .setTools(Arrays.asList(
+                new CodeInterpreterToolDefinition(),
+                new FunctionToolDefinition(
+                    new FunctionDefinition("get_boilerplate_equation", BinaryData.fromString("{\"type\":\"object\",\"properties\":{}}"))
+                        .setDescription("Retrieves a predefined 'boilerplate equation' from the caller")
+                )));
         return createAssistant(client, assistantCreationOptions);
     }
 
@@ -317,8 +381,12 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     String uploadFile(AssistantsClient client) {
+        String fileName = JAVA_SDK_TESTS_ASSISTANTS_TXT;
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
+            .setFilename(fileName);
+
         OpenAIFile openAIFile = client.uploadFile(
-            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
+            fileDetails,
             FilePurpose.ASSISTANTS);
         assertNotNull(openAIFile.getId());
         assertNotNull(openAIFile.getCreatedAt());
@@ -336,8 +404,10 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     String uploadFile(AssistantsAsyncClient client) {
         AtomicReference<String> openAIFileRef = new AtomicReference<>();
+        String fileName = JAVA_SDK_TESTS_ASSISTANTS_TXT;
         StepVerifier.create(client.uploadFile(
-            new FileDetails(BinaryData.fromFile(openResourceFile("java_sdk_tests_assistants.txt"))),
+            new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
+                .setFilename(fileName),
             FilePurpose.ASSISTANTS))
                 .assertNext(openAIFile -> {
                     assertNotNull(openAIFile.getId());
@@ -370,17 +440,13 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     String createAssistant(AssistantsAsyncClient client, AssistantCreationOptions assistantCreationOptions) {
-        AtomicReference<String> assistantIdRef = new AtomicReference<>();
         // create assistant test
-        StepVerifier.create(client.createAssistant(assistantCreationOptions))
-                .assertNext(assistant -> {
-                    assistantIdRef.set(assistant.getId());
-                    assertEquals(assistantCreationOptions.getName(), assistant.getName());
-                    assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
-                    assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
-                })
-                .verifyComplete();
-        return assistantIdRef.get();
+        Assistant assistant = client.createAssistant(assistantCreationOptions).block();
+        assertNotNull(assistant);
+        assertEquals(assistantCreationOptions.getName(), assistant.getName());
+        assertEquals(assistantCreationOptions.getDescription(), assistant.getDescription());
+        assertEquals(assistantCreationOptions.getInstructions(), assistant.getInstructions());
+        return assistant.getId();
     }
 
     void deleteAssistant(AssistantsClient client, String assistantId) {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservices.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Monitoring Settings of the vault. */
+/**
+ * Monitoring Settings of the vault.
+ */
 @Fluent
 public final class MonitoringSettings {
     /*
@@ -22,13 +24,15 @@ public final class MonitoringSettings {
     @JsonProperty(value = "classicAlertSettings")
     private ClassicAlertSettings classicAlertSettings;
 
-    /** Creates an instance of MonitoringSettings class. */
+    /**
+     * Creates an instance of MonitoringSettings class.
+     */
     public MonitoringSettings() {
     }
 
     /**
      * Get the azureMonitorAlertSettings property: Settings for Azure Monitor based alerts.
-     *
+     * 
      * @return the azureMonitorAlertSettings value.
      */
     public AzureMonitorAlertSettings azureMonitorAlertSettings() {
@@ -37,7 +41,7 @@ public final class MonitoringSettings {
 
     /**
      * Set the azureMonitorAlertSettings property: Settings for Azure Monitor based alerts.
-     *
+     * 
      * @param azureMonitorAlertSettings the azureMonitorAlertSettings value to set.
      * @return the MonitoringSettings object itself.
      */
@@ -48,7 +52,7 @@ public final class MonitoringSettings {
 
     /**
      * Get the classicAlertSettings property: Settings for classic alerts.
-     *
+     * 
      * @return the classicAlertSettings value.
      */
     public ClassicAlertSettings classicAlertSettings() {
@@ -57,7 +61,7 @@ public final class MonitoringSettings {
 
     /**
      * Set the classicAlertSettings property: Settings for classic alerts.
-     *
+     * 
      * @param classicAlertSettings the classicAlertSettings value to set.
      * @return the MonitoringSettings object itself.
      */
@@ -68,7 +72,7 @@ public final class MonitoringSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

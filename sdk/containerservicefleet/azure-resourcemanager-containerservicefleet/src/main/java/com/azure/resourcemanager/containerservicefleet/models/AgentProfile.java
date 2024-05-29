@@ -13,8 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AgentProfile {
     /*
-     * The ID of the subnet which the Fleet hub node will join on startup. If this is not specified, a vnet and subnet
-     * will be generated and used.
+     * The ID of the subnet which the Fleet hub node will join on startup. If this is not specified, a vnet and subnet will be generated and used.
      */
     @JsonProperty(value = "subnetId")
     private String subnetId;

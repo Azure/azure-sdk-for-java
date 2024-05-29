@@ -35,7 +35,6 @@ public class WorkerSelectorAttachmentInternal {
      */
     @Generated
     public WorkerSelectorAttachmentInternal() {
-        this.kind = WorkerSelectorAttachmentKind.fromString("WorkerSelectorAttachmentInternal");
     }
 
     /*
@@ -44,7 +43,8 @@ public class WorkerSelectorAttachmentInternal {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private WorkerSelectorAttachmentKind kind;
+    private WorkerSelectorAttachmentKind kind
+        = WorkerSelectorAttachmentKind.fromString("WorkerSelectorAttachmentInternal");
 
     /**
      * Get the kind property: The type discriminator describing a sub-type of WorkerSelectorAttachment.

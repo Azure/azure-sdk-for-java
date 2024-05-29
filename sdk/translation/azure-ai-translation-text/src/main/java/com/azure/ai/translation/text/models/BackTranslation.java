@@ -41,7 +41,7 @@ public final class BackTranslation {
      */
     @Generated
     @JsonProperty(value = "numExamples")
-    private final int numExamples;
+    private final int examplesCount;
 
     /*
      * An integer representing the frequency of this translation pair in the data. The main purpose of this
@@ -56,17 +56,17 @@ public final class BackTranslation {
      *
      * @param normalizedText the normalizedText value to set.
      * @param displayText the displayText value to set.
-     * @param numExamples the numExamples value to set.
+     * @param examplesCount the examplesCount value to set.
      * @param frequencyCount the frequencyCount value to set.
      */
     @Generated
     @JsonCreator
     private BackTranslation(@JsonProperty(value = "normalizedText") String normalizedText,
-        @JsonProperty(value = "displayText") String displayText, @JsonProperty(value = "numExamples") int numExamples,
+        @JsonProperty(value = "displayText") String displayText, @JsonProperty(value = "numExamples") int examplesCount,
         @JsonProperty(value = "frequencyCount") int frequencyCount) {
         this.normalizedText = normalizedText;
         this.displayText = displayText;
-        this.numExamples = numExamples;
+        this.examplesCount = examplesCount;
         this.frequencyCount = frequencyCount;
     }
 
@@ -95,7 +95,7 @@ public final class BackTranslation {
     }
 
     /**
-     * Get the numExamples property: An integer representing the number of examples that are available for this
+     * Get the examplesCount property: An integer representing the number of examples that are available for this
      * translation pair.
      * Actual examples must be retrieved with a separate call to lookup examples. The number is mostly
      * intended to facilitate display in a UX. For example, a user interface may add a hyperlink
@@ -104,11 +104,11 @@ public final class BackTranslation {
      * by a call to lookup examples may be less than numExamples, because additional filtering may be
      * applied on the fly to remove "bad" examples.
      *
-     * @return the numExamples value.
+     * @return the examplesCount value.
      */
     @Generated
-    public int getNumExamples() {
-        return this.numExamples;
+    public int getExamplesCount() {
+        return this.examplesCount;
     }
 
     /**

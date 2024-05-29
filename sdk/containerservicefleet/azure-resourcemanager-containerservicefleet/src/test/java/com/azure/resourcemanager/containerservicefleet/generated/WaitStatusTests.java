@@ -11,7 +11,7 @@ public final class WaitStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WaitStatus model = BinaryData.fromString(
-            "{\"status\":{\"startTime\":\"2021-03-03T06:00:33Z\",\"completedTime\":\"2021-02-17T04:39:54Z\",\"state\":\"Skipped\"},\"waitDurationInSeconds\":1309072810}")
+            "{\"status\":{\"startTime\":\"2021-06-21T09:19:47Z\",\"completedTime\":\"2021-04-08T20:42:11Z\",\"state\":\"Running\"},\"waitDurationInSeconds\":794855452}")
             .toObject(WaitStatus.class);
     }
 

@@ -32,8 +32,10 @@ public final class AlertsSuppressionRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AlertsSuppressionRuleInner model = new AlertsSuppressionRuleInner().withAlertType("axuconuq")
-            .withExpirationDateUtc(OffsetDateTime.parse("2021-05-20T10:54:42Z")).withReason("eyp")
-            .withState(RuleState.ENABLED).withComment("mjmwvvjektcx")
+            .withExpirationDateUtc(OffsetDateTime.parse("2021-05-20T10:54:42Z"))
+            .withReason("eyp")
+            .withState(RuleState.ENABLED)
+            .withComment("mjmwvvjektcx")
             .withSuppressionAlertsScope(new SuppressionAlertsScope()
                 .withAllOf(Arrays.asList(new ScopeElement().withField("wlrsffrzpwv").withAdditionalProperties(mapOf()),
                     new ScopeElement().withField("rbirphxe").withAdditionalProperties(mapOf()),

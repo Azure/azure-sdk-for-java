@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -14,14 +16,35 @@ import java.util.Map;
 /**
  * Azure VM workload-specific protected item representing SAP HANA DBInstance.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "protectedItemType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "protectedItemType",
+    defaultImpl = AzureVmWorkloadSapHanaDBInstanceProtectedItem.class,
+    visible = true)
 @JsonTypeName("AzureVmWorkloadSAPHanaDBInstance")
 @Fluent
 public final class AzureVmWorkloadSapHanaDBInstanceProtectedItem extends AzureVmWorkloadProtectedItem {
+    /*
+     * backup item type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "protectedItemType", required = true)
+    private String protectedItemType = "AzureVmWorkloadSAPHanaDBInstance";
+
     /**
      * Creates an instance of AzureVmWorkloadSapHanaDBInstanceProtectedItem class.
      */
     public AzureVmWorkloadSapHanaDBInstanceProtectedItem() {
+    }
+
+    /**
+     * Get the protectedItemType property: backup item type.
+     * 
+     * @return the protectedItemType value.
+     */
+    @Override
+    public String protectedItemType() {
+        return this.protectedItemType;
     }
 
     /**

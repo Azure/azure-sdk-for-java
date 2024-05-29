@@ -28,7 +28,9 @@ public final class FollowupRecommendationOptions {
     private Boolean includeRecommendationsInReferences;
 
     /*
-     * If this is true, provide one or more sentences as evidence for the recommendation, next to the token evidence. The start and end positions of these sentences will be put in an extension with url 'modality_sentences'. Default is false.
+     * If this is true, provide one or more sentences as evidence for the recommendation, next to the token evidence.
+     * The start and end positions of these sentences will be put in an extension with url 'modality_sentences'. Default
+     * is false.
      */
     @Generated
     @JsonProperty(value = "provideFocusedSentenceEvidence")

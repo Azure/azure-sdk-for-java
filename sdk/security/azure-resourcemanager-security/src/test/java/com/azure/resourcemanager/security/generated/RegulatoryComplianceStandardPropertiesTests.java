@@ -13,16 +13,16 @@ public final class RegulatoryComplianceStandardPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegulatoryComplianceStandardProperties model = BinaryData.fromString(
-            "{\"state\":\"Failed\",\"passedControls\":860424274,\"failedControls\":1250108412,\"skippedControls\":239999895,\"unsupportedControls\":659977632}")
+            "{\"state\":\"Passed\",\"passedControls\":1058131952,\"failedControls\":869075022,\"skippedControls\":2044526914,\"unsupportedControls\":1480083823}")
             .toObject(RegulatoryComplianceStandardProperties.class);
-        Assertions.assertEquals(State.FAILED, model.state());
+        Assertions.assertEquals(State.PASSED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegulatoryComplianceStandardProperties model
-            = new RegulatoryComplianceStandardProperties().withState(State.FAILED);
+            = new RegulatoryComplianceStandardProperties().withState(State.PASSED);
         model = BinaryData.fromObject(model).toObject(RegulatoryComplianceStandardProperties.class);
-        Assertions.assertEquals(State.FAILED, model.state());
+        Assertions.assertEquals(State.PASSED, model.state());
     }
 }

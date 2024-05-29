@@ -9,7 +9,9 @@ import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignme
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ConfigurationAssignments list. */
+/**
+ * Response for ConfigurationAssignments list.
+ */
 @Fluent
 public final class ListConfigurationAssignmentsResult {
     /*
@@ -18,13 +20,15 @@ public final class ListConfigurationAssignmentsResult {
     @JsonProperty(value = "value")
     private List<ConfigurationAssignmentInner> value;
 
-    /** Creates an instance of ListConfigurationAssignmentsResult class. */
+    /**
+     * Creates an instance of ListConfigurationAssignmentsResult class.
+     */
     public ListConfigurationAssignmentsResult() {
     }
 
     /**
      * Get the value property: The list of configuration Assignments.
-     *
+     * 
      * @return the value value.
      */
     public List<ConfigurationAssignmentInner> value() {
@@ -33,7 +37,7 @@ public final class ListConfigurationAssignmentsResult {
 
     /**
      * Set the value property: The list of configuration Assignments.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListConfigurationAssignmentsResult object itself.
      */
@@ -44,7 +48,7 @@ public final class ListConfigurationAssignmentsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

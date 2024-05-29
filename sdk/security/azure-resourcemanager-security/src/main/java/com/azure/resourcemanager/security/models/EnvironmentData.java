@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "environmentType",
-    defaultImpl = EnvironmentData.class)
+    defaultImpl = EnvironmentData.class,
+    visible = true)
 @JsonTypeName("EnvironmentData")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AwsAccount", value = AwsEnvironmentData.class),
@@ -26,10 +28,27 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "GitlabScope", value = GitlabScopeEnvironmentData.class) })
 @Immutable
 public class EnvironmentData {
+    /*
+     * The type of the environment data.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "environmentType", required = true)
+    private EnvironmentType environmentType;
+
     /**
      * Creates an instance of EnvironmentData class.
      */
     public EnvironmentData() {
+        this.environmentType = EnvironmentType.fromString("EnvironmentData");
+    }
+
+    /**
+     * Get the environmentType property: The type of the environment data.
+     * 
+     * @return the environmentType value.
+     */
+    public EnvironmentType environmentType() {
+        return this.environmentType;
     }
 
     /**

@@ -37,7 +37,6 @@ public class JobMatchingModeInternal {
      */
     @Generated
     public JobMatchingModeInternal() {
-        this.kind = JobMatchingModeKind.fromString("JobMatchingModeInternal");
     }
 
     /*
@@ -46,7 +45,7 @@ public class JobMatchingModeInternal {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private JobMatchingModeKind kind;
+    private JobMatchingModeKind kind = JobMatchingModeKind.fromString("JobMatchingModeInternal");
 
     /**
      * Get the kind property: The type discriminator describing a sub-type of JobMatchingMode.

@@ -21,8 +21,7 @@ public final class GetSensitivitySettingsResponseProperties {
     private List<UUID> sensitiveInfoTypesIds;
 
     /*
-     * The order of the sensitivity threshold label. Any label at or above this order will be considered sensitive. If
-     * set to -1, sensitivity by labels is turned off
+     * The order of the sensitivity threshold label. Any label at or above this order will be considered sensitive. If set to -1, sensitivity by labels is turned off
      */
     @JsonProperty(value = "sensitivityThresholdLabelOrder")
     private Float sensitivityThresholdLabelOrder;

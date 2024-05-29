@@ -33,8 +33,10 @@ public final class ProtectionContainerResourceInnerTests {
         ProtectionContainerResourceInner model = new ProtectionContainerResourceInner().withLocation("cskfcktqumiekk")
             .withTags(mapOf("yf", "ikh", "unygaeqid", "hdgqggeb"))
             .withProperties(new ProtectionContainer().withFriendlyName("kl")
-                .withBackupManagementType(BackupManagementType.AZURE_WORKLOAD).withRegistrationStatus("jhwuaanozjos")
-                .withHealthStatus("youlp").withProtectableObjectType("v"))
+                .withBackupManagementType(BackupManagementType.AZURE_WORKLOAD)
+                .withRegistrationStatus("jhwuaanozjos")
+                .withHealthStatus("youlp")
+                .withProtectableObjectType("v"))
             .withEtag("glrvimjwosytxi");
         model = BinaryData.fromObject(model).toObject(ProtectionContainerResourceInner.class);
         Assertions.assertEquals("cskfcktqumiekk", model.location());

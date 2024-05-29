@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class GitHubReposListSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-09-01-preview/examples/
-     * SecurityConnectorsDevOps/ListGitHubRepos_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2024-04-01/examples/SecurityConnectorsDevOps/ListGitHubRepos_example.json
      */
     /**
      * Sample code: List_GitHubRepos.
@@ -19,7 +17,7 @@ public final class GitHubReposListSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void listGitHubRepos(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.gitHubRepos().list("myRg", "mySecurityConnectorName", "myGitHubOwner",
-            com.azure.core.util.Context.NONE);
+        manager.gitHubRepos()
+            .list("myRg", "mySecurityConnectorName", "myGitHubOwner", com.azure.core.util.Context.NONE);
     }
 }

@@ -54,7 +54,8 @@ public final class JitNetworkAccessPolicyImpl
         List<JitNetworkAccessRequestInner> inner = this.innerModel().requests();
         if (inner != null) {
             return Collections.unmodifiableList(inner.stream()
-                .map(inner1 -> new JitNetworkAccessRequestImpl(inner1, this.manager())).collect(Collectors.toList()));
+                .map(inner1 -> new JitNetworkAccessRequestImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -97,16 +98,20 @@ public final class JitNetworkAccessPolicyImpl
     }
 
     public JitNetworkAccessPolicy create() {
-        this.innerObject
-            = serviceManager.serviceClient().getJitNetworkAccessPolicies().createOrUpdateWithResponse(resourceGroupName,
-                ascLocation, jitNetworkAccessPolicyName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJitNetworkAccessPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public JitNetworkAccessPolicy create(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getJitNetworkAccessPolicies().createOrUpdateWithResponse(resourceGroupName,
-                ascLocation, jitNetworkAccessPolicyName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJitNetworkAccessPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -121,16 +126,20 @@ public final class JitNetworkAccessPolicyImpl
     }
 
     public JitNetworkAccessPolicy apply() {
-        this.innerObject
-            = serviceManager.serviceClient().getJitNetworkAccessPolicies().createOrUpdateWithResponse(resourceGroupName,
-                ascLocation, jitNetworkAccessPolicyName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJitNetworkAccessPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public JitNetworkAccessPolicy apply(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getJitNetworkAccessPolicies().createOrUpdateWithResponse(resourceGroupName,
-                ascLocation, jitNetworkAccessPolicyName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJitNetworkAccessPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -145,14 +154,18 @@ public final class JitNetworkAccessPolicyImpl
     }
 
     public JitNetworkAccessPolicy refresh() {
-        this.innerObject = serviceManager.serviceClient().getJitNetworkAccessPolicies()
-            .getWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJitNetworkAccessPolicies()
+            .getWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public JitNetworkAccessPolicy refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getJitNetworkAccessPolicies()
-            .getWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJitNetworkAccessPolicies()
+            .getWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, context)
+            .getValue();
         return this;
     }
 

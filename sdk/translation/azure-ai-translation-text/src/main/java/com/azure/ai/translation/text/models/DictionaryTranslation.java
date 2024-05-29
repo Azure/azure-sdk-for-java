@@ -41,8 +41,8 @@ public final class DictionaryTranslation {
     private final String posTag;
 
     /*
-     * A value between 0.0 and 1.0 which represents the "confidence" 
-     * (or perhaps more accurately, "probability in the training data") of that translation pair. 
+     * A value between 0.0 and 1.0 which represents the "confidence"
+     * (or perhaps more accurately, "probability in the training data") of that translation pair.
      * The sum of confidence scores for one source word may or may not sum to 1.0.
      */
     @Generated
@@ -52,8 +52,8 @@ public final class DictionaryTranslation {
     /*
      * A string giving the word to display as a prefix of the translation. Currently,
      * this is the gendered determiner of nouns, in languages that have gendered determiners.
-     * For example, the prefix of the Spanish word "mosca" is "la", since "mosca" is a feminine noun in Spanish. 
-     * This is only dependent on the translation, and not on the source. 
+     * For example, the prefix of the Spanish word "mosca" is "la", since "mosca" is a feminine noun in Spanish.
+     * This is only dependent on the translation, and not on the source.
      * If there is no prefix, it will be the empty string.
      */
     @Generated

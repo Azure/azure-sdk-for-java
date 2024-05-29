@@ -6,49 +6,32 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.IoTSecuritySolutionAnalyticsModel;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IotSecuritySolutionAnalyticsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"metrics\":{\"high\":6853467273380534189,\"medium\":6746615410164306567,\"low\":3787198845133963054},\"unhealthyDeviceCount\":7469578486884022863,\"devicesMetrics\":[{\"date\":\"2021-11-09T19:09:05Z\",\"devicesMetrics\":{\"high\":4255203458944496867,\"medium\":3684724613073344191,\"low\":5721667312486056933}},{\"date\":\"2021-11-10T16:16:06Z\",\"devicesMetrics\":{\"high\":3621197231950204431,\"medium\":7404661922128325124,\"low\":3780121775840233443}}],\"topAlertedDevices\":[{\"deviceId\":\"jy\",\"alertsCount\":4921864981427864767}],\"mostPrevalentDeviceAlerts\":[{\"alertDisplayName\":\"haknklthqwppv\",\"reportedSeverity\":\"High\",\"alertsCount\":3649211574046420197},{\"alertDisplayName\":\"pvdrohulobkabhvx\",\"reportedSeverity\":\"Informational\",\"alertsCount\":6604922408270460638},{\"alertDisplayName\":\"nirnygtixk\",\"reportedSeverity\":\"High\",\"alertsCount\":7104856527726269276},{\"alertDisplayName\":\"hvdlorxzpqdit\",\"reportedSeverity\":\"Medium\",\"alertsCount\":7874351531412148950}],\"mostPrevalentDeviceRecommendations\":[{\"recommendationDisplayName\":\"il\",\"reportedSeverity\":\"Informational\",\"devicesCount\":6508534861221977803},{\"recommendationDisplayName\":\"h\",\"reportedSeverity\":\"Low\",\"devicesCount\":6169100559279589462}]},\"id\":\"xv\",\"name\":\"bw\",\"type\":\"gikkmibnmdpi\"}";
+            = "{\"properties\":{\"metrics\":{\"high\":7368459103907525624,\"medium\":5807787480737662907,\"low\":567541440569199527},\"unhealthyDeviceCount\":6567836729721317859,\"devicesMetrics\":[{\"date\":\"2021-07-06T23:28:32Z\",\"devicesMetrics\":{\"high\":1887234271616809188,\"medium\":7997168385996796776,\"low\":5540371555593816808}},{\"date\":\"2021-02-16T22:16:27Z\",\"devicesMetrics\":{\"high\":5445586364113285995,\"medium\":6341272955922181386,\"low\":4748706104822338282}},{\"date\":\"2021-03-15T14:17:13Z\",\"devicesMetrics\":{\"high\":7659910395088410245,\"medium\":8414322961968097580,\"low\":758196128304606757}}],\"topAlertedDevices\":[{\"deviceId\":\"evtarphklqlii\",\"alertsCount\":2276709666391141132},{\"deviceId\":\"wgjnofgij\",\"alertsCount\":3896888190804947721},{\"deviceId\":\"bjuymtevaebzmw\",\"alertsCount\":4881217860855843402},{\"deviceId\":\"k\",\"alertsCount\":325752059956767931}],\"mostPrevalentDeviceAlerts\":[{\"alertDisplayName\":\"gzougxbxxgjo\",\"reportedSeverity\":\"Low\",\"alertsCount\":8714956202407730196},{\"alertDisplayName\":\"hrm\",\"reportedSeverity\":\"Informational\",\"alertsCount\":2717980472890398006},{\"alertDisplayName\":\"oearywusrjz\",\"reportedSeverity\":\"Medium\",\"alertsCount\":4519650980077728037},{\"alertDisplayName\":\"ezfsmyljdzyy\",\"reportedSeverity\":\"Medium\",\"alertsCount\":5620103953775404592}],\"mostPrevalentDeviceRecommendations\":[{\"recommendationDisplayName\":\"jk\",\"reportedSeverity\":\"Informational\",\"devicesCount\":264244379767899003},{\"recommendationDisplayName\":\"tdt\",\"reportedSeverity\":\"High\",\"devicesCount\":7931941420384647726},{\"recommendationDisplayName\":\"fxaqjyihjcwwv\",\"reportedSeverity\":\"Low\",\"devicesCount\":1207253752256153000},{\"recommendationDisplayName\":\"vhkhpsp\",\"reportedSeverity\":\"Low\",\"devicesCount\":6320554571106499302}]},\"id\":\"yfaoexnguwnrdpu\",\"name\":\"laihsujtggybsz\",\"type\":\"mijxejpd\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IoTSecuritySolutionAnalyticsModel response = manager.iotSecuritySolutionAnalytics()
-            .getWithResponse("dbhatmabtpgn", "tjtnnrjewih", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("rjq", "jlgkuirx", com.azure.core.util.Context.NONE)
+            .getValue();
 
     }
 }

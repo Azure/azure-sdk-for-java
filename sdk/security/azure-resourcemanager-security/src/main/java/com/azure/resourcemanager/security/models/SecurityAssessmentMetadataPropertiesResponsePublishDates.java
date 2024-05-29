@@ -78,8 +78,9 @@ public final class SecurityAssessmentMetadataPropertiesResponsePublishDates {
      */
     public void validate() {
         if (publicProperty() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property publicProperty in model SecurityAssessmentMetadataPropertiesResponsePublishDates"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publicProperty in model SecurityAssessmentMetadataPropertiesResponsePublishDates"));
         }
     }
 

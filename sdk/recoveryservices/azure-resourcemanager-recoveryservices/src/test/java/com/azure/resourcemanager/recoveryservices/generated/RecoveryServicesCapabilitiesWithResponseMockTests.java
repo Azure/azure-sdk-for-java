@@ -6,87 +6,46 @@ package com.azure.resourcemanager.recoveryservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.models.CapabilitiesProperties;
 import com.azure.resourcemanager.recoveryservices.models.CapabilitiesResponse;
 import com.azure.resourcemanager.recoveryservices.models.DnsZone;
 import com.azure.resourcemanager.recoveryservices.models.ResourceCapabilities;
 import com.azure.resourcemanager.recoveryservices.models.VaultSubResourceType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class RecoveryServicesCapabilitiesWithResponseMockTests {
     @Test
     public void testCapabilitiesWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"dnsZones\":[{\"requiredZoneNames\":[\"vrnsvshqjohxc\",\"sbfov\",\"srruvwbhsqfsubcg\",\"birx\"],\"subResource\":\"AzureSiteRecovery\"},{\"requiredZoneNames\":[\"rfbjf\",\"twss\",\"t\"],\"subResource\":\"AzureSiteRecovery\"},{\"requiredZoneNames\":[\"zbexilzznfqqnvw\",\"mqtaruoujmkcjh\",\"qytjrybnwjewgd\"],\"subResource\":\"AzureBackup_secondary\"}]},\"type\":\"rvnaenqpeh\"}";
 
-        String responseStr =
-            "{\"properties\":{\"dnsZones\":[{\"requiredZoneNames\":[\"wbxqzvszjfau\",\"j\"],\"subResource\":\"AzureSiteRecovery\"}]},\"type\":\"xivetvt\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        RecoveryServicesManager manager = RecoveryServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        CapabilitiesResponse response = manager.recoveryServices()
+            .capabilitiesWithResponse("bhsfxob",
+                new ResourceCapabilities().withType("mpew")
+                    .withProperties(new CapabilitiesProperties().withDnsZones(
+                        Arrays.asList(new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY)))),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        RecoveryServicesManager manager =
-            RecoveryServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        CapabilitiesResponse response =
-            manager
-                .recoveryServices()
-                .capabilitiesWithResponse(
-                    "zpostmgrcfbu",
-                    new ResourceCapabilities()
-                        .withType("vjymjhxxjyngud")
-                        .withProperties(
-                            new CapabilitiesProperties()
-                                .withDnsZones(
-                                    Arrays
-                                        .asList(
-                                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP_SECONDARY),
-                                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_SITE_RECOVERY),
-                                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP),
-                                            new DnsZone().withSubResource(VaultSubResourceType.AZURE_BACKUP)))),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("xivetvt", response.type());
-        Assertions
-            .assertEquals(
-                VaultSubResourceType.AZURE_SITE_RECOVERY, response.properties().dnsZones().get(0).subResource());
-        Assertions.assertEquals("wbxqzvszjfau", response.properties().dnsZones().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("rvnaenqpeh", response.type());
+        Assertions.assertEquals(VaultSubResourceType.AZURE_SITE_RECOVERY,
+            response.properties().dnsZones().get(0).subResource());
+        Assertions.assertEquals("vrnsvshqjohxc", response.properties().dnsZones().get(0).requiredZoneNames().get(0));
     }
 }

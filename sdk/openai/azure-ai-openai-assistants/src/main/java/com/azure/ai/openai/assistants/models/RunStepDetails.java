@@ -22,7 +22,6 @@ public class RunStepDetails implements JsonSerializable<RunStepDetails> {
      */
     @Generated
     protected RunStepDetails() {
-        this.type = RunStepType.fromString("RunStepDetails");
     }
 
     static RunStepDetails fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
@@ -41,7 +40,7 @@ public class RunStepDetails implements JsonSerializable<RunStepDetails> {
      * The object type.
      */
     @Generated
-    private RunStepType type;
+    private RunStepType type = RunStepType.fromString("RunStepDetails");
 
     /**
      * Get the type property: The object type.

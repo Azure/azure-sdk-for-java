@@ -8,18 +8,18 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Defenders CSPM Cloud infrastructure entitlement management (CIEM) offering configurations.
+ * Defenders CSPM Permissions Management offering configurations.
  */
 @Fluent
 public final class DefenderCspmAwsOfferingCiem {
     /*
-     * Defender CSPM CIEM discovery configuration
+     * Defender CSPM Permissions Management discovery configuration
      */
     @JsonProperty(value = "ciemDiscovery")
     private DefenderCspmAwsOfferingCiemDiscovery ciemDiscovery;
 
     /*
-     * Defender CSPM CIEM AWS OIDC (open id connect) configuration
+     * AWS Defender CSPM Permissions Management OIDC (open id connect) connection configurations
      */
     @JsonProperty(value = "ciemOidc")
     private DefenderCspmAwsOfferingCiemOidc ciemOidc;
@@ -31,7 +31,7 @@ public final class DefenderCspmAwsOfferingCiem {
     }
 
     /**
-     * Get the ciemDiscovery property: Defender CSPM CIEM discovery configuration.
+     * Get the ciemDiscovery property: Defender CSPM Permissions Management discovery configuration.
      * 
      * @return the ciemDiscovery value.
      */
@@ -40,7 +40,7 @@ public final class DefenderCspmAwsOfferingCiem {
     }
 
     /**
-     * Set the ciemDiscovery property: Defender CSPM CIEM discovery configuration.
+     * Set the ciemDiscovery property: Defender CSPM Permissions Management discovery configuration.
      * 
      * @param ciemDiscovery the ciemDiscovery value to set.
      * @return the DefenderCspmAwsOfferingCiem object itself.
@@ -51,7 +51,8 @@ public final class DefenderCspmAwsOfferingCiem {
     }
 
     /**
-     * Get the ciemOidc property: Defender CSPM CIEM AWS OIDC (open id connect) configuration.
+     * Get the ciemOidc property: AWS Defender CSPM Permissions Management OIDC (open id connect) connection
+     * configurations.
      * 
      * @return the ciemOidc value.
      */
@@ -60,7 +61,8 @@ public final class DefenderCspmAwsOfferingCiem {
     }
 
     /**
-     * Set the ciemOidc property: Defender CSPM CIEM AWS OIDC (open id connect) configuration.
+     * Set the ciemOidc property: AWS Defender CSPM Permissions Management OIDC (open id connect) connection
+     * configurations.
      * 
      * @param ciemOidc the ciemOidc value to set.
      * @return the DefenderCspmAwsOfferingCiem object itself.
