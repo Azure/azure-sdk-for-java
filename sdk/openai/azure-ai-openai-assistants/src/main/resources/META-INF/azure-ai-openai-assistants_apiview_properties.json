@@ -184,6 +184,7 @@
     "com.azure.ai.openai.assistants.models.AssistantThread": "Azure.AI.OpenAI.Assistants.AssistantThread",
     "com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions": "Azure.AI.OpenAI.Assistants.AssistantThreadCreationOptions",
     "com.azure.ai.openai.assistants.models.AssistantsApiResponseFormat": "Azure.AI.OpenAI.Assistants.AssistantsApiResponseFormat",
+    "com.azure.ai.openai.assistants.models.AssistantsApiResponseFormatMode": "Azure.AI.OpenAI.Assistants.AssistantsApiResponseFormatMode",
     "com.azure.ai.openai.assistants.models.AssistantsApiToolChoiceOptionMode": "Azure.AI.OpenAI.Assistants.AssistantsApiToolChoiceOptionMode",
     "com.azure.ai.openai.assistants.models.AssistantsNamedToolChoice": "Azure.AI.OpenAI.Assistants.AssistantsNamedToolChoice",
     "com.azure.ai.openai.assistants.models.AssistantsNamedToolChoiceType": "Azure.AI.OpenAI.Assistants.AssistantsNamedToolChoiceType",

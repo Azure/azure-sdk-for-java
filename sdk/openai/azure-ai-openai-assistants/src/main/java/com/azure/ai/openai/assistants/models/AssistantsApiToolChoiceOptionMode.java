@@ -19,7 +19,7 @@ public final class AssistantsApiToolChoiceOptionMode extends ExpandableStringEnu
     public static final AssistantsApiToolChoiceOptionMode NONE = fromString("none");
 
     /**
-     * TShe model can pick between generating a message or calling a function.
+     * The model can pick between generating a message or calling a function.
      */
     @Generated
     public static final AssistantsApiToolChoiceOptionMode AUTO = fromString("auto");
