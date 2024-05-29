@@ -982,8 +982,8 @@ public final class AssistantsClientImpl {
      *         }
      *         file_search: BinaryData (Optional)
      *     }
-     *     temperature: Double (Required)
-     *     top_p: Double (Required)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
      *     response_format: BinaryData (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
@@ -1068,8 +1068,8 @@ public final class AssistantsClientImpl {
      *         }
      *         file_search: BinaryData (Optional)
      *     }
-     *     temperature: Double (Required)
-     *     top_p: Double (Required)
+     *     temperature: Double (Optional)
+     *     top_p: Double (Optional)
      *     response_format: BinaryData (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
@@ -5555,7 +5555,7 @@ public final class AssistantsClientImpl {
      * }</pre>
      * 
      * @param vectorStoreId The ID of the vector store that the file batch belongs to.
-     * @param batchId The ID of the file batch being retrieved..
+     * @param batchId The ID of the file batch being retrieved.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5594,7 +5594,7 @@ public final class AssistantsClientImpl {
      * }</pre>
      * 
      * @param vectorStoreId The ID of the vector store that the file batch belongs to.
-     * @param batchId The ID of the file batch being retrieved..
+     * @param batchId The ID of the file batch being retrieved.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
