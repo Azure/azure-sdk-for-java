@@ -72,6 +72,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final ClientLogger methodLogger;
     private final HttpMethod httpMethod;
     private final String relativePath;
+    private final Map<String, List<String>> constantQueryParams = new HashMap<>();
     final List<RangeReplaceSubstitution> hostSubstitutions = new ArrayList<>();
     private final List<RangeReplaceSubstitution> pathSubstitutions = new ArrayList<>();
     private final List<QuerySubstitution> querySubstitutions = new ArrayList<>();
@@ -142,6 +143,38 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                             } else {
                                 this.requestHeaders.set(HttpHeaderName.fromString(headerName), headerValue);
                             }
+                        }
+                    }
+                }
+            }
+        }
+
+        final String[] requestQueryParams = httpRequestInformation.queryParams();
+
+        if (requestQueryParams != null) {
+            for (final String queryParam : requestQueryParams) {
+                final int equalsIndex = queryParam.indexOf("=");
+
+                if (equalsIndex >= 0) {
+                    final String paramName = queryParam.substring(0, equalsIndex).trim();
+
+                    if (!paramName.isEmpty()) {
+                        final String paramValue = queryParam.substring(equalsIndex + 1).trim();
+
+                        if (!paramValue.isEmpty()) {
+                            constantQueryParams.compute(paramName, (key, value) -> {
+                                if (value == null) {
+                                    List<String> valueList = new ArrayList<>();
+
+                                    valueList.add(paramValue);
+
+                                    return valueList;
+                                }
+
+                                value.add(paramValue);
+
+                                return value;
+                            });
                         }
                     }
                 }
@@ -227,8 +260,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         Class<?>[] parameterTypes = swaggerMethod.getParameterTypes();
         int requestOptionsPosition = -1;
         int serverSentEventListenerPosition = -1;
+
         for (int i = 0; i < parameterTypes.length; i++) {
             Class<?> parameterType = parameterTypes[i];
+
             // Check for the RequestOptions position.
             // To retain previous behavior, only track the first instance found.
             if (parameterType == RequestOptions.class && requestOptionsPosition == -1) {
@@ -327,10 +362,19 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     @SuppressWarnings("unchecked")
     public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UrlBuilder urlBuilder,
                                           ObjectSerializer serializer) {
+        // First we add the constant query parameters.
+        for (Map.Entry<String, List<String>> queryParam : constantQueryParams.entrySet()) {
+            for (String value : queryParam.getValue()) {
+                addSerializedQueryParameter(serializer, value, false, urlBuilder, queryParam.getKey());
+            }
+        }
+
         if (swaggerMethodArguments == null) {
             return;
         }
 
+        // Then we add query parameters passed as arguments to the request method. If any of them share a name with the
+        // constant query parameters, the constant query parameter will be overwritten.
         for (QuerySubstitution substitution : querySubstitutions) {
             final int parameterIndex = substitution.getMethodParameterIndex();
 
