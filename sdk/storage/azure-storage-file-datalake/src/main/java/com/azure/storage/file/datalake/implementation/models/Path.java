@@ -5,91 +5,86 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Path model. */
-@JacksonXmlRootElement(localName = "Path")
+/**
+ * The Path model.
+ */
 @Fluent
-public final class Path {
+public final class Path implements JsonSerializable<Path> {
     /*
      * The name property.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The isDirectory property.
      */
-    @JsonProperty(value = "isDirectory")
     private Boolean isDirectory;
 
     /*
      * The lastModified property.
      */
-    @JsonProperty(value = "lastModified")
     private String lastModified;
 
     /*
      * The contentLength property.
      */
-    @JsonProperty(value = "contentLength")
     private Long contentLength;
 
     /*
      * The owner property.
      */
-    @JsonProperty(value = "owner")
     private String owner;
 
     /*
      * The group property.
      */
-    @JsonProperty(value = "group")
     private String group;
 
     /*
      * The permissions property.
      */
-    @JsonProperty(value = "permissions")
     private String permissions;
 
     /*
      * The name of the encryption scope under which the blob is encrypted.
      */
-    @JsonProperty(value = "EncryptionScope")
     private String encryptionScope;
 
     /*
      * The creationTime property.
      */
-    @JsonProperty(value = "creationTime")
     private String creationTime;
 
     /*
      * The expiryTime property.
      */
-    @JsonProperty(value = "expiryTime")
     private String expiryTime;
 
     /*
      * The EncryptionContext property.
      */
-    @JsonProperty(value = "EncryptionContext")
     private String encryptionContext;
 
     /*
      * The etag property.
      */
-    @JsonProperty(value = "etag")
     private String eTag;
 
-    /** Creates an instance of Path class. */
-    public Path() {}
+    /**
+     * Creates an instance of Path class.
+     */
+    public Path() {
+    }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -98,7 +93,7 @@ public final class Path {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the Path object itself.
      */
@@ -109,7 +104,7 @@ public final class Path {
 
     /**
      * Get the isDirectory property: The isDirectory property.
-     *
+     * 
      * @return the isDirectory value.
      */
     public Boolean isDirectory() {
@@ -118,7 +113,7 @@ public final class Path {
 
     /**
      * Set the isDirectory property: The isDirectory property.
-     *
+     * 
      * @param isDirectory the isDirectory value to set.
      * @return the Path object itself.
      */
@@ -129,7 +124,7 @@ public final class Path {
 
     /**
      * Get the lastModified property: The lastModified property.
-     *
+     * 
      * @return the lastModified value.
      */
     public String getLastModified() {
@@ -138,7 +133,7 @@ public final class Path {
 
     /**
      * Set the lastModified property: The lastModified property.
-     *
+     * 
      * @param lastModified the lastModified value to set.
      * @return the Path object itself.
      */
@@ -149,7 +144,7 @@ public final class Path {
 
     /**
      * Get the contentLength property: The contentLength property.
-     *
+     * 
      * @return the contentLength value.
      */
     public Long getContentLength() {
@@ -158,7 +153,7 @@ public final class Path {
 
     /**
      * Set the contentLength property: The contentLength property.
-     *
+     * 
      * @param contentLength the contentLength value to set.
      * @return the Path object itself.
      */
@@ -169,7 +164,7 @@ public final class Path {
 
     /**
      * Get the owner property: The owner property.
-     *
+     * 
      * @return the owner value.
      */
     public String getOwner() {
@@ -178,7 +173,7 @@ public final class Path {
 
     /**
      * Set the owner property: The owner property.
-     *
+     * 
      * @param owner the owner value to set.
      * @return the Path object itself.
      */
@@ -189,7 +184,7 @@ public final class Path {
 
     /**
      * Get the group property: The group property.
-     *
+     * 
      * @return the group value.
      */
     public String getGroup() {
@@ -198,7 +193,7 @@ public final class Path {
 
     /**
      * Set the group property: The group property.
-     *
+     * 
      * @param group the group value to set.
      * @return the Path object itself.
      */
@@ -209,7 +204,7 @@ public final class Path {
 
     /**
      * Get the permissions property: The permissions property.
-     *
+     * 
      * @return the permissions value.
      */
     public String getPermissions() {
@@ -218,7 +213,7 @@ public final class Path {
 
     /**
      * Set the permissions property: The permissions property.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the Path object itself.
      */
@@ -229,7 +224,7 @@ public final class Path {
 
     /**
      * Get the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
-     *
+     * 
      * @return the encryptionScope value.
      */
     public String getEncryptionScope() {
@@ -238,7 +233,7 @@ public final class Path {
 
     /**
      * Set the encryptionScope property: The name of the encryption scope under which the blob is encrypted.
-     *
+     * 
      * @param encryptionScope the encryptionScope value to set.
      * @return the Path object itself.
      */
@@ -249,7 +244,7 @@ public final class Path {
 
     /**
      * Get the creationTime property: The creationTime property.
-     *
+     * 
      * @return the creationTime value.
      */
     public String getCreationTime() {
@@ -258,7 +253,7 @@ public final class Path {
 
     /**
      * Set the creationTime property: The creationTime property.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the Path object itself.
      */
@@ -269,7 +264,7 @@ public final class Path {
 
     /**
      * Get the expiryTime property: The expiryTime property.
-     *
+     * 
      * @return the expiryTime value.
      */
     public String getExpiryTime() {
@@ -278,7 +273,7 @@ public final class Path {
 
     /**
      * Set the expiryTime property: The expiryTime property.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the Path object itself.
      */
@@ -289,7 +284,7 @@ public final class Path {
 
     /**
      * Get the encryptionContext property: The EncryptionContext property.
-     *
+     * 
      * @return the encryptionContext value.
      */
     public String getEncryptionContext() {
@@ -298,7 +293,7 @@ public final class Path {
 
     /**
      * Set the encryptionContext property: The EncryptionContext property.
-     *
+     * 
      * @param encryptionContext the encryptionContext value to set.
      * @return the Path object itself.
      */
@@ -309,7 +304,7 @@ public final class Path {
 
     /**
      * Get the eTag property: The etag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -318,12 +313,81 @@ public final class Path {
 
     /**
      * Set the eTag property: The etag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the Path object itself.
      */
     public Path setETag(String eTag) {
         this.eTag = eTag;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("isDirectory", this.isDirectory);
+        jsonWriter.writeStringField("lastModified", this.lastModified);
+        jsonWriter.writeNumberField("contentLength", this.contentLength);
+        jsonWriter.writeStringField("owner", this.owner);
+        jsonWriter.writeStringField("group", this.group);
+        jsonWriter.writeStringField("permissions", this.permissions);
+        jsonWriter.writeStringField("EncryptionScope", this.encryptionScope);
+        jsonWriter.writeStringField("creationTime", this.creationTime);
+        jsonWriter.writeStringField("expiryTime", this.expiryTime);
+        jsonWriter.writeStringField("EncryptionContext", this.encryptionContext);
+        jsonWriter.writeStringField("etag", this.eTag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Path from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Path if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Path.
+     */
+    public static Path fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Path deserializedPath = new Path();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPath.name = reader.getString();
+                } else if ("isDirectory".equals(fieldName)) {
+                    deserializedPath.isDirectory = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastModified".equals(fieldName)) {
+                    deserializedPath.lastModified = reader.getString();
+                } else if ("contentLength".equals(fieldName)) {
+                    deserializedPath.contentLength = reader.getNullable(JsonReader::getLong);
+                } else if ("owner".equals(fieldName)) {
+                    deserializedPath.owner = reader.getString();
+                } else if ("group".equals(fieldName)) {
+                    deserializedPath.group = reader.getString();
+                } else if ("permissions".equals(fieldName)) {
+                    deserializedPath.permissions = reader.getString();
+                } else if ("EncryptionScope".equals(fieldName)) {
+                    deserializedPath.encryptionScope = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedPath.creationTime = reader.getString();
+                } else if ("expiryTime".equals(fieldName)) {
+                    deserializedPath.expiryTime = reader.getString();
+                } else if ("EncryptionContext".equals(fieldName)) {
+                    deserializedPath.encryptionContext = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedPath.eTag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPath;
+        });
     }
 }

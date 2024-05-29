@@ -6,44 +6,51 @@ package com.azure.storage.file.datalake.implementation;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 
-/** Initializes a new instance of the AzureDataLakeStorageRestAPI type. */
+/**
+ * Initializes a new instance of the AzureDataLakeStorageRestAPI type.
+ */
 public final class AzureDataLakeStorageRestAPIImpl {
-    /** The URL of the service account, container, or blob that is the target of the desired operation. */
+    /**
+     * The URL of the service account, container, or blob that is the target of the desired operation.
+     */
     private final String url;
 
     /**
      * Gets The URL of the service account, container, or blob that is the target of the desired operation.
-     *
+     * 
      * @return the url value.
      */
     public String getUrl() {
         return this.url;
     }
 
-    /** The value must be "filesystem" for all filesystem operations. */
+    /**
+     * The value must be "filesystem" for all filesystem operations.
+     */
     private final String resource;
 
     /**
      * Gets The value must be "filesystem" for all filesystem operations.
-     *
+     * 
      * @return the resource value.
      */
     public String getResource() {
         return this.resource;
     }
 
-    /** Specifies the version of the operation to use for this request. */
+    /**
+     * Specifies the version of the operation to use for this request.
+     */
     private final String version;
 
     /**
      * Gets Specifies the version of the operation to use for this request.
-     *
+     * 
      * @return the version value.
      */
     public String getVersion() {
@@ -59,91 +66,105 @@ public final class AzureDataLakeStorageRestAPIImpl {
     /**
      * Gets The lease duration is required to acquire a lease, and specifies the duration of the lease in seconds. The
      * lease duration must be between 15 and 60 seconds or -1 for infinite lease.
-     *
+     * 
      * @return the xMsLeaseDuration value.
      */
     public int getXMsLeaseDuration() {
         return this.xMsLeaseDuration;
     }
 
-    /** The filesystem identifier. */
+    /**
+     * The filesystem identifier.
+     */
     private final String fileSystem;
 
     /**
      * Gets The filesystem identifier.
-     *
+     * 
      * @return the fileSystem value.
      */
     public String getFileSystem() {
         return this.fileSystem;
     }
 
-    /** The file or directory path. */
+    /**
+     * The file or directory path.
+     */
     private final String path;
 
     /**
      * Gets The file or directory path.
-     *
+     * 
      * @return the path value.
      */
     public String getPath() {
         return this.path;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The ServicesImpl object to access its operations. */
+    /**
+     * The ServicesImpl object to access its operations.
+     */
     private final ServicesImpl services;
 
     /**
      * Gets the ServicesImpl object to access its operations.
-     *
+     * 
      * @return the ServicesImpl object.
      */
     public ServicesImpl getServices() {
         return this.services;
     }
 
-    /** The FileSystemsImpl object to access its operations. */
+    /**
+     * The FileSystemsImpl object to access its operations.
+     */
     private final FileSystemsImpl fileSystems;
 
     /**
      * Gets the FileSystemsImpl object to access its operations.
-     *
+     * 
      * @return the FileSystemsImpl object.
      */
     public FileSystemsImpl getFileSystems() {
         return this.fileSystems;
     }
 
-    /** The PathsImpl object to access its operations. */
+    /**
+     * The PathsImpl object to access its operations.
+     */
     private final PathsImpl paths;
 
     /**
      * Gets the PathsImpl object to access its operations.
-     *
+     * 
      * @return the PathsImpl object.
      */
     public PathsImpl getPaths() {
@@ -152,83 +173,55 @@ public final class AzureDataLakeStorageRestAPIImpl {
 
     /**
      * Initializes an instance of AzureDataLakeStorageRestAPI client.
-     *
+     * 
      * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param resource The value must be "filesystem" for all filesystem operations.
      * @param version Specifies the version of the operation to use for this request.
      * @param xMsLeaseDuration The lease duration is required to acquire a lease, and specifies the duration of the
-     *     lease in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * lease in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
      * @param fileSystem The filesystem identifier.
      * @param path The file or directory path.
      */
-    AzureDataLakeStorageRestAPIImpl(
-            String url, String resource, String version, int xMsLeaseDuration, String fileSystem, String path) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                url,
-                resource,
-                version,
-                xMsLeaseDuration,
-                fileSystem,
-                path);
+    public AzureDataLakeStorageRestAPIImpl(String url, String resource, String version, int xMsLeaseDuration,
+        String fileSystem, String path) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), url, resource, version, xMsLeaseDuration, fileSystem,
+            path);
     }
 
     /**
      * Initializes an instance of AzureDataLakeStorageRestAPI client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param resource The value must be "filesystem" for all filesystem operations.
      * @param version Specifies the version of the operation to use for this request.
      * @param xMsLeaseDuration The lease duration is required to acquire a lease, and specifies the duration of the
-     *     lease in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * lease in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
      * @param fileSystem The filesystem identifier.
      * @param path The file or directory path.
      */
-    AzureDataLakeStorageRestAPIImpl(
-            HttpPipeline httpPipeline,
-            String url,
-            String resource,
-            String version,
-            int xMsLeaseDuration,
-            String fileSystem,
-            String path) {
-        this(
-                httpPipeline,
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                url,
-                resource,
-                version,
-                xMsLeaseDuration,
-                fileSystem,
-                path);
+    public AzureDataLakeStorageRestAPIImpl(HttpPipeline httpPipeline, String url, String resource, String version,
+        int xMsLeaseDuration, String fileSystem, String path) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url, resource, version, xMsLeaseDuration,
+            fileSystem, path);
     }
 
     /**
      * Initializes an instance of AzureDataLakeStorageRestAPI client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param resource The value must be "filesystem" for all filesystem operations.
      * @param version Specifies the version of the operation to use for this request.
      * @param xMsLeaseDuration The lease duration is required to acquire a lease, and specifies the duration of the
-     *     lease in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     * lease in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
      * @param fileSystem The filesystem identifier.
      * @param path The file or directory path.
      */
-    AzureDataLakeStorageRestAPIImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String url,
-            String resource,
-            String version,
-            int xMsLeaseDuration,
-            String fileSystem,
-            String path) {
+    public AzureDataLakeStorageRestAPIImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url,
+        String resource, String version, int xMsLeaseDuration, String fileSystem, String path) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.url = url;
