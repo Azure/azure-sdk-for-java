@@ -76,7 +76,7 @@ public class RecurrenceEvaluatorTest {
         final Recurrence recurrence4 = new Recurrence();
         pattern4.setType("Daily");
         range4.setType("Numbered");
-        range4.setNumberOfRecurrences(2);
+        range4.setNumberOfOccurrences(2);
         recurrence4.setRange(range4);
         recurrence4.setPattern(pattern4);
         settings4.setStart("2023-09-01T00:00:00+08:00");
@@ -293,7 +293,7 @@ public class RecurrenceEvaluatorTest {
         pattern.setType("Weekly");
         pattern.setDaysOfWeek(List.of("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
         range.setType("Numbered");
-        range.setNumberOfRecurrences(3);
+        range.setNumberOfOccurrences(3);
         recurrence.setRange(range);
         recurrence.setPattern(pattern);
         settings.setStart("2023-09-01T00:00:00+08:00");    // Friday
@@ -312,7 +312,7 @@ public class RecurrenceEvaluatorTest {
         pattern.setType("Weekly");
         pattern.setDaysOfWeek(List.of("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
         range.setType("Numbered");
-        range.setNumberOfRecurrences(10);
+        range.setNumberOfOccurrences(10);
         recurrence.setRange(range);
         recurrence.setPattern(pattern);
         settings.setStart("2023-09-01T00:00:00+08:00");    // Friday
@@ -331,7 +331,7 @@ public class RecurrenceEvaluatorTest {
         pattern.setType("Weekly");
         pattern.setDaysOfWeek(List.of("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
         range.setType("Numbered");
-        range.setNumberOfRecurrences(2);
+        range.setNumberOfOccurrences(2);
         recurrence.setRange(range);
         recurrence.setPattern(pattern);
         settings.setStart("2023-09-01T00:00:00+08:00");    // Friday
@@ -352,7 +352,7 @@ public class RecurrenceEvaluatorTest {
         pattern4.setFirstDayOfWeek("Monday");
         pattern4.setInterval(2);
         range4.setType("Numbered");
-        range4.setNumberOfRecurrences(3);
+        range4.setNumberOfOccurrences(3);
         recurrence4.setRange(range4);
         recurrence4.setPattern(pattern4);
         settings4.setStart("2023-09-03T00:00:00+08:00");    // Sunday
@@ -392,7 +392,7 @@ public class RecurrenceEvaluatorTest {
         pattern5.setFirstDayOfWeek("Monday");
         pattern5.setInterval(2);
         range5.setType("Numbered");
-        range5.setNumberOfRecurrences(3);
+        range5.setNumberOfOccurrences(3);
         recurrence5.setRange(range5);
         recurrence5.setPattern(pattern5);
         settings5.setStart("2023-09-03T00:00:00+08:00");    // Sunday
@@ -413,7 +413,7 @@ public class RecurrenceEvaluatorTest {
         pattern6.setFirstDayOfWeek("Monday");
         pattern6.setInterval(2);
         range6.setType("Numbered");
-        range6.setNumberOfRecurrences(2);
+        range6.setNumberOfOccurrences(2);
         recurrence6.setRange(range6);
         recurrence6.setPattern(pattern6);
         settings6.setStart("2023-09-03T00:00:00+08:00");    // Sunday

@@ -27,7 +27,7 @@ public class RecurrenceRange {
     /**
      * The number of times to repeat the time window
      */
-    private int numberOfRecurrences = Integer.MAX_VALUE;
+    private int numberOfOccurrences = Integer.MAX_VALUE;
 
     /**
      * @return the recurrence range type
@@ -61,18 +61,18 @@ public class RecurrenceRange {
     /**
      * @return the number of times to repeat the time window
      * */
-    public int getNumberOfRecurrences() {
-        return numberOfRecurrences;
+    public int getNumberOfOccurrences() {
+        return numberOfOccurrences;
     }
 
     /**
-     * @param numberOfRecurrences the repeat times to be set
+     * @param numberOfOccurrences the repeat times to be set
      * */
-    public void setNumberOfRecurrences(int numberOfRecurrences) {
-        if (numberOfRecurrences < 1) {
+    public void setNumberOfOccurrences(int numberOfOccurrences) {
+        if (numberOfOccurrences < 1) {
             throw new IllegalArgumentException(
                 String.format(RecurrenceConstants.OUT_OF_RANGE, "Recurrence.Range.NumberOfOccurrences"));
         }
-        this.numberOfRecurrences = numberOfRecurrences;
+        this.numberOfOccurrences = numberOfOccurrences;
     }
 }
