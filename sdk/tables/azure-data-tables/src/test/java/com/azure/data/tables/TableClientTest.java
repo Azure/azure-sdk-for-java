@@ -146,7 +146,7 @@ public class TableClientTest extends TableClientTestBase {
         // Arrange
         final String tableName2 = testResourceNamer.randomName("tableName", 20);
         final String endpoint = TestUtils.getEndpoint(interceptorManager.isPlaybackMode());
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();;
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         final TableClient tableClient2 = getClientBuilder(tableName2, endpoint, credential, true).buildClient();
         final int expectedStatusCode = 204;
 
