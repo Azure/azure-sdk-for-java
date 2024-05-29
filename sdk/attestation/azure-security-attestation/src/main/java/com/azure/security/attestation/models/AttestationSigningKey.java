@@ -38,18 +38,14 @@ public final class AttestationSigningKey {
     }
 
     /**
-     * Returns the X.509 certificate associated with this Signing Key.
-     *
-     * @return the X.509 certificate.
+     * @return Returns the X.509 certificate associated with this Signing Key.
      */
     public X509Certificate getCertificate() {
         return this.certificate;
     }
 
     /**
-     * Returns the private key associated with this signing key.
-     *
-     * @return the private key.
+     * @return Returns the private key associated with this signing key.
      */
     public PrivateKey getPrivateKey() {
         return this.privateKey;
@@ -67,9 +63,8 @@ public final class AttestationSigningKey {
     }
 
     /**
-     * Returns if a weak key is allowed on this signing key.
      *
-     * @return the boolean indicator.
+     * @return Returns if a weak key is allowed on this signing key.
      */
     public boolean isWeakKeyAllowed() {
         return this.weakKeyAllowed;

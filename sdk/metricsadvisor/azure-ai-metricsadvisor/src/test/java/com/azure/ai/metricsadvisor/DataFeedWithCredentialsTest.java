@@ -16,6 +16,7 @@ import com.azure.ai.metricsadvisor.administration.models.DataSourceServicePrinci
 import com.azure.ai.metricsadvisor.administration.models.DataSourceSqlServerConnectionString;
 import com.azure.ai.metricsadvisor.administration.models.SqlServerDataFeedSource;
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -39,6 +40,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     public void testSqlServer(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final MetricsAdvisorAdministrationClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
@@ -147,6 +149,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     public void testDataLakeGen2(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final MetricsAdvisorAdministrationClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
@@ -253,6 +256,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     public void testDataExplorer(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final MetricsAdvisorAdministrationClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
@@ -349,6 +353,7 @@ public class DataFeedWithCredentialsTest extends DataFeedWithCredentialsTestBase
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     public void testBlobStorage(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final MetricsAdvisorAdministrationClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();

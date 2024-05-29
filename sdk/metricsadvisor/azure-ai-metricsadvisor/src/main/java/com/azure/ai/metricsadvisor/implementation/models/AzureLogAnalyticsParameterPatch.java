@@ -5,51 +5,47 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AzureLogAnalyticsParameterPatch model.
- */
+/** The AzureLogAnalyticsParameterPatch model. */
 @Fluent
-public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<AzureLogAnalyticsParameterPatch> {
+public final class AzureLogAnalyticsParameterPatch {
     /*
      * The tenant id of service principal that have access to this Log Analytics
      */
+    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * The client id of service principal that have access to this Log Analytics
      */
+    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * The client secret of service principal that have access to this Log Analytics
      */
+    @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
     /*
      * The workspace id of this Log Analytics
      */
+    @JsonProperty(value = "workspaceId")
     private String workspaceId;
 
     /*
      * The KQL (Kusto Query Language) query to fetch data from this Log Analytics
      */
+    @JsonProperty(value = "query")
     private String query;
 
-    /**
-     * Creates an instance of AzureLogAnalyticsParameterPatch class.
-     */
-    public AzureLogAnalyticsParameterPatch() {
-    }
+    /** Creates an instance of AzureLogAnalyticsParameterPatch class. */
+    public AzureLogAnalyticsParameterPatch() {}
 
     /**
      * Get the tenantId property: The tenant id of service principal that have access to this Log Analytics.
-     * 
+     *
      * @return the tenantId value.
      */
     public String getTenantId() {
@@ -58,7 +54,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
 
     /**
      * Set the tenantId property: The tenant id of service principal that have access to this Log Analytics.
-     * 
+     *
      * @param tenantId the tenantId value to set.
      * @return the AzureLogAnalyticsParameterPatch object itself.
      */
@@ -69,7 +65,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
 
     /**
      * Get the clientId property: The client id of service principal that have access to this Log Analytics.
-     * 
+     *
      * @return the clientId value.
      */
     public String getClientId() {
@@ -78,7 +74,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
 
     /**
      * Set the clientId property: The client id of service principal that have access to this Log Analytics.
-     * 
+     *
      * @param clientId the clientId value to set.
      * @return the AzureLogAnalyticsParameterPatch object itself.
      */
@@ -89,7 +85,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
 
     /**
      * Get the clientSecret property: The client secret of service principal that have access to this Log Analytics.
-     * 
+     *
      * @return the clientSecret value.
      */
     public String getClientSecret() {
@@ -98,7 +94,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
 
     /**
      * Set the clientSecret property: The client secret of service principal that have access to this Log Analytics.
-     * 
+     *
      * @param clientSecret the clientSecret value to set.
      * @return the AzureLogAnalyticsParameterPatch object itself.
      */
@@ -109,7 +105,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
 
     /**
      * Get the workspaceId property: The workspace id of this Log Analytics.
-     * 
+     *
      * @return the workspaceId value.
      */
     public String getWorkspaceId() {
@@ -118,7 +114,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
 
     /**
      * Set the workspaceId property: The workspace id of this Log Analytics.
-     * 
+     *
      * @param workspaceId the workspaceId value to set.
      * @return the AzureLogAnalyticsParameterPatch object itself.
      */
@@ -129,7 +125,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
 
     /**
      * Get the query property: The KQL (Kusto Query Language) query to fetch data from this Log Analytics.
-     * 
+     *
      * @return the query value.
      */
     public String getQuery() {
@@ -138,58 +134,12 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
 
     /**
      * Set the query property: The KQL (Kusto Query Language) query to fetch data from this Log Analytics.
-     * 
+     *
      * @param query the query value to set.
      * @return the AzureLogAnalyticsParameterPatch object itself.
      */
     public AzureLogAnalyticsParameterPatch setQuery(String query) {
         this.query = query;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("tenantId", this.tenantId);
-        jsonWriter.writeStringField("clientId", this.clientId);
-        jsonWriter.writeStringField("clientSecret", this.clientSecret);
-        jsonWriter.writeStringField("workspaceId", this.workspaceId);
-        jsonWriter.writeStringField("query", this.query);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AzureLogAnalyticsParameterPatch from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureLogAnalyticsParameterPatch if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the AzureLogAnalyticsParameterPatch.
-     */
-    public static AzureLogAnalyticsParameterPatch fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            AzureLogAnalyticsParameterPatch deserializedAzureLogAnalyticsParameterPatch
-                = new AzureLogAnalyticsParameterPatch();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("tenantId".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsParameterPatch.tenantId = reader.getString();
-                } else if ("clientId".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsParameterPatch.clientId = reader.getString();
-                } else if ("clientSecret".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsParameterPatch.clientSecret = reader.getString();
-                } else if ("workspaceId".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsParameterPatch.workspaceId = reader.getString();
-                } else if ("query".equals(fieldName)) {
-                    deserializedAzureLogAnalyticsParameterPatch.query = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedAzureLogAnalyticsParameterPatch;
-        });
     }
 }

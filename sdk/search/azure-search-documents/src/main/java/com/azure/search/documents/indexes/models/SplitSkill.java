@@ -13,10 +13,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * A skill to split a string into chunks of text.
- */
+/** A skill to split a string into chunks of text. */
 @Fluent
 public final class SplitSkill extends SearchIndexerSkill {
     /*
@@ -34,22 +33,9 @@ public final class SplitSkill extends SearchIndexerSkill {
      */
     private Integer maximumPageLength;
 
-    /*
-     * Only applicable when textSplitMode is set to 'pages'. If specified, n+1th chunk will start with this number of
-     * characters/tokens from the end of the nth chunk.
-     */
-    private Integer pageOverlapLength;
-
-    /*
-     * Only applicable when textSplitMode is set to 'pages'. If specified, the SplitSkill will discontinue splitting
-     * after processing the first 'maximumPagesToTake' pages, in order to improve performance when only a few initial
-     * pages are needed from each document.
-     */
-    private Integer maximumPagesToTake;
-
     /**
      * Creates an instance of SplitSkill class.
-     * 
+     *
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
@@ -59,7 +45,7 @@ public final class SplitSkill extends SearchIndexerSkill {
 
     /**
      * Get the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
-     * 
+     *
      * @return the defaultLanguageCode value.
      */
     public SplitSkillLanguage getDefaultLanguageCode() {
@@ -68,7 +54,7 @@ public final class SplitSkill extends SearchIndexerSkill {
 
     /**
      * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
-     * 
+     *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the SplitSkill object itself.
      */
@@ -79,7 +65,7 @@ public final class SplitSkill extends SearchIndexerSkill {
 
     /**
      * Get the textSplitMode property: A value indicating which split mode to perform.
-     * 
+     *
      * @return the textSplitMode value.
      */
     public TextSplitMode getTextSplitMode() {
@@ -88,7 +74,7 @@ public final class SplitSkill extends SearchIndexerSkill {
 
     /**
      * Set the textSplitMode property: A value indicating which split mode to perform.
-     * 
+     *
      * @param textSplitMode the textSplitMode value to set.
      * @return the SplitSkill object itself.
      */
@@ -99,7 +85,7 @@ public final class SplitSkill extends SearchIndexerSkill {
 
     /**
      * Get the maximumPageLength property: The desired maximum page length. Default is 10000.
-     * 
+     *
      * @return the maximumPageLength value.
      */
     public Integer getMaximumPageLength() {
@@ -108,7 +94,7 @@ public final class SplitSkill extends SearchIndexerSkill {
 
     /**
      * Set the maximumPageLength property: The desired maximum page length. Default is 10000.
-     * 
+     *
      * @param maximumPageLength the maximumPageLength value to set.
      * @return the SplitSkill object itself.
      */
@@ -117,73 +103,21 @@ public final class SplitSkill extends SearchIndexerSkill {
         return this;
     }
 
-    /**
-     * Get the pageOverlapLength property: Only applicable when textSplitMode is set to 'pages'. If specified, n+1th
-     * chunk will start with this number of characters/tokens from the end of the nth chunk.
-     * 
-     * @return the pageOverlapLength value.
-     */
-    public Integer getPageOverlapLength() {
-        return this.pageOverlapLength;
-    }
-
-    /**
-     * Set the pageOverlapLength property: Only applicable when textSplitMode is set to 'pages'. If specified, n+1th
-     * chunk will start with this number of characters/tokens from the end of the nth chunk.
-     * 
-     * @param pageOverlapLength the pageOverlapLength value to set.
-     * @return the SplitSkill object itself.
-     */
-    public SplitSkill setPageOverlapLength(Integer pageOverlapLength) {
-        this.pageOverlapLength = pageOverlapLength;
-        return this;
-    }
-
-    /**
-     * Get the maximumPagesToTake property: Only applicable when textSplitMode is set to 'pages'. If specified, the
-     * SplitSkill will discontinue splitting after processing the first 'maximumPagesToTake' pages, in order to improve
-     * performance when only a few initial pages are needed from each document.
-     * 
-     * @return the maximumPagesToTake value.
-     */
-    public Integer getMaximumPagesToTake() {
-        return this.maximumPagesToTake;
-    }
-
-    /**
-     * Set the maximumPagesToTake property: Only applicable when textSplitMode is set to 'pages'. If specified, the
-     * SplitSkill will discontinue splitting after processing the first 'maximumPagesToTake' pages, in order to improve
-     * performance when only a few initial pages are needed from each document.
-     * 
-     * @param maximumPagesToTake the maximumPagesToTake value to set.
-     * @return the SplitSkill object itself.
-     */
-    public SplitSkill setMaximumPagesToTake(Integer maximumPagesToTake) {
-        this.maximumPagesToTake = maximumPagesToTake;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SplitSkill setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SplitSkill setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SplitSkill setContext(String context) {
         super.setContext(context);
@@ -199,99 +133,90 @@ public final class SplitSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
-        jsonWriter.writeStringField("defaultLanguageCode",
-            this.defaultLanguageCode == null ? null : this.defaultLanguageCode.toString());
-        jsonWriter.writeStringField("textSplitMode", this.textSplitMode == null ? null : this.textSplitMode.toString());
+        jsonWriter.writeStringField("defaultLanguageCode", Objects.toString(this.defaultLanguageCode, null));
+        jsonWriter.writeStringField("textSplitMode", Objects.toString(this.textSplitMode, null));
         jsonWriter.writeNumberField("maximumPageLength", this.maximumPageLength);
-        jsonWriter.writeNumberField("pageOverlapLength", this.pageOverlapLength);
-        jsonWriter.writeNumberField("maximumPagesToTake", this.maximumPagesToTake);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of SplitSkill from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SplitSkill if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     *     to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the SplitSkill.
      */
     public static SplitSkill fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean inputsFound = false;
-            List<InputFieldMappingEntry> inputs = null;
-            boolean outputsFound = false;
-            List<OutputFieldMappingEntry> outputs = null;
-            String name = null;
-            String description = null;
-            String context = null;
-            SplitSkillLanguage defaultLanguageCode = null;
-            TextSplitMode textSplitMode = null;
-            Integer maximumPageLength = null;
-            Integer pageOverlapLength = null;
-            Integer maximumPagesToTake = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean inputsFound = false;
+                    List<InputFieldMappingEntry> inputs = null;
+                    boolean outputsFound = false;
+                    List<OutputFieldMappingEntry> outputs = null;
+                    String name = null;
+                    String description = null;
+                    String context = null;
+                    SplitSkillLanguage defaultLanguageCode = null;
+                    TextSplitMode textSplitMode = null;
+                    Integer maximumPageLength = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Skills.Text.SplitSkill".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.SplitSkill'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Skills.Text.SplitSkill".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.SplitSkill'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputsFound = true;
+                        } else if ("outputs".equals(fieldName)) {
+                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
+                            outputsFound = true;
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getString();
+                        } else if ("context".equals(fieldName)) {
+                            context = reader.getString();
+                        } else if ("defaultLanguageCode".equals(fieldName)) {
+                            defaultLanguageCode = SplitSkillLanguage.fromString(reader.getString());
+                        } else if ("textSplitMode".equals(fieldName)) {
+                            textSplitMode = TextSplitMode.fromString(reader.getString());
+                        } else if ("maximumPageLength".equals(fieldName)) {
+                            maximumPageLength = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                    inputsFound = true;
-                } else if ("outputs".equals(fieldName)) {
-                    outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
-                    outputsFound = true;
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("context".equals(fieldName)) {
-                    context = reader.getString();
-                } else if ("defaultLanguageCode".equals(fieldName)) {
-                    defaultLanguageCode = SplitSkillLanguage.fromString(reader.getString());
-                } else if ("textSplitMode".equals(fieldName)) {
-                    textSplitMode = TextSplitMode.fromString(reader.getString());
-                } else if ("maximumPageLength".equals(fieldName)) {
-                    maximumPageLength = reader.getNullable(JsonReader::getInt);
-                } else if ("pageOverlapLength".equals(fieldName)) {
-                    pageOverlapLength = reader.getNullable(JsonReader::getInt);
-                } else if ("maximumPagesToTake".equals(fieldName)) {
-                    maximumPagesToTake = reader.getNullable(JsonReader::getInt);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (inputsFound && outputsFound) {
-                SplitSkill deserializedSplitSkill = new SplitSkill(inputs, outputs);
-                deserializedSplitSkill.setName(name);
-                deserializedSplitSkill.setDescription(description);
-                deserializedSplitSkill.setContext(context);
-                deserializedSplitSkill.defaultLanguageCode = defaultLanguageCode;
-                deserializedSplitSkill.textSplitMode = textSplitMode;
-                deserializedSplitSkill.maximumPageLength = maximumPageLength;
-                deserializedSplitSkill.pageOverlapLength = pageOverlapLength;
-                deserializedSplitSkill.maximumPagesToTake = maximumPagesToTake;
+                    if (inputsFound && outputsFound) {
+                        SplitSkill deserializedSplitSkill = new SplitSkill(inputs, outputs);
+                        deserializedSplitSkill.setName(name);
+                        deserializedSplitSkill.setDescription(description);
+                        deserializedSplitSkill.setContext(context);
+                        deserializedSplitSkill.defaultLanguageCode = defaultLanguageCode;
+                        deserializedSplitSkill.textSplitMode = textSplitMode;
+                        deserializedSplitSkill.maximumPageLength = maximumPageLength;
 
-                return deserializedSplitSkill;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!inputsFound) {
-                missingProperties.add("inputs");
-            }
-            if (!outputsFound) {
-                missingProperties.add("outputs");
-            }
+                        return deserializedSplitSkill;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!inputsFound) {
+                        missingProperties.add("inputs");
+                    }
+                    if (!outputsFound) {
+                        missingProperties.add("outputs");
+                    }
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

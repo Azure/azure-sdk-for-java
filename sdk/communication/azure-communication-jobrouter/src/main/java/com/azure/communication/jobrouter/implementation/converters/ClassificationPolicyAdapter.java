@@ -29,13 +29,22 @@ public class ClassificationPolicyAdapter {
             .setName(options.getName())
             .setPrioritizationRule(prioritizationRuleInternal)
             .setFallbackQueueId(options.getFallbackQueueId())
-            .setQueueSelectorAttachments(options.getQueueSelectors() != null
-                ? options.getQueueSelectors().stream()
-                .map(LabelSelectorAdapter::convertQueueSelectorAttachmentToInternal).collect(Collectors.toList())
-            : null)
-            .setWorkerSelectorAttachments(options.getWorkerSelectors() != null
-                ? options.getWorkerSelectors().stream()
-                .map(LabelSelectorAdapter::convertWorkerSelectorAttachmentToInternal).collect(Collectors.toList())
-            : null);
+            .setQueueSelectorAttachments(options.getQueueSelectors().stream()
+                .map(LabelSelectorAdapter::convertQueueSelectorAttachmentToInternal).collect(Collectors.toList()))
+            .setWorkerSelectorAttachments(options.getWorkerSelectors().stream()
+                .map(LabelSelectorAdapter::convertWorkerSelectorAttachmentToInternal).collect(Collectors.toList()));
+    }
+
+    public static ClassificationPolicyInternal convertClassificationPolicyToClassificationPolicyInternal(ClassificationPolicy classificationPolicy) {
+        return new ClassificationPolicyInternal()
+            .setEtag(classificationPolicy.getEtag())
+            .setId(classificationPolicy.getId())
+            .setName(classificationPolicy.getName())
+            .setWorkerSelectorAttachments(classificationPolicy.getWorkerSelectorAttachments().stream()
+                .map(LabelSelectorAdapter::convertWorkerSelectorAttachmentToInternal).collect(Collectors.toList()))
+            .setQueueSelectorAttachments(classificationPolicy.getQueueSelectorAttachments().stream()
+                .map(LabelSelectorAdapter::convertQueueSelectorAttachmentToInternal).collect(Collectors.toList()))
+            .setFallbackQueueId(classificationPolicy.getFallbackQueueId())
+            .setPrioritizationRule(getRouterRuleInternal(classificationPolicy.getPrioritizationRule()));
     }
 }

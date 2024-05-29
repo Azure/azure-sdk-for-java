@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -76,6 +77,7 @@ public final class MetadataColumnDataType extends ExpandableStringEnum<MetadataC
      * @param name a name to look for.
      * @return the corresponding MetadataColumnDataType.
      */
+    @JsonCreator
     public static MetadataColumnDataType fromString(String name) {
         return fromString(name, MetadataColumnDataType.class);
     }

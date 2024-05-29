@@ -16,14 +16,11 @@ import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.test.environment.models.NonNullableModel;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Array;
@@ -53,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * This class contains helper methods for running Azure AI Search tests.
+ * This class contains helper methods for running Azure Cognitive Search tests.
  */
 public final class TestHelpers {
     private static TestMode testMode;
@@ -116,17 +113,8 @@ public final class TestHelpers {
         } else if (expected instanceof Map) {
             assertMapEqualsInternal((Map) expected, (Map) actual, ignoredDefaults, ignoredFields);
         } else {
-            byte[] expectedJson;
-            byte[] actualJson;
-            if (expected instanceof JsonSerializable<?>) {
-                expectedJson = serializeJsonSerializable((JsonSerializable<?>) expected);
-                actualJson = (actual instanceof JsonSerializable<?>)
-                    ? serializeJsonSerializable((JsonSerializable<?>) actual)
-                    : SERIALIZER.serializeToBytes(actual);
-            } else {
-                expectedJson = SERIALIZER.serializeToBytes(expected);
-                actualJson = SERIALIZER.serializeToBytes(actual);
-            }
+            byte[] expectedJson = SERIALIZER.serializeToBytes(expected);
+            byte[] actualJson = SERIALIZER.serializeToBytes(actual);
 
             try (JsonReader expectedReader = JsonProviders.createReader(expectedJson);
                  JsonReader actualReader = JsonProviders.createReader(actualJson)) {
@@ -136,21 +124,6 @@ public final class TestHelpers {
             } catch (IOException ex) {
                 throw new UncheckedIOException(ex);
             }
-        }
-    }
-
-    private static byte[] serializeJsonSerializable(JsonSerializable<?> jsonSerializable) {
-        if (jsonSerializable == null) {
-            return new byte[0];
-        }
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        try (JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            jsonSerializable.toJson(writer).flush();
-            return outputStream.toByteArray();
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
         }
     }
 
@@ -416,7 +389,6 @@ public final class TestHelpers {
             .setTokenizers(baseIndex.getTokenizers())
             .setTokenFilters(baseIndex.getTokenFilters())
             .setCharFilters(baseIndex.getCharFilters())
-            .setNormalizers(baseIndex.getNormalizers())
             .setEncryptionKey(baseIndex.getEncryptionKey())
             .setSimilarity(baseIndex.getSimilarity())
             .setSemanticSearch(baseIndex.getSemanticSearch())

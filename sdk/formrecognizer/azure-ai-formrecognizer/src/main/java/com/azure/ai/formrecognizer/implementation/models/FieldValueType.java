@@ -4,63 +4,42 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
-/**
- * Semantic data type of the field value.
- */
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/** Semantic data type of the field value. */
 public enum FieldValueType {
-    /**
-     * Enum value string.
-     */
+    /** Enum value string. */
     STRING("string"),
 
-    /**
-     * Enum value date.
-     */
+    /** Enum value date. */
     DATE("date"),
 
-    /**
-     * Enum value time.
-     */
+    /** Enum value time. */
     TIME("time"),
 
-    /**
-     * Enum value phoneNumber.
-     */
+    /** Enum value phoneNumber. */
     PHONE_NUMBER("phoneNumber"),
 
-    /**
-     * Enum value number.
-     */
+    /** Enum value number. */
     NUMBER("number"),
 
-    /**
-     * Enum value integer.
-     */
+    /** Enum value integer. */
     INTEGER("integer"),
 
-    /**
-     * Enum value array.
-     */
+    /** Enum value array. */
     ARRAY("array"),
 
-    /**
-     * Enum value object.
-     */
+    /** Enum value object. */
     OBJECT("object"),
 
-    /**
-     * Enum value selectionMark.
-     */
+    /** Enum value selectionMark. */
     SELECTION_MARK("selectionMark"),
 
-    /**
-     * Enum value countryRegion.
-     */
+    /** Enum value countryRegion. */
     COUNTRY_REGION("countryRegion");
 
-    /**
-     * The actual serialized value for a FieldValueType instance.
-     */
+    /** The actual serialized value for a FieldValueType instance. */
     private final String value;
 
     FieldValueType(String value) {
@@ -69,10 +48,11 @@ public enum FieldValueType {
 
     /**
      * Parses a serialized value to a FieldValueType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed FieldValueType object, or null if unable to parse.
      */
+    @JsonCreator
     public static FieldValueType fromString(String value) {
         if (value == null) {
             return null;
@@ -86,9 +66,8 @@ public enum FieldValueType {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -5,43 +5,45 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Entity model. */
 @Fluent
-public final class Entity implements JsonSerializable<Entity> {
+public final class Entity {
     /*
      * Entity text as appears in the request.
      */
+    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
      * Entity type.
      */
+    @JsonProperty(value = "category", required = true)
     private String category;
 
     /*
      * (Optional) Entity sub type.
      */
+    @JsonProperty(value = "subcategory")
     private String subcategory;
 
     /*
      * Start position for the entity text. Use of different 'stringIndexType' values can affect the offset returned.
      */
+    @JsonProperty(value = "offset", required = true)
     private int offset;
 
     /*
      * Length for the entity text. Use of different 'stringIndexType' values can affect the length returned.
      */
+    @JsonProperty(value = "length", required = true)
     private int length;
 
     /*
      * Confidence score between 0 and 1 of the extracted entity.
      */
+    @JsonProperty(value = "confidenceScore", required = true)
     private double confidenceScore;
 
     /** Creates an instance of Entity class. */
@@ -169,55 +171,5 @@ public final class Entity implements JsonSerializable<Entity> {
     public Entity setConfidenceScore(double confidenceScore) {
         this.confidenceScore = confidenceScore;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("category", this.category);
-        jsonWriter.writeIntField("offset", this.offset);
-        jsonWriter.writeIntField("length", this.length);
-        jsonWriter.writeDoubleField("confidenceScore", this.confidenceScore);
-        jsonWriter.writeStringField("subcategory", this.subcategory);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of Entity from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of Entity if the JsonReader was pointing to an instance of it, or null if it was pointing to
-     *     JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Entity.
-     */
-    public static Entity fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Entity deserializedEntity = new Entity();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("text".equals(fieldName)) {
-                            deserializedEntity.text = reader.getString();
-                        } else if ("category".equals(fieldName)) {
-                            deserializedEntity.category = reader.getString();
-                        } else if ("offset".equals(fieldName)) {
-                            deserializedEntity.offset = reader.getInt();
-                        } else if ("length".equals(fieldName)) {
-                            deserializedEntity.length = reader.getInt();
-                        } else if ("confidenceScore".equals(fieldName)) {
-                            deserializedEntity.confidenceScore = reader.getDouble();
-                        } else if ("subcategory".equals(fieldName)) {
-                            deserializedEntity.subcategory = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedEntity;
-                });
     }
 }

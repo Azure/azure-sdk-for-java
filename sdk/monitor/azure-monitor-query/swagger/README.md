@@ -23,7 +23,6 @@ credential-types: tokencredential
 artifact-id: azure-monitor-query
 customization-class: src/main/java/LogsCustomization.java
 enable-sync-stack: true
-stream-style-serialization: true
 ```
 
 ## Metrics Query
@@ -48,7 +47,6 @@ credential-types: tokencredential
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsCustomization.java
 enable-sync-stack: true
-stream-style-serialization: true
 directive:
     - rename-model:
         from: Response
@@ -96,7 +94,6 @@ credential-types: tokencredential
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsNamespacesCustomization.java
 enable-sync-stack: true
-stream-style-serialization: true
 ```
 
 ## Metrics Definitions Query
@@ -122,7 +119,6 @@ credential-types: tokencredential
 artifact-id: azure-monitor-query
 customization-class: src/main/java/MetricsDefinitionsCustomization.java
 enable-sync-stack: true
-stream-style-serialization: true
 ```
 
 ## Metrics Batch Query
@@ -147,8 +143,6 @@ model-override-setter-from-superclass: true
 credential-types: tokencredential
 artifact-id: azure-monitor-query
 enable-sync-stack: true
-stream-style-serialization: true
-customization-class: src/main/java/MetricsClientCustomization.java
 ```
 
 ### Change Interval to type 'Duration'

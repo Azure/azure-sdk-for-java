@@ -22,13 +22,13 @@ import java.util.stream.Collectors;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@LiveOnly
 public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase {
     private MetricsAdvisorAdministrationAsyncClient client;
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     void createSqlConnectionString(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> credentialId = new AtomicReference<>();
         try {
@@ -59,6 +59,7 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     void createDataLakeGen2SharedKey(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> credentialId = new AtomicReference<>();
         try {
@@ -89,6 +90,7 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     void createServicePrincipal(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> credentialId = new AtomicReference<>();
         try {
@@ -119,6 +121,7 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
+    @LiveOnly
     void createServicePrincipalInKV(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         final AtomicReference<String> credentialId = new AtomicReference<>();
         try {
@@ -148,6 +151,7 @@ public class DatasourceCredentialAsyncTest extends DatasourceCredentialTestBase 
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    @LiveOnly
     void testListDataSourceCredentials(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         AtomicReference<List<String>> createdCredentialIdList = new AtomicReference<>();
         try {

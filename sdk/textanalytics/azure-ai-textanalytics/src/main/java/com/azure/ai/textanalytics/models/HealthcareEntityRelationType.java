@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Type of relation. Examples include: `DosageOfMedication` or 'FrequencyOfMedication', etc. */
@@ -130,6 +131,7 @@ public final class HealthcareEntityRelationType extends ExpandableStringEnum<Hea
      * @param name a name to look for.
      * @return the corresponding HealthcareEntityRelationType.
      */
+    @JsonCreator
     public static HealthcareEntityRelationType fromString(String name) {
         return fromString(name, HealthcareEntityRelationType.class);
     }

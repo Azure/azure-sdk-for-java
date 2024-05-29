@@ -5,32 +5,24 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The SeriesIdentity model.
- */
+/** The SeriesIdentity model. */
 @Fluent
-public final class SeriesIdentity implements JsonSerializable<SeriesIdentity> {
+public final class SeriesIdentity {
     /*
      * dimension specified for series
      */
+    @JsonProperty(value = "dimension", required = true)
     private Map<String, String> dimension;
 
-    /**
-     * Creates an instance of SeriesIdentity class.
-     */
-    public SeriesIdentity() {
-    }
+    /** Creates an instance of SeriesIdentity class. */
+    public SeriesIdentity() {}
 
     /**
      * Get the dimension property: dimension specified for series.
-     * 
+     *
      * @return the dimension value.
      */
     public Map<String, String> getDimension() {
@@ -39,47 +31,12 @@ public final class SeriesIdentity implements JsonSerializable<SeriesIdentity> {
 
     /**
      * Set the dimension property: dimension specified for series.
-     * 
+     *
      * @param dimension the dimension value to set.
      * @return the SeriesIdentity object itself.
      */
     public SeriesIdentity setDimension(Map<String, String> dimension) {
         this.dimension = dimension;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("dimension", this.dimension, (writer, element) -> writer.writeString(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SeriesIdentity from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SeriesIdentity if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SeriesIdentity.
-     */
-    public static SeriesIdentity fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SeriesIdentity deserializedSeriesIdentity = new SeriesIdentity();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("dimension".equals(fieldName)) {
-                    Map<String, String> dimension = reader.readMap(reader1 -> reader1.getString());
-                    deserializedSeriesIdentity.dimension = dimension;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSeriesIdentity;
-        });
     }
 }

@@ -15,8 +15,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
@@ -66,8 +64,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class EventHubConsumerClientTest {
-    private static final ClientLogger LOGGER = new ClientLogger(EventHubConsumerClientTest.class);
-
     private static final ClientOptions CLIENT_OPTIONS = new ClientOptions();
     private static final String PAYLOAD = "hello";
     private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
@@ -135,10 +131,10 @@ public class EventHubConsumerClientTest {
         when(connection.createReceiveLink(any(), argThat(name -> name.endsWith(PARTITION_ID)),
             any(EventPosition.class), any(ReceiveOptions.class), anyString())).thenReturn(
             Mono.fromCallable(() -> {
-                LOGGER.log(LogLevel.VERBOSE, () -> "Returning first link");
+                System.out.println("Returning first link");
                 return amqpReceiveLink;
             }), Mono.fromCallable(() -> {
-                LOGGER.log(LogLevel.VERBOSE, () -> "Returning second link");
+                System.out.println("Returning second link");
                 return amqpReceiveLink2;
             }));
 
@@ -295,11 +291,11 @@ public class EventHubConsumerClientTest {
         final IterableStream<PartitionEvent> receive2 = consumer.receiveFromPartition(PARTITION_ID, secondReceive, EventPosition.earliest());
 
         // Assert
-        LOGGER.log(LogLevel.VERBOSE, () -> "First receive.");
+        System.out.println("First receive.");
         final Map<Integer, PartitionEvent> firstActual = receive.stream()
             .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
 
-        LOGGER.log(LogLevel.VERBOSE, () -> "Second receive.");
+        System.out.println("Second receive.");
         final Map<Integer, PartitionEvent> secondActual = receive2.stream()
             .collect(Collectors.toMap(EventHubConsumerClientTest::getPositionId, Function.identity()));
 

@@ -5,8 +5,6 @@ package com.azure.messaging.webpubsub.client;
 
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
 import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
@@ -20,7 +18,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class GroupMessageTests extends TestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(GroupMessageTests.class);
 
     private static final String HELLO = "hello";
 
@@ -181,10 +178,9 @@ public class GroupMessageTests extends TestBase {
             final long endNanoReceive = System.nanoTime();
 
             // about 800 ms for 1k messages
-            LOGGER.log(LogLevel.VERBOSE, () -> "send takes milliseconds: " + (endNanoSend - beginNano) / 1E6);
+            System.out.println("send takes milliseconds: " + (endNanoSend - beginNano) / 1E6);
             // about 1 second for 1k messages
-            LOGGER.log(LogLevel.VERBOSE,
-                () -> "send and receive takes milliseconds: " + (endNanoReceive - beginNano) / 1E6);
+            System.out.println("send and receive takes milliseconds: " + (endNanoReceive - beginNano) / 1E6);
         } finally {
             client.stop();
         }

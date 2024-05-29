@@ -4,9 +4,8 @@
 package com.azure.search.documents;
 
 import com.azure.core.models.GeoPoint;
+import com.azure.core.models.GeoPosition;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -27,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Functional tests that ensure expected behavior of deserializing a document.
  */
-@Execution(ExecutionMode.CONCURRENT)
 public class SearchDocumentConverterTests {
 
     private static final String TEST_DATE_STRING = "2016-10-10T17:41:05.123-07:00";
@@ -135,8 +133,17 @@ public class SearchDocumentConverterTests {
             + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}, "
             + "{\"type\":\"Point\", \"coordinates\":[-121.0, 49.0], "
             + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\":\"EPSG:4326\"}}}]}";
-        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field",
-            Arrays.asList(new GeoPoint(-122.131577, 47.678581), new GeoPoint(-121.0, 49.0))));
+        Map<String, Object> crsProperties = new HashMap<>();
+        crsProperties.put("type", "name");
+        crsProperties.put("properties", Collections.singletonMap("name", "EPSG:4326"));
+
+        List<GeoPoint> geoPoints = new ArrayList<>();
+        geoPoints.add(new GeoPoint(new GeoPosition(-122.131577, 47.678581), null,
+            Collections.singletonMap("crs", crsProperties)));
+        geoPoints.add(new GeoPoint(new GeoPosition(-121.0, 49.0), null,
+            Collections.singletonMap("crs", crsProperties)));
+
+        SearchDocument expectedDoc = new SearchDocument(Collections.singletonMap("field", geoPoints));
 
         SearchDocument actualDoc = deserialize(json);
         assertMapEquals(expectedDoc, actualDoc, true, "properties");
@@ -195,7 +202,7 @@ public class SearchDocumentConverterTests {
 
     @Test
     public void canReadArraysOfMixedTypes() {
-        // Azure AI Search won't return payloads like this; This test is only for pinning purposes.
+        // Azure Cognitive Search won't return payloads like this; This test is only for pinning purposes.
         String json =
             "{\"field\": [\"hello\", 123, 3.25, { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581], "
                 + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\": \"EPSG:4326\"}}}, "
@@ -242,7 +249,7 @@ public class SearchDocumentConverterTests {
         String json = "{ \"field\": [null, null] }";
 
         // With only null elements, we can't tell what type of collection it is. For backward compatibility, we assume type string.
-        // This shouldn't happen in practice anyway since Azure AI Search generally doesn't allow nulls in collections.
+        // This shouldn't happen in practice anyway since Azure Cognitive Search generally doesn't allow nulls in collections.
         SearchDocument expectedDoc = new SearchDocument();
         List<String> emptyStringList = Arrays.asList(null, null);
         expectedDoc.put("field", emptyStringList);

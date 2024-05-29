@@ -9,52 +9,37 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * Represents the parsing mode for indexing from an Azure blob data source.
- */
+/** Represents the parsing mode for indexing from an Azure blob data source. */
 public final class BlobIndexerParsingMode extends ExpandableStringEnum<BlobIndexerParsingMode> {
-    /**
-     * Set to default for normal file processing.
-     */
+    /** Set to default for normal file processing. */
     public static final BlobIndexerParsingMode DEFAULT = fromString("default");
 
-    /**
-     * Set to text to improve indexing performance on plain text files in blob storage.
-     */
+    /** Set to text to improve indexing performance on plain text files in blob storage. */
     public static final BlobIndexerParsingMode TEXT = fromString("text");
 
-    /**
-     * Set to delimitedText when blobs are plain CSV files.
-     */
+    /** Set to delimitedText when blobs are plain CSV files. */
     public static final BlobIndexerParsingMode DELIMITED_TEXT = fromString("delimitedText");
 
-    /**
-     * Set to json to extract structured content from JSON files.
-     */
+    /** Set to json to extract structured content from JSON files. */
     public static final BlobIndexerParsingMode JSON = fromString("json");
 
-    /**
-     * Set to jsonArray to extract individual elements of a JSON array as separate documents.
-     */
+    /** Set to jsonArray to extract individual elements of a JSON array as separate documents. */
     public static final BlobIndexerParsingMode JSON_ARRAY = fromString("jsonArray");
 
-    /**
-     * Set to jsonLines to extract individual JSON entities, separated by a new line, as separate documents.
-     */
+    /** Set to jsonLines to extract individual JSON entities, separated by a new line, as separate documents. */
     public static final BlobIndexerParsingMode JSON_LINES = fromString("jsonLines");
 
     /**
      * Creates a new instance of BlobIndexerParsingMode value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public BlobIndexerParsingMode() {
-    }
+    public BlobIndexerParsingMode() {}
 
     /**
      * Creates or finds a BlobIndexerParsingMode from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding BlobIndexerParsingMode.
      */
@@ -64,7 +49,7 @@ public final class BlobIndexerParsingMode extends ExpandableStringEnum<BlobIndex
 
     /**
      * Gets known BlobIndexerParsingMode values.
-     * 
+     *
      * @return known BlobIndexerParsingMode values.
      */
     public static Collection<BlobIndexerParsingMode> values() {

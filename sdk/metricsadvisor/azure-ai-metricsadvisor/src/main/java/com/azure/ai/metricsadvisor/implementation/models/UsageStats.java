@@ -5,52 +5,48 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The UsageStats model.
- */
+/** The UsageStats model. */
 @Immutable
-public final class UsageStats implements JsonSerializable<UsageStats> {
+public final class UsageStats {
     /*
      * The timestamp of the stats
      */
+    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
     /*
      * The active series count
      */
+    @JsonProperty(value = "activeSeriesCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer activeSeriesCount;
 
     /*
      * All series count under non deleted data feed
      */
+    @JsonProperty(value = "allSeriesCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer allSeriesCount;
 
     /*
      * The metrics count under non deleted data feed
      */
+    @JsonProperty(value = "metricsCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer metricsCount;
 
     /*
      * The count of non deleted data feed
      */
+    @JsonProperty(value = "dataFeedCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer dataFeedCount;
 
-    /**
-     * Creates an instance of UsageStats class.
-     */
-    public UsageStats() {
-    }
+    /** Creates an instance of UsageStats class. */
+    public UsageStats() {}
 
     /**
      * Get the timestamp property: The timestamp of the stats.
-     * 
+     *
      * @return the timestamp value.
      */
     public OffsetDateTime getTimestamp() {
@@ -59,7 +55,7 @@ public final class UsageStats implements JsonSerializable<UsageStats> {
 
     /**
      * Get the activeSeriesCount property: The active series count.
-     * 
+     *
      * @return the activeSeriesCount value.
      */
     public Integer getActiveSeriesCount() {
@@ -68,7 +64,7 @@ public final class UsageStats implements JsonSerializable<UsageStats> {
 
     /**
      * Get the allSeriesCount property: All series count under non deleted data feed.
-     * 
+     *
      * @return the allSeriesCount value.
      */
     public Integer getAllSeriesCount() {
@@ -77,7 +73,7 @@ public final class UsageStats implements JsonSerializable<UsageStats> {
 
     /**
      * Get the metricsCount property: The metrics count under non deleted data feed.
-     * 
+     *
      * @return the metricsCount value.
      */
     public Integer getMetricsCount() {
@@ -86,51 +82,10 @@ public final class UsageStats implements JsonSerializable<UsageStats> {
 
     /**
      * Get the dataFeedCount property: The count of non deleted data feed.
-     * 
+     *
      * @return the dataFeedCount value.
      */
     public Integer getDataFeedCount() {
         return this.dataFeedCount;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of UsageStats from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of UsageStats if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IOException If an error occurs while reading the UsageStats.
-     */
-    public static UsageStats fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            UsageStats deserializedUsageStats = new UsageStats();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("timestamp".equals(fieldName)) {
-                    deserializedUsageStats.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("activeSeriesCount".equals(fieldName)) {
-                    deserializedUsageStats.activeSeriesCount = reader.getNullable(JsonReader::getInt);
-                } else if ("allSeriesCount".equals(fieldName)) {
-                    deserializedUsageStats.allSeriesCount = reader.getNullable(JsonReader::getInt);
-                } else if ("metricsCount".equals(fieldName)) {
-                    deserializedUsageStats.metricsCount = reader.getNullable(JsonReader::getInt);
-                } else if ("dataFeedCount".equals(fieldName)) {
-                    deserializedUsageStats.dataFeedCount = reader.getNullable(JsonReader::getInt);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedUsageStats;
-        });
     }
 }

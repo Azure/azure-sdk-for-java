@@ -24,7 +24,6 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
@@ -961,9 +960,9 @@ class EventHubConsumerAsyncClientTest {
     }
 
     private void assertPartition(String partitionId, PartitionEvent event) {
-        LOGGER.log(LogLevel.VERBOSE, () -> "Event received: " + event.getPartitionContext().getPartitionId());
+        System.out.println("Event received: " + event.getPartitionContext().getPartitionId());
         final Object value = event.getData().getProperties().get(PARTITION_ID_HEADER);
-        Assertions.assertInstanceOf(String.class, value);
+        Assertions.assertTrue(value instanceof String);
         Assertions.assertEquals(partitionId, value);
 
         Assertions.assertEquals(partitionId, event.getPartitionContext().getPartitionId());

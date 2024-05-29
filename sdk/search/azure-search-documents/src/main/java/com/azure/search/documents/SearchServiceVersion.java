@@ -6,7 +6,7 @@ package com.azure.search.documents;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * The versions of Azure AI Search supported by this client library.
+ * The versions of Azure Cognitive Search supported by this client library.
  */
 public enum SearchServiceVersion implements ServiceVersion {
     /**
@@ -17,12 +17,7 @@ public enum SearchServiceVersion implements ServiceVersion {
     /**
      * {@code 2023-11-01} service version.
      */
-    V2023_11_01("2023-11-01"),
-
-    /**
-     * {@code 2024-03-01-preview} service version.
-     */
-    V2024_03_01_PREVIEW("2024-03-01-preview");
+    V2023_11_01("2023-11-01");
 
     private final String version;
 
@@ -44,6 +39,6 @@ public enum SearchServiceVersion implements ServiceVersion {
      * @return The latest version supported by this client library.
      */
     public static SearchServiceVersion getLatest() {
-        return V2024_03_01_PREVIEW;
+        return V2023_11_01;
     }
 }

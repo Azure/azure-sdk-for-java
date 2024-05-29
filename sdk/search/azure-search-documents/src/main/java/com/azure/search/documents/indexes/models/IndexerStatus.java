@@ -6,28 +6,18 @@
 
 package com.azure.search.documents.indexes.models;
 
-/**
- * Represents the overall indexer status.
- */
+/** Represents the overall indexer status. */
 public enum IndexerStatus {
-    /**
-     * Indicates that the indexer is in an unknown state.
-     */
+    /** Indicates that the indexer is in an unknown state. */
     UNKNOWN("unknown"),
 
-    /**
-     * Indicates that the indexer experienced an error that cannot be corrected without human intervention.
-     */
+    /** Indicates that the indexer experienced an error that cannot be corrected without human intervention. */
     ERROR("error"),
 
-    /**
-     * Indicates that the indexer is running normally.
-     */
+    /** Indicates that the indexer is running normally. */
     RUNNING("running");
 
-    /**
-     * The actual serialized value for a IndexerStatus instance.
-     */
+    /** The actual serialized value for a IndexerStatus instance. */
     private final String value;
 
     IndexerStatus(String value) {
@@ -36,7 +26,7 @@ public enum IndexerStatus {
 
     /**
      * Parses a serialized value to a IndexerStatus instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed IndexerStatus object, or null if unable to parse.
      */
@@ -53,9 +43,7 @@ public enum IndexerStatus {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

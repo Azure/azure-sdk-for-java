@@ -4,23 +4,17 @@
 package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.communication.jobrouter.models.ExpressionRouterRuleLanguage;
-import com.azure.communication.jobrouter.models.RouterRuleKind;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A rule providing inline expression rules.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "kind",
-    defaultImpl = ExpressionRouterRuleInternal.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("expression")
 @Fluent
 public final class ExpressionRouterRuleInternal extends RouterRuleInternal {
@@ -37,7 +31,7 @@ public final class ExpressionRouterRuleInternal extends RouterRuleInternal {
      */
     @Generated
     @JsonProperty(value = "expression")
-    private final String expression;
+    private String expression;
 
     /**
      * Creates an instance of ExpressionRouterRuleInternal class.
@@ -80,24 +74,5 @@ public final class ExpressionRouterRuleInternal extends RouterRuleInternal {
     @Generated
     public String getExpression() {
         return this.expression;
-    }
-
-    /*
-     * The type discriminator describing a sub-type of RouterRule
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
-    private RouterRuleKind kind = RouterRuleKind.EXPRESSION;
-
-    /**
-     * Get the kind property: The type discriminator describing a sub-type of RouterRule.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public RouterRuleKind getKind() {
-        return this.kind;
     }
 }

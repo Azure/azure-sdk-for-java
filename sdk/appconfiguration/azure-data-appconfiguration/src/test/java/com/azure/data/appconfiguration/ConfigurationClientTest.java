@@ -10,6 +10,7 @@ import com.azure.core.http.MatchConditions;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Context;
@@ -83,12 +84,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             } else if (interceptorManager.isPlaybackMode()) {
                 interceptorManager.addMatchers(Collections.singletonList(
-                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token", "If-Match"))));
-            }
-
-            // Disable `$.key` snanitizer
-            if (!interceptorManager.isLiveMode()) {
-                interceptorManager.removeSanitizers(Arrays.asList("AZSDK3447"));
+                    new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Sync-Token"))));
             }
             return builder.buildClient();
         });
@@ -184,6 +180,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void addExistingSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         addExistingSettingRunner((expected) -> {
@@ -282,6 +279,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void setConfigurationSettingIfETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         setConfigurationSettingIfETagRunner((initial, update) -> {
@@ -338,6 +336,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void getConfigurationSetting(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         getConfigurationSettingRunner((expected) -> {
@@ -489,6 +488,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void deleteConfigurationSettingWithETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         deleteConfigurationSettingWithETagRunner((initial, update) -> {
@@ -507,6 +507,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void deleteConfigurationSettingNullKey(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         assertRunnableThrowsException(() -> client.deleteConfigurationSetting(null, null), IllegalArgumentException.class);
@@ -638,6 +639,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void listWithKeyAndLabel(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final String value = "myValue";
@@ -721,6 +723,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void listConfigurationSettingsSelectFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         listConfigurationSettingsSelectFieldsRunner((settings, selector) -> {
@@ -782,11 +785,15 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting updated2 = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
 
         // Create 3 revisions of the same key.
-        assertConfigurationEquals(original, client.setConfigurationSettingWithResponse(original, false, Context.NONE).getValue());
-        sleepIfRunningAgainstService(2000);
-        assertConfigurationEquals(updated, client.setConfigurationSettingWithResponse(updated, false, Context.NONE).getValue());
-        sleepIfRunningAgainstService(2000);
-        assertConfigurationEquals(updated2, client.setConfigurationSettingWithResponse(updated2, false, Context.NONE).getValue());
+        try {
+            assertConfigurationEquals(original, client.setConfigurationSettingWithResponse(original, false, Context.NONE).getValue());
+            Thread.sleep(2000);
+            assertConfigurationEquals(updated, client.setConfigurationSettingWithResponse(updated, false, Context.NONE).getValue());
+            Thread.sleep(2000);
+            assertConfigurationEquals(updated2, client.setConfigurationSettingWithResponse(updated2, false, Context.NONE).getValue());
+        } catch (InterruptedException ex) {
+            // Do nothing.
+        }
 
         // Gets all versions of this value so we can get the one we want at that particular date.
         List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).stream().collect(Collectors.toList());
@@ -805,6 +812,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void listRevisions(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final String keyName = getKey();
@@ -887,11 +895,15 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting updated2 = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
 
         // Create 3 revisions of the same key.
-        assertConfigurationEquals(original, client.setConfigurationSettingWithResponse(original, false, Context.NONE).getValue());
-        sleepIfRunningAgainstService(2000);
-        assertConfigurationEquals(updated, client.setConfigurationSettingWithResponse(updated, false, Context.NONE).getValue());
-        sleepIfRunningAgainstService(2000);
-        assertConfigurationEquals(updated2, client.setConfigurationSettingWithResponse(updated2, false, Context.NONE).getValue());
+        try {
+            assertConfigurationEquals(original, client.setConfigurationSettingWithResponse(original, false, Context.NONE).getValue());
+            Thread.sleep(2000);
+            assertConfigurationEquals(updated, client.setConfigurationSettingWithResponse(updated, false, Context.NONE).getValue());
+            Thread.sleep(2000);
+            assertConfigurationEquals(updated2, client.setConfigurationSettingWithResponse(updated2, false, Context.NONE).getValue());
+        } catch (InterruptedException ex) {
+            // Do nothing.
+        }
 
         // Gets all versions of this value.
         List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).stream().collect(Collectors.toList());
@@ -913,6 +925,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void listRevisionsWithPagination(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final int numberExpected = 50;
@@ -996,6 +1009,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void getConfigurationSettingWhenValueNotUpdated(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         final String key = getKey();
@@ -1065,6 +1079,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void getSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
@@ -1138,6 +1153,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void archiveSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
@@ -1196,6 +1212,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void recoverSnapshot(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
@@ -1235,6 +1252,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void recoverSnapshotConvenience(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         // Prepare a setting before creating a snapshot
@@ -1268,6 +1286,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void listSnapshots(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
 
@@ -1334,6 +1353,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void listSnapshotsWithFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
 
@@ -1501,6 +1521,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void listSettingsWithPageETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationClient(httpClient, serviceVersion);
         // Step 1: Prepare testing data.
