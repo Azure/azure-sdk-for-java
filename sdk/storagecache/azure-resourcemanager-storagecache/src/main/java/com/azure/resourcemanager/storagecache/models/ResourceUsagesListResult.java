@@ -43,8 +43,8 @@ public final class ResourceUsagesListResult {
     }
 
     /**
-     * Get the value property: List of usages and limits for resources controlled by the Microsoft.StorageCache
-     * resource provider.
+     * Get the value property: List of usages and limits for resources controlled by the Microsoft.StorageCache resource
+     * provider.
      * 
      * @return the value value.
      */

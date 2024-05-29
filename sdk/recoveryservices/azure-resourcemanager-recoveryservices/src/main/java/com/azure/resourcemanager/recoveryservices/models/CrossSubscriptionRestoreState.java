@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CrossSubscriptionRestoreState. */
+/**
+ * Defines values for CrossSubscriptionRestoreState.
+ */
 public final class CrossSubscriptionRestoreState extends ExpandableStringEnum<CrossSubscriptionRestoreState> {
-    /** Static value Enabled for CrossSubscriptionRestoreState. */
+    /**
+     * Static value Enabled for CrossSubscriptionRestoreState.
+     */
     public static final CrossSubscriptionRestoreState ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for CrossSubscriptionRestoreState. */
+    /**
+     * Static value Disabled for CrossSubscriptionRestoreState.
+     */
     public static final CrossSubscriptionRestoreState DISABLED = fromString("Disabled");
 
-    /** Static value PermanentlyDisabled for CrossSubscriptionRestoreState. */
+    /**
+     * Static value PermanentlyDisabled for CrossSubscriptionRestoreState.
+     */
     public static final CrossSubscriptionRestoreState PERMANENTLY_DISABLED = fromString("PermanentlyDisabled");
 
     /**
      * Creates a new instance of CrossSubscriptionRestoreState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class CrossSubscriptionRestoreState extends ExpandableStringEnum<Cr
 
     /**
      * Creates or finds a CrossSubscriptionRestoreState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CrossSubscriptionRestoreState.
      */
@@ -41,7 +49,7 @@ public final class CrossSubscriptionRestoreState extends ExpandableStringEnum<Cr
 
     /**
      * Gets known CrossSubscriptionRestoreState values.
-     *
+     * 
      * @return known CrossSubscriptionRestoreState values.
      */
     public static Collection<CrossSubscriptionRestoreState> values() {

@@ -19,7 +19,8 @@ import java.util.List;
 public final class ChatChoiceLogProbabilityInfo implements JsonSerializable<ChatChoiceLogProbabilityInfo> {
 
     /*
-     * The list of log probability information entries for the choice's message content tokens, as requested via the 'logprobs' option.
+     * The list of log probability information entries for the choice's message content tokens, as requested via the
+     * 'logprobs' option.
      */
     @Generated
     private final List<ChatTokenLogProbabilityResult> content;

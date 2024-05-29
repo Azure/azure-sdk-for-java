@@ -21,45 +21,38 @@ public final class UpdateRunPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateRunProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"updateStrategyId\":\"wxrjfeallnwsub\",\"strategy\":{\"stages\":[{\"name\":\"jampmngnzscxaqw\",\"groups\":[{\"name\":\"hcbonqvpkvlr\"},{\"name\":\"njeaseipheofloke\"},{\"name\":\"y\"},{\"name\":\"enjbdlwtgrhp\"}],\"afterStageWaitInSeconds\":469621378},{\"name\":\"jumasx\",\"groups\":[{\"name\":\"pqyegualhbxxh\"},{\"name\":\"jj\"}],\"afterStageWaitInSeconds\":57336706}]},\"managedClusterUpdate\":{\"upgrade\":{\"type\":\"ControlPlaneOnly\",\"kubernetesVersion\":\"dgwdslfhot\"},\"nodeImageSelection\":{\"type\":\"Consistent\"}},\"status\":{\"status\":{\"startTime\":\"2021-07-29T20:13:33Z\",\"completedTime\":\"2021-07-05T23:51:59Z\",\"state\":\"Stopped\"},\"stages\":[{\"status\":{\"startTime\":\"2021-04-17T12:51:37Z\",\"completedTime\":\"2021-09-14T10:31:34Z\",\"state\":\"Running\"},\"name\":\"ltyfsop\",\"groups\":[{\"status\":{},\"name\":\"snzwd\",\"members\":[{}]},{\"status\":{},\"name\":\"orxzdmohctbqvud\",\"members\":[{},{}]}],\"afterStageWaitStatus\":{\"status\":{\"startTime\":\"2021-02-14T16:40:57Z\",\"completedTime\":\"2021-04-03T23:08:08Z\",\"state\":\"Skipped\"},\"waitDurationInSeconds\":766815263}},{\"status\":{\"startTime\":\"2021-04-30T19:52:02Z\",\"completedTime\":\"2021-02-16T09:07:36Z\",\"state\":\"Stopping\"},\"name\":\"lazjdyggdtjixhbk\",\"groups\":[{\"status\":{},\"name\":\"e\",\"members\":[{},{},{},{}]},{\"status\":{},\"name\":\"n\",\"members\":[{},{}]},{\"status\":{},\"name\":\"xfw\",\"members\":[{},{},{},{}]}],\"afterStageWaitStatus\":{\"status\":{\"startTime\":\"2021-02-12T00:37:49Z\",\"completedTime\":\"2021-05-14T16:24:46Z\",\"state\":\"Failed\"},\"waitDurationInSeconds\":1668619152}}],\"nodeImageSelection\":{\"selectedNodeImageVersions\":[{\"version\":\"amdecte\"},{\"version\":\"iqscjeypv\"}]}}}")
+            "{\"provisioningState\":\"Canceled\",\"updateStrategyId\":\"qeojnxqbzvddntw\",\"strategy\":{\"stages\":[{\"name\":\"icbtwnpzao\",\"groups\":[{\"name\":\"hrhcffcyddglmjth\"},{\"name\":\"qkwpyeicxmqc\"},{\"name\":\"wqvhkhixuigdt\"},{\"name\":\"pbobjo\"}],\"afterStageWaitInSeconds\":10300487}]},\"managedClusterUpdate\":{\"upgrade\":{\"type\":\"Full\",\"kubernetesVersion\":\"u\"},\"nodeImageSelection\":{\"type\":\"Latest\"}},\"status\":{\"status\":{\"startTime\":\"2020-12-30T21:59:13Z\",\"completedTime\":\"2021-02-11T14:54:06Z\",\"state\":\"Stopping\"},\"stages\":[{\"status\":{\"startTime\":\"2021-04-16T13:10:39Z\",\"completedTime\":\"2021-08-13T02:24:54Z\",\"state\":\"Skipped\"},\"name\":\"tutqxlngxlefgug\",\"groups\":[{\"status\":{},\"name\":\"dqmidtt\",\"members\":[{},{}]}],\"afterStageWaitStatus\":{\"status\":{\"startTime\":\"2021-06-26T08:11:35Z\",\"completedTime\":\"2021-12-03T05:38:56Z\",\"state\":\"Stopped\"},\"waitDurationInSeconds\":1338183758}},{\"status\":{\"startTime\":\"2021-05-29T13:44:30Z\",\"completedTime\":\"2021-09-28T08:30:32Z\",\"state\":\"Running\"},\"name\":\"skanyk\",\"groups\":[{\"status\":{},\"name\":\"iywgqywgndrvynh\",\"members\":[{},{},{}]},{\"status\":{},\"name\":\"rcgyn\",\"members\":[{},{},{},{}]},{\"status\":{},\"name\":\"cfvmmco\",\"members\":[{},{},{}]},{\"status\":{},\"name\":\"zevgb\",\"members\":[{},{},{},{}]}],\"afterStageWaitStatus\":{\"status\":{\"startTime\":\"2021-06-25T22:17:23Z\",\"completedTime\":\"2021-02-17T22:01:44Z\",\"state\":\"Stopping\"},\"waitDurationInSeconds\":61418624}},{\"status\":{\"startTime\":\"2021-08-01T19:05:37Z\",\"completedTime\":\"2021-08-04T02:49:11Z\",\"state\":\"Completed\"},\"name\":\"fnba\",\"groups\":[{\"status\":{},\"name\":\"l\",\"members\":[{}]},{\"status\":{},\"name\":\"qgtz\",\"members\":[{},{},{}]}],\"afterStageWaitStatus\":{\"status\":{\"startTime\":\"2021-09-22T23:33:27Z\",\"completedTime\":\"2021-03-31T09:09:52Z\",\"state\":\"Running\"},\"waitDurationInSeconds\":1251275830}},{\"status\":{\"startTime\":\"2021-11-06T05:18:11Z\",\"completedTime\":\"2021-01-01T22:31:01Z\",\"state\":\"Skipped\"},\"name\":\"snjampmng\",\"groups\":[{\"status\":{},\"name\":\"aqw\",\"members\":[{},{},{},{}]},{\"status\":{},\"name\":\"bonqvpkvlrxnjeas\",\"members\":[{},{},{}]}],\"afterStageWaitStatus\":{\"status\":{\"startTime\":\"2021-02-19T14:56:30Z\",\"completedTime\":\"2021-11-21T02:07:23Z\",\"state\":\"Running\"},\"waitDurationInSeconds\":674171704}}],\"nodeImageSelection\":{\"selectedNodeImageVersions\":[{\"version\":\"dlwtgrhpdj\"},{\"version\":\"umasxazjpq\"},{\"version\":\"gual\"},{\"version\":\"xxhejjzzvd\"}]}}}")
             .toObject(UpdateRunProperties.class);
-        Assertions.assertEquals("wxrjfeallnwsub", model.updateStrategyId());
-        Assertions.assertEquals("jampmngnzscxaqw", model.strategy().stages().get(0).name());
-        Assertions.assertEquals("hcbonqvpkvlr", model.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(469621378, model.strategy().stages().get(0).afterStageWaitInSeconds());
-        Assertions.assertEquals(ManagedClusterUpgradeType.CONTROL_PLANE_ONLY,
-            model.managedClusterUpdate().upgrade().type());
-        Assertions.assertEquals("dgwdslfhot", model.managedClusterUpdate().upgrade().kubernetesVersion());
-        Assertions.assertEquals(NodeImageSelectionType.CONSISTENT,
+        Assertions.assertEquals("qeojnxqbzvddntw", model.updateStrategyId());
+        Assertions.assertEquals("icbtwnpzao", model.strategy().stages().get(0).name());
+        Assertions.assertEquals("hrhcffcyddglmjth", model.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(10300487, model.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals(ManagedClusterUpgradeType.FULL, model.managedClusterUpdate().upgrade().type());
+        Assertions.assertEquals("u", model.managedClusterUpdate().upgrade().kubernetesVersion());
+        Assertions.assertEquals(NodeImageSelectionType.LATEST,
             model.managedClusterUpdate().nodeImageSelection().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateRunProperties model = new UpdateRunProperties().withUpdateStrategyId("wxrjfeallnwsub")
-            .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(
-                new UpdateStage().withName("jampmngnzscxaqw")
-                    .withGroups(Arrays.asList(new UpdateGroup().withName("hcbonqvpkvlr"),
-                        new UpdateGroup().withName("njeaseipheofloke"), new UpdateGroup().withName("y"),
-                        new UpdateGroup().withName("enjbdlwtgrhp")))
-                    .withAfterStageWaitInSeconds(469621378),
-                new UpdateStage().withName("jumasx")
-                    .withGroups(
-                        Arrays.asList(new UpdateGroup().withName("pqyegualhbxxh"), new UpdateGroup().withName("jj")))
-                    .withAfterStageWaitInSeconds(57336706))))
+        UpdateRunProperties model = new UpdateRunProperties().withUpdateStrategyId("qeojnxqbzvddntw")
+            .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("icbtwnpzao")
+                .withGroups(Arrays.asList(new UpdateGroup().withName("hrhcffcyddglmjth"),
+                    new UpdateGroup().withName("qkwpyeicxmqc"), new UpdateGroup().withName("wqvhkhixuigdt"),
+                    new UpdateGroup().withName("pbobjo")))
+                .withAfterStageWaitInSeconds(10300487))))
             .withManagedClusterUpdate(new ManagedClusterUpdate()
-                .withUpgrade(new ManagedClusterUpgradeSpec().withType(ManagedClusterUpgradeType.CONTROL_PLANE_ONLY)
-                    .withKubernetesVersion("dgwdslfhot"))
-                .withNodeImageSelection(new NodeImageSelection().withType(NodeImageSelectionType.CONSISTENT)));
+                .withUpgrade(
+                    new ManagedClusterUpgradeSpec().withType(ManagedClusterUpgradeType.FULL).withKubernetesVersion("u"))
+                .withNodeImageSelection(new NodeImageSelection().withType(NodeImageSelectionType.LATEST)));
         model = BinaryData.fromObject(model).toObject(UpdateRunProperties.class);
-        Assertions.assertEquals("wxrjfeallnwsub", model.updateStrategyId());
-        Assertions.assertEquals("jampmngnzscxaqw", model.strategy().stages().get(0).name());
-        Assertions.assertEquals("hcbonqvpkvlr", model.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(469621378, model.strategy().stages().get(0).afterStageWaitInSeconds());
-        Assertions.assertEquals(ManagedClusterUpgradeType.CONTROL_PLANE_ONLY,
-            model.managedClusterUpdate().upgrade().type());
-        Assertions.assertEquals("dgwdslfhot", model.managedClusterUpdate().upgrade().kubernetesVersion());
-        Assertions.assertEquals(NodeImageSelectionType.CONSISTENT,
+        Assertions.assertEquals("qeojnxqbzvddntw", model.updateStrategyId());
+        Assertions.assertEquals("icbtwnpzao", model.strategy().stages().get(0).name());
+        Assertions.assertEquals("hrhcffcyddglmjth", model.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(10300487, model.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals(ManagedClusterUpgradeType.FULL, model.managedClusterUpdate().upgrade().type());
+        Assertions.assertEquals("u", model.managedClusterUpdate().upgrade().kubernetesVersion());
+        Assertions.assertEquals(NodeImageSelectionType.LATEST,
             model.managedClusterUpdate().nodeImageSelection().type());
     }
 }

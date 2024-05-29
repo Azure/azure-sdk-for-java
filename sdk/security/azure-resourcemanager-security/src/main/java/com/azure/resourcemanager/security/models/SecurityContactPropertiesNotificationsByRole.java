@@ -15,15 +15,13 @@ import java.util.List;
 @Fluent
 public final class SecurityContactPropertiesNotificationsByRole {
     /*
-     * Defines whether to send email notifications from AMicrosoft Defender for Cloud to persons with specific RBAC
-     * roles on the subscription.
+     * Defines whether to send email notifications from AMicrosoft Defender for Cloud to persons with specific RBAC roles on the subscription.
      */
     @JsonProperty(value = "state")
     private State state;
 
     /*
-     * Defines which RBAC roles will get email notifications from Microsoft Defender for Cloud. List of allowed RBAC
-     * roles:
+     * Defines which RBAC roles will get email notifications from Microsoft Defender for Cloud. List of allowed RBAC roles: 
      */
     @JsonProperty(value = "roles")
     private List<SecurityContactRole> roles;
@@ -35,8 +33,8 @@ public final class SecurityContactPropertiesNotificationsByRole {
     }
 
     /**
-     * Get the state property: Defines whether to send email notifications from AMicrosoft Defender for Cloud to
-     * persons with specific RBAC roles on the subscription.
+     * Get the state property: Defines whether to send email notifications from AMicrosoft Defender for Cloud to persons
+     * with specific RBAC roles on the subscription.
      * 
      * @return the state value.
      */
@@ -45,8 +43,8 @@ public final class SecurityContactPropertiesNotificationsByRole {
     }
 
     /**
-     * Set the state property: Defines whether to send email notifications from AMicrosoft Defender for Cloud to
-     * persons with specific RBAC roles on the subscription.
+     * Set the state property: Defines whether to send email notifications from AMicrosoft Defender for Cloud to persons
+     * with specific RBAC roles on the subscription.
      * 
      * @param state the state value to set.
      * @return the SecurityContactPropertiesNotificationsByRole object itself.

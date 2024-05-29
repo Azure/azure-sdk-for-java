@@ -8,6 +8,10 @@ package com.azure.resourcemanager.standbypool.generated;
  * Samples for StandbyContainerGroupPools GetByResourceGroup.
  */
 public final class StandbyContainerGroupPoolsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/StandbyContainerGroupPools_Get.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_Get.
      * 

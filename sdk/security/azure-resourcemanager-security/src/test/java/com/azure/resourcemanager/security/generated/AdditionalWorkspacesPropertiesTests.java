@@ -6,30 +6,31 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.models.AdditionalWorkspaceDataType;
-import com.azure.resourcemanager.security.models.AdditionalWorkspaceType;
 import com.azure.resourcemanager.security.models.AdditionalWorkspacesProperties;
+import com.azure.resourcemanager.security.models.AdditionalWorkspaceType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class AdditionalWorkspacesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdditionalWorkspacesProperties model = BinaryData.fromString(
-            "{\"workspace\":\"wmseharxifvqn\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\",\"RawEvents\",\"Alerts\",\"Alerts\"]}")
+        AdditionalWorkspacesProperties model = BinaryData
+            .fromString(
+                "{\"workspace\":\"sffxui\",\"type\":\"Sentinel\",\"dataTypes\":[\"Alerts\",\"RawEvents\",\"Alerts\"]}")
             .toObject(AdditionalWorkspacesProperties.class);
-        Assertions.assertEquals("wmseharxifvqn", model.workspace());
+        Assertions.assertEquals("sffxui", model.workspace());
         Assertions.assertEquals(AdditionalWorkspaceType.SENTINEL, model.type());
         Assertions.assertEquals(AdditionalWorkspaceDataType.ALERTS, model.dataTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdditionalWorkspacesProperties model = new AdditionalWorkspacesProperties().withWorkspace("wmseharxifvqn")
+        AdditionalWorkspacesProperties model = new AdditionalWorkspacesProperties().withWorkspace("sffxui")
             .withType(AdditionalWorkspaceType.SENTINEL)
             .withDataTypes(Arrays.asList(AdditionalWorkspaceDataType.ALERTS, AdditionalWorkspaceDataType.RAW_EVENTS,
-                AdditionalWorkspaceDataType.ALERTS, AdditionalWorkspaceDataType.ALERTS));
+                AdditionalWorkspaceDataType.ALERTS));
         model = BinaryData.fromObject(model).toObject(AdditionalWorkspacesProperties.class);
-        Assertions.assertEquals("wmseharxifvqn", model.workspace());
+        Assertions.assertEquals("sffxui", model.workspace());
         Assertions.assertEquals(AdditionalWorkspaceType.SENTINEL, model.type());
         Assertions.assertEquals(AdditionalWorkspaceDataType.ALERTS, model.dataTypes().get(0));
     }

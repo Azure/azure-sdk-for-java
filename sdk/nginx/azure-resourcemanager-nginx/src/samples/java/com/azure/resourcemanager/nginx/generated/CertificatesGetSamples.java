@@ -9,8 +9,7 @@ package com.azure.resourcemanager.nginx.generated;
  */
 public final class CertificatesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Certificates_Get.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_Get.json
      */
     /**
      * Sample code: Certificates_Get.
@@ -18,7 +17,7 @@ public final class CertificatesGetSamples {
      * @param manager Entry point to NginxManager.
      */
     public static void certificatesGet(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager.certificates().getWithResponse("myResourceGroup", "myDeployment", "default",
-            com.azure.core.util.Context.NONE);
+        manager.certificates()
+            .getWithResponse("myResourceGroup", "myDeployment", "default", com.azure.core.util.Context.NONE);
     }
 }

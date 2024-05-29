@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Raw certificate data. */
+/**
+ * Raw certificate data.
+ */
 @Fluent
 public final class RawCertificateData {
     /*
@@ -23,13 +25,15 @@ public final class RawCertificateData {
     @JsonProperty(value = "certificate")
     private byte[] certificate;
 
-    /** Creates an instance of RawCertificateData class. */
+    /**
+     * Creates an instance of RawCertificateData class.
+     */
     public RawCertificateData() {
     }
 
     /**
      * Get the authType property: Specifies the authentication type.
-     *
+     * 
      * @return the authType value.
      */
     public AuthType authType() {
@@ -38,7 +42,7 @@ public final class RawCertificateData {
 
     /**
      * Set the authType property: Specifies the authentication type.
-     *
+     * 
      * @param authType the authType value to set.
      * @return the RawCertificateData object itself.
      */
@@ -49,7 +53,7 @@ public final class RawCertificateData {
 
     /**
      * Get the certificate property: The base64 encoded certificate raw data string.
-     *
+     * 
      * @return the certificate value.
      */
     public byte[] certificate() {
@@ -58,7 +62,7 @@ public final class RawCertificateData {
 
     /**
      * Set the certificate property: The base64 encoded certificate raw data string.
-     *
+     * 
      * @param certificate the certificate value to set.
      * @return the RawCertificateData object itself.
      */
@@ -69,7 +73,7 @@ public final class RawCertificateData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.Arrays;
+
 import static com.azure.data.appconfiguration.ConfigurationClientTestBase.FAKE_CONNECTION_STRING;
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 
@@ -52,7 +54,13 @@ public class AadCredentialTest extends TestProxyTestBase {
                 builder.addPolicy(interceptorManager.getRecordPolicy()); // Record
             }
 
+
             client = builder.buildClient();
+        }
+
+        // Disable `("$.key")` sanitizer
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3447"));
         }
     }
 

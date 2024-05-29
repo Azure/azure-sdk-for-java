@@ -88,14 +88,20 @@ public final class ProtectionIntentResourceImpl
     }
 
     public ProtectionIntentResource create() {
-        this.innerObject = serviceManager.serviceClient().getProtectionIntents().createOrUpdateWithResponse(vaultName,
-            resourceGroupName, fabricName, intentObjectName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionIntents()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProtectionIntentResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getProtectionIntents().createOrUpdateWithResponse(vaultName,
-            resourceGroupName, fabricName, intentObjectName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionIntents()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -111,14 +117,20 @@ public final class ProtectionIntentResourceImpl
     }
 
     public ProtectionIntentResource apply() {
-        this.innerObject = serviceManager.serviceClient().getProtectionIntents().createOrUpdateWithResponse(vaultName,
-            resourceGroupName, fabricName, intentObjectName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionIntents()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProtectionIntentResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getProtectionIntents().createOrUpdateWithResponse(vaultName,
-            resourceGroupName, fabricName, intentObjectName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionIntents()
+            .createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -133,14 +145,18 @@ public final class ProtectionIntentResourceImpl
     }
 
     public ProtectionIntentResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getProtectionIntents()
-            .getWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionIntents()
+            .getWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProtectionIntentResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getProtectionIntents()
-            .getWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getProtectionIntents()
+            .getWithResponse(vaultName, resourceGroupName, fabricName, intentObjectName, context)
+            .getValue();
         return this;
     }
 

@@ -369,11 +369,6 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             getAndLogContentLength(response.getHeaders(), logBuilder, logger);
             logHeaders(logger, response, logBuilder);
-
-            if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(LogLevel.INFORMATIONAL)) {
-                addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), logBuilder,
-                    disableRedactedHeaderLogging);
-            }
         }
 
         @Override

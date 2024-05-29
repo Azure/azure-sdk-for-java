@@ -11,21 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForContainersGcpOfferingDataPipelineNativeCloudConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection model
-            = BinaryData.fromString("{\"serviceAccountEmailAddress\":\"p\",\"workloadIdentityProviderId\":\"lpe\"}")
-                .toObject(DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection.class);
-        Assertions.assertEquals("p", model.serviceAccountEmailAddress());
-        Assertions.assertEquals("lpe", model.workloadIdentityProviderId());
+        DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection model = BinaryData
+            .fromString(
+                "{\"serviceAccountEmailAddress\":\"zuqloiwyayyzivr\",\"workloadIdentityProviderId\":\"tcdqlh\"}")
+            .toObject(DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection.class);
+        Assertions.assertEquals("zuqloiwyayyzivr", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("tcdqlh", model.workloadIdentityProviderId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection model
             = new DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection()
-                .withServiceAccountEmailAddress("p").withWorkloadIdentityProviderId("lpe");
+                .withServiceAccountEmailAddress("zuqloiwyayyzivr")
+                .withWorkloadIdentityProviderId("tcdqlh");
         model = BinaryData.fromObject(model)
             .toObject(DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection.class);
-        Assertions.assertEquals("p", model.serviceAccountEmailAddress());
-        Assertions.assertEquals("lpe", model.workloadIdentityProviderId());
+        Assertions.assertEquals("zuqloiwyayyzivr", model.serviceAccountEmailAddress());
+        Assertions.assertEquals("tcdqlh", model.workloadIdentityProviderId());
     }
 }

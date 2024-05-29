@@ -36,7 +36,6 @@ public class RouterRuleInternal {
      */
     @Generated
     public RouterRuleInternal() {
-        this.kind = RouterRuleKind.fromString("RouterRuleInternal");
     }
 
     /*
@@ -45,7 +44,7 @@ public class RouterRuleInternal {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private RouterRuleKind kind;
+    private RouterRuleKind kind = RouterRuleKind.fromString("RouterRuleInternal");
 
     /**
      * Get the kind property: The type discriminator describing a sub-type of RouterRule.

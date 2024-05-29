@@ -1226,7 +1226,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.readToFile#ReadToFileOptions -->
      * <pre>
-     * client.readToFile&#40;new ReadToFileOptions&#40;&#41;.setFilePath&#40;file&#41;&#41;;
+     * client.readToFile&#40;new ReadToFileOptions&#40;file&#41;&#41;;
      * System.out.println&#40;&quot;Completed download to file&quot;&#41;;
      * </pre>
      * <!-- end com.azure.storage.file.datalake.DataLakeFileClient.readToFile#ReadToFileOptions -->
@@ -1348,8 +1348,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      *
      * <!-- src_embed com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#ReadToFileOptions-Duration-Context -->
      * <pre>
-     * ReadToFileOptions options = new ReadToFileOptions&#40;&#41;;
-     * options.setFilePath&#40;file&#41;;
+     * ReadToFileOptions options = new ReadToFileOptions&#40;file&#41;;
      * options.setRange&#40;new FileRange&#40;1024, 2048L&#41;&#41;;
      * options.setDownloadRetryOptions&#40;new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;&#41;;
      * options.setOpenOptions&#40;new HashSet&lt;&gt;&#40;Arrays.asList&#40;StandardOpenOption.CREATE_NEW,

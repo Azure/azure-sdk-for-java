@@ -118,6 +118,8 @@ public class CustomAnalyzerTests extends SearchTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
+        // Disabled `$..token` sanitizer for this test
+        interceptorManager.removeSanitizers(Arrays.asList("AZSDK3431"));
         searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
     }

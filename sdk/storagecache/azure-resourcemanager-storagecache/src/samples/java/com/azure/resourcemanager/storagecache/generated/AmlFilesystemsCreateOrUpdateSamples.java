@@ -26,9 +26,7 @@ import java.util.Map;
  */
 public final class AmlFilesystemsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
-     * amlFilesystems_CreateOrUpdate.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/amlFilesystems_CreateOrUpdate.json
      */
     /**
      * Sample code: amlFilesystems_CreateOrUpdate.
@@ -37,13 +35,17 @@ public final class AmlFilesystemsCreateOrUpdateSamples {
      */
     public static void
         amlFilesystemsCreateOrUpdate(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
-        manager.amlFilesystems().define("fs1").withRegion("eastus").withExistingResourceGroup("scgroup")
+        manager.amlFilesystems()
+            .define("fs1")
+            .withRegion("eastus")
+            .withExistingResourceGroup("scgroup")
             .withTags(mapOf("Dept", "ContosoAds"))
             .withIdentity(new AmlFilesystemIdentity().withType(AmlFilesystemIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
                     new UserAssignedIdentitiesValue())))
-            .withSku(new SkuName().withName("AMLFS-Durable-Premium-250")).withZones(Arrays.asList("1"))
+            .withSku(new SkuName().withName("AMLFS-Durable-Premium-250"))
+            .withZones(Arrays.asList("1"))
             .withStorageCapacityTiB(16f)
             .withFilesystemSubnet(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/fsSub")
@@ -51,15 +53,18 @@ public final class AmlFilesystemsCreateOrUpdateSamples {
                 .withKeyEncryptionKey(new KeyVaultKeyReference().withKeyUrl("fakeTokenPlaceholder")
                     .withSourceVault(new KeyVaultKeyReferenceSourceVault().withId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.KeyVault/vaults/keyvault-cmk"))))
-            .withMaintenanceWindow(new AmlFilesystemPropertiesMaintenanceWindow()
-                .withDayOfWeek(MaintenanceDayOfWeekType.FRIDAY).withTimeOfDayUtc("22:00"))
+            .withMaintenanceWindow(
+                new AmlFilesystemPropertiesMaintenanceWindow().withDayOfWeek(MaintenanceDayOfWeekType.FRIDAY)
+                    .withTimeOfDayUtc("22:00"))
             .withHsm(new AmlFilesystemPropertiesHsm().withSettings(new AmlFilesystemHsmSettings().withContainer(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Storage/storageAccounts/storageaccountname/blobServices/default/containers/containername")
                 .withLoggingContainer(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Storage/storageAccounts/storageaccountname/blobServices/default/containers/loggingcontainername")
-                .withImportPrefix("/")))
+                .withImportPrefixesInitial(Arrays.asList("/"))))
             .withRootSquashSettings(new AmlFilesystemRootSquashSettings().withMode(AmlFilesystemSquashMode.ALL)
-                .withNoSquashNidLists("10.0.0.[5-6]@tcp;10.0.1.2@tcp").withSquashUid(99L).withSquashGid(99L))
+                .withNoSquashNidLists("10.0.0.[5-6]@tcp;10.0.1.2@tcp")
+                .withSquashUid(99L)
+                .withSquashGid(99L))
             .create();
     }
 

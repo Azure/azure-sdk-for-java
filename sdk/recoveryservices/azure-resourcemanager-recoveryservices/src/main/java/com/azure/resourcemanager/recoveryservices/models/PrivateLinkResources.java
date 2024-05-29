@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservices.fluent.models.PrivateLinkResou
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Class which represent the stamps associated with the vault. */
+/**
+ * Class which represent the stamps associated with the vault.
+ */
 @Fluent
 public final class PrivateLinkResources {
     /*
@@ -24,13 +26,15 @@ public final class PrivateLinkResources {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PrivateLinkResources class. */
+    /**
+     * Creates an instance of PrivateLinkResources class.
+     */
     public PrivateLinkResources() {
     }
 
     /**
      * Get the value property: A collection of private link resources.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateLinkResourceInner> value() {
@@ -39,7 +43,7 @@ public final class PrivateLinkResources {
 
     /**
      * Set the value property: A collection of private link resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateLinkResources object itself.
      */
@@ -50,7 +54,7 @@ public final class PrivateLinkResources {
 
     /**
      * Get the nextLink property: Link to the next chunk of the response.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class PrivateLinkResources {
 
     /**
      * Set the nextLink property: Link to the next chunk of the response.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PrivateLinkResources object itself.
      */
@@ -70,7 +74,7 @@ public final class PrivateLinkResources {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

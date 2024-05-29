@@ -7,6 +7,7 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,10 +15,21 @@ import java.util.List;
 /**
  * A custom alert rule that checks if a value (depends on the custom alert type) is denied.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "ruleType",
+    defaultImpl = DenylistCustomAlertRule.class,
+    visible = true)
 @JsonTypeName("DenylistCustomAlertRule")
 @Fluent
 public final class DenylistCustomAlertRule extends ListCustomAlertRule {
+    /*
+     * The type of the custom alert rule.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "ruleType", required = true)
+    private String ruleType = "DenylistCustomAlertRule";
+
     /*
      * The values to deny. The format of the values depends on the rule type.
      */
@@ -28,6 +40,16 @@ public final class DenylistCustomAlertRule extends ListCustomAlertRule {
      * Creates an instance of DenylistCustomAlertRule class.
      */
     public DenylistCustomAlertRule() {
+    }
+
+    /**
+     * Get the ruleType property: The type of the custom alert rule.
+     * 
+     * @return the ruleType value.
+     */
+    @Override
+    public String ruleType() {
+        return this.ruleType;
     }
 
     /**
@@ -68,8 +90,9 @@ public final class DenylistCustomAlertRule extends ListCustomAlertRule {
     public void validate() {
         super.validate();
         if (denylistValues() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property denylistValues in model DenylistCustomAlertRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property denylistValues in model DenylistCustomAlertRule"));
         }
     }
 

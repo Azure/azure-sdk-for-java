@@ -11,7 +11,7 @@ public final class IoTSecurityAggregatedAlertPropertiesTopDevicesListItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IoTSecurityAggregatedAlertPropertiesTopDevicesListItem model = BinaryData.fromString(
-            "{\"deviceId\":\"jdrqcrjidhftu\",\"alertsCount\":5219275983415576474,\"lastOccurrence\":\"lwyojbfqzdkfnj\"}")
+            "{\"deviceId\":\"kcudfbsfarfsiowl\",\"alertsCount\":2835617475342020386,\"lastOccurrence\":\"pvwgfstmhqykizmd\"}")
             .toObject(IoTSecurityAggregatedAlertPropertiesTopDevicesListItem.class);
     }
 

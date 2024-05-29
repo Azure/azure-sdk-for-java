@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Tag filter information for the VM. */
+/**
+ * Tag filter information for the VM.
+ */
 @Fluent
 public final class TagSettingsProperties {
     /*
@@ -26,13 +28,15 @@ public final class TagSettingsProperties {
     @JsonProperty(value = "filterOperator")
     private TagOperators filterOperator;
 
-    /** Creates an instance of TagSettingsProperties class. */
+    /**
+     * Creates an instance of TagSettingsProperties class.
+     */
     public TagSettingsProperties() {
     }
 
     /**
      * Get the tags property: Dictionary of tags with its list of values.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, List<String>> tags() {
@@ -41,7 +45,7 @@ public final class TagSettingsProperties {
 
     /**
      * Set the tags property: Dictionary of tags with its list of values.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the TagSettingsProperties object itself.
      */
@@ -52,7 +56,7 @@ public final class TagSettingsProperties {
 
     /**
      * Get the filterOperator property: Filter VMs by Any or All specified tags.
-     *
+     * 
      * @return the filterOperator value.
      */
     public TagOperators filterOperator() {
@@ -61,7 +65,7 @@ public final class TagSettingsProperties {
 
     /**
      * Set the filterOperator property: Filter VMs by Any or All specified tags.
-     *
+     * 
      * @param filterOperator the filterOperator value to set.
      * @return the TagSettingsProperties object itself.
      */
@@ -72,7 +76,7 @@ public final class TagSettingsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

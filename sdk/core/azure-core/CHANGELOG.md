@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed an issue where HTTP response headers would be logged twice. ([#40190](https://github.com/Azure/azure-sdk-for-java/pull/40190))
+
 ### Other Changes
 
 ## 1.49.0 (2024-05-01)

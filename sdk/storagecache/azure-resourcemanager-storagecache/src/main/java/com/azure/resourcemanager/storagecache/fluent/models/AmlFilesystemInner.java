@@ -202,8 +202,8 @@ public final class AmlFilesystemInner extends Resource {
     }
 
     /**
-     * Get the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing
-     * operations. This subnet should have at least a /24 subnet mask within the VNET's address space.
+     * Get the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing operations.
+     * This subnet should have at least a /24 subnet mask within the VNET's address space.
      * 
      * @return the filesystemSubnet value.
      */
@@ -212,8 +212,8 @@ public final class AmlFilesystemInner extends Resource {
     }
 
     /**
-     * Set the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing
-     * operations. This subnet should have at least a /24 subnet mask within the VNET's address space.
+     * Set the filesystemSubnet property: Subnet used for managing the AML file system and for client-facing operations.
+     * This subnet should have at least a /24 subnet mask within the VNET's address space.
      * 
      * @param filesystemSubnet the filesystemSubnet value to set.
      * @return the AmlFilesystemInner object itself.

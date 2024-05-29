@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,21 @@ import java.util.List;
 /**
  * Azure VM (Mercury) workload-specific backup policy.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupManagementType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "backupManagementType",
+    defaultImpl = AzureVmWorkloadProtectionPolicy.class,
+    visible = true)
 @JsonTypeName("AzureWorkload")
 @Fluent
 public final class AzureVmWorkloadProtectionPolicy extends ProtectionPolicy {
+    /*
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "backupManagementType", required = true)
+    private String backupManagementType = "AzureWorkload";
+
     /*
      * Type of workload for the backup management
      */
@@ -45,6 +57,17 @@ public final class AzureVmWorkloadProtectionPolicy extends ProtectionPolicy {
      * Creates an instance of AzureVmWorkloadProtectionPolicy class.
      */
     public AzureVmWorkloadProtectionPolicy() {
+    }
+
+    /**
+     * Get the backupManagementType property: This property will be used as the discriminator for deciding the specific
+     * types in the polymorphic chain of types.
+     * 
+     * @return the backupManagementType value.
+     */
+    @Override
+    public String backupManagementType() {
+        return this.backupManagementType;
     }
 
     /**

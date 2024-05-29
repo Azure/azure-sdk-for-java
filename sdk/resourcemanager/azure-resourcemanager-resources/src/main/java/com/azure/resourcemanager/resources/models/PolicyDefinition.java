@@ -54,6 +54,21 @@ public interface PolicyDefinition extends
     Map<String, ParameterDefinitionsValue> parameters();
 
     /**
+     * Gets the policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
+     *
+     * @return the policy definition mode.
+     */
+    String mode();
+
+    /**
+     * Gets the policy definition metadata. Metadata is an open-ended object and is typically a
+     * collection of key value pairs.
+     *
+     * @return the policy definition metadata.
+     */
+    Object metadata();
+
+    /**
      * Container interface for all the definitions that need to be implemented.
      */
     interface Definition extends
@@ -156,6 +171,36 @@ public interface PolicyDefinition extends
         }
 
         /**
+         * A policy definition allowing policy definition mode to be set.
+         */
+        interface WithMode {
+            /**
+             * Specifies the policy definition mode.
+             * <p>
+             * Some examples are All, Indexed, Microsoft.KeyVault.Data.
+             *
+             * @param mode the policy definition mode
+             * @return the next stage of policy definition
+             */
+            WithCreate withMode(String mode);
+        }
+
+        /**
+         * A policy definition allowing policy definition metadata to be set.
+         */
+        interface WithMetadata {
+            /**
+             * Specifies the policy definition metadata.
+             * <p>
+             * Metadata is an open-ended object and is typically a collection of key value pairs.
+             *
+             * @param metadata the policy definition metadata
+             * @return the next stage of policy definition
+             */
+            WithCreate withMetadata(Object metadata);
+        }
+
+        /**
          * A policy definition with sufficient inputs to create a new
          * policy in the cloud, but exposing additional optional inputs to
          * specify.
@@ -165,7 +210,9 @@ public interface PolicyDefinition extends
                 DefinitionStages.WithDescription,
                 DefinitionStages.WithDisplayName,
                 DefinitionStages.WithPolicyType,
-                DefinitionStages.WithParameters {
+                DefinitionStages.WithParameters,
+                DefinitionStages.WithMode,
+                DefinitionStages.WithMetadata {
         }
     }
 
@@ -224,6 +271,36 @@ public interface PolicyDefinition extends
              */
             Update withDescription(String description);
         }
+
+        /**
+         * A policy definition allowing policy definition mode to be set.
+         */
+        interface WithMode {
+            /**
+             * Specifies the policy definition mode.
+             * <p>
+             * Some examples are All, Indexed, Microsoft.KeyVault.Data.
+             *
+             * @param mode the policy definition mode
+             * @return the next stage of policy update
+             */
+            Update withMode(String mode);
+        }
+
+        /**
+         * A policy definition allowing policy definition metadata to be set.
+         */
+        interface WithMetadata {
+            /**
+             * Specifies the policy definition metadata.
+             * <p>
+             * Metadata is an open-ended object and is typically a collection of key value pairs.
+             *
+             * @param metadata the policy definition metadata
+             * @return the next stage of policy update
+             */
+            Update withMetadata(Object metadata);
+        }
     }
 
     /**
@@ -234,6 +311,8 @@ public interface PolicyDefinition extends
             UpdateStages.WithDescription,
             UpdateStages.WithDisplayName,
             UpdateStages.WithPolicyRule,
-            UpdateStages.WithPolicyType {
+            UpdateStages.WithPolicyType,
+            UpdateStages.WithMode,
+            UpdateStages.WithMetadata {
     }
 }

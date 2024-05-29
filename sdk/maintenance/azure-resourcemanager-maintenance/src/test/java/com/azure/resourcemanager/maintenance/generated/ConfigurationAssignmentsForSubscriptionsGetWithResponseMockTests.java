@@ -6,74 +6,43 @@ package com.azure.resourcemanager.maintenance.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.maintenance.MaintenanceManager;
 import com.azure.resourcemanager.maintenance.models.ConfigurationAssignment;
 import com.azure.resourcemanager.maintenance.models.TagOperators;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ConfigurationAssignmentsForSubscriptionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"location\":\"bjoxs\",\"properties\":{\"maintenanceConfigurationId\":\"nhl\",\"resourceId\":\"rqnkkzjcjbtr\",\"filter\":{\"resourceTypes\":[\"vvib\"],\"resourceGroups\":[\"jsto\"],\"osTypes\":[\"it\",\"kxzt\",\"oobklftidgfcwq\"],\"locations\":[\"maqxzhemjyh\"],\"tagSettings\":{\"tags\":{\"vkcdmxzr\":[\"wtwko\",\"zwculkbawpfajnj\",\"ltlwtjjguktalhs\"],\"eazulcs\":[\"aimlnwiaaom\",\"l\"],\"ousnfepgfewe\":[\"hwwn\",\"jhlfzswpchwahf\"]},\"filterOperator\":\"All\"}}},\"id\":\"xgncxyk\",\"name\":\"hdjhlimmbcx\",\"type\":\"h\"}";
 
-        String responseStr =
-            "{\"location\":\"dggxdbeesmi\",\"properties\":{\"maintenanceConfigurationId\":\"lrariaawiu\",\"resourceId\":\"ydwqfbylyrf\",\"filter\":{\"resourceTypes\":[\"tcojocqwo\",\"fnzjvusfzldm\",\"zuxylfsbtkadpyso\"],\"resourceGroups\":[\"tgkbugrjqctojc\",\"isofieypefojyqd\",\"cuplcplcwkhih\",\"hlhzdsqtzbsrgno\"],\"osTypes\":[\"hfgmvecactxm\"],\"locations\":[\"e\",\"owcluqo\"],\"tagSettings\":{\"tags\":{\"kvyklxubyjaffmm\":[\"gqouwifzmpj\",\"yivqikfxcvhrfsp\",\"uagrttikteusqc\"],\"lmetttwgdslqxi\":[\"lcqcuubgqibrt\"]},\"filterOperator\":\"Any\"}}},\"id\":\"ooizqseyp\",\"name\":\"iut\",\"type\":\"xapzhyrpet\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MaintenanceManager manager = MaintenanceManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ConfigurationAssignment response = manager.configurationAssignmentsForSubscriptions()
+            .getWithResponse("zhyrpeto", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        MaintenanceManager manager =
-            MaintenanceManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ConfigurationAssignment response =
-            manager
-                .configurationAssignmentsForSubscriptions()
-                .getWithResponse("qxtjjfzqlqhyca", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("dggxdbeesmi", response.location());
-        Assertions.assertEquals("lrariaawiu", response.maintenanceConfigurationId());
-        Assertions.assertEquals("ydwqfbylyrf", response.resourceId());
-        Assertions.assertEquals("tcojocqwo", response.filter().resourceTypes().get(0));
-        Assertions.assertEquals("tgkbugrjqctojc", response.filter().resourceGroups().get(0));
-        Assertions.assertEquals("hfgmvecactxm", response.filter().osTypes().get(0));
-        Assertions.assertEquals("e", response.filter().locations().get(0));
-        Assertions.assertEquals("gqouwifzmpj", response.filter().tagSettings().tags().get("kvyklxubyjaffmm").get(0));
-        Assertions.assertEquals(TagOperators.ANY, response.filter().tagSettings().filterOperator());
+        Assertions.assertEquals("bjoxs", response.location());
+        Assertions.assertEquals("nhl", response.maintenanceConfigurationId());
+        Assertions.assertEquals("rqnkkzjcjbtr", response.resourceId());
+        Assertions.assertEquals("vvib", response.filter().resourceTypes().get(0));
+        Assertions.assertEquals("jsto", response.filter().resourceGroups().get(0));
+        Assertions.assertEquals("it", response.filter().osTypes().get(0));
+        Assertions.assertEquals("maqxzhemjyh", response.filter().locations().get(0));
+        Assertions.assertEquals("wtwko", response.filter().tagSettings().tags().get("vkcdmxzr").get(0));
+        Assertions.assertEquals(TagOperators.ALL, response.filter().tagSettings().filterOperator());
     }
 }

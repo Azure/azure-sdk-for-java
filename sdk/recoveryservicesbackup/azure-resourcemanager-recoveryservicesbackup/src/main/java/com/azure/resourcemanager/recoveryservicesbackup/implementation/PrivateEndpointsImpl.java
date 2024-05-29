@@ -28,8 +28,9 @@ public final class PrivateEndpointsImpl implements PrivateEndpoints {
 
     public Response<OperationStatus> getOperationStatusWithResponse(String vaultName, String resourceGroupName,
         String privateEndpointConnectionName, String operationId, Context context) {
-        Response<OperationStatusInner> inner = this.serviceClient().getOperationStatusWithResponse(vaultName,
-            resourceGroupName, privateEndpointConnectionName, operationId, context);
+        Response<OperationStatusInner> inner = this.serviceClient()
+            .getOperationStatusWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, operationId,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
@@ -40,8 +41,8 @@ public final class PrivateEndpointsImpl implements PrivateEndpoints {
 
     public OperationStatus getOperationStatus(String vaultName, String resourceGroupName,
         String privateEndpointConnectionName, String operationId) {
-        OperationStatusInner inner = this.serviceClient().getOperationStatus(vaultName, resourceGroupName,
-            privateEndpointConnectionName, operationId);
+        OperationStatusInner inner = this.serviceClient()
+            .getOperationStatus(vaultName, resourceGroupName, privateEndpointConnectionName, operationId);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {

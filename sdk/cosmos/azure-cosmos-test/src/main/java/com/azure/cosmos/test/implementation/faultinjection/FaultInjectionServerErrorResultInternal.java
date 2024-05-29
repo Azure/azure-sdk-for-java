@@ -33,19 +33,22 @@ public class FaultInjectionServerErrorResultInternal {
     private final Duration delay;
 
     private final Boolean suppressServiceRequests;
+    private final double injectionRate;
 
 
     public FaultInjectionServerErrorResultInternal(
         FaultInjectionServerErrorType serverErrorTypes,
         Integer times,
         Duration delay,
-        Boolean suppressServiceRequests) {
+        Boolean suppressServiceRequests,
+        double injectionRate) {
 
         checkArgument(serverErrorTypes != null, "Argument 'serverErrorType' can not be null");
         this.serverErrorType = serverErrorTypes;
         this.times = times;
         this.delay = delay;
         this.suppressServiceRequests = suppressServiceRequests;
+        this.injectionRate = injectionRate;
     }
 
     public FaultInjectionServerErrorType getServerErrorType() {
@@ -62,6 +65,10 @@ public class FaultInjectionServerErrorResultInternal {
 
     public Boolean getSuppressServiceRequests() {
         return this.suppressServiceRequests;
+    }
+
+    public double getInjectionRate() {
+        return this.injectionRate;
     }
 
     public boolean isApplicable(String ruleId, RxDocumentServiceRequest request) {
@@ -117,7 +124,7 @@ public class FaultInjectionServerErrorResultInternal {
 
             case READ_SESSION_NOT_AVAILABLE:
 
-                final String badSessionToken = "1:1#1#1=1#1=1";
+                final String badSessionToken = partitionKeyRangeId + ":" + "1#1#1=1#1=1";
 
                 responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
                     Integer.toString(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE));

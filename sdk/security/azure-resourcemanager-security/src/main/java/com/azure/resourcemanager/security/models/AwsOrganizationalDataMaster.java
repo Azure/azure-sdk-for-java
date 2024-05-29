@@ -6,6 +6,7 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -13,10 +14,21 @@ import java.util.List;
 /**
  * The AWS organization data for the master account.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "organizationMembershipType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "organizationMembershipType",
+    defaultImpl = AwsOrganizationalDataMaster.class,
+    visible = true)
 @JsonTypeName("Organization")
 @Fluent
 public final class AwsOrganizationalDataMaster extends AwsOrganizationalData {
+    /*
+     * The multi cloud account's membership type in the organization
+     */
+    @JsonTypeId
+    @JsonProperty(value = "organizationMembershipType", required = true)
+    private OrganizationMembershipType organizationMembershipType = OrganizationMembershipType.ORGANIZATION;
+
     /*
      * If the multi cloud account is of membership type organization, this will be the name of the onboarding stackset
      */
@@ -33,6 +45,16 @@ public final class AwsOrganizationalDataMaster extends AwsOrganizationalData {
      * Creates an instance of AwsOrganizationalDataMaster class.
      */
     public AwsOrganizationalDataMaster() {
+    }
+
+    /**
+     * Get the organizationMembershipType property: The multi cloud account's membership type in the organization.
+     * 
+     * @return the organizationMembershipType value.
+     */
+    @Override
+    public OrganizationMembershipType organizationMembershipType() {
+        return this.organizationMembershipType;
     }
 
     /**

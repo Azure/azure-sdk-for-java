@@ -23,7 +23,8 @@ public final class AzureFileshareProtectedItemExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureFileshareProtectedItemExtendedInfo model = new AzureFileshareProtectedItemExtendedInfo()
-            .withOldestRecoveryPoint(OffsetDateTime.parse("2021-05-17T23:03:28Z")).withRecoveryPointCount(1368964811)
+            .withOldestRecoveryPoint(OffsetDateTime.parse("2021-05-17T23:03:28Z"))
+            .withRecoveryPointCount(1368964811)
             .withPolicyState("lbfpncurd");
         model = BinaryData.fromObject(model).toObject(AzureFileshareProtectedItemExtendedInfo.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-17T23:03:28Z"), model.oldestRecoveryPoint());
