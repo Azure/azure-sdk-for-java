@@ -47,7 +47,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.DefaultPollingStrategy;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.PollingStrategyOptions;
 import com.azure.core.util.polling.SyncDefaultPollingStrategy;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.TypeReference;
@@ -59,254 +58,331 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in DocumentModels.
- */
+/** An instance of this class provides access to all the operations defined in DocumentModels. */
 public final class DocumentModelsImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final DocumentModelsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final FormRecognizerClientImpl client;
 
     /**
      * Initializes an instance of DocumentModelsImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     DocumentModelsImpl(FormRecognizerClientImpl client) {
-        this.service
-            = RestProxy.create(DocumentModelsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+                RestProxy.create(DocumentModelsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for FormRecognizerClientDocumentModels to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for FormRecognizerClientDocumentModels to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}/formrecognizer")
     @ServiceInterface(name = "FormRecognizerClient")
     public interface DocumentModelsService {
         @Post("/documentModels/{modelId}:analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void>> analyzeDocument(
-            @HostParam("endpoint") String endpoint, @PathParam("modelId") String modelId,
-            @QueryParam("pages") String pages, @QueryParam("locale") String locale,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("api-version") String apiVersion, @QueryParam("features") String features,
-            @BodyParam("application/json") AnalyzeDocumentRequest analyzeRequest, @HeaderParam("Accept") String accept,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("pages") String pages,
+                @QueryParam("locale") String locale,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("features") String features,
+                @BodyParam("application/json") AnalyzeDocumentRequest analyzeRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentModels/{modelId}:analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocumentSync(
-            @HostParam("endpoint") String endpoint, @PathParam("modelId") String modelId,
-            @QueryParam("pages") String pages, @QueryParam("locale") String locale,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("api-version") String apiVersion, @QueryParam("features") String features,
-            @BodyParam("application/json") AnalyzeDocumentRequest analyzeRequest, @HeaderParam("Accept") String accept,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("pages") String pages,
+                @QueryParam("locale") String locale,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("features") String features,
+                @BodyParam("application/json") AnalyzeDocumentRequest analyzeRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentModels/{modelId}:analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void>> analyzeDocument(
-            @HostParam("endpoint") String endpoint, @PathParam("modelId") String modelId,
-            @QueryParam("pages") String pages, @QueryParam("locale") String locale,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("api-version") String apiVersion, @QueryParam("features") String features,
-            @HeaderParam("Content-Type") ContentType contentType,
-            @BodyParam("application/octet-stream") Flux<ByteBuffer> analyzeRequest,
-            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("pages") String pages,
+                @QueryParam("locale") String locale,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("features") String features,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") Flux<ByteBuffer> analyzeRequest,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentModels/{modelId}:analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void>> analyzeDocument(
-            @HostParam("endpoint") String endpoint, @PathParam("modelId") String modelId,
-            @QueryParam("pages") String pages, @QueryParam("locale") String locale,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("api-version") String apiVersion, @QueryParam("features") String features,
-            @HeaderParam("Content-Type") ContentType contentType,
-            @BodyParam("application/octet-stream") BinaryData analyzeRequest,
-            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("pages") String pages,
+                @QueryParam("locale") String locale,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("features") String features,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData analyzeRequest,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentModels/{modelId}:analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocumentSync(
-            @HostParam("endpoint") String endpoint, @PathParam("modelId") String modelId,
-            @QueryParam("pages") String pages, @QueryParam("locale") String locale,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("api-version") String apiVersion, @QueryParam("features") String features,
-            @HeaderParam("Content-Type") ContentType contentType,
-            @BodyParam("application/octet-stream") BinaryData analyzeRequest,
-            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("pages") String pages,
+                @QueryParam("locale") String locale,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("features") String features,
+                @HeaderParam("Content-Type") ContentType contentType,
+                @BodyParam("application/octet-stream") BinaryData analyzeRequest,
+                @HeaderParam("Content-Length") Long contentLength,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentModels/{modelId}:analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void>> analyzeDocument(
-            @HostParam("endpoint") String endpoint, @PathParam("modelId") String modelId,
-            @QueryParam("pages") String pages, @QueryParam("locale") String locale,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("api-version") String apiVersion, @QueryParam("features") String features,
-            @BodyParam("text/html") String analyzeRequest, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("pages") String pages,
+                @QueryParam("locale") String locale,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("features") String features,
+                @BodyParam("text/html") String analyzeRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentModels/{modelId}:analyze")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocumentSync(
-            @HostParam("endpoint") String endpoint, @PathParam("modelId") String modelId,
-            @QueryParam("pages") String pages, @QueryParam("locale") String locale,
-            @QueryParam("stringIndexType") StringIndexType stringIndexType,
-            @QueryParam("api-version") String apiVersion, @QueryParam("features") String features,
-            @BodyParam("text/html") String analyzeRequest, @HeaderParam("Accept") String accept, Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("pages") String pages,
+                @QueryParam("locale") String locale,
+                @QueryParam("stringIndexType") StringIndexType stringIndexType,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("features") String features,
+                @BodyParam("text/html") String analyzeRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/documentModels/{modelId}/analyzeResults/{resultId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<AnalyzeResultOperation>> getAnalyzeResult(@HostParam("endpoint") String endpoint,
-            @PathParam("modelId") String modelId, @PathParam("resultId") String resultId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<AnalyzeResultOperation>> getAnalyzeResult(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @PathParam("resultId") String resultId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/documentModels/{modelId}/analyzeResults/{resultId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<AnalyzeResultOperation> getAnalyzeResultSync(@HostParam("endpoint") String endpoint,
-            @PathParam("modelId") String modelId, @PathParam("resultId") String resultId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Response<AnalyzeResultOperation> getAnalyzeResultSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @PathParam("resultId") String resultId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentModels:build")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DocumentModelsBuildModelHeaders, Void>> buildModel(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BuildDocumentModelRequest buildRequest, @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<ResponseBase<DocumentModelsBuildModelHeaders, Void>> buildModel(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BuildDocumentModelRequest buildRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentModels:build")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        ResponseBase<DocumentModelsBuildModelHeaders, Void> buildModelSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BuildDocumentModelRequest buildRequest, @HeaderParam("Accept") String accept,
-            Context context);
+        ResponseBase<DocumentModelsBuildModelHeaders, Void> buildModelSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BuildDocumentModelRequest buildRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentModels:compose")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DocumentModelsComposeModelHeaders, Void>> composeModel(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ComposeDocumentModelRequest composeRequest,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<ResponseBase<DocumentModelsComposeModelHeaders, Void>> composeModel(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") ComposeDocumentModelRequest composeRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentModels:compose")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        ResponseBase<DocumentModelsComposeModelHeaders, Void> composeModelSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ComposeDocumentModelRequest composeRequest,
-            @HeaderParam("Accept") String accept, Context context);
+        ResponseBase<DocumentModelsComposeModelHeaders, Void> composeModelSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") ComposeDocumentModelRequest composeRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentModels:authorizeCopy")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<CopyAuthorization>> authorizeModelCopy(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AuthorizeCopyRequest authorizeCopyRequest,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<CopyAuthorization>> authorizeModelCopy(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") AuthorizeCopyRequest authorizeCopyRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentModels:authorizeCopy")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<CopyAuthorization> authorizeModelCopySync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AuthorizeCopyRequest authorizeCopyRequest,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<CopyAuthorization> authorizeModelCopySync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") AuthorizeCopyRequest authorizeCopyRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentModels/{modelId}:copyTo")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<ResponseBase<DocumentModelsCopyModelToHeaders, Void>> copyModelTo(@HostParam("endpoint") String endpoint,
-            @PathParam("modelId") String modelId, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CopyAuthorization copyToRequest, @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<ResponseBase<DocumentModelsCopyModelToHeaders, Void>> copyModelTo(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") CopyAuthorization copyToRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Post("/documentModels/{modelId}:copyTo")
-        @ExpectedResponses({ 202 })
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        ResponseBase<DocumentModelsCopyModelToHeaders, Void> copyModelToSync(@HostParam("endpoint") String endpoint,
-            @PathParam("modelId") String modelId, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CopyAuthorization copyToRequest, @HeaderParam("Accept") String accept,
-            Context context);
+        ResponseBase<DocumentModelsCopyModelToHeaders, Void> copyModelToSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") CopyAuthorization copyToRequest,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/documentModels")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<GetDocumentModelsResponse>> listModels(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<GetDocumentModelsResponse>> listModels(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/documentModels")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<GetDocumentModelsResponse> listModelsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Response<GetDocumentModelsResponse> listModelsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/documentModels/{modelId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<DocumentModelDetails>> getModel(@HostParam("endpoint") String endpoint,
-            @PathParam("modelId") String modelId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DocumentModelDetails>> getModel(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/documentModels/{modelId}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<DocumentModelDetails> getModelSync(@HostParam("endpoint") String endpoint,
-            @PathParam("modelId") String modelId, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<DocumentModelDetails> getModelSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Delete("/documentModels/{modelId}")
-        @ExpectedResponses({ 204 })
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<Void>> deleteModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") String modelId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> deleteModel(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Delete("/documentModels/{modelId}")
-        @ExpectedResponses({ 204 })
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<Void> deleteModelSync(@HostParam("endpoint") String endpoint, @PathParam("modelId") String modelId,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Response<Void> deleteModelSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("modelId") String modelId,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<GetDocumentModelsResponse>> listModelsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<GetDocumentModelsResponse> listModelsNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+                @PathParam(value = "nextLink", encoded = true) String nextLink,
+                @HostParam("endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -317,22 +393,39 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(
-        String modelId, String pages, String locale, StringIndexType stringIndexType,
-        List<DocumentAnalysisFeature> features, AnalyzeDocumentRequest analyzeRequest) {
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            AnalyzeDocumentRequest analyzeRequest) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.analyzeDocument(this.client.getEndpoint(), modelId, pages,
-            locale, stringIndexType, this.client.getApiVersion(), featuresConverted, analyzeRequest, accept, context));
+        String featuresConverted =
+                (features == null)
+                        ? null
+                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeDocument(
+                                this.client.getEndpoint(),
+                                modelId,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                this.client.getApiVersion(),
+                                featuresConverted,
+                                analyzeRequest,
+                                accept,
+                                context));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -344,22 +437,38 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(
-        String modelId, String pages, String locale, StringIndexType stringIndexType,
-        List<DocumentAnalysisFeature> features, AnalyzeDocumentRequest analyzeRequest, Context context) {
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            AnalyzeDocumentRequest analyzeRequest,
+            Context context) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return service.analyzeDocument(this.client.getEndpoint(), modelId, pages, locale, stringIndexType,
-            this.client.getApiVersion(), featuresConverted, analyzeRequest, accept, context);
+        String featuresConverted =
+                (features == null)
+                        ? null
+                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeDocument(
+                this.client.getEndpoint(),
+                modelId,
+                pages,
+                locale,
+                stringIndexType,
+                this.client.getApiVersion(),
+                featuresConverted,
+                analyzeRequest,
+                accept,
+                context);
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -370,23 +479,39 @@ public final class DocumentModelsImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocumentWithResponse(String modelId,
-        String pages, String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
-        AnalyzeDocumentRequest analyzeRequest, Context context) {
+    public ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocumentWithResponse(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            AnalyzeDocumentRequest analyzeRequest,
+            Context context) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return service.analyzeDocumentSync(this.client.getEndpoint(), modelId, pages, locale, stringIndexType,
-            this.client.getApiVersion(), featuresConverted, analyzeRequest, accept, context);
+        String featuresConverted =
+                (features == null)
+                        ? null
+                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeDocumentSync(
+                this.client.getEndpoint(),
+                modelId,
+                pages,
+                locale,
+                stringIndexType,
+                this.client.getApiVersion(),
+                featuresConverted,
+                analyzeRequest,
+                accept,
+                context);
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -396,25 +521,34 @@ public final class DocumentModelsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, String pages, String locale,
-        StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
-        AnalyzeDocumentRequest analyzeRequest) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, features,
-                analyzeRequest),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            AnalyzeDocumentRequest analyzeRequest) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponseAsync(
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -425,25 +559,35 @@ public final class DocumentModelsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, String pages, String locale,
-        StringIndexType stringIndexType, List<DocumentAnalysisFeature> features, AnalyzeDocumentRequest analyzeRequest,
-        Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, features,
-                analyzeRequest, context),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            AnalyzeDocumentRequest analyzeRequest,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponseAsync(
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -453,25 +597,34 @@ public final class DocumentModelsImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, String pages, String locale,
-        StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
-        AnalyzeDocumentRequest analyzeRequest) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponse(modelId, pages, locale, stringIndexType, features, analyzeRequest,
-                Context.NONE),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            AnalyzeDocumentRequest analyzeRequest) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponse(
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -482,26 +635,36 @@ public final class DocumentModelsImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, String pages, String locale,
-        StringIndexType stringIndexType, List<DocumentAnalysisFeature> features, AnalyzeDocumentRequest analyzeRequest,
-        Context context) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponse(modelId, pages, locale, stringIndexType, features, analyzeRequest,
-                context),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            AnalyzeDocumentRequest analyzeRequest,
+            Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponse(
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -513,24 +676,44 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(
-        String modelId, ContentType contentType, String pages, String locale, StringIndexType stringIndexType,
-        List<DocumentAnalysisFeature> features, Flux<ByteBuffer> analyzeRequest, Long contentLength) {
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            Flux<ByteBuffer> analyzeRequest,
+            Long contentLength) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.analyzeDocument(this.client.getEndpoint(), modelId, pages,
-            locale, stringIndexType, this.client.getApiVersion(), featuresConverted, contentType, analyzeRequest,
-            contentLength, accept, context));
+        String featuresConverted =
+                (features == null)
+                        ? null
+                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeDocument(
+                                this.client.getEndpoint(),
+                                modelId,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                this.client.getApiVersion(),
+                                featuresConverted,
+                                contentType,
+                                analyzeRequest,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -543,24 +726,43 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(
-        String modelId, ContentType contentType, String pages, String locale, StringIndexType stringIndexType,
-        List<DocumentAnalysisFeature> features, Flux<ByteBuffer> analyzeRequest, Long contentLength, Context context) {
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            Flux<ByteBuffer> analyzeRequest,
+            Long contentLength,
+            Context context) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return service.analyzeDocument(this.client.getEndpoint(), modelId, pages, locale, stringIndexType,
-            this.client.getApiVersion(), featuresConverted, contentType, analyzeRequest, contentLength, accept,
-            context);
+        String featuresConverted =
+                (features == null)
+                        ? null
+                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeDocument(
+                this.client.getEndpoint(),
+                modelId,
+                pages,
+                locale,
+                stringIndexType,
+                this.client.getApiVersion(),
+                featuresConverted,
+                contentType,
+                analyzeRequest,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -571,26 +773,44 @@ public final class DocumentModelsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, ContentType contentType,
-        String pages, String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
-        Flux<ByteBuffer> analyzeRequest, Long contentLength) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponseAsync(modelId, contentType, pages, locale, stringIndexType, features,
-                analyzeRequest, contentLength),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            Flux<ByteBuffer> analyzeRequest,
+            Long contentLength) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponseAsync(
+                                modelId,
+                                contentType,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                features,
+                                analyzeRequest,
+                                contentLength),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -602,26 +822,46 @@ public final class DocumentModelsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, ContentType contentType,
-        String pages, String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
-        Flux<ByteBuffer> analyzeRequest, Long contentLength, Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponseAsync(modelId, contentType, pages, locale, stringIndexType, features,
-                analyzeRequest, contentLength, context),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            Flux<ByteBuffer> analyzeRequest,
+            Long contentLength,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponseAsync(
+                                modelId,
+                                contentType,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                features,
+                                analyzeRequest,
+                                contentLength,
+                                context),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -633,24 +873,44 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(
-        String modelId, ContentType contentType, String pages, String locale, StringIndexType stringIndexType,
-        List<DocumentAnalysisFeature> features, BinaryData analyzeRequest, Long contentLength) {
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            BinaryData analyzeRequest,
+            Long contentLength) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.analyzeDocument(this.client.getEndpoint(), modelId, pages,
-            locale, stringIndexType, this.client.getApiVersion(), featuresConverted, contentType, analyzeRequest,
-            contentLength, accept, context));
+        String featuresConverted =
+                (features == null)
+                        ? null
+                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeDocument(
+                                this.client.getEndpoint(),
+                                modelId,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                this.client.getApiVersion(),
+                                featuresConverted,
+                                contentType,
+                                analyzeRequest,
+                                contentLength,
+                                accept,
+                                context));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -663,24 +923,43 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(
-        String modelId, ContentType contentType, String pages, String locale, StringIndexType stringIndexType,
-        List<DocumentAnalysisFeature> features, BinaryData analyzeRequest, Long contentLength, Context context) {
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            BinaryData analyzeRequest,
+            Long contentLength,
+            Context context) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return service.analyzeDocument(this.client.getEndpoint(), modelId, pages, locale, stringIndexType,
-            this.client.getApiVersion(), featuresConverted, contentType, analyzeRequest, contentLength, accept,
-            context);
+        String featuresConverted =
+                (features == null)
+                        ? null
+                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeDocument(
+                this.client.getEndpoint(),
+                modelId,
+                pages,
+                locale,
+                stringIndexType,
+                this.client.getApiVersion(),
+                featuresConverted,
+                contentType,
+                analyzeRequest,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -692,25 +971,44 @@ public final class DocumentModelsImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocumentWithResponse(String modelId,
-        ContentType contentType, String pages, String locale, StringIndexType stringIndexType,
-        List<DocumentAnalysisFeature> features, BinaryData analyzeRequest, Long contentLength, Context context) {
+    public ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocumentWithResponse(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            BinaryData analyzeRequest,
+            Long contentLength,
+            Context context) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return service.analyzeDocumentSync(this.client.getEndpoint(), modelId, pages, locale, stringIndexType,
-            this.client.getApiVersion(), featuresConverted, contentType, analyzeRequest, contentLength, accept,
-            context);
+        String featuresConverted =
+                (features == null)
+                        ? null
+                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeDocumentSync(
+                this.client.getEndpoint(),
+                modelId,
+                pages,
+                locale,
+                stringIndexType,
+                this.client.getApiVersion(),
+                featuresConverted,
+                contentType,
+                analyzeRequest,
+                contentLength,
+                accept,
+                context);
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -721,26 +1019,44 @@ public final class DocumentModelsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, ContentType contentType,
-        String pages, String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
-        BinaryData analyzeRequest, Long contentLength) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponseAsync(modelId, contentType, pages, locale, stringIndexType, features,
-                analyzeRequest, contentLength),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            BinaryData analyzeRequest,
+            Long contentLength) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponseAsync(
+                                modelId,
+                                contentType,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                features,
+                                analyzeRequest,
+                                contentLength),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -752,26 +1068,46 @@ public final class DocumentModelsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, ContentType contentType,
-        String pages, String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
-        BinaryData analyzeRequest, Long contentLength, Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponseAsync(modelId, contentType, pages, locale, stringIndexType, features,
-                analyzeRequest, contentLength, context),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            BinaryData analyzeRequest,
+            Long contentLength,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponseAsync(
+                                modelId,
+                                contentType,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                features,
+                                analyzeRequest,
+                                contentLength,
+                                context),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -782,26 +1118,45 @@ public final class DocumentModelsImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, ContentType contentType,
-        String pages, String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
-        BinaryData analyzeRequest, Long contentLength) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponse(modelId, contentType, pages, locale, stringIndexType, features,
-                analyzeRequest, contentLength, Context.NONE),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            BinaryData analyzeRequest,
+            Long contentLength) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponse(
+                                modelId,
+                                contentType,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                features,
+                                analyzeRequest,
+                                contentLength,
+                                Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param contentType Upload file type.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -813,25 +1168,45 @@ public final class DocumentModelsImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, ContentType contentType,
-        String pages, String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
-        BinaryData analyzeRequest, Long contentLength, Context context) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponse(modelId, contentType, pages, locale, stringIndexType, features,
-                analyzeRequest, contentLength, context),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(
+            String modelId,
+            ContentType contentType,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            BinaryData analyzeRequest,
+            Long contentLength,
+            Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponse(
+                                modelId,
+                                contentType,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                features,
+                                analyzeRequest,
+                                contentLength,
+                                context),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -842,22 +1217,39 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(
-        String modelId, String pages, String locale, StringIndexType stringIndexType,
-        List<DocumentAnalysisFeature> features, String analyzeRequest) {
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            String analyzeRequest) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.analyzeDocument(this.client.getEndpoint(), modelId, pages,
-            locale, stringIndexType, this.client.getApiVersion(), featuresConverted, analyzeRequest, accept, context));
+        String featuresConverted =
+                (features == null)
+                        ? null
+                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return FluxUtil.withContext(
+                context ->
+                        service.analyzeDocument(
+                                this.client.getEndpoint(),
+                                modelId,
+                                pages,
+                                locale,
+                                stringIndexType,
+                                this.client.getApiVersion(),
+                                featuresConverted,
+                                analyzeRequest,
+                                accept,
+                                context));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -869,22 +1261,38 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void>> analyzeDocumentWithResponseAsync(
-        String modelId, String pages, String locale, StringIndexType stringIndexType,
-        List<DocumentAnalysisFeature> features, String analyzeRequest, Context context) {
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            String analyzeRequest,
+            Context context) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return service.analyzeDocument(this.client.getEndpoint(), modelId, pages, locale, stringIndexType,
-            this.client.getApiVersion(), featuresConverted, analyzeRequest, accept, context);
+        String featuresConverted =
+                (features == null)
+                        ? null
+                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeDocument(
+                this.client.getEndpoint(),
+                modelId,
+                pages,
+                locale,
+                stringIndexType,
+                this.client.getApiVersion(),
+                featuresConverted,
+                analyzeRequest,
+                accept,
+                context);
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -895,23 +1303,39 @@ public final class DocumentModelsImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocumentWithResponse(String modelId,
-        String pages, String locale, StringIndexType stringIndexType, List<DocumentAnalysisFeature> features,
-        String analyzeRequest, Context context) {
+    public ResponseBase<DocumentModelsAnalyzeDocumentHeaders, Void> analyzeDocumentWithResponse(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            String analyzeRequest,
+            Context context) {
         final String accept = "application/json";
-        String featuresConverted = (features == null) ? null : features.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return service.analyzeDocumentSync(this.client.getEndpoint(), modelId, pages, locale, stringIndexType,
-            this.client.getApiVersion(), featuresConverted, analyzeRequest, accept, context);
+        String featuresConverted =
+                (features == null)
+                        ? null
+                        : features.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
+        return service.analyzeDocumentSync(
+                this.client.getEndpoint(),
+                modelId,
+                pages,
+                locale,
+                stringIndexType,
+                this.client.getApiVersion(),
+                featuresConverted,
+                analyzeRequest,
+                accept,
+                context);
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -921,24 +1345,34 @@ public final class DocumentModelsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, String pages, String locale,
-        StringIndexType stringIndexType, List<DocumentAnalysisFeature> features, String analyzeRequest) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, features,
-                analyzeRequest),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            String analyzeRequest) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponseAsync(
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -949,25 +1383,35 @@ public final class DocumentModelsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(String modelId, String pages, String locale,
-        StringIndexType stringIndexType, List<DocumentAnalysisFeature> features, String analyzeRequest,
-        Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponseAsync(modelId, pages, locale, stringIndexType, features,
-                analyzeRequest, context),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginAnalyzeDocumentAsync(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            String analyzeRequest,
+            Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponseAsync(
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -977,24 +1421,34 @@ public final class DocumentModelsImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, String pages, String locale,
-        StringIndexType stringIndexType, List<DocumentAnalysisFeature> features, String analyzeRequest) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponse(modelId, pages, locale, stringIndexType, features, analyzeRequest,
-                Context.NONE),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            String analyzeRequest) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponse(
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Analyzes document with document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param pages List of 1-based page numbers to analyze. Ex. "1-3,5,7-9".
      * @param locale Locale hint for text recognition and document analysis. Value may contain only the language code
-     * (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
+     *     (ex. "en", "fr") or BCP 47 language tag (ex. "en-US").
      * @param stringIndexType Method used to compute string offset and length.
      * @param features List of optional analysis features.
      * @param analyzeRequest Analyze request parameters.
@@ -1005,21 +1459,31 @@ public final class DocumentModelsImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(String modelId, String pages, String locale,
-        StringIndexType stringIndexType, List<DocumentAnalysisFeature> features, String analyzeRequest,
-        Context context) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.analyzeDocumentWithResponse(modelId, pages, locale, stringIndexType, features, analyzeRequest,
-                context),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginAnalyzeDocument(
+            String modelId,
+            String pages,
+            String locale,
+            StringIndexType stringIndexType,
+            List<DocumentAnalysisFeature> features,
+            String analyzeRequest,
+            Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () ->
+                        this.analyzeDocumentWithResponse(
+                                modelId, pages, locale, stringIndexType, features, analyzeRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Gets the result of document analysis.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1030,13 +1494,20 @@ public final class DocumentModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeResultOperation>> getAnalyzeResultWithResponseAsync(String modelId, String resultId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAnalyzeResult(this.client.getEndpoint(), modelId, resultId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.getAnalyzeResult(
+                                this.client.getEndpoint(),
+                                modelId,
+                                resultId,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
     }
 
     /**
      * Gets the result of document analysis.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param context The context to associate with this operation.
@@ -1046,16 +1517,16 @@ public final class DocumentModelsImpl {
      * @return the result of document analysis along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AnalyzeResultOperation>> getAnalyzeResultWithResponseAsync(String modelId, String resultId,
-        Context context) {
+    public Mono<Response<AnalyzeResultOperation>> getAnalyzeResultWithResponseAsync(
+            String modelId, String resultId, Context context) {
         final String accept = "application/json";
-        return service.getAnalyzeResult(this.client.getEndpoint(), modelId, resultId, this.client.getApiVersion(),
-            accept, context);
+        return service.getAnalyzeResult(
+                this.client.getEndpoint(), modelId, resultId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the result of document analysis.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1070,7 +1541,7 @@ public final class DocumentModelsImpl {
 
     /**
      * Gets the result of document analysis.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param context The context to associate with this operation.
@@ -1082,12 +1553,12 @@ public final class DocumentModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeResultOperation> getAnalyzeResultAsync(String modelId, String resultId, Context context) {
         return getAnalyzeResultWithResponseAsync(modelId, resultId, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the result of document analysis.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @param context The context to associate with this operation.
@@ -1097,16 +1568,16 @@ public final class DocumentModelsImpl {
      * @return the result of document analysis along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeResultOperation> getAnalyzeResultWithResponse(String modelId, String resultId,
-        Context context) {
+    public Response<AnalyzeResultOperation> getAnalyzeResultWithResponse(
+            String modelId, String resultId, Context context) {
         final String accept = "application/json";
-        return service.getAnalyzeResultSync(this.client.getEndpoint(), modelId, resultId, this.client.getApiVersion(),
-            accept, context);
+        return service.getAnalyzeResultSync(
+                this.client.getEndpoint(), modelId, resultId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the result of document analysis.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1121,7 +1592,7 @@ public final class DocumentModelsImpl {
 
     /**
      * Builds a custom document analysis model.
-     * 
+     *
      * @param buildRequest Building request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1129,16 +1600,18 @@ public final class DocumentModelsImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DocumentModelsBuildModelHeaders, Void>>
-        buildModelWithResponseAsync(BuildDocumentModelRequest buildRequest) {
+    public Mono<ResponseBase<DocumentModelsBuildModelHeaders, Void>> buildModelWithResponseAsync(
+            BuildDocumentModelRequest buildRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.buildModel(this.client.getEndpoint(),
-            this.client.getApiVersion(), buildRequest, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.buildModel(
+                                this.client.getEndpoint(), this.client.getApiVersion(), buildRequest, accept, context));
     }
 
     /**
      * Builds a custom document analysis model.
-     * 
+     *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1147,16 +1620,16 @@ public final class DocumentModelsImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DocumentModelsBuildModelHeaders, Void>>
-        buildModelWithResponseAsync(BuildDocumentModelRequest buildRequest, Context context) {
+    public Mono<ResponseBase<DocumentModelsBuildModelHeaders, Void>> buildModelWithResponseAsync(
+            BuildDocumentModelRequest buildRequest, Context context) {
         final String accept = "application/json";
-        return service.buildModel(this.client.getEndpoint(), this.client.getApiVersion(), buildRequest, accept,
-            context);
+        return service.buildModel(
+                this.client.getEndpoint(), this.client.getApiVersion(), buildRequest, accept, context);
     }
 
     /**
      * Builds a custom document analysis model.
-     * 
+     *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1165,16 +1638,16 @@ public final class DocumentModelsImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<DocumentModelsBuildModelHeaders, Void>
-        buildModelWithResponse(BuildDocumentModelRequest buildRequest, Context context) {
+    public ResponseBase<DocumentModelsBuildModelHeaders, Void> buildModelWithResponse(
+            BuildDocumentModelRequest buildRequest, Context context) {
         final String accept = "application/json";
-        return service.buildModelSync(this.client.getEndpoint(), this.client.getApiVersion(), buildRequest, accept,
-            context);
+        return service.buildModelSync(
+                this.client.getEndpoint(), this.client.getApiVersion(), buildRequest, accept, context);
     }
 
     /**
      * Builds a custom document analysis model.
-     * 
+     *
      * @param buildRequest Building request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1183,16 +1656,21 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginBuildModelAsync(BuildDocumentModelRequest buildRequest) {
-        return PollerFlux.create(Duration.ofSeconds(1), () -> this.buildModelWithResponseAsync(buildRequest),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.buildModelWithResponseAsync(buildRequest),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Builds a custom document analysis model.
-     * 
+     *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1201,18 +1679,23 @@ public final class DocumentModelsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginBuildModelAsync(BuildDocumentModelRequest buildRequest,
-        Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1), () -> this.buildModelWithResponseAsync(buildRequest, context),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginBuildModelAsync(
+            BuildDocumentModelRequest buildRequest, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.buildModelWithResponseAsync(buildRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Builds a custom document analysis model.
-     * 
+     *
      * @param buildRequest Building request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1221,17 +1704,21 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginBuildModel(BuildDocumentModelRequest buildRequest) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.buildModelWithResponse(buildRequest, Context.NONE),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.buildModelWithResponse(buildRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Builds a custom document analysis model.
-     * 
+     *
      * @param buildRequest Building request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1241,16 +1728,21 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginBuildModel(BuildDocumentModelRequest buildRequest, Context context) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1), () -> this.buildModelWithResponse(buildRequest, context),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.buildModelWithResponse(buildRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     * 
+     *
      * @param composeRequest Compose request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1258,16 +1750,22 @@ public final class DocumentModelsImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DocumentModelsComposeModelHeaders, Void>>
-        composeModelWithResponseAsync(ComposeDocumentModelRequest composeRequest) {
+    public Mono<ResponseBase<DocumentModelsComposeModelHeaders, Void>> composeModelWithResponseAsync(
+            ComposeDocumentModelRequest composeRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.composeModel(this.client.getEndpoint(),
-            this.client.getApiVersion(), composeRequest, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.composeModel(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                composeRequest,
+                                accept,
+                                context));
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     * 
+     *
      * @param composeRequest Compose request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1276,16 +1774,16 @@ public final class DocumentModelsImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DocumentModelsComposeModelHeaders, Void>>
-        composeModelWithResponseAsync(ComposeDocumentModelRequest composeRequest, Context context) {
+    public Mono<ResponseBase<DocumentModelsComposeModelHeaders, Void>> composeModelWithResponseAsync(
+            ComposeDocumentModelRequest composeRequest, Context context) {
         final String accept = "application/json";
-        return service.composeModel(this.client.getEndpoint(), this.client.getApiVersion(), composeRequest, accept,
-            context);
+        return service.composeModel(
+                this.client.getEndpoint(), this.client.getApiVersion(), composeRequest, accept, context);
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     * 
+     *
      * @param composeRequest Compose request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1294,16 +1792,16 @@ public final class DocumentModelsImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<DocumentModelsComposeModelHeaders, Void>
-        composeModelWithResponse(ComposeDocumentModelRequest composeRequest, Context context) {
+    public ResponseBase<DocumentModelsComposeModelHeaders, Void> composeModelWithResponse(
+            ComposeDocumentModelRequest composeRequest, Context context) {
         final String accept = "application/json";
-        return service.composeModelSync(this.client.getEndpoint(), this.client.getApiVersion(), composeRequest, accept,
-            context);
+        return service.composeModelSync(
+                this.client.getEndpoint(), this.client.getApiVersion(), composeRequest, accept, context);
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     * 
+     *
      * @param composeRequest Compose request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1312,16 +1810,21 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginComposeModelAsync(ComposeDocumentModelRequest composeRequest) {
-        return PollerFlux.create(Duration.ofSeconds(1), () -> this.composeModelWithResponseAsync(composeRequest),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.composeModelWithResponseAsync(composeRequest),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     * 
+     *
      * @param composeRequest Compose request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1330,19 +1833,23 @@ public final class DocumentModelsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginComposeModelAsync(ComposeDocumentModelRequest composeRequest,
-        Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.composeModelWithResponseAsync(composeRequest, context),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginComposeModelAsync(
+            ComposeDocumentModelRequest composeRequest, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.composeModelWithResponseAsync(composeRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     * 
+     *
      * @param composeRequest Compose request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1351,17 +1858,21 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginComposeModel(ComposeDocumentModelRequest composeRequest) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.composeModelWithResponse(composeRequest, Context.NONE),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.composeModelWithResponse(composeRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Creates a new document model from document types of existing document models.
-     * 
+     *
      * @param composeRequest Compose request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1370,114 +1881,124 @@ public final class DocumentModelsImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginComposeModel(ComposeDocumentModelRequest composeRequest,
-        Context context) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.composeModelWithResponse(composeRequest, context),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginComposeModel(
+            ComposeDocumentModelRequest composeRequest, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.composeModelWithResponse(composeRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Generates authorization to copy a document model to this location with specified modelId and optional
      * description.
-     * 
+     *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization to copy a document model to the specified target resource and modelId along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return authorization to copy a document model to the specified target resource and modelId along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CopyAuthorization>>
-        authorizeModelCopyWithResponseAsync(AuthorizeCopyRequest authorizeCopyRequest) {
+    public Mono<Response<CopyAuthorization>> authorizeModelCopyWithResponseAsync(
+            AuthorizeCopyRequest authorizeCopyRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.authorizeModelCopy(this.client.getEndpoint(),
-            this.client.getApiVersion(), authorizeCopyRequest, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.authorizeModelCopy(
+                                this.client.getEndpoint(),
+                                this.client.getApiVersion(),
+                                authorizeCopyRequest,
+                                accept,
+                                context));
     }
 
     /**
      * Generates authorization to copy a document model to this location with specified modelId and optional
      * description.
-     * 
+     *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization to copy a document model to the specified target resource and modelId along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return authorization to copy a document model to the specified target resource and modelId along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CopyAuthorization>>
-        authorizeModelCopyWithResponseAsync(AuthorizeCopyRequest authorizeCopyRequest, Context context) {
+    public Mono<Response<CopyAuthorization>> authorizeModelCopyWithResponseAsync(
+            AuthorizeCopyRequest authorizeCopyRequest, Context context) {
         final String accept = "application/json";
-        return service.authorizeModelCopy(this.client.getEndpoint(), this.client.getApiVersion(), authorizeCopyRequest,
-            accept, context);
+        return service.authorizeModelCopy(
+                this.client.getEndpoint(), this.client.getApiVersion(), authorizeCopyRequest, accept, context);
     }
 
     /**
      * Generates authorization to copy a document model to this location with specified modelId and optional
      * description.
-     * 
+     *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return authorization to copy a document model to the specified target resource and modelId on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyAuthorization> authorizeModelCopyAsync(AuthorizeCopyRequest authorizeCopyRequest) {
         return authorizeModelCopyWithResponseAsync(authorizeCopyRequest)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Generates authorization to copy a document model to this location with specified modelId and optional
      * description.
-     * 
+     *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return authorization to copy a document model to the specified target resource and modelId on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CopyAuthorization> authorizeModelCopyAsync(AuthorizeCopyRequest authorizeCopyRequest, Context context) {
         return authorizeModelCopyWithResponseAsync(authorizeCopyRequest, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Generates authorization to copy a document model to this location with specified modelId and optional
      * description.
-     * 
+     *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return authorization to copy a document model to the specified target resource and modelId along with
-     * {@link Response}.
+     * @return authorization to copy a document model to the specified target resource and modelId along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CopyAuthorization> authorizeModelCopyWithResponse(AuthorizeCopyRequest authorizeCopyRequest,
-        Context context) {
+    public Response<CopyAuthorization> authorizeModelCopyWithResponse(
+            AuthorizeCopyRequest authorizeCopyRequest, Context context) {
         final String accept = "application/json";
-        return service.authorizeModelCopySync(this.client.getEndpoint(), this.client.getApiVersion(),
-            authorizeCopyRequest, accept, context);
+        return service.authorizeModelCopySync(
+                this.client.getEndpoint(), this.client.getApiVersion(), authorizeCopyRequest, accept, context);
     }
 
     /**
      * Generates authorization to copy a document model to this location with specified modelId and optional
      * description.
-     * 
+     *
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1491,7 +2012,7 @@ public final class DocumentModelsImpl {
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1500,16 +2021,23 @@ public final class DocumentModelsImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DocumentModelsCopyModelToHeaders, Void>> copyModelToWithResponseAsync(String modelId,
-        CopyAuthorization copyToRequest) {
+    public Mono<ResponseBase<DocumentModelsCopyModelToHeaders, Void>> copyModelToWithResponseAsync(
+            String modelId, CopyAuthorization copyToRequest) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.copyModelTo(this.client.getEndpoint(), modelId,
-            this.client.getApiVersion(), copyToRequest, accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.copyModelTo(
+                                this.client.getEndpoint(),
+                                modelId,
+                                this.client.getApiVersion(),
+                                copyToRequest,
+                                accept,
+                                context));
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param context The context to associate with this operation.
@@ -1519,16 +2047,16 @@ public final class DocumentModelsImpl {
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<DocumentModelsCopyModelToHeaders, Void>> copyModelToWithResponseAsync(String modelId,
-        CopyAuthorization copyToRequest, Context context) {
+    public Mono<ResponseBase<DocumentModelsCopyModelToHeaders, Void>> copyModelToWithResponseAsync(
+            String modelId, CopyAuthorization copyToRequest, Context context) {
         final String accept = "application/json";
-        return service.copyModelTo(this.client.getEndpoint(), modelId, this.client.getApiVersion(), copyToRequest,
-            accept, context);
+        return service.copyModelTo(
+                this.client.getEndpoint(), modelId, this.client.getApiVersion(), copyToRequest, accept, context);
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param context The context to associate with this operation.
@@ -1538,16 +2066,16 @@ public final class DocumentModelsImpl {
      * @return the {@link ResponseBase}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ResponseBase<DocumentModelsCopyModelToHeaders, Void> copyModelToWithResponse(String modelId,
-        CopyAuthorization copyToRequest, Context context) {
+    public ResponseBase<DocumentModelsCopyModelToHeaders, Void> copyModelToWithResponse(
+            String modelId, CopyAuthorization copyToRequest, Context context) {
         final String accept = "application/json";
-        return service.copyModelToSync(this.client.getEndpoint(), modelId, this.client.getApiVersion(), copyToRequest,
-            accept, context);
+        return service.copyModelToSync(
+                this.client.getEndpoint(), modelId, this.client.getApiVersion(), copyToRequest, accept, context);
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1557,16 +2085,21 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginCopyModelToAsync(String modelId, CopyAuthorization copyToRequest) {
-        return PollerFlux.create(Duration.ofSeconds(1), () -> this.copyModelToWithResponseAsync(modelId, copyToRequest),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.copyModelToWithResponseAsync(modelId, copyToRequest),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param context The context to associate with this operation.
@@ -1576,19 +2109,23 @@ public final class DocumentModelsImpl {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCopyModelToAsync(String modelId, CopyAuthorization copyToRequest,
-        Context context) {
-        return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.copyModelToWithResponseAsync(modelId, copyToRequest, context),
-            new DefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginCopyModelToAsync(
+            String modelId, CopyAuthorization copyToRequest, Context context) {
+        return PollerFlux.create(
+                Duration.ofSeconds(1),
+                () -> this.copyModelToWithResponseAsync(modelId, copyToRequest, context),
+                new DefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1598,17 +2135,21 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginCopyModelTo(String modelId, CopyAuthorization copyToRequest) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.copyModelToWithResponse(modelId, copyToRequest, Context.NONE),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(Context.NONE)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.copyModelToWithResponse(modelId, copyToRequest, Context.NONE),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        Context.NONE),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * Copies document model to the target resource, region, and modelId.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
      * @param context The context to associate with this operation.
@@ -1618,55 +2159,74 @@ public final class DocumentModelsImpl {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCopyModelTo(String modelId, CopyAuthorization copyToRequest,
-        Context context) {
-        return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.copyModelToWithResponse(modelId, copyToRequest, context),
-            new SyncDefaultPollingStrategy<>(new PollingStrategyOptions(this.client.getHttpPipeline())
-                .setEndpoint("{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()))
-                .setContext(context)),
-            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
+    public SyncPoller<BinaryData, BinaryData> beginCopyModelTo(
+            String modelId, CopyAuthorization copyToRequest, Context context) {
+        return SyncPoller.createPoller(
+                Duration.ofSeconds(1),
+                () -> this.copyModelToWithResponse(modelId, copyToRequest, context),
+                new SyncDefaultPollingStrategy<>(
+                        this.client.getHttpPipeline(),
+                        "{endpoint}/formrecognizer".replace("{endpoint}", this.client.getEndpoint()),
+                        null,
+                        context),
+                TypeReference.createInstance(BinaryData.class),
+                TypeReference.createInstance(BinaryData.class));
     }
 
     /**
      * List all document models.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list document models response object along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list document models response object along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DocumentModelSummary>> listModelsSinglePageAsync() {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listModels(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+        return FluxUtil.withContext(
+                        context ->
+                                service.listModels(
+                                        this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * List all document models.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list document models response object along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list document models response object along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DocumentModelSummary>> listModelsSinglePageAsync(Context context) {
         final String accept = "application/json";
         return service.listModels(this.client.getEndpoint(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * List all document models.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list document models response object as paginated response with {@link PagedFlux}.
@@ -1678,7 +2238,7 @@ public final class DocumentModelsImpl {
 
     /**
      * List all document models.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1687,13 +2247,13 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DocumentModelSummary> listModelsAsync(Context context) {
-        return new PagedFlux<>(() -> listModelsSinglePageAsync(context),
-            nextLink -> listModelsNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(
+                () -> listModelsSinglePageAsync(context), nextLink -> listModelsNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all document models.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list document models response object along with {@link PagedResponse}.
@@ -1701,15 +2261,20 @@ public final class DocumentModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DocumentModelSummary> listModelsSinglePage() {
         final String accept = "application/json";
-        Response<GetDocumentModelsResponse> res
-            = service.listModelsSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<GetDocumentModelsResponse> res =
+                service.listModelsSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * List all document models.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1719,28 +2284,33 @@ public final class DocumentModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DocumentModelSummary> listModelsSinglePage(Context context) {
         final String accept = "application/json";
-        Response<GetDocumentModelsResponse> res
-            = service.listModelsSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<GetDocumentModelsResponse> res =
+                service.listModelsSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * List all document models.
-     * 
+     *
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list document models response object as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DocumentModelSummary> listModels() {
-        return new PagedIterable<>(() -> listModelsSinglePage(Context.NONE),
-            nextLink -> listModelsNextSinglePage(nextLink));
+        return new PagedIterable<>(
+                () -> listModelsSinglePage(Context.NONE), nextLink -> listModelsNextSinglePage(nextLink));
     }
 
     /**
      * List all document models.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1749,13 +2319,13 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DocumentModelSummary> listModels(Context context) {
-        return new PagedIterable<>(() -> listModelsSinglePage(context),
-            nextLink -> listModelsNextSinglePage(nextLink, context));
+        return new PagedIterable<>(
+                () -> listModelsSinglePage(context), nextLink -> listModelsNextSinglePage(nextLink, context));
     }
 
     /**
      * Gets detailed document model information.
-     * 
+     *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1765,13 +2335,15 @@ public final class DocumentModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DocumentModelDetails>> getModelWithResponseAsync(String modelId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getModel(this.client.getEndpoint(), modelId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.getModel(
+                                this.client.getEndpoint(), modelId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Gets detailed document model information.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1787,7 +2359,7 @@ public final class DocumentModelsImpl {
 
     /**
      * Gets detailed document model information.
-     * 
+     *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1801,7 +2373,7 @@ public final class DocumentModelsImpl {
 
     /**
      * Gets detailed document model information.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1816,7 +2388,7 @@ public final class DocumentModelsImpl {
 
     /**
      * Gets detailed document model information.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1832,7 +2404,7 @@ public final class DocumentModelsImpl {
 
     /**
      * Gets detailed document model information.
-     * 
+     *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1846,7 +2418,7 @@ public final class DocumentModelsImpl {
 
     /**
      * Deletes document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1856,13 +2428,15 @@ public final class DocumentModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteModelWithResponseAsync(String modelId) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteModel(this.client.getEndpoint(), modelId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteModel(
+                                this.client.getEndpoint(), modelId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Deletes document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1878,7 +2452,7 @@ public final class DocumentModelsImpl {
 
     /**
      * Deletes document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1892,7 +2466,7 @@ public final class DocumentModelsImpl {
 
     /**
      * Deletes document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1907,7 +2481,7 @@ public final class DocumentModelsImpl {
 
     /**
      * Deletes document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1918,13 +2492,13 @@ public final class DocumentModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteModelWithResponse(String modelId, Context context) {
         final String accept = "application/json";
-        return service.deleteModelSync(this.client.getEndpoint(), modelId, this.client.getApiVersion(), accept,
-            context);
+        return service.deleteModelSync(
+                this.client.getEndpoint(), modelId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes document model.
-     * 
+     *
      * @param modelId Unique document model name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -1937,52 +2511,63 @@ public final class DocumentModelsImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list document models response object along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list document models response object along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DocumentModelSummary>> listModelsNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listModelsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+        return FluxUtil.withContext(
+                        context -> service.listModelsNext(nextLink, this.client.getEndpoint(), accept, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list document models response object along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list document models response object along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DocumentModelSummary>> listModelsNextSinglePageAsync(String nextLink, Context context) {
         final String accept = "application/json";
         return service.listModelsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), res.getValue().getNextLink(), null));
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1991,18 +2576,22 @@ public final class DocumentModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DocumentModelSummary> listModelsNextSinglePage(String nextLink) {
         final String accept = "application/json";
-        Response<GetDocumentModelsResponse> res
-            = service.listModelsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<GetDocumentModelsResponse> res =
+                service.listModelsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -2012,9 +2601,14 @@ public final class DocumentModelsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DocumentModelSummary> listModelsNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        Response<GetDocumentModelsResponse> res
-            = service.listModelsNextSync(nextLink, this.client.getEndpoint(), accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), res.getValue().getNextLink(), null);
+        Response<GetDocumentModelsResponse> res =
+                service.listModelsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getValue(),
+                res.getValue().getNextLink(),
+                null);
     }
 }

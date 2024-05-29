@@ -5,44 +5,39 @@
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Font style.
- */
+/** Font style. */
 public final class FontStyle extends ExpandableStringEnum<FontStyle> {
-    /**
-     * Characters are represented normally.
-     */
+    /** Static value normal for FontStyle. */
     public static final FontStyle NORMAL = fromString("normal");
 
-    /**
-     * Characters are visually slanted to the right.
-     */
+    /** Static value italic for FontStyle. */
     public static final FontStyle ITALIC = fromString("italic");
 
     /**
      * Creates a new instance of FontStyle value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public FontStyle() {
-    }
+    public FontStyle() {}
 
     /**
      * Creates or finds a FontStyle from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding FontStyle.
      */
+    @JsonCreator
     public static FontStyle fromString(String name) {
         return fromString(name, FontStyle.class);
     }
 
     /**
      * Gets known FontStyle values.
-     * 
+     *
      * @return known FontStyle values.
      */
     public static Collection<FontStyle> values() {

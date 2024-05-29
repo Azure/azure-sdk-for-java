@@ -6,42 +6,41 @@ package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Text extracted from a page in the input document.
- */
+/** Text extracted from a page in the input document. */
 @Fluent
-public final class ReadResult implements JsonSerializable<ReadResult> {
+public final class ReadResult {
     /*
      * The 1-based page number in the input document.
      */
+    @JsonProperty(value = "page", required = true)
     private int page;
 
     /*
      * The general orientation of the text in clockwise direction, measured in degrees between (-180, 180].
      */
+    @JsonProperty(value = "angle", required = true)
     private float angle;
 
     /*
      * The width of the image/PDF in pixels/inches, respectively.
      */
+    @JsonProperty(value = "width", required = true)
     private float width;
 
     /*
      * The height of the image/PDF in pixels/inches, respectively.
      */
+    @JsonProperty(value = "height", required = true)
     private float height;
 
     /*
      * The unit used by the width, height and boundingBox properties. For images, the unit is "pixel". For PDF, the
      * unit is "inch".
      */
+    @JsonProperty(value = "unit", required = true)
     private LengthUnit unit;
 
     /*
@@ -50,22 +49,21 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
      * with higher priority. As the sorting order depends on the detected text, it may change across images and OCR
      * version updates. Thus, business logic should be built upon the actual line location instead of order.
      */
+    @JsonProperty(value = "lines")
     private List<TextLine> lines;
 
     /*
      * List of selection marks extracted from the page.
      */
+    @JsonProperty(value = "selectionMarks")
     private List<SelectionMark> selectionMarks;
 
-    /**
-     * Creates an instance of ReadResult class.
-     */
-    public ReadResult() {
-    }
+    /** Creates an instance of ReadResult class. */
+    public ReadResult() {}
 
     /**
      * Get the page property: The 1-based page number in the input document.
-     * 
+     *
      * @return the page value.
      */
     public int getPage() {
@@ -74,7 +72,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
 
     /**
      * Set the page property: The 1-based page number in the input document.
-     * 
+     *
      * @param page the page value to set.
      * @return the ReadResult object itself.
      */
@@ -86,7 +84,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
     /**
      * Get the angle property: The general orientation of the text in clockwise direction, measured in degrees between
      * (-180, 180].
-     * 
+     *
      * @return the angle value.
      */
     public float getAngle() {
@@ -96,7 +94,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
     /**
      * Set the angle property: The general orientation of the text in clockwise direction, measured in degrees between
      * (-180, 180].
-     * 
+     *
      * @param angle the angle value to set.
      * @return the ReadResult object itself.
      */
@@ -107,7 +105,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
 
     /**
      * Get the width property: The width of the image/PDF in pixels/inches, respectively.
-     * 
+     *
      * @return the width value.
      */
     public float getWidth() {
@@ -116,7 +114,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
 
     /**
      * Set the width property: The width of the image/PDF in pixels/inches, respectively.
-     * 
+     *
      * @param width the width value to set.
      * @return the ReadResult object itself.
      */
@@ -127,7 +125,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
 
     /**
      * Get the height property: The height of the image/PDF in pixels/inches, respectively.
-     * 
+     *
      * @return the height value.
      */
     public float getHeight() {
@@ -136,7 +134,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
 
     /**
      * Set the height property: The height of the image/PDF in pixels/inches, respectively.
-     * 
+     *
      * @param height the height value to set.
      * @return the ReadResult object itself.
      */
@@ -148,7 +146,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
     /**
      * Get the unit property: The unit used by the width, height and boundingBox properties. For images, the unit is
      * "pixel". For PDF, the unit is "inch".
-     * 
+     *
      * @return the unit value.
      */
     public LengthUnit getUnit() {
@@ -158,7 +156,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
     /**
      * Set the unit property: The unit used by the width, height and boundingBox properties. For images, the unit is
      * "pixel". For PDF, the unit is "inch".
-     * 
+     *
      * @param unit the unit value to set.
      * @return the ReadResult object itself.
      */
@@ -170,10 +168,10 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
     /**
      * Get the lines property: When includeTextDetails is set to true, a list of recognized text lines. The maximum
      * number of lines returned is 300 per page. The lines are sorted top to bottom, left to right, although in certain
-     * cases proximity is treated with higher priority. As the sorting order depends on the detected text, it may
-     * change across images and OCR version updates. Thus, business logic should be built upon the actual line location
-     * instead of order.
-     * 
+     * cases proximity is treated with higher priority. As the sorting order depends on the detected text, it may change
+     * across images and OCR version updates. Thus, business logic should be built upon the actual line location instead
+     * of order.
+     *
      * @return the lines value.
      */
     public List<TextLine> getLines() {
@@ -183,10 +181,10 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
     /**
      * Set the lines property: When includeTextDetails is set to true, a list of recognized text lines. The maximum
      * number of lines returned is 300 per page. The lines are sorted top to bottom, left to right, although in certain
-     * cases proximity is treated with higher priority. As the sorting order depends on the detected text, it may
-     * change across images and OCR version updates. Thus, business logic should be built upon the actual line location
-     * instead of order.
-     * 
+     * cases proximity is treated with higher priority. As the sorting order depends on the detected text, it may change
+     * across images and OCR version updates. Thus, business logic should be built upon the actual line location instead
+     * of order.
+     *
      * @param lines the lines value to set.
      * @return the ReadResult object itself.
      */
@@ -197,7 +195,7 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
 
     /**
      * Get the selectionMarks property: List of selection marks extracted from the page.
-     * 
+     *
      * @return the selectionMarks value.
      */
     public List<SelectionMark> getSelectionMarks() {
@@ -206,67 +204,12 @@ public final class ReadResult implements JsonSerializable<ReadResult> {
 
     /**
      * Set the selectionMarks property: List of selection marks extracted from the page.
-     * 
+     *
      * @param selectionMarks the selectionMarks value to set.
      * @return the ReadResult object itself.
      */
     public ReadResult setSelectionMarks(List<SelectionMark> selectionMarks) {
         this.selectionMarks = selectionMarks;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("page", this.page);
-        jsonWriter.writeFloatField("angle", this.angle);
-        jsonWriter.writeFloatField("width", this.width);
-        jsonWriter.writeFloatField("height", this.height);
-        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
-        jsonWriter.writeArrayField("lines", this.lines, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("selectionMarks", this.selectionMarks,
-            (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ReadResult from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ReadResult if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ReadResult.
-     */
-    public static ReadResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ReadResult deserializedReadResult = new ReadResult();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("page".equals(fieldName)) {
-                    deserializedReadResult.page = reader.getInt();
-                } else if ("angle".equals(fieldName)) {
-                    deserializedReadResult.angle = reader.getFloat();
-                } else if ("width".equals(fieldName)) {
-                    deserializedReadResult.width = reader.getFloat();
-                } else if ("height".equals(fieldName)) {
-                    deserializedReadResult.height = reader.getFloat();
-                } else if ("unit".equals(fieldName)) {
-                    deserializedReadResult.unit = LengthUnit.fromString(reader.getString());
-                } else if ("lines".equals(fieldName)) {
-                    List<TextLine> lines = reader.readArray(reader1 -> TextLine.fromJson(reader1));
-                    deserializedReadResult.lines = lines;
-                } else if ("selectionMarks".equals(fieldName)) {
-                    List<SelectionMark> selectionMarks = reader.readArray(reader1 -> SelectionMark.fromJson(reader1));
-                    deserializedReadResult.selectionMarks = selectionMarks;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedReadResult;
-        });
     }
 }
