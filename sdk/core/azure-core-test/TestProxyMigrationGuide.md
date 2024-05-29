@@ -12,6 +12,7 @@ GitHub repository and documentation of how to set up and use the proxy can be fo
     - [Start the proxy server](#start-the-proxy-server)
     - [Record or playback tests](#record-or-playback-tests)
     - [Adding sanitizers](#adding-sanitizers)
+    - [Removing sanitizers](#removing-sanitizers)
 - [Migrate management-plane tests](#migrate-management-plane-tests)
 - [Next steps](#next-steps)
 - [Advanced details](#advanced-details)
@@ -147,6 +148,21 @@ In the snippet above, any storage endpoint URIs that match the specified URL reg
 made to `https://REDACTED-secondary.table.core.windows.net`, and URLs will also be sanitized in bodies and headers.
 
 For more details about sanitizers and their options, please refer to [TestProxySanitizer][test_proxy_sanitizer].
+
+### Removing sanitizers
+Azure SDK tools now include a [common set of sanitizers](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/Common/SanitizerDictionary.cs) applied by default to all test cases.
+These sanitizers are designed to remove sensitive information from the test recordings.
+Users have the option to disable specific sanitizers if needed.
+To disable a sanitizer, the `interceptorManager.removeSanitizer("SanitizerID")` method can be used within the test setup. 
+This flexibility allows developers to customize the sanitization process according to their testing requirements.
+
+- For example, to remove the sanitizer that targets the `$..id` body key, one would use `interceptorManager.removeSanitizer("AZSDK3440")`.
+```java
+if (!interceptorManager.isLiveMode()) {
+    // Remove the default sanitizer that redacts the value of JSON key "id" from the response body
+    interceptorManager.removeSanitizer("AZSDK3440");
+}
+```
 
 #### Note regarding body matching
 
