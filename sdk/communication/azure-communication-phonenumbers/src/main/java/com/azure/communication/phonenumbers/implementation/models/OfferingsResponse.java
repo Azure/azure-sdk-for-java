@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a wrapper around a list of offerings. */
+/** The OfferingsResponse model. */
 @Immutable
 public final class OfferingsResponse {
     /*
