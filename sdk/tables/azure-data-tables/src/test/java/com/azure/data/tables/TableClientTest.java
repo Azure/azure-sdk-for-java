@@ -77,7 +77,7 @@ public class TableClientTest extends TableClientTestBase {
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
         final String endpoint = "https://tb914c4cd1614894eprim.table.core.windows.net";
-        AzureCliCredential credential = new AzureCliCredentialBuilder().build();
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         tableClient = getClientBuilder(tableName, endpoint, credential, true).buildClient();
         tableClient.createTable();
     }
