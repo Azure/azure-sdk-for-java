@@ -30,6 +30,8 @@ import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolDefinition;
+import com.azure.ai.openai.assistants.models.VectorStoreOptions;
+import com.azure.ai.openai.assistants.models.VectorStoreUpdateOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -261,6 +263,32 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
             .setFilename(fileName);
         testRunner.accept(fileDetails, FilePurpose.FINE_TUNE);
+    }
+
+    void createVectorStoreRunner(Consumer<VectorStoreOptions> testRunner) {
+        VectorStoreOptions vectorStoreOptions = new VectorStoreOptions();
+        // TODO fill out with file IDs and low expiry date
+        testRunner.accept(vectorStoreOptions);
+    }
+
+    void listVectorStoreRunner(Runnable testRunner) {
+        testRunner.run();
+    }
+
+    void getVectorStoreRunner(Consumer<String> testRunner) {
+        // TODO upload a file
+        testRunner.accept("vectorStoreId");
+    }
+
+    void modifyVectorStoreRunner(BiConsumer<String, VectorStoreUpdateOptions> testRunner) {
+        VectorStoreUpdateOptions updateVectorStoreOptions = new VectorStoreUpdateOptions();
+        // TODO fill out with file IDs and low expiry date
+        testRunner.accept("vectorStoreId", updateVectorStoreOptions);
+    }
+
+    void deleteVectorStoreRunner(Consumer<String> testRunner) {
+        // TODO
+        testRunner.accept("vectorStoreId");
     }
 
     public HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
