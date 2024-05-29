@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The RunStepCompletionUsage model.
+ * Usage statistics related to the run step.
  */
 @Immutable
 public final class RunStepCompletionUsage implements JsonSerializable<RunStepCompletionUsage> {

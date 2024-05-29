@@ -21,7 +21,7 @@ public class RunStepDeltaToolCall implements JsonSerializable<RunStepDeltaToolCa
      * The type of the tool call detail item in a streaming run step's details.
      */
     @Generated
-    private String type;
+    private String type = "RunStepDeltaToolCall";
 
     /*
      * The index of the tool call detail in the run step's tool_calls array.
@@ -43,7 +43,6 @@ public class RunStepDeltaToolCall implements JsonSerializable<RunStepDeltaToolCa
      */
     @Generated
     protected RunStepDeltaToolCall(int index, String id) {
-        this.type = "RunStepDeltaToolCall";
         this.index = index;
         this.id = id;
     }

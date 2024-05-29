@@ -21,7 +21,7 @@ public class RunStepDeltaCodeInterpreterOutput implements JsonSerializable<RunSt
      * The type of the streaming run step tool call's Code Interpreter output.
      */
     @Generated
-    private String type;
+    private String type = "RunStepDeltaCodeInterpreterOutput";
 
     /*
      * The index of the output in the streaming run step tool call's Code Interpreter outputs array.
@@ -36,7 +36,6 @@ public class RunStepDeltaCodeInterpreterOutput implements JsonSerializable<RunSt
      */
     @Generated
     protected RunStepDeltaCodeInterpreterOutput(int index) {
-        this.type = "RunStepDeltaCodeInterpreterOutput";
         this.index = index;
     }
 

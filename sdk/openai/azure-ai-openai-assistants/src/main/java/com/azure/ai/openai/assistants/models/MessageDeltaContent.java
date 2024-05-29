@@ -21,7 +21,7 @@ public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent
      * The type of content for this content part.
      */
     @Generated
-    private String type;
+    private String type = "MessageDeltaContent";
 
     /*
      * The index of the content part of the message.
@@ -36,7 +36,6 @@ public class MessageDeltaContent implements JsonSerializable<MessageDeltaContent
      */
     @Generated
     protected MessageDeltaContent(int index) {
-        this.type = "MessageDeltaContent";
         this.index = index;
     }
 

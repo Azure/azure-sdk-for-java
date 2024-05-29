@@ -21,7 +21,7 @@ public class MessageDeltaTextAnnotation implements JsonSerializable<MessageDelta
      * The type of the text content annotation.
      */
     @Generated
-    private String type;
+    private String type = "MessageDeltaTextAnnotation";
 
     /*
      * The index of the annotation within a text content part.
@@ -36,7 +36,6 @@ public class MessageDeltaTextAnnotation implements JsonSerializable<MessageDelta
      */
     @Generated
     protected MessageDeltaTextAnnotation(int index) {
-        this.type = "MessageDeltaTextAnnotation";
         this.index = index;
     }
 
