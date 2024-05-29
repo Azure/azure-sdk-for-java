@@ -5,7 +5,9 @@ package com.azure.monitor.opentelemetry.exporter.implementation;
 
 import io.opentelemetry.api.common.AttributeKey;
 
-import static io.opentelemetry.api.common.AttributeKey.*;
+import static io.opentelemetry.api.common.AttributeKey.booleanKey;
+import static io.opentelemetry.api.common.AttributeKey.doubleKey;
+import static io.opentelemetry.api.common.AttributeKey.stringKey;
 
 public final class AiSemanticAttributes {
 
