@@ -94,7 +94,7 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
             interceptorManager.addSanitizers(new TestProxySanitizer("$..id", null,
                 "00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY));
             // Disable `Location`, `Operation-Location`, `$..id` and `$..name` from the default list of sanitizers as they are used in the SDK.
-            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030","AZSDK3493", "AZSDK3430");
+            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030", "AZSDK3493", "AZSDK3430");
         }
 
         ledgerOperationsInstance = new ConfidentialLedgerManagementOperations(ledgerManager);

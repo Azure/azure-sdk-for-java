@@ -35,6 +35,11 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
         HttpClient actualHttpClient = buildSyncAssertingClient(interceptorManager.isPlaybackMode()
             ? interceptorManager.getPlaybackClient() : httpClient);
 
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+        }
+
         String keyId = getEndpoint();
         keyId = keyId.endsWith("/") ? keyId + "secrets/" + secretName : keyId + "/secrets/" + secretName;
         CryptographyClientImpl implClient = getCryptographyClientImpl(actualHttpClient, keyId, serviceVersion);
