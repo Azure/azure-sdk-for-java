@@ -3349,11 +3349,8 @@ public final class AssistantsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIPageableListOfVectorStore listVectorStores(Integer limit, ListSortOrder order, String after,
-        String before) {
-        // Generated convenience method for listVectorStoresWithResponse
+    public PageableList<VectorStore> listVectorStores(Integer limit, ListSortOrder order, String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
         if (limit != null) {
             requestOptions.addQueryParam("limit", String.valueOf(limit), false);
@@ -3367,7 +3364,10 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listVectorStoresWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfVectorStore.class);
+        OpenAIPageableListOfVectorStore vectorStoreList
+            = listVectorStoresWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfVectorStore.class);
+        return PageableListAccessHelper.create(vectorStoreList.getData(), vectorStoreList.getFirstId(),
+            vectorStoreList.getLastId(), vectorStoreList.isHasMore());
     }
 
     /**
@@ -3380,12 +3380,13 @@ public final class AssistantsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIPageableListOfVectorStore listVectorStores() {
-        // Generated convenience method for listVectorStoresWithResponse
+    public PageableList<VectorStore> listVectorStores() {
         RequestOptions requestOptions = new RequestOptions();
-        return listVectorStoresWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfVectorStore.class);
+        OpenAIPageableListOfVectorStore vectorStoreList
+            = listVectorStoresWithResponse(requestOptions).getValue().toObject(OpenAIPageableListOfVectorStore.class);
+        return PageableListAccessHelper.create(vectorStoreList.getData(), vectorStoreList.getFirstId(),
+            vectorStoreList.getLastId(), vectorStoreList.isHasMore());
     }
 
     /**
@@ -3495,11 +3496,9 @@ public final class AssistantsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIPageableListOfVectorStoreFile listVectorStoreFiles(String vectorStoreId,
-        VectorStoreFileStatusFilter filter, Integer limit, ListSortOrder order, String after, String before) {
-        // Generated convenience method for listVectorStoreFilesWithResponse
+    public PageableList<VectorStoreFile> listVectorStoreFiles(String vectorStoreId, VectorStoreFileStatusFilter filter,
+        Integer limit, ListSortOrder order, String after, String before) {
         RequestOptions requestOptions = new RequestOptions();
         if (filter != null) {
             requestOptions.addQueryParam("filter", filter.toString(), false);
@@ -3516,8 +3515,11 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listVectorStoreFilesWithResponse(vectorStoreId, requestOptions).getValue()
-            .toObject(OpenAIPageableListOfVectorStoreFile.class);
+        OpenAIPageableListOfVectorStoreFile vectorStoreFileList
+            = listVectorStoreFilesWithResponse(vectorStoreId, requestOptions).getValue()
+                .toObject(OpenAIPageableListOfVectorStoreFile.class);
+        return PageableListAccessHelper.create(vectorStoreFileList.getData(), vectorStoreFileList.getFirstId(),
+            vectorStoreFileList.getLastId(), vectorStoreFileList.isHasMore());
     }
 
     /**
@@ -3532,13 +3534,14 @@ public final class AssistantsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIPageableListOfVectorStoreFile listVectorStoreFiles(String vectorStoreId) {
-        // Generated convenience method for listVectorStoreFilesWithResponse
+    public PageableList<VectorStoreFile> listVectorStoreFiles(String vectorStoreId) {
         RequestOptions requestOptions = new RequestOptions();
-        return listVectorStoreFilesWithResponse(vectorStoreId, requestOptions).getValue()
-            .toObject(OpenAIPageableListOfVectorStoreFile.class);
+        OpenAIPageableListOfVectorStoreFile vectorStoreFileList
+            = listVectorStoreFilesWithResponse(vectorStoreId, requestOptions).getValue()
+                .toObject(OpenAIPageableListOfVectorStoreFile.class);
+        return PageableListAccessHelper.create(vectorStoreFileList.getData(), vectorStoreFileList.getFirstId(),
+            vectorStoreFileList.getLastId(), vectorStoreFileList.isHasMore());
     }
 
     /**
@@ -3705,11 +3708,9 @@ public final class AssistantsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIPageableListOfVectorStoreFile listVectorStoreFileBatchFiles(String vectorStoreId, String batchId,
+    public PageableList<VectorStoreFile> listVectorStoreFileBatchFiles(String vectorStoreId, String batchId,
         VectorStoreFileStatusFilter filter, Integer limit, ListSortOrder order, String after, String before) {
-        // Generated convenience method for listVectorStoreFileBatchFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (filter != null) {
             requestOptions.addQueryParam("filter", filter.toString(), false);
@@ -3726,8 +3727,11 @@ public final class AssistantsClient {
         if (before != null) {
             requestOptions.addQueryParam("before", before, false);
         }
-        return listVectorStoreFileBatchFilesWithResponse(vectorStoreId, batchId, requestOptions).getValue()
-            .toObject(OpenAIPageableListOfVectorStoreFile.class);
+        OpenAIPageableListOfVectorStoreFile vectorStoreFileList
+            = listVectorStoreFileBatchFilesWithResponse(vectorStoreId, batchId, requestOptions).getValue()
+                .toObject(OpenAIPageableListOfVectorStoreFile.class);
+        return PageableListAccessHelper.create(vectorStoreFileList.getData(), vectorStoreFileList.getFirstId(),
+            vectorStoreFileList.getLastId(), vectorStoreFileList.isHasMore());
     }
 
     /**
@@ -3743,12 +3747,14 @@ public final class AssistantsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response data for a requested list of items.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OpenAIPageableListOfVectorStoreFile listVectorStoreFileBatchFiles(String vectorStoreId, String batchId) {
+    public PageableList<VectorStoreFile> listVectorStoreFileBatchFiles(String vectorStoreId, String batchId) {
         // Generated convenience method for listVectorStoreFileBatchFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return listVectorStoreFileBatchFilesWithResponse(vectorStoreId, batchId, requestOptions).getValue()
-            .toObject(OpenAIPageableListOfVectorStoreFile.class);
+        OpenAIPageableListOfVectorStoreFile vectorStoreFileList
+            = listVectorStoreFileBatchFilesWithResponse(vectorStoreId, batchId, requestOptions).getValue()
+                .toObject(OpenAIPageableListOfVectorStoreFile.class);
+        return PageableListAccessHelper.create(vectorStoreFileList.getData(), vectorStoreFileList.getFirstId(),
+            vectorStoreFileList.getLastId(), vectorStoreFileList.isHasMore());
     }
 }
