@@ -6,13 +6,13 @@ package com.azure.messaging.servicebus.models;
 import java.time.OffsetDateTime;
 
 /**
- * Options to specify when deleting messages.
+ * Options to specify when deleting a batch of messages.
  */
 public final class DeleteMessagesOptions {
     private OffsetDateTime beforeEnqueueTimeUtc;
 
     /**
-     * Creates a new instance of options to specify when deleting messages.
+     * Creates a new instance of options to specify when deleting a batch of messages.
      */
     public DeleteMessagesOptions() {
     }

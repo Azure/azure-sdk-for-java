@@ -12,7 +12,7 @@ public class PurgeMessagesOptions {
     private OffsetDateTime beforeEnqueueTimeUtc;
 
     /**
-     * Creates a new instance of options to specify when deleting messages.
+     * Creates a new instance of options to specify when purging messages.
      */
     public PurgeMessagesOptions() {
     }
@@ -31,9 +31,9 @@ public class PurgeMessagesOptions {
     }
 
     /**
-     * Gets the cutoff time for the deletion, only messages that were enqueued before this time will be deleted.
+     * Gets the cutoff time for the purging, only messages that were enqueued before this time will be purged.
      *
-     * @return the cutoff time for the deletion.
+     * @return the cutoff time for the purging.
      */
     public OffsetDateTime getBeforeEnqueueTimeUtc() {
         return beforeEnqueueTimeUtc;

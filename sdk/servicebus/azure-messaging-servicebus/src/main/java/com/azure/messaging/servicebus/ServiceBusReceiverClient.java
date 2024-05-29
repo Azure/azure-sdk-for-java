@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
@@ -848,8 +849,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     /**
      * Deletes up to {@code messageCount} messages from the entity enqueued before {@link OffsetDateTime#now()}.
      * The actual number of deleted messages may be less if there are fewer eligible messages in the entity.
-     *
      * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     * <p>You can delete a maximum of 4000 messages in a single API call, this is the current limit determined by
+     * the Service Bus service.</p>
      *
      * @param messageCount the desired number of messages to delete.
      * @return the number of messages deleted.
@@ -864,8 +866,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     /**
      * Deletes up to {@code messageCount} messages from the entity. The actual number of deleted messages may be less
      * if there are fewer eligible messages in the entity.
-     *
      * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     * <p>You can delete a maximum of 4000 messages in a single API call, this is the current limit determined by
+     * the Service Bus service.</p>
      *
      * @param messageCount the desired number of messages to delete.
      * @param options options used to delete the messages.
@@ -873,23 +876,44 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws IllegalArgumentException when the {@code messageCount} is less than 1 or exceeds the maximum allowed, as
      * determined by the Service Bus service.
+     * @throws NullPointerException if {@code options} is null.
      */
     public int deleteMessages(int messageCount, DeleteMessagesOptions options) {
         return asyncClient.deleteMessages(messageCount, options).block(operationTimeout);
     }
 
     /**
-     * Attempts to purge all messages from an entity.  Locked messages are not eligible for removal and will remain in
+     * Attempts to purge all messages from an entity. Locked messages are not eligible for removal and will remain in
      * the entity.
      * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
      * <p>
      * This method may invoke multiple service requests to delete all messages. Because multiple service requests may be
      * made, the possibility of partial success exists.  In this scenario, the method will stop attempting to delete
-     * additional messages and throw the exception that was encountered.
+     * additional messages and throw the exception that was encountered. Also, due to the multiple service requests,
+     * purge operation may exceed the configured {@link AmqpRetryOptions#getTryTimeout()}.
      * </p>
+     *
+     * @return the number of messages deleted.
+     */
+    public int purgeMessages() {
+        return purgeMessages(new PurgeMessagesOptions());
+    }
+
+    /**
+     * Attempts to purge all messages from an entity. Locked messages are not eligible for removal and will remain in
+     * the entity.
+     * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     * <p>
+     * This method may invoke multiple service requests to delete all messages. Because multiple service requests may be
+     * made, the possibility of partial success exists.  In this scenario, the method will stop attempting to delete
+     * additional messages and throw the exception that was encountered. Also, due to the multiple service requests,
+     * purge operation may exceed the configured {@link AmqpRetryOptions#getTryTimeout()}.
+     * </p>
+     *
      * @param options options used to purge the messages.
      *
      * @return the number of messages deleted.
+     * @throws NullPointerException if {@code options} is null.
      */
     public int purgeMessages(PurgeMessagesOptions options) {
         return asyncClient.purgeMessages(options).block();

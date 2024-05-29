@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.AmqpTransaction;
@@ -54,6 +55,7 @@ import java.util.function.Consumer;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
+import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
@@ -332,7 +334,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private static final Duration EXPIRED_RENEWAL_CLEANUP_INTERVAL = Duration.ofMinutes(2);
     private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
     private static final String TRANSACTION_LINK_NAME = "coordinator";
-    // the maximum number of messages to delete in a single batch.  This cap is established and enforced by the service.
+    /**
+     * The maximum number of messages to delete in a single batch.  This cap is established and enforced by the service.
+     */
     private static final int MAX_DELETE_MESSAGES_COUNT = 4000;
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClient.class);
 
@@ -1467,8 +1471,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     /**
      * Deletes up to {@code messageCount} messages from the entity enqueued before {@link OffsetDateTime#now()}.
      * The actual number of deleted messages may be less if there are fewer eligible messages in the entity.
-     *
      * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     * <p>You can delete a maximum of 4000 messages in a single API call, this is the current limit determined by
+     * the Service Bus service.</p>
      *
      * @param messageCount the desired number of messages to delete.
      * @return a {@link Mono} indicating the number of messages deleted.
@@ -1484,6 +1489,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * Deletes up to {@code messageCount} messages from the entity. The actual number of deleted messages may be less
      * if there are fewer eligible messages in the entity.
      * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     * <p>You can delete a maximum of 4000 messages in a single API call, this is the current limit determined by
+     * the Service Bus service.</p>
      *
      * @param messageCount the desired number of messages to delete.
      * @param options options used to delete the messages.
@@ -1491,26 +1498,49 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @throws IllegalArgumentException when the {@code messageCount} is less than 1 or exceeds the maximum allowed, as
      * determined by the Service Bus service.
+     * @throws NullPointerException if {@code options} is null.
      */
     public Mono<Integer> deleteMessages(int messageCount, DeleteMessagesOptions options) {
-        return deleteMessages(messageCount, options, receiverOptions.getSessionId())
-            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.DELETE_MESSAGES));
+        return deleteMessages(messageCount, options, receiverOptions.getSessionId());
     }
 
     /**
-     * Attempts to purge all messages from an entity.  Locked messages are not eligible for removal and will remain in
+     * Attempts to purge all messages from an entity. Locked messages are not eligible for removal and will remain in
      * the entity.
      * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
      * <p>
      * This method may invoke multiple service requests to delete all messages. Because multiple service requests may be
      * made, the possibility of partial success exists.  In this scenario, the method will stop attempting to delete
-     * additional messages and throw the exception that was encountered.
+     * additional messages and throw the exception that was encountered. Also, due to the multiple service requests,
+     * purge operation may exceed the configured {@link AmqpRetryOptions#getTryTimeout()}.
      * </p>
-     * @param options options used to purge the messages.
      *
      * @return a {@link Mono} indicating the number of messages deleted.
      */
+    public Mono<Integer> purgeMessages() {
+        return purgeMessages(new PurgeMessagesOptions());
+    }
+
+    /**
+     * Attempts to purge all messages from an entity. Locked messages are not eligible for removal and will remain in
+     * the entity.
+     * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
+     * <p>
+     * This method may invoke multiple service requests to delete all messages. Because multiple service requests may be
+     * made, the possibility of partial success exists.  In this scenario, the method will stop attempting to delete
+     * additional messages and throw the exception that was encountered. Also, due to the multiple service requests,
+     * purge operation may exceed the configured {@link AmqpRetryOptions#getTryTimeout()}.
+     * </p>
+     *
+     * @param options options used to purge the messages.
+     *
+     * @return a {@link Mono} indicating the number of messages deleted.
+     * @throws NullPointerException if {@code options} is null.
+     */
     public Mono<Integer> purgeMessages(PurgeMessagesOptions options) {
+        if (Objects.isNull(options)) {
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
+        }
         final DeleteMessagesOptions deleteMessagesOptions;
         if (options.getBeforeEnqueueTimeUtc() != null) {
             deleteMessagesOptions = new DeleteMessagesOptions()
@@ -1531,8 +1561,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                     return Mono.empty();
                 }
             })
-            .reduce(0, Integer::sum)
-            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.DELETE_MESSAGES));
+            .reduce(0, Integer::sum);
     }
 
     /**
@@ -1549,7 +1578,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalArgumentException when the {@code messageCount} is less than 1 or exceeds the maximum allowed, as
      * determined by the Service Bus service.
      */
-    Mono<Integer> deleteMessages(int messageCount, DeleteMessagesOptions options, String sessionId) {
+    private Mono<Integer> deleteMessages(int messageCount, DeleteMessagesOptions options, String sessionId) {
         if (isDisposed.get()) {
             return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "deleteMessages")));
@@ -1558,7 +1587,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         }
         if (messageCount <= 0 || messageCount > MAX_DELETE_MESSAGES_COUNT) {
-            final String message = "'maxMessages' must be a positive number and less than " + MAX_DELETE_MESSAGES_COUNT;
+            final String message = "'messageCount' must be a positive number and less than " + MAX_DELETE_MESSAGES_COUNT;
             return monoError(LOGGER, new IllegalArgumentException(message));
         }
         final OffsetDateTime beforeEnqueueTimeUtc;
@@ -1567,9 +1596,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         } else {
             beforeEnqueueTimeUtc = OffsetDateTime.now();
         }
-        return connectionProcessor
+        final Mono<Integer> deleteMessages = connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(managementNode -> managementNode.deleteMessages(messageCount, beforeEnqueueTimeUtc, getLinkName(sessionId), sessionId));
+
+        return withRetry(deleteMessages, connectionCacheWrapper.getRetryOptions(),
+            "Deleting messages timed out.", false)
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.DELETE_MESSAGES));
     }
 
     /**
