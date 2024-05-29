@@ -27,13 +27,13 @@ public class TimeWindowUtils {
     }
 
     /**
-     * Calculate the number of days that have passed since the start of the week
+     * Calculates the offset in days between two given days of the week.
      * @param today DayOfWeek enum of today
      * @param firstDayOfWeek the start day of the week
      * @return the number of days passed
      * */
     public static int getPassedWeekDays(DayOfWeek today, DayOfWeek firstDayOfWeek) {
-        int passedDays = (convertToWeekDayNumber(today) - convertToWeekDayNumber(firstDayOfWeek));
+        int passedDays = (today.getValue() - firstDayOfWeek.getValue());
         if (passedDays < 0) {
             return passedDays + RecurrenceConstants.DAYS_PER_WEEK;
         } else {
@@ -41,17 +41,12 @@ public class TimeWindowUtils {
         }
     }
 
-    public static int convertToWeekDayNumber(DayOfWeek dayOfWeek) {
-        return dayOfWeek.getValue() % 7;
-    }
-
     public static List<DayOfWeek> sortDaysOfWeek(List<DayOfWeek> daysOfWeek, DayOfWeek firstDayOfWeek) {
         final List<DayOfWeek> result = new ArrayList<>(daysOfWeek);
 
-        final int firstDayNum = TimeWindowUtils.convertToWeekDayNumber(firstDayOfWeek);
         Collections.sort(result, (a, b) -> {
-            int aIndex = (TimeWindowUtils.convertToWeekDayNumber(a) - firstDayNum + RecurrenceConstants.DAYS_PER_WEEK) % 7;
-            int bIndex = (TimeWindowUtils.convertToWeekDayNumber(b) - firstDayNum + RecurrenceConstants.DAYS_PER_WEEK) % 7;
+            int aIndex = (a.getValue() - firstDayOfWeek.getValue() + RecurrenceConstants.DAYS_PER_WEEK) % 7;
+            int bIndex = (b.getValue() - firstDayOfWeek.getValue() + RecurrenceConstants.DAYS_PER_WEEK) % 7;
             return aIndex - bIndex;
         });
         return result;
