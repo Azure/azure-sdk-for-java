@@ -40,6 +40,16 @@ import reactor.core.publisher.Mono;
  * {@link AsyncKeyEncryptionKey} are {@link JsonWebKey jsonWebKey} or {@link String Azure Key Vault key identifier}
  * and {@link TokenCredential credential}.</p>
  *
+ * <p>When a {@link AsyncKeyEncryptionKey KeyEncryptionKey async client} or
+ * {@link KeyEncryptionKey KeyEncryptionKey sync client} gets created using a
+ * {@code Azure Key Vault key identifier}, the first time a cryptographic operation is attempted, the client will
+ * attempt to retrieve the key material from the service, cache it, and perform all future cryptographic operations
+ * locally, deferring to the service when that's not possible. If key retrieval and caching fails because of a
+ * non-retryable error, the client will not make any further attempts and will fall back to performing all cryptographic
+ * operations on the service side. Conversely, when a {@link AsyncKeyEncryptionKey KeyEncryptionKey async client} or
+ * {@link KeyEncryptionKey KeyEncryptionKey sync client} gets created using a {@link JsonWebKey JSON Web Key}, all
+ * cryptographic operations will be performed locally.</p>
+ *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link KeyEncryptionKeyClientBuilder}.</p>
  *
