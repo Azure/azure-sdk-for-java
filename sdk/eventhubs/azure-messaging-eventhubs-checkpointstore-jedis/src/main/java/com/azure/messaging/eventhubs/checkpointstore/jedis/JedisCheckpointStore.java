@@ -144,6 +144,8 @@ public final class JedisCheckpointStore implements CheckpointStore {
 
                         sink.next(partitionOwnership);
                     }
+                } catch (Exception e) {
+                    sink.error(e);
                 } finally {
                     jedis.unwatch();
                 }
@@ -297,7 +299,7 @@ public final class JedisCheckpointStore implements CheckpointStore {
         AzureException exception = new AzureException("Unable to claim partition: " + partitionId +  ". " + message);
         addEventHubInformation(LOGGER.atInfo(), fullyQualifiedNamespace, eventHubName, consumerGroup)
             .addKeyValue(PARTITION_ID_KEY, partitionId)
-            .log("Unable to claim partition. ", exception);
+            .log("Unable to claim partition.", exception);
 
         return exception;
     }

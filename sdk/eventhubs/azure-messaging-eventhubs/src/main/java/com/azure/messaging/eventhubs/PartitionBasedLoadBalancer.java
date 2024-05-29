@@ -527,6 +527,7 @@ final class PartitionBasedLoadBalancer {
             log.log("Current partition distribution.");
         }
     }
+
     private PartitionOwnership createPartitionOwnershipRequest(
         final Map<String, PartitionOwnership> partitionOwnershipMap,
         final String partitionIdToClaim) {
