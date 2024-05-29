@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory=\
+com.azure.spring.testcontainers.service.connection.cosmos.CosmosContainerConnectionDetailsFactory

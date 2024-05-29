@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.cosmos;
 
+import com.azure.cosmos.ConnectionMode;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetails;
 
 public interface AzureCosmosConnectionDetails extends ConnectionDetails {
@@ -10,4 +11,10 @@ public interface AzureCosmosConnectionDetails extends ConnectionDetails {
     String getEndpoint();
 
     String getKey();
+
+    String getDatabase();
+
+    Boolean getEndpointDiscoveryEnabled();
+
+    ConnectionMode getConnectionMode();
 }

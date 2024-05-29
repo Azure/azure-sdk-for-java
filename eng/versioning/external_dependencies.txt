@@ -148,6 +148,7 @@ org.springframework.boot:spring-boot-starter-validation;3.2.5
 org.springframework.boot:spring-boot-starter-web;3.2.5
 org.springframework.boot:spring-boot-starter;3.2.5
 org.springframework.boot:spring-boot-test;3.2.5
+org.springframework.boot:spring-boot-testcontainers;3.2.5
 org.springframework.boot:spring-boot;3.2.5
 org.springframework.data:spring-data-commons;3.2.5
 org.springframework.data:spring-data-mongodb;4.2.5
@@ -335,6 +336,7 @@ org.revapi:revapi-maven-plugin;0.14.6
 org.sonatype.plugins:nexus-staging-maven-plugin;1.6.8
 org.testcontainers:testcontainers;1.19.7
 org.testcontainers:junit-jupiter;1.19.7
+org.testcontainers:azure;1.19.7
 
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than
