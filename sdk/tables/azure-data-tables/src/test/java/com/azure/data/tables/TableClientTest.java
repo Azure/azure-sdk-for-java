@@ -1057,6 +1057,74 @@ public class TableClientTest extends TableClientTestBase {
         assertEquals(s, (String) retrievedEntity.getProperties().get("stringField"));
     }
 
+    /**
+     * Create an entity with all supported types, and verify that both listEntities and getEntity return the correct and same type for each.
+     */
+    @Test
+    public void listAndGetEntitiesWithAllSupportedTypes() {
+        // Arrange
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        // final BinaryData binaryData = BinaryData.fromString("This is string bytes.");
+        final byte[] bytes = new byte[]{4, 5, 6, 7};
+        final boolean b = true;
+        final OffsetDateTime dateTime = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
+        final double d = 1.23D;
+        final UUID uuid = UUID.fromString("11111111-2222-3333-4444-555555555555");
+        final int i = 123;
+        final long l = 123L;
+        final String s = "Test";
+
+        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue)
+            //.addProperty("binaryField", binaryData.toBytes())
+            .addProperty("byteField", bytes)
+            .addProperty("booleanField", b)
+            .addProperty("dateTimeField", dateTime)
+            .addProperty("doubleField", d)
+            .addProperty("uuidField", uuid)
+            .addProperty("intField", i)
+            .addProperty("longField", l)
+            .addProperty("stringField", s);
+
+        tableClient.createEntity(tableEntity);
+
+        // Act
+        final TableEntity retrievedEntity = tableClient.getEntity(partitionKeyValue, rowKeyValue);
+        final Iterator<PagedResponse<TableEntity>> iterator = tableClient.listEntities().iterableByPage().iterator();
+        assertTrue(iterator.hasNext());
+
+        final TableEntity listedEntity = iterator.next().getValue().get(0);
+
+        // Assert
+        //assertEquals(binaryData, (BinaryData) retrievedEntity.getProperties().get("binaryField"));
+        //assertEquals(binaryData, (BinaryData) listedEntity.getProperties().get("binaryField"));
+
+        Assertions.assertArrayEquals(bytes, (byte[]) retrievedEntity.getProperties().get("byteField"));
+        Assertions.assertArrayEquals(bytes, (byte[]) listedEntity.getProperties().get("byteField"));
+
+        assertEquals(b, (boolean) retrievedEntity.getProperties().get("booleanField"));
+        assertEquals(b, (boolean) listedEntity.getProperties().get("booleanField"));
+
+        assertTrue(dateTime.isEqual((OffsetDateTime) retrievedEntity.getProperties().get("dateTimeField")));
+        assertTrue(dateTime.isEqual((OffsetDateTime) listedEntity.getProperties().get("dateTimeField")));
+
+        assertEquals(d, (double) retrievedEntity.getProperties().get("doubleField"));
+        assertEquals(d, (double) listedEntity.getProperties().get("doubleField"));
+
+        assertEquals(0, uuid.compareTo((UUID) retrievedEntity.getProperties().get("uuidField")));
+        assertEquals(0, uuid.compareTo((UUID) listedEntity.getProperties().get("uuidField")));
+
+        assertEquals(i, (int) retrievedEntity.getProperties().get("intField"));
+        assertEquals(i, (int) listedEntity.getProperties().get("intField"));
+
+        assertEquals(l, (long) retrievedEntity.getProperties().get("longField"));
+        assertEquals(l, (long) listedEntity.getProperties().get("longField"));
+
+        assertEquals(s, (String) retrievedEntity.getProperties().get("stringField"));
+        assertEquals(s, (String) listedEntity.getProperties().get("stringField"));
+
+    }
+
 
     @Test
     public void generateSasTokenWithMinimumParameters() {
