@@ -1960,20 +1960,27 @@ public abstract class HttpClientTests {
             method = HttpMethod.GET,
             path = "anything",
             expectedStatusCodes = { 200 },
-            queryParams = { "param1=value1", "param2=value2"})
-        HttpBinJSON get(@HostParam("url") String url, @QueryParam("param3") String queryParam);
+            queryParams = { "constantParam1=constantValue1", "constantParam2=constantValue2"})
+        HttpBinJSON get1(@HostParam("url") String url, @QueryParam("variableParam") String queryParam);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
             path = "anything",
             expectedStatusCodes = { 200 },
-            queryParams = { "param1=value1", "param1=value2"})
-        HttpBinJSON anotherGet(@HostParam("url") String url, @QueryParam("param1") String queryParam);
+            queryParams = { "param=constantValue1", "param=constantValue2"})
+        HttpBinJSON get2(@HostParam("url") String url, @QueryParam("param") String queryParam);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "param=constantValue1,constantValue2", "param=constantValue3"})
+        HttpBinJSON get3(@HostParam("url") String url, @QueryParam("param") String queryParam);
     }
 
     @Test
     public void queryParamsRequest() {
-        final HttpBinJSON json = createService(Service31.class).get(getRequestUri(), "value3");
+        final HttpBinJSON json = createService(Service31.class).get1(getRequestUri(), "variableValue");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything", json.url().substring(0, json.url().indexOf('?')));
@@ -1982,17 +1989,17 @@ public abstract class HttpClientTests {
 
         assertNotNull(queryParams);
         assertEquals(3, queryParams.size());
-        assertEquals(1, queryParams.get("param1").size());
-        assertEquals("value1", queryParams.get("param1").get(0));
-        assertEquals(1, queryParams.get("param2").size());
-        assertEquals("value2", queryParams.get("param2").get(0));
-        assertEquals(1, queryParams.get("param3").size());
-        assertEquals("value3", queryParams.get("param3").get(0));
+        assertEquals(1, queryParams.get("constantParam1").size());
+        assertEquals("constantValue1", queryParams.get("constantParam1").get(0));
+        assertEquals(1, queryParams.get("constantParam2").size());
+        assertEquals("constantValue2", queryParams.get("constantParam2").get(0));
+        assertEquals(1, queryParams.get("variableParam").size());
+        assertEquals("variableValue", queryParams.get("variableParam").get(0));
     }
 
     @Test
     public void queryParamsRequestWithMultipleValuesForSameName() {
-        final HttpBinJSON json = createService(Service31.class).anotherGet(getRequestUri(), "value3");
+        final HttpBinJSON json = createService(Service31.class).get2(getRequestUri(), "variableValue");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything", json.url().substring(0, json.url().indexOf('?')));
@@ -2001,10 +2008,28 @@ public abstract class HttpClientTests {
 
         assertNotNull(queryParams);
         assertEquals(1, queryParams.size());
-        assertEquals(3, queryParams.get("param1").size());
-        assertEquals("value1", queryParams.get("param1").get(0));
-        assertEquals("value2", queryParams.get("param1").get(1));
-        assertEquals("value3", queryParams.get("param1").get(2));
+        assertEquals(3, queryParams.get("param").size());
+        assertEquals("constantValue1", queryParams.get("param").get(0));
+        assertEquals("constantValue2", queryParams.get("param").get(1));
+        assertEquals("variableValue", queryParams.get("param").get(2));
+    }
+
+    @Test
+    public void queryParamsRequestWithMultipleValuesForSameNameAndValueArray() {
+        final HttpBinJSON json =
+            createService(Service31.class).get3(getRequestUri(), "variableValue1,variableValue2,variableValue3");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.url().substring(0, json.url().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertEquals(3, queryParams.get("param").size());
+        assertEquals("constantValue1%2CconstantValue2", queryParams.get("param").get(0));
+        assertEquals("constantValue3", queryParams.get("param").get(1));
+        assertEquals("variableValue1%2CvariableValue2%2CvariableValue3", queryParams.get("param").get(2));
     }
 
     // Helpers

@@ -159,19 +159,19 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     final String paramName = queryParam.substring(0, equalsIndex).trim();
 
                     if (!paramName.isEmpty()) {
-                        final String paramValue = queryParam.substring(equalsIndex + 1).trim();
+                        String paramValue = queryParam.substring(equalsIndex + 1).trim();
 
                         if (!paramValue.isEmpty()) {
                             constantQueryParams.compute(paramName, (key, value) -> {
                                 if (value == null) {
                                     List<String> valueList = new ArrayList<>();
 
-                                    valueList.add(paramValue);
+                                    valueList.add(paramValue.replace(",", "%2C"));
 
                                     return valueList;
                                 }
 
-                                value.add(paramValue);
+                                value.add(paramValue.replace(",", "%2C"));
 
                                 return value;
                             });
