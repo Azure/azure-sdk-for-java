@@ -57,7 +57,7 @@ listing the artifact's version.
 
 #### Release cadence
 
-Currently, the `azure-sdk-bom` releases monthly using the latest globally available(GA) versions of managed libraries.
+Currently, the `azure-sdk-bom` releases monthly using the latest generally available(GA) versions of managed libraries.
 
 #### Included library requirements
 
