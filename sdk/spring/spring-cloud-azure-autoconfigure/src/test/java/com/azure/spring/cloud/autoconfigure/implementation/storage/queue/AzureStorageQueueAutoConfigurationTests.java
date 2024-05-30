@@ -234,7 +234,7 @@ class AzureStorageQueueAutoConfigurationTests extends AbstractAzureServiceConfig
 
         private final String endpoint;
 
-        public CustomAzureStorageQueueConnectionDetails(String connectionString, String endpoint) {
+        CustomAzureStorageQueueConnectionDetails(String connectionString, String endpoint) {
             this.connectionString = connectionString;
             this.endpoint = endpoint;
         }

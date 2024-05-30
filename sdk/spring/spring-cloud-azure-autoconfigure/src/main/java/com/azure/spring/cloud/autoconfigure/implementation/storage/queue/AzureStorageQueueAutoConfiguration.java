@@ -6,7 +6,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.storage.queue;
 import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.AzureStorageConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.storage.blob.AzureStorageBlobConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.common.AzureStorageProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;

@@ -63,7 +63,7 @@ public class AzureEventHubsAutoConfiguration extends AzureServiceConfigurationBa
 
         private final AzureEventHubsProperties properties;
 
-        public PropertiesAzureEventHubsConnectionDetails(AzureEventHubsProperties properties) {
+        PropertiesAzureEventHubsConnectionDetails(AzureEventHubsProperties properties) {
             this.properties = properties;
         }
 
