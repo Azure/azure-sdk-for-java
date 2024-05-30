@@ -8,9 +8,11 @@ import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormatMode;
 import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormatOption;
 import com.azure.ai.openai.assistants.models.AssistantsApiToolChoiceOption;
 import com.azure.ai.openai.assistants.models.AssistantsApiToolChoiceOptionMode;
+import com.azure.ai.openai.assistants.models.AssistantsNamedToolChoice;
 import com.azure.ai.openai.assistants.models.AssistantsNamedToolChoiceType;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
+import com.azure.ai.openai.assistants.models.FunctionName;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.core.util.BinaryData;
@@ -75,5 +77,86 @@ public class AssistantApiToolChoiceSerializerTests {
         assertNull(toolChoice.getMode());
         assertNotNull(toolChoice.getToolChoice());
         assertEquals(AssistantsNamedToolChoiceType.CODE_INTERPRETER, toolChoice.getToolChoice().getType());
+    }
+
+    @Test
+    public void createAndRunThreadOptionsAutoMode() {
+        CreateAndRunThreadOptions options = new CreateAndRunThreadOptions("abc123");
+        options.setToolChoice(new AssistantsApiToolChoiceOption(AssistantsApiToolChoiceOptionMode.AUTO));
+        AssistantsApiToolChoiceOption toolChoice = options.getToolChoice();
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+
+        assertEquals(AssistantsApiToolChoiceOptionMode.AUTO, toolChoice.getMode());
+        assertTrue(json.contains("\"tool_choice\":\"auto\""));
+        assertTrue(json.contains("\"assistant_id\":\"abc123\""));
+    }
+
+    @Test
+    public void createAndRunThreadOptionsNoneMode() {
+        CreateAndRunThreadOptions options = new CreateAndRunThreadOptions("abc123");
+        options.setToolChoice(new AssistantsApiToolChoiceOption(AssistantsApiToolChoiceOptionMode.NONE));
+        AssistantsApiToolChoiceOption toolChoice = options.getToolChoice();
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+
+        assertEquals(AssistantsApiToolChoiceOptionMode.NONE, toolChoice.getMode());
+        assertTrue(json.contains("\"tool_choice\":\"none\""));
+        assertTrue(json.contains("\"assistant_id\":\"abc123\""));
+    }
+
+    @Test
+    public void createAndRunThreadOptionsFunctionCallToolChoice() {
+        CreateAndRunThreadOptions options = new CreateAndRunThreadOptions("abc123");
+        options.setToolChoice(new AssistantsApiToolChoiceOption(
+            new AssistantsNamedToolChoice(AssistantsNamedToolChoiceType.FUNCTION)
+                .setFunction(new FunctionName("my_function"))));
+        AssistantsApiToolChoiceOption toolChoice = options.getToolChoice();
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+
+        assertNull(toolChoice.getMode());
+        assertNotNull(toolChoice.getToolChoice());
+        assertEquals(AssistantsNamedToolChoiceType.FUNCTION, toolChoice.getToolChoice().getType());
+        assertEquals("my_function", toolChoice.getToolChoice().getFunction().getName());
+        assertTrue(json.contains("\"tool_choice\":{\"type\":\"function\",\"function\":{\"name\":\"my_function\"}}"));
+        assertTrue(json.contains("\"assistant_id\":\"abc123\""));
+    }
+
+    @Test
+    public void createAndRunThreadOptionsFileSearchToolChoice() {
+        CreateAndRunThreadOptions options = new CreateAndRunThreadOptions("abc123");
+        options.setToolChoice(new AssistantsApiToolChoiceOption(
+            new AssistantsNamedToolChoice(AssistantsNamedToolChoiceType.FILE_SEARCH)));
+        AssistantsApiToolChoiceOption toolChoice = options.getToolChoice();
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+
+        assertNull(toolChoice.getMode());
+        assertNotNull(toolChoice.getToolChoice());
+        assertEquals(AssistantsNamedToolChoiceType.FILE_SEARCH, toolChoice.getToolChoice().getType());
+        assertTrue(json.contains("\"tool_choice\":{\"type\":\"file_search\"}"));
+        assertTrue(json.contains("\"assistant_id\":\"abc123\""));
+    }
+
+    @Test
+    public void createAndRunThreadOptionsCodeInterpreterToolChoice() {
+        CreateAndRunThreadOptions options = new CreateAndRunThreadOptions("abc123");
+        options.setToolChoice(new AssistantsApiToolChoiceOption(
+            new AssistantsNamedToolChoice(AssistantsNamedToolChoiceType.CODE_INTERPRETER)));
+        AssistantsApiToolChoiceOption toolChoice = options.getToolChoice();
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+
+        assertNull(toolChoice.getMode());
+        assertNotNull(toolChoice.getToolChoice());
+        assertEquals(AssistantsNamedToolChoiceType.CODE_INTERPRETER, toolChoice.getToolChoice().getType());
+        assertTrue(json.contains("\"tool_choice\":{\"type\":\"code_interpreter\"}"));
+        assertTrue(json.contains("\"assistant_id\":\"abc123\""));
     }
 }
