@@ -9,7 +9,6 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
@@ -29,7 +28,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
@@ -52,18 +50,9 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (interceptorManager.isPlaybackMode()) {
-            documentTranslationClientbuilder
-                .httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+            documentTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isRecordMode()) {
-            documentTranslationClientbuilder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new AzureKeyCredential(key));
-        } else if (interceptorManager.isLiveMode()) {
-            documentTranslationClientbuilder.credential(new AzureKeyCredential(key));
-        }
-
-        if (interceptorManager.isRecordMode()) {
+            documentTranslationClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
             interceptorManager.removeSanitizers(DISABLE_SANITIZER_LIST);
         }
 
@@ -71,15 +60,17 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
             addTestProxySanitizers();
         }
 
+        documentTranslationClientbuilder.credential(new AzureKeyCredential(key));
+
         return documentTranslationClientbuilder.buildClient();
     }
 
     private void addTestProxySanitizers() {
         List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-        customSanitizers.add(new TestProxySanitizer("$..sourceUrl", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.BODY_KEY));
-        customSanitizers.add(new TestProxySanitizer("$..targetUrl", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.BODY_KEY));
-        customSanitizers.add(new TestProxySanitizer("$..glossaryUrl", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.BODY_KEY));
-        customSanitizers.add(new TestProxySanitizer("Operation-Location", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.HEADER));
+         customSanitizers.add(new TestProxySanitizer("$..sourceUrl", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.BODY_KEY));
+         customSanitizers.add(new TestProxySanitizer("$..targetUrl", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.BODY_KEY));
+         customSanitizers.add(new TestProxySanitizer("$..glossaryUrl", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.BODY_KEY));
+         customSanitizers.add(new TestProxySanitizer("Operation-Location", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.HEADER));
         interceptorManager.addSanitizers(customSanitizers);
     }
 
@@ -93,25 +84,17 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (interceptorManager.isPlaybackMode()) {
-            singleDocumentTranslationClientbuilder
-                .httpClient(interceptorManager.getPlaybackClient())
-                .credential(new MockTokenCredential());
+            singleDocumentTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isRecordMode()) {
-            singleDocumentTranslationClientbuilder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new AzureKeyCredential(key));
-        } else if (interceptorManager.isLiveMode()) {
-            singleDocumentTranslationClientbuilder
-                .credential(new AzureKeyCredential(key));
-        }
-
-        if (interceptorManager.isRecordMode()) {
+            singleDocumentTranslationClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
             interceptorManager.removeSanitizers(DISABLE_SANITIZER_LIST);
         }
 
         if (!interceptorManager.isLiveMode()) {
             addTestProxySanitizers();
         }
+
+        singleDocumentTranslationClientbuilder.credential(new AzureKeyCredential(key));
         return singleDocumentTranslationClientbuilder.buildClient();
     }
 
@@ -189,7 +172,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
     }
 
     String createSourceContainer(List<TestDocument> documents) {
-        String containerName = "source" + generateRandomName("");
+        String containerName = testResourceNamer.randomName("source", 10);
         BlobContainerClient blobContainerClient = createContainer(containerName, documents);
         OffsetDateTime expiresOn = OffsetDateTime.now().plusHours(1);
 
@@ -207,7 +190,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
     }
 
     String createTargetContainer(List<TestDocument> documents) {
-        String containerName = "target" + generateRandomName("");
+        String containerName = testResourceNamer.randomName("target", 10);
         BlobContainerClient blobContainerClient = createContainer(containerName, documents);
         OffsetDateTime expiresOn = OffsetDateTime.now().plusHours(1);
 
@@ -226,7 +209,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
     Map<String, String> createTargetContainerWithClient(List<TestDocument> documents) {
 
-        String containerName = "target" + generateRandomName("");
+        String containerName = testResourceNamer.randomName("target", 10);
         BlobContainerClient blobContainerClient = createContainer(containerName, documents);
         OffsetDateTime expiresOn = OffsetDateTime.now().plusHours(1);
 
@@ -249,7 +232,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
     }
 
     String createGlossary(TestDocument document) {
-        String containerName = "glossary" + generateRandomName("");
+        String containerName = testResourceNamer.randomName("glossary", 10);
         List<TestDocument> documents = new ArrayList<>();
         documents.add(document);
         BlobContainerClient blobContainerClient = createContainer(containerName, documents);
@@ -306,10 +289,6 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
             e.printStackTrace();
         }
         return "";
-    }
-
-    String generateRandomName(String baseName) {
-        return interceptorManager.isPlaybackMode() ? "REDACTED" : baseName + UUID.randomUUID();
     }
 
     public static String readInputStreamToString(InputStream inputStream) throws IOException {
