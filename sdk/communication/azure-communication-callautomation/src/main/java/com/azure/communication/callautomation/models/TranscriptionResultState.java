@@ -11,16 +11,16 @@ import java.util.Collection;
 /**
  * Defines values for TranscriptionResultTypeInternal.
  */
-public final class TranscriptionResultType extends ExpandableStringEnum<TranscriptionResultType> {
+public final class TranscriptionResultState extends ExpandableStringEnum<TranscriptionResultState> {
     /**
      * Static value final for TranscriptionResultTypeInternal.
      */
-    public static final TranscriptionResultType FINAL = fromString("final");
+    public static final TranscriptionResultState FINAL = fromString("final");
 
     /**
      * Static value intermediate for TranscriptionResultTypeInternal.
      */
-    public static final TranscriptionResultType INTERMEDIATE = fromString("intermediate");
+    public static final TranscriptionResultState INTERMEDIATE = fromString("intermediate");
 
     /**
      * Creates a new instance of TranscriptionResultTypeInternal value.
@@ -28,7 +28,7 @@ public final class TranscriptionResultType extends ExpandableStringEnum<Transcri
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public TranscriptionResultType() {
+    public TranscriptionResultState() {
     }
 
     /**
@@ -38,8 +38,8 @@ public final class TranscriptionResultType extends ExpandableStringEnum<Transcri
      * @return the corresponding TranscriptionResultTypeInternal.
      */
     @JsonCreator
-    public static TranscriptionResultType fromString(String name) {
-        return fromString(name, TranscriptionResultType.class);
+    public static TranscriptionResultState fromString(String name) {
+        return fromString(name, TranscriptionResultState.class);
     }
 
     /**
@@ -47,7 +47,7 @@ public final class TranscriptionResultType extends ExpandableStringEnum<Transcri
      * 
      * @return known TranscriptionResultTypeInternal values.
      */
-    public static Collection<TranscriptionResultType> values() {
-        return values(TranscriptionResultType.class);
+    public static Collection<TranscriptionResultState> values() {
+        return values(TranscriptionResultState.class);
     }
 }

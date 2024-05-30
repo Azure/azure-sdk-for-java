@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.models;
+import com.azure.core.annotation.Fluent;
 
 /**
  * Options for the Start media streaming operation.
  */
-public class StartMediaStreamingOptions {
+@Fluent
+public final class StartMediaStreamingOptions {
 
      /*
      * Set a callback URL that overrides the default callback URL set by CreateCall/AnswerCall for this operation.

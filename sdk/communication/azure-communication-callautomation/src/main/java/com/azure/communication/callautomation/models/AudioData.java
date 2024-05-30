@@ -14,7 +14,7 @@ public final class AudioData extends StreamingData {
     /*
      * The audio data.
      */
-    private final String data;
+    private final byte[] data;
 
     /*
      * The timestamp of when the media was sourced.
@@ -39,7 +39,7 @@ public final class AudioData extends StreamingData {
      * @param participantRawID The participantId.
      * @param silent Indicates if the received audio buffer contains only silence.
      */
-    public AudioData(String data, String timestamp, String participantRawID, boolean silent) {
+    public AudioData(byte[] data, String timestamp, String participantRawID, boolean silent) {
         this.data = data;
         this.timestamp = OffsetDateTime.parse(timestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         if (participantRawID != null && !participantRawID.isEmpty()) {
@@ -55,7 +55,7 @@ public final class AudioData extends StreamingData {
      *
      * @return the data value.
      */
-    public String getData() {
+    public byte[] getData() {
         return data;
     }
 

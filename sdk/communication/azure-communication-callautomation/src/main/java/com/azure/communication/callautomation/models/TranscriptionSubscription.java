@@ -29,7 +29,7 @@ public final class TranscriptionSubscription {
      * Gets or Sets the subscribed transcription result types.
      */
     @JsonProperty(value = "subscribedResultTypes")
-    private List<TranscriptionResultType> subscribedResultTypes;
+    private List<TranscriptionResultState> subscribedResultTypes;
 
     /**
      * Creates an instance of TranscriptionSubscriptionInternal class.
@@ -82,7 +82,7 @@ public final class TranscriptionSubscription {
      * 
      * @return the subscribedResultTypes value.
      */
-    public List<TranscriptionResultType> getSubscribedResultTypes() {
+    public List<TranscriptionResultState> getSubscribedResultTypes() {
         return this.subscribedResultTypes;
     }
 
@@ -93,7 +93,7 @@ public final class TranscriptionSubscription {
      * @return the TranscriptionSubscriptionInternal object itself.
      */
     public TranscriptionSubscription
-        setSubscribedResultTypes(List<TranscriptionResultType> subscribedResultTypes) {
+        setSubscribedResultTypes(List<TranscriptionResultState> subscribedResultTypes) {
         this.subscribedResultTypes = subscribedResultTypes;
         return this;
     }

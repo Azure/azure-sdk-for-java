@@ -131,7 +131,7 @@ public final class PlayToAllOptions {
      *
      * @return the interruptCallMediaOperation value.
      */
-    public boolean isInterruptCallMediaOperation() {
+    public Boolean isInterruptCallMediaOperation() {
         return this.interruptCallMediaOperation;
     }
 

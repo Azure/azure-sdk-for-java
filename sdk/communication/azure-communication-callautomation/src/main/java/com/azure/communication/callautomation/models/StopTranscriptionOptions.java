@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
  * Options for the Stop Transcription operation.
  */
 @Fluent
-public class StopTranscriptionOptions {
+public final class StopTranscriptionOptions {
 
     /**
      * The value to identify context of the operation.

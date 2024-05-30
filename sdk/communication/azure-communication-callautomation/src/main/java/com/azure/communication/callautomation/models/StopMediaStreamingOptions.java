@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
  * Options for the Stop media streaming operation.
  */
 @Fluent
-public class StopMediaStreamingOptions {
+public final class StopMediaStreamingOptions {
 /*
      * Set a callback URL that overrides the default callback URL set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URL set by CreateCall/AnswerCall will be

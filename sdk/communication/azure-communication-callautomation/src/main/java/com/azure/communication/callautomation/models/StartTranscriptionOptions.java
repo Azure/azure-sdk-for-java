@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
  * Options for the Start Transcription operation.
  */
 @Fluent
-public class StartTranscriptionOptions {
+public final class StartTranscriptionOptions {
 
     /**
      * Defines Locale for the transcription e,g en-US.
