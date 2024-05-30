@@ -604,7 +604,6 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
      * @param responseFormat the responseFormat value to set.
      * @return the CreateRunOptions object itself.
      */
-    @Generated
     public CreateRunOptions setResponseFormat(AssistantsApiResponseFormatOption responseFormat) {
         if (responseFormat.getFormat() != null) {
             this.responseFormat = BinaryData.fromObject(responseFormat.getFormat());

@@ -390,7 +390,6 @@ public final class UpdateAssistantOptions implements JsonSerializable<UpdateAssi
      *
      * @return the responseFormat value.
      */
-    @Generated
     public AssistantsApiResponseFormatOption getResponseFormat() {
         return AssistantsApiResponseFormatOption.fromBinaryData(this.responseFormat);
     }
@@ -401,7 +400,6 @@ public final class UpdateAssistantOptions implements JsonSerializable<UpdateAssi
      * @param responseFormat the responseFormat value to set.
      * @return the UpdateAssistantOptions object itself.
      */
-    @Generated
     public UpdateAssistantOptions setResponseFormat(AssistantsApiResponseFormatOption responseFormat) {
         if (responseFormat.getFormat() != null) {
             this.responseFormat = BinaryData.fromObject(responseFormat.getFormat());
