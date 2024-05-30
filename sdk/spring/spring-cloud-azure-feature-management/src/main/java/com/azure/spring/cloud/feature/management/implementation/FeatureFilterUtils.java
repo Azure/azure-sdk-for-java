@@ -8,8 +8,7 @@ import java.util.Map;
 
 public class FeatureFilterUtils {
     /**
-     * Looks at the given key in the parameters and coverts it to a list if it is currently a map. Used for updating
-     * fields in the targeting filter.
+     * Looks at the given key in the parameters and coverts it to a list if it is currently a map.
      *
      * @param parameters map of generic objects
      * @param key key of object int the parameters map

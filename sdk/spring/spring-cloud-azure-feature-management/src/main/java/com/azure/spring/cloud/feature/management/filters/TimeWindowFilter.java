@@ -73,7 +73,7 @@ public final class TimeWindowFilter implements FeatureFilter {
             }
         }
 
-        return (settings.getStart() != null || now.isAfter(settings.getStart()))
-            && (settings.getEnd() != null || now.isBefore(settings.getEnd()));
+        return (settings.getStart() == null || now.isAfter(settings.getStart()))
+            && (settings.getEnd() == null || now.isBefore(settings.getEnd()));
     }
 }

@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.feature.management.implementation.models;
 
 /**
- * The type of {@link RecurrenceRange} specifying the frequency by which the time window repeats.
+ * The type of {@link RecurrencePattern} specifying the frequency by which the time window repeats.
  * */
 public enum RecurrencePatternType {
     /**

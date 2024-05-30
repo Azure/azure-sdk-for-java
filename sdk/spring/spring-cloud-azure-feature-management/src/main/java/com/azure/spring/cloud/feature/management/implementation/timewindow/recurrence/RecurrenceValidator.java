@@ -45,7 +45,7 @@ public class RecurrenceValidator {
         }
         if (settings.getEnd().isAfter(settings.getStart().plusDays(RecurrenceConstants.TEN_YEARS))) {
             paramName = TIME_WINDOW_FILTER_SETTING_END;
-            reason = RecurrenceConstants.TIME_WINDOW_DURATION_OUT_OF_RANGE;
+            reason = RecurrenceConstants.TIME_WINDOW_DURATION_TEN_YEARS;
         }
 
         if (!paramName.isEmpty()) {
@@ -91,7 +91,7 @@ public class RecurrenceValidator {
 
         // Check whether the time window duration is shorter than the minimum gap between days of week
         if (!isDurationCompliantWithDaysOfWeek(settings)) {
-            throw new IllegalArgumentException("The time window between Start and End should be shorter than the minimum gap between Recurrence.Pattern.DaysOfWeek");
+            throw new IllegalArgumentException(String.format(RecurrenceConstants.TIME_WINDOW_DURATION_OUT_OF_RANGE, "Recurrence.Pattern.DaysOfWeek"));
         }
     }
 
@@ -105,7 +105,7 @@ public class RecurrenceValidator {
             : Duration.ofDays((long) pattern.getInterval() * RecurrenceConstants.DAYS_PER_WEEK);
         final Duration timeWindowDuration = Duration.between(settings.getStart(), settings.getEnd());
         if (timeWindowDuration.compareTo(intervalDuration) > 0) {
-            throw new IllegalArgumentException("The time window between Start and End should be shorter than the Interval");
+            throw new IllegalArgumentException(String.format(RecurrenceConstants.TIME_WINDOW_DURATION_OUT_OF_RANGE, "Recurrence.Pattern.Interval"));
         }
     }
 

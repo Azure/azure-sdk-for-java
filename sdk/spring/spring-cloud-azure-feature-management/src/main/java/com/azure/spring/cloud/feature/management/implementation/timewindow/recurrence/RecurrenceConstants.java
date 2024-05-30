@@ -19,6 +19,7 @@ public final class RecurrenceConstants {
     public static final String OUT_OF_RANGE = "The value of parameter %s is out of the accepted range.";
     public static final String REQUIRED_PARAMETER = "Value cannot be null for required parameter: %s";
     public static final String NOT_MATCHED = "%s date is not a valid first occurrence.";
-    public static final String TIME_WINDOW_DURATION_OUT_OF_RANGE = "Time window duration cannot be longer than how frequently it occurs or be longer than 10 years.";
+    public static final String TIME_WINDOW_DURATION_TEN_YEARS = "Time window duration cannot be longer than 10 years.";
+    public static final String TIME_WINDOW_DURATION_OUT_OF_RANGE = "The time window between Start and End should be shorter than the minimum gap between %s";
 
 }
