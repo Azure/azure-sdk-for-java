@@ -45,10 +45,20 @@ public final class AssistantsApiResponseFormatOption {
         this.format = format;
     }
 
+    /**
+     * Gets the mode in which the model will handle the return format of a tool call.
+     *
+     * @return The mode in which the model will handle the return format of a tool call.
+     */
     public AssistantsApiResponseFormatMode getMode() {
         return this.mode;
     }
 
+    /**
+     * Gets the format in which the model will handle the return format of a tool call.
+     *
+     * @return The format in which the model will handle the return format of a tool call.
+     */
     public AssistantsApiResponseFormat getFormat() {
         return this.format;
     }
