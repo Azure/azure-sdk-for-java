@@ -238,13 +238,17 @@ public class LocationCache {
 
         List<String> effectiveExcludedRegionsWithPartitionUnavailableRegions = new ArrayList<>(effectiveExcludedRegions);
 
-        logger.info("Printing unavailable location for partition");
+        if (unavailableRegionsForPartition != null) {
 
-        for (String unavailableRegionForPartition : unavailableRegionsForPartition) {
-            logger.info("Unavailable region : {}", unavailableRegionForPartition);
+            // todo: remove logging statements eventually
+            logger.info("Printing unavailable location for partition");
+
+            for (String unavailableRegionForPartition : unavailableRegionsForPartition) {
+                logger.info("Unavailable region : {}", unavailableRegionForPartition);
+            }
+
+            effectiveExcludedRegionsWithPartitionUnavailableRegions.addAll(unavailableRegionsForPartition);
         }
-
-        effectiveExcludedRegionsWithPartitionUnavailableRegions.addAll(unavailableRegionsForPartition);
 
         // filter regions based on the exclude region config
         return this.getApplicableEndpoints(
@@ -275,12 +279,17 @@ public class LocationCache {
         }
 
         List<String> effectiveExcludedRegionsWithPartitionUnavailableRegions = new ArrayList<>(effectiveExcludedRegions);
-        effectiveExcludedRegionsWithPartitionUnavailableRegions.addAll(unavailableRegionsForPartition);
 
-        logger.info("Printing unavailable region for partition");
+        if (unavailableRegionsForPartition != null) {
 
-        for (String unavailableRegionForPartition : unavailableRegionsForPartition) {
-            logger.info("Unavailable region : {}", unavailableRegionForPartition);
+            // todo: remove logging statements eventually
+            logger.info("Printing unavailable region for partition");
+
+            for (String unavailableRegionForPartition : unavailableRegionsForPartition) {
+                logger.info("Unavailable region : {}", unavailableRegionForPartition);
+            }
+
+            effectiveExcludedRegionsWithPartitionUnavailableRegions.addAll(unavailableRegionsForPartition);
         }
 
         // filter regions based on the exclude region config

@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.FeedOperationContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
@@ -202,11 +201,11 @@ abstract class Fetcher<T> {
                         if (!feedOperationContext.getIsRequestHedged() && feedOperationContext.hasPartitionKeyRangeSeenSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId())) {
 
                             if (this.globalEndpointManager != null && this.globalPartitionEndpointManagerForCircuitBreaker != null) {
-                                this.tryMarkPartitionKeyRangeAsUnavailable(request);
+                                this.handleLocationExceptionForPartitionKeyRange(request);
                             }
                         }
                     } else {
-                        this.tryMarkPartitionKeyRangeAsUnavailable(request);
+                        this.handleLocationExceptionForPartitionKeyRange(request);
                     }
                 }
 
@@ -216,7 +215,7 @@ abstract class Fetcher<T> {
             });
     }
 
-    private void tryMarkPartitionKeyRangeAsUnavailable(RxDocumentServiceRequest failedRequest) {
+    private void handleLocationExceptionForPartitionKeyRange(RxDocumentServiceRequest failedRequest) {
         URI firstContactedLocationEndpoint = diagnosticsAccessor.getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
 
         if (firstContactedLocationEndpoint != null) {
