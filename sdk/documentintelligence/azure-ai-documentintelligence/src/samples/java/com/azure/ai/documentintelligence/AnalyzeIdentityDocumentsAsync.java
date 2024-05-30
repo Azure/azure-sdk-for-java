@@ -43,7 +43,7 @@ public class AnalyzeIdentityDocumentsAsync {
             + "sample-forms/identityDocuments/license.png");
         byte[] fileContent = Files.readAllBytes(licenseDocumentFile.toPath());
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeIdentityDocumentPoller
+        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeIdentityDocumentPoller
             = client.beginAnalyzeDocument("prebuilt-idDocument",
             null,
             null,
@@ -61,7 +61,7 @@ public class AnalyzeIdentityDocumentsAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            }).map(AnalyzeResultOperation::getAnalyzeResult);
+            });
 
         identityDocumentPollerResult.subscribe(idDocumentResults -> {
             for (int i = 0; i < idDocumentResults.getDocuments().size(); i++) {

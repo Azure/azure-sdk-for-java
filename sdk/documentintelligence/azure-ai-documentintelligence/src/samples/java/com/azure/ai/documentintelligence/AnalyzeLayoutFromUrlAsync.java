@@ -32,7 +32,7 @@ public class AnalyzeLayoutFromUrlAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutPoller =
+        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
                 null,
                 null,
@@ -55,7 +55,7 @@ public class AnalyzeLayoutFromUrlAsync {
                             new RuntimeException(
                                 "Polling completed unsuccessfully with status:" + pollResponse.getStatus()));
                     }
-                }).map(AnalyzeResultOperation::getAnalyzeResult);
+                });
 
         analyzeLayoutResultMono.subscribe(analyzeLayoutResult -> {
             // pages
