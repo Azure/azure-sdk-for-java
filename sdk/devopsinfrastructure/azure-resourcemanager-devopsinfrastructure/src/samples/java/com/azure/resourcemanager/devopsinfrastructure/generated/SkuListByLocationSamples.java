@@ -8,6 +8,11 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
  * Samples for Sku ListByLocation.
  */
 public final class SkuListByLocationSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure/examples/2024-04-04-preview/Sku_ListByLocation.
+     * json
+     */
     /**
      * Sample code: Sku_ListByLocation.
      * 

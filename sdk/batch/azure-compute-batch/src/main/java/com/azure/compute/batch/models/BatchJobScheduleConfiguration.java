@@ -238,11 +238,11 @@ public final class BatchJobScheduleConfiguration implements JsonSerializable<Bat
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("doNotRunUntil".equals(fieldName)) {
-                    deserializedBatchJobScheduleConfiguration.doNotRunUntil
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchJobScheduleConfiguration.doNotRunUntil = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("doNotRunAfter".equals(fieldName)) {
-                    deserializedBatchJobScheduleConfiguration.doNotRunAfter
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchJobScheduleConfiguration.doNotRunAfter = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("startWindow".equals(fieldName)) {
                     deserializedBatchJobScheduleConfiguration.startWindow
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));

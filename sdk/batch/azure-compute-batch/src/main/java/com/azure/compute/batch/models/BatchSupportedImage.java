@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -193,8 +194,8 @@ public final class BatchSupportedImage implements JsonSerializable<BatchSupporte
                 } else if ("capabilities".equals(fieldName)) {
                     capabilities = reader.readArray(reader1 -> reader1.getString());
                 } else if ("batchSupportEndOfLife".equals(fieldName)) {
-                    batchSupportEndOfLife
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    batchSupportEndOfLife = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

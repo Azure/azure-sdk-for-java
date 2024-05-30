@@ -56,7 +56,12 @@ import com.azure.core.util.FluxUtil;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import com.azure.ai.openai.assistants.implementation.OpenAIUtils;
+import com.azure.ai.openai.assistants.implementation.streaming.OpenAIServerSentEvents;
+import com.azure.ai.openai.assistants.models.StreamUpdate;
+import java.nio.ByteBuffer;
 import static com.azure.ai.openai.assistants.implementation.OpenAIUtils.addAzureVersionToRequestOptions;
 import com.azure.ai.openai.assistants.implementation.accesshelpers.PageableListAccessHelper;
 import com.azure.ai.openai.assistants.models.PageableList;
@@ -2283,33 +2288,6 @@ public final class AssistantsAsyncClient {
     }
 
     /**
-     * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
-     * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
-     *
-     * @param threadId The ID of the thread that was run.
-     * @param runId The ID of the run that requires tool outputs.
-     * @param toolOutputs The list of tool outputs requested by tool calls from the specified run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data representing a single evaluation run of an assistant thread on successful completion of
-     * {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ThreadRun> submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs) {
-        // Generated convenience method for submitToolOutputsToRunWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs);
-        BinaryData request = BinaryData.fromObject(requestObj);
-        return submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
-    }
-
-    /**
      * Cancels a run of an in progress thread.
      *
      * @param threadId The ID of the thread being run.
@@ -2353,6 +2331,31 @@ public final class AssistantsAsyncClient {
         return createThreadAndRunWithResponse(BinaryData.fromObject(createAndRunThreadOptions), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
+    }
+
+    /**
+     * Creates a new assistant thread and immediately starts a run using that new thread. Updates are returned as a
+     * stream.
+     *
+     * @param createAndRunThreadOptions The details used when creating and immediately running a new assistant thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread on successful completion of
+     * {@link Flux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<StreamUpdate> createThreadAndRunStream(CreateAndRunThreadOptions createAndRunThreadOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData inputJson = BinaryData.fromObject(createAndRunThreadOptions);
+        BinaryData adjustedJson = OpenAIUtils.injectStreamJsonField(inputJson, true);
+        Flux<ByteBuffer> responseStream = createThreadAndRunWithResponse(adjustedJson, requestOptions)
+            .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
+        return eventStream.getEvents();
     }
 
     /**
@@ -2982,6 +2985,57 @@ public final class AssistantsAsyncClient {
     }
 
     /**
+     * Creates a new run for an assistant thread returning a stream of updates.
+     *
+     * @param threadId The ID of the thread to run
+     * @param assistantId The ID of the assistant that will run the thread.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<StreamUpdate> createRunStream(String threadId, String assistantId) {
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData inputJson = BinaryData.fromObject(new CreateRunOptions(assistantId));
+        BinaryData adjustedJson = OpenAIUtils.injectStreamJsonField(inputJson, true);
+        Flux<ByteBuffer> responseStream
+            = createRunWithResponse(threadId, BinaryData.fromObject(adjustedJson), requestOptions)
+                .flatMapMany(it -> it.getValue().toFluxByteBuffer());
+        OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(responseStream);
+        return openAIServerSentEvents.getEvents();
+    }
+
+    /**
+     * Creates a new run for an assistant thread returning a stream of updates.
+     *
+     * @param threadId The ID of the thread to run.
+     * @param createRunOptions The details for the run to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread on successful completion of
+     * {@link Flux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions) {
+        RequestOptions requestOptions = new RequestOptions();
+        BinaryData inputJson = BinaryData.fromObject(createRunOptions);
+        BinaryData adjustedJson = OpenAIUtils.injectStreamJsonField(inputJson, true);
+        Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, adjustedJson, requestOptions)
+            .flatMapMany(it -> it.getValue().toFluxByteBuffer());
+        OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(responseStream);
+        return openAIServerSentEvents.getEvents();
+    }
+
+    /**
      * Modifies an existing thread run.
      *
      * @param threadId The ID of the thread associated with the specified run.
@@ -3070,8 +3124,8 @@ public final class AssistantsAsyncClient {
      * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose, String filename) {
-        // Generated convenience method for uploadFileWithResponse
+    public Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose, String filename) {
+        file.setFilename(filename);
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest requestObj = new UploadFileRequest(file, purpose).setFilename(filename);
         BinaryData request = new MultipartFormDataHelper(requestOptions)
@@ -3098,9 +3152,8 @@ public final class AssistantsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose) {
+    Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose) {
         // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest requestObj = new UploadFileRequest(file, purpose);
@@ -3156,5 +3209,58 @@ public final class AssistantsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return getFileContentWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(byte[].class));
+    }
+
+    /**
+     * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
+     * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
+     *
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the run that requires tool outputs.
+     * @param toolOutputs The list of tool outputs requested by tool calls from the specified run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Flux<StreamUpdate> submitToolOutputsToRunStream(String threadId, String runId,
+        List<ToolOutput> toolOutputs) {
+        RequestOptions requestOptions = new RequestOptions();
+        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(false);
+        Flux<ByteBuffer> responseStream
+            = submitToolOutputsToRunWithResponse(threadId, runId, BinaryData.fromObject(requestObj), requestOptions)
+                .flatMapMany(response -> response.getValue().toFluxByteBuffer());
+        OpenAIServerSentEvents openAIServerSentEvents = new OpenAIServerSentEvents(responseStream);
+        return openAIServerSentEvents.getEvents();
+    }
+
+    /**
+     * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
+     * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
+     *
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the run that requires tool outputs.
+     * @param toolOutputs A list of tools for which the outputs are being submitted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data representing a single evaluation run of an assistant thread on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ThreadRun> submitToolOutputsToRun(String threadId, String runId, List<ToolOutput> toolOutputs) {
+        RequestOptions requestOptions = new RequestOptions();
+        SubmitToolOutputsToRunRequest requestObj = new SubmitToolOutputsToRunRequest(toolOutputs).setStream(false);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return submitToolOutputsToRunWithResponse(threadId, runId, request, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
     }
 }
