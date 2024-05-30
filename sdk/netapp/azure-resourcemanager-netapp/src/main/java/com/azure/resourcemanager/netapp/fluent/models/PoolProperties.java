@@ -27,8 +27,7 @@ public final class PoolProperties {
     /*
      * size
      * 
-     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
-     * 4398046511104).
+     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of 1099511627776).
      */
     @JsonProperty(value = "size", required = true)
     private long size;
@@ -74,8 +73,7 @@ public final class PoolProperties {
     /*
      * encryptionType
      * 
-     * Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it.
-     * This value can only be set when creating new pool.
+     * Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it. This value can only be set when creating new pool.
      */
     @JsonProperty(value = "encryptionType")
     private EncryptionType encryptionType;
@@ -101,7 +99,7 @@ public final class PoolProperties {
      * Get the size property: size
      * 
      * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
-     * 4398046511104).
+     * 1099511627776).
      * 
      * @return the size value.
      */
@@ -113,7 +111,7 @@ public final class PoolProperties {
      * Set the size property: size
      * 
      * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
-     * 4398046511104).
+     * 1099511627776).
      * 
      * @param size the size value to set.
      * @return the PoolProperties object itself.
@@ -247,8 +245,8 @@ public final class PoolProperties {
      */
     public void validate() {
         if (serviceLevel() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property serviceLevel in model PoolProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property serviceLevel in model PoolProperties"));
         }
     }
 

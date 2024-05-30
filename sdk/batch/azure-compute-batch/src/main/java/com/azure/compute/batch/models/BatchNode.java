@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -483,14 +484,14 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
                 } else if ("schedulingState".equals(fieldName)) {
                     deserializedBatchNode.schedulingState = SchedulingState.fromString(reader.getString());
                 } else if ("stateTransitionTime".equals(fieldName)) {
-                    deserializedBatchNode.stateTransitionTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchNode.stateTransitionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastBootTime".equals(fieldName)) {
-                    deserializedBatchNode.lastBootTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchNode.lastBootTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("allocationTime".equals(fieldName)) {
-                    deserializedBatchNode.allocationTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchNode.allocationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("ipAddress".equals(fieldName)) {
                     deserializedBatchNode.ipAddress = reader.getString();
                 } else if ("affinityId".equals(fieldName)) {

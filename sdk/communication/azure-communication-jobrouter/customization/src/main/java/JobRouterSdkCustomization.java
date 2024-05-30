@@ -8,10 +8,13 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
-import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.InitializerDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
+import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.javadoc.Javadoc;
@@ -19,7 +22,7 @@ import com.github.javaparser.javadoc.JavadocBlockTag;
 import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
-import java.lang.reflect.Modifier;
+import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.List;
 
@@ -54,6 +57,7 @@ public class JobRouterSdkCustomization extends Customization {
         classCustomizationForScoringRuleOptions
             .getMethod("setIsBatchScoringEnabled")
             .rename("setBatchScoringEnabled");
+
         customizeRouterWorkerSelector(models.getClass("RouterWorkerSelector"));
         customizeReclassifyExceptionAction(models.getClass("ReclassifyExceptionAction"));
         customizeWaitTimeExceptionTrigger(models.getClass("WaitTimeExceptionTrigger"));
@@ -77,29 +81,37 @@ public class JobRouterSdkCustomization extends Customization {
         addConstructor(models.getClass("FunctionRouterRule"), "String", "functionUri");
         addConstructor(models.getClass("PassThroughQueueSelectorAttachment"), "String", "key", "LabelOperator",
             "labelOperator");
-        addConstructor(models.getClass("PassThroughWorkerSelectorAttachment"), "String", "key", "LabelOperator",
-            "labelOperator");
         addConstructor(models.getClass("QueueLengthExceptionTrigger"), "int", "threshold");
         addConstructor(models.getClass("QueueWeightedAllocation"), "double", "weight", "List<RouterQueueSelector>",
             "queueSelectors");
         addConstructor(models.getClass("RouterChannel"), "String", "channelId", "int", "capacityCostPerJob");
         addConstructor(models.getClass("RouterJobNote"), "String", "message");
-        addConstructor(models.getClass("RouterQueueSelector"), "String", "key", "LabelOperator", "labelOperator",
-            "RouterValue", "value");
-        addConstructor(models.getClass("RouterWorkerSelector"), "String", "key", "LabelOperator", "labelOperator",
-            "RouterValue", "value");
         addConstructor(models.getClass("RuleEngineQueueSelectorAttachment"), "RouterRule", "rule");
         addConstructor(models.getClass("RuleEngineWorkerSelectorAttachment"), "RouterRule", "rule");
         addConstructor(models.getClass("ScheduleAndSuspendMode"), "OffsetDateTime", "scheduleAt");
         addConstructor(models.getClass("StaticQueueSelectorAttachment"), "RouterQueueSelector", "queueSelector");
         addConstructor(models.getClass("StaticWorkerSelectorAttachment"), "RouterWorkerSelector", "workerSelector");
-        addConstructor(models.getClass("WaitTimeExceptionTrigger"), "Duration", "thresholdSeconds");
         addConstructor(models.getClass("WeightedAllocationQueueSelectorAttachment"), "List<QueueWeightedAllocation>",
             "allocations");
         addConstructor(models.getClass("WeightedAllocationWorkerSelectorAttachment"), "List<WorkerWeightedAllocation>",
             "allocations");
         addConstructor(models.getClass("WorkerWeightedAllocation"), "double", "weight", "List<RouterWorkerSelector>",
             "workerSelectors");
+
+        // Add setter for DistributionPolicy.id in JsonMergePatchHelper.
+        customization.getPackage("com.azure.communication.jobrouter.implementation")
+            .getClass("JsonMergePatchHelper")
+            .customizeAst(ast -> ast.getClassByName("JsonMergePatchHelper")
+                .flatMap(clazz -> clazz.getMembers()
+                    .stream()
+                    .filter(BodyDeclaration::isTypeDeclaration)
+                    .map(BodyDeclaration::asTypeDeclaration)
+                    .filter(type -> "DistributionPolicyAccessor".equals(type.getNameAsString()))
+                    .findFirst())
+                .ifPresent(type -> type.addMethod("setId")
+                    .addParameter("DistributionPolicy", "policy")
+                    .addParameter("String", "id")
+                    .removeBody()));
     }
 
     private void addAuthTraits(ClassCustomization classCustomization) {
@@ -212,6 +224,8 @@ public class JobRouterSdkCustomization extends Customization {
 
             ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
 
+            addConstructor(clazz, "String", "key", "LabelOperator", "labelOperator", "RouterValue", "value");
+
             changeFieldGetterAndSetterType(clazz, "value", "RouterValue", null);
             updateToJsonAndFromJson(clazz, "jsonWriter.writeUntypedField(\"value\", this.value);",
                 "jsonWriter.writeJsonField(\"value\", this.value);",
@@ -246,6 +260,8 @@ public class JobRouterSdkCustomization extends Customization {
             ast.addImport("com.azure.communication.jobrouter.implementation.utils.CustomizationHelper");
 
             ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+
+            addConstructor(clazz, "Duration", "thresholdSeconds");
 
             changeFieldGetterAndSetterType(clazz, "thresholdSeconds", "Duration", "Threshold");
             updateToJsonAndFromJson(clazz, "jsonWriter.writeDoubleField(\"thresholdSeconds\", this.thresholdSeconds);",
@@ -297,6 +313,8 @@ public class JobRouterSdkCustomization extends Customization {
 
             ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
 
+            addConstructor(clazz, "String", "key", "LabelOperator", "labelOperator", "RouterValue", "value");
+
             changeFieldGetterAndSetterType(clazz, "value", "RouterValue", null);
             updateToJsonAndFromJson(clazz, "jsonWriter.writeUntypedField(\"value\", this.value);",
                 "jsonWriter.writeJsonField(\"value\", this.value);",
@@ -312,6 +330,8 @@ public class JobRouterSdkCustomization extends Customization {
 
             ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
 
+            addConstructor(clazz, "String", "key", "LabelOperator", "labelOperator");
+
             changeFieldGetterAndSetterType(clazz, "expiresAfterSeconds", "Duration", "ExpiresAfter");
             updateToJsonAndFromJson(clazz, "jsonWriter.writeNumberField(\"expiresAfterSeconds\", this.expiresAfterSeconds);",
                 "CustomizationHelper.serializeDurationToSeconds(jsonWriter, \"expiresAfterSeconds\", this.expiresAfterSeconds);",
@@ -326,6 +346,22 @@ public class JobRouterSdkCustomization extends Customization {
             ast.addImport("com.azure.communication.jobrouter.implementation.utils.CustomizationHelper");
 
             ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+
+            clazz.getMembers().stream()
+                .filter(BodyDeclaration::isInitializerDeclaration)
+                .map(BodyDeclaration::asInitializerDeclaration)
+                .filter(InitializerDeclaration::isStatic)
+                .findFirst()
+                .ifPresent(staticInitializer -> {
+                    ExpressionStmt setAccessor = (ExpressionStmt) staticInitializer.getBody().getStatement(0);
+                    MethodCallExpr setAccessorCall = (MethodCallExpr) setAccessor.getExpression();
+                    ObjectCreationExpr anonymousAccessorCreation = (ObjectCreationExpr) setAccessorCall.getArgument(0);
+                    anonymousAccessorCreation.addAnonymousClassBody(StaticJavaParser.parseMethodDeclaration(String.join("\n",
+                        "@Override",
+                        "public void setId(DistributionPolicy policy, String id) {",
+                        "    policy.id = id;",
+                        "}")));
+                });
 
             changeFieldGetterAndSetterType(clazz, "offerExpiresAfterSeconds", "Duration", "OfferExpiresAfter");
             updateToJsonAndFromJson(clazz, "jsonWriter.writeNumberField(\"offerExpiresAfterSeconds\", this.offerExpiresAfterSeconds);",
@@ -443,33 +479,38 @@ public class JobRouterSdkCustomization extends Customization {
             throw new IllegalStateException("The number of type and param names must be even.");
         }
 
-        classCustomization.customizeAst(ast -> {
-            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+        classCustomization.customizeAst(ast ->
+            addConstructor(ast.getClassByName(classCustomization.getClassName()).get(), typeAndParamNames));
+    }
 
-            ConstructorDeclaration constructorDeclaration = new ConstructorDeclaration(
-                new NodeList<>(com.github.javaparser.ast.Modifier.publicModifier()), clazz.getNameAsString());
+    private static void addConstructor(ClassOrInterfaceDeclaration clazz, String... typeAndParamNames) {
+        if (typeAndParamNames.length % 2 != 0) {
+            throw new IllegalStateException("The number of type and param names must be even.");
+        }
 
-            NodeList<Statement> constructorBody = new NodeList<>();
-            Javadoc javadoc = new Javadoc(
-                JavadocDescription.parseText("Creates an instance of " + clazz.getNameAsString() + " class."));
-            for (int i = 0; i < typeAndParamNames.length; i += 2) {
-                String paramType = typeAndParamNames[i];
-                String paramName = typeAndParamNames[i + 1];
+        ConstructorDeclaration constructorDeclaration = new ConstructorDeclaration(
+            new NodeList<>(com.github.javaparser.ast.Modifier.publicModifier()), clazz.getNameAsString());
 
-                constructorDeclaration.addParameter(paramType, paramName);
+        NodeList<Statement> constructorBody = new NodeList<>();
+        Javadoc javadoc = new Javadoc(
+            JavadocDescription.parseText("Creates an instance of " + clazz.getNameAsString() + " class."));
+        for (int i = 0; i < typeAndParamNames.length; i += 2) {
+            String paramType = typeAndParamNames[i];
+            String paramName = typeAndParamNames[i + 1];
 
-                constructorBody.add(
-                    StaticJavaParser.parseStatement("this." + paramName + " = " + paramName + ";"));
-                constructorBody.add(
-                    StaticJavaParser.parseStatement("this.updatedProperties.add(\"" + paramName + "\");"));
+            constructorDeclaration.addParameter(paramType, paramName);
 
-                javadoc.addBlockTag(JavadocBlockTag.createParamBlockTag(paramName, "the " + paramName + " value to set."));
-            }
+            constructorBody.add(
+                StaticJavaParser.parseStatement("this." + paramName + " = " + paramName + ";"));
+            constructorBody.add(
+                StaticJavaParser.parseStatement("this.updatedProperties.add(\"" + paramName + "\");"));
 
-            constructorDeclaration.setBody(new BlockStmt(constructorBody)).setJavadocComment(javadoc);
+            javadoc.addBlockTag(JavadocBlockTag.createParamBlockTag(paramName, "the " + paramName + " value to set."));
+        }
 
-            clazz.getMembers().add(addConstructorPosition(clazz), constructorDeclaration);
-        });
+        constructorDeclaration.setBody(new BlockStmt(constructorBody)).setJavadocComment(javadoc);
+
+        clazz.getMembers().add(addConstructorPosition(clazz), constructorDeclaration);
     }
 
     private static int addConstructorPosition(ClassOrInterfaceDeclaration clazz) {

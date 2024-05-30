@@ -5,6 +5,7 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -149,8 +150,8 @@ public final class CloseJobOptions implements JsonSerializable<CloseJobOptions> 
                 if ("dispositionCode".equals(fieldName)) {
                     deserializedCloseJobOptions.dispositionCode = reader.getString();
                 } else if ("closeAt".equals(fieldName)) {
-                    deserializedCloseJobOptions.closeAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedCloseJobOptions.closeAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("note".equals(fieldName)) {
                     deserializedCloseJobOptions.note = reader.getString();
                 } else {

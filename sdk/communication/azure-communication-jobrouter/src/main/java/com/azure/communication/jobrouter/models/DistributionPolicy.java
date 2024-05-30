@@ -76,9 +76,8 @@ public final class DistributionPolicy implements JsonSerializable<DistributionPo
             }
 
             @Override
-            public void setId(DistributionPolicy model, String id) {
-                model.id = id;
-                model.updatedProperties.add("id");
+            public void setId(DistributionPolicy policy, String id) {
+                policy.id = id;
             }
         });
     }

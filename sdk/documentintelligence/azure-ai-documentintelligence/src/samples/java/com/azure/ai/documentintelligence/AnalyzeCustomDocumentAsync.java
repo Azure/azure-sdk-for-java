@@ -46,7 +46,7 @@ public class AnalyzeCustomDocumentAsync {
             + "sample-forms/forms/Invoice_6.pdf");
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         String modelId = "{modelId}";
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeDocumentPoller
+        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeDocumentPoller
             = client.beginAnalyzeDocument(modelId,
             "1",
             "en-US",
@@ -65,7 +65,7 @@ public class AnalyzeCustomDocumentAsync {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            }).map(AnalyzeResultOperation::getAnalyzeResult);
+            });
 
         analyzeDocumentResult.subscribe(analyzeResult -> {
             for (int i = 0; i < analyzeResult.getDocuments().size(); i++) {

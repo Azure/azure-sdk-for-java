@@ -5,6 +5,7 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -91,8 +92,8 @@ public final class DeclineJobOfferOptions implements JsonSerializable<DeclineJob
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("retryOfferAt".equals(fieldName)) {
-                    deserializedDeclineJobOfferOptions.retryOfferAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDeclineJobOfferOptions.retryOfferAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

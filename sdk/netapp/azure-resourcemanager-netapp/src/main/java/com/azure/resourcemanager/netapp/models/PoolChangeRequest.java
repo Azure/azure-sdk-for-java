@@ -52,8 +52,9 @@ public final class PoolChangeRequest {
      */
     public void validate() {
         if (newPoolResourceId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property newPoolResourceId in model PoolChangeRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property newPoolResourceId in model PoolChangeRequest"));
         }
     }
 

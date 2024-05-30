@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter.models;
 import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -132,8 +133,8 @@ public final class ScheduleAndSuspendMode extends JobMatchingMode {
                 if ("kind".equals(fieldName)) {
                     deserializedScheduleAndSuspendMode.kind = JobMatchingModeKind.fromString(reader.getString());
                 } else if ("scheduleAt".equals(fieldName)) {
-                    deserializedScheduleAndSuspendMode.scheduleAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedScheduleAndSuspendMode.scheduleAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else {
                     reader.skipChildren();
                 }

@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import com.azure.ai.openai.implementation.models.FunctionCallPreset;
 
 /**
  * The configuration information for a chat completions request.
@@ -536,7 +537,13 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
      */
     public ChatCompletionsOptions setFunctionCall(FunctionCallConfig functionCallConfig) {
         this.functionCallConfig = functionCallConfig;
-        this.functionCall = BinaryData.fromObject(new FunctionName(this.functionCallConfig.getName()));
+        if (FunctionCallPreset.values()
+            .stream()
+            .anyMatch(preset -> preset.toString().equals(functionCallConfig.getName()))) {
+            this.functionCall = BinaryData.fromObject(FunctionCallPreset.fromString(this.functionCallConfig.getName()));
+        } else {
+            this.functionCall = BinaryData.fromObject(new FunctionName(this.functionCallConfig.getName()));
+        }
         return this;
     }
 

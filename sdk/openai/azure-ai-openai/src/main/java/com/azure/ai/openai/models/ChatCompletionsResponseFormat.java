@@ -23,14 +23,13 @@ public class ChatCompletionsResponseFormat implements JsonSerializable<ChatCompl
      */
     @Generated
     public ChatCompletionsResponseFormat() {
-        this.type = "ChatCompletionsResponseFormat";
     }
 
     /*
      * The discriminated type for the response format.
      */
     @Generated
-    private String type;
+    private String type = "ChatCompletionsResponseFormat";
 
     /**
      * Get the type property: The discriminated type for the response format.

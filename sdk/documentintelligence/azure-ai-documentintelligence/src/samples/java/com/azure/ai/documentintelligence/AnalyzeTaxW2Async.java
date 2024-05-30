@@ -38,7 +38,7 @@ public class AnalyzeTaxW2Async {
         String w2Url =
             "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/resources/sample-forms/w2/Sample-W2.jpg";
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeW2Poller =
+        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeW2Poller =
             client.beginAnalyzeDocument("prebuilt-tax.us.w2", null,
                 null,
                 null,
@@ -57,7 +57,7 @@ public class AnalyzeTaxW2Async {
                     return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
                         + pollResponse.getStatus()));
                 }
-            }).map(AnalyzeResultOperation::getAnalyzeResult);
+            });
 
         w2Mono.subscribe(analyzeTaxResult -> {
 

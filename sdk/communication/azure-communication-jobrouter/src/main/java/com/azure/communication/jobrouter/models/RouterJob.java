@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter.models;
 import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -642,8 +643,8 @@ public final class RouterJob implements JsonSerializable<RouterJob> {
                 } else if ("status".equals(fieldName)) {
                     deserializedRouterJob.status = RouterJobStatus.fromString(reader.getString());
                 } else if ("enqueuedAt".equals(fieldName)) {
-                    deserializedRouterJob.enqueuedAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedRouterJob.enqueuedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("channelId".equals(fieldName)) {
                     deserializedRouterJob.channelId = reader.getString();
                 } else if ("classificationPolicyId".equals(fieldName)) {
@@ -676,8 +677,8 @@ public final class RouterJob implements JsonSerializable<RouterJob> {
                     List<RouterJobNote> notes = reader.readArray(reader1 -> RouterJobNote.fromJson(reader1));
                     deserializedRouterJob.notes = notes;
                 } else if ("scheduledAt".equals(fieldName)) {
-                    deserializedRouterJob.scheduledAt
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedRouterJob.scheduledAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("matchingMode".equals(fieldName)) {
                     deserializedRouterJob.matchingMode = JobMatchingMode.fromJson(reader);
                 } else {
