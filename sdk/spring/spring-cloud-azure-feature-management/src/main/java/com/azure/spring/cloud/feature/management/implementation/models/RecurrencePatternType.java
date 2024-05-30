@@ -23,9 +23,4 @@ public enum RecurrencePatternType {
     RecurrencePatternType(final String type) {
         this.type = type;
     }
-
-    @Override
-    public String toString() {
-        return type;
-    }
 }
