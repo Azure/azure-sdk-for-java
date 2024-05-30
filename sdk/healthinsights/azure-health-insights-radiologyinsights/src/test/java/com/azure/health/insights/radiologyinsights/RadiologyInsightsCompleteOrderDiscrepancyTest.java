@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -58,20 +59,20 @@ public class RadiologyInsightsCompleteOrderDiscrepancyTest extends RadiologyInsi
         setInferenceType(RadiologyInsightsInferenceType.COMPLETE_ORDER_DISCREPANCY);
         setOrderCode("USPELVIS");
         setOrderDescription("US PELVIS COMPLETE");
-        
+
         try {
             testRadiologyInsightsWithResponse(request -> {
-                RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
+                RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
                         getClient().beginInferRadiologyInsights("job1715007526876", request)).getFinalResult();
-                
-                List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
+
+                List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
                 assertEquals(1, patients.size());
                 RadiologyInsightsPatientResult patient = patients.get(0);
-                
+
                 List<RadiologyInsightsInference> inferences = patient.getInferences();
                 assertEquals(1, inferences.size());
                 RadiologyInsightsInference inference = inferences.get(0);
-                
+
                 if (inference instanceof CompleteOrderDiscrepancyInference) {
                     CompleteOrderDiscrepancyInference completeOrderDiscrepancyInference = (CompleteOrderDiscrepancyInference) inference;
                     FhirR4CodeableConcept orderType = completeOrderDiscrepancyInference.getOrderType();
@@ -79,14 +80,14 @@ public class RadiologyInsightsCompleteOrderDiscrepancyTest extends RadiologyInsi
                     Set<String> expectedOrderTypeCodes = new HashSet<>();
                     expectedOrderTypeCodes.add("Coding: 24869-0, US Pelvis (http://loinc.org)");
                     assertEquals(expectedOrderTypeCodes, orderTypeCodes);
-                    
+
                     List<FhirR4Coding> codingList = orderType.getCoding();
                     assertNotNull(codingList);
                     assertEquals(1, codingList.size());
-                    
+
                     FhirR4Coding fhirR4Coding = codingList.get(0);
                     assertFhirR4Coding(fhirR4Coding, "24869-0", "US Pelvis", "http://loinc.org");
-                    
+
                     List<FhirR4CodeableConcept> missingBodyParts = completeOrderDiscrepancyInference.getMissingBodyParts();
                     assertEquals(0, missingBodyParts.size());
 
@@ -112,5 +113,5 @@ public class RadiologyInsightsCompleteOrderDiscrepancyTest extends RadiologyInsi
         assertEquals(display, fhirR4Coding.getDisplay());
         assertEquals(system, fhirR4Coding.getSystem());
     }
-    
+
 }

@@ -43,11 +43,11 @@ import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 
 /**
- * The SampleCriticalResultInferenceSync class processes a sample radiology document 
- * with the Radiology Insights service. It will initialize a synchronous 
- * RadiologyInsightsClient, build a Radiology Insights job request with the sample document, submit it to the client 
- * and display the Critical Results extracted by the Radiology Insights service.  
- * 
+ * The SampleCriticalResultInferenceSync class processes a sample radiology document
+ * with the Radiology Insights service. It will initialize a synchronous
+ * RadiologyInsightsClient, build a Radiology Insights job request with the sample document, submit it to the client
+ * and display the Critical Results extracted by the Radiology Insights service.
+ *
  */
 public class SampleCriticalResultInferenceSync {
 
@@ -83,7 +83,7 @@ public class SampleCriticalResultInferenceSync {
         // BEGIN: com.azure.health.insights.radiologyinsights.buildsyncclient
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
-        
+
         RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
         if (apiKey != null && !apiKey.equals("")) {
@@ -91,12 +91,12 @@ public class SampleCriticalResultInferenceSync {
         }
         RadiologyInsightsClient radiologyInsightsClient = clientBuilder.buildClient();
         // END: com.azure.health.insights.radiologyinsights.buildsyncclient
-        
+
         // BEGIN: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
-        RadiologyInsightsJob riJobResponse = radiologyInsightsClient.beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob()).getFinalResult();
+        RadiologyInsightsInferenceResult riJobResult = radiologyInsightsClient.beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob()).getFinalResult();
         // END: com.azure.health.insights.radiologyinsights.inferradiologyinsightssync
 
-        displayCriticalResults(riJobResponse.getResult());
+        displayCriticalResults(riJobResult);
     }
 
     /**
@@ -113,7 +113,7 @@ public class SampleCriticalResultInferenceSync {
                 if (inference instanceof CriticalResultInference) {
                     CriticalResultInference criticalResultInference = (CriticalResultInference) inference;
                     String description = criticalResultInference.getResult().getDescription();
-                    System.out.println("Critical Result Inference found: " + description);                    
+                    System.out.println("Critical Result Inference found: " + description);
                 }
             }
         }
@@ -151,7 +151,7 @@ public class SampleCriticalResultInferenceSync {
 
         // Use LocalDate to set Date
         patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
-        
+
         patientRecord.setDetails(patientDetails);
 
         PatientEncounter encounter = new PatientEncounter("encounterid1");

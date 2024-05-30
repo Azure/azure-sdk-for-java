@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Arrays;
 import java.util.List;
 
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -52,15 +53,15 @@ public class RadiologyInsightsFollowupRecommendationTest extends RadiologyInsigh
         setInferenceType(RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION);
         setOrderCode("USPELVIS");
         setOrderDescription("US PELVIS COMPLETE");
-        
+
         try {
             testRadiologyInsightsWithResponse(request -> {
-                RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
+                RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
                         getClient().beginInferRadiologyInsights("job1715007599316", request)).getFinalResult();
 
-                List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
+                List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
                 assertEquals(1, patients.size());
-                
+
                 RadiologyInsightsPatientResult patient = patients.get(0);
                 List<RadiologyInsightsInference> inferences = patient.getInferences();
                 assertEquals(1, inferences.size());
@@ -74,5 +75,5 @@ public class RadiologyInsightsFollowupRecommendationTest extends RadiologyInsigh
             return;
         }
     }
-    
+
 }

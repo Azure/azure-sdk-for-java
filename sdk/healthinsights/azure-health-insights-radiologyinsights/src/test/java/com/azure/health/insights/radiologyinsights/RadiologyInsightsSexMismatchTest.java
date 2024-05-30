@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -56,19 +57,19 @@ public class RadiologyInsightsSexMismatchTest extends RadiologyInsightsClientTes
         setInferenceType(RadiologyInsightsInferenceType.SEX_MISMATCH);
         setOrderCode("USPELVIS");
         setOrderDescription("US PELVIS COMPLETE");
-        
+
         try {
             testRadiologyInsightsWithResponse(request -> {
-                RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
+                RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
                         getClient().beginInferRadiologyInsights("job1715007680570", request)).getFinalResult();
 
-                List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
+                List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
                 assertEquals(1, patients.size());
-                
+
                 RadiologyInsightsPatientResult patient = patients.get(0);
                 List<RadiologyInsightsInference> inferences = patient.getInferences();
                 assertEquals(1, inferences.size());
-                
+
                 RadiologyInsightsInference inference = inferences.get(0);
                 assertTrue(inference instanceof SexMismatchInference, "Inference should be an instance of SexMismatchInference");
 
@@ -90,5 +91,5 @@ public class RadiologyInsightsSexMismatchTest extends RadiologyInsightsClientTes
         assertEquals(display, fhirR4Coding.getDisplay());
         assertEquals(system, fhirR4Coding.getSystem());
     }
-    
+
 }

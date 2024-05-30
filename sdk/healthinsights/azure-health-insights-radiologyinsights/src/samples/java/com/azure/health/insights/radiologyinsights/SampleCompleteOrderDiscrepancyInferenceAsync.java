@@ -48,11 +48,11 @@ import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
- * with the Radiology Insights service. It will initialize an asynchronous 
- * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the 
- * results and display the Critical Results extracted by the Radiology Insights service.  
- * 
+ * The SampleCriticalResultInferenceAsync class processes a sample radiology document
+ * with the Radiology Insights service. It will initialize an asynchronous
+ * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the
+ * results and display the Critical Results extracted by the Radiology Insights service.
+ *
  */
 public class SampleCompleteOrderDiscrepancyInferenceAsync {
 
@@ -77,7 +77,7 @@ public class SampleCompleteOrderDiscrepancyInferenceAsync {
             + "\r\n\nA new US pelvis within the next 6 months is recommended."
             + "\n\nThese results have been discussed with Dr. Jones at 3 PM on November 5 2020.\n "
             + "\r\n";
-    
+
     /**
      * The main method is the entry point for the application. It initializes and uses
      * the RadiologyInsightsAsyncClient to perform Radiology Insights operations.
@@ -87,7 +87,7 @@ public class SampleCompleteOrderDiscrepancyInferenceAsync {
     public static void main(final String[] args) throws InterruptedException {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
         String apiKey = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_API_KEY");
-        
+
         RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint).serviceVersion(RadiologyInsightsServiceVersion.getLatest());
         if (apiKey != null && !apiKey.equals("")) {
@@ -95,11 +95,11 @@ public class SampleCompleteOrderDiscrepancyInferenceAsync {
         }
         RadiologyInsightsAsyncClient radiologyInsightsAsyncClient = clientBuilder.buildAsyncClient();
 
-        PollerFlux<RadiologyInsightsJob, RadiologyInsightsJob> asyncPoller = radiologyInsightsAsyncClient
+        PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
-        
+
         CountDownLatch latch = new CountDownLatch(1);
-        
+
         asyncPoller
             .takeUntil(isComplete)
             .doFinally(signal -> {
@@ -165,7 +165,7 @@ public class SampleCompleteOrderDiscrepancyInferenceAsync {
         }
     }
     // END: com.azure.health.insights.radiologyinsights.displayresults.completeorderdiscrepancy
-    
+
     /**
      * Creates a RadiologyInsightsJob object to use in the Radiology Insights job
      * request.
@@ -201,7 +201,7 @@ public class SampleCompleteOrderDiscrepancyInferenceAsync {
         // Parse the string to LocalDateTime
         LocalDateTime dateTime = LocalDateTime.parse("1959-11-11T19:00:00+00:00", formatter);
         patientDetails.setBirthDate(dateTime.toLocalDate());
-        
+
         patientRecord.setDetails(patientDetails);
 
         PatientEncounter encounter = new PatientEncounter("encounterid1");
@@ -313,7 +313,7 @@ public class SampleCompleteOrderDiscrepancyInferenceAsync {
         return inferenceOptions;
     }
 
-    private static Predicate<AsyncPollResponse<RadiologyInsightsJob, RadiologyInsightsJob>> isComplete = response -> {
+    private static Predicate<AsyncPollResponse<RadiologyInsightsJob, RadiologyInsightsInferenceResult>> isComplete = response -> {
         return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
             && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;
     };

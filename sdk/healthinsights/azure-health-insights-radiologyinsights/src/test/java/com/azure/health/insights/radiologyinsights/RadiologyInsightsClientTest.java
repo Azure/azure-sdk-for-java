@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -34,10 +35,10 @@ public class RadiologyInsightsClientTest extends RadiologyInsightsClientTestBase
         try {
             testRadiologyInsightsWithResponse(request -> {
 
-                RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
+                RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
                         getClient().beginInferRadiologyInsights("job1715007505099", request)).getFinalResult();
 
-                List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
+                List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
                 assertEquals(1, patients.size());
                 RadiologyInsightsPatientResult patient = patients.get(0);
                 assertTrue(patient.getInferences().size() > 0, "at least one inference should be returned");

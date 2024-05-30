@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -54,19 +55,19 @@ public class RadiologyInsightsFindingTest extends RadiologyInsightsClientTestBas
         setInferenceType(RadiologyInsightsInferenceType.FINDING);
         setOrderCode("USPELVIS");
         setOrderDescription("US PELVIS COMPLETE");
-        
+
         try {
             testRadiologyInsightsWithResponse(request -> {
-                RadiologyInsightsJob riResponse = setPlaybackSyncPollerPollInterval(
+                RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
                         getClient().beginInferRadiologyInsights("job1715007545785", request)).getFinalResult();
 
-                List<RadiologyInsightsPatientResult> patients = riResponse.getResult().getPatientResults();
+                List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
                 assertEquals(1, patients.size());
-                
+
                 RadiologyInsightsPatientResult patient = patients.get(0);
                 List<RadiologyInsightsInference> inferences = patient.getInferences();
                 assertEquals(7, inferences.size());
-                
+
                 RadiologyInsightsInference inference = inferences.get(0);
                 assertTrue(inference instanceof FindingInference, "Inference should be an instance of FindingInference");
 
@@ -79,5 +80,5 @@ public class RadiologyInsightsFindingTest extends RadiologyInsightsClientTestBas
             return;
         }
     }
-    
+
 }
