@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
 
 /**

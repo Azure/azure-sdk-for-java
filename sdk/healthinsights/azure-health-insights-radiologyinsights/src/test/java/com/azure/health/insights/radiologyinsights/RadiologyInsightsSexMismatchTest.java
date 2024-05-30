@@ -17,7 +17,6 @@ import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Extension;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
-import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatientResult;
 import com.azure.health.insights.radiologyinsights.models.SexMismatchInference;
 
