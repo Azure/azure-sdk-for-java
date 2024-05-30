@@ -3,6 +3,7 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
+    UseFederatedAuth: true
     ServiceDirectory: appconfiguration
     Artifacts:
       - name: azure-data-appconfiguration
@@ -10,5 +11,5 @@ extends:
         safeName: azuredataappconfiguration
     TimeoutInMinutes: 90
     SupportedClouds: "Public,UsGov,China"
-    UseFederatedAuth: true
     EnvVars:
+      AZURE_CLIENT_ID: $(APPCONFIGURATION_CLIENT_ID)
