@@ -101,13 +101,14 @@ steps:
         pwsh: true
         ScriptType: InlineScript
         Inline: >
+          $PSNativeCommandArgumentPassing='Legacy';
           mvn -f $(Build.SourcesDirectory)/pom.xml
-          ${{ parameters.TestGoals }}
           $(DefaultTestOptions)
           -DAZURE_TEST_DEBUG=$(IsDebug)
           -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }}
           ${{ parameters.TestOptions }}
           -T ${{ parameters.TestParallelization }}
+          ${{ parameters.TestGoals }}
       env:
         JAVA_HOME: $(PowerShellJavaTestVersion)
         MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
@@ -189,6 +190,7 @@ steps:
         pwsh: true
         ScriptType: InlineScript
         Inline: >-
+          $PSNativeCommandArgumentPassing='Legacy';
           mvn -f $(Build.SourcesDirectory)/ClientFromSourcePom.xml
           ${{ parameters.TestGoals }}
           $(DefaultTestOptions)
