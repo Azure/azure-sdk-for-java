@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AssessmentsMetadataDeleteInSubscriptionSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/
-     * DeleteAssessmentsMetadata_subscription_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/DeleteAssessmentsMetadata_subscription_example.json
      */
     /**
      * Sample code: Delete a security assessment metadata for subscription.
@@ -20,7 +18,7 @@ public final class AssessmentsMetadataDeleteInSubscriptionSamples {
      */
     public static void
         deleteASecurityAssessmentMetadataForSubscription(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.assessmentsMetadatas().deleteInSubscriptionWithResponse("ca039e75-a276-4175-aebc-bcd41e4b14b7",
-            com.azure.core.util.Context.NONE);
+        manager.assessmentsMetadatas()
+            .deleteInSubscriptionWithResponse("ca039e75-a276-4175-aebc-bcd41e4b14b7", com.azure.core.util.Context.NONE);
     }
 }

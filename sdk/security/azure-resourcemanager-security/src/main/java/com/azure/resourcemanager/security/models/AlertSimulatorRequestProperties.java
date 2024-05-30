@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -19,13 +21,20 @@ import java.util.Map;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "kind",
-    defaultImpl = AlertSimulatorRequestProperties.class)
+    defaultImpl = AlertSimulatorRequestProperties.class,
+    visible = true)
 @JsonTypeName("AlertSimulatorRequestProperties")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "Bundles", value = AlertSimulatorBundlesRequestProperties.class) })
 @Fluent
 public class AlertSimulatorRequestProperties {
+    /*
+     * The kind of alert simulation.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "kind", required = true)
+    private Kind kind;
+
     /*
      * Describes properties of an alert simulation request
      */
@@ -36,6 +45,16 @@ public class AlertSimulatorRequestProperties {
      * Creates an instance of AlertSimulatorRequestProperties class.
      */
     public AlertSimulatorRequestProperties() {
+        this.kind = Kind.fromString("AlertSimulatorRequestProperties");
+    }
+
+    /**
+     * Get the kind property: The kind of alert simulation.
+     * 
+     * @return the kind value.
+     */
+    public Kind kind() {
+        return this.kind;
     }
 
     /**

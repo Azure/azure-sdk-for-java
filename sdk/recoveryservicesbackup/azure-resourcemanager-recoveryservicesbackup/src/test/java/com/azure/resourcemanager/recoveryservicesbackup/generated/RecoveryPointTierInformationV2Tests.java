@@ -16,22 +16,24 @@ public final class RecoveryPointTierInformationV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPointTierInformationV2 model = BinaryData.fromString(
-            "{\"type\":\"InstantRP\",\"status\":\"Rehydrated\",\"extendedInfo\":{\"rxvxcjzh\":\"mmbcxfhbcp\",\"qscjavftjuh\":\"izxfpxt\"}}")
+            "{\"type\":\"ArchivedRP\",\"status\":\"Rehydrated\",\"extendedInfo\":{\"twly\":\"wahfbousnfepgfew\",\"limmbcxf\":\"gncxykxhdj\",\"pxtgqscjav\":\"bcporxvxcjzhqizx\"}}")
             .toObject(RecoveryPointTierInformationV2.class);
-        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.type());
+        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
         Assertions.assertEquals(RecoveryPointTierStatus.REHYDRATED, model.status());
-        Assertions.assertEquals("mmbcxfhbcp", model.extendedInfo().get("rxvxcjzh"));
+        Assertions.assertEquals("wahfbousnfepgfew", model.extendedInfo().get("twly"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPointTierInformationV2 model = new RecoveryPointTierInformationV2()
-            .withType(RecoveryPointTierType.INSTANT_RP).withStatus(RecoveryPointTierStatus.REHYDRATED)
-            .withExtendedInfo(mapOf("rxvxcjzh", "mmbcxfhbcp", "qscjavftjuh", "izxfpxt"));
+        RecoveryPointTierInformationV2 model
+            = new RecoveryPointTierInformationV2().withType(RecoveryPointTierType.ARCHIVED_RP)
+                .withStatus(RecoveryPointTierStatus.REHYDRATED)
+                .withExtendedInfo(
+                    mapOf("twly", "wahfbousnfepgfew", "limmbcxf", "gncxykxhdj", "pxtgqscjav", "bcporxvxcjzhqizx"));
         model = BinaryData.fromObject(model).toObject(RecoveryPointTierInformationV2.class);
-        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.type());
+        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
         Assertions.assertEquals(RecoveryPointTierStatus.REHYDRATED, model.status());
-        Assertions.assertEquals("mmbcxfhbcp", model.extendedInfo().get("rxvxcjzh"));
+        Assertions.assertEquals("wahfbousnfepgfew", model.extendedInfo().get("twly"));
     }
 
     // Use "Map.of" if available

@@ -5,21 +5,28 @@
 package com.azure.resourcemanager.recoveryservices.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.recoveryservices.models.CrossRegionRestore;
+import com.azure.resourcemanager.recoveryservices.models.StandardTierStorageRedundancy;
 import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesRedundancySettings;
+import org.junit.jupiter.api.Assertions;
 
 public final class VaultPropertiesRedundancySettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VaultPropertiesRedundancySettings model =
-            BinaryData
-                .fromString(
-                    "{\"standardTierStorageRedundancy\":\"LocallyRedundant\",\"crossRegionRestore\":\"Enabled\"}")
-                .toObject(VaultPropertiesRedundancySettings.class);
+        VaultPropertiesRedundancySettings model = BinaryData
+            .fromString("{\"standardTierStorageRedundancy\":\"GeoRedundant\",\"crossRegionRestore\":\"Enabled\"}")
+            .toObject(VaultPropertiesRedundancySettings.class);
+        Assertions.assertEquals(StandardTierStorageRedundancy.GEO_REDUNDANT, model.standardTierStorageRedundancy());
+        Assertions.assertEquals(CrossRegionRestore.ENABLED, model.crossRegionRestore());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VaultPropertiesRedundancySettings model = new VaultPropertiesRedundancySettings();
+        VaultPropertiesRedundancySettings model = new VaultPropertiesRedundancySettings()
+            .withStandardTierStorageRedundancy(StandardTierStorageRedundancy.GEO_REDUNDANT)
+            .withCrossRegionRestore(CrossRegionRestore.ENABLED);
         model = BinaryData.fromObject(model).toObject(VaultPropertiesRedundancySettings.class);
+        Assertions.assertEquals(StandardTierStorageRedundancy.GEO_REDUNDANT, model.standardTierStorageRedundancy());
+        Assertions.assertEquals(CrossRegionRestore.ENABLED, model.crossRegionRestore());
     }
 }

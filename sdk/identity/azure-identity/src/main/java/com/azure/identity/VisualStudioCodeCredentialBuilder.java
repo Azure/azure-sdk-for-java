@@ -34,7 +34,7 @@ public class VisualStudioCodeCredentialBuilder extends CredentialBuilderBase<Vis
 
     /**
      * Sets the tenant id of the user to authenticate through the {@link VisualStudioCodeCredential}. The default is
-     * the tenant the user originally authenticated to via via the Visual Studio Code Azure Account plugin.
+     * the tenant the user originally authenticated to via the Visual Studio Code Azure Account plugin.
      *
      * @param tenantId the tenant ID to set.
      * @return An updated instance of this builder with the tenant id set as specified.

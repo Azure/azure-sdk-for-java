@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.AzureServiceBusProcessorCondition;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
@@ -22,6 +23,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
@@ -36,6 +38,7 @@ import org.springframework.util.StringUtils;
     AzureServiceBusProcessorClientConfiguration.SessionProcessorClientConfiguration.class,
     AzureServiceBusProcessorClientConfiguration.NoneSessionProcessorClientConfiguration.class
 })
+@Conditional(AzureServiceBusProcessorCondition.class)
 class AzureServiceBusProcessorClientConfiguration {
 
     @Bean
@@ -51,7 +54,6 @@ class AzureServiceBusProcessorClientConfiguration {
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.session-enabled", havingValue = "false",
         matchIfMissing = true)
-    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "processor.entity-type" })
     static class NoneSessionProcessorClientConfiguration {
 
         @Bean
@@ -102,7 +104,6 @@ class AzureServiceBusProcessorClientConfiguration {
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.session-enabled", havingValue = "true")
-    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "processor.entity-type" })
     static class SessionProcessorClientConfiguration {
 
         @Bean

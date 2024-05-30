@@ -28,7 +28,7 @@ public class ThreadAsyncTest extends AssistantsClientTestBase {
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void threadCRUD(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
-        createThreadRunner(threadCreationOptions -> {
+        createRunRunner(threadCreationOptions -> {
             AtomicReference<String> threadIdReference = new AtomicReference<>();
             // Create a thread
             StepVerifier.create(client.createThread(threadCreationOptions))
@@ -78,7 +78,7 @@ public class ThreadAsyncTest extends AssistantsClientTestBase {
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void threadCRUDWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient);
-        createThreadRunner(threadCreationOptions -> {
+        createRunRunner(threadCreationOptions -> {
             AtomicReference<String> threadIdReference = new AtomicReference<>();
             // Create a thread
             StepVerifier.create(client.createThreadWithResponse(

@@ -11,15 +11,17 @@ import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, DirectConnectionConfig, GatewayConnectionConfig, ThrottlingRetryOptions}
-import com.azure.identity.{ClientSecretCredentialBuilder, ManagedIdentityCredentialBuilder}
+import com.azure.identity.{ClientCertificateCredentialBuilder, ClientSecretCredentialBuilder, ManagedIdentityCredentialBuilder}
 import com.azure.resourcemanager.cosmos.CosmosManager
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkContext, TaskContext}
 import reactor.core.publisher.Mono
+import reactor.core.scheduler.{Scheduler, Schedulers}
 
+import java.io.ByteArrayInputStream
 import java.time.{Duration, Instant}
-import java.util.ConcurrentModificationException
+import java.util.{Base64, ConcurrentModificationException}
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
 import scala.collection.concurrent.TrieMap
@@ -51,6 +53,15 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     this.cleanupIntervalInSeconds,
     this.cleanupIntervalInSeconds,
     TimeUnit.SECONDS)
+
+  private val AAD_AUTH_BOUNDED_ELASTIC_THREAD_NAME = "cosmos-client-cache-auth-bounded-elastic"
+  private val TTL_FOR_SCHEDULER_WORKER_IN_SECONDS = 60 // same as BoundedElasticScheduler.DEFAULT_TTL_SECONDS
+
+  private val aadAuthBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+    AAD_AUTH_BOUNDED_ELASTIC_THREAD_NAME,
+    TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
   def apply(cosmosClientConfiguration: CosmosClientConfiguration,
             cosmosClientStateHandle: Option[CosmosClientMetadataCachesSnapshot],
@@ -157,6 +168,16 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                     new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
                     managedIdentityAuth),
                   cosmosAsyncClient)
+            case accessTokenProviderAuth: CosmosAccessTokenAuthConfig =>
+              sparkCatalogClient =
+                CosmosCatalogManagementSDKClient(
+                  cosmosClientConfiguration.resourceGroupName.get,
+                  cosmosClientConfiguration.databaseAccountName,
+                  createCosmosManagementClient(
+                    cosmosClientConfiguration.subscriptionId.get,
+                    new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
+                    accessTokenProviderAuth),
+                  cosmosAsyncClient)
             case _ =>
         }
 
@@ -206,17 +227,30 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       val authConfig = cosmosClientConfiguration.authConfig
       authConfig match {
           case masterKeyAuthConfig: CosmosMasterKeyAuthConfig => builder.key(masterKeyAuthConfig.accountKey)
-          case aadAuthConfig: CosmosServicePrincipalAuthConfig =>
-              val tokenCredential = new ClientSecretCredentialBuilder()
+          case servicePrincipalAuthConfig: CosmosServicePrincipalAuthConfig =>
+              val tokenCredential = if (servicePrincipalAuthConfig.clientCertPemBase64.isDefined) {
+                val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(servicePrincipalAuthConfig.clientCertPemBase64.get))
+                new ClientCertificateCredentialBuilder()
                   .authorityHost(new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints).getActiveDirectoryEndpoint())
-                  .tenantId(aadAuthConfig.tenantId)
-                  .clientId(aadAuthConfig.clientId)
-                  .clientSecret(aadAuthConfig.clientSecret)
+                  .tenantId(servicePrincipalAuthConfig.tenantId)
+                  .clientId(servicePrincipalAuthConfig.clientId)
+                  .pemCertificate(certInputStream)
+                  .sendCertificateChain(servicePrincipalAuthConfig.sendChain)
                   .build()
+              } else {
+                new ClientSecretCredentialBuilder()
+                  .authorityHost(new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints).getActiveDirectoryEndpoint())
+                  .tenantId(servicePrincipalAuthConfig.tenantId)
+                  .clientId(servicePrincipalAuthConfig.clientId)
+                  .clientSecret(servicePrincipalAuthConfig.clientSecret.get)
+                  .build()
+              }
+
               builder.credential(tokenCredential)
-          case managedIdentityAuthConfig: CosmosManagedIdentityAuthConfig => {
+          case managedIdentityAuthConfig: CosmosManagedIdentityAuthConfig =>
             builder.credential(createTokenCredential(managedIdentityAuthConfig))
-          }
+          case accessTokenAuthConfig: CosmosAccessTokenAuthConfig =>
+            builder.credential(createTokenCredential(accessTokenAuthConfig))
           case _ => throw new IllegalArgumentException(s"Authorization type ${authConfig.getClass} is not supported")
       }
 
@@ -369,12 +403,23 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                                     azureEnvironment: AzureEnvironment,
                                                     authConfig: CosmosServicePrincipalAuthConfig): CosmosManager = {
       val azureProfile = new AzureProfile(authConfig.tenantId, subscriptionId, azureEnvironment)
-      val tokenCredential = new ClientSecretCredentialBuilder()
+      val tokenCredential = if (authConfig.clientCertPemBase64.isDefined) {
+        val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(authConfig.clientCertPemBase64.get))
+        new ClientCertificateCredentialBuilder()
           .authorityHost(azureEnvironment.getActiveDirectoryEndpoint())
           .tenantId(authConfig.tenantId)
           .clientId(authConfig.clientId)
-          .clientSecret(authConfig.clientSecret)
+          .pemCertificate(certInputStream)
+          .sendCertificateChain(authConfig.sendChain)
           .build()
+      } else {
+        new ClientSecretCredentialBuilder()
+          .authorityHost(azureEnvironment.getActiveDirectoryEndpoint())
+          .tenantId(authConfig.tenantId)
+          .clientId(authConfig.clientId)
+          .clientSecret(authConfig.clientSecret.get)
+          .build()
+      }
       CosmosManager.authenticate(tokenCredential, azureProfile)
   }
 
@@ -386,16 +431,16 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     CosmosManager.authenticate(createTokenCredential(authConfig), azureProfile)
   }
 
-  private[this] def createTokenCredential(authConfig: CosmosManagedIdentityAuthConfig): CosmosManagedIdentityTokenCredential = {
-    val tokenProvider: (List[String] => Mono[CosmosAccessToken]) = CosmosConfig.accountDataResolverCls match {
-      case Some(accountDataResolver) =>
-        // @TODO fabianm - leaving this commented out for now. Below is how I would envision
-        // exposing the option to use linked service tokens eventually when the LinkedService for
-        // Cosmos DB supports ManagedIdentity authentication
-        // accountDataResolver.getManagedIdentityTokenProvider
-        throw new IllegalStateException(
-          "ManagedIdentity authentication is not supported in Synapse/Fabric for LinkedServices yet.")
-      case None =>
+  private[this] def createCosmosManagementClient(subscriptionId: String,
+                                                 azureEnvironment: AzureEnvironment,
+                                                 authConfig: CosmosAccessTokenAuthConfig): CosmosManager = {
+    val azureProfile = new AzureProfile(authConfig.tenantId, subscriptionId, azureEnvironment)
+
+    CosmosManager.authenticate(createTokenCredential(authConfig), azureProfile)
+  }
+
+  private[this] def createTokenCredential(authConfig: CosmosManagedIdentityAuthConfig): CosmosAccessTokenCredential = {
+    val tokenProvider: (List[String] => CosmosAccessToken) = {
         val tokenCredentialBuilder = new ManagedIdentityCredentialBuilder()
         if (authConfig.clientId.isDefined) {
           tokenCredentialBuilder.clientId(authConfig.clientId.get)
@@ -410,13 +455,19 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         (tokenRequestContextStrings: List[String]) => {
           val tokenRequestContext = new TokenRequestContext
           tokenRequestContext.setScopes(tokenRequestContextStrings.asJava)
-          tokenCredential
+          val accessToken = tokenCredential
             .getToken(tokenRequestContext)
-            .map(accessToken => new CosmosAccessToken(accessToken.getToken, accessToken.getExpiresAt))
+            .block()
+
+          CosmosAccessToken(accessToken.getToken, accessToken.getExpiresAt)
         }
     }
 
-    new CosmosManagedIdentityTokenCredential(tokenProvider)
+    new CosmosAccessTokenCredential(tokenProvider)
+  }
+
+  private[this] def createTokenCredential(authConfig: CosmosAccessTokenAuthConfig): CosmosAccessTokenCredential = {
+    new CosmosAccessTokenCredential(authConfig.tokenProvider)
   }
 
   private[this] def onCleanup(): Unit = {
@@ -596,11 +647,16 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 
-  private[this] class CosmosManagedIdentityTokenCredential(val tokenProvider: (List[String]) => Mono[CosmosAccessToken]) extends TokenCredential {
+  private[this] class CosmosAccessTokenCredential(val tokenProvider: (List[String]) =>CosmosAccessToken) extends TokenCredential {
     override def getToken(tokenRequestContext: TokenRequestContext): Mono[AccessToken] = {
-      tokenProvider
-        .apply(tokenRequestContext.getScopes.asScala.toList)
-        .map(token => new AccessToken(token.token, token.Offset))
+      val returnValue: Mono[AccessToken] = Mono.fromCallable(() => {
+        val token = tokenProvider
+          .apply(tokenRequestContext.getScopes.asScala.toList)
+
+        new AccessToken(token.token, token.Offset)
+      })
+
+      returnValue.publishOn(aadAuthBoundedElastic)
     }
   }
 }

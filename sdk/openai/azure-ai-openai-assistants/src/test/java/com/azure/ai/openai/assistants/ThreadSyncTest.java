@@ -27,7 +27,7 @@ public class ThreadSyncTest extends AssistantsClientTestBase {
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void threadCRUD(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        createThreadRunner(threadCreationOptions -> {
+        createRunRunner(threadCreationOptions -> {
             // Create a thread
             AssistantThread assistantThread = client.createThread(threadCreationOptions);
             String threadId = assistantThread.getId();
@@ -63,7 +63,7 @@ public class ThreadSyncTest extends AssistantsClientTestBase {
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void threadCRUDWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
-        createThreadRunner(threadCreationOptions -> {
+        createRunRunner(threadCreationOptions -> {
             // Create a thread
             Response<BinaryData> response = client.createThreadWithResponse(
                     BinaryData.fromObject(threadCreationOptions), new RequestOptions());

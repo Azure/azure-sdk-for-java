@@ -38,7 +38,8 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
     private String instructions;
 
     /*
-     * Additional instructions to append at the end of the instructions for the run. This is useful for modifying the behavior
+     * Additional instructions to append at the end of the instructions for the run. This is useful for modifying the
+     * behavior
      * on a per-run basis without overriding other instructions.
      */
     @Generated
@@ -51,7 +52,9 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
     private List<ToolDefinition> tools;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     private Map<String, String> metadata;
@@ -208,6 +211,7 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
         jsonWriter.writeStringField("instructions", this.instructions);
         jsonWriter.writeStringField("additional_instructions", this.additionalInstructions);
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("stream", this.stream);
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -229,6 +233,7 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
             String instructions = null;
             String additionalInstructions = null;
             List<ToolDefinition> tools = null;
+            Boolean stream = null;
             Map<String, String> metadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -243,6 +248,8 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
                     additionalInstructions = reader.getString();
                 } else if ("tools".equals(fieldName)) {
                     tools = reader.readArray(reader1 -> ToolDefinition.fromJson(reader1));
+                } else if ("stream".equals(fieldName)) {
+                    stream = reader.getNullable(JsonReader::getBoolean);
                 } else if ("metadata".equals(fieldName)) {
                     metadata = reader.readMap(reader1 -> reader1.getString());
                 } else {
@@ -254,8 +261,38 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
             deserializedCreateRunOptions.instructions = instructions;
             deserializedCreateRunOptions.additionalInstructions = additionalInstructions;
             deserializedCreateRunOptions.tools = tools;
+            deserializedCreateRunOptions.stream = stream;
             deserializedCreateRunOptions.metadata = metadata;
             return deserializedCreateRunOptions;
         });
+    }
+
+    /*
+     * If `true`, returns a stream of events that happen during the Run as server-sent events,
+     * terminating when the Run enters a terminal state with a `data: [DONE]` message.
+     */
+    @Generated
+    private Boolean stream;
+
+    /**
+     * Get the stream property: If `true`, returns a stream of events that happen during the Run as server-sent events,
+     * terminating when the Run enters a terminal state with a `data: [DONE]` message.
+     *
+     * @return the stream value.
+     */
+    Boolean isStream() {
+        return this.stream;
+    }
+
+    /**
+     * Set the stream property: If `true`, returns a stream of events that happen during the Run as server-sent events,
+     * terminating when the Run enters a terminal state with a `data: [DONE]` message.
+     *
+     * @param stream the stream value to set.
+     * @return the CreateRunOptions object itself.
+     */
+    CreateRunOptions setStream(Boolean stream) {
+        this.stream = stream;
+        return this;
     }
 }

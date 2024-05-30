@@ -19,8 +19,7 @@ public final class ServicePrincipalProperties {
     private String applicationId;
 
     /*
-     * A secret string that the application uses to prove its identity, also can be referred to as application password
-     * (write only).
+     * A secret string that the application uses to prove its identity, also can be referred to as application password (write only).
      */
     @JsonProperty(value = "secret")
     private String secret;
@@ -52,8 +51,8 @@ public final class ServicePrincipalProperties {
     }
 
     /**
-     * Get the secret property: A secret string that the application uses to prove its identity, also can be referred
-     * to as application password (write only).
+     * Get the secret property: A secret string that the application uses to prove its identity, also can be referred to
+     * as application password (write only).
      * 
      * @return the secret value.
      */
@@ -62,8 +61,8 @@ public final class ServicePrincipalProperties {
     }
 
     /**
-     * Set the secret property: A secret string that the application uses to prove its identity, also can be referred
-     * to as application password (write only).
+     * Set the secret property: A secret string that the application uses to prove its identity, also can be referred to
+     * as application password (write only).
      * 
      * @param secret the secret value to set.
      * @return the ServicePrincipalProperties object itself.

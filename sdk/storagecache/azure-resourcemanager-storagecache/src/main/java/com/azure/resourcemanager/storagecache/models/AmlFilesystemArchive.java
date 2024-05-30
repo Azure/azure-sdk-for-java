@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Immutable
 public final class AmlFilesystemArchive {
     /*
-     * Lustre file system path to archive relative to the file system root. Specify '/' to archive all modified data.
+     * Lustre file system path to archive relative to the file system root.  Specify '/' to archive all modified data.
      */
     @JsonProperty(value = "filesystemPath", access = JsonProperty.Access.WRITE_ONLY)
     private String filesystemPath;
@@ -31,8 +31,8 @@ public final class AmlFilesystemArchive {
     }
 
     /**
-     * Get the filesystemPath property: Lustre file system path to archive relative to the file system root. Specify
-     * '/' to archive all modified data.
+     * Get the filesystemPath property: Lustre file system path to archive relative to the file system root. Specify '/'
+     * to archive all modified data.
      * 
      * @return the filesystemPath value.
      */

@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class SecurityOperatorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/
-     * PutSecurityOperatorByName_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/PutSecurityOperatorByName_example.json
      */
     /**
      * Sample code: Create a security operator on the given scope.
@@ -20,7 +18,8 @@ public final class SecurityOperatorsCreateOrUpdateSamples {
      */
     public static void
         createASecurityOperatorOnTheGivenScope(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.securityOperators().createOrUpdateWithResponse("CloudPosture", "DefenderCSPMSecurityOperator",
-            com.azure.core.util.Context.NONE);
+        manager.securityOperators()
+            .createOrUpdateWithResponse("CloudPosture", "DefenderCSPMSecurityOperator",
+                com.azure.core.util.Context.NONE);
     }
 }

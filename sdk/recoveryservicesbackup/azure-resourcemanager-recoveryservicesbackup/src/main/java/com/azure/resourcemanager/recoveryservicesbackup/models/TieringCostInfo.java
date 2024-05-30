@@ -11,6 +11,14 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.TieringCos
  */
 public interface TieringCostInfo {
     /**
+     * Gets the objectType property: This property will be used as the discriminator for deciding the specific types in
+     * the polymorphic chain of types.
+     * 
+     * @return the objectType value.
+     */
+    String objectType();
+
+    /**
      * Gets the inner com.azure.resourcemanager.recoveryservicesbackup.fluent.models.TieringCostInfoInner object.
      * 
      * @return the inner object.

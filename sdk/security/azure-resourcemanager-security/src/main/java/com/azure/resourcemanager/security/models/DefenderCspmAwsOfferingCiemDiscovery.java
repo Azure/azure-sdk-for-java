@@ -8,12 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Defender CSPM CIEM discovery configuration.
+ * Defender CSPM Permissions Management discovery configuration.
  */
 @Fluent
 public final class DefenderCspmAwsOfferingCiemDiscovery {
     /*
-     * The cloud role ARN in AWS for CIEM discovery
+     * The cloud role ARN in AWS for Permissions Management discovery
      */
     @JsonProperty(value = "cloudRoleArn")
     private String cloudRoleArn;
@@ -25,7 +25,7 @@ public final class DefenderCspmAwsOfferingCiemDiscovery {
     }
 
     /**
-     * Get the cloudRoleArn property: The cloud role ARN in AWS for CIEM discovery.
+     * Get the cloudRoleArn property: The cloud role ARN in AWS for Permissions Management discovery.
      * 
      * @return the cloudRoleArn value.
      */
@@ -34,7 +34,7 @@ public final class DefenderCspmAwsOfferingCiemDiscovery {
     }
 
     /**
-     * Set the cloudRoleArn property: The cloud role ARN in AWS for CIEM discovery.
+     * Set the cloudRoleArn property: The cloud role ARN in AWS for Permissions Management discovery.
      * 
      * @param cloudRoleArn the cloudRoleArn value to set.
      * @return the DefenderCspmAwsOfferingCiemDiscovery object itself.

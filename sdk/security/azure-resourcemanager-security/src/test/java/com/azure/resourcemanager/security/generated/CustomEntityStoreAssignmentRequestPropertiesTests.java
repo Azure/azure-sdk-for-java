@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomEntityStoreAssignmentRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomEntityStoreAssignmentRequestProperties model = BinaryData.fromString("{\"principal\":\"hka\"}")
+        CustomEntityStoreAssignmentRequestProperties model = BinaryData.fromString("{\"principal\":\"pnppfuf\"}")
             .toObject(CustomEntityStoreAssignmentRequestProperties.class);
-        Assertions.assertEquals("hka", model.principal());
+        Assertions.assertEquals("pnppfuf", model.principal());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomEntityStoreAssignmentRequestProperties model
-            = new CustomEntityStoreAssignmentRequestProperties().withPrincipal("hka");
+            = new CustomEntityStoreAssignmentRequestProperties().withPrincipal("pnppfuf");
         model = BinaryData.fromObject(model).toObject(CustomEntityStoreAssignmentRequestProperties.class);
-        Assertions.assertEquals("hka", model.principal());
+        Assertions.assertEquals("pnppfuf", model.principal());
     }
 }

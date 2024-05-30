@@ -13,20 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class RecommendationConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecommendationConfigurationProperties model = BinaryData.fromString(
-            "{\"recommendationType\":\"IoT_AgentSendsUnutilizedMessages\",\"name\":\"hmjpjscdfpdqwtyg\",\"status\":\"Enabled\"}")
+        RecommendationConfigurationProperties model = BinaryData
+            .fromString("{\"recommendationType\":\"IoT_InstallAgent\",\"name\":\"kois\",\"status\":\"Disabled\"}")
             .toObject(RecommendationConfigurationProperties.class);
-        Assertions.assertEquals(RecommendationType.IO_T_AGENT_SENDS_UNUTILIZED_MESSAGES, model.recommendationType());
-        Assertions.assertEquals(RecommendationConfigStatus.ENABLED, model.status());
+        Assertions.assertEquals(RecommendationType.IO_T_INSTALL_AGENT, model.recommendationType());
+        Assertions.assertEquals(RecommendationConfigStatus.DISABLED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecommendationConfigurationProperties model = new RecommendationConfigurationProperties()
-            .withRecommendationType(RecommendationType.IO_T_AGENT_SENDS_UNUTILIZED_MESSAGES)
-            .withStatus(RecommendationConfigStatus.ENABLED);
+        RecommendationConfigurationProperties model
+            = new RecommendationConfigurationProperties().withRecommendationType(RecommendationType.IO_T_INSTALL_AGENT)
+                .withStatus(RecommendationConfigStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(RecommendationConfigurationProperties.class);
-        Assertions.assertEquals(RecommendationType.IO_T_AGENT_SENDS_UNUTILIZED_MESSAGES, model.recommendationType());
-        Assertions.assertEquals(RecommendationConfigStatus.ENABLED, model.status());
+        Assertions.assertEquals(RecommendationType.IO_T_INSTALL_AGENT, model.recommendationType());
+        Assertions.assertEquals(RecommendationConfigStatus.DISABLED, model.status());
     }
 }

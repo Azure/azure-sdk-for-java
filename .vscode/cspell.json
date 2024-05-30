@@ -137,6 +137,7 @@
     "sdk/cosmos/azure-cosmos-spark_3-3_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-4_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-5_2-12/**",
+    "sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/**",
     "sdk/core/azure-core-test/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
@@ -176,6 +177,7 @@
     "sdk/parents/azure-client-sdk-parent/**",
     "sdk/parents/azure-sdk-parent/**",
     "sdk/parents/azure-data-sdk-parent/**",
+    "sdk/parents/clientcore-parent/**",
     "sdk/personalizer/azure-ai-personalizer/**",
     "sdk/personalizer/test-resources.json",
     "sdk/purview/azure-analytics-purview-administration/**",
@@ -212,6 +214,10 @@
     "sdk/maps/azure-maps-timezone/**",
     "sdk/devcenter/azure-developer-devcenter/**",
     "sdk/loadtesting/azure-developer-loadtesting/**",
+    "sdk/clientcore/core/**",
+    "sdk/clientcore/core-json/**",
+    "sdk/clientcore/http-okhttp3/**",
+    "sdk/clientcore/http-jdk-httpclient/**",
     "sdk/serialization/azure-json-gson/**",
     "sdk/serialization/azure-json/**",
     "sdk/serialization/azure-xml/**",
@@ -384,6 +390,9 @@
     "reimaging",
     "Remediations",
     "requireReleaseDeps",
+    "rerank",
+    "Rerank",
+    "RERANK",
     "resourcemanager",
     "Retriable",
     "revapi",
@@ -427,6 +436,21 @@
     "XLint"
   ],
   "overrides": [
+    {
+      "filename": "sdk/batch/azure-compute-batch/**",
+      "words": [
+        "Dtest",
+        "osdisk",
+        "nopublicipaddresses",
+        "cifs",
+        "noaction",
+        "upgradingos",
+        "VMSS",
+        "reimaged",
+        "isdirectory",
+        "SSDLRS"
+      ]
+    },
     {
       "filename": "sdk/search/azure-search-documents/**",
       "words": [

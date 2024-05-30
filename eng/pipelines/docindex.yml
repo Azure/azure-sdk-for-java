@@ -90,7 +90,9 @@ jobs:
         parameters:
           DailyBranchVariableName: DailyDocsBranchName
 
-      - template: /eng/pipelines/templates/steps/mvn-linux-settings-for-docs.yml
+      - template: /eng/pipelines/templates/steps/mvn-linux-repository-settings.yml
+
+      - template: /eng/pipelines/templates/steps/install-rex-validation-tool.yml
 
       - task: Powershell@2
         inputs:

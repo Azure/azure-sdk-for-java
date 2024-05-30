@@ -6,51 +6,33 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.ExpandControlsEnum;
 import com.azure.resourcemanager.security.models.SecureScoreControlDetails;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SecureScoreControlsListBySecureScoreMockTests {
     @Test
     public void testListBySecureScore() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"cylzz\",\"score\":{\"max\":1469171066,\"current\":89.76534728751808,\"percentage\":98.09121879270528},\"healthyResourceCount\":1418530782,\"unhealthyResourceCount\":450961408,\"notApplicableResourceCount\":264526768,\"weight\":7975023214373291142,\"definition\":{\"properties\":{\"displayName\":\"ibdctjwfebqqq\",\"description\":\"tsqaclczfrofy\",\"maxScore\":223925634,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[{},{},{}]},\"id\":\"kewqwamptld\",\"name\":\"d\",\"type\":\"r\"}},\"id\":\"ljhnxf\",\"name\":\"ffngfpilloirm\",\"type\":\"xdbktuqnbcjknrq\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"wjsba\",\"score\":{\"max\":1797222701,\"current\":73.83149851676426,\"percentage\":25.390317222265125},\"healthyResourceCount\":1509353774,\"unhealthyResourceCount\":2053007884,\"notApplicableResourceCount\":616800165,\"weight\":1063123898853327288,\"definition\":{\"properties\":{\"displayName\":\"i\",\"description\":\"onkrni\",\"maxScore\":834064746,\"source\":{\"sourceType\":\"BuiltIn\"},\"assessmentDefinitions\":[{},{}]},\"id\":\"itn\",\"name\":\"paptgvnaqyjuk\",\"type\":\"ajnnewltonop\"}},\"id\":\"femiwfhhawbabhz\",\"name\":\"fcdi\",\"type\":\"qnxyd\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<SecureScoreControlDetails> response = manager.secureScoreControls().listBySecureScore("rmrjpjthi",
-            ExpandControlsEnum.DEFINITION, com.azure.core.util.Context.NONE);
+        PagedIterable<SecureScoreControlDetails> response = manager.secureScoreControls()
+            .listBySecureScore("so", ExpandControlsEnum.DEFINITION, com.azure.core.util.Context.NONE);
 
     }
 }

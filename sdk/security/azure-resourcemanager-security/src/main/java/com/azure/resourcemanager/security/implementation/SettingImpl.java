@@ -6,6 +6,7 @@ package com.azure.resourcemanager.security.implementation;
 
 import com.azure.resourcemanager.security.fluent.models.SettingInner;
 import com.azure.resourcemanager.security.models.Setting;
+import com.azure.resourcemanager.security.models.SettingKind;
 
 public final class SettingImpl implements Setting {
     private SettingInner innerObject;
@@ -27,6 +28,10 @@ public final class SettingImpl implements Setting {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SettingKind kind() {
+        return this.innerModel().kind();
     }
 
     public SettingInner innerModel() {

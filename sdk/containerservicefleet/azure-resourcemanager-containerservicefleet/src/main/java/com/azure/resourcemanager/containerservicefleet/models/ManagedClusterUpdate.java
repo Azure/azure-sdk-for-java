@@ -78,8 +78,8 @@ public final class ManagedClusterUpdate {
      */
     public void validate() {
         if (upgrade() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property upgrade in model ManagedClusterUpdate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property upgrade in model ManagedClusterUpdate"));
         } else {
             upgrade().validate();
         }

@@ -6,16 +6,28 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The Defender for Servers GCP offering configurations.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "offeringType",
+    defaultImpl = DefenderForServersGcpOffering.class,
+    visible = true)
 @JsonTypeName("DefenderForServersGcp")
 @Fluent
 public final class DefenderForServersGcpOffering extends CloudOffering {
+    /*
+     * The type of the security offering.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "offeringType", required = true)
+    private OfferingType offeringType = OfferingType.DEFENDER_FOR_SERVERS_GCP;
+
     /*
      * The Defender for servers connection configuration
      */
@@ -56,6 +68,16 @@ public final class DefenderForServersGcpOffering extends CloudOffering {
      * Creates an instance of DefenderForServersGcpOffering class.
      */
     public DefenderForServersGcpOffering() {
+    }
+
+    /**
+     * Get the offeringType property: The type of the security offering.
+     * 
+     * @return the offeringType value.
+     */
+    @Override
+    public OfferingType offeringType() {
+        return this.offeringType;
     }
 
     /**

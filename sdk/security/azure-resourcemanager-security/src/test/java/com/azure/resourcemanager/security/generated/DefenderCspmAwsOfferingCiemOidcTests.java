@@ -11,19 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderCspmAwsOfferingCiemOidcTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderCspmAwsOfferingCiemOidc model
-            = BinaryData.fromString("{\"cloudRoleArn\":\"a\",\"azureActiveDirectoryAppName\":\"whpjlw\"}")
-                .toObject(DefenderCspmAwsOfferingCiemOidc.class);
-        Assertions.assertEquals("a", model.cloudRoleArn());
-        Assertions.assertEquals("whpjlw", model.azureActiveDirectoryAppName());
+        DefenderCspmAwsOfferingCiemOidc model = BinaryData
+            .fromString("{\"cloudRoleArn\":\"layunomirhpfabe\",\"azureActiveDirectoryAppName\":\"lamwmgewa\"}")
+            .toObject(DefenderCspmAwsOfferingCiemOidc.class);
+        Assertions.assertEquals("layunomirhpfabe", model.cloudRoleArn());
+        Assertions.assertEquals("lamwmgewa", model.azureActiveDirectoryAppName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefenderCspmAwsOfferingCiemOidc model
-            = new DefenderCspmAwsOfferingCiemOidc().withCloudRoleArn("a").withAzureActiveDirectoryAppName("whpjlw");
+            = new DefenderCspmAwsOfferingCiemOidc().withCloudRoleArn("layunomirhpfabe")
+                .withAzureActiveDirectoryAppName("lamwmgewa");
         model = BinaryData.fromObject(model).toObject(DefenderCspmAwsOfferingCiemOidc.class);
-        Assertions.assertEquals("a", model.cloudRoleArn());
-        Assertions.assertEquals("whpjlw", model.azureActiveDirectoryAppName());
+        Assertions.assertEquals("layunomirhpfabe", model.cloudRoleArn());
+        Assertions.assertEquals("lamwmgewa", model.azureActiveDirectoryAppName());
     }
 }

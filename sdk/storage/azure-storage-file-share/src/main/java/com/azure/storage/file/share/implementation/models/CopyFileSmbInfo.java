@@ -5,45 +5,35 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
-import java.io.IOException;
 
 /**
  * Parameter group.
  */
 @Fluent
-public final class CopyFileSmbInfo implements JsonSerializable<CopyFileSmbInfo> {
+public final class CopyFileSmbInfo {
     /*
-     * Specifies either the option to copy file attributes from a source file(source) to a target file or a list of
-     * attributes to set on a target file.
+     * Specifies either the option to copy file attributes from a source file(source) to a target file or a list of attributes to set on a target file.
      */
     private String fileAttributes;
 
     /*
-     * Specifies either the option to copy file creation time from a source file(source) to a target file or a time
-     * value in ISO 8601 format to set as creation time on a target file.
+     * Specifies either the option to copy file creation time from a source file(source) to a target file or a time value in ISO 8601 format to set as creation time on a target file.
      */
     private String fileCreationTime;
 
     /*
-     * Specifies either the option to copy file last write time from a source file(source) to a target file or a time
-     * value in ISO 8601 format to set as last write time on a target file.
+     * Specifies either the option to copy file last write time from a source file(source) to a target file or a time value in ISO 8601 format to set as last write time on a target file.
      */
     private String fileLastWriteTime;
 
     /*
-     * Specifies either the option to copy file last write time from a source file(source) to a target file or a time
-     * value in ISO 8601 format to set as last write time on a target file.
+     * Specifies either the option to copy file last write time from a source file(source) to a target file or a time value in ISO 8601 format to set as last write time on a target file.
      */
     private String fileChangeTime;
 
     /*
-     * Specifies the option to copy file security descriptor from source file or to set it using the value which is
-     * defined by the header value of x-ms-file-permission or x-ms-file-permission-key.
+     * Specifies the option to copy file security descriptor from source file or to set it using the value which is defined by the header value of x-ms-file-permission or x-ms-file-permission-key.
      */
     private PermissionCopyModeType filePermissionCopyMode;
 
@@ -53,8 +43,7 @@ public final class CopyFileSmbInfo implements JsonSerializable<CopyFileSmbInfo> 
     private Boolean ignoreReadOnly;
 
     /*
-     * Specifies the option to set archive attribute on a target file. True means archive attribute will be set on a
-     * target file despite attribute overrides or a source file state.
+     * Specifies the option to set archive attribute on a target file. True means archive attribute will be set on a target file despite attribute overrides or a source file state.
      */
     private Boolean setArchiveAttribute;
 
@@ -218,58 +207,5 @@ public final class CopyFileSmbInfo implements JsonSerializable<CopyFileSmbInfo> 
     public CopyFileSmbInfo setSetArchiveAttribute(Boolean setArchiveAttribute) {
         this.setArchiveAttribute = setArchiveAttribute;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("fileAttributes", this.fileAttributes);
-        jsonWriter.writeStringField("fileCreationTime", this.fileCreationTime);
-        jsonWriter.writeStringField("fileLastWriteTime", this.fileLastWriteTime);
-        jsonWriter.writeStringField("fileChangeTime", this.fileChangeTime);
-        jsonWriter.writeStringField("filePermissionCopyMode",
-            this.filePermissionCopyMode == null ? null : this.filePermissionCopyMode.toString());
-        jsonWriter.writeBooleanField("ignoreReadOnly", this.ignoreReadOnly);
-        jsonWriter.writeBooleanField("setArchiveAttribute", this.setArchiveAttribute);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CopyFileSmbInfo from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CopyFileSmbInfo if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CopyFileSmbInfo.
-     */
-    public static CopyFileSmbInfo fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CopyFileSmbInfo deserializedCopyFileSmbInfo = new CopyFileSmbInfo();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("fileAttributes".equals(fieldName)) {
-                    deserializedCopyFileSmbInfo.fileAttributes = reader.getString();
-                } else if ("fileCreationTime".equals(fieldName)) {
-                    deserializedCopyFileSmbInfo.fileCreationTime = reader.getString();
-                } else if ("fileLastWriteTime".equals(fieldName)) {
-                    deserializedCopyFileSmbInfo.fileLastWriteTime = reader.getString();
-                } else if ("fileChangeTime".equals(fieldName)) {
-                    deserializedCopyFileSmbInfo.fileChangeTime = reader.getString();
-                } else if ("filePermissionCopyMode".equals(fieldName)) {
-                    deserializedCopyFileSmbInfo.filePermissionCopyMode
-                        = PermissionCopyModeType.fromString(reader.getString());
-                } else if ("ignoreReadOnly".equals(fieldName)) {
-                    deserializedCopyFileSmbInfo.ignoreReadOnly = reader.getNullable(JsonReader::getBoolean);
-                } else if ("setArchiveAttribute".equals(fieldName)) {
-                    deserializedCopyFileSmbInfo.setArchiveAttribute = reader.getNullable(JsonReader::getBoolean);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCopyFileSmbInfo;
-        });
     }
 }

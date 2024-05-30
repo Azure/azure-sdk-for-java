@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.22 (Unreleased)
+## 1.0.0-beta.25 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.24 (2024-05-29)
+
+### Features Added
+
+- [Support explicit fixed sampling rate of 100% without ingestion sampling](https://github.com/Azure/azure-sdk-for-java/pull/40338)
+
+## 1.0.0-beta.23 (2024-05-23)
+
+### Other Changes
+- [Only emit `_APPRESOURCEPREVIEW_` custom metric in AKS preview integration](https://github.com/Azure/azure-sdk-for-java/pull/40312)
+- [Update OpenTelemetry to 2.4.0](https://github.com/Azure/azure-sdk-for-java/pull/40289)
+
+## 1.0.0-beta.22 (2024-05-09)
+
+### Bugs Fixed
+- [Fix _OTELRESOURCE_ custom metrics with default resources](https://github.com/Azure/azure-sdk-for-java/pull/39380)
+
+### Other Changes
+- [Update OpenTelemetry to 2.3.0](https://github.com/Azure/azure-sdk-for-java/pull/39843)
+- [Add attach type to sdkVersion](https://github.com/Azure/azure-sdk-for-java/pull/39883)
+- [Emit stable HTTP OTel metrics](https://github.com/Azure/azure-sdk-for-java/pull/39960)
 
 ## 1.0.0-beta.21 (2024-03-11)
 

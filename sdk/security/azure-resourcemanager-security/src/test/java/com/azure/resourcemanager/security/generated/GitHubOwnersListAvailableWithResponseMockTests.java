@@ -6,56 +6,40 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.DevOpsProvisioningState;
 import com.azure.resourcemanager.security.models.GitHubOwnerListResponse;
 import com.azure.resourcemanager.security.models.OnboardingState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class GitHubOwnersListAvailableWithResponseMockTests {
     @Test
     public void testListAvailableWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"ninpesw\",\"provisioningStatusUpdateTimeUtc\":\"2021-06-19T13:20:23Z\",\"provisioningState\":\"DeletionFailure\",\"ownerUrl\":\"ebzqz\",\"gitHubInternalId\":\"sviujojzd\",\"onboardingState\":\"NotApplicable\"},\"id\":\"naosxsxoxvimd\",\"name\":\"etqhdbitqsby\",\"type\":\"jsgomrih\"},{\"properties\":{\"provisioningStatusMessage\":\"msdbvqxgfygf\",\"provisioningStatusUpdateTimeUtc\":\"2021-01-27T17:11:36Z\",\"provisioningState\":\"DeletionFailure\",\"ownerUrl\":\"bceh\",\"gitHubInternalId\":\"dp\",\"onboardingState\":\"Onboarded\"},\"id\":\"bo\",\"name\":\"npytporrvkxtf\",\"type\":\"tanetinqxdhnpjn\"}],\"nextLink\":\"jighd\"}";
+            = "{\"value\":[{\"properties\":{\"provisioningStatusMessage\":\"wkzfggsuzkv\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-21T17:44:02Z\",\"provisioningState\":\"DeletionSuccess\",\"ownerUrl\":\"uiwaz\",\"gitHubInternalId\":\"bthutctcabc\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"bzfihszfkpoidfzw\",\"name\":\"gvuojuwg\",\"type\":\"eccvufjqvfcfss\"},{\"properties\":{\"provisioningStatusMessage\":\"emkrhbsdgktluifi\",\"provisioningStatusUpdateTimeUtc\":\"2021-02-02T18:13:56Z\",\"provisioningState\":\"Canceled\",\"ownerUrl\":\"enobqysbeespqbvv\",\"gitHubInternalId\":\"rszsu\",\"onboardingState\":\"OnboardedByOtherConnector\"},\"id\":\"aut\",\"name\":\"ricv\",\"type\":\"ofenin\"},{\"properties\":{\"provisioningStatusMessage\":\"hyyqxckdlxjp\",\"provisioningStatusUpdateTimeUtc\":\"2021-08-27T02:35:06Z\",\"provisioningState\":\"DeletionFailure\",\"ownerUrl\":\"wincbesfvij\",\"gitHubInternalId\":\"bxfiiytqxewj\",\"onboardingState\":\"NotOnboarded\"},\"id\":\"tezlghkvoxdpo\",\"name\":\"xkivbkuto\",\"type\":\"ecyqoytwssbvqnp\"}],\"nextLink\":\"wdmuvyakrbqpw\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GitHubOwnerListResponse response = manager.gitHubOwners()
-            .listAvailableWithResponse("vqzgaqsosrnj", "vgrghnhu", com.azure.core.util.Context.NONE).getValue();
+            .listAvailableWithResponse("rrsjscosanjso", "trztogujg", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE,
+        Assertions.assertEquals(DevOpsProvisioningState.DELETION_SUCCESS,
             response.value().get(0).properties().provisioningState());
-        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, response.value().get(0).properties().onboardingState());
-        Assertions.assertEquals("jighd", response.nextLink());
+        Assertions.assertEquals(OnboardingState.ONBOARDED_BY_OTHER_CONNECTOR,
+            response.value().get(0).properties().onboardingState());
+        Assertions.assertEquals("wdmuvyakrbqpw", response.nextLink());
     }
 }

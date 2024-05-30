@@ -1,0 +1,228 @@
+<!--
+  ~ Copyright (c) Microsoft Corporation. All rights reserved.
+  ~ Licensed under the MIT License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>io.clientcore</groupId>
+    <artifactId>clientcore-parent</artifactId>
+    <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
+    <relativePath>../../parents/clientcore-parent</relativePath>
+  </parent>
+
+  <groupId>io.clientcore</groupId>
+  <artifactId>core</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core;current} -->
+
+  <name>Java Core Library for building client libraries for accessing web services.</name>
+  <description>This library contains core types for building Java client libraries for accessing web services.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://opensource.org/licenses/MIT</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+    <developerConnection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</developerConnection>
+  </scm>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.60</jacoco.min.branchcoverage>
+    <jacoco.skip>true</jacoco.skip>
+    <javaModulesSurefireArgLine>
+      --add-opens io.clientcore.core/io.clientcore.core=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.annotation=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.credential=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.http=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.http.annotation=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.http.client=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.http.exception=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.http.models=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.http.pipeline=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.implementation.http.rest=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.implementation.util=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.models=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.shared=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.util=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.util.configuration=ALL-UNNAMED
+      --add-opens io.clientcore.core/io.clientcore.core.util.serializer=ALL-UNNAMED
+
+      --add-reads io.clientcore.core=ALL-UNNAMED
+
+      --add-exports io.clientcore.core/io.clientcore.core.shared=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
+
+    </javaModulesSurefireArgLine>
+
+    <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->
+    <checkstyle.excludes>**/generated/**/*.java</checkstyle.excludes>
+
+    <!-- Enables fail on deprecated API usage. -->
+    <compiler.failondeprecatedstatus/>
+
+    <javadoc.excludePackageNames>
+      io.clientcore.core.json,com.azure.json,com.azure.xml,com.azure.core*
+    </javadoc.excludePackageNames>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>core-json</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core-json;dependency} -->
+    </dependency>
+
+    <!-- Test dependencies -->
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>core-json</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:core-json;dependency} -->
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.json</groupId>
+      <artifactId>javax.json-api</artifactId>
+      <version>1.1.4</version> <!-- {x-version-update;javax.json:javax.json-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-compress</artifactId>
+      <version>1.26.0</version> <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.54.v20240208</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>9.4.54.v20240208</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.openjdk.jmh</groupId>
+      <artifactId>jmh-generator-annprocess</artifactId>
+      <version>1.37</version> <!-- {x-version-update;org.openjdk.jmh:jmh-generator-annprocess;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.conscrypt</groupId>
+      <artifactId>conscrypt-openjdk-uber</artifactId>
+      <version>2.5.2</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- RestProxyTests is inherited by tests in http-okhttp3 and http-jdk-httpclient -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <executions>
+          <execution>
+            <id>test-jar</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+
+      <!-- This plugin scans reports spotbugs in the code -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.8.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <configuration>
+          <plugins>
+            <plugin>
+              <groupId>com.h3xstream.findsecbugs</groupId>
+              <artifactId>findsecbugs-plugin</artifactId>
+              <version>1.9.0</version> <!-- {x-version-update;com.h3xstream.findsecbugs:findsecbugs-plugin;external_dependency} -->
+            </plugin>
+          </plugins>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>jmh-benchmark</id>
+      <activation>
+        <property>
+          <name>jmh-benchmark</name>
+        </property>
+      </activation>
+
+      <properties>
+      </properties>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <configuration>
+              <!-- Add the JMH annotation processor to the classpath. -->
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>org.openjdk.jmh</groupId>
+                  <artifactId>jmh-generator-annprocess</artifactId>
+                  <version>1.37</version> <!-- {x-version-update;org.openjdk.jmh:jmh-generator-annprocess;external_dependency} -->
+                </path>
+              </annotationProcessorPaths>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

@@ -9,9 +9,7 @@ package com.azure.resourcemanager.containerservicefleet.generated;
  */
 public final class UpdateRunsGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-02-02-preview/
-     * examples/UpdateRuns_Get.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2024-04-01/examples/UpdateRuns_Get.json
      */
     /**
      * Sample code: Gets an UpdateRun resource.

@@ -6,55 +6,37 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.CloudName;
 import com.azure.resourcemanager.security.models.SecurityConnector;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SecurityConnectorsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"wqgqrbthbfpi\",\"hierarchyIdentifierTrialEndDate\":\"2021-02-14T16:09:27Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"wfvkywzrq\"},{\"offeringType\":\"CloudOffering\",\"description\":\"addpkhuvnlmdcn\"},{\"offeringType\":\"CloudOffering\",\"description\":\"iexmizunzbqvioy\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"tfqhhvvwzprjaaai\",\"tags\":{\"cn\":\"tvavlyaqtl\",\"rvbzgyhenfsfy\":\"mefzvzuzqcrlk\"},\"id\":\"ncowmhnozfby\",\"name\":\"jiaaosla\",\"type\":\"agwaakktbjort\"}]}";
+            = "{\"value\":[{\"properties\":{\"hierarchyIdentifier\":\"jptnnt\",\"hierarchyIdentifierTrialEndDate\":\"2021-01-23T01:07:35Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"vn\"},{\"offeringType\":\"CloudOffering\",\"description\":\"rrhpgsjbio\"},{\"offeringType\":\"CloudOffering\",\"description\":\"wviqehmdqvaolid\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"fsfvkjcimbrsv\",\"tags\":{\"jl\":\"tjnhp\",\"cyzhimmydtdtftmi\":\"k\",\"rgyzcslazp\":\"uzjd\",\"teagbgac\":\"kqoyimxpggk\"},\"id\":\"qpjuytvude\",\"name\":\"lpbybkisb\",\"type\":\"ifm\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SecurityConnector> response = manager.securityConnectors().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tfqhhvvwzprjaaai", response.iterator().next().location());
-        Assertions.assertEquals("tvavlyaqtl", response.iterator().next().tags().get("cn"));
-        Assertions.assertEquals("wqgqrbthbfpi", response.iterator().next().hierarchyIdentifier());
+        Assertions.assertEquals("fsfvkjcimbrsv", response.iterator().next().location());
+        Assertions.assertEquals("tjnhp", response.iterator().next().tags().get("jl"));
+        Assertions.assertEquals("jptnnt", response.iterator().next().hierarchyIdentifier());
         Assertions.assertEquals(CloudName.GITHUB, response.iterator().next().environmentName());
     }
 }

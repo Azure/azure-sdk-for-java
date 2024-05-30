@@ -19,9 +19,7 @@ import java.util.Arrays;
  */
 public final class UpdateRunsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-02-02-preview/
-     * examples/UpdateRuns_CreateOrUpdate.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2024-04-01/examples/UpdateRuns_CreateOrUpdate.json
      */
     /**
      * Sample code: Create an UpdateRun.
@@ -30,10 +28,14 @@ public final class UpdateRunsCreateOrUpdateSamples {
      */
     public static void
         createAnUpdateRun(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
-        manager.updateRuns().define("run1").withExistingFleet("rg1", "fleet1").withUpdateStrategyId(
-            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1")
+        manager.updateRuns()
+            .define("run1")
+            .withExistingFleet("rg1", "fleet1")
+            .withUpdateStrategyId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/fleets/myFleet/updateStrategies/strategy1")
             .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(new UpdateStage().withName("stage1")
-                .withGroups(Arrays.asList(new UpdateGroup().withName("group-a"))).withAfterStageWaitInSeconds(3600))))
+                .withGroups(Arrays.asList(new UpdateGroup().withName("group-a")))
+                .withAfterStageWaitInSeconds(3600))))
             .withManagedClusterUpdate(new ManagedClusterUpdate()
                 .withUpgrade(new ManagedClusterUpgradeSpec().withType(ManagedClusterUpgradeType.FULL)
                     .withKubernetesVersion("1.26.1"))

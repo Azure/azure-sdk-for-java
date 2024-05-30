@@ -13,28 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class RestoreSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestoreSettings model =
-            BinaryData
-                .fromString(
-                    "{\"crossSubscriptionRestoreSettings\":{\"crossSubscriptionRestoreState\":\"PermanentlyDisabled\"}}")
-                .toObject(RestoreSettings.class);
-        Assertions
-            .assertEquals(
-                CrossSubscriptionRestoreState.PERMANENTLY_DISABLED,
-                model.crossSubscriptionRestoreSettings().crossSubscriptionRestoreState());
+        RestoreSettings model = BinaryData
+            .fromString("{\"crossSubscriptionRestoreSettings\":{\"crossSubscriptionRestoreState\":\"Enabled\"}}")
+            .toObject(RestoreSettings.class);
+        Assertions.assertEquals(CrossSubscriptionRestoreState.ENABLED,
+            model.crossSubscriptionRestoreSettings().crossSubscriptionRestoreState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestoreSettings model =
-            new RestoreSettings()
-                .withCrossSubscriptionRestoreSettings(
-                    new CrossSubscriptionRestoreSettings()
-                        .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.PERMANENTLY_DISABLED));
+        RestoreSettings model
+            = new RestoreSettings().withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
+                .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED));
         model = BinaryData.fromObject(model).toObject(RestoreSettings.class);
-        Assertions
-            .assertEquals(
-                CrossSubscriptionRestoreState.PERMANENTLY_DISABLED,
-                model.crossSubscriptionRestoreSettings().crossSubscriptionRestoreState());
+        Assertions.assertEquals(CrossSubscriptionRestoreState.ENABLED,
+            model.crossSubscriptionRestoreSettings().crossSubscriptionRestoreState());
     }
 }

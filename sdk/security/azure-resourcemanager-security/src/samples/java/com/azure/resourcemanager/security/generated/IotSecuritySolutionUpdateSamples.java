@@ -18,9 +18,7 @@ import java.util.Map;
  */
 public final class IotSecuritySolutionUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/
-     * UpdateIoTSecuritySolution.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/IoTSecuritySolutions/UpdateIoTSecuritySolution.json
      */
     /**
      * Sample code: Use this method to update existing IoT Security solution.
@@ -30,8 +28,10 @@ public final class IotSecuritySolutionUpdateSamples {
     public static void
         useThisMethodToUpdateExistingIoTSecuritySolution(com.azure.resourcemanager.security.SecurityManager manager) {
         IoTSecuritySolutionModel resource = manager.iotSecuritySolutions()
-            .getByResourceGroupWithResponse("myRg", "default", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("foo", "bar"))
+            .getByResourceGroupWithResponse("myRg", "default", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("foo", "bar"))
             .withUserDefinedResources(new UserDefinedResourcesProperties()
                 .withQuery("where type != \"microsoft.devices/iothubs\" | where name contains \"v2\"")
                 .withQuerySubscriptions(Arrays.asList("075423e9-7d33-4166-8bdf-3920b04e3735")))

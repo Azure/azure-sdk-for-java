@@ -76,7 +76,7 @@ public interface CapacityPool {
      * Gets the size property: size
      * 
      * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
-     * 4398046511104).
+     * 1099511627776).
      * 
      * @return the size value.
      */
@@ -225,12 +225,12 @@ public interface CapacityPool {
              * Specifies the size property: size
              * 
              * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
-             * 4398046511104)..
+             * 1099511627776)..
              * 
              * @param size size
              * 
              * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
-             * 4398046511104).
+             * 1099511627776).
              * @return the next definition stage.
              */
             WithServiceLevel withSize(long size);
@@ -387,12 +387,12 @@ public interface CapacityPool {
              * Specifies the size property: size
              * 
              * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
-             * 4398046511104)..
+             * 1099511627776)..
              * 
              * @param size size
              * 
              * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
-             * 4398046511104).
+             * 1099511627776).
              * @return the next definition stage.
              */
             Update withSize(Long size);
