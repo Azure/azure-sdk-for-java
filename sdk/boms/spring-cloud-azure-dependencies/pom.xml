@@ -161,6 +161,11 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-data-redis-lettuce</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-eventhubs</artifactId>
         <version>${project.version}</version>
       </dependency>

@@ -1,5 +1,6 @@
 # Release History
 ## 5.13.0-beta.1 (Unreleased)
+Upgrade Spring Boot dependencies version to 3.3.0 and Spring Cloud dependencies version to 2023.0.1
 
 New module `spring-cloud-azure-testcontainers`
 
