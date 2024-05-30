@@ -33,28 +33,41 @@ public class TelemetryPipelineResponse {
         return body;
     }
 
-    public Set<String> getErrors() {
+    public Set<ResponseError> getErrors() {
         return parseErrors(body); // parseErrors on demand
     }
 
+    public Set<String> getErrorMessages() {
+        return getErrors().stream().map(ResponseError::getMessage).collect(Collectors.toSet());
+    }
+
     public boolean isInvalidInstrumentationKey() {
-        Set<String> errors = parseErrors(body);
+        Set<String> errors = getErrorMessages();
         return errors != null && errors.contains(INVALID_INSTRUMENTATION_KEY);
     }
 
-    private static Set<String> parseErrors(String body) {
+    static Set<ResponseError> parseErrors(String body) {
         JsonNode jsonNode;
         try {
             jsonNode = new ObjectMapper().readTree(body);
         } catch (JsonProcessingException e) {
             // fallback to generic message
-            return singleton("Could not parse response");
+            return singleton(null);
         }
         List<JsonNode> errorNodes = new ArrayList<>();
         jsonNode.get("errors").forEach(errorNodes::add);
         return errorNodes.stream()
-            .map(errorNode -> errorNode.get("message").asText())
-            .filter(s -> !s.equals("Telemetry sampled out."))
+            .map(errorNode -> new ResponseError(errorNode.get("index").asInt(), errorNode.get("statusCode").asInt(), errorNode.get("message").asText()))
+            .filter(s -> !s.getMessage().equals("Telemetry sampled out."))
             .collect(Collectors.toSet());
+    }
+
+    @SuppressWarnings("SystemOut")
+    public static void main(String[] args) {
+       String body = "{\"itemsReceived\":92,\"itemsAccepted\":85,\"appId\":null,\"errors\":[{\"index\":20,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":21,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":22,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":23,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":24,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":25,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"},{\"index\":26,\"statusCode\":400,\"message\":\"Invalid instrumentation key\"}]}";
+       Set<ResponseError> errors = parseErrors(body);
+       System.out.println("##############");
+       errors.forEach(System.out::println);
+       System.out.println("##############");
     }
 }
