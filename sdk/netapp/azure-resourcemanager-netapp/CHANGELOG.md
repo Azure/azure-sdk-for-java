@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2024-05-30)
+## 1.2.0 (2024-05-30)
 
 - Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2023-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -8,8 +8,7 @@
 
 #### `models.Backups` was modified
 
-* `getVolumeRestoreStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was removed
-* `getVolumeRestoreStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* Removed `getVolumeRestoreStatus` as it's no longer functional in backend since 2023-05.
 
 ### Features Added
 
