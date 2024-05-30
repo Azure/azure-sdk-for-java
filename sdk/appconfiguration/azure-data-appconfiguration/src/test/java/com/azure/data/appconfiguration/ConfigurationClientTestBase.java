@@ -2,11 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
@@ -21,10 +24,14 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -57,7 +64,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
 
     static final Duration MINIMUM_RETENTION_PERIOD = Duration.ofHours(1);
 
-    static String connectionString;
+    static TokenCredential tokenCredential;
 
     String keyPrefix;
     String labelPrefix;
@@ -67,15 +74,21 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         labelPrefix = testResourceNamer.randomName(LABEL_PREFIX, PREFIX_LENGTH);
     }
 
-    <T> T clientSetup(Function<ConfigurationClientCredentials, T> clientBuilder) {
-        if (CoreUtils.isNullOrEmpty(connectionString)) {
-            connectionString = interceptorManager.isPlaybackMode() ? FAKE_CONNECTION_STRING
-                                   : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+    <T> T clientSetup(Function<TokenCredential, T> clientBuilder) {
+//        if (CoreUtils.isNullOrEmpty(connectionString)) {
+//            connectionString = interceptorManager.isPlaybackMode() ? FAKE_CONNECTION_STRING
+//                                   : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
+//        }
+
+        if (tokenCredential == null) {
+            tokenCredential = interceptorManager.isPlaybackMode()
+                ? (trc) -> Mono.just(new AccessToken("Dummy", OffsetDateTime.now().plusHours(2)))
+                : new AzurePipelinesCredentialBuilder().build();
         }
 
-        Objects.requireNonNull(connectionString, "AZURE_APPCONFIG_CONNECTION_STRING expected to be set.");
+        Objects.requireNonNull(tokenCredential, "Token Credential expected to be set.");
 
-        return Objects.requireNonNull(clientBuilder.apply(new ConfigurationClientCredentials(connectionString)));
+        return Objects.requireNonNull(clientBuilder.apply(tokenCredential));
     }
 
     String getKey() {

@@ -10,6 +10,7 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -41,7 +42,7 @@ public class AadCredentialTest extends TestProxyTestBase {
                 .buildClient();
         } else {
             connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
+            tokenCredential = new AzurePipelinesCredentialBuilder().build();
             String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
                 .endpoint(endpoint)

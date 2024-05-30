@@ -77,7 +77,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         ConfigurationServiceVersion serviceVersion) {
         return clientSetup(credentials -> {
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
+                .credential(credentials)
                 .serviceVersion(serviceVersion);
 
             builder = setHttpClient(httpClient, builder);
