@@ -286,6 +286,14 @@ public class AssistantApiFormatSerializerTests {
     }
 
     @Test
+    public void assistantNull() {
+        Assistant assistant = BinaryData.fromString("{\"response_format\":null}").toObject(Assistant.class);
+        AssistantsApiResponseFormatOption responseFormat = assistant.getResponseFormat();
+
+        assertNull(responseFormat);
+    }
+
+    @Test
     public void threadRunTextFormat() {
         ThreadRun threadRun = BinaryData.fromString("{\"response_format\":{\"type\":\"text\"}}").toObject(ThreadRun.class);
         AssistantsApiResponseFormatOption responseFormat = threadRun.getResponseFormat();
@@ -323,5 +331,13 @@ public class AssistantApiFormatSerializerTests {
         assertNotNull(responseFormat.getMode());
         assertNull(responseFormat.getFormat());
         assertEquals(AssistantsApiResponseFormatMode.NONE, responseFormat.getMode());
+    }
+
+    @Test
+    public void threadRunNull() {
+        ThreadRun threadRun = BinaryData.fromString("{\"response_format\":null}").toObject(ThreadRun.class);
+        AssistantsApiResponseFormatOption responseFormat = threadRun.getResponseFormat();
+
+        assertNull(responseFormat);
     }
 }

@@ -43,6 +43,9 @@ public class AssistantsApiToolChoiceOption {
     }
 
     public static AssistantsApiToolChoiceOption fromBinaryData(BinaryData toolChoiceBinaryData) {
+        if (toolChoiceBinaryData == null) {
+            return null;
+        }
         try {
             AssistantsNamedToolChoice toolChoice = toolChoiceBinaryData.toObject(AssistantsNamedToolChoice.class);
             if (toolChoice != null) {

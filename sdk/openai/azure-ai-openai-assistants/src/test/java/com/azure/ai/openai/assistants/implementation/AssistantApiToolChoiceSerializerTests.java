@@ -21,6 +21,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AssistantApiToolChoiceSerializerTests {
 
     @Test
+    public void threadRunNull() {
+        ThreadRun threadRun = BinaryData.fromString("{\"tool_choice\":null}").toObject(ThreadRun.class);
+        AssistantsApiToolChoiceOption toolChoice = threadRun.getToolChoice();
+
+        assertNull(toolChoice);
+    }
+
+    @Test
     public void threadRunAutoMode() {
         ThreadRun threadRun = BinaryData.fromString("{\"tool_choice\":\"auto\"}").toObject(ThreadRun.class);
         AssistantsApiToolChoiceOption toolChoice = threadRun.getToolChoice();

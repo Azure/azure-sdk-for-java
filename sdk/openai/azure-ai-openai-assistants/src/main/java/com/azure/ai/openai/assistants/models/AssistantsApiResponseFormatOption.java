@@ -73,6 +73,9 @@ public final class AssistantsApiResponseFormatOption {
      * @return a new instance of AssistantsApiResponseFormatOption
      */
     public static AssistantsApiResponseFormatOption fromBinaryData(BinaryData responseFormatBinaryData) {
+        if (responseFormatBinaryData == null) {
+            return null;
+        }
         try {
             AssistantsApiResponseFormat format = responseFormatBinaryData.toObject(AssistantsApiResponseFormat.class);
             if (format != null) {
