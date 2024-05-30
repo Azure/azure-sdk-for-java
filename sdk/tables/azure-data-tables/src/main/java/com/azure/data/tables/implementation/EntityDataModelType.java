@@ -3,7 +3,7 @@
 package com.azure.data.tables.implementation;
 
 import com.azure.core.util.Base64Util;
-import com.azure.core.util.ExpandableStringEnum;
+
 
 import java.time.Instant;
 import java.time.LocalDate;

@@ -40,7 +40,6 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -102,7 +101,7 @@ public class TableClientTest extends TableClientTestBase {
      * Tests that a table and entity can be created while having a different tenant ID than the one that will be
      * provided in the authentication challenge.
      */
-    @Disabled("This test is disabled because it is not supported using MI.")
+    @LiveOnly
     @Test
     public void createTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.

@@ -1,8 +1,8 @@
 package com.azure.data.tables.implementation;
 
-import com.azure.core.util.ExpandableStringEnum;
-import com.azure.data.tables.implementation.models.OdataMetadataFormat;
-
+/**
+ * Table service data types.
+ */
 public abstract class TableServiceDataTypes {
 
     protected static final String BINARY = "Edm.Binary";
