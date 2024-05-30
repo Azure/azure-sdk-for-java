@@ -8,6 +8,10 @@ package com.azure.resourcemanager.standbypool.generated;
  * Samples for StandbyVirtualMachinePools GetByResourceGroup.
  */
 public final class StandbyVirtualMachinePoolsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/StandbyVirtualMachinePools_Get.json
+     */
     /**
      * Sample code: StandbyVirtualMachinePools_Get.
      * 

@@ -3,6 +3,7 @@
 ### 1.0.0-beta.8 (Unreleased)
 
 #### Features Added
+* Added support for `injectionRate` for `FaultInjectionServerErrorResult` - See [PR 40213](https://github.com/Azure/azure-sdk-for-java/pull/40213)
 
 #### Breaking Changes
 

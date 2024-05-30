@@ -20,8 +20,9 @@ public final class ResourceGuardOperationDetailTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceGuardOperationDetail model = new ResourceGuardOperationDetail()
-            .withVaultCriticalOperation("aysjkixqtnqttez").withDefaultResourceRequest("fffiak");
+        ResourceGuardOperationDetail model
+            = new ResourceGuardOperationDetail().withVaultCriticalOperation("aysjkixqtnqttez")
+                .withDefaultResourceRequest("fffiak");
         model = BinaryData.fromObject(model).toObject(ResourceGuardOperationDetail.class);
         Assertions.assertEquals("aysjkixqtnqttez", model.vaultCriticalOperation());
         Assertions.assertEquals("fffiak", model.defaultResourceRequest());

@@ -7,14 +7,9 @@ package com.azure.ai.vision.face;
 import com.azure.ai.vision.face.models.CreateLivenessSessionContent;
 import com.azure.ai.vision.face.models.CreateLivenessSessionResult;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionResult;
-import com.azure.ai.vision.face.models.CreatePersonResult;
 import com.azure.ai.vision.face.models.FaceAttributeType;
-import com.azure.ai.vision.face.models.FaceCollectionTrainingResult;
 import com.azure.ai.vision.face.models.FaceDetectionModel;
 import com.azure.ai.vision.face.models.FaceDetectionResult;
-import com.azure.ai.vision.face.models.FaceIdentificationCandidate;
-import com.azure.ai.vision.face.models.FaceIdentificationResult;
-import com.azure.ai.vision.face.models.FaceOperationStatus;
 import com.azure.ai.vision.face.models.FaceRecognitionModel;
 import com.azure.ai.vision.face.models.LivenessOperationMode;
 import com.azure.ai.vision.face.models.LivenessResponseBody;
@@ -22,11 +17,8 @@ import com.azure.ai.vision.face.models.LivenessSession;
 import com.azure.ai.vision.face.models.LivenessWithVerifySession;
 import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
 import com.azure.ai.vision.face.samples.utils.Resources;
-import com.azure.ai.vision.face.samples.utils.Utils;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.nio.file.Path;
@@ -34,7 +26,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public final class ReadmeSamples {
     public void readmeSamples() {
@@ -80,7 +71,7 @@ public final class ReadmeSamples {
         Path path = Paths.get(imagePathString);
         BinaryData imageData = BinaryData.fromFile(path);
         List<FaceAttributeType> attributeTypes = Arrays.asList(
-            FaceAttributeType.Detection03.HEAD_POSE, FaceAttributeType.Detection03.MASK, FaceAttributeType.Recognition04.QUALITY_FOR_RECOGNITION);
+            FaceAttributeType.ModelDetection03.HEAD_POSE, FaceAttributeType.ModelDetection03.MASK, FaceAttributeType.ModelRecognition04.QUALITY_FOR_RECOGNITION);
 
         List<FaceDetectionResult> results = client.detect(
             imageData, FaceDetectionModel.DETECTION_03, FaceRecognitionModel.RECOGNITION_04, true,
@@ -93,87 +84,6 @@ public final class ReadmeSamples {
             // Do what you need for the result
         }
         // END: com.azure.ai.vision.face.readme.detectFace
-    }
-
-    public void faceRecognitionFromLargePersonGroup() {
-        String endpoint = ConfigurationHelper.getEndpoint();
-        String accountKey = ConfigurationHelper.getAccountKey();
-
-        BinaryData faceOfBill = Utils.loadFromFile(Resources.TEST_IMAGE_PATH_FAMILY1_DAD1);
-        BinaryData faceOfClare = Utils.loadFromFile(Resources.TEST_IMAGE_PATH_FAMILY1_MON1);
-        BinaryData imageFromDetect = Utils.loadFromFile(Resources.TEST_IMAGE_PATH_IDENTIFICATION);
-
-        // BEGIN: com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.createPersonGroup
-        FaceAdministrationClient administrationClient = new FaceAdministrationClientBuilder()
-            .endpoint(endpoint)
-            .credential(new KeyCredential(accountKey))
-            .buildClient();
-
-        // Stage 1: Create a LargePersonGroup and make it ready for identification.
-        // Step 1-1: Create LargePersonGroup.
-        String largePersonGroupId = "lpg_family";
-        administrationClient.createLargePersonGroup(
-            largePersonGroupId, "Family1", "Family Group 1", FaceRecognitionModel.RECOGNITION_04);
-
-        // Step 1-2: Create a LargePersonGroupPerson named 'Bill' and add a face to him.
-        CreatePersonResult createPersonResult = administrationClient
-            .createLargePersonGroupPerson(largePersonGroupId, "Bill", "Dad");
-        String personId = createPersonResult.getPersonId();
-
-        administrationClient.addPersonGroupPersonFace(
-            largePersonGroupId, personId, faceOfBill, null, FaceDetectionModel.DETECTION_03, "Dad-0001");
-
-
-        // Step 1-3: Create another LargePersonGroupPerson named 'Clare' and add a face to her.
-        createPersonResult = administrationClient
-            .createLargePersonGroupPerson(largePersonGroupId, "Clare", "Mon");
-        personId = createPersonResult.getPersonId();
-
-        administrationClient.addPersonGroupPersonFace(
-            largePersonGroupId, personId, faceOfClare, null, FaceDetectionModel.DETECTION_03, "Mom-0001");
-        // END: com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.createPersonGroup
-
-
-        // BEGIN: com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.train
-        // Step 1-4: Train the LargePersonGroup to make all the newly added LargePersonGroupPersons available for identification.
-        SyncPoller<FaceCollectionTrainingResult, Void> poller = administrationClient
-            .beginTrainLargePersonGroup(largePersonGroupId);
-
-        PollResponse<FaceCollectionTrainingResult> pollResponse = poller.waitForCompletion();
-        FaceOperationStatus status = pollResponse.getValue().getStatus();
-
-        if (status != FaceOperationStatus.SUCCEEDED) {
-            throw new IllegalStateException("Fail to train");
-        }
-        // END: com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.train
-
-
-        // BEGIN: com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.detect
-        // Stage 2: detect an image
-        FaceClient client = new FaceClientBuilder()
-            .endpoint(endpoint)
-            .credential(new KeyCredential(accountKey))
-            .buildClient();
-
-        List<FaceDetectionResult> detectResults = client.detect(
-            imageFromDetect, FaceDetectionModel.DETECTION_03, FaceRecognitionModel.RECOGNITION_04, true);
-        List<String> faceIds = detectResults.stream().map(FaceDetectionResult::getFaceId).collect(Collectors.toList());
-        // END: com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.detect
-
-        // BEGIN: com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.identify
-        // Stage 3: identification
-        List<FaceIdentificationResult> results = client.identifyFromLargePersonGroup(faceIds, largePersonGroupId);
-        for (FaceIdentificationResult result : results) {
-            System.out.println("Identification result for " + result.getFaceId());
-            for (FaceIdentificationCandidate identificationCandidate : result.getCandidates()) {
-                System.out.println("Found:" + identificationCandidate.getPersonId() + ", confidence: " + identificationCandidate.getConfidence());
-            }
-        }
-        // END: com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.identify
-
-        // BEGIN: com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.deleteLargePersonGroup
-        administrationClient.deleteLargePersonGroup(largePersonGroupId);
-        // END: com.azure.ai.vision.face.readme.faceRecognitionFromLargePersonGroup.deleteLargePersonGroup
     }
 
     public void createLivenessSessionAndGetResult() {

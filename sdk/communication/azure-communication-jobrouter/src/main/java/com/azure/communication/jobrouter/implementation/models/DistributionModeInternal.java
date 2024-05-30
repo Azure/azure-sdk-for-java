@@ -56,7 +56,6 @@ public class DistributionModeInternal {
      */
     @Generated
     public DistributionModeInternal() {
-        this.kind = DistributionModeKind.fromString("DistributionModeInternal");
     }
 
     /**
@@ -137,7 +136,7 @@ public class DistributionModeInternal {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private DistributionModeKind kind;
+    private DistributionModeKind kind = DistributionModeKind.fromString("DistributionModeInternal");
 
     /**
      * Get the kind property: The type discriminator describing a sub-type of DistributionMode.

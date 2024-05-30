@@ -22,14 +22,14 @@ public class OnYourDataVectorizationSource implements JsonSerializable<OnYourDat
      */
     @Generated
     public OnYourDataVectorizationSource() {
-        this.type = OnYourDataVectorizationSourceType.fromString("OnYourDataVectorizationSource");
     }
 
     /*
      * The type of vectorization source to use.
      */
     @Generated
-    private OnYourDataVectorizationSourceType type;
+    private OnYourDataVectorizationSourceType type
+        = OnYourDataVectorizationSourceType.fromString("OnYourDataVectorizationSource");
 
     /**
      * Get the type property: The type of vectorization source to use.

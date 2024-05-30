@@ -32,14 +32,13 @@ public class ProcedureRecommendation {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private String kind;
+    private String kind = "ProcedureRecommendation";
 
     /**
      * Creates an instance of ProcedureRecommendation class.
      */
     @Generated
     protected ProcedureRecommendation() {
-        this.kind = "ProcedureRecommendation";
     }
 
     /**

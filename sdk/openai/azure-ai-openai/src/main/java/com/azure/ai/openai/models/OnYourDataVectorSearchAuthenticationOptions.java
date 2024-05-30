@@ -22,14 +22,14 @@ public class OnYourDataVectorSearchAuthenticationOptions
      * The type of authentication to use.
      */
     @Generated
-    private OnYourDataVectorSearchAuthenticationType type;
+    private OnYourDataVectorSearchAuthenticationType type
+        = OnYourDataVectorSearchAuthenticationType.fromString("OnYourDataVectorSearchAuthenticationOptions");
 
     /**
      * Creates an instance of OnYourDataVectorSearchAuthenticationOptions class.
      */
     @Generated
     public OnYourDataVectorSearchAuthenticationOptions() {
-        this.type = OnYourDataVectorSearchAuthenticationType.fromString("OnYourDataVectorSearchAuthenticationOptions");
     }
 
     /**

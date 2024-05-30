@@ -29,11 +29,13 @@ public final class WorkloadItemResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadItemResourceInner model
-            = new WorkloadItemResourceInner().withLocation("odtji").withTags(mapOf("akggkfpag", "jlfltkacjvefkdlf"))
-                .withProperties(new WorkloadItem().withBackupManagementType("patdooaojkniodko").withWorkloadType("bw")
-                    .withFriendlyName("jhemms").withProtectionState(ProtectionStatus.PROTECTED))
-                .withEtag("c");
+        WorkloadItemResourceInner model = new WorkloadItemResourceInner().withLocation("odtji")
+            .withTags(mapOf("akggkfpag", "jlfltkacjvefkdlf"))
+            .withProperties(new WorkloadItem().withBackupManagementType("patdooaojkniodko")
+                .withWorkloadType("bw")
+                .withFriendlyName("jhemms")
+                .withProtectionState(ProtectionStatus.PROTECTED))
+            .withEtag("c");
         model = BinaryData.fromObject(model).toObject(WorkloadItemResourceInner.class);
         Assertions.assertEquals("odtji", model.location());
         Assertions.assertEquals("jlfltkacjvefkdlf", model.tags().get("akggkfpag"));
