@@ -17,7 +17,7 @@ public class CosmosParameter extends Parameter {
      * @param parameter must not be {@literal null}.
      */
     public CosmosParameter(MethodParameter parameter) {
-        super(parameter, TypeInformation.of(Parameter.class));
+        super(parameter, TypeInformation.of(CosmosParameter.class));
     }
 
     @Override
