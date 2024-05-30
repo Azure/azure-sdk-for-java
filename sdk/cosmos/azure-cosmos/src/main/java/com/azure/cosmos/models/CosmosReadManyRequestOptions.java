@@ -141,7 +141,7 @@ public final class CosmosReadManyRequestOptions {
      * @return the {@link CosmosReadManyRequestOptions}
      */
     public CosmosReadManyRequestOptions setExcludedRegions(List<String> excludeRegions) {
-        this.actualRequestOptions.setExcludeRegions(excludeRegions);
+        this.actualRequestOptions.setExcludedRegions(excludeRegions);
         return this;
     }
 
@@ -152,7 +152,7 @@ public final class CosmosReadManyRequestOptions {
      * @return a list of excluded regions
      * */
     public List<String> getExcludedRegions() {
-        return this.actualRequestOptions.getExcludeRegions();
+        return this.actualRequestOptions.getExcludedRegions();
     }
 
     /**
@@ -259,7 +259,7 @@ public final class CosmosReadManyRequestOptions {
      * @return the diagnostic thresholds used as an override for a specific operation.
      */
     public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
-        return this.actualRequestOptions.getThresholds();
+        return this.actualRequestOptions.getDiagnosticsThresholds();
     }
 
     /**

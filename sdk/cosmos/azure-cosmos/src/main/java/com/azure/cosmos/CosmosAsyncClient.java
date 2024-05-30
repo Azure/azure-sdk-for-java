@@ -41,7 +41,6 @@ import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.CosmosRequestDetails;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -61,7 +60,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -107,7 +105,7 @@ public final class CosmosAsyncClient implements Closeable {
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
     private final ConsistencyLevel accountConsistencyLevel;
     private final WriteRetryPolicy nonIdempotentWriteRetryPolicy;
-    private Consumer<CosmosRequestDetails> requestOptionsTransformer;
+    private List<CosmosRequestPolicy> requestPolicies;
     private final CosmosItemSerializer defaultCustomSerializer;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
@@ -125,7 +123,7 @@ public final class CosmosAsyncClient implements Closeable {
         boolean enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
-        this.requestOptionsTransformer = builder.getRequestOptionsTransformer();
+        this.requestPolicies = builder.getPolicies();
         this.defaultCustomSerializer = builder.getCustomItemSerializer();
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
         SessionRetryOptions sessionRetryOptions = builder.getSessionRetryOptions();
@@ -908,8 +906,8 @@ public final class CosmosAsyncClient implements Closeable {
                 }
 
                 @Override
-                public Consumer<CosmosRequestDetails> getRequestOptionsTransformer(CosmosAsyncClient client) {
-                    return client.requestOptionsTransformer;
+                public List<CosmosRequestPolicy> getPolicies(CosmosAsyncClient client) {
+                    return client.requestPolicies;
                 }
 
                 @Override

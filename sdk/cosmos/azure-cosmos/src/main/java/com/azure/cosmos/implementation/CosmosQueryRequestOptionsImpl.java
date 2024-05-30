@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.models.CosmosCommonRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -142,7 +143,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * execution.
      */
     @Override
-    public int getMaxDegreeOfParallelism() {
+    public Integer getMaxDegreeOfParallelism() {
         return maxDegreeOfParallelism;
     }
 
@@ -166,7 +167,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * parallel query execution.
      */
     @Override
-    public int getMaxBufferedItemCount() {
+    public Integer getMaxBufferedItemCount() {
         return maxBufferedItemCount;
     }
 
@@ -189,7 +190,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
      * @return the max number of items.
      */
     @Override
-    public int getMaxItemCount() {
+    public Integer getMaxItemCount() {
         return this.maxItemCount;
     }
 
@@ -360,5 +361,15 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
 
     public PartitionKeyDefinition getPartitionKeyDefinition() {
         return this.partitionKeyDefinition;
+    }
+
+    @Override
+    public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
+        super.override(cosmosCommonRequestOptions);
+        overrideOption(cosmosCommonRequestOptions.isScanInQueryEnabled(), this.scanInQueryEnabled);
+        overrideOption(cosmosCommonRequestOptions.getMaxDegreeOfParallelism(), this.maxDegreeOfParallelism);
+        overrideOption(cosmosCommonRequestOptions.getMaxBufferedItemCount(), this.maxBufferedItemCount);
+        overrideOption(cosmosCommonRequestOptions.getMaxItemCount(), this.maxItemCount);
+        overrideOption(cosmosCommonRequestOptions.getQueryNameOrDefault(""), this.queryName);
     }
 }

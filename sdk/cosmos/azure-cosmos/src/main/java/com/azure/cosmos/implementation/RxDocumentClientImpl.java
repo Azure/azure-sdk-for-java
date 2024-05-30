@@ -1825,7 +1825,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if( options != null) {
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
         }
 
         if (requestRetryPolicy != null) {
@@ -1874,7 +1874,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null) {
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
         }
 
         if (requestRetryPolicy != null) {
@@ -1887,7 +1887,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (options != null) {
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
         }
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
@@ -2591,7 +2591,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null) {
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
         }
 
         if (retryPolicyInstance != null) {
@@ -2732,7 +2732,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options != null) {
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
         }
 
         if (retryPolicyInstance != null) {
@@ -2846,7 +2846,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (options != null) {
                 options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                     () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-                request.requestContext.setExcludeRegions(options.getExcludeRegions());
+                request.requestContext.setExcludeRegions(options.getExcludedRegions());
             }
 
             if (retryPolicyInstance != null) {
@@ -2972,7 +2972,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
                 () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludeRegions());
+            request.requestContext.setExcludeRegions(options.getExcludedRegions());
 
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
@@ -4000,7 +4000,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     requestHeaders, options);
 
             if (options != null) {
-                request.requestContext.setExcludeRegions(options.getExcludeRegions());
+                request.requestContext.setExcludeRegions(options.getExcludedRegions());
             }
 
             if (retryPolicy != null) {
@@ -5507,9 +5507,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             monoList.add(initialMonoAcrossAllRegions);
                         }
                 } else {
-                    clonedOptions.setExcludeRegions(
+                    clonedOptions.setExcludedRegions(
                         getEffectiveExcludedRegionsForHedging(
-                            nonNullRequestOptions.getExcludeRegions(),
+                            nonNullRequestOptions.getExcludedRegions(),
                             orderedApplicableRegionsForSpeculation,
                             region)
                     );
@@ -5728,7 +5728,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             resourceType,
             operationType,
             isIdempotentWriteRetriesEnabled,
-            options.getExcludeRegions());
+            options.getExcludedRegions());
     }
 
     private List<String> getApplicableRegionsForSpeculation(

@@ -136,7 +136,7 @@ implements IDocumentQueryExecutionContext<T> {
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
         }
         request.requestContext.setExcludeRegions(
-            qryOptAccessor.getImpl(cosmosQueryRequestOptions).getExcludeRegions());
+            qryOptAccessor.getImpl(cosmosQueryRequestOptions).getExcludedRegions());
 
         request.requestContext.setIsRequestCancelledOnTimeout(this.isQueryCancelledOnTimeout);
         return request;

@@ -429,7 +429,7 @@ public class CosmosQueryRequestOptions {
      * @return the diagnostic thresholds used as an override for a specific operation.
      */
     public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
-        return this.actualRequestOptions.getThresholds();
+        return this.actualRequestOptions.getDiagnosticsThresholds();
     }
 
     /**
@@ -540,6 +540,11 @@ public class CosmosQueryRequestOptions {
                 public CosmosQueryRequestOptionsBase<?> getImpl(CosmosQueryRequestOptions options) {
                     return options.actualRequestOptions;
                 }
+
+                /*@Override
+                public void setImpl(CosmosQueryRequestOptions options, CosmosQueryRequestOptionsImpl optionsImpl) {
+                    options.actualRequestOptions = optionsImpl;
+                }*/
 
                 @Override
                 public CosmosQueryRequestOptions clone(CosmosQueryRequestOptions toBeCloned) {

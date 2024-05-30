@@ -26,7 +26,7 @@ import java.util.function.Supplier;
 /**
  * Encapsulates options that can be specified for a request issued to the Azure Cosmos DB database service.
  */
-public class RequestOptions implements ICosmosCommonRequestOptions {
+public class RequestOptions implements OverridableRequestOptions {
     private Map<String, String> customOptions;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
@@ -552,9 +552,17 @@ public class RequestOptions implements ICosmosCommonRequestOptions {
         return this.markE2ETimeoutInRequestContextCallbackHook;
     }
 
+    @Override
     public void override(CosmosCommonRequestOptions cosmosCommonRequestOptions) {
-        // only replace if not null
-        this.endToEndOperationLatencyConfig = cosmosCommonRequestOptions.getCosmosEndToEndLatencyPolicyConfig();
+        overrideOption(cosmosCommonRequestOptions.getConsistencyLevel(), this.consistencyLevel);
+        overrideOption(cosmosCommonRequestOptions.getSessionToken(), this.sessionToken);
+        overrideOption(cosmosCommonRequestOptions.isContentResponseOnWriteEnabled(), this.contentResponseOnWriteEnabled);
+        overrideOption(cosmosCommonRequestOptions.getNonIdempotentWriteRetriesEnabled(), this.nonIdempotentWriteRetriesEnabled);
+        overrideOption(cosmosCommonRequestOptions.getDedicatedGatewayRequestOptions(), this.dedicatedGatewayRequestOptions);
+        overrideOption(cosmosCommonRequestOptions.getExcludedRegions(), this.excludeRegions);
+        overrideOption(cosmosCommonRequestOptions.getThroughputControlGroupName(), this.throughputControlGroupName);
+        overrideOption(cosmosCommonRequestOptions.getDiagnosticsThresholds(), this.thresholds);
+        overrideOption(cosmosCommonRequestOptions.getCosmosEndToEndLatencyPolicyConfig(), this.endToEndOperationLatencyConfig);
     }
 
     public CosmosItemSerializer getEffectiveItemSerializer() {
