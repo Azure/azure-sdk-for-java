@@ -21,13 +21,13 @@ class AzureCompatibilityVerifierAutoConfigurationTest {
     @Test
     void testCompatibilityVerifierPropertiesDisabled() {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.compatibility-verifier.enabled=false")
             .run(context -> assertThat(context).doesNotHaveBean(AzureSpringBootVersionVerifier.class));
     }
 
     @Test
     void testCompatibilityVerifierPropertiesEnabled() {
         this.contextRunner
+            .withPropertyValues("spring.cloud.azure.compatibility-verifier.enabled=true")
             .run(context -> assertThat(context).hasSingleBean(AzureSpringBootVersionVerifier.class));
     }
 
@@ -35,6 +35,7 @@ class AzureCompatibilityVerifierAutoConfigurationTest {
     void testCompatibleSpringBootVersionCanSet() {
         String version = SpringBootVersion.getVersion();
         this.contextRunner
+            .withPropertyValues("spring.cloud.azure.compatibility-verifier.enabled=true")
             .withPropertyValues(
                 String.format("spring.cloud.azure.compatibility-verifier.compatible-boot-versions=%s", version)
             )
