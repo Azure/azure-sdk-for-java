@@ -9,7 +9,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Fixed `IllegalArgumentException: Subscription cannot be null` error when only configured one subscription name of `AzureServiceBusConsumerClient` or `AzureServiceBusProcessorClient` [#40264](https://github.com/Azure/azure-sdk-for-java/pull/40264).
 
 ### Other Changes
-- Disable compatibility verifier as default for Spring Cloud Azure [#](https://github.com/Azure/azure-sdk-for-java/pull/).
+- Disable compatibility verifier by default [#40407](https://github.com/Azure/azure-sdk-for-java/pull/40407).
 
 ## 5.12.0 (2024-05-09)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.8, 3.2.0-3.2.5. (Note: 3.0.x (x>13), 3.1.y (y>8) and 3.2.z (z>5) should be supported, but they aren't tested with this release.)
