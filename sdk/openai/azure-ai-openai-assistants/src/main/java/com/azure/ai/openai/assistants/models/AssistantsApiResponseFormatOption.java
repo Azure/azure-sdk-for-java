@@ -1,13 +1,9 @@
 package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
 
-import java.io.IOException;
-
+// Convenience class added for the purpose of handling a wire type that can be either a JSON object or a string.
+// The class still uses the documentation from the original union in the service spec.
 /**
  * Specifies the format that the model must output. Compatible with GPT-4 Turbo and all GPT-3.5 Turbo models since `gpt-3.5-turbo-1106`.
  * Setting to `{ "type": "json_object" }` enables JSON mode, which guarantees the message the model generates is valid JSON.
@@ -17,12 +13,12 @@ import java.io.IOException;
  * if `finish_reason="length"`, which indicates the generation exceeded `max_tokens` or the conversation exceeded the max context length.
  */
 @Immutable
-public final class AssistantsApiResponseFormatOption implements JsonSerializable<AssistantsApiResponseFormatOption> {
+public final class AssistantsApiResponseFormatOption {
 
     /**
      * The mode in which the model will handle the return format of a tool call.
      */
-    private final AssistantsApiToolChoiceOptionMode mode;
+    private final AssistantsApiResponseFormatMode mode;
 
     /**
      * The format in which the model will handle the return format of a tool call.
@@ -34,7 +30,7 @@ public final class AssistantsApiResponseFormatOption implements JsonSerializable
      *
      * @param mode The mode in which the model will handle the return format of a tool call.
      */
-    public AssistantsApiResponseFormatOption(AssistantsApiToolChoiceOptionMode mode) {
+    public AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode mode) {
         this.mode = mode;
         this.format = null;
     }
@@ -49,53 +45,11 @@ public final class AssistantsApiResponseFormatOption implements JsonSerializable
         this.format = format;
     }
 
-    public AssistantsApiToolChoiceOptionMode getMode() {
+    public AssistantsApiResponseFormatMode getMode() {
         return this.mode;
     }
 
     public AssistantsApiResponseFormat getFormat() {
         return this.format;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        if (this.mode != null && this.format != null) {
-            throw new IllegalArgumentException("Only set `mode` or `format` can be set, not both.");
-        }
-
-        if (this.mode != null) {
-            jsonWriter.writeString(this.mode.toString());
-        } else if (this.format != null) {
-            jsonWriter.writeStartObject();
-            jsonWriter.writeJson(this.format);
-            jsonWriter.writeEndObject();
-        }
-        return jsonWriter;
-    }
-
-    /**
-     * Reads an instance of AssistantsApiResponseFormatOption from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AssistantsApiResponseFormatOption.
-     */
-    public AssistantsApiResponseFormatOption fromJson(JsonReader jsonReader) throws IOException {
-        if(this.mode != null && this.format != null) {
-            throw new IllegalArgumentException("Only set `mode` or `format` can be set, not both.");
-        }
-
-        JsonToken firstToken = jsonReader.nextToken();
-        if (firstToken == JsonToken.START_OBJECT) {
-            AssistantsApiResponseFormat format = jsonReader.readObject(AssistantsApiResponseFormat::fromJson);
-            return new AssistantsApiResponseFormatOption(format);
-        } else if (firstToken == JsonToken.STRING) {
-            AssistantsApiToolChoiceOptionMode mode = AssistantsApiToolChoiceOptionMode.fromString(jsonReader.getString());
-            return new AssistantsApiResponseFormatOption(mode);
-        }
-
-        return null;
     }
 }

@@ -69,7 +69,7 @@ public final class AssistantCreationOptions implements JsonSerializable<Assistan
      * An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of
      * the tokens with top_p probability mass.
      * So 0.1 means only the tokens comprising the top 10% probability mass are considered.
-     * 
+     *
      * We generally recommend altering this or temperature but not both.
      */
     @Generated
@@ -295,7 +295,13 @@ public final class AssistantCreationOptions implements JsonSerializable<Assistan
      * @return the AssistantCreationOptions object itself.
      */
     public AssistantCreationOptions setResponseFormat(AssistantsApiResponseFormatOption responseFormat) {
-        this.responseFormat = BinaryData.fromObject(responseFormat);
+        if (responseFormat.getFormat() != null) {
+            this.responseFormat = BinaryData.fromObject(responseFormat.getFormat());
+        } else if (responseFormat.getMode() != null) {
+            this.responseFormat = BinaryData.fromObject(responseFormat.getMode());
+        } else {
+            this.responseFormat = null;
+        }
         return this;
     }
 
@@ -341,7 +347,7 @@ public final class AssistantCreationOptions implements JsonSerializable<Assistan
         jsonWriter.writeNumberField("temperature", this.temperature);
         jsonWriter.writeNumberField("top_p", this.topP);
         if (this.responseFormat != null) {
-            jsonWriter.writeUntypedField("response_format", this.responseFormat.toObject(Object.class));
+            jsonWriter.writeRawField("response_format", this.responseFormat.toString());
         }
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
