@@ -23,12 +23,12 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RecurrenceValidatorTest {
-    private final String pattern = "Recurrence.Pattern";
-    private final String range = "Recurrence.Range";
-    private final String interval = "Recurrence.Pattern.Interval";
-    private final String daysOfWeek = "Recurrence.Pattern.DaysOfWeek";
-    private final String numberOfOccurrences = "Recurrence.Range.NumberOfOccurrences";
-    private final String endDate = "Recurrence.Range.EndDate";
+    private final String RECURRENCE_PATTERN = "Recurrence.Pattern";
+    private final String RECURRENCE_RANGE = "Recurrence.Range";
+    private final String RECURRENCE_PATTERN_INTERVAL = "Recurrence.Pattern.Interval";
+    private final String RECURRENCE_PATTERN_DAYS_OF_WEEK = "Recurrence.Pattern.DaysOfWeek";
+    private final String RECURRENCE_RANGE_NUMBER_OF_OCCURRENCES = "Recurrence.Range.NumberOfOccurrences";
+    private final String RECURRENCE_RANGE_END_DATE = "Recurrence.Range.EndDate";
 
     @Test
     public void generalRequiredParameterTest() {
@@ -44,7 +44,7 @@ public class RecurrenceValidatorTest {
         parameters1.put("Start", startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
         parameters1.put("End", endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
         parameters1.put("Recurrence", recurrence1);
-        consumeValidationTestData(parameters1, pattern);
+        consumeValidationTestData(parameters1, RECURRENCE_PATTERN);
 
         // no range in recurrence parameter
         final HashMap<String, Object> pattern2 = new HashMap<>();
@@ -55,132 +55,132 @@ public class RecurrenceValidatorTest {
         parameters2.put("Start", startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
         parameters2.put("End", endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
         parameters2.put("Recurrence", recurrence2);
-        consumeValidationTestData(parameters2, range);
+        consumeValidationTestData(parameters2, RECURRENCE_RANGE);
     }
 
     @Test
     public void invalidPatternTypeTest() {
-        final HashMap<String, Object> pattern1 = new HashMap<>();
-        pattern1.put("Type", "");
+        final HashMap<String, Object> pattern = new HashMap<>();
+        pattern.put("Type", "");
 
-        final HashMap<String, Object> range1 = new HashMap<>();
-        range1.put("Type", "NoEnd");
+        final HashMap<String, Object> range = new HashMap<>();
+        range.put("Type", "NoEnd");
 
-        final HashMap<String, Object> recurrence1 = new HashMap<>();
-        recurrence1.put("Pattern", pattern1);
-        recurrence1.put("Range", range1);
+        final HashMap<String, Object> recurrence = new HashMap<>();
+        recurrence.put("Pattern", pattern);
+        recurrence.put("Range", range);
 
-        final Map<String, Object> parameters1 = new LinkedHashMap<>();
-        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
-        parameters1.put("End", "2023-09-01T02:00:00+08:00");
-        parameters1.put("Recurrence", recurrence1);
+        final Map<String, Object> parameters = new LinkedHashMap<>();
+        parameters.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters.put("End", "2023-09-01T02:00:00+08:00");
+        parameters.put("Recurrence", recurrence);
 
-        consumeValidationTestData(parameters1, "No enum constant");
+        consumeValidationTestData(parameters, "No enum constant");
     }
 
     @Test
     public void invalidPatternIntervalTest() {
-        final HashMap<String, Object> pattern1 = new HashMap<>();
-        pattern1.put("Type", "Daily");
-        pattern1.put("Interval", 0);
+        final HashMap<String, Object> pattern = new HashMap<>();
+        pattern.put("Type", "Daily");
+        pattern.put("Interval", 0);
 
-        final HashMap<String, Object> range1 = new HashMap<>();
-        range1.put("Type", "NoEnd");
+        final HashMap<String, Object> range = new HashMap<>();
+        range.put("Type", "NoEnd");
 
-        final HashMap<String, Object> recurrence1 = new HashMap<>();
-        recurrence1.put("Pattern", pattern1);
-        recurrence1.put("Range", range1);
+        final HashMap<String, Object> recurrence = new HashMap<>();
+        recurrence.put("Pattern", pattern);
+        recurrence.put("Range", range);
 
-        final Map<String, Object> parameters1 = new LinkedHashMap<>();
-        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
-        parameters1.put("End", "2023-09-01T02:00:00+08:00");
-        parameters1.put("Recurrence", recurrence1);
+        final Map<String, Object> parameters = new LinkedHashMap<>();
+        parameters.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters.put("End", "2023-09-01T02:00:00+08:00");
+        parameters.put("Recurrence", recurrence);
 
-        consumeValidationTestData(parameters1, interval);
+        consumeValidationTestData(parameters, RECURRENCE_PATTERN_INTERVAL);
     }
 
     @Test
     public void invalidPatternFirstDayOfWeekTest() {
-        final HashMap<String, Object> pattern1 = new HashMap<>();
-        pattern1.put("Type", "Weekly");
-        pattern1.put("FirstDayOfWeek", "");
-        pattern1.put("DaysOfWeek", List.of("Monday"));
+        final HashMap<String, Object> pattern = new HashMap<>();
+        pattern.put("Type", "Weekly");
+        pattern.put("FirstDayOfWeek", "");
+        pattern.put("DaysOfWeek", List.of("Monday"));
 
-        final HashMap<String, Object> range1 = new HashMap<>();
-        range1.put("Type", "NoEnd");
+        final HashMap<String, Object> range = new HashMap<>();
+        range.put("Type", "NoEnd");
 
-        final HashMap<String, Object> recurrence1 = new HashMap<>();
-        recurrence1.put("Pattern", pattern1);
-        recurrence1.put("Range", range1);
+        final HashMap<String, Object> recurrence = new HashMap<>();
+        recurrence.put("Pattern", pattern);
+        recurrence.put("Range", range);
 
-        final Map<String, Object> parameters1 = new LinkedHashMap<>();
-        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
-        parameters1.put("End", "2023-09-01T02:00:00+08:00");
-        parameters1.put("Recurrence", recurrence1);
+        final Map<String, Object> parameters = new LinkedHashMap<>();
+        parameters.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters.put("End", "2023-09-01T02:00:00+08:00");
+        parameters.put("Recurrence", recurrence);
 
-        consumeValidationTestData(parameters1, "No enum constant");
+        consumeValidationTestData(parameters, "No enum constant");
     }
 
     @Test
     public void invalidPatternDaysOfWeekTest() {
-        final HashMap<String, Object> pattern1 = new HashMap<>();
-        pattern1.put("Type", "Weekly");
-        pattern1.put("DaysOfWeek", List.of("day"));
+        final HashMap<String, Object> pattern = new HashMap<>();
+        pattern.put("Type", "Weekly");
+        pattern.put("DaysOfWeek", List.of("day"));
 
-        final HashMap<String, Object> range1 = new HashMap<>();
-        range1.put("Type", "NoEnd");
+        final HashMap<String, Object> range = new HashMap<>();
+        range.put("Type", "NoEnd");
 
-        final HashMap<String, Object> recurrence1 = new HashMap<>();
-        recurrence1.put("Pattern", pattern1);
-        recurrence1.put("Range", range1);
+        final HashMap<String, Object> recurrence = new HashMap<>();
+        recurrence.put("Pattern", pattern);
+        recurrence.put("Range", range);
 
-        final Map<String, Object> parameters1 = new LinkedHashMap<>();
-        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
-        parameters1.put("End", "2023-09-01T02:00:00+08:00");
-        parameters1.put("Recurrence", recurrence1);
+        final Map<String, Object> parameters = new LinkedHashMap<>();
+        parameters.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters.put("End", "2023-09-01T02:00:00+08:00");
+        parameters.put("Recurrence", recurrence);
 
-        consumeValidationTestData(parameters1, "No enum constant");
+        consumeValidationTestData(parameters, "No enum constant");
     }
 
     @Test
     public void invalidRangeTypeTest() {
-        final HashMap<String, Object> pattern1 = new HashMap<>();
-        pattern1.put("Type", "Daily");
+        final HashMap<String, Object> pattern = new HashMap<>();
+        pattern.put("Type", "Daily");
 
-        final HashMap<String, Object> range1 = new HashMap<>();
-        range1.put("Type", "");
+        final HashMap<String, Object> range = new HashMap<>();
+        range.put("Type", "");
 
-        final HashMap<String, Object> recurrence1 = new HashMap<>();
-        recurrence1.put("Pattern", pattern1);
-        recurrence1.put("Range", range1);
+        final HashMap<String, Object> recurrence = new HashMap<>();
+        recurrence.put("Pattern", pattern);
+        recurrence.put("Range", range);
 
-        final Map<String, Object> parameters1 = new LinkedHashMap<>();
-        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
-        parameters1.put("End", "2023-09-01T02:00:00+08:00");
-        parameters1.put("Recurrence", recurrence1);
+        final Map<String, Object> parameters = new LinkedHashMap<>();
+        parameters.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters.put("End", "2023-09-01T02:00:00+08:00");
+        parameters.put("Recurrence", recurrence);
 
-        consumeValidationTestData(parameters1, "No enum constant");
+        consumeValidationTestData(parameters, "No enum constant");
     }
 
     @Test
     public void invalidRangeNumberOfOccurrencesTest() {
-        final HashMap<String, Object> pattern1 = new HashMap<>();
-        pattern1.put("Type", "Daily");
+        final HashMap<String, Object> pattern = new HashMap<>();
+        pattern.put("Type", "Daily");
 
-        final HashMap<String, Object> range1 = new HashMap<>();
-        range1.put("Type", "Numbered");
-        range1.put("NumberOfRecurrences", 0);
+        final HashMap<String, Object> range = new HashMap<>();
+        range.put("Type", "Numbered");
+        range.put("NumberOfOccurrences", 0);
 
-        final HashMap<String, Object> recurrence1 = new HashMap<>();
-        recurrence1.put("Pattern", pattern1);
-        recurrence1.put("Range", range1);
+        final HashMap<String, Object> recurrence = new HashMap<>();
+        recurrence.put("Pattern", pattern);
+        recurrence.put("Range", range);
 
-        final Map<String, Object> parameters1 = new LinkedHashMap<>();
-        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
-        parameters1.put("End", "2023-09-01T02:00:00+08:00");
-        parameters1.put("Recurrence", recurrence1);
+        final Map<String, Object> parameters = new LinkedHashMap<>();
+        parameters.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters.put("End", "2023-09-01T02:00:00+08:00");
+        parameters.put("Recurrence", recurrence);
 
-        consumeValidationTestData(parameters1, numberOfOccurrences);
+        consumeValidationTestData(parameters, RECURRENCE_RANGE_NUMBER_OF_OCCURRENCES);
     }
 
     @Test
@@ -267,49 +267,49 @@ public class RecurrenceValidatorTest {
         parameters5.put("Start", "2023-09-01T00:00:00+08:00");
         parameters5.put("End", "2023-09-01T00:00:01+08:00");
         parameters5.put("Recurrence", recurrence5);
-        consumeValidationTestData(parameters5, endDate);
+        consumeValidationTestData(parameters5, RECURRENCE_RANGE_END_DATE);
     }
 
     @Test
     public void weeklyPatternRequiredParameterTest() {
-        final HashMap<String, Object> pattern1 = new HashMap<>();
-        pattern1.put("Type", "Weekly");
+        final HashMap<String, Object> pattern = new HashMap<>();
+        pattern.put("Type", "Weekly");
 
-        final HashMap<String, Object> range1 = new HashMap<>();
-        range1.put("Type", "NoEnd");
+        final HashMap<String, Object> range = new HashMap<>();
+        range.put("Type", "NoEnd");
 
-        final HashMap<String, Object> recurrence1 = new HashMap<>();
-        recurrence1.put("Pattern", pattern1);
-        recurrence1.put("Range", range1);
+        final HashMap<String, Object> recurrence = new HashMap<>();
+        recurrence.put("Pattern", pattern);
+        recurrence.put("Range", range);
 
-        final Map<String, Object> parameters1 = new LinkedHashMap<>();
-        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
-        parameters1.put("End", "2023-09-01T02:00:00+08:00");
-        parameters1.put("Recurrence", recurrence1);
+        final Map<String, Object> parameters = new LinkedHashMap<>();
+        parameters.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters.put("End", "2023-09-01T02:00:00+08:00");
+        parameters.put("Recurrence", recurrence);
 
         // daysOfWeek parameter is required
-        consumeValidationTestData(parameters1, daysOfWeek);
+        consumeValidationTestData(parameters, RECURRENCE_PATTERN_DAYS_OF_WEEK);
     }
 
     @Test
     public void startParameterNotMatchTest() {
-        final HashMap<String, Object> pattern1 = new HashMap<>();
-        pattern1.put("Type", "Weekly");
-        pattern1.put("DaysOfWeek", List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Saturday", "Sunday"));
+        final HashMap<String, Object> pattern = new HashMap<>();
+        pattern.put("Type", "Weekly");
+        pattern.put("DaysOfWeek", List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Saturday", "Sunday"));
 
-        final HashMap<String, Object> range1 = new HashMap<>();
-        range1.put("Type", "NoEnd");
+        final HashMap<String, Object> range = new HashMap<>();
+        range.put("Type", "NoEnd");
 
-        final HashMap<String, Object> recurrence1 = new HashMap<>();
-        recurrence1.put("Pattern", pattern1);
-        recurrence1.put("Range", range1);
+        final HashMap<String, Object> recurrence = new HashMap<>();
+        recurrence.put("Pattern", pattern);
+        recurrence.put("Range", range);
 
-        final Map<String, Object> parameters1 = new LinkedHashMap<>();
-        parameters1.put("Start", "2023-09-01T00:00:00+08:00");
-        parameters1.put("End", "2023-09-01T02:00:00+08:00");
-        parameters1.put("Recurrence", recurrence1);
+        final Map<String, Object> parameters = new LinkedHashMap<>();
+        parameters.put("Start", "2023-09-01T00:00:00+08:00");
+        parameters.put("End", "2023-09-01T02:00:00+08:00");
+        parameters.put("Recurrence", recurrence);
 
-        consumeValidationTestData(parameters1, String.format(RecurrenceConstants.NOT_MATCHED, FilterParameters.TIME_WINDOW_FILTER_SETTING_START));
+        consumeValidationTestData(parameters, String.format(RecurrenceConstants.NOT_MATCHED, FilterParameters.TIME_WINDOW_FILTER_SETTING_START));
     }
 
 
