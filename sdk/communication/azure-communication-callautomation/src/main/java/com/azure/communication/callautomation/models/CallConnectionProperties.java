@@ -81,8 +81,8 @@ public final class CallConnectionProperties {
         this.targetParticipants = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.callbackUrl = callConnectionPropertiesInternal.getCallbackUri();
-        this.mediaStreamingSubscription = null; //#TODO (mediaStreamingSubscription)  callConnectionPropertiesInternal.getMediaStreamingSubscription();
-        this.transcriptionSubscription = null; // #TODO (transcriptionSubscription) callConnectionPropertiesInternal.getTranscriptionSubscription();
+        this.mediaStreamingSubscription = convertMediaStreamingSubscription(callConnectionPropertiesInternal);
+        this.transcriptionSubscription = convertTranscriptionSubscription(callConnectionPropertiesInternal);
         this.answeredBy = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredBy());
         this.correlationId = callConnectionPropertiesInternal.getCorrelationId();
         this.answeredFor = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredFor());
@@ -202,5 +202,31 @@ public final class CallConnectionProperties {
      */
     public PhoneNumberIdentifier getAnsweredFor() {
         return answeredFor;
+    }
+
+    private MediaStreamingSubscription convertMediaStreamingSubscription(CallConnectionPropertiesInternal callConnectionPropertiesInternal) {
+        if (callConnectionPropertiesInternal.getMediaStreamingSubscription() == null) {
+            return null;
+        }
+        MediaStreamingSubscription mediaStreamingSubscription = new MediaStreamingSubscription();
+        mediaStreamingSubscription.setId(callConnectionPropertiesInternal.getMediaStreamingSubscription().getId());
+        mediaStreamingSubscription.setState(MediaStreamingSubscriptionState.fromString(callConnectionPropertiesInternal.getMediaStreamingSubscription().getState().toString()));
+        mediaStreamingSubscription.setSubscribedContentTypes(callConnectionPropertiesInternal.getMediaStreamingSubscription().getSubscribedContentTypes().stream()
+                .map(contentType -> MediaStreamingContentType.fromString(contentType.toString()))
+                .collect(Collectors.toList()));
+        return mediaStreamingSubscription;
+    }
+
+    private TranscriptionSubscription convertTranscriptionSubscription(CallConnectionPropertiesInternal callConnectionPropertiesInternal) {
+        if (callConnectionPropertiesInternal.getTranscriptionSubscription() == null) {
+            return null;
+        }
+        TranscriptionSubscription transcriptionSubscription = new TranscriptionSubscription();
+        transcriptionSubscription.setId(callConnectionPropertiesInternal.getTranscriptionSubscription().getId());
+        transcriptionSubscription.setState(TranscriptionSubscriptionState.fromString(callConnectionPropertiesInternal.getTranscriptionSubscription().getState().toString()));
+        transcriptionSubscription.setSubscribedResultTypes(callConnectionPropertiesInternal.getTranscriptionSubscription().getSubscribedResultTypes().stream()
+                .map(resultType -> TranscriptionResultType.fromString(resultType.toString()))
+                .collect(Collectors.toList()));
+        return transcriptionSubscription;
     }
 }
