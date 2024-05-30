@@ -227,20 +227,20 @@ The `recurrence` settings is made up of two parts: `pattern` (how often the time
 
 There are two possible recurrence pattern types: `Daily` and `Weekly`. For example, a time window could repeat "every day", "every 3 days", "every Monday" or "every other Friday".
 
-- Parameters
+* Parameters
 
-  | Property | Relevance | Description                                                                                                                                                                                                                                                               | 
-  |-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-  | **type** | Required  | Two valid values: `Daily`, `Weekly`.                                                                                                                                                                                                                                      |
-  | **interval** | Optional  | Specifies the interval between each start time of occurrence. Default value is 1. <br/>For example, if the interval is 2 with `Daily` type, and current occurrence is 2:00 AM ~ 3:00 AM on 2024/05/11, then the next occurrence should be 2:00 AM ~ 3:00 AM on 2024/05/13 |
-  | **daysOfWeek** | Optional  | Specifies on which day(s) of the week the event occurs. It's required when `Weekly` type, not applicable for `Daily` type.                                                                                                                                                |
-  | **firstDayOfWeek** | Optional  | Specifies which day is considered the first day of the week. Default value is `Sunday`. Not applicable for `Daily` type.                                                                                                                                                  |
+  Property | Relevance | Description
+  -----------|-------|-----
+  **type** | Required  | Two valid values: `Daily`, `Weekly`.
+  **interval** | Optional  | Specifies the interval between each start time of occurrence. Default value is 1. <br/>For example, if the interval is 2 with `Daily` type, and current occurrence is 2:00 AM ~ 3:00 AM on 2024/05/11, then the next occurrence should be 2:00 AM ~ 3:00 AM on 2024/05/13
+  **daysOfWeek** | Optional  | Specifies on which day(s) of the week the event occurs. It's required when `Weekly` type, not applicable for `Daily` type. 
+  **firstDayOfWeek** | Optional  | Specifies which day is considered the first day of the week. Default value is `Sunday`. Not applicable for `Daily` type. 
   
-  - Example
-    - Daily 
+  * Example
+    * Daily
   
         The daily recurrence pattern causes the time window to repeat based on interval between each occurrence.
-    
+
         The following example will repeat from 2:00 AM to 3:00 AM on every 2 days
 
         ```yaml
@@ -253,7 +253,8 @@ There are two possible recurrence pattern types: `Daily` and `Weekly`. For examp
           range:
             type: "NoEnd"
         ```
-    - Weekly
+
+    * Weekly
   
       The weekly recurrence pattern causes the time window to repeat on the same day or days of the week, based on the number of weeks between each set of occurrences.
 
@@ -273,26 +274,27 @@ There are two possible recurrence pattern types: `Daily` and `Weekly`. For examp
             type: "NoEnd"
         ```
 
-  **Note:** `start` must be a valid first occurrence which fits the recurrence pattern. For example, if we define to repeat on every other Monday and Tuesday, then the start time should be in Monday or Tuesday. </br> Additionally, the duration of the time window cannot be longer than how frequently it occurs. For example, it is invalid to have a 25-hour time window recur every day.
+    **Note:** `start` must be a valid first occurrence which fits the recurrence pattern. For example, if we define to repeat on every other Monday and Tuesday, then the start time should be in Monday or Tuesday. </br> Additionally, the duration of the time window cannot be longer than how frequently it occurs. For example, it is invalid to have a 25-hour time window recur every day.
 
 #### Recurrence Range
 
 There are three possible recurrence range type: `NoEnd`, `EndDate` and `Numbered`.
 
-- Parameter
+* Parameter
   
-    | Property | Relevance | Description                                                                                                                                                                                                                                                                                          |
-    |-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|
-    | **type** | Required  | Three valid values: `NoEnd`, `EndDate` and `Numbered`.                                                                                                                                                                                                                                               |
-    | **endDate** | Optional  | 	Specifies the date time to stop applying the pattern. Note that as long as the start time of the last occurrence falls before the end date, the end time of that occurrence is allowed to extend beyond it. <br/> It's required for `EndDate` type, not applicable for `NoEnd` and `Numbered` type. |
-    | **NumberOfOccurrences** | Required | Specifies the number of days that it will occur. <br/> It's required for `Numbered` type, not applicable for `NoEnd` and `EndDate` type.                                                                                                                                                             |
+    Property | Relevance | Description                                                                           |
+    -----------|---------------|-------------
+    **type** | Required  | Three valid values: `NoEnd`, `EndDate` and `Numbered`.
+    **endDate** | Optional  |  Specifies the date time to stop applying the pattern. Note that as long as the start time of the last occurrence falls before the end date, the end time of that occurrence is allowed to extend beyond it. <br/> It's required for `EndDate` type, not applicable for `NoEnd` and `Numbered` type.
+    **NumberOfOccurrences** | Required | Specifies the number of days that it will occur. <br/> It's required for `Numbered` type, not applicable for `NoEnd` and `EndDate` type.
 
-  - Example
-    - `NoEnd`
+  * Example
+    * `NoEnd`
 
-      The `NoEnd` range causes the recurrence to occur indefinitely. 
+      The `NoEnd` range causes the recurrence to occur indefinitely.
 
       The following example will repeat from 6:00 PM to 8:00 PM every day.
+
       ``` yaml
       start: "Fri, 22 Mar 2024 18:00:00 GMT",
       end: "Fri, 22 Mar 2024 20:00:00 GMT",
@@ -304,7 +306,7 @@ There are three possible recurrence range type: `NoEnd`, `EndDate` and `Numbered
           type: "NoEnd"
       ```
 
-    - `EndDate`
+    * `EndDate`
 
       The `EndDate` range causes the time window to occur on all days that fit the applicable pattern until the end date.
 
@@ -322,7 +324,7 @@ There are three possible recurrence range type: `NoEnd`, `EndDate` and `Numbered
           endDate: "Mon, 1 Apr 2024 20:00:00 GMT"
       ```
 
-    - `Numbered`
+    * `Numbered`
 
       The `Numbered` range causes the time window to occur a fixed number of times (based on the pattern).
 
