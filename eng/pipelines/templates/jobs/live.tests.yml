@@ -72,6 +72,10 @@ jobs:
           sbomEnabled: false
 
     steps:
+      - pwsh: |
+          Write-Host '${{ convertToJson(parameters) }}'
+        displayName: 'Print parameters'
+
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           OS: ${{ parameters.OSName }}
