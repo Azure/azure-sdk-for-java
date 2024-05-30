@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
@@ -92,7 +93,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
      * Tests that a table and entity can be created while having a different tenant ID than the one that will be
      * provided in the authentication challenge.
      */
-    @Disabled("This test is disabled because it is not supported using MI.")
+    @LiveOnly
     @Test
 
     public void serviceCreateTableWithMultipleTenants() {
@@ -293,7 +294,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         TableClientTest.getEntityWithResponseImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
     }
 
-    @Disabled("This test is disabled because it is not supported using MI.")
+    @LiveOnly
     @Test
     public void generateAccountSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -322,7 +323,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         );
     }
 
-    @Disabled("This test is disabled because it is not supported using MI.")
+    @LiveOnly
     @Test
     public void generateAccountSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -358,7 +359,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         );
     }
 
-    @Disabled("This test is disabled because it is not supported using MI.")
+    @LiveOnly
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
         final OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);

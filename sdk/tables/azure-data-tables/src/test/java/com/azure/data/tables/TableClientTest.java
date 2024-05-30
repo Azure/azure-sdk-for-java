@@ -12,6 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.TestResourceNamer;
@@ -1126,7 +1127,7 @@ public class TableClientTest extends TableClientTestBase {
     }
 
 
-    @Disabled("This test is disabled because it is not supported using MI.")
+    @LiveOnly
     @Test
     public void generateSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -1152,7 +1153,7 @@ public class TableClientTest extends TableClientTestBase {
         );
     }
 
-    @Disabled("This test is disabled because it is not supported using MI.")
+    @LiveOnly
     @Test
     public void generateSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -1197,7 +1198,7 @@ public class TableClientTest extends TableClientTestBase {
         );
     }
 
-    @Disabled("This test is disabled because it is not supported using MI.")
+    @LiveOnly
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
         // SAS tokens at the table level have not been working with Cosmos endpoints.
@@ -1244,7 +1245,7 @@ public class TableClientTest extends TableClientTestBase {
         assertEquals(expectedStatusCode, newTableClient.createEntityWithResponse(entity, null, null).getStatusCode());
     }
 
-    @Disabled("This test is disabled because it is not supported using MI.")
+    @LiveOnly
     @Test
     public void setAndListAccessPolicies() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,
@@ -1283,7 +1284,7 @@ public class TableClientTest extends TableClientTestBase {
         assertEquals(id, signedIdentifier.getId());
     }
 
-    @Disabled("This test is disabled because it is not supported using MI.")
+    @LiveOnly
     @Test
     public void setAndListMultipleAccessPolicies() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,

@@ -642,32 +642,32 @@ public final class TableUtils {
             if (!key.endsWith("@odata.type")) {
                 Object convertedOdataObject = adjustedMap.computeIfPresent(key.concat("@odata.type"), (k, v) -> {
                     String odataType = (String) v;
-                    if ("Edm.Binary".equals(odataType)) {
+                    if (TableServiceDataTypes.BINARY.equals(odataType)) {
                         if (!(adjustedMap.get(key) instanceof byte[])) {
                             byte[] bytes = java.util.Base64.getDecoder().decode(((String) adjustedMap.get(key)).getBytes());
                             return bytes;
                         }
-                    } else if ("Edm.DateTime".equals(odataType)) {
+                    } else if (TableServiceDataTypes.DATE_TIME.equals(odataType)) {
                         if (!(adjustedMap.get(key) instanceof OffsetDateTime)) {
                             return OffsetDateTime.parse((String) adjustedMap.get(key));
                         }
-                    } else if ("Edm.Guid".equals(odataType)) {
+                    } else if (TableServiceDataTypes.GUID.equals(odataType)) {
                         if (!(adjustedMap.get(key) instanceof UUID)) {
                             return UUID.fromString((String) adjustedMap.get(key));
                         }
-                    } else if ("Edm.Int32".equals(odataType)) {
+                    } else if (TableServiceDataTypes.INT32.equals(odataType)) {
                         if (!(adjustedMap.get(key) instanceof Integer)) {
                             return Integer.parseInt((String) adjustedMap.get(key));
                         }
-                    } else if ("Edm.Int64".equals(odataType)) {
+                    } else if (TableServiceDataTypes.INT64.equals(odataType)) {
                         if (!(adjustedMap.get(key) instanceof Long)) {
                             return Long.parseLong((String) adjustedMap.get(key));
                         }
-                    } else if ("Edm.Double".equals(odataType)) {
+                    } else if (TableServiceDataTypes.DOUBLE.equals(odataType)) {
                         if (!(adjustedMap.get(key) instanceof Double)) {
                             return Double.parseDouble((String) adjustedMap.get(key));
                         }
-                    } else if ("Edm.Boolean".equals(odataType)) {
+                    } else if (TableServiceDataTypes.BOOLEAN.equals(odataType)) {
                         if (!(adjustedMap.get(key) instanceof Boolean)) {
                             return Boolean.parseBoolean((String) adjustedMap.get(key));
                         }

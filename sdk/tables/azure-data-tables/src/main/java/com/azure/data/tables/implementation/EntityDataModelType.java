@@ -3,6 +3,7 @@
 package com.azure.data.tables.implementation;
 
 import com.azure.core.util.Base64Util;
+import com.azure.core.util.ExpandableStringEnum;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -26,18 +27,18 @@ public enum EntityDataModelType {
     /**
      * <strong>Edm.Binary</strong> Represents fixed- or variable-length binary data
      */
-    BINARY("Edm.Binary", Base64Util::decodeString, byte[].class, Byte[].class),
+    BINARY(TableServiceDataTypes.BINARY, Base64Util::decodeString, byte[].class, Byte[].class),
 
     /**
      * <strong>Edm.Boolean</strong> Represents the mathematical concept of binary-valued logic
      */
-    BOOLEAN("Edm.Boolean", Boolean::parseBoolean),
+    BOOLEAN(TableServiceDataTypes.BOOLEAN, Boolean::parseBoolean),
 
     /**
      * <strong>Edm.DateTime</strong> Represents date and time with values ranging from 12:00:00 midnight, January 1,
      * 1753 A.D. through 11:59:59 P.M, December 9999 A.D.
      */
-    DATE_TIME("Edm.DateTime", s ->
+    DATE_TIME(TableServiceDataTypes.DATE_TIME, s ->
         DateTimeFormatter.ISO_DATE_TIME.parseBest(s, OffsetDateTime::from, LocalDateTime::from),
         OffsetDateTime.class, ZonedDateTime.class, Instant.class, LocalDateTime.class, LocalDate.class, Date.class),
 
@@ -45,27 +46,27 @@ public enum EntityDataModelType {
      * <strong>Edm.Double</strong> Represents a floating point number with 15 digits precision that can represent values
      * with approximate range of +/- 2.23e -308 through +/- 1.79e +308
      */
-    DOUBLE("Edm.Double", Double::parseDouble),
+    DOUBLE(TableServiceDataTypes.DOUBLE, Double::parseDouble),
 
     /**
      * <strong>Edm.Guid</strong> Represents a 16-byte (128-bit) unique identifier value
      */
-    GUID("Edm.Guid", UUID::fromString, UUID.class),
+    GUID(TableServiceDataTypes.GUID, UUID::fromString, UUID.class),
 
     /**
      * <strong>Edm.Int32</strong> Represents a signed 32-bit integer value
      */
-    INT32("Edm.Int32", Integer::parseInt),
+    INT32(TableServiceDataTypes.INT32, Integer::parseInt),
 
     /**
      * <strong>Edm.Int64</strong> Represents a signed 64-bit integer value
      */
-    INT64("Edm.Int64", Long::parseLong, long.class, Long.class),
+    INT64(TableServiceDataTypes.INT64, Long::parseLong, long.class, Long.class),
 
     /**
      * <strong>Edm.String</strong> Represents fixed- or variable-length character data
      */
-    STRING("Edm.String", String::toString);
+    STRING(TableServiceDataTypes.STRING, String::toString);
 
     private final String edmType;
     private final Function<String, Object> deserializer;

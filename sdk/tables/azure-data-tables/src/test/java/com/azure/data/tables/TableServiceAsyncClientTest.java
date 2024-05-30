@@ -9,6 +9,7 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
@@ -90,7 +91,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
      * Tests that a table and entity can be created while having a different tenant ID than the one that will be
      * provided in the authentication challenge.
      */
-    @Disabled("This test is disabled because it is not supported using MI.")
+    @LiveOnly
     @Test
     public void serviceCreateTableWithMultipleTenants() {
         // This feature works only in Storage endpoints with service version 2020_12_06.
@@ -334,7 +335,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         TableAsyncClientTest.getEntityWithResponseAsyncImpl(tableClient, testResourceNamer, "partitionKey", "rowKey");
     }
 
-    @Disabled("This test is disabled because it is not supported using MI.")
+    @LiveOnly
     @Test
     public void generateAccountSasTokenWithMinimumParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -363,7 +364,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         );
     }
 
-    @Disabled("This test is disabled because it is not supported using MI.")
+    @LiveOnly
     @Test
     public void generateAccountSasTokenWithAllParameters() {
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
@@ -399,7 +400,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         );
     }
 
-    @Disabled("This test is disabled because it is not supported using MI.")
+    @LiveOnly
     @Test
     public void canUseSasTokenToCreateValidTableClient() {
 
