@@ -145,7 +145,7 @@ public class CosmosClientBuilder implements
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private SessionRetryOptions sessionRetryOptions;
     private Supplier<CosmosExcludedRegions> cosmosExcludedRegionsSupplier;
-    private final List<CosmosRequestPolicy> requestPolicies;
+    private final List<CosmosOperationPolicy> requestPolicies;
     private CosmosItemSerializer defaultCustomSerializer;
     private boolean isRegionScopedSessionCapturingEnabled = false;
 
@@ -240,12 +240,12 @@ public class CosmosClientBuilder implements
      * @param policy the policy to add
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder addPolicy(CosmosRequestPolicy policy) {
+    public CosmosClientBuilder addPolicy(CosmosOperationPolicy policy) {
         this.requestPolicies.add(policy);
         return this;
     }
 
-    List<CosmosRequestPolicy> getPolicies() {
+    List<CosmosOperationPolicy> getPolicies() {
         return requestPolicies;
     }
 

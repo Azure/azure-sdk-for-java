@@ -22,7 +22,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.CosmosItemSerializer;
-import com.azure.cosmos.CosmosRequestPolicy;
+import com.azure.cosmos.CosmosOperationPolicy;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.SessionRetryOptions;
@@ -1387,7 +1387,7 @@ public class ImplementationBridgeHelpers {
 
             DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient client);
 
-            List<CosmosRequestPolicy> getPolicies(CosmosAsyncClient client);
+            List<CosmosOperationPolicy> getPolicies(CosmosAsyncClient client);
 
             CosmosItemSerializer getEffectiveItemSerializer(
                 CosmosAsyncClient client,
