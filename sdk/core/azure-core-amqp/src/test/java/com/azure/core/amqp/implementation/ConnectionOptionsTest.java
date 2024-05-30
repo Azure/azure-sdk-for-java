@@ -30,7 +30,6 @@ public class ConnectionOptionsTest {
     @Mock
     private Scheduler scheduler;
     private AutoCloseable mocksCloseable;
-
     @BeforeEach
     public void beforeEach() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
@@ -50,7 +49,7 @@ public class ConnectionOptionsTest {
         final String clientVersion = "1.5.10";
         final String scope = "test-scope";
 
-        final String fullyQualifiedNamespace = "host-name.com";
+        final String fullyQualifiedNamespace = "servicebus.windows.net";
         final SslDomain.VerifyMode verifyMode = SslDomain.VerifyMode.VERIFY_PEER;
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
         final ClientOptions clientOptions = new ClientOptions();
@@ -81,7 +80,7 @@ public class ConnectionOptionsTest {
     }
 
     /**
-     * Verifies that the
+     * Verifies that the correct port and properties are set.
      */
     @Test
     public void propertiesAndPortSet() {
