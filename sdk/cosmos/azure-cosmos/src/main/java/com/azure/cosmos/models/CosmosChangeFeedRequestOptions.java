@@ -627,19 +627,19 @@ public final class CosmosChangeFeedRequestOptions {
             HttpConstants.ChangeFeedWireFormatVersions.SEPARATE_METADATA_WITH_CRTS);
     }
 
-    public String getCollectionRid() {
+    String getCollectionRid() {
         return collectionRid;
     }
 
-    public void setCollectionRid(String collectionRid) {
+    void setCollectionRid(String collectionRid) {
         this.collectionRid = collectionRid;
     }
 
-    public PartitionKeyDefinition getPartitionKeyDefinition() {
+    PartitionKeyDefinition getPartitionKeyDefinition() {
         return partitionKeyDefinition;
     }
 
-    public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+    void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
         this.partitionKeyDefinition = partitionKeyDefinition;
     }
 
