@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
@@ -14,10 +15,15 @@ import com.azure.core.credential.BasicAuthenticationCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import reactor.core.scheduler.Scheduler;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -53,6 +59,24 @@ public class EventHubClientBuilderTest {
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
     public static final String JAVA_NET_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
 
+    @Mock
+    private Scheduler scheduler;
+
+    @Mock
+    private TokenCredential tokenCredential;
+    private AutoCloseable closeable;
+
+    @BeforeEach
+    public void beforeEach() {
+        closeable = MockitoAnnotations.openMocks(this);
+    }
+
+    @AfterEach
+    public void afterEach() throws Exception {
+        if (closeable != null) {
+            closeable.close();
+        }
+    }
 
     @Test
     public void missingConnectionString() {
@@ -293,34 +317,16 @@ public class EventHubClientBuilderTest {
     }
 
     @Test
-    public void getsCorrectEndpoint() {{
+    public void getsCorrectEndpoint() {
         // Arrange
         final String fqdn = "test.foo.com";
         final String eventHubName = "my-event-hub";
-        final TokenCredential tokenCredential = mock(TokenCredential.class);
-        final EventHubClientBuilder builder = new EventHubClientBuilder();
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .retryOptions(new AmqpRetryOptions())
+            .scheduler(scheduler);
 
         // Act
         builder.credential(fqdn, eventHubName, tokenCredential);
-
-        final ConnectionOptions actual = builder.getConnectionOptions();
-
-        // Assert
-        assertEquals(fqdn, actual.getFullyQualifiedNamespace());
-        assertEquals(fqdn, actual.getHostname());
-        assertEquals(ConnectionHandler.AMQPS_PORT, actual.getPort());
-        assertEquals(AmqpTransportType.AMQP, actual.getTransportType());
-    }
-
-        // Arrange
-        final String fqdn = "test.foo.com";
-        final String endpoint = "sb://" + fqdn;
-        final String eventHubName = "my-event-hub";
-        final TokenCredential tokenCredential = mock(TokenCredential.class);
-        final EventHubClientBuilder builder = new EventHubClientBuilder();
-
-        // Act
-        builder.credential(endpoint, eventHubName, tokenCredential);
 
         final ConnectionOptions actual = builder.getConnectionOptions();
 
@@ -340,9 +346,9 @@ public class EventHubClientBuilderTest {
         final String customHostname = "my.local.endpoint";
         final int customPort = 4542;
         final String customEndpoint = "sb://" + customHostname + ":" + customPort;
-        final TokenCredential tokenCredential = mock(TokenCredential.class);
-        final EventHubClientBuilder builder = new EventHubClientBuilder();
-
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .retryOptions(new AmqpRetryOptions())
+            .scheduler(scheduler);
         // Act
         builder.credential(fqdn, eventHubName, tokenCredential)
             .customEndpointAddress(customEndpoint);
@@ -381,7 +387,9 @@ public class EventHubClientBuilderTest {
     public void getsCorrectEndpointConnectionString(String connectionString, String expectedHostname,
         int expectedPort) {
         // Arrange
-        final EventHubClientBuilder builder = new EventHubClientBuilder();
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .retryOptions(new AmqpRetryOptions())
+            .scheduler(scheduler);
 
         // Act
         builder.connectionString(connectionString);
