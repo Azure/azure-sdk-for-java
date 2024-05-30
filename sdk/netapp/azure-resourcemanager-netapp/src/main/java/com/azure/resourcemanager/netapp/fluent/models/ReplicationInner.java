@@ -134,8 +134,9 @@ public final class ReplicationInner {
      */
     public void validate() {
         if (remoteVolumeResourceId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property remoteVolumeResourceId in model ReplicationInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property remoteVolumeResourceId in model ReplicationInner"));
         }
     }
 

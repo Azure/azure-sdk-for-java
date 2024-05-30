@@ -32,8 +32,7 @@ public final class PlacementKeyValuePairs {
     }
 
     /**
-     * Get the key property: Key for an application specific parameter for the placement of volumes in the volume
-     * group.
+     * Get the key property: Key for an application specific parameter for the placement of volumes in the volume group.
      * 
      * @return the key value.
      */
@@ -42,8 +41,7 @@ public final class PlacementKeyValuePairs {
     }
 
     /**
-     * Set the key property: Key for an application specific parameter for the placement of volumes in the volume
-     * group.
+     * Set the key property: Key for an application specific parameter for the placement of volumes in the volume group.
      * 
      * @param key the key value to set.
      * @return the PlacementKeyValuePairs object itself.
@@ -82,12 +80,12 @@ public final class PlacementKeyValuePairs {
      */
     public void validate() {
         if (key() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property key in model PlacementKeyValuePairs"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property key in model PlacementKeyValuePairs"));
         }
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model PlacementKeyValuePairs"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model PlacementKeyValuePairs"));
         }
     }
 
