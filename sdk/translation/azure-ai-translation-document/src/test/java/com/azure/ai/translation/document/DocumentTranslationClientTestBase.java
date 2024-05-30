@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
     private static final String HOST_NAME_REGEX = "(?<=http://|https://)(?<host>[^/?\\\\.]+)";
     private static final String REDACTED = "REDACTED";
+    private static final List<String> DISABLE_SANITIZER_LIST = Arrays.asList("AZSDK3430", "AZSDK2030");
 
     @Override
     public void beforeTest() {
@@ -61,6 +63,10 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
             documentTranslationClientbuilder.credential(new AzureKeyCredential(key));
         }
 
+        if (interceptorManager.isRecordMode()) {
+            interceptorManager.removeSanitizers(DISABLE_SANITIZER_LIST);
+        }
+
         if (!interceptorManager.isLiveMode()) {
             addTestProxySanitizers();
         }
@@ -70,9 +76,9 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
     private void addTestProxySanitizers() {
         List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-        customSanitizers.add(new TestProxySanitizer("$..sourceUrl", null, REDACTED, TestProxySanitizerType.BODY_KEY));
-        customSanitizers.add(new TestProxySanitizer("$..targetUrl", null, REDACTED, TestProxySanitizerType.BODY_KEY));
-        customSanitizers.add(new TestProxySanitizer("$..glossaryUrl", null, REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..sourceUrl", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..targetUrl", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.BODY_KEY));
+        customSanitizers.add(new TestProxySanitizer("$..glossaryUrl", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.BODY_KEY));
         customSanitizers.add(new TestProxySanitizer("Operation-Location", HOST_NAME_REGEX, REDACTED, TestProxySanitizerType.HEADER));
         interceptorManager.addSanitizers(customSanitizers);
     }
@@ -98,6 +104,11 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
             singleDocumentTranslationClientbuilder
                 .credential(new AzureKeyCredential(key));
         }
+
+        if (interceptorManager.isRecordMode()) {
+            interceptorManager.removeSanitizers(DISABLE_SANITIZER_LIST);
+        }
+
         if (!interceptorManager.isLiveMode()) {
             addTestProxySanitizers();
         }
@@ -141,6 +152,10 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
             blobContainerClientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isRecordMode()) {
             blobContainerClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        if (interceptorManager.isRecordMode()) {
+            interceptorManager.removeSanitizers(DISABLE_SANITIZER_LIST);
         }
 
         if (!interceptorManager.isLiveMode()) {
@@ -294,7 +309,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
     }
 
     String generateRandomName(String baseName) {
-        return baseName + UUID.randomUUID().toString();
+        return interceptorManager.isPlaybackMode() ? "REDACTED" : baseName + UUID.randomUUID();
     }
 
     public static String readInputStreamToString(InputStream inputStream) throws IOException {
