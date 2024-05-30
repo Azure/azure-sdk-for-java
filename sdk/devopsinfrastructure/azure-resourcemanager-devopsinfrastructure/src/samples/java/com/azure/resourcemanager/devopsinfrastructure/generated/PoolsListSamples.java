@@ -8,6 +8,11 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
  * Samples for Pools List.
  */
 public final class PoolsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure/examples/2024-04-04-preview/
+     * ListPoolsBySubscription.json
+     */
     /**
      * Sample code: Pools_ListBySubscription.
      * 

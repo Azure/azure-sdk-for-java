@@ -17,6 +17,10 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRawValue;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -152,6 +156,7 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
      */
     @JsonProperty(value = "data")
     @JsonRawValue
+    @JsonDeserialize(using = CloudEvent.AnyToStringDeserializer.class)
     private String data;
 
     /*
@@ -696,5 +701,16 @@ public final class CloudEvent implements JsonSerializable<CloudEvent> {
 
             return cloudEvent;
         });
+    }
+
+    /*
+     * Custom Jackson JsonDeserialized used to deserialize anything into the String field 'data'.
+     * A custom serializer isn't needed as the field is used as a raw value, meaning it will be serialized as is.
+     */
+    private static final class AnyToStringDeserializer extends JsonDeserializer<String> {
+        @Override
+        public String deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+            return p.readValueAsTree().toString();
+        }
     }
 }

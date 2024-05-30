@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -218,7 +219,8 @@ public final class BatchNodeUserCreateContent implements JsonSerializable<BatchN
                 } else if ("isAdmin".equals(fieldName)) {
                     isAdmin = reader.getNullable(JsonReader::getBoolean);
                 } else if ("expiryTime".equals(fieldName)) {
-                    expiryTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    expiryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("password".equals(fieldName)) {
                     password = reader.getString();
                 } else if ("sshPublicKey".equals(fieldName)) {

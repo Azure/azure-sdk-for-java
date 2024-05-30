@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -47,8 +47,6 @@ public final class LivenessResponseBody {
     private LivenessWithVerifyOutputs verifyResult;
 
     /*
-     * The response body of detect liveness API call.
-     * 
      * Additional properties
      */
     @Generated
@@ -104,9 +102,7 @@ public final class LivenessResponseBody {
     }
 
     /**
-     * Get the additionalProperties property: The response body of detect liveness API call.
-     *
-     * Additional properties.
+     * Get the additionalProperties property: Additional properties.
      *
      * @return the additionalProperties value.
      */
@@ -120,7 +116,7 @@ public final class LivenessResponseBody {
     @JsonAnySetter
     void setAdditionalProperties(String key, Object value) {
         if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+            additionalProperties = new LinkedHashMap<>();
         }
         additionalProperties.put(key, value);
     }
