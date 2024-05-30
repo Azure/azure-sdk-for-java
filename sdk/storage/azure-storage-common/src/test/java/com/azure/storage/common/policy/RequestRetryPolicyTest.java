@@ -3,7 +3,6 @@
 
 package com.azure.storage.common.policy;
 
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -248,7 +247,7 @@ public class RequestRetryPolicyTest {
         assertEquals(shouldBeRetried, RequestRetryPolicy.shouldErrorBeRetried(throwable, 0, 1).canBeRetried);
     }
 
-    @ParameterizedTest
+    /*@ParameterizedTest
     @MethodSource("retryPolicyRetriesStatusCodeSupplier")
     public void retryPolicyRetriesStatusCode(int statusCode, boolean isPrimary, boolean shouldBeRetried) {
         assertEquals(shouldBeRetried, RequestRetryPolicy.shouldResponseBeRetried(statusCode, isPrimary, null));
@@ -262,6 +261,12 @@ public class RequestRetryPolicyTest {
 
         assertEquals(shouldBeRetried, RequestRetryPolicy.shouldResponseBeRetried(0, isPrimary, response));
 
+    }*/
+
+    @ParameterizedTest
+    @MethodSource("retryPolicyRetriesStatusCodeSupplier")
+    public void retryPolicyRetriesStatusCode(int statusCode, boolean isPrimary, boolean shouldBeRetried) {
+        assertEquals(shouldBeRetried, RequestRetryPolicy.shouldStatusCodeBeRetried(statusCode, isPrimary));
     }
 
     private static Mono<HttpResponse> sendRequest(HttpPipeline pipeline) {

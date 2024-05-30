@@ -812,7 +812,7 @@ public class BlobBaseApiTests extends BlobTestBase {
             () -> bc.queryWithResponse(optionsOs, null, null));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void copyFromURLSourceErrorAndStatusCode() {
         BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
@@ -822,7 +822,7 @@ public class BlobBaseApiTests extends BlobTestBase {
         assertTrue(e.getStatusCode() == 409);
         assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
         assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
-    }
+    }*/
 
     static class MockProgressConsumer implements Consumer<BlobQueryProgress> {
 

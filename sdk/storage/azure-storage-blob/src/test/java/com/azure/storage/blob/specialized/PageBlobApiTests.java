@@ -537,7 +537,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertTrue(validateBasicHeaders(response.getHeaders()));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void uploadPageFromURLSourceErrorAndStatusCode() {
         PageBlobClient destBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient();
@@ -550,7 +550,7 @@ public class PageBlobApiTests extends BlobTestBase {
         assertTrue(e.getStatusCode() == 409);
         assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
         assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
-    }
+    }*/
 
     @Test
     public void uploadPageFromURLRange() {

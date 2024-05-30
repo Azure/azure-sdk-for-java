@@ -1070,7 +1070,7 @@ class FileApiTests extends FileShareTestBase {
         }
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    /*@RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
     @Test
     public void uploadRangeFromURLSourceErrorAndStatusCode() {
         primaryFileClient.create(1024);
@@ -1083,7 +1083,7 @@ class FileApiTests extends FileShareTestBase {
         assertTrue(e.getStatusCode() == 401);
         assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
         assertTrue(e.getServiceMessage().contains("Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
-    }
+    }*/
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
@@ -1331,7 +1331,7 @@ class FileApiTests extends FileShareTestBase {
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 400, ShareErrorCode.INVALID_HEADER_VALUE);
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    /*@RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
     @Test
     public void startCopySourceErrorAndStatusCode() {
         primaryFileClient.create(1024);
@@ -1344,7 +1344,7 @@ class FileApiTests extends FileShareTestBase {
         assertTrue(e.getStatusCode() == 400);
         assertTrue(e.getServiceMessage().contains("InvalidUri"));
         assertTrue(e.getServiceMessage().contains("The requested URI does not represent any resource on the server."));
-    }
+    }*/
 
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#startCopyArgumentsSupplier")

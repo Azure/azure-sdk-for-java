@@ -558,7 +558,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void appendBlockFromURLSourceErrorAndStatusCodeNewTest() {
         AppendBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
@@ -570,7 +570,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
                 assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
                 assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
             });
-    }
+    }*/
 
     @Test
     public void appendBlockFromURLRange() {

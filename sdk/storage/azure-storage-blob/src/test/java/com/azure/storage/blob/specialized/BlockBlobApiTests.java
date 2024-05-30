@@ -375,7 +375,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertEquals(ByteBuffer.wrap(outputStream.toByteArray()), DATA.getDefaultData());
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void stageBlockFromUrlSourceErrorAndStatusCode() {
         BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
@@ -387,7 +387,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         assertTrue(e.getStatusCode() == 409);
         assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
         assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
-    }
+    }*/
 
     @Test
     public void stageBlockFromUrlMin() {

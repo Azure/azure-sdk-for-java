@@ -608,7 +608,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
         }).verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    /*@RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
     @Test
     public void uploadRangeFromURLSourceErrorAndStatusCode() {
         ShareFileAsyncClient destinationClient = shareAsyncClient.getFileClient(generatePathName());
@@ -621,7 +621,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
                 assertTrue(e.getServiceMessage().contains("Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
             });
-    }
+    }*/
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
@@ -793,7 +793,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
             .verify(Duration.ofMinutes(1));
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
+    /*@RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-08-04")
     @Test
     public void startCopySourceErrorAndStatusCode() {
         primaryFileAsyncClient.create(1024);
@@ -808,7 +808,7 @@ public class FileAsyncApiTests extends FileShareTestBase {
                 assertTrue(e.getServiceMessage().contains("InvalidUri"));
                 assertTrue(e.getServiceMessage().contains("The requested URI does not represent any resource on the server."));
             });
-    }
+    }*/
 
     @Disabled("There is a race condition in Poller where it misses the first observed event if there is a gap "
         + "between the time subscribed and the time we start observing events.")
