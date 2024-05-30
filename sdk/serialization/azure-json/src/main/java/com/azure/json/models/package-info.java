@@ -8,4 +8,4 @@
  * typing and validation. Rather than performing string manipulation to modify JSON data, the tree model allows for
  * manipulation using types with well-defined properties and methods.
  */
-package com.azure.json.tree;
+package com.azure.json.models;

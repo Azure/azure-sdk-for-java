@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.json.contract.tree;
+package com.azure.json.contract.models;
 
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonProvider;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 import com.azure.json.implementation.StringBuilderWriter;
-import com.azure.json.tree.JsonBoolean;
-import com.azure.json.tree.JsonElement;
+import com.azure.json.models.JsonElement;
+import com.azure.json.models.JsonString;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -22,12 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests the contract of {@link JsonBoolean}.
+ * Tests the contract of {@link JsonString}.
  * <p>
  * All implementations of {@link JsonProvider} must create a subclass of this test class and pass all tests as they're
  * written to be considered an acceptable implementation.
  */
-public abstract class JsonBooleanContractTests {
+public abstract class JsonStringContractTests {
     /**
      * Creates an instance {@link JsonProvider} that will be used by a test.
      *
@@ -37,48 +37,50 @@ public abstract class JsonBooleanContractTests {
 
     @Test
     public void kindCheck() {
-        JsonElement element = JsonBoolean.getInstance(true);
-        assertTrue(element.isBoolean());
+        JsonElement element = new JsonString("");
+        assertTrue(element.isString());
         assertFalse(element.isArray());
         assertFalse(element.isObject());
-        assertFalse(element.isString());
         assertFalse(element.isNumber());
+        assertFalse(element.isBoolean());
         assertFalse(element.isNull());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "true", "false" })
+    @ValueSource(strings = { "\"\"", "\"hello\"" })
     public void fromJson(String json) throws IOException {
         try (JsonReader reader = getJsonProvider().createReader(json, new JsonOptions())) {
-            JsonBoolean jsonBoolean = JsonBoolean.fromJson(reader);
-            assertEquals(json, jsonBoolean.toJsonString());
-            if ("true".equals(json)) {
-                assertTrue(jsonBoolean.getValue());
-                assertSame(JsonBoolean.getInstance(true), jsonBoolean);
-            } else {
-                assertFalse(jsonBoolean.getValue());
-                assertSame(JsonBoolean.getInstance(false), jsonBoolean);
-            }
+            JsonString jsonString = JsonString.fromJson(reader);
+            assertEquals(json, jsonString.toJsonString());
+            assertEquals(json.substring(1, json.length() - 1), jsonString.getValue());
         }
     }
 
+    @Test
+    public void toJsonStringCachesValue() throws IOException {
+        JsonString jsonString = new JsonString("hello");
+        String json = jsonString.toJsonString();
+        assertEquals("\"hello\"", json);
+        assertSame(json, jsonString.toJsonString());
+    }
+
     @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    public void toJson(boolean value) throws IOException {
-        JsonBoolean jsonBoolean = JsonBoolean.getInstance(value);
+    @ValueSource(strings = { "", "hello" })
+    public void toJson(String value) throws IOException {
+        JsonString jsonString = new JsonString(value);
         try (StringBuilderWriter writer = new StringBuilderWriter()) {
             try (JsonWriter jsonWriter = getJsonProvider().createWriter(writer, new JsonOptions())) {
-                jsonBoolean.toJson(jsonWriter);
+                jsonString.toJson(jsonWriter);
             }
-            assertEquals(Boolean.toString(value), writer.toString());
+            assertEquals("\"" + value + "\"", writer.toString());
         }
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "null", "10", "10.0", "\"hello\"", "[]", "{}" })
+    @ValueSource(strings = { "true", "null", "1", "1.0", "[]", "{}" })
     public void invalidFromJsonStartingPoints(String json) throws IOException {
         try (JsonReader reader = getJsonProvider().createReader(json, new JsonOptions())) {
-            assertThrows(IllegalStateException.class, () -> JsonBoolean.fromJson(reader));
+            assertThrows(IllegalStateException.class, () -> JsonString.fromJson(reader));
         }
     }
 }

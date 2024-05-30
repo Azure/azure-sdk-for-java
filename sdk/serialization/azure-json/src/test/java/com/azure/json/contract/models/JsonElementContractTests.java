@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.json.contract.tree;
+package com.azure.json.contract.models;
 
 import com.azure.json.JsonProvider;
-import com.azure.json.tree.JsonElement;
+import com.azure.json.models.JsonElement;
 
 /**
  * Tests the contract of {@link JsonElement}.

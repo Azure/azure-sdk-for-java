@@ -1,18 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.json.contract.tree;
+package com.azure.json.contract.models;
 
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonProvider;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 import com.azure.json.implementation.StringBuilderWriter;
-import com.azure.json.tree.JsonArray;
-import com.azure.json.tree.JsonBoolean;
-import com.azure.json.tree.JsonElement;
-import com.azure.json.tree.JsonNull;
-import com.azure.json.tree.JsonNumber;
-import com.azure.json.tree.JsonString;
+import com.azure.json.models.JsonArray;
+import com.azure.json.models.JsonBoolean;
+import com.azure.json.models.JsonElement;
+import com.azure.json.models.JsonNull;
+import com.azure.json.models.JsonNumber;
+import com.azure.json.models.JsonString;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

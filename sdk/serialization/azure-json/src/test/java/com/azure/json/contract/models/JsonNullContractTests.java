@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.json.contract.tree;
+package com.azure.json.contract.models;
 
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonProvider;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 import com.azure.json.implementation.StringBuilderWriter;
-import com.azure.json.tree.JsonElement;
-import com.azure.json.tree.JsonString;
+import com.azure.json.models.JsonElement;
+import com.azure.json.models.JsonNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -22,12 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests the contract of {@link JsonString}.
+ * Tests the contract of {@link JsonNull}.
  * <p>
  * All implementations of {@link JsonProvider} must create a subclass of this test class and pass all tests as they're
  * written to be considered an acceptable implementation.
  */
-public abstract class JsonStringContractTests {
+public abstract class JsonNullContractTests {
     /**
      * Creates an instance {@link JsonProvider} that will be used by a test.
      *
@@ -37,50 +37,40 @@ public abstract class JsonStringContractTests {
 
     @Test
     public void kindCheck() {
-        JsonElement element = new JsonString("");
-        assertTrue(element.isString());
+        JsonElement element = JsonNull.getInstance();
+        assertTrue(element.isNull());
         assertFalse(element.isArray());
         assertFalse(element.isObject());
+        assertFalse(element.isString());
         assertFalse(element.isNumber());
         assertFalse(element.isBoolean());
-        assertFalse(element.isNull());
     }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "\"\"", "\"hello\"" })
-    public void fromJson(String json) throws IOException {
-        try (JsonReader reader = getJsonProvider().createReader(json, new JsonOptions())) {
-            JsonString jsonString = JsonString.fromJson(reader);
-            assertEquals(json, jsonString.toJsonString());
-            assertEquals(json.substring(1, json.length() - 1), jsonString.getValue());
+    @Test
+    public void fromJson() throws IOException {
+        try (JsonReader reader = getJsonProvider().createReader("null", new JsonOptions())) {
+            JsonNull jsonNull = JsonNull.fromJson(reader);
+            assertEquals("null", jsonNull.toJsonString());
+            assertSame(JsonNull.getInstance(), jsonNull);
         }
     }
 
     @Test
-    public void toJsonStringCachesValue() throws IOException {
-        JsonString jsonString = new JsonString("hello");
-        String json = jsonString.toJsonString();
-        assertEquals("\"hello\"", json);
-        assertSame(json, jsonString.toJsonString());
-    }
-
-    @ParameterizedTest
-    @ValueSource(strings = { "", "hello" })
-    public void toJson(String value) throws IOException {
-        JsonString jsonString = new JsonString(value);
+    public void toJson() throws IOException {
+        JsonNull jsonNull = JsonNull.getInstance();
         try (StringBuilderWriter writer = new StringBuilderWriter()) {
             try (JsonWriter jsonWriter = getJsonProvider().createWriter(writer, new JsonOptions())) {
-                jsonString.toJson(jsonWriter);
+                jsonNull.toJson(jsonWriter);
             }
-            assertEquals("\"" + value + "\"", writer.toString());
+            assertEquals("null", writer.toString());
         }
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "true", "null", "1", "1.0", "[]", "{}" })
+    @ValueSource(strings = { "true", "10", "10.0", "\"hello\"", "[]", "{}" })
     public void invalidFromJsonStartingPoints(String json) throws IOException {
         try (JsonReader reader = getJsonProvider().createReader(json, new JsonOptions())) {
-            assertThrows(IllegalStateException.class, () -> JsonString.fromJson(reader));
+            assertThrows(IllegalStateException.class, () -> JsonNull.fromJson(reader));
         }
     }
 }

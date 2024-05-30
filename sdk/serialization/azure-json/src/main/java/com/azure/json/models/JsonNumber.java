@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.json.tree;
+package com.azure.json.models;
 
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
