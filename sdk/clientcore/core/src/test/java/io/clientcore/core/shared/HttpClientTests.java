@@ -1960,22 +1960,50 @@ public abstract class HttpClientTests {
             method = HttpMethod.GET,
             path = "anything",
             expectedStatusCodes = { 200 },
-            queryParams = { "constantParam1=constantValue1", "constantParam2=constantValue2"})
+            queryParams = { "constantParam1=constantValue1", "constantParam2=constantValue2" })
         HttpBinJSON get1(@HostParam("url") String url, @QueryParam("variableParam") String queryParam);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
             path = "anything",
             expectedStatusCodes = { 200 },
-            queryParams = { "param=constantValue1", "param=constantValue2"})
+            queryParams = { "param=constantValue1", "param=constantValue2" })
         HttpBinJSON get2(@HostParam("url") String url, @QueryParam("param") String queryParam);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
             path = "anything",
             expectedStatusCodes = { 200 },
-            queryParams = { "param=constantValue1,constantValue2", "param=constantValue3"})
+            queryParams = { "param=constantValue1,constantValue2", "param=constantValue3" })
         HttpBinJSON get3(@HostParam("url") String url, @QueryParam("param") String queryParam);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "constantParam1=", "constantParam1" })
+        HttpBinJSON get4(@HostParam("url") String url);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "constantParam1=some=value" })
+        HttpBinJSON get5(@HostParam("url") String url);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "" })
+        HttpBinJSON get6(@HostParam("url") String url);
+
+        @HttpRequestInformation(
+            method = HttpMethod.GET,
+            path = "anything",
+            expectedStatusCodes = { 200 },
+            queryParams = { "=value" })
+        HttpBinJSON get7(@HostParam("url") String url);
     }
 
     @Test
@@ -2008,7 +2036,6 @@ public abstract class HttpClientTests {
 
         assertNotNull(queryParams);
         assertEquals(1, queryParams.size());
-        assertEquals(3, queryParams.get("param").size());
         assertEquals("constantValue1", queryParams.get("param").get(0));
         assertEquals("constantValue2", queryParams.get("param").get(1));
         assertEquals("variableValue", queryParams.get("param").get(2));
@@ -2030,6 +2057,42 @@ public abstract class HttpClientTests {
         assertEquals("constantValue1%2CconstantValue2", queryParams.get("param").get(0));
         assertEquals("constantValue3", queryParams.get("param").get(1));
         assertEquals("variableValue1%2CvariableValue2%2CvariableValue3", queryParams.get("param").get(2));
+    }
+
+    @Test
+    public void queryParamsRequestWithEmptyValues() {
+        final HttpBinJSON json = createService(Service31.class).get4(getRequestUri());
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.url().substring(0, json.url().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertEquals(0, queryParams.get("constantParam1").size());
+    }
+
+    @Test
+    public void queryParamsRequestWithMoreThanOneEqualsSign() {
+        final HttpBinJSON json = createService(Service31.class).get5(getRequestUri());
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.url().substring(0, json.url().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertEquals("some%3Dvalue", queryParams.get("constantParam1").get(0));
+    }
+
+    @Test
+    public void queryParamsRequestWithEmptyName() {
+        assertThrows(IllegalStateException.class, () ->
+            createService(Service31.class).get6(getRequestUri()), "Query parameters cannot be null or empty.");
+        assertThrows(IllegalStateException.class, () ->
+            createService(Service31.class).get7(getRequestUri()), "Names for query parameters cannot be empty.");
     }
 
     // Helpers

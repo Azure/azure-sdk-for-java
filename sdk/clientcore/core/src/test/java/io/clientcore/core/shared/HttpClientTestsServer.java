@@ -239,20 +239,18 @@ public class HttpClientTestsServer {
         Map<String, List<String>> queryParamsMap = new HashMap<>();
 
         for (String queryParam : queryParams) {
-            String[] queryParamParts = queryParam.split("=");
-            String paramName = queryParamParts[0];
-            String paramValue = queryParamParts[1];
+            final String[] queryParamParts = queryParam.split("=");
+            final String paramName = queryParamParts[0];
+            final String paramValue = queryParamParts.length == 2 ? queryParamParts[1] : null;
 
             queryParamsMap.compute(paramName, (key, value) -> {
                 if (value == null) {
-                    List<String> valueList = new ArrayList<>();
-
-                    valueList.add(paramValue);
-
-                    return valueList;
+                    value = new ArrayList<>();
                 }
 
-                value.add(paramValue);
+                if (paramValue != null) {
+                    value.add(paramValue);
+                }
 
                 return value;
             });

@@ -47,6 +47,7 @@ import java.util.Arrays;
 import java.util.BitSet;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -72,7 +73,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final ClientLogger methodLogger;
     private final HttpMethod httpMethod;
     private final String relativePath;
-    private final Map<String, List<String>> constantQueryParams = new HashMap<>();
+    private final Map<String, List<String>> queryParams = new LinkedHashMap<>();
     final List<RangeReplaceSubstitution> hostSubstitutions = new ArrayList<>();
     private final List<RangeReplaceSubstitution> pathSubstitutions = new ArrayList<>();
     private final List<QuerySubstitution> querySubstitutions = new ArrayList<>();
@@ -153,31 +154,43 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         if (requestQueryParams != null) {
             for (final String queryParam : requestQueryParams) {
+                if (CoreUtils.isNullOrEmpty(queryParam)) {
+                    throw new IllegalStateException("Query parameters cannot be null or empty.");
+                }
+
+                // We take the first equals sign as the delimiter between the name and value of the query parameter.
+                // If more than one equals sign is present, the rest of the string is considered part of the value.
                 final int equalsIndex = queryParam.indexOf("=");
+                final String paramName;
+                final String paramValue;
 
                 if (equalsIndex >= 0) {
-                    final String paramName = queryParam.substring(0, equalsIndex).trim();
+                    paramName = queryParam.substring(0, equalsIndex);
 
                     if (!paramName.isEmpty()) {
-                        String paramValue = queryParam.substring(equalsIndex + 1).trim();
-
-                        if (!paramValue.isEmpty()) {
-                            constantQueryParams.compute(paramName, (key, value) -> {
-                                if (value == null) {
-                                    List<String> valueList = new ArrayList<>();
-
-                                    valueList.add(paramValue.replace(",", "%2C"));
-
-                                    return valueList;
-                                }
-
-                                value.add(paramValue.replace(",", "%2C"));
-
-                                return value;
-                            });
-                        }
+                        paramValue = UrlEscapers.QUERY_ESCAPER.escape(queryParam.substring(equalsIndex + 1));
+                    } else {
+                        throw new IllegalStateException("Names for query parameters cannot be empty.");
                     }
+                } else {
+                    // No equals sign was found, so the entire string is considered the name of the query parameter.
+                    paramName = queryParam;
+                    paramValue = null;
                 }
+
+                queryParams.compute(paramName, (key, value) -> {
+                    // If the value of a query parameter is empty or null, we still need to add its name to the map,
+                    // which is why we will associate an empty list to it.
+                    if (value == null) {
+                        value = new ArrayList<>();
+                    }
+
+                    if (!CoreUtils.isNullOrEmpty(paramValue)) {
+                        value.add(paramValue);
+                    }
+
+                    return value;
+                });
             }
         }
 
@@ -363,9 +376,13 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     public void setEncodedQueryParameters(Object[] swaggerMethodArguments, UrlBuilder urlBuilder,
                                           ObjectSerializer serializer) {
         // First we add the constant query parameters.
-        for (Map.Entry<String, List<String>> queryParam : constantQueryParams.entrySet()) {
-            for (String value : queryParam.getValue()) {
-                addSerializedQueryParameter(serializer, value, false, urlBuilder, queryParam.getKey());
+        for (Map.Entry<String, List<String>> entry : queryParams.entrySet()) {
+            if (entry.getValue().isEmpty()) {
+                urlBuilder.addQueryParameter(entry.getKey(), null);
+            } else {
+                for (String paramValue : entry.getValue()) {
+                    urlBuilder.addQueryParameter(entry.getKey(), paramValue);
+                }
             }
         }
 
