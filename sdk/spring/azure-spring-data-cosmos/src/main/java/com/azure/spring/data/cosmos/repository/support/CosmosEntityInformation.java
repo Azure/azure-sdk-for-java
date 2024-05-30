@@ -21,7 +21,10 @@ import com.azure.spring.data.cosmos.core.mapping.CosmosUniqueKeyPolicy;
 import com.azure.spring.data.cosmos.core.mapping.GeneratedValue;
 import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.repository.core.support.AbstractEntityInformation;
@@ -32,6 +35,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
@@ -50,6 +54,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private static final Function<Class<?>, CosmosEntityInformation<?, ?>> ENTITY_INFORMATION_CREATOR =
         Memoizer.memoize(CosmosEntityInformation::getCosmosEntityInformation);
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosEntityInformation.class);
+
     private static CosmosEntityInformation<?, ?> getCosmosEntityInformation(Class<?> domainClass) {
         return new CosmosEntityInformation<>(domainClass);
     }
@@ -67,6 +73,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     private final Field id;
     private final Field partitionKeyField;
     private final Field versionField;
+    private final List<String> transientFields;
     private final String containerName;
     private final String partitionKeyPath;
     private final Integer requestUnit;
@@ -97,6 +104,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         this.partitionKeyPath = CosmosEntityInformationHelper.getPartitionKeyPathAnnotationValue(domainType);
 
         this.partitionKeyField = CosmosEntityInformationHelper.getPartitionKeyField(domainType);
+        this.transientFields = CosmosEntityInformationHelper.getTransientFields(domainType);
         if (this.partitionKeyField != null) {
             ReflectionUtils.makeAccessible(this.partitionKeyField);
         }
@@ -145,6 +153,13 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
      */
     public Field getIdField() {
         return this.id;
+    }
+
+    /**
+     * @return fields with @Transient annotation
+     */
+    public List<String> getTransientFields() {
+        return transientFields;
     }
 
     /**
@@ -303,6 +318,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             return partitionKeyField == null ? null : partitionKeyField.getName();
         }
     }
+
+
 
     /**
      * Check if auto creating container is allowed
@@ -496,6 +513,23 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
                     + "only one field with @PartitionKey annotation!");
             }
             return partitionKey;
+        }
+
+        private static List<String> getTransientFields(Class<?> domainType) {
+            final Field partitionKeyField = getPartitionKeyField(domainType);
+            final List<Field> fields = FieldUtils.getFieldsListWithAnnotation(domainType, Transient.class);
+            List<String> transientFieldNames = new ArrayList<>();
+            Iterator<Field> iterator = fields.iterator();
+            while (iterator.hasNext()) {
+                Field field = iterator.next();
+                if (field.equals(partitionKeyField) || field.getName().equalsIgnoreCase("id") || field.getName().equalsIgnoreCase("_etag")) {
+                    //throw exception if partition key or id field is declared transient
+                    throw new IllegalArgumentException("Field cannot be declared transient: " + field.getName());
+                }
+                LOGGER.warn("Transient field will not be persisted: {}", field);
+                transientFieldNames.add(field.getName());
+            }
+            return transientFieldNames;
         }
 
         /**

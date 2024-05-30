@@ -3,6 +3,7 @@
 ### 5.13.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for `@Transient` annotation - see [PR 40401](https://github.com/Azure/azure-sdk-for-java/pull/40401).
 
 #### Breaking Changes
 
