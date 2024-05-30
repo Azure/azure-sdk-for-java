@@ -1,6 +1,7 @@
 package com.azure.ai.openai.assistants.implementation;
 
 import com.azure.ai.openai.assistants.models.ApiResponseFormat;
+import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormat;
 import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormatMode;
@@ -11,6 +12,9 @@ import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AssistantApiFormatSerializerTests {
@@ -187,5 +191,45 @@ public class AssistantApiFormatSerializerTests {
         BinaryData jsonBinaryData = BinaryData.fromObject(options);
         String json = jsonBinaryData.toString();
         assertTrue(json.contains("\"response_format\":\"none\""));
+    }
+
+    @Test
+    public void assistantTextFormat() {
+        Assistant assistant = BinaryData.fromString("{\"response_format\":{\"type\":\"text\"}}").toObject(Assistant.class);
+        AssistantsApiResponseFormatOption responseFormat = assistant.getResponseFormat();
+
+        assertNull(responseFormat.getMode());
+        assertNotNull(responseFormat.getFormat());
+        assertEquals(ApiResponseFormat.TEXT, responseFormat.getFormat().getType());
+    }
+
+    @Test
+    public void assistantJsonObjectFormat() {
+        Assistant assistant = BinaryData.fromString("{\"response_format\":{\"type\":\"json_object\"}}").toObject(Assistant.class);
+        AssistantsApiResponseFormatOption responseFormat = assistant.getResponseFormat();
+
+        assertNull(responseFormat.getMode());
+        assertNotNull(responseFormat.getFormat());
+        assertEquals(ApiResponseFormat.JSON_OBJECT, responseFormat.getFormat().getType());
+    }
+
+    @Test
+    public void assistantAutoMode() {
+        Assistant assistant = BinaryData.fromString("{\"response_format\":\"auto\"}").toObject(Assistant.class);
+        AssistantsApiResponseFormatOption responseFormat = assistant.getResponseFormat();
+
+        assertNotNull(responseFormat.getMode());
+        assertNull(responseFormat.getFormat());
+        assertEquals(AssistantsApiResponseFormatMode.AUTO, responseFormat.getMode());
+    }
+
+    @Test
+    public void assistantNoneMode() {
+        Assistant assistant = BinaryData.fromString("{\"response_format\":\"none\"}").toObject(Assistant.class);
+        AssistantsApiResponseFormatOption responseFormat = assistant.getResponseFormat();
+
+        assertNotNull(responseFormat.getMode());
+        assertNull(responseFormat.getFormat());
+        assertEquals(AssistantsApiResponseFormatMode.NONE, responseFormat.getMode());
     }
 }

@@ -1,6 +1,9 @@
 package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.BinaryData;
+
+import java.io.UncheckedIOException;
 
 // Convenience class added for the purpose of handling a wire type that can be either a JSON object or a string.
 // The class still uses the documentation from the original union in the service spec.
@@ -61,5 +64,27 @@ public final class AssistantsApiResponseFormatOption {
      */
     public AssistantsApiResponseFormat getFormat() {
         return this.format;
+    }
+
+    /**
+     * Creates a new instance of AssistantsApiResponseFormatOption based on a JSON string.
+     *
+     * @param responseFormatBinaryData input JSON string
+     * @return a new instance of AssistantsApiResponseFormatOption
+     */
+    public static AssistantsApiResponseFormatOption fromBinaryData(BinaryData responseFormatBinaryData) {
+        try {
+            AssistantsApiResponseFormat format = responseFormatBinaryData.toObject(AssistantsApiResponseFormat.class);
+            if (format != null) {
+                return new AssistantsApiResponseFormatOption(format);
+            }
+        } catch (UncheckedIOException e) {
+            AssistantsApiResponseFormatMode mode = responseFormatBinaryData.toObject(AssistantsApiResponseFormatMode.class);
+            // AssistantsApiResponseFormatMode is an expandable union, so if we get `null` as result, that will be returned as a new string value variant.
+            if (AssistantsApiResponseFormatMode.values().contains(mode)) {
+                return new AssistantsApiResponseFormatOption(mode);
+            }
+        }
+        throw new IllegalArgumentException("The provided JSON string does not match the expected format.");
     }
 }
