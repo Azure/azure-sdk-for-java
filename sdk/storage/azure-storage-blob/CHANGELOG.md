@@ -1,6 +1,8 @@
 # Release History
 
 ## 12.27.0-beta.1 (Unreleased)
+- Added support for getting account info on blob container clients and the blob base client. 
+- Added support for bearer token challenges. 
 
 ### Features Added
 
