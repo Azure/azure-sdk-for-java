@@ -97,6 +97,7 @@ steps:
         displayName: 'Run tests (Federated Auth)'
       inputs:
         azureSubscription: ${{ parameters.ServiceConnection }}
+        azurePowerShellVersion: LatestVersion
         pwsh: true
         ScriptType: InlineScript
         Inline: >-
@@ -184,6 +185,7 @@ steps:
       condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
       inputs:
         azureSubscription: ${{ parameters.ServiceConnection }}
+        azurePowerShellVersion: LatestVersion
         pwsh: true
         ScriptType: InlineScript
         Inline: >-
