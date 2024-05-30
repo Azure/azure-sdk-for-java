@@ -8,6 +8,7 @@ import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormatMode;
 import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormatOption;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
+import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
@@ -278,6 +279,46 @@ public class AssistantApiFormatSerializerTests {
     public void assistantNoneMode() {
         Assistant assistant = BinaryData.fromString("{\"response_format\":\"none\"}").toObject(Assistant.class);
         AssistantsApiResponseFormatOption responseFormat = assistant.getResponseFormat();
+
+        assertNotNull(responseFormat.getMode());
+        assertNull(responseFormat.getFormat());
+        assertEquals(AssistantsApiResponseFormatMode.NONE, responseFormat.getMode());
+    }
+
+    @Test
+    public void threadRunTextFormat() {
+        ThreadRun threadRun = BinaryData.fromString("{\"response_format\":{\"type\":\"text\"}}").toObject(ThreadRun.class);
+        AssistantsApiResponseFormatOption responseFormat = threadRun.getResponseFormat();
+
+        assertNull(responseFormat.getMode());
+        assertNotNull(responseFormat.getFormat());
+        assertEquals(ApiResponseFormat.TEXT, responseFormat.getFormat().getType());
+    }
+
+    @Test
+    public void threadRunJsonObjectFormat() {
+        ThreadRun threadRun = BinaryData.fromString("{\"response_format\":{\"type\":\"json_object\"}}").toObject(ThreadRun.class);
+        AssistantsApiResponseFormatOption responseFormat = threadRun.getResponseFormat();
+
+        assertNull(responseFormat.getMode());
+        assertNotNull(responseFormat.getFormat());
+        assertEquals(ApiResponseFormat.JSON_OBJECT, responseFormat.getFormat().getType());
+    }
+
+    @Test
+    public void threadRunAutoMode() {
+        ThreadRun threadRun = BinaryData.fromString("{\"response_format\":\"auto\"}").toObject(ThreadRun.class);
+        AssistantsApiResponseFormatOption responseFormat = threadRun.getResponseFormat();
+
+        assertNotNull(responseFormat.getMode());
+        assertNull(responseFormat.getFormat());
+        assertEquals(AssistantsApiResponseFormatMode.AUTO, responseFormat.getMode());
+    }
+
+    @Test
+    public void threadRunNoneMode() {
+        ThreadRun threadRun = BinaryData.fromString("{\"response_format\":\"none\"}").toObject(ThreadRun.class);
+        AssistantsApiResponseFormatOption responseFormat = threadRun.getResponseFormat();
 
         assertNotNull(responseFormat.getMode());
         assertNull(responseFormat.getFormat());

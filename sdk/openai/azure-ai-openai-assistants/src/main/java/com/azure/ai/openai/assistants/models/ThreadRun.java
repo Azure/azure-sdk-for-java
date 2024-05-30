@@ -701,8 +701,7 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      *
      * @return the responseFormat value.
      */
-    @Generated
-    public BinaryData getResponseFormat() {
-        return this.responseFormat;
+    public AssistantsApiResponseFormatOption getResponseFormat() {
+        return AssistantsApiResponseFormatOption.fromBinaryData(this.responseFormat);
     }
 }
