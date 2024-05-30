@@ -8,8 +8,7 @@ import com.azure.core.util.logging.LogLevel;
 import com.azure.monitor.opentelemetry.exporter.implementation.ResourceAttributes;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
-import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributes;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -144,6 +143,14 @@ public class TelemetryItemExporter {
         if (!"Statsbeat".equals(telemetryItems.get(0).getName()) && AksResourceAttributes.isAks(telemetryItemBatchKey.resource)) {
             telemetryItems.add(0, createOtelResourceMetric(telemetryItemBatchKey));
         }
+
+        try {
+            // remove micrometer jvm metric because we now emit otel runtime metric by default.
+            telemetryItems.removeIf(this::isMicrometerJvmMetric);
+        } catch (Exception e) {
+            logger.verbose(e.getMessage());
+        }
+
         try {
             byteBuffers = encode(telemetryItems);
             encodeBatchOperationLogger.recordSuccess();
@@ -153,6 +160,21 @@ public class TelemetryItemExporter {
         }
         return telemetryPipeline.send(byteBuffers, telemetryItemBatchKey.connectionString, listener);
     }
+
+    private boolean isMicrometerJvmMetric(TelemetryItem item) {
+        boolean result = false;
+        MonitorDomain md = item.getData().getBaseData();
+        if (md instanceof MetricsData) {
+            MetricsData metricsData = (MetricsData) md;
+            if (!metricsData.getMetrics().isEmpty()) {
+                MetricDataPoint point = metricsData.getMetrics().get(0);
+                String metricName = point.getName();
+                return metricName.startsWith("jvm_");
+            }
+        }
+        return result;
+    }
+
 
     private TelemetryItem createOtelResourceMetric(TelemetryItemBatchKey telemetryItemBatchKey) {
         MetricTelemetryBuilder builder = MetricTelemetryBuilder.create(_OTELRESOURCE_, 0);
