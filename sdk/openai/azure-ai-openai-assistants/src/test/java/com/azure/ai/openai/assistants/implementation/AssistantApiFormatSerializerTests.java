@@ -7,6 +7,7 @@ import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormatMode;
 import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormatOption;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
+import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
@@ -146,5 +147,45 @@ public class AssistantApiFormatSerializerTests {
         String json = jsonBinaryData.toString();
         assertTrue(json.contains("\"response_format\":\"none\""));
         assertTrue(json.contains("\"assistant_id\":\"abc123\""));
+    }
+
+    @Test
+    public void updateAssistantOptionTextFormat() {
+        UpdateAssistantOptions options = new UpdateAssistantOptions();
+        options.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.TEXT)));
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+        assertTrue(json.contains("\"response_format\":{\"type\":\"text\"}"));
+    }
+
+    @Test
+    public void updateAssistantOptionJsonObjectFormat() {
+        UpdateAssistantOptions options = new UpdateAssistantOptions();
+        options.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_OBJECT)));
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+        assertTrue(json.contains("\"response_format\":{\"type\":\"json_object\"}"));
+    }
+
+    @Test
+    public void updateAssistantOptionAutoMode() {
+        UpdateAssistantOptions options = new UpdateAssistantOptions();
+        options.setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.AUTO));
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+        assertTrue(json.contains("\"response_format\":\"auto\""));
+    }
+
+    @Test
+    public void updateAssistantOptionNoneMode() {
+        UpdateAssistantOptions options = new UpdateAssistantOptions();
+        options.setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.NONE));
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+        assertTrue(json.contains("\"response_format\":\"none\""));
     }
 }

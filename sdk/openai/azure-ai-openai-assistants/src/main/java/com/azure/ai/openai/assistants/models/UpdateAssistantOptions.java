@@ -289,7 +289,7 @@ public final class UpdateAssistantOptions implements JsonSerializable<UpdateAssi
      * An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of
      * the tokens with top_p probability mass.
      * So 0.1 means only the tokens comprising the top 10% probability mass are considered.
-     * 
+     *
      * We generally recommend altering this or temperature but not both.
      */
     @Generated
@@ -391,8 +391,8 @@ public final class UpdateAssistantOptions implements JsonSerializable<UpdateAssi
      * @return the responseFormat value.
      */
     @Generated
-    public BinaryData getResponseFormat() {
-        return this.responseFormat;
+    public AssistantsApiResponseFormatOption getResponseFormat() {
+        return this.responseFormat.toObject(AssistantsApiResponseFormatOption.class);
     }
 
     /**
@@ -402,8 +402,14 @@ public final class UpdateAssistantOptions implements JsonSerializable<UpdateAssi
      * @return the UpdateAssistantOptions object itself.
      */
     @Generated
-    public UpdateAssistantOptions setResponseFormat(BinaryData responseFormat) {
-        this.responseFormat = responseFormat;
+    public UpdateAssistantOptions setResponseFormat(AssistantsApiResponseFormatOption responseFormat) {
+        if (responseFormat.getFormat() != null) {
+            this.responseFormat = BinaryData.fromObject(responseFormat.getFormat());
+        } else if (responseFormat.getMode() != null) {
+            this.responseFormat = BinaryData.fromObject(responseFormat.getMode());
+        } else {
+            this.responseFormat = null;
+        }
         return this;
     }
 }
