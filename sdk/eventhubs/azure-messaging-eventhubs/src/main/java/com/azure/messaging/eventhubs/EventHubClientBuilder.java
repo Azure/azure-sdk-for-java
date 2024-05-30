@@ -51,6 +51,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.Map;
@@ -261,7 +262,7 @@ public class EventHubClientBuilder implements
     private Integer prefetchCount;
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
-    private URL customEndpointAddress;
+    private URI customEndpointAddress;
     private ConnectionStringProperties connectionStringProperties;
 
     static {
@@ -449,8 +450,8 @@ public class EventHubClientBuilder implements
         }
 
         try {
-            this.customEndpointAddress = new URL(customEndpointAddress);
-        } catch (MalformedURLException e) {
+            this.customEndpointAddress = new URI(customEndpointAddress);
+        } catch (URISyntaxException e) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException(customEndpointAddress + " : is not a valid URL.", e));
         }
@@ -461,7 +462,7 @@ public class EventHubClientBuilder implements
     /**
      * Gets the custom endpoint address.
      */
-    URL getCustomEndpointAddress() {
+    URI getCustomEndpointAddress() {
         return this.customEndpointAddress;
     }
 
