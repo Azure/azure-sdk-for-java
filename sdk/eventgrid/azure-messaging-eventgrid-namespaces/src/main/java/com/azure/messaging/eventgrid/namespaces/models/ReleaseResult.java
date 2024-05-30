@@ -19,7 +19,8 @@ import java.util.List;
 public final class ReleaseResult implements JsonSerializable<ReleaseResult> {
 
     /*
-     * Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the related error information (namely, the error code and description).
+     * Array of FailedLockToken for failed cloud events. Each FailedLockToken includes the lock token along with the
+     * related error information (namely, the error code and description).
      */
     @Generated
     private final List<FailedLockToken> failedLockTokens;

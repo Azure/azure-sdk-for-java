@@ -84,6 +84,8 @@ offazurespringboot:
   service: springappdiscovery
 operationalinsights:
   service: loganalytics
+oracle:
+  service: oracledatabase
 paloaltonetworks:
   suffix: ngfw
 postgresql:

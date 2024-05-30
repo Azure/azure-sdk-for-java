@@ -11,7 +11,8 @@ import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
-import com.azure.ai.translation.text.models.Translation;
+import com.azure.ai.translation.text.models.TranslationText;
+import com.azure.ai.translation.text.models.TranslateOptions;
 
 /**
  * Translate text from known source language to target language.
@@ -33,22 +34,18 @@ public class TranslateWithTransliteration {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-        String fromScript = "Latn";
-        String fromLanguage = "ar";
-        String toScript = "Latn";
-        List<String> targetLanguages = new ArrayList<>();
-        targetLanguages.add("zh-Hans");
-        List<InputTextItem> content = new ArrayList<>();
-        content.add(new InputTextItem("hudha akhtabar."));
+        TranslateOptions translateOptions = new TranslateOptions()
+            .addTargetLanguage("zh-Hans")
+            .setSourceLanguage("ar")
+            .setSourceLanguageScript("Latn")
+            .setTargetLanguageScript("Latn");
 
-        List<TranslatedTextItem> translations = client.translate(targetLanguages, content, null, fromLanguage, TextType.PLAIN, null, ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, false, false, null, fromScript, toScript, false);
+        TranslatedTextItem translation = client.translate("hudha akhtabar.", translateOptions);
 
-        for (TranslatedTextItem translation : translations) {
-            System.out.println("Source Text: " + translation.getSourceText().getText());
-            for (Translation textTranslation : translation.getTranslations()) {
-                System.out.println("Text was translated to: '" + textTranslation.getTo() + "' and the result is: '" + textTranslation.getText() + "'.");
-                System.out.println("Transliterated text (" + textTranslation.getTransliteration().getScript() + "): " + textTranslation.getTransliteration().getText());
-            }
+        System.out.println("Source Text: " + translation.getSourceText().getText());
+        for (TranslationText textTranslation : translation.getTranslations()) {
+            System.out.println("Text was translated to: '" + textTranslation.getTargetLanguage() + "' and the result is: '" + textTranslation.getText() + "'.");
+            System.out.println("Transliterated text (" + textTranslation.getTransliteration().getScript() + "): " + textTranslation.getTransliteration().getText());
         }
     }
 }

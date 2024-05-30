@@ -33,8 +33,7 @@ public final class AmlFilesystemIdentity {
     private AmlFilesystemIdentityType type;
 
     /*
-     * A dictionary where each key is a user assigned identity resource ID, and each key's value is an empty
-     * dictionary.
+     * A dictionary where each key is a user assigned identity resource ID, and each key's value is an empty dictionary.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -85,8 +84,8 @@ public final class AmlFilesystemIdentity {
     }
 
     /**
-     * Get the userAssignedIdentities property: A dictionary where each key is a user assigned identity resource ID,
-     * and each key's value is an empty dictionary.
+     * Get the userAssignedIdentities property: A dictionary where each key is a user assigned identity resource ID, and
+     * each key's value is an empty dictionary.
      * 
      * @return the userAssignedIdentities value.
      */
@@ -95,8 +94,8 @@ public final class AmlFilesystemIdentity {
     }
 
     /**
-     * Set the userAssignedIdentities property: A dictionary where each key is a user assigned identity resource ID,
-     * and each key's value is an empty dictionary.
+     * Set the userAssignedIdentities property: A dictionary where each key is a user assigned identity resource ID, and
+     * each key's value is an empty dictionary.
      * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the AmlFilesystemIdentity object itself.

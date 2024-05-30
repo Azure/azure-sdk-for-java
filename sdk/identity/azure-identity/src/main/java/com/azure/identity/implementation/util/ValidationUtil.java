@@ -7,11 +7,27 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * Utility class for validating parameters.
  */
 public final class ValidationUtil {
+
+    public static void validate(String className, ClientLogger logger, List<String> names, List<String> values) {
+        String missing = "";
+
+        for (int i = 0; i < values.size(); i++) {
+            if (values.get(i) == null) {
+                missing += missing.isEmpty() ? names.get(i) : ", " + names.get(i);
+            }
+        }
+
+        if (!missing.isEmpty()) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("Must provide non-null values for "
+                +  missing + " properties in " + className));
+        }
+    }
     public static void validate(String className, ClientLogger logger, String param1Name, Object param1,
         String param2Name, Object param2) {
         String missing = "";

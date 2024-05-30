@@ -18,19 +18,23 @@ import java.io.IOException;
 public final class BatchTaskContainerSettings implements JsonSerializable<BatchTaskContainerSettings> {
 
     /*
-     * Additional options to the container create command. These additional options are supplied as arguments to the "docker create" command, in addition to those controlled by the Batch Service.
+     * Additional options to the container create command. These additional options are supplied as arguments to the
+     * "docker create" command, in addition to those controlled by the Batch Service.
      */
     @Generated
     private String containerRunOptions;
 
     /*
-     * The Image to use to create the container in which the Task will run. This is the full Image reference, as would be specified to "docker pull". If no tag is provided as part of the Image name, the tag ":latest" is used as a default.
+     * The Image to use to create the container in which the Task will run. This is the full Image reference, as would
+     * be specified to "docker pull". If no tag is provided as part of the Image name, the tag ":latest" is used as a
+     * default.
      */
     @Generated
     private final String imageName;
 
     /*
-     * The private registry which contains the container Image. This setting can be omitted if was already provided at Pool creation.
+     * The private registry which contains the container Image. This setting can be omitted if was already provided at
+     * Pool creation.
      */
     @Generated
     private ContainerRegistryReference registry;

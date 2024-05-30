@@ -7,15 +7,16 @@ import com.azure.security.keyvault.jca.implementation.certificates.ClasspathCert
 import com.azure.security.keyvault.jca.implementation.certificates.JreCertificates;
 import com.azure.security.keyvault.jca.implementation.certificates.KeyVaultCertificates;
 import com.azure.security.keyvault.jca.implementation.certificates.SpecificPathCertificates;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.Key;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.security.KeyStoreSpi;
 import java.security.NoSuchAlgorithmException;
-import java.security.KeyStoreException;
 import java.security.UnrecoverableEntryException;
-import java.security.Key;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
@@ -25,8 +26,8 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
@@ -123,6 +124,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         LOGGER.log(FINE, "Constructing KeyVaultKeyStore.");
         creationDate = new Date();
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
+        String loginUri = System.getProperty("azure.login.uri");
         String tenantId = System.getProperty("azure.keyvault.tenant-id");
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
@@ -140,7 +142,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         customCertificates = SpecificPathCertificates.getSpecificPathCertificates(customPath);
         LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
         keyVaultCertificates = new KeyVaultCertificates(
-            refreshInterval, keyVaultUri, tenantId, clientId, clientSecret, managedIdentity);
+            refreshInterval, keyVaultUri, loginUri, tenantId, clientId, clientSecret, managedIdentity);
         LOGGER.log(FINE, String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
         classpathCertificates = new ClasspathCertificates();
         LOGGER.log(FINE, String.format("Loaded classpath certificates: %s.", classpathCertificates.getAliases()));
@@ -171,11 +173,14 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         KeyStore keyStore = KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME);
         KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"),
+            System.getProperty("azure.login.uri"),
             System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"),
             System.getProperty("azure.keyvault.client-secret"),
             System.getProperty("azure.keyvault.managed-identity"));
+
         keyStore.load(parameter);
+
         return keyStore;
     }
 
@@ -363,17 +368,19 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
     /**
      * Loads the keystore using the given {@code KeyStore.LoadStoreParameter}.
      *
-     * @param param the {@code KeyStore.LoadStoreParameter}
-     *          that specifies how to load the keystore,
-     *          which may be {@code null}
+     * @param param the {@code KeyStore.LoadStoreParameter} that specifies how to load the keystore, which may be
+     * {@code null}.
      */
     @Override
     public void engineLoad(KeyStore.LoadStoreParameter param) {
         if (param instanceof KeyVaultLoadStoreParameter) {
             KeyVaultLoadStoreParameter parameter = (KeyVaultLoadStoreParameter) param;
-            keyVaultCertificates.updateKeyVaultClient(parameter.getUri(), parameter.getTenantId(),
-                parameter.getClientId(), parameter.getClientSecret(), parameter.getManagedIdentity());
+
+            keyVaultCertificates.updateKeyVaultClient(
+                parameter.getUri(), parameter.getLoginUri(), parameter.getTenantId(), parameter.getClientId(),
+                parameter.getClientSecret(), parameter.getManagedIdentity());
         }
+
         classpathCertificates.loadCertificatesFromClasspath();
     }
 

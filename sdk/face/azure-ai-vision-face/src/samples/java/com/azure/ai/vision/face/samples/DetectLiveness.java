@@ -72,8 +72,7 @@ public class DetectLiveness {
             // We can also list all the liveness sessions of this face account.
             List<LivenessSessionItem> sessions = faceSessionClient.getLivenessSessions();
             logObject("List all the liveness sessions: ", sessions, true);
-        }
-        finally {
+        } finally {
             // Delete this session
             faceSessionClient.deleteLivenessSession(livenessSessionCreationResult.getSessionId());
         }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,111 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2024-05-30)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-netapp-2023-11-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Backups` was modified
+
+* Removed `getVolumeRestoreStatus` as it's no longer functional in backend since 2023-05.
+
+### Features Added
+
+* `models.BackupStatus` was added
+
+* `models.BackupType` was added
+
+* `models.BackupVault$DefinitionStages` was added
+
+* `models.BackupVaultPatch` was added
+
+* `models.NetAppResourceRegionInfos` was added
+
+* `models.BackupVault$Update` was added
+
+* `models.BackupsMigrationRequest` was added
+
+* `models.BackupVaults` was added
+
+* `models.Backup` was added
+
+* `models.BackupVault$UpdateStages` was added
+
+* `models.BackupsUnderVolumes` was added
+
+* `models.BackupsList` was added
+
+* `models.BackupVaultsList` was added
+
+* `models.BackupRestoreFiles` was added
+
+* `models.BackupVault$Definition` was added
+
+* `models.BackupsUnderBackupVaults` was added
+
+* `models.BackupVault` was added
+
+* `models.BackupsUnderAccounts` was added
+
+* `models.BackupPatch` was added
+
+* `models.Backup$DefinitionStages` was added
+
+* `models.Backup$Update` was added
+
+* `models.RegionInfosList` was added
+
+* `models.Backup$Definition` was added
+
+* `models.Backup$UpdateStages` was added
+
+* `models.RegionInfoResource` was added
+
+* `models.VolumeBackupProperties` was added
+
+#### `models.VolumePropertiesDataProtection` was modified
+
+* `backup()` was added
+* `withBackup(models.VolumeBackupProperties)` was added
+
+#### `NetAppFilesManager` was modified
+
+* `backupsUnderVolumes()` was added
+* `backupVaults()` was added
+* `backupsUnderBackupVaults()` was added
+* `netAppResourceRegionInfos()` was added
+* `backupsUnderAccounts()` was added
+
+#### `models.Backups` was modified
+
+* `getLatestStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `get(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `deleteById(java.lang.String)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listByVault(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listByVault(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `getVolumeLatestRestoreStatus(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `getVolumeLatestRestoreStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getLatestStatusWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `define(java.lang.String)` was added
+* `getById(java.lang.String)` was added
+
+#### `models.VolumePatchPropertiesDataProtection` was modified
+
+* `withBackup(models.VolumeBackupProperties)` was added
+* `backup()` was added
+
+#### `models.VolumeBackups` was modified
+
+* `withVolumeResourceId(java.lang.String)` was added
+* `volumeResourceId()` was added
 
 ## 1.1.0 (2024-03-20)
 

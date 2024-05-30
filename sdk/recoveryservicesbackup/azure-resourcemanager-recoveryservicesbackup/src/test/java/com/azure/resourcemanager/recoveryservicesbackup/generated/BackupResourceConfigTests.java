@@ -29,8 +29,11 @@ public final class BackupResourceConfigTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupResourceConfig model = new BackupResourceConfig().withStorageModelType(StorageType.INVALID)
-            .withStorageType(StorageType.GEO_REDUNDANT).withStorageTypeState(StorageTypeState.UNLOCKED)
-            .withCrossRegionRestoreFlag(true).withDedupState(DedupState.ENABLED).withXcoolState(XcoolState.INVALID);
+            .withStorageType(StorageType.GEO_REDUNDANT)
+            .withStorageTypeState(StorageTypeState.UNLOCKED)
+            .withCrossRegionRestoreFlag(true)
+            .withDedupState(DedupState.ENABLED)
+            .withXcoolState(XcoolState.INVALID);
         model = BinaryData.fromObject(model).toObject(BackupResourceConfig.class);
         Assertions.assertEquals(StorageType.INVALID, model.storageModelType());
         Assertions.assertEquals(StorageType.GEO_REDUNDANT, model.storageType());

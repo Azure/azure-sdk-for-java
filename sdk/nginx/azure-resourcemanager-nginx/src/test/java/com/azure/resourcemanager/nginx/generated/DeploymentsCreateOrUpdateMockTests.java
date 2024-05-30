@@ -6,12 +6,11 @@ package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.nginx.NginxManager;
+import com.azure.resourcemanager.nginx.models.AutoUpgradeProfile;
 import com.azure.resourcemanager.nginx.models.IdentityProperties;
 import com.azure.resourcemanager.nginx.models.IdentityType;
 import com.azure.resourcemanager.nginx.models.NginxDeployment;
@@ -26,8 +25,9 @@ import com.azure.resourcemanager.nginx.models.NginxPrivateIpAddress;
 import com.azure.resourcemanager.nginx.models.NginxPublicIpAddress;
 import com.azure.resourcemanager.nginx.models.NginxStorageAccount;
 import com.azure.resourcemanager.nginx.models.ResourceSku;
+import com.azure.resourcemanager.nginx.models.ScaleProfile;
+import com.azure.resourcemanager.nginx.models.ScaleProfileCapacity;
 import com.azure.resourcemanager.nginx.models.UserIdentityProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -35,71 +35,72 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DeploymentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"identity\":{\"principalId\":\"pi\",\"tenantId\":\"waasip\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"uwhhmhykojoxafn\":{\"principalId\":\"uqerpqlpqwc\",\"clientId\":\"uqgbdbutauvfbt\"},\"novvqfovljxy\":{\"principalId\":\"lpichk\",\"clientId\":\"mkcdyhbpkkpwdre\"},\"q\":{\"principalId\":\"uwsyrsndsytgadg\",\"clientId\":\"aeaeneqnzarrw\"}}},\"properties\":{\"provisioningState\":\"Succeeded\",\"nginxVersion\":\"qkacewii\",\"managedResourceGroup\":\"pubjibw\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{},{},{},{}],\"privateIPAddresses\":[{},{},{},{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"puvks\"}},\"ipAddress\":\"lsa\",\"enableDiagnosticsSupport\":false,\"logging\":{\"storageAccount\":{\"accountName\":\"ynl\",\"containerName\":\"huopxodlqiynto\"}},\"scalingProperties\":{\"capacity\":1915861757},\"userProfile\":{\"preferredEmail\":\"osjswsr\"}},\"sku\":{\"name\":\"lyzrpzbchckqqzqi\"},\"location\":\"iysui\",\"tags\":{\"yhwitsmypyynpcdp\":\"nkedyatrwyhqmib\",\"nsorgjhxbldt\":\"mnzgmwznmabi\",\"kotl\":\"wwrlkdmtncv\",\"gsyocogj\":\"xdy\"},\"id\":\"tdtbnnhadooc\",\"name\":\"kvci\",\"type\":\"hnvpamqgxq\"}";
+            = "{\"identity\":{\"principalId\":\"xwabmqoe\",\"tenantId\":\"ifrvtpu\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ujitcjedftww\":{\"principalId\":\"gkfbtndoaong\",\"clientId\":\"cn\"},\"zfoqouicybxar\":{\"principalId\":\"zkoj\",\"clientId\":\"c\"}}},\"properties\":{\"provisioningState\":\"Succeeded\",\"nginxVersion\":\"foxciq\",\"managedResourceGroup\":\"idoamciodhkha\",\"networkProfile\":{\"frontEndIPConfiguration\":{\"publicIPAddresses\":[{}],\"privateIPAddresses\":[{}]},\"networkInterfaceConfiguration\":{\"subnetId\":\"lwntoego\"}},\"ipAddress\":\"wbw\",\"enableDiagnosticsSupport\":true,\"logging\":{\"storageAccount\":{\"accountName\":\"mrv\",\"containerName\":\"ztvbtqgsfr\"}},\"scalingProperties\":{\"capacity\":2100359325,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"owtlmnguxawqald\",\"capacity\":{\"min\":2048944312,\"max\":1988673385}},{\"name\":\"uximerqfobw\",\"capacity\":{\"min\":2077702872,\"max\":880028215}},{\"name\":\"kby\",\"capacity\":{\"min\":1828204425,\"max\":189482477}}]}},\"autoUpgradeProfile\":{\"upgradeChannel\":\"pfhpagmhrskdsnfd\"},\"userProfile\":{\"preferredEmail\":\"akgtdlmkkzevdlh\"}},\"sku\":{\"name\":\"pusdstt\"},\"location\":\"ogvbbejdcngq\",\"tags\":{\"wr\":\"akufgmjz\",\"u\":\"grtwae\"},\"id\":\"zkopb\",\"name\":\"inrfdwoyu\",\"type\":\"hziuiefozbhdms\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        NginxManager manager = NginxManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        NginxManager manager = NginxManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NginxDeployment response
-            = manager.deployments().define("swacffgdkzz").withRegion("atddc").withExistingResourceGroup("ljuti")
-                .withTags(mapOf("ibrhosxsdqr", "cuejrjxgci", "luszdtmhrkwof", "zoymibmrqyibahw", "piexpbtgiw", "yvoqa"))
-                .withIdentity(new IdentityProperties().withType(IdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("wqapnedgfbcvk", new UserIdentityProperties(), "tbobz",
-                        new UserIdentityProperties(), "rslpmutwuoeg", new UserIdentityProperties(), "ggkzzlvmbmpa",
-                        new UserIdentityProperties())))
-                .withProperties(new NginxDeploymentProperties().withManagedResourceGroup("ouyftaakc")
+            = manager.deployments()
+                .define("l")
+                .withRegion("kgjubgdknnqvsazn")
+                .withExistingResourceGroup("yfxrx")
+                .withTags(mapOf("mkycgra", "orudsgsa"))
+                .withIdentity(
+                    new IdentityProperties().withType(IdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("msbvdkcrodtjinf", new UserIdentityProperties(), "pagao",
+                            new UserIdentityProperties(), "sz", new UserIdentityProperties(), "vinvkj",
+                            new UserIdentityProperties())))
+                .withProperties(new NginxDeploymentProperties().withManagedResourceGroup("aztz")
                     .withNetworkProfile(new NginxNetworkProfile()
                         .withFrontEndIpConfiguration(new NginxFrontendIpConfiguration()
                             .withPublicIpAddresses(Arrays.asList(new NginxPublicIpAddress(), new NginxPublicIpAddress(),
-                                new NginxPublicIpAddress()))
+                                new NginxPublicIpAddress(), new NginxPublicIpAddress()))
                             .withPrivateIpAddresses(Arrays.asList(new NginxPrivateIpAddress(),
-                                new NginxPrivateIpAddress(), new NginxPrivateIpAddress())))
-                        .withNetworkInterfaceConfiguration(
-                            new NginxNetworkInterfaceConfiguration().withSubnetId("nubexk")))
-                    .withEnableDiagnosticsSupport(true)
+                                new NginxPrivateIpAddress(), new NginxPrivateIpAddress(), new NginxPrivateIpAddress())))
+                        .withNetworkInterfaceConfiguration(new NginxNetworkInterfaceConfiguration().withSubnetId("fz")))
+                    .withEnableDiagnosticsSupport(false)
                     .withLogging(new NginxLogging().withStorageAccount(
-                        new NginxStorageAccount().withAccountName("ypomgkopkwho").withContainerName("pajqgxysm")))
-                    .withScalingProperties(new NginxDeploymentScalingProperties().withCapacity(478734436))
-                    .withUserProfile(new NginxDeploymentUserProfile().withPreferredEmail("qvmkcxo")))
-                .withSku(new ResourceSku().withName("pvhelxprg")).create();
+                        new NginxStorageAccount().withAccountName("zfeqztppri").withContainerName("xorjaltolmncwsob")))
+                    .withScalingProperties(new NginxDeploymentScalingProperties().withCapacity(1713401176)
+                        .withProfiles(Arrays.asList(
+                            new ScaleProfile().withName("nwdcfhu")
+                                .withCapacity(new ScaleProfileCapacity().withMin(1589501712).withMax(1491398356)),
+                            new ScaleProfile().withName("pfuvglsbjjca")
+                                .withCapacity(new ScaleProfileCapacity().withMin(615108235).withMax(1995846414)))))
+                    .withAutoUpgradeProfile(new AutoUpgradeProfile().withUpgradeChannel("vtvudutncormr"))
+                    .withUserProfile(new NginxDeploymentUserProfile().withPreferredEmail("tvcof")))
+                .withSku(new ResourceSku().withName("f"))
+                .create();
 
-        Assertions.assertEquals("iysui", response.location());
-        Assertions.assertEquals("nkedyatrwyhqmib", response.tags().get("yhwitsmypyynpcdp"));
+        Assertions.assertEquals("ogvbbejdcngq", response.location());
+        Assertions.assertEquals("akufgmjz", response.tags().get("wr"));
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("pubjibw", response.properties().managedResourceGroup());
-        Assertions.assertEquals("puvks",
+        Assertions.assertEquals("idoamciodhkha", response.properties().managedResourceGroup());
+        Assertions.assertEquals("lwntoego",
             response.properties().networkProfile().networkInterfaceConfiguration().subnetId());
-        Assertions.assertEquals(false, response.properties().enableDiagnosticsSupport());
-        Assertions.assertEquals("ynl", response.properties().logging().storageAccount().accountName());
-        Assertions.assertEquals("huopxodlqiynto", response.properties().logging().storageAccount().containerName());
-        Assertions.assertEquals(1915861757, response.properties().scalingProperties().capacity());
-        Assertions.assertEquals("osjswsr", response.properties().userProfile().preferredEmail());
-        Assertions.assertEquals("lyzrpzbchckqqzqi", response.sku().name());
+        Assertions.assertEquals(true, response.properties().enableDiagnosticsSupport());
+        Assertions.assertEquals("mrv", response.properties().logging().storageAccount().accountName());
+        Assertions.assertEquals("ztvbtqgsfr", response.properties().logging().storageAccount().containerName());
+        Assertions.assertEquals(2100359325, response.properties().scalingProperties().capacity());
+        Assertions.assertEquals("owtlmnguxawqald", response.properties().scalingProperties().profiles().get(0).name());
+        Assertions.assertEquals(2048944312,
+            response.properties().scalingProperties().profiles().get(0).capacity().min());
+        Assertions.assertEquals(1988673385,
+            response.properties().scalingProperties().profiles().get(0).capacity().max());
+        Assertions.assertEquals("pfhpagmhrskdsnfd", response.properties().autoUpgradeProfile().upgradeChannel());
+        Assertions.assertEquals("akgtdlmkkzevdlh", response.properties().userProfile().preferredEmail());
+        Assertions.assertEquals("pusdstt", response.sku().name());
     }
 
     // Use "Map.of" if available

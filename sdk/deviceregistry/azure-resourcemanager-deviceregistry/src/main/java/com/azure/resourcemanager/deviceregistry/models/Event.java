@@ -20,13 +20,15 @@ public final class Event {
     private String name;
 
     /*
-     * The address of the notifier of the event in the asset (e.g. URL) so that a client can access the event on the asset.
+     * The address of the notifier of the event in the asset (e.g. URL) so that a client can access the event on the
+     * asset.
      */
     @JsonProperty(value = "eventNotifier", required = true)
     private String eventNotifier;
 
     /*
-     * The path to the type definition of the capability (e.g. DTMI, OPC UA information model node id, etc.), for example dtmi:com:example:Robot:_contents:__prop1;1.
+     * The path to the type definition of the capability (e.g. DTMI, OPC UA information model node id, etc.), for
+     * example dtmi:com:example:Robot:_contents:__prop1;1.
      */
     @JsonProperty(value = "capabilityId")
     private String capabilityId;
@@ -38,7 +40,8 @@ public final class Event {
     private EventsObservabilityMode observabilityMode;
 
     /*
-     * Protocol-specific configuration for the event. For OPC UA, this could include configuration like, publishingInterval, samplingInterval, and queueSize.
+     * Protocol-specific configuration for the event. For OPC UA, this could include configuration like,
+     * publishingInterval, samplingInterval, and queueSize.
      */
     @JsonProperty(value = "eventConfiguration")
     private String eventConfiguration;

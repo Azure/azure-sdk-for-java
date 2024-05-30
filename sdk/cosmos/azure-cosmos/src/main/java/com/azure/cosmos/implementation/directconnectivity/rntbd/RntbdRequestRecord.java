@@ -396,7 +396,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
                     generator.writeObjectFieldStart("error");
                     generator.writeStringField("type", error.getClass().getName());
-                    generator.writeObjectField("value", error);
+                    generator.writeStringField("value", error.toString());
                     generator.writeEndObject();
 
                 } catch (CancellationException | InterruptedException exception) {

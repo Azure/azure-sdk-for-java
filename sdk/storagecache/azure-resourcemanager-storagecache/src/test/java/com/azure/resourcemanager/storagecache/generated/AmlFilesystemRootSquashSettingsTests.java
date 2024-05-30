@@ -13,23 +13,25 @@ public final class AmlFilesystemRootSquashSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmlFilesystemRootSquashSettings model = BinaryData.fromString(
-            "{\"mode\":\"All\",\"noSquashNidLists\":\"ihnhun\",\"squashUID\":4957035002722095413,\"squashGID\":3740091618502324159,\"status\":\"ygxgispemvtz\"}")
+            "{\"mode\":\"All\",\"noSquashNidLists\":\"qeof\",\"squashUID\":240667119929496892,\"squashGID\":2427630562639480366,\"status\":\"b\"}")
             .toObject(AmlFilesystemRootSquashSettings.class);
         Assertions.assertEquals(AmlFilesystemSquashMode.ALL, model.mode());
-        Assertions.assertEquals("ihnhun", model.noSquashNidLists());
-        Assertions.assertEquals(4957035002722095413L, model.squashUid());
-        Assertions.assertEquals(3740091618502324159L, model.squashGid());
+        Assertions.assertEquals("qeof", model.noSquashNidLists());
+        Assertions.assertEquals(240667119929496892L, model.squashUid());
+        Assertions.assertEquals(2427630562639480366L, model.squashGid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AmlFilesystemRootSquashSettings model
-            = new AmlFilesystemRootSquashSettings().withMode(AmlFilesystemSquashMode.ALL).withNoSquashNidLists("ihnhun")
-                .withSquashUid(4957035002722095413L).withSquashGid(3740091618502324159L);
+            = new AmlFilesystemRootSquashSettings().withMode(AmlFilesystemSquashMode.ALL)
+                .withNoSquashNidLists("qeof")
+                .withSquashUid(240667119929496892L)
+                .withSquashGid(2427630562639480366L);
         model = BinaryData.fromObject(model).toObject(AmlFilesystemRootSquashSettings.class);
         Assertions.assertEquals(AmlFilesystemSquashMode.ALL, model.mode());
-        Assertions.assertEquals("ihnhun", model.noSquashNidLists());
-        Assertions.assertEquals(4957035002722095413L, model.squashUid());
-        Assertions.assertEquals(3740091618502324159L, model.squashGid());
+        Assertions.assertEquals("qeof", model.noSquashNidLists());
+        Assertions.assertEquals(240667119929496892L, model.squashUid());
+        Assertions.assertEquals(2427630562639480366L, model.squashGid());
     }
 }

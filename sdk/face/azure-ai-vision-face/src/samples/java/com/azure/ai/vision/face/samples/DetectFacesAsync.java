@@ -5,25 +5,23 @@ package com.azure.ai.vision.face.samples;
 
 import com.azure.ai.vision.face.FaceAsyncClient;
 import com.azure.ai.vision.face.FaceClientBuilder;
-import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
-import com.azure.ai.vision.face.samples.utils.Resources;
-import com.azure.ai.vision.face.samples.utils.Utils;
 import com.azure.ai.vision.face.models.DetectOptions;
 import com.azure.ai.vision.face.models.FaceDetectionModel;
 import com.azure.ai.vision.face.models.FaceDetectionResult;
 import com.azure.ai.vision.face.models.FaceRecognitionModel;
+import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
+import com.azure.ai.vision.face.samples.utils.Resources;
+import com.azure.ai.vision.face.samples.utils.Utils;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
+import static com.azure.ai.vision.face.models.FaceAttributeType.ModelDetection01;
+import static com.azure.ai.vision.face.models.FaceAttributeType.ModelDetection03;
+import static com.azure.ai.vision.face.models.FaceAttributeType.ModelRecognition04;
 import static com.azure.ai.vision.face.samples.utils.Utils.log;
-import static com.azure.ai.vision.face.models.FaceAttributeType.Detection01;
-import static com.azure.ai.vision.face.models.FaceAttributeType.Detection03;
-import static com.azure.ai.vision.face.models.FaceAttributeType.Recognition04;
 
 public class DetectFacesAsync {
     public static void main(String[] args) {
@@ -38,7 +36,7 @@ public class DetectFacesAsync {
             FaceDetectionModel.DETECTION_03,
             FaceRecognitionModel.RECOGNITION_04,
             true,
-            Arrays.asList(Detection03.HEAD_POSE, Detection03.MASK, Recognition04.QUALITY_FOR_RECOGNITION),
+            Arrays.asList(ModelDetection03.HEAD_POSE, ModelDetection03.MASK, ModelDetection03.BLUR, ModelRecognition04.QUALITY_FOR_RECOGNITION),
             false,
             true,
             120)
@@ -47,10 +45,10 @@ public class DetectFacesAsync {
         flux.subscribe(face -> log("Detected Face by file:" + Utils.toString(face) + "\n"));
 
         DetectOptions options = new DetectOptions(FaceDetectionModel.DETECTION_01, FaceRecognitionModel.RECOGNITION_04, false)
-            .setReturnFaceAttributes(Arrays.asList(Detection01.ACCESSORIES, Detection01.GLASSES, Detection01.EXPOSURE, Detection01.NOISE))
+            .setReturnFaceAttributes(Arrays.asList(ModelDetection01.ACCESSORIES, ModelDetection01.GLASSES, ModelDetection01.EXPOSURE, ModelDetection01.NOISE))
             .setReturnFaceLandmarks(true);
 
-        flux = client.detectFromUrl(Resources.TEST_IMAGE_URL_DETECT_SAMPLE, options)
+        flux = client.detect(Resources.TEST_IMAGE_URL_DETECT_SAMPLE, options)
             .flatMapMany(Flux::fromIterable);
 
         flux.subscribe(face -> log("Detected Face from URL:" + Utils.toString(face) + "\n"));

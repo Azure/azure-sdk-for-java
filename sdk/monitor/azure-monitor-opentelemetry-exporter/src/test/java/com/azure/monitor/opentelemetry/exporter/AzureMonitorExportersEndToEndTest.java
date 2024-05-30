@@ -55,7 +55,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         countDownLatch.await(10, SECONDS);
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(2);
+        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(1);
 
         // validate span
         TelemetryItem spanTelemetryItem =
@@ -85,19 +85,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         countDownLatch.await(10, SECONDS);
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(2);
-
-        // validate metric
-        TelemetryItem metricTelemetryItem =
-            customValidationPolicy.getActualTelemetryItems().stream()
-                .filter(item -> item.getName().equals("Metric"))
-                .filter(item -> {
-                    MetricsData metricsData = (MetricsData) item.getData().getBaseData();
-                    return metricsData.getMetrics().stream().noneMatch(metricDataPoint -> metricDataPoint.getName().equals("_OTELRESOURCE_"));
-                })
-                .findFirst()
-                .get();
-        validateMetric(metricTelemetryItem);
+        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(1);
+        validateMetric(customValidationPolicy.getActualTelemetryItems().get(0));
     }
 
     @Test
@@ -116,7 +105,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         countDownLatch.await(10, SECONDS);
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(2);
+        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(1);
 
         // validate log
         TelemetryItem logTelemetryItem =
@@ -149,7 +138,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         countDownLatch.await(10, SECONDS);
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(6);
+        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(3);
 
         // validate telemetry
         TelemetryItem spanTelemetryItem =
@@ -160,10 +149,6 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         TelemetryItem metricTelemetryItem =
             customValidationPolicy.getActualTelemetryItems().stream()
                 .filter(item -> item.getName().equals("Metric"))
-                .filter(item -> {
-                    MetricsData metricsData = (MetricsData) item.getData().getBaseData();
-                    return metricsData.getMetrics().stream().noneMatch(metricDataPoint -> metricDataPoint.getName().equals("_OTELRESOURCE_"));
-                })
                 .findFirst()
                 .get();
         TelemetryItem logTelemetryItem =

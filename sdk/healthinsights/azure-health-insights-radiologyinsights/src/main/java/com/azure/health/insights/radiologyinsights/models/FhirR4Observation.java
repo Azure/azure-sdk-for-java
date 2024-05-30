@@ -26,7 +26,7 @@ import java.util.List;
 public final class FhirR4Observation extends FhirR4DomainResource {
 
     /*
-     * resourceType
+     * The resourceType property.
      */
     @Generated
     @JsonTypeId
@@ -48,7 +48,7 @@ public final class FhirR4Observation extends FhirR4DomainResource {
     private final ObservationStatusCodeType status;
 
     /*
-     * Classification of  type of observation
+     * Classification of type of observation
      */
     @Generated
     @JsonProperty(value = "category")
@@ -261,7 +261,7 @@ public final class FhirR4Observation extends FhirR4DomainResource {
     }
 
     /**
-     * Get the resourceType property: resourceType.
+     * Get the resourceType property: The resourceType property.
      *
      * @return the resourceType value.
      */

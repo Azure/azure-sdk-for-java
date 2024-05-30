@@ -11,7 +11,7 @@ public final class MemberUpdateStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MemberUpdateStatus model = BinaryData.fromString(
-            "{\"status\":{\"startTime\":\"2021-10-04T02:04:35Z\",\"completedTime\":\"2021-01-20T10:25:16Z\",\"state\":\"Stopped\"},\"name\":\"runmp\",\"clusterResourceId\":\"tdbhrbnla\",\"operationId\":\"xmyskp\",\"message\":\"enbtkcxywny\"}")
+            "{\"status\":{\"startTime\":\"2021-07-16T08:39:13Z\",\"completedTime\":\"2021-03-27T12:14:26Z\",\"state\":\"Stopping\"},\"name\":\"erfuwuttt\",\"clusterResourceId\":\"vjrbirphxepcyvah\",\"operationId\":\"ljkyqxjvuuj\",\"message\":\"idokgjlj\"}")
             .toObject(MemberUpdateStatus.class);
     }
 

@@ -32,7 +32,6 @@ public class ExceptionTriggerInternal {
      */
     @Generated
     public ExceptionTriggerInternal() {
-        this.kind = ExceptionTriggerKind.fromString("ExceptionTriggerInternal");
     }
 
     /*
@@ -41,7 +40,7 @@ public class ExceptionTriggerInternal {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private ExceptionTriggerKind kind;
+    private ExceptionTriggerKind kind = ExceptionTriggerKind.fromString("ExceptionTriggerInternal");
 
     /**
      * Get the kind property: The type discriminator describing a sub-type of ExceptionTrigger.

@@ -12,17 +12,17 @@ public final class PrimingJobTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrimingJob model = BinaryData.fromString(
-            "{\"primingJobName\":\"mwmbes\",\"primingManifestUrl\":\"dnkwwtppjflcxog\",\"primingJobId\":\"konzmnsik\",\"primingJobState\":\"Queued\",\"primingJobStatus\":\"ze\",\"primingJobDetails\":\"kdltfzxmhhvhg\",\"primingJobPercentComplete\":55.672485242934656}")
+            "{\"primingJobName\":\"h\",\"primingManifestUrl\":\"zbwemh\",\"primingJobId\":\"rsbrgzdwm\",\"primingJobState\":\"Complete\",\"primingJobStatus\":\"pqwd\",\"primingJobDetails\":\"gicccnxqhuex\",\"primingJobPercentComplete\":81.72743271460638}")
             .toObject(PrimingJob.class);
-        Assertions.assertEquals("mwmbes", model.primingJobName());
-        Assertions.assertEquals("dnkwwtppjflcxog", model.primingManifestUrl());
+        Assertions.assertEquals("h", model.primingJobName());
+        Assertions.assertEquals("zbwemh", model.primingManifestUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrimingJob model = new PrimingJob().withPrimingJobName("mwmbes").withPrimingManifestUrl("dnkwwtppjflcxog");
+        PrimingJob model = new PrimingJob().withPrimingJobName("h").withPrimingManifestUrl("zbwemh");
         model = BinaryData.fromObject(model).toObject(PrimingJob.class);
-        Assertions.assertEquals("mwmbes", model.primingJobName());
-        Assertions.assertEquals("dnkwwtppjflcxog", model.primingManifestUrl());
+        Assertions.assertEquals("h", model.primingJobName());
+        Assertions.assertEquals("zbwemh", model.primingManifestUrl());
     }
 }

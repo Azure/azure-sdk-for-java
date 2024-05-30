@@ -11,15 +11,17 @@ import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, DirectConnectionConfig, GatewayConnectionConfig, ThrottlingRetryOptions}
-import com.azure.identity.{ClientSecretCredentialBuilder, ManagedIdentityCredentialBuilder}
+import com.azure.identity.{ClientCertificateCredentialBuilder, ClientSecretCredentialBuilder, ManagedIdentityCredentialBuilder}
 import com.azure.resourcemanager.cosmos.CosmosManager
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.{SparkContext, TaskContext}
 import reactor.core.publisher.Mono
+import reactor.core.scheduler.{Scheduler, Schedulers}
 
+import java.io.ByteArrayInputStream
 import java.time.{Duration, Instant}
-import java.util.ConcurrentModificationException
+import java.util.{Base64, ConcurrentModificationException}
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
 import scala.collection.concurrent.TrieMap
@@ -51,6 +53,15 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     this.cleanupIntervalInSeconds,
     this.cleanupIntervalInSeconds,
     TimeUnit.SECONDS)
+
+  private val AAD_AUTH_BOUNDED_ELASTIC_THREAD_NAME = "cosmos-client-cache-auth-bounded-elastic"
+  private val TTL_FOR_SCHEDULER_WORKER_IN_SECONDS = 60 // same as BoundedElasticScheduler.DEFAULT_TTL_SECONDS
+
+  private val aadAuthBoundedElastic: Scheduler = Schedulers.newBoundedElastic(
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+    Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+    AAD_AUTH_BOUNDED_ELASTIC_THREAD_NAME,
+    TTL_FOR_SCHEDULER_WORKER_IN_SECONDS, true)
 
   def apply(cosmosClientConfiguration: CosmosClientConfiguration,
             cosmosClientStateHandle: Option[CosmosClientMetadataCachesSnapshot],
@@ -217,12 +228,24 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       authConfig match {
           case masterKeyAuthConfig: CosmosMasterKeyAuthConfig => builder.key(masterKeyAuthConfig.accountKey)
           case servicePrincipalAuthConfig: CosmosServicePrincipalAuthConfig =>
-              val tokenCredential = new ClientSecretCredentialBuilder()
+              val tokenCredential = if (servicePrincipalAuthConfig.clientCertPemBase64.isDefined) {
+                val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(servicePrincipalAuthConfig.clientCertPemBase64.get))
+                new ClientCertificateCredentialBuilder()
                   .authorityHost(new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints).getActiveDirectoryEndpoint())
                   .tenantId(servicePrincipalAuthConfig.tenantId)
                   .clientId(servicePrincipalAuthConfig.clientId)
-                  .clientSecret(servicePrincipalAuthConfig.clientSecret)
+                  .pemCertificate(certInputStream)
+                  .sendCertificateChain(servicePrincipalAuthConfig.sendChain)
                   .build()
+              } else {
+                new ClientSecretCredentialBuilder()
+                  .authorityHost(new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints).getActiveDirectoryEndpoint())
+                  .tenantId(servicePrincipalAuthConfig.tenantId)
+                  .clientId(servicePrincipalAuthConfig.clientId)
+                  .clientSecret(servicePrincipalAuthConfig.clientSecret.get)
+                  .build()
+              }
+
               builder.credential(tokenCredential)
           case managedIdentityAuthConfig: CosmosManagedIdentityAuthConfig =>
             builder.credential(createTokenCredential(managedIdentityAuthConfig))
@@ -380,12 +403,23 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                                     azureEnvironment: AzureEnvironment,
                                                     authConfig: CosmosServicePrincipalAuthConfig): CosmosManager = {
       val azureProfile = new AzureProfile(authConfig.tenantId, subscriptionId, azureEnvironment)
-      val tokenCredential = new ClientSecretCredentialBuilder()
+      val tokenCredential = if (authConfig.clientCertPemBase64.isDefined) {
+        val certInputStream = new ByteArrayInputStream(Base64.getDecoder.decode(authConfig.clientCertPemBase64.get))
+        new ClientCertificateCredentialBuilder()
           .authorityHost(azureEnvironment.getActiveDirectoryEndpoint())
           .tenantId(authConfig.tenantId)
           .clientId(authConfig.clientId)
-          .clientSecret(authConfig.clientSecret)
+          .pemCertificate(certInputStream)
+          .sendCertificateChain(authConfig.sendChain)
           .build()
+      } else {
+        new ClientSecretCredentialBuilder()
+          .authorityHost(azureEnvironment.getActiveDirectoryEndpoint())
+          .tenantId(authConfig.tenantId)
+          .clientId(authConfig.clientId)
+          .clientSecret(authConfig.clientSecret.get)
+          .build()
+      }
       CosmosManager.authenticate(tokenCredential, azureProfile)
   }
 
@@ -615,10 +649,14 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   private[this] class CosmosAccessTokenCredential(val tokenProvider: (List[String]) =>CosmosAccessToken) extends TokenCredential {
     override def getToken(tokenRequestContext: TokenRequestContext): Mono[AccessToken] = {
-      val token = tokenProvider
-        .apply(tokenRequestContext.getScopes.asScala.toList)
+      val returnValue: Mono[AccessToken] = Mono.fromCallable(() => {
+        val token = tokenProvider
+          .apply(tokenRequestContext.getScopes.asScala.toList)
 
-      Mono.just(new AccessToken(token.token, token.Offset))
+        new AccessToken(token.token, token.Offset)
+      })
+
+      returnValue.publishOn(aadAuthBoundedElastic)
     }
   }
 }

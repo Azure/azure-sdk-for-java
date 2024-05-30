@@ -84,14 +84,16 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
     }
 
     public PrivateEndpointConnectionResource create() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().put(vaultName,
-            resourceGroupName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .put(vaultName, resourceGroupName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnectionResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().put(vaultName,
-            resourceGroupName, privateEndpointConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .put(vaultName, resourceGroupName, privateEndpointConnectionName, this.innerModel(), context);
         return this;
     }
 
@@ -107,14 +109,16 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
     }
 
     public PrivateEndpointConnectionResource apply() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().put(vaultName,
-            resourceGroupName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .put(vaultName, resourceGroupName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnectionResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().put(vaultName,
-            resourceGroupName, privateEndpointConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .put(vaultName, resourceGroupName, privateEndpointConnectionName, this.innerModel(), context);
         return this;
     }
 
@@ -129,14 +133,18 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
     }
 
     public PrivateEndpointConnectionResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
-            .getWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .getWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateEndpointConnectionResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
-            .getWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpointConnections()
+            .getWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, context)
+            .getValue();
         return this;
     }
 

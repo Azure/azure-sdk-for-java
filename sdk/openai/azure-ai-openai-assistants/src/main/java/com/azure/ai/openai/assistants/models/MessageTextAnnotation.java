@@ -18,36 +18,35 @@ import java.io.IOException;
 public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnotation> {
 
     /*
+     * The object type.
+     */
+    @Generated
+    private String type = "MessageTextAnnotation";
+
+    /*
      * The textual content associated with this text annotation item.
      */
     @Generated
     private final String text;
 
-    /*
-     * The first text index associated with this text annotation.
-     */
-    @Generated
-    private final int startIndex;
-
-    /*
-     * The last text index associated with this text annotation.
-     */
-    @Generated
-    private final int endIndex;
-
     /**
      * Creates an instance of MessageTextAnnotation class.
      *
      * @param text the text value to set.
-     * @param startIndex the startIndex value to set.
-     * @param endIndex the endIndex value to set.
      */
     @Generated
-    protected MessageTextAnnotation(String text, int startIndex, int endIndex) {
-        this.type = "MessageTextAnnotation";
+    protected MessageTextAnnotation(String text) {
         this.text = text;
-        this.startIndex = startIndex;
-        this.endIndex = endIndex;
+    }
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -61,26 +60,6 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
     }
 
     /**
-     * Get the startIndex property: The first text index associated with this text annotation.
-     *
-     * @return the startIndex value.
-     */
-    @Generated
-    public int getStartIndex() {
-        return this.startIndex;
-    }
-
-    /**
-     * Get the endIndex property: The last text index associated with this text annotation.
-     *
-     * @return the endIndex value.
-     */
-    @Generated
-    public int getEndIndex() {
-        return this.endIndex;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -88,8 +67,6 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeIntField("start_index", this.startIndex);
-        jsonWriter.writeIntField("end_index", this.endIndex);
         jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
@@ -132,41 +109,25 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
         });
     }
 
+    @Generated
     static MessageTextAnnotation fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String text = null;
-            int startIndex = 0;
-            int endIndex = 0;
+            String type = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("text".equals(fieldName)) {
                     text = reader.getString();
-                } else if ("start_index".equals(fieldName)) {
-                    startIndex = reader.getInt();
-                } else if ("end_index".equals(fieldName)) {
-                    endIndex = reader.getInt();
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new MessageTextAnnotation(text, startIndex, endIndex);
+            MessageTextAnnotation deserializedMessageTextAnnotation = new MessageTextAnnotation(text);
+            deserializedMessageTextAnnotation.type = type;
+            return deserializedMessageTextAnnotation;
         });
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    private String type;
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    public String getType() {
-        return this.type;
     }
 }

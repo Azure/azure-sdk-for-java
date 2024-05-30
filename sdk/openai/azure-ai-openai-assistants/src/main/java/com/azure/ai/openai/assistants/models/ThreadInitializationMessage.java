@@ -20,13 +20,15 @@ import java.util.Map;
 public final class ThreadInitializationMessage implements JsonSerializable<ThreadInitializationMessage> {
 
     /*
-     * The role associated with the assistant thread message. Currently, only 'user' is supported when providing initial messages to a new thread.
+     * The role associated with the assistant thread message. Currently, only 'user' is supported when providing initial
+     * messages to a new thread.
      */
     @Generated
     private final MessageRole role;
 
     /*
-     * The textual content of the initial message. Currently, robust input including images and annotated text may only be provided via a separate call to the create message API.
+     * The textual content of the initial message. Currently, robust input including images and annotated text may only
+     * be provided via a separate call to the create message API.
      */
     @Generated
     private final String content;
@@ -39,7 +41,9 @@ public final class ThreadInitializationMessage implements JsonSerializable<Threa
     private List<String> fileIds;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     private Map<String, String> metadata;

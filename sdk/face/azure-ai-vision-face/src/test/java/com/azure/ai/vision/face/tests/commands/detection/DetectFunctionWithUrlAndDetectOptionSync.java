@@ -26,7 +26,7 @@ class DetectFunctionWithUrlAndDetectOptionSync extends DetectSyncFunction {
         FaceDetectionModel detectionModel, FaceRecognitionModel recognitionModel, boolean returnFaceId,
         List<FaceAttributeType> returnFaceAttributes, Boolean returnFaceLandmarks, Boolean returnRecognitionModel,
         Integer faceIdTimeToLive) {
-        return mFaceClient.detectFromUrl(mUrl,
+        return mFaceClient.detect(mUrl,
             new DetectOptions(detectionModel, recognitionModel, returnFaceId)
                 .setReturnFaceAttributes(returnFaceAttributes)
                 .setReturnFaceLandmarks(returnFaceLandmarks)

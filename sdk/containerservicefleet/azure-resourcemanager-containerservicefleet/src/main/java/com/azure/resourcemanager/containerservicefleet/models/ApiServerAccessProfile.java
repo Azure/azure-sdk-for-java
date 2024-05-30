@@ -18,19 +18,6 @@ public final class ApiServerAccessProfile {
     @JsonProperty(value = "enablePrivateCluster")
     private Boolean enablePrivateCluster;
 
-    /*
-     * Whether to enable apiserver vnet integration for the Fleet hub or not.
-     */
-    @JsonProperty(value = "enableVnetIntegration")
-    private Boolean enableVnetIntegration;
-
-    /*
-     * The subnet to be used when apiserver vnet integration is enabled. It is required when creating a new Fleet with
-     * BYO vnet.
-     */
-    @JsonProperty(value = "subnetId")
-    private String subnetId;
-
     /**
      * Creates an instance of ApiServerAccessProfile class.
      */
@@ -54,48 +41,6 @@ public final class ApiServerAccessProfile {
      */
     public ApiServerAccessProfile withEnablePrivateCluster(Boolean enablePrivateCluster) {
         this.enablePrivateCluster = enablePrivateCluster;
-        return this;
-    }
-
-    /**
-     * Get the enableVnetIntegration property: Whether to enable apiserver vnet integration for the Fleet hub or not.
-     * 
-     * @return the enableVnetIntegration value.
-     */
-    public Boolean enableVnetIntegration() {
-        return this.enableVnetIntegration;
-    }
-
-    /**
-     * Set the enableVnetIntegration property: Whether to enable apiserver vnet integration for the Fleet hub or not.
-     * 
-     * @param enableVnetIntegration the enableVnetIntegration value to set.
-     * @return the ApiServerAccessProfile object itself.
-     */
-    public ApiServerAccessProfile withEnableVnetIntegration(Boolean enableVnetIntegration) {
-        this.enableVnetIntegration = enableVnetIntegration;
-        return this;
-    }
-
-    /**
-     * Get the subnetId property: The subnet to be used when apiserver vnet integration is enabled. It is required when
-     * creating a new Fleet with BYO vnet.
-     * 
-     * @return the subnetId value.
-     */
-    public String subnetId() {
-        return this.subnetId;
-    }
-
-    /**
-     * Set the subnetId property: The subnet to be used when apiserver vnet integration is enabled. It is required when
-     * creating a new Fleet with BYO vnet.
-     * 
-     * @param subnetId the subnetId value to set.
-     * @return the ApiServerAccessProfile object itself.
-     */
-    public ApiServerAccessProfile withSubnetId(String subnetId) {
-        this.subnetId = subnetId;
         return this;
     }
 

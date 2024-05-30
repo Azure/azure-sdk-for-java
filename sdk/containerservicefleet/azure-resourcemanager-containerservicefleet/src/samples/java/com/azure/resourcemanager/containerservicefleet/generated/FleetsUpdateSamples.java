@@ -13,9 +13,7 @@ import java.util.Map;
  */
 public final class FleetsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/preview/2024-02-02-preview/
-     * examples/Fleets_PatchTags.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2024-04-01/examples/Fleets_PatchTags.json
      */
     /**
      * Sample code: Update a Fleet.
@@ -25,7 +23,8 @@ public final class FleetsUpdateSamples {
     public static void
         updateAFleet(com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager manager) {
         Fleet resource = manager.fleets()
-            .getByResourceGroupWithResponse("rg1", "fleet1", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rg1", "fleet1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("env", "prod", "tier", "secure")).withIfMatch("dfjkwelr7384").apply();
     }
 

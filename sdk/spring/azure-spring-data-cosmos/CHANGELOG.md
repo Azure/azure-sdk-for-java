@@ -3,12 +3,14 @@
 ### 3.46.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for `@Transient` annotation - see [PR 39760](https://github.com/Azure/azure-sdk-for-java/pull/39760).
 * Added hierarchical or sub-partitioning support to 'azure-spring-data-cosmos' - See [PR 38365](https://github.com/Azure/azure-sdk-for-java/pull/38365).
 
 #### Breaking Changes
 
 #### Bugs Fixed
 * Fixing bug with annotated queries that have no where clause but do have a sort - See [PR 40083](https://github.com/Azure/azure-sdk-for-java/pull/40083).
+* Fixing bug with Spring JPA keywords that don't lead to criteria creation - See [PR 40167](https://github.com/Azure/azure-sdk-for-java/pull/40167).
 
 #### Other Changes
 

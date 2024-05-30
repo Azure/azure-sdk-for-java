@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-security</artifactId>
-  <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-security;current} -->
+  <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-security;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Security Management</name>
@@ -61,7 +61,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.25.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.26.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
