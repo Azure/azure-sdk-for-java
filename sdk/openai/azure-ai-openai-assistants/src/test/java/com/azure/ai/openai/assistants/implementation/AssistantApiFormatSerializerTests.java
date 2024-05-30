@@ -17,15 +17,20 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+// It may seem odd to test the getter for some methods, but there is actually some degree of logic involved in it, to
+// prevent having to leak BinaryData as a type that would have to be used by someone consuming the SDK.
 public class AssistantApiFormatSerializerTests {
 
     @Test
     public void assistantCreationOptionTextFormat() {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions("gpt-4");
         assistantCreationOptions.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.TEXT)));
+        AssistantsApiResponseFormatOption responseFormat = assistantCreationOptions.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(assistantCreationOptions);
         String json = jsonBinaryData.toString();
+
+        assertEquals(ApiResponseFormat.TEXT, responseFormat.getFormat().getType());
         assertTrue(json.contains("\"response_format\":{\"type\":\"text\"}"));
         assertTrue(json.contains("\"model\":\"gpt-4\""));
 
@@ -35,9 +40,12 @@ public class AssistantApiFormatSerializerTests {
     public void assistantCreationOptionJsonObjectFormat() {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions("gpt-4");
         assistantCreationOptions.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_OBJECT)));
+        AssistantsApiResponseFormatOption responseFormat = assistantCreationOptions.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(assistantCreationOptions);
         String json = jsonBinaryData.toString();
+
+        assertEquals(ApiResponseFormat.JSON_OBJECT, responseFormat.getFormat().getType());
         assertTrue(json.contains("\"response_format\":{\"type\":\"json_object\"}"));
         assertTrue(json.contains("\"model\":\"gpt-4\""));
 
@@ -47,9 +55,12 @@ public class AssistantApiFormatSerializerTests {
     public void assistantCreationOptionAutoMode() {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions("gpt-4");
         assistantCreationOptions.setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.AUTO));
+        AssistantsApiResponseFormatOption responseFormat = assistantCreationOptions.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(assistantCreationOptions);
         String json = jsonBinaryData.toString();
+
+        assertEquals(AssistantsApiResponseFormatMode.AUTO, responseFormat.getMode());
         assertTrue(json.contains("\"response_format\":\"auto\"}"));
         assertTrue(json.contains("\"model\":\"gpt-4\""));
     }
@@ -58,9 +69,12 @@ public class AssistantApiFormatSerializerTests {
     public void assistantCreationOptionNoneMode() {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions("gpt-4");
         assistantCreationOptions.setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.NONE));
+        AssistantsApiResponseFormatOption responseFormat = assistantCreationOptions.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(assistantCreationOptions);
         String json = jsonBinaryData.toString();
+
+        assertEquals(AssistantsApiResponseFormatMode.NONE, responseFormat.getMode());
         assertTrue(json.contains("\"response_format\":\"none\"}"));
         assertTrue(json.contains("\"model\":\"gpt-4\""));
     }
@@ -69,9 +83,13 @@ public class AssistantApiFormatSerializerTests {
     public void createRunOptionTextFormat() {
         CreateRunOptions createRunOptions = new CreateRunOptions("abc123");
         createRunOptions.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.TEXT)));
+        AssistantsApiResponseFormatOption responseFormat = createRunOptions.getResponseFormat();
+
 
         BinaryData jsonBinaryData = BinaryData.fromObject(createRunOptions);
         String json = jsonBinaryData.toString();
+
+        assertEquals(ApiResponseFormat.TEXT, responseFormat.getFormat().getType());
         assertTrue(json.contains("\"response_format\":{\"type\":\"text\"}"));
         assertTrue(json.contains("\"assistant_id\":\"abc123\""));
     }
@@ -80,9 +98,12 @@ public class AssistantApiFormatSerializerTests {
     public void createRunOptionJsonObjectFormat() {
         CreateRunOptions createRunOptions = new CreateRunOptions("abc123");
         createRunOptions.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_OBJECT)));
+        AssistantsApiResponseFormatOption responseFormat = createRunOptions.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(createRunOptions);
         String json = jsonBinaryData.toString();
+
+        assertEquals(ApiResponseFormat.JSON_OBJECT, responseFormat.getFormat().getType());
         assertTrue(json.contains("\"response_format\":{\"type\":\"json_object\"}"));
         assertTrue(json.contains("\"assistant_id\":\"abc123\""));
     }
@@ -91,9 +112,12 @@ public class AssistantApiFormatSerializerTests {
     public void createRunOptionAutoMode() {
         CreateRunOptions createRunOptions = new CreateRunOptions("abc123");
         createRunOptions.setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.AUTO));
+        AssistantsApiResponseFormatOption responseFormat = createRunOptions.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(createRunOptions);
         String json = jsonBinaryData.toString();
+
+        assertEquals(AssistantsApiResponseFormatMode.AUTO, responseFormat.getMode());
         assertTrue(json.contains("\"response_format\":\"auto\"}"));
         assertTrue(json.contains("\"assistant_id\":\"abc123\""));
     }
@@ -102,9 +126,12 @@ public class AssistantApiFormatSerializerTests {
     public void createRunOptionNoneMode() {
         CreateRunOptions createRunOptions = new CreateRunOptions("abc123");
         createRunOptions.setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.NONE));
+        AssistantsApiResponseFormatOption responseFormat = createRunOptions.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(createRunOptions);
         String json = jsonBinaryData.toString();
+
+        assertEquals(AssistantsApiResponseFormatMode.NONE, responseFormat.getMode());
         assertTrue(json.contains("\"response_format\":\"none\"}"));
         assertTrue(json.contains("\"assistant_id\":\"abc123\""));
     }
@@ -113,9 +140,12 @@ public class AssistantApiFormatSerializerTests {
     public void createAndRunThreadOptionTextFormat() {
         CreateAndRunThreadOptions options = new CreateAndRunThreadOptions("abc123");
         options.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.TEXT)));
+        AssistantsApiResponseFormatOption responseFormat = options.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(options);
         String json = jsonBinaryData.toString();
+
+        assertEquals(ApiResponseFormat.TEXT, responseFormat.getFormat().getType());
         assertTrue(json.contains("\"response_format\":{\"type\":\"text\"}"));
         assertTrue(json.contains("\"assistant_id\":\"abc123\""));
     }
@@ -124,9 +154,12 @@ public class AssistantApiFormatSerializerTests {
     public void createAndRunThreadOptionJsonObjectFormat() {
         CreateAndRunThreadOptions options = new CreateAndRunThreadOptions("abc123");
         options.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_OBJECT)));
+        AssistantsApiResponseFormatOption responseFormat = options.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(options);
         String json = jsonBinaryData.toString();
+
+        assertEquals(ApiResponseFormat.JSON_OBJECT, responseFormat.getFormat().getType());
         assertTrue(json.contains("\"response_format\":{\"type\":\"json_object\"}"));
         assertTrue(json.contains("\"assistant_id\":\"abc123\""));
     }
@@ -135,9 +168,12 @@ public class AssistantApiFormatSerializerTests {
     public void createAndRunThreadOptionAutoMode() {
         CreateAndRunThreadOptions options = new CreateAndRunThreadOptions("abc123");
         options.setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.AUTO));
+        AssistantsApiResponseFormatOption responseFormat = options.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(options);
         String json = jsonBinaryData.toString();
+
+        assertEquals(AssistantsApiResponseFormatMode.AUTO, responseFormat.getMode());
         assertTrue(json.contains("\"response_format\":\"auto\""));
         assertTrue(json.contains("\"assistant_id\":\"abc123\""));
     }
@@ -146,9 +182,12 @@ public class AssistantApiFormatSerializerTests {
     public void createAndRunThreadOptionNoneMode() {
         CreateAndRunThreadOptions options = new CreateAndRunThreadOptions("abc123");
         options.setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.NONE));
+        AssistantsApiResponseFormatOption responseFormat = options.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(options);
         String json = jsonBinaryData.toString();
+
+        assertEquals(AssistantsApiResponseFormatMode.NONE, responseFormat.getMode());
         assertTrue(json.contains("\"response_format\":\"none\""));
         assertTrue(json.contains("\"assistant_id\":\"abc123\""));
     }
@@ -157,9 +196,12 @@ public class AssistantApiFormatSerializerTests {
     public void updateAssistantOptionTextFormat() {
         UpdateAssistantOptions options = new UpdateAssistantOptions();
         options.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.TEXT)));
+        AssistantsApiResponseFormatOption responseFormat = options.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(options);
         String json = jsonBinaryData.toString();
+
+        assertEquals(ApiResponseFormat.TEXT, responseFormat.getFormat().getType());
         assertTrue(json.contains("\"response_format\":{\"type\":\"text\"}"));
     }
 
@@ -167,9 +209,12 @@ public class AssistantApiFormatSerializerTests {
     public void updateAssistantOptionJsonObjectFormat() {
         UpdateAssistantOptions options = new UpdateAssistantOptions();
         options.setResponseFormat(new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_OBJECT)));
+        AssistantsApiResponseFormatOption responseFormat = options.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(options);
         String json = jsonBinaryData.toString();
+
+        assertEquals(ApiResponseFormat.JSON_OBJECT, responseFormat.getFormat().getType());
         assertTrue(json.contains("\"response_format\":{\"type\":\"json_object\"}"));
     }
 
@@ -177,9 +222,12 @@ public class AssistantApiFormatSerializerTests {
     public void updateAssistantOptionAutoMode() {
         UpdateAssistantOptions options = new UpdateAssistantOptions();
         options.setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.AUTO));
+        AssistantsApiResponseFormatOption responseFormat = options.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(options);
         String json = jsonBinaryData.toString();
+
+        assertEquals(AssistantsApiResponseFormatMode.AUTO, responseFormat.getMode());
         assertTrue(json.contains("\"response_format\":\"auto\""));
     }
 
@@ -187,9 +235,12 @@ public class AssistantApiFormatSerializerTests {
     public void updateAssistantOptionNoneMode() {
         UpdateAssistantOptions options = new UpdateAssistantOptions();
         options.setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.NONE));
+        AssistantsApiResponseFormatOption responseFormat = options.getResponseFormat();
 
         BinaryData jsonBinaryData = BinaryData.fromObject(options);
         String json = jsonBinaryData.toString();
+
+        assertEquals(AssistantsApiResponseFormatMode.NONE, responseFormat.getMode());
         assertTrue(json.contains("\"response_format\":\"none\""));
     }
 

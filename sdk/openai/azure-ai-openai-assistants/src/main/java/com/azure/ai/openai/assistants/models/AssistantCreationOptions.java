@@ -285,7 +285,7 @@ public final class AssistantCreationOptions implements JsonSerializable<Assistan
      * @return the responseFormat value.
      */
     public AssistantsApiResponseFormatOption getResponseFormat() {
-        return this.responseFormat.toObject(AssistantsApiResponseFormatOption.class);
+        return AssistantsApiResponseFormatOption.fromBinaryData(this.responseFormat);
     }
 
     /**

@@ -592,7 +592,7 @@ public final class CreateAndRunThreadOptions implements JsonSerializable<CreateA
      * @return the responseFormat value.
      */
     public AssistantsApiResponseFormatOption getResponseFormat() {
-        return this.responseFormat.toObject(AssistantsApiResponseFormatOption.class);
+        return AssistantsApiResponseFormatOption.fromBinaryData(this.responseFormat);
     }
 
     /**
