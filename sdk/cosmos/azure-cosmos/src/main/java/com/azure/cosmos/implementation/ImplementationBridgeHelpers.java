@@ -808,8 +808,6 @@ public class ImplementationBridgeHelpers {
 
             void setDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, CosmosDiagnosticsContext ctx);
 
-            String getFirstContactedRegion(CosmosDiagnostics cosmosDiagnostics);
-
             URI getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics);
         }
     }

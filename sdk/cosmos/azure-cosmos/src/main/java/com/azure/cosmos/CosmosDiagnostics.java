@@ -7,7 +7,6 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -472,16 +471,6 @@ public final class CosmosDiagnostics {
                     }
 
                     cosmosDiagnostics.setDiagnosticsContext(ctx);
-                }
-
-                @Override
-                public String getFirstContactedRegion(CosmosDiagnostics cosmosDiagnostics) {
-
-                    if (cosmosDiagnostics == null) {
-                        return StringUtils.EMPTY;
-                    }
-
-                    return cosmosDiagnostics.getFirstContactedRegion();
                 }
 
                 @Override

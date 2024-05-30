@@ -556,6 +556,17 @@ public class DocumentProducerTest {
 
                 return feedOperation.apply(retryPolicyFactory, req);
             }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
+
+            doAnswer(invocation -> {
+                RxDocumentServiceRequest req = invocation.getArgument(0);
+                return Mono.just(req);
+            }).when(queryClient).populateFeedRangeHeader(any());
+
+            doAnswer(invocation -> {
+                RxDocumentServiceRequest req = invocation.getArgument(0);
+                return Mono.just(req);
+            }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any());
+
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
                 new DocumentProducer<>(
@@ -634,6 +645,7 @@ public class DocumentProducerTest {
                                                                                   behaviourAfterException);
 
             IDocumentQueryClient queryClient = Mockito.mock(IDocumentQueryClient.class);
+
             doAnswer(invocation -> {
                 Supplier<DocumentClientRetryPolicy> retryPolicyFactory = invocation.getArgument(2);
                 RxDocumentServiceRequest req = invocation.getArgument(3);
@@ -642,6 +654,16 @@ public class DocumentProducerTest {
 
                 return feedOperation.apply(retryPolicyFactory, req);
             }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
+
+            doAnswer(invocation -> {
+                RxDocumentServiceRequest req = invocation.getArgument(0);
+                return Mono.just(req);
+            }).when(queryClient).populateFeedRangeHeader(any());
+
+            doAnswer(invocation -> {
+                RxDocumentServiceRequest req = invocation.getArgument(0);
+                return Mono.just(req);
+            }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any());
 
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
@@ -733,6 +755,17 @@ public class DocumentProducerTest {
 
                 return feedOperation.apply(retryPolicyFactory, req);
             }).when(queryClient).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
+
+            doAnswer(invocation -> {
+                RxDocumentServiceRequest req = invocation.getArgument(0);
+                return Mono.just(req);
+            }).when(queryClient).populateFeedRangeHeader(any());
+
+            doAnswer(invocation -> {
+                RxDocumentServiceRequest req = invocation.getArgument(0);
+                return Mono.just(req);
+            }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any());
+
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
                 new DocumentProducer<Document>(
@@ -858,6 +891,14 @@ public class DocumentProducerTest {
         doReturn(cache).when(client).getPartitionKeyRangeCache();
         doReturn(Mono.just(new Utils.ValueHolder<>(replacementRanges)))
             .when(cache).tryGetOverlappingRangesAsync(any(), any(), any(), anyBoolean(), ArgumentMatchers.any());
+        doAnswer(invocation -> {
+            RxDocumentServiceRequest req = invocation.getArgument(0);
+            return Mono.just(req);
+        }).when(client).populateFeedRangeHeader(any());
+        doAnswer(invocation -> {
+            RxDocumentServiceRequest req = invocation.getArgument(0);
+            return Mono.just(req);
+        }).when(client).addPartitionLevelUnavailableRegionsOnRequest(any(), any());
         return client;
     }
 
