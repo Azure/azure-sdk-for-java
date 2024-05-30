@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callautomation.models.streaming.transcription;
+package com.azure.communication.callautomation.models;
 
-import com.azure.communication.callautomation.models.streaming.StreamingData;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -44,7 +43,7 @@ public final class TranscriptionData extends StreamingData {
     /*
      * The result for each word of the phrase
      */
-    private final List<Word> words;
+    private final List<WordData> words;
 
     /*
      * The identified speaker based on participant raw ID
@@ -68,7 +67,7 @@ public final class TranscriptionData extends StreamingData {
      * @param participantRawID The identified speaker based on participant raw ID
      * @param resultStatus Status of the result of transcription
      */
-    public TranscriptionData(String text, String format, double confidence, long offset, long duration, List<Word> words, String participantRawID, String resultStatus) {
+    public TranscriptionData(String text, String format, double confidence, long offset, long duration, List<WordData> words, String participantRawID, String resultStatus) {
         this.text = text;
         this.format = convertToTextFormatEnum(format);
         this.confidence = confidence;
@@ -150,7 +149,7 @@ public final class TranscriptionData extends StreamingData {
      *
      * @return the words value.
      */
-    public List<Word> getWords() {
+    public List<WordData> getWords() {
         return words;
     }
 

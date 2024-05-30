@@ -12,7 +12,7 @@ public final class AudioDataConverter {
      * The audio data.
      */
     @JsonProperty(value = "data")
-    private String data;
+    private byte[] data;
 
     /*
      * The timestamp of when the media was sourced.
@@ -37,7 +37,7 @@ public final class AudioDataConverter {
      *
      * @return the data value.
      */
-    public String getData() {
+    public byte[] getData() {
         return data;
     }
 

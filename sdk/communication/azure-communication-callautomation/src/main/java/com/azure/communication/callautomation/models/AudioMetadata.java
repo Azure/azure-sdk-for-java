@@ -1,9 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callautomation.models.streaming.media;
-
-import com.azure.communication.callautomation.models.streaming.StreamingData;
+package com.azure.communication.callautomation.models;
 
 /** The MediaStreamingMetadata model. */
 public final class AudioMetadata extends StreamingData {

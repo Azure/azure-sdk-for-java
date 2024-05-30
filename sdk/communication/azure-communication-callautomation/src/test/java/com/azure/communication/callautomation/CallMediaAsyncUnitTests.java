@@ -556,7 +556,7 @@ public class CallMediaAsyncUnitTests {
         options.setOperationContext("operationContext");
         options.setLocale("en-US");
         StepVerifier.create(
-                callMedia.startTranscriptionWithResponseAsync(options))
+                callMedia.startTranscriptionWithResponse(options))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode())
             )
             .verifyComplete();
@@ -567,7 +567,7 @@ public class CallMediaAsyncUnitTests {
         StopTranscriptionOptions options = new StopTranscriptionOptions();
         options.setOperationContext("operationContext");
         StepVerifier.create(
-                callMedia.stopTranscriptionWithResponseAsync(options)
+                callMedia.stopTranscriptionWithResponse(options)
             )
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
@@ -587,7 +587,7 @@ public class CallMediaAsyncUnitTests {
         options.setOperationCallbackUrl("https://localhost");
         options.setOperationContext("operationContext");
         StepVerifier.create(
-                callMedia.startMediaStreamingWithResponseAsync(options))
+                callMedia.startMediaStreamingWithResponse(options))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode())
             )
             .verifyComplete();
@@ -599,7 +599,7 @@ public class CallMediaAsyncUnitTests {
         StopMediaStreamingOptions options = new StopMediaStreamingOptions();
         options.setOperationCallbackUrl("https://localhost");
         StepVerifier.create(
-                callMedia.stopMediaStreamingWithResponseAsync(options))
+                callMedia.stopMediaStreamingWithResponse(options))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode())
             )
             .verifyComplete();

@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callautomation.models.streaming;
+package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.converters.AudioDataConverter;
 import com.azure.communication.callautomation.implementation.converters.AudioMetadataConverter;
 import com.azure.communication.callautomation.implementation.converters.TranscriptionDataConverter;
 import com.azure.communication.callautomation.implementation.converters.TranscriptionMetadataConverter;
-import com.azure.communication.callautomation.models.streaming.media.AudioData;
-import com.azure.communication.callautomation.models.streaming.media.AudioMetadata;
-import com.azure.communication.callautomation.models.streaming.transcription.TranscriptionData;
-import com.azure.communication.callautomation.models.streaming.transcription.TranscriptionMetadata;
+import com.azure.communication.callautomation.models.AudioData;
+import com.azure.communication.callautomation.models.AudioMetadata;
+import com.azure.communication.callautomation.models.StreamingData;
+import com.azure.communication.callautomation.models.TranscriptionData;
+import com.azure.communication.callautomation.models.TranscriptionMetadata;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,17 +26,6 @@ import java.nio.charset.StandardCharsets;
  */
 public final class StreamingDataParser {
     private static final ClientLogger LOGGER = new ClientLogger(StreamingDataParser.class);
-
-    /***
-     * Parses StreamingData such as Audio, Transcription or Captions from BinaryData.
-     *
-     * @param json The MediaStreaming package as a BinaryData object.
-     * @throws RuntimeException Any exceptions occur at runtime.
-     * @return a MediaStreamingPackageBase object.
-     */
-    public static StreamingData parse(BinaryData json) {
-        return parse(json.toString());
-    }
 
     /***
      * Parses a StreamingData such as Audio, Transcription or Captions from byte array.
@@ -55,7 +45,7 @@ public final class StreamingDataParser {
      * @throws RuntimeException Any exceptions occur at runtime.
      * @return a MediaStreamingPackageBase object.
      */
-    public static StreamingData parse(String stringJson) {
+    private static StreamingData parse(String stringJson) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);

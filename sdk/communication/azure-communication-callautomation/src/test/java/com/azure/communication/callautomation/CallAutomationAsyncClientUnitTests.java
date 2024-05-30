@@ -62,8 +62,8 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
         CreateGroupCallOptions callOptions = new CreateGroupCallOptions(targets, CALL_CALLBACK_URL);
         callOptions.setOperationContext(CALL_SUBJECT);
-        callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
-        callOptions.setTranscriptionConfiguration(TRANSCRIPTION_CONFIGURATION);
+        callOptions.setMediaStreamingOptions(MEDIA_STREAMING_CONFIGURATION);
+        callOptions.setTranscriptionOptions(TRANSCRIPTION_CONFIGURATION);
 
         Response<CreateCallResult> createCallResult = callAutomationAsyncClient.createGroupCallWithResponse(callOptions).block();
 
@@ -84,8 +84,8 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID));
         CreateCallOptions callOptions = new CreateCallOptions(callInvite, CALL_CALLBACK_URL);
         callOptions.setOperationContext(CALL_SUBJECT);
-        callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
-        callOptions.setTranscriptionConfiguration(TRANSCRIPTION_CONFIGURATION);
+        callOptions.setMediaStreamingOptions(MEDIA_STREAMING_CONFIGURATION);
+        callOptions.setTranscriptionOptions(TRANSCRIPTION_CONFIGURATION);
 
         Response<CreateCallResult> createCallResult = callAutomationAsyncClient.createCallWithResponse(callOptions).block();
 
@@ -117,8 +117,8 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             )));
 
         AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL)
-            .setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION)
-            .setTranscriptionConfiguration(TRANSCRIPTION_CONFIGURATION);
+            .setMediaStreamingOptions(MEDIA_STREAMING_CONFIGURATION)
+            .setTranscriptionOptions(TRANSCRIPTION_CONFIGURATION);
 
         Response<AnswerCallResult> answerCallResult = callAutomationAsyncClient.answerCallWithResponse(
             answerCallOptions).block();

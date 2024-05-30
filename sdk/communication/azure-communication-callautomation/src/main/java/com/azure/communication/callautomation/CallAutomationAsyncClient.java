@@ -207,15 +207,15 @@ public final class CallAutomationAsyncClient {
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
             .setOperationContext(createCallOptions.getOperationContext());
         
-        if (createCallOptions.getMediaStreamingConfiguration() != null) {
+        if (createCallOptions.getMediaStreamingOptions() != null) {
             MediaStreamingOptionsInternal streamingOptionsInternal =
-                getMediaStreamingOptionsInternal(createCallOptions.getMediaStreamingConfiguration());
+                getMediaStreamingOptionsInternal(createCallOptions.getMediaStreamingOptions());
             request.setMediaStreamingOptions(streamingOptionsInternal);
         }
 
-        if (createCallOptions.getTranscriptionConfiguration() != null) {
+        if (createCallOptions.getTranscriptionOptions() != null) {
             TranscriptionOptionsInternal transcriptionOptionsInternal =
-                getTranscriptionOptionsInternal(createCallOptions.getTranscriptionConfiguration());
+                getTranscriptionOptionsInternal(createCallOptions.getTranscriptionOptions());
             request.setTranscriptionOptions(transcriptionOptionsInternal);
         }
 
@@ -241,15 +241,15 @@ public final class CallAutomationAsyncClient {
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
             .setOperationContext(createCallGroupOptions.getOperationContext());
 
-        if (createCallGroupOptions.getMediaStreamingConfiguration() != null) {
+        if (createCallGroupOptions.getMediaStreamingOptions() != null) {
             MediaStreamingOptionsInternal streamingOptionsInternal =
-                getMediaStreamingOptionsInternal(createCallGroupOptions.getMediaStreamingConfiguration());
+                getMediaStreamingOptionsInternal(createCallGroupOptions.getMediaStreamingOptions());
             request.setMediaStreamingOptions(streamingOptionsInternal);
         }
 
-        if (createCallGroupOptions.getTranscriptionConfiguration() != null) {
+        if (createCallGroupOptions.getTranscriptionOptions() != null) {
             TranscriptionOptionsInternal transcriptionOptionsInternal =
-                getTranscriptionOptionsInternal(createCallGroupOptions.getTranscriptionConfiguration());
+                getTranscriptionOptionsInternal(createCallGroupOptions.getTranscriptionOptions());
             request.setTranscriptionOptions(transcriptionOptionsInternal);
         }
 
@@ -281,7 +281,7 @@ public final class CallAutomationAsyncClient {
                     transcriptionOptions.getTransportType().toString()))
             .setLocale(transcriptionOptions.getLocale())
             .setStartTranscription(transcriptionOptions.getStartTranscription())
-            .setEnableIntermediateResults(transcriptionOptions.isEnableIntermediateResults())
+            .setEnableIntermediateResults(transcriptionOptions.isIntermediateResultsEnabled())
             .setSpeechRecognitionModelEndpointId(transcriptionOptions.getSpeechRecognitionModelEndpointId());
     }
 
@@ -330,15 +330,15 @@ public final class CallAutomationAsyncClient {
                 request.setCallIntelligenceOptions(callIntelligenceOptionsInternal);
             }
 
-            if (answerCallOptions.getMediaStreamingConfiguration() != null) {
+            if (answerCallOptions.getMediaStreamingOptions() != null) {
                 MediaStreamingOptionsInternal streamingOptionsInternal =
-                    getMediaStreamingOptionsInternal(answerCallOptions.getMediaStreamingConfiguration());
+                    getMediaStreamingOptionsInternal(answerCallOptions.getMediaStreamingOptions());
                 request.setMediaStreamingOptions(streamingOptionsInternal);
             }
 
-            if (answerCallOptions.getTranscriptionConfiguration() != null) {
+            if (answerCallOptions.getTranscriptionOptions() != null) {
                 TranscriptionOptionsInternal transcriptionOptionsInternal =
-                    getTranscriptionOptionsInternal(answerCallOptions.getTranscriptionConfiguration());
+                    getTranscriptionOptionsInternal(answerCallOptions.getTranscriptionOptions());
                 request.setTranscriptionOptions(transcriptionOptionsInternal);
             }
 

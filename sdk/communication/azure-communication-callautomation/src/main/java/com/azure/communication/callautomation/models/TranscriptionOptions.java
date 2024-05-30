@@ -19,7 +19,7 @@ public final class TranscriptionOptions {
      * The type of transport to be used for live transcription, eg. Websocket
      */
     @JsonProperty(value = "transportType", required = true)
-    private final TranscriptionTransportType transportType;
+    private final TranscriptionTransport transportType;
 
     /*
      * Defines the locale for the data e.g en-CA, en-AU
@@ -52,7 +52,7 @@ public final class TranscriptionOptions {
      * @param locale - Locale
      * @param startTranscription - Start Transcription
      */
-    public TranscriptionOptions(String transportUrl, TranscriptionTransportType transportType, String locale, boolean startTranscription) {
+    public TranscriptionOptions(String transportUrl, TranscriptionTransport transportType, String locale, boolean startTranscription) {
         this.transportUrl = transportUrl;
         this.transportType = transportType;
         this.locale = locale;
@@ -73,7 +73,7 @@ public final class TranscriptionOptions {
      *
      * @return the transportType value.
      */
-    public TranscriptionTransportType getTransportType() {
+    public TranscriptionTransport getTransportType() {
         return this.transportType;
     }
 
@@ -120,7 +120,7 @@ public final class TranscriptionOptions {
      * 
      * @return the enableIntermediateResults value.
      */
-    public Boolean isEnableIntermediateResults() {
+    public Boolean isIntermediateResultsEnabled() {
         return this.enableIntermediateResults;
     }
 

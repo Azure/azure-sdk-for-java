@@ -251,7 +251,7 @@ public class CallMediaUnitTests {
 
     @Test
     public void updateTranscriptionWithResponse() {
-        Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", Context.NONE);
+        Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", null, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
 

@@ -11,11 +11,11 @@ import java.util.Collection;
 /**
  * The type of transport to be used for live transcription, eg. Websocket.
  */
-public final class TranscriptionTransportType extends ExpandableStringEnum<TranscriptionTransportType> {
+public final class TranscriptionTransport extends ExpandableStringEnum<TranscriptionTransport> {
     /**
      * Static value websocket for TranscriptionTransportType.
      */
-    public static final TranscriptionTransportType WEBSOCKET = fromString("websocket");
+    public static final TranscriptionTransport WEBSOCKET = fromString("websocket");
 
     /**
      * Creates a new instance of TranscriptionTransportType value.
@@ -23,7 +23,7 @@ public final class TranscriptionTransportType extends ExpandableStringEnum<Trans
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public TranscriptionTransportType() {
+    public TranscriptionTransport() {
     }
 
     /**
@@ -33,8 +33,8 @@ public final class TranscriptionTransportType extends ExpandableStringEnum<Trans
      * @return the corresponding TranscriptionTransportType.
      */
     @JsonCreator
-    public static TranscriptionTransportType fromString(String name) {
-        return fromString(name, TranscriptionTransportType.class);
+    public static TranscriptionTransport fromString(String name) {
+        return fromString(name, TranscriptionTransport.class);
     }
 
     /**
@@ -42,7 +42,7 @@ public final class TranscriptionTransportType extends ExpandableStringEnum<Trans
      *
      * @return known TranscriptionTransportType values.
      */
-    public static Collection<TranscriptionTransportType> values() {
-        return values(TranscriptionTransportType.class);
+    public static Collection<TranscriptionTransport> values() {
+        return values(TranscriptionTransport.class);
     }
 }
