@@ -24,13 +24,12 @@ public class FabricProfile {
      */
     @JsonTypeId
     @JsonProperty(value = "kind", required = true)
-    private String kind;
+    private String kind = "FabricProfile";
 
     /**
      * Creates an instance of FabricProfile class.
      */
     public FabricProfile() {
-        this.kind = "FabricProfile";
     }
 
     /**

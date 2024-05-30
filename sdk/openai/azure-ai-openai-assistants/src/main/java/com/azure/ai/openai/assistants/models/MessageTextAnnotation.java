@@ -21,7 +21,7 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
      * The object type.
      */
     @Generated
-    private String type;
+    private String type = "MessageTextAnnotation";
 
     /*
      * The textual content associated with this text annotation item.
@@ -36,7 +36,6 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
      */
     @Generated
     protected MessageTextAnnotation(String text) {
-        this.type = "MessageTextAnnotation";
         this.text = text;
     }
 

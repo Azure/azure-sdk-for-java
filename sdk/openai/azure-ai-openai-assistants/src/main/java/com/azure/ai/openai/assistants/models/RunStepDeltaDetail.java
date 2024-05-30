@@ -21,14 +21,13 @@ public class RunStepDeltaDetail implements JsonSerializable<RunStepDeltaDetail> 
      * The object type for the run step detail object.
      */
     @Generated
-    private String type;
+    private String type = "RunStepDeltaDetail";
 
     /**
      * Creates an instance of RunStepDeltaDetail class.
      */
     @Generated
     protected RunStepDeltaDetail() {
-        this.type = "RunStepDeltaDetail";
     }
 
     /**

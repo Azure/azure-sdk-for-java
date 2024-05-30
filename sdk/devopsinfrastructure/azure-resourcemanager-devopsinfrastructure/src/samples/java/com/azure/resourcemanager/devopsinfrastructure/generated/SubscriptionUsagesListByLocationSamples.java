@@ -8,6 +8,11 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
  * Samples for SubscriptionUsages ListByLocation.
  */
 public final class SubscriptionUsagesListByLocationSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure/examples/2024-04-04-preview/
+     * SubscriptionUsages_ListByLocation.json
+     */
     /**
      * Sample code: SubscriptionUsages_ListByLocation.
      * 

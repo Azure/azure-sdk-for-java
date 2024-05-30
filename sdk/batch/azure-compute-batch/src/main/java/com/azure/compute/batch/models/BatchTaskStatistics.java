@@ -294,10 +294,11 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
                 if ("url".equals(fieldName)) {
                     url = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
-                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdateTime".equals(fieldName)) {
-                    lastUpdateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastUpdateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("userCPUTime".equals(fieldName)) {
                     userCpuTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("kernelCPUTime".equals(fieldName)) {
