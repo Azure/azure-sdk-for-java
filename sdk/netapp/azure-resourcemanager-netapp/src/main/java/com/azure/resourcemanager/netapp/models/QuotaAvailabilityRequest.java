@@ -104,16 +104,17 @@ public final class QuotaAvailabilityRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model QuotaAvailabilityRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model QuotaAvailabilityRequest"));
         }
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model QuotaAvailabilityRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model QuotaAvailabilityRequest"));
         }
         if (resourceGroup() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resourceGroup in model QuotaAvailabilityRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceGroup in model QuotaAvailabilityRequest"));
         }
     }
 
