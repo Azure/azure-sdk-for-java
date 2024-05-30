@@ -11,3 +11,4 @@ extends:
     TimeoutInMinutes: 90
     SupportedClouds: "Public,UsGov,China"
     UseFederatedAuth: true
+    EnvVars:
