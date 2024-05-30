@@ -21,7 +21,7 @@ import com.azure.communication.callautomation.models.MediaStreamingContentType;
 import com.azure.communication.callautomation.models.MediaStreamingTransport;
 import com.azure.communication.callautomation.models.MediaStreamingSubscription;
 import com.azure.communication.callautomation.models.TranscriptionOptions;
-import com.azure.communication.callautomation.models.TranscriptionTransportType;
+import com.azure.communication.callautomation.models.TranscriptionTransport;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -63,7 +63,7 @@ public class CallAutomationUnitTestBase {
 
     static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION = new TranscriptionOptions(
         "https://websocket.url.com",
-        TranscriptionTransportType.WEBSOCKET,
+        TranscriptionTransport.WEBSOCKET,
         "en-US",
         true
     );

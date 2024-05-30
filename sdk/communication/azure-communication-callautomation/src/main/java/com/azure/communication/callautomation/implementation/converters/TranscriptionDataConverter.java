@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation.implementation.converters;
 
-import com.azure.communication.callautomation.models.streaming.transcription.Word;
+import com.azure.communication.callautomation.models.WordData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
@@ -48,7 +48,7 @@ public final class TranscriptionDataConverter {
      * TThe result for each word of the phrase
      */
     @JsonProperty(value = "words")
-    private List<Word> words;
+    private List<WordData> words;
 
     /*
      * The participantId.
@@ -111,7 +111,7 @@ public final class TranscriptionDataConverter {
      *
      * @return the words value.
      */
-    public List<Word> getWords() {
+    public List<WordData> getWords() {
         return words;
     }
 

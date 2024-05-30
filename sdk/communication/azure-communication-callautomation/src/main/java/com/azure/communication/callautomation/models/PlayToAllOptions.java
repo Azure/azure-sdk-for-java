@@ -36,7 +36,7 @@ public final class PlayToAllOptions {
     /*
      * If set play can barge into other existing queued-up/currently-processing requests.
     */
-    private boolean interruptCallMediaOperation;
+    private Boolean interruptCallMediaOperation;
 
     /**
      * Constructor

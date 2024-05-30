@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callautomation.models.streaming.transcription;
+package com.azure.communication.callautomation.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The result for each word of the phrase
  */
-public class Word {
+public class WordData {
 
     /*
      * Text in the phrase.

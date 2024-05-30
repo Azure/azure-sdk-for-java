@@ -337,18 +337,6 @@ public final class CallMedia {
      * Updates transcription language in the call.
      *
      * @param locale Defines new locale for transcription.
-     * @param context Context
-     * @return Response for successful update transcription request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateTranscriptionWithResponse(String locale, Context context) {
-        return callMediaAsync.updateTranscriptionWithResponseInternal(locale, context).block();
-    }
-
-    /**
-     * Updates transcription language in the call.
-     *
-     * @param locale Defines new locale for transcription.
      * @param speechRecognitionModelEndpointId Defines custom model endpoint.
      * @param context Context
      * @return Response for successful update transcription request.
