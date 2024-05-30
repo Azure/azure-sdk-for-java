@@ -1263,9 +1263,9 @@ public class ShareApiTests extends FileShareTestBase {
         options.setProtocols(protocols);
         options.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
 
-        primaryShareClient.createWithResponse(options, null, null);
+        premiumFileServiceClient.getShareClient(shareName).createWithResponse(options, null, null);
 
-        ShareProperties response = primaryShareClient.getProperties();
+        ShareProperties response = premiumFileServiceClient.getShareClient(shareName).getProperties();
         assertEquals(protocols.toString(), response.getProtocols().toString());
         if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
             assertTrue(response.isSnapshotVirtualDirectoryAccessEnabled());
@@ -1289,15 +1289,15 @@ public class ShareApiTests extends FileShareTestBase {
         ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
         options.setProtocols(protocols);
 
-        primaryShareClient.createWithResponse(options, null, null);
+        premiumFileServiceClient.getShareClient(shareName).createWithResponse(options, null, null);
 
         ShareSetPropertiesOptions setPropertiesOptions = new ShareSetPropertiesOptions();
         setPropertiesOptions.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
         setPropertiesOptions.setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED);
 
-        primaryShareClient.setProperties(setPropertiesOptions);
+        premiumFileServiceClient.getShareClient(shareName).setProperties(setPropertiesOptions);
 
-        ShareProperties response = primaryShareClient.getProperties();
+        ShareProperties response = premiumFileServiceClient.getShareClient(shareName).getProperties();
         assertEquals(protocols.toString(), response.getProtocols().toString());
         if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
             assertTrue(response.isSnapshotVirtualDirectoryAccessEnabled());

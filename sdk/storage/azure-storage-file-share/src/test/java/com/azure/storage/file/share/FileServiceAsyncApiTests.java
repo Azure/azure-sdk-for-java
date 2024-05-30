@@ -313,10 +313,10 @@ public class FileServiceAsyncApiTests extends FileShareTestBase {
         options.setProtocols(protocols);
         options.setSnapshotVirtualDirectoryAccessEnabled(true);
 
-        ShareAsyncClient shareClient = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName());
+        ShareAsyncClient shareClient = premiumFileServiceAsyncClient.getShareAsyncClient(generateShareName());
         shareClient.createWithResponse(options).block();
 
-        StepVerifier.create(primaryFileServiceAsyncClient.listShares())
+        StepVerifier.create(premiumFileServiceAsyncClient.listShares())
             .assertNext(r -> {
                 ShareProperties properties = r.getProperties();
                 assertEquals(protocols.toString(), properties.getProtocols().toString());

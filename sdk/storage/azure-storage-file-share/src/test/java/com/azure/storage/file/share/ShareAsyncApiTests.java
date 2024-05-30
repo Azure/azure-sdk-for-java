@@ -825,9 +825,9 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         options.setProtocols(protocols);
         options.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
 
-        primaryShareAsyncClient.createWithResponse(options).block();
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).createWithResponse(options).block();
 
-        StepVerifier.create(primaryShareAsyncClient.getProperties())
+        StepVerifier.create(premiumFileServiceAsyncClient.getShareAsyncClient(shareName).getProperties())
             .assertNext(r -> {
                 assertEquals(protocols.toString(), r.getProtocols().toString());
                 if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
@@ -854,15 +854,15 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         ShareProtocols protocols = ModelHelper.parseShareProtocols(Constants.HeaderConstants.NFS_PROTOCOL);
         options.setProtocols(protocols);
 
-        primaryShareAsyncClient.createWithResponse(options).block();
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).createWithResponse(options).block();
 
         ShareSetPropertiesOptions setPropertiesOptions = new ShareSetPropertiesOptions();
         setPropertiesOptions.setSnapshotVirtualDirectoryAccessEnabled(enableSnapshotVirtualDirectoryAccess);
         setPropertiesOptions.setAccessTier(ShareAccessTier.TRANSACTION_OPTIMIZED);
 
-        primaryShareAsyncClient.setProperties(setPropertiesOptions).block();
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).setProperties(setPropertiesOptions).block();
 
-        StepVerifier.create(primaryShareAsyncClient.getProperties())
+        StepVerifier.create(premiumFileServiceAsyncClient.getShareAsyncClient(shareName).getProperties())
             .assertNext(r -> {
                 assertEquals(protocols.toString(), r.getProtocols().toString());
                 if (enableSnapshotVirtualDirectoryAccess == null || enableSnapshotVirtualDirectoryAccess) {
