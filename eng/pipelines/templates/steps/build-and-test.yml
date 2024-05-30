@@ -195,12 +195,12 @@ steps:
           $(LiveTestSourceParams)
           -T ${{ parameters.TestParallelization }}
           ${{ parameters.TestGoals }}
-        env:
-          # PowerShellJavaTestVersion is set in the 'Set PowerShellJavaTestVersion'
-          # task above
-          JAVA_HOME: $(PowerShellJavaTestVersion)
-          MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
-          ${{ insert }}: ${{ parameters.TestEnvVars }}
+      env:
+        # PowerShellJavaTestVersion is set in the 'Set PowerShellJavaTestVersion'
+        # task above
+        JAVA_HOME: $(PowerShellJavaTestVersion)
+        MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
+        ${{ insert }}: ${{ parameters.TestEnvVars }}
   - ${{ else }}:
     - task: Maven@3
       displayName: 'Run tests for From Source run'
