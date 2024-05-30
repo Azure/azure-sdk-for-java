@@ -15,6 +15,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.health.insights.radiologyinsights.implementation.RadiologyInsightsClientImpl;
+import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsJob;
 import java.util.List;
 
@@ -553,7 +554,7 @@ public final class RadiologyInsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RadiologyInsightsJob, RadiologyInsightsJob> beginInferRadiologyInsights(String id,
+    public SyncPoller<RadiologyInsightsJob, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
         RadiologyInsightsJob resource, List<String> expand) {
         // Generated convenience method for beginInferRadiologyInsightsWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -584,7 +585,7 @@ public final class RadiologyInsightsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RadiologyInsightsJob, RadiologyInsightsJob> beginInferRadiologyInsights(String id,
+    public SyncPoller<RadiologyInsightsJob, RadiologyInsightsInferenceResult> beginInferRadiologyInsights(String id,
         RadiologyInsightsJob resource) {
         // Generated convenience method for beginInferRadiologyInsightsWithModel
         RequestOptions requestOptions = new RequestOptions();

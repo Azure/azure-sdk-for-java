@@ -33,7 +33,7 @@ public class ProcedureRecommendation {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private String kind;
+    private String kind = "ProcedureRecommendation";
 
     /*
      * Additional Content defined by implementations
@@ -47,7 +47,6 @@ public class ProcedureRecommendation {
      */
     @Generated
     protected ProcedureRecommendation() {
-        this.kind = "ProcedureRecommendation";
     }
 
     /**
