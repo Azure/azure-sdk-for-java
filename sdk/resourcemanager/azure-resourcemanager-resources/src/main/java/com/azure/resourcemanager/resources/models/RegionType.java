@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the region. */
+/**
+ * The type of the region.
+ */
 public final class RegionType extends ExpandableStringEnum<RegionType> {
-    /** Static value Physical for RegionType. */
+    /**
+     * Static value Physical for RegionType.
+     */
     public static final RegionType PHYSICAL = fromString("Physical");
 
-    /** Static value Logical for RegionType. */
+    /**
+     * Static value Logical for RegionType.
+     */
     public static final RegionType LOGICAL = fromString("Logical");
 
     /**
      * Creates a new instance of RegionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class RegionType extends ExpandableStringEnum<RegionType> {
 
     /**
      * Creates or finds a RegionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RegionType.
      */
@@ -38,7 +44,7 @@ public final class RegionType extends ExpandableStringEnum<RegionType> {
 
     /**
      * Gets known RegionType values.
-     *
+     * 
      * @return known RegionType values.
      */
     public static Collection<RegionType> values() {

@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The category of the region. */
+/**
+ * The category of the region.
+ */
 public final class RegionCategory extends ExpandableStringEnum<RegionCategory> {
-    /** Static value Recommended for RegionCategory. */
+    /**
+     * Static value Recommended for RegionCategory.
+     */
     public static final RegionCategory RECOMMENDED = fromString("Recommended");
 
-    /** Static value Extended for RegionCategory. */
+    /**
+     * Static value Extended for RegionCategory.
+     */
     public static final RegionCategory EXTENDED = fromString("Extended");
 
-    /** Static value Other for RegionCategory. */
+    /**
+     * Static value Other for RegionCategory.
+     */
     public static final RegionCategory OTHER = fromString("Other");
 
     /**
      * Creates a new instance of RegionCategory value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class RegionCategory extends ExpandableStringEnum<RegionCategory> {
 
     /**
      * Creates or finds a RegionCategory from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RegionCategory.
      */
@@ -41,7 +49,7 @@ public final class RegionCategory extends ExpandableStringEnum<RegionCategory> {
 
     /**
      * Gets known RegionCategory values.
-     *
+     * 
      * @return known RegionCategory values.
      */
     public static Collection<RegionCategory> values() {
