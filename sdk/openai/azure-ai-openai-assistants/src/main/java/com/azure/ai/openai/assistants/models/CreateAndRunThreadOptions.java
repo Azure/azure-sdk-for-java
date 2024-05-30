@@ -579,7 +579,6 @@ public final class CreateAndRunThreadOptions implements JsonSerializable<CreateA
      * @param toolChoice the toolChoice value to set.
      * @return the CreateAndRunThreadOptions object itself.
      */
-    @Generated
     public CreateAndRunThreadOptions setToolChoice(AssistantsApiToolChoiceOption toolChoice) {
         if (toolChoice.getMode() != null) {
             this.toolChoice = BinaryData.fromObject(toolChoice.getMode());

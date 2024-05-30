@@ -361,7 +361,7 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
      * An alternative to sampling with temperature, called nucleus sampling, where the model
      * considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens
      * comprising the top 10% probability mass are considered.
-     * 
+     *
      * We generally recommend altering this or temperature but not both.
      */
     @Generated
@@ -572,9 +572,8 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
      *
      * @return the toolChoice value.
      */
-    @Generated
-    public BinaryData getToolChoice() {
-        return this.toolChoice;
+    public AssistantsApiToolChoiceOption getToolChoice() {
+        return AssistantsApiToolChoiceOption.fromBinaryData(this.toolChoice);
     }
 
     /**
@@ -583,9 +582,14 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
      * @param toolChoice the toolChoice value to set.
      * @return the CreateRunOptions object itself.
      */
-    @Generated
-    public CreateRunOptions setToolChoice(BinaryData toolChoice) {
-        this.toolChoice = toolChoice;
+    public CreateRunOptions setToolChoice(AssistantsApiToolChoiceOption toolChoice) {
+        if (toolChoice.getMode() != null) {
+            this.toolChoice = BinaryData.fromObject(toolChoice.getMode());
+        } else if (toolChoice.getToolChoice() != null) {
+            this.toolChoice = BinaryData.fromObject(toolChoice.getToolChoice());
+        } else {
+            this.toolChoice = null;
+        }
         return this;
     }
 

@@ -159,4 +159,85 @@ public class AssistantApiToolChoiceSerializerTests {
         assertTrue(json.contains("\"tool_choice\":{\"type\":\"code_interpreter\"}"));
         assertTrue(json.contains("\"assistant_id\":\"abc123\""));
     }
+
+    @Test
+    public void createRunOptionsAutoMode() {
+        CreateRunOptions options = new CreateRunOptions("abc123");
+        options.setToolChoice(new AssistantsApiToolChoiceOption(AssistantsApiToolChoiceOptionMode.AUTO));
+        AssistantsApiToolChoiceOption toolChoice = options.getToolChoice();
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+
+        assertEquals(AssistantsApiToolChoiceOptionMode.AUTO, toolChoice.getMode());
+        assertTrue(json.contains("\"tool_choice\":\"auto\""));
+        assertTrue(json.contains("\"assistant_id\":\"abc123\""));
+    }
+
+    @Test
+    public void createRunOptionsNoneMode() {
+        CreateRunOptions options = new CreateRunOptions("abc123");
+        options.setToolChoice(new AssistantsApiToolChoiceOption(AssistantsApiToolChoiceOptionMode.NONE));
+        AssistantsApiToolChoiceOption toolChoice = options.getToolChoice();
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+
+        assertEquals(AssistantsApiToolChoiceOptionMode.NONE, toolChoice.getMode());
+        assertTrue(json.contains("\"tool_choice\":\"none\""));
+        assertTrue(json.contains("\"assistant_id\":\"abc123\""));
+    }
+
+    @Test
+    public void createRunOptionsFunctionCallToolChoice() {
+        CreateRunOptions options = new CreateRunOptions("abc123");
+        options.setToolChoice(new AssistantsApiToolChoiceOption(
+            new AssistantsNamedToolChoice(AssistantsNamedToolChoiceType.FUNCTION)
+                .setFunction(new FunctionName("my_function"))));
+        AssistantsApiToolChoiceOption toolChoice = options.getToolChoice();
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+
+        assertNull(toolChoice.getMode());
+        assertNotNull(toolChoice.getToolChoice());
+        assertEquals(AssistantsNamedToolChoiceType.FUNCTION, toolChoice.getToolChoice().getType());
+        assertEquals("my_function", toolChoice.getToolChoice().getFunction().getName());
+        assertTrue(json.contains("\"tool_choice\":{\"type\":\"function\",\"function\":{\"name\":\"my_function\"}}"));
+        assertTrue(json.contains("\"assistant_id\":\"abc123\""));
+    }
+
+    @Test
+    public void createRunOptionsFileSearchToolChoice() {
+        CreateRunOptions options = new CreateRunOptions("abc123");
+        options.setToolChoice(new AssistantsApiToolChoiceOption(
+            new AssistantsNamedToolChoice(AssistantsNamedToolChoiceType.FILE_SEARCH)));
+        AssistantsApiToolChoiceOption toolChoice = options.getToolChoice();
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+
+        assertNull(toolChoice.getMode());
+        assertNotNull(toolChoice.getToolChoice());
+        assertEquals(AssistantsNamedToolChoiceType.FILE_SEARCH, toolChoice.getToolChoice().getType());
+        assertTrue(json.contains("\"tool_choice\":{\"type\":\"file_search\"}"));
+        assertTrue(json.contains("\"assistant_id\":\"abc123\""));
+    }
+
+    @Test
+    public void createRunOptionsCodeInterpreterToolChoice() {
+        CreateRunOptions options = new CreateRunOptions("abc123");
+        options.setToolChoice(new AssistantsApiToolChoiceOption(
+            new AssistantsNamedToolChoice(AssistantsNamedToolChoiceType.CODE_INTERPRETER)));
+        AssistantsApiToolChoiceOption toolChoice = options.getToolChoice();
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+
+        assertNull(toolChoice.getMode());
+        assertNotNull(toolChoice.getToolChoice());
+        assertEquals(AssistantsNamedToolChoiceType.CODE_INTERPRETER, toolChoice.getToolChoice().getType());
+        assertTrue(json.contains("\"tool_choice\":{\"type\":\"code_interpreter\"}"));
+        assertTrue(json.contains("\"assistant_id\":\"abc123\""));
+    }
 }
