@@ -30,6 +30,7 @@ public class ConnectionOptionsTest {
     @Mock
     private Scheduler scheduler;
     private AutoCloseable mocksCloseable;
+
     @BeforeEach
     public void beforeEach() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
@@ -97,10 +98,10 @@ public class ConnectionOptionsTest {
         final int port = 1000;
 
         // Act
-        final ConnectionOptions actual = new ConnectionOptions(fullyQualifiedNamespace, tokenCredential,
-            CbsAuthorizationType.JSON_WEB_TOKEN, scope, AmqpTransportType.AMQP, retryOptions,
-            ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptions, verifyMode, productName, clientVersion,
-            actualHostname, port);
+        final ConnectionOptions actual
+            = new ConnectionOptions(fullyQualifiedNamespace, tokenCredential, CbsAuthorizationType.JSON_WEB_TOKEN,
+                scope, AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptions,
+                verifyMode, productName, clientVersion, actualHostname, port);
 
         // Assert
         assertEquals(fullyQualifiedNamespace, actual.getFullyQualifiedNamespace());
