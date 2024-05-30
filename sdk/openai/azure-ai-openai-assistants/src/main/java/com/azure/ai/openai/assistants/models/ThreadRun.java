@@ -691,9 +691,8 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
      *
      * @return the toolChoice value.
      */
-    @Generated
-    public BinaryData getToolChoice() {
-        return this.toolChoice;
+    public AssistantsApiToolChoiceOption getToolChoice() {
+        return AssistantsApiToolChoiceOption.fromBinaryData(this.toolChoice);
     }
 
     /**

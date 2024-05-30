@@ -1,0 +1,79 @@
+package com.azure.ai.openai.assistants.implementation;
+
+import com.azure.ai.openai.assistants.models.ApiResponseFormat;
+import com.azure.ai.openai.assistants.models.Assistant;
+import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
+import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormat;
+import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormatMode;
+import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormatOption;
+import com.azure.ai.openai.assistants.models.AssistantsApiToolChoiceOption;
+import com.azure.ai.openai.assistants.models.AssistantsApiToolChoiceOptionMode;
+import com.azure.ai.openai.assistants.models.AssistantsNamedToolChoiceType;
+import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
+import com.azure.ai.openai.assistants.models.CreateRunOptions;
+import com.azure.ai.openai.assistants.models.ThreadRun;
+import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
+import com.azure.core.util.BinaryData;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+// It may seem odd to test the getter for some methods, but there is actually some degree of logic involved in it, to
+// prevent having to leak BinaryData as a type that would have to be used by someone consuming the SDK.
+public class AssistantApiToolChoiceSerializerTests {
+
+    @Test
+    public void threadRunAutoMode() {
+        ThreadRun threadRun = BinaryData.fromString("{\"tool_choice\":\"auto\"}").toObject(ThreadRun.class);
+        AssistantsApiToolChoiceOption toolChoice = threadRun.getToolChoice();
+
+        assertNotNull(toolChoice.getMode());
+        assertNull(toolChoice.getToolChoice());
+        assertEquals(AssistantsApiToolChoiceOptionMode.AUTO, toolChoice.getMode());
+    }
+
+    @Test
+    public void threadRunNoneMode() {
+        ThreadRun threadRun = BinaryData.fromString("{\"tool_choice\":\"none\"}").toObject(ThreadRun.class);
+        AssistantsApiToolChoiceOption toolChoice = threadRun.getToolChoice();
+
+        assertNotNull(toolChoice.getMode());
+        assertNull(toolChoice.getToolChoice());
+        assertEquals(AssistantsApiToolChoiceOptionMode.NONE, toolChoice.getMode());
+    }
+
+    @Test
+    public void threadRunFunctionCallToolChoice() {
+        ThreadRun threadRun = BinaryData.fromString("{\"tool_choice\":{\"type\":\"function\",\"function\":{\"name\":\"my_function\"}}}")
+            .toObject(ThreadRun.class);
+        AssistantsApiToolChoiceOption toolChoice = threadRun.getToolChoice();
+
+        assertNull(toolChoice.getMode());
+        assertNotNull(toolChoice.getToolChoice());
+        assertEquals(AssistantsNamedToolChoiceType.FUNCTION, toolChoice.getToolChoice().getType());
+        assertEquals("my_function", toolChoice.getToolChoice().getFunction().getName());
+    }
+
+    @Test
+    public void threadRunFileSearchToolChoice() {
+        ThreadRun threadRun = BinaryData.fromString("{\"tool_choice\":{\"type\":\"file_search\"}}").toObject(ThreadRun.class);
+        AssistantsApiToolChoiceOption toolChoice = threadRun.getToolChoice();
+
+        assertNull(toolChoice.getMode());
+        assertNotNull(toolChoice.getToolChoice());
+        assertEquals(AssistantsNamedToolChoiceType.FILE_SEARCH, toolChoice.getToolChoice().getType());
+    }
+
+    @Test
+    public void threadRunCodeInterpreterToolChoice() {
+        ThreadRun threadRun = BinaryData.fromString("{\"tool_choice\":{\"type\":\"code_interpreter\"}}").toObject(ThreadRun.class);
+        AssistantsApiToolChoiceOption toolChoice = threadRun.getToolChoice();
+
+        assertNull(toolChoice.getMode());
+        assertNotNull(toolChoice.getToolChoice());
+        assertEquals(AssistantsNamedToolChoiceType.CODE_INTERPRETER, toolChoice.getToolChoice().getType());
+    }
+}

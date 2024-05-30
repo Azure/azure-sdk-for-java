@@ -42,11 +42,18 @@ public class AssistantsApiToolChoiceOption {
         return this.toolChoice;
     }
 
-//    public static AssistantsApiToolChoiceOption fromBinaryData(BinaryData toolChoiceBinaryData) {
-////        try {
-////            return new AssistantsApiToolChoiceOption(AssistantsNamedToolChoice.fromBinaryData(toolChoiceBinaryData));
-////        } catch (UncheckedIOException e) {
-////            throw new IllegalArgumentException("Failed to parse JSON string.", e);
-////        }
-//    }
+    public static AssistantsApiToolChoiceOption fromBinaryData(BinaryData toolChoiceBinaryData) {
+        try {
+            AssistantsNamedToolChoice toolChoice = toolChoiceBinaryData.toObject(AssistantsNamedToolChoice.class);
+            if (toolChoice != null) {
+                return new AssistantsApiToolChoiceOption(toolChoice);
+            }
+        } catch (UncheckedIOException e) {
+            AssistantsApiToolChoiceOptionMode mode = toolChoiceBinaryData.toObject(AssistantsApiToolChoiceOptionMode.class);
+            if (AssistantsApiToolChoiceOptionMode.values().contains(mode)) {
+                return new AssistantsApiToolChoiceOption(mode);
+            }
+        }
+        throw new IllegalArgumentException("The provided JSON string does not match the expected format.");
+    }
 }
