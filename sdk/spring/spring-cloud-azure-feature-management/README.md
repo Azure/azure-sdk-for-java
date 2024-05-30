@@ -229,8 +229,8 @@ There are two possible recurrence pattern types: `Daily` and `Weekly`. For examp
 
 - Parameters
 
-  | Property | Relevance | Description                                                                                                                                                                                                                                                               |
-      |-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+  | Property | Relevance | Description                                                                                                                                                                                                                                                               | 
+  |-----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
   | **type** | Required  | Two valid values: `Daily`, `Weekly`.                                                                                                                                                                                                                                      |
   | **interval** | Optional  | Specifies the interval between each start time of occurrence. Default value is 1. <br/>For example, if the interval is 2 with `Daily` type, and current occurrence is 2:00 AM ~ 3:00 AM on 2024/05/11, then the next occurrence should be 2:00 AM ~ 3:00 AM on 2024/05/13 |
   | **daysOfWeek** | Optional  | Specifies on which day(s) of the week the event occurs. It's required when `Weekly` type, not applicable for `Daily` type.                                                                                                                                                |
@@ -253,27 +253,27 @@ There are two possible recurrence pattern types: `Daily` and `Weekly`. For examp
           range:
             type: "NoEnd"
         ```
-  - Weekly
+    - Weekly
   
-    The weekly recurrence pattern causes the time window to repeat on the same day or days of the week, based on the number of weeks between each set of occurrences.
+      The weekly recurrence pattern causes the time window to repeat on the same day or days of the week, based on the number of weeks between each set of occurrences.
 
-    The following example will repeat from 2:00 AM to 3:00 AM on every other Monday and Tuesday
+      The following example will repeat from 2:00 AM to 3:00 AM on every other Monday and Tuesday
 
-      ```yaml
-      start: "Mon, 13 May 2024 02:00:00 GMT",
-      end: "Mon, 13 May 2024 03:00:00 GMT",
-      recurrence:
-        pattern:
-          type: "Weekly",
-          interval: 2,
-          daysOfWeek: 
-            - Monday
-            - Tuesday
-        range:
-          type: "NoEnd"
-      ```
-    
-**Note:** `start` must be a valid first occurrence which fits the recurrence pattern. For example, if we define to repeat on every other Monday and Tuesday, then the start time should be in Monday or Tuesday. </br> Additionally, the duration of the time window cannot be longer than how frequently it occurs. For example, it is invalid to have a 25-hour time window recur every day.
+        ```yaml
+        start: "Mon, 13 May 2024 02:00:00 GMT",
+        end: "Mon, 13 May 2024 03:00:00 GMT",
+        recurrence:
+          pattern:
+            type: "Weekly",
+            interval: 2,
+            daysOfWeek: 
+              - Monday
+              - Tuesday
+          range:
+            type: "NoEnd"
+        ```
+
+  **Note:** `start` must be a valid first occurrence which fits the recurrence pattern. For example, if we define to repeat on every other Monday and Tuesday, then the start time should be in Monday or Tuesday. </br> Additionally, the duration of the time window cannot be longer than how frequently it occurs. For example, it is invalid to have a 25-hour time window recur every day.
 
 #### Recurrence Range
 
