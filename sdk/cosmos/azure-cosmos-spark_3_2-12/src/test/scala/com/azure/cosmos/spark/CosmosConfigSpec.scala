@@ -27,6 +27,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
   private val testAccountResourceGroupName = "test-resourceGroup"
   private val testServicePrincipalClientId = UUID.randomUUID().toString
   private val testServicePrincipalClientSecret = "test-secret"
+  private val testServicePrincipalClientCert = "PEMBase64"
 
   "Config Parser" should "parse account credentials" in {
     val userConfig = Map(
@@ -45,6 +46,38 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     endpointConfig.useGatewayMode shouldEqual true
     endpointConfig.preferredRegionsList.isDefined shouldEqual true
     endpointConfig.preferredRegionsList.get should contain theSameElementsAs Array("west us", "eastus1")
+  }
+
+  "Config Parser" should "parse default account AAD authentication credentials with cert" in {
+
+    for (authType <- Array("ServicePrinciple", "ServicePrincipal")) {
+      val userConfig = Map(
+        "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+        "spark.cosmos.auth.type" -> authType,
+        "spark.cosmos.account.subscriptionId" -> testAccountSubscriptionId,
+        "spark.cosmos.account.tenantId" -> testAccountTenantId,
+        "spark.cosmos.account.resourceGroupName" -> testAccountResourceGroupName,
+        "spark.cosmos.auth.aad.clientId" -> testServicePrincipalClientId,
+        "spark.cosmos.auth.aad.clientCertPemBase64" -> testServicePrincipalClientCert,
+        "spark.cosmos.auth.aad.clientCertSendChain" -> "true"
+      )
+
+      val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+
+      endpointConfig.endpoint shouldEqual sampleProdEndpoint
+
+      val servicePrincipalAuthConfig = endpointConfig.authConfig.asInstanceOf[CosmosServicePrincipalAuthConfig]
+      endpointConfig.subscriptionId.get shouldEqual testAccountSubscriptionId
+      servicePrincipalAuthConfig.tenantId shouldEqual testAccountTenantId
+      endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
+      servicePrincipalAuthConfig.clientId shouldEqual testServicePrincipalClientId
+      servicePrincipalAuthConfig.clientSecret.isDefined shouldEqual false
+      servicePrincipalAuthConfig.clientCertPemBase64.isDefined shouldEqual true
+      servicePrincipalAuthConfig.clientCertPemBase64.get shouldEqual testServicePrincipalClientCert
+      servicePrincipalAuthConfig.sendChain shouldEqual true
+      new AzureEnvironment(endpointConfig.azureEnvironmentEndpoints).getActiveDirectoryEndpoint shouldEqual AzureEnvironment.AZURE.getActiveDirectoryEndpoint
+      endpointConfig.accountName shouldEqual "boson-test"
+    }
   }
 
   "Config Parser" should "parse default account AAD authentication credentials" in {
@@ -69,7 +102,10 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
           servicePrincipalAuthConfig.tenantId shouldEqual testAccountTenantId
           endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
           servicePrincipalAuthConfig.clientId shouldEqual testServicePrincipalClientId
-          servicePrincipalAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
+          servicePrincipalAuthConfig.clientSecret.isDefined shouldEqual true
+          servicePrincipalAuthConfig.clientSecret.get shouldEqual testServicePrincipalClientSecret
+          servicePrincipalAuthConfig.clientCertPemBase64.isDefined shouldEqual false
+          servicePrincipalAuthConfig.sendChain shouldEqual false
           new AzureEnvironment(endpointConfig.azureEnvironmentEndpoints).getActiveDirectoryEndpoint shouldEqual AzureEnvironment.AZURE.getActiveDirectoryEndpoint
           endpointConfig.accountName shouldEqual "boson-test"
       }
@@ -145,7 +181,8 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
           servicePrincipalAuthConfig.tenantId shouldEqual testAccountTenantId
           endpointConfig.resourceGroupName.get shouldEqual testAccountResourceGroupName
           servicePrincipalAuthConfig.clientId shouldEqual testServicePrincipalClientId
-          servicePrincipalAuthConfig.clientSecret shouldEqual testServicePrincipalClientSecret
+          servicePrincipalAuthConfig.clientSecret.isDefined shouldEqual true
+          servicePrincipalAuthConfig.clientSecret.get shouldEqual testServicePrincipalClientSecret
           new AzureEnvironment(endpointConfig.azureEnvironmentEndpoints).getActiveDirectoryEndpoint shouldEqual AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint
           endpointConfig.accountName shouldEqual "boson-test"
       }

@@ -40,7 +40,6 @@ public class ExceptionActionInternal {
      */
     @Generated
     public ExceptionActionInternal() {
-        this.kind = ExceptionActionKind.fromString("ExceptionActionInternal");
     }
 
     /**
@@ -71,7 +70,7 @@ public class ExceptionActionInternal {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private ExceptionActionKind kind;
+    private ExceptionActionKind kind = ExceptionActionKind.fromString("ExceptionActionInternal");
 
     /**
      * Get the kind property: The type discriminator describing a sub-type of ExceptionAction.

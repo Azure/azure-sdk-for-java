@@ -27,7 +27,7 @@ class DetectFunctionWithUrlAndDetectOptionAsync extends DetectAsyncFunction {
         FaceDetectionModel detectionModel, FaceRecognitionModel recognitionModel, boolean returnFaceId,
         List<FaceAttributeType> returnFaceAttributes, Boolean returnFaceLandmarks, Boolean returnRecognitionModel,
         Integer faceIdTimeToLive) {
-        return mFaceAsyncClient.detectFromUrl(mUrl,
+        return mFaceAsyncClient.detect(mUrl,
                 new DetectOptions(detectionModel, recognitionModel, returnFaceId)
                         .setReturnFaceAttributes(returnFaceAttributes)
                         .setReturnFaceLandmarks(returnFaceLandmarks)

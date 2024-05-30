@@ -154,7 +154,7 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> detectFromUrl(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> detectFromUrlImpl(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
             RequestOptions requestOptions, Context context);
@@ -165,7 +165,7 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> detectFromUrlSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> detectFromUrlImplSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("accept") String accept, @BodyParam("application/json") BinaryData request,
             RequestOptions requestOptions, Context context);
@@ -176,7 +176,7 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> detect(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> detectImpl(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("accept") String accept, @BodyParam("application/octet-stream") BinaryData imageContent,
             RequestOptions requestOptions, Context context);
@@ -187,7 +187,7 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> detectSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> detectImplSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
             @HeaderParam("accept") String accept, @BodyParam("application/octet-stream") BinaryData imageContent,
             RequestOptions requestOptions, Context context);
@@ -212,126 +212,6 @@ public final class FaceClientImpl {
             @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
 
-        @Post("/findsimilars")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> findSimilarFromFaceList(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/findsimilars")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> findSimilarFromFaceListSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/findsimilars")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> findSimilarFromLargeFaceList(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/findsimilars")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> findSimilarFromLargeFaceListSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/identify")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> identifyFromPersonGroup(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/identify")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> identifyFromPersonGroupSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/identify")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> identifyFromLargePersonGroup(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/identify")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> identifyFromLargePersonGroupSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/identify")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> identifyFromPersonDirectory(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/identify")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> identifyFromPersonDirectorySync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/identify")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> identifyFromDynamicPersonGroup(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/identify")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> identifyFromDynamicPersonGroupSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
         @Post("/verify")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -349,66 +229,6 @@ public final class FaceClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> verifyFaceToFaceSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/verify")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> verifyFromPersonGroup(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/verify")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> verifyFromPersonGroupSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/verify")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> verifyFromLargePersonGroup(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/verify")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> verifyFromLargePersonGroupSync(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/verify")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> verifyFromPersonDirectory(@HostParam("endpoint") String endpoint,
-            @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
-
-        @Post("/verify")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
-        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> verifyFromPersonDirectorySync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
 
@@ -458,7 +278,7 @@ public final class FaceClientImpl {
      * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
      * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
      * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
-     * * 'detection_03': Face attributes (mask and headPose only) and landmarks are supported if you choose this
+     * * 'detection_03': Face attributes (mask, blur, and headPose) and landmarks are supported if you choose this
      * detection model.
      * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
      * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
@@ -611,11 +431,11 @@ public final class FaceClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> detectFromUrlWithResponseAsync(BinaryData request,
+    public Mono<Response<BinaryData>> detectFromUrlImplWithResponseAsync(BinaryData request,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.detectFromUrl(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.detectFromUrlImpl(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, accept, request, requestOptions, context));
     }
 
@@ -644,7 +464,7 @@ public final class FaceClientImpl {
      * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
      * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
      * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
-     * * 'detection_03': Face attributes (mask and headPose only) and landmarks are supported if you choose this
+     * * 'detection_03': Face attributes (mask, blur, and headPose) and landmarks are supported if you choose this
      * detection model.
      * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
      * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
@@ -797,11 +617,11 @@ public final class FaceClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectFromUrlWithResponse(BinaryData request, RequestOptions requestOptions) {
+    public Response<BinaryData> detectFromUrlImplWithResponse(BinaryData request, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.detectFromUrlSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
-            request, requestOptions, Context.NONE);
+        return service.detectFromUrlImplSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            accept, request, requestOptions, Context.NONE);
     }
 
     /**
@@ -829,7 +649,7 @@ public final class FaceClientImpl {
      * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
      * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
      * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
-     * * 'detection_03': Face attributes (mask and headPose only) and landmarks are supported if you choose this
+     * * 'detection_03': Face attributes (mask, blur, and headPose) and landmarks are supported if you choose this
      * detection model.
      * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
      * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
@@ -980,11 +800,12 @@ public final class FaceClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> detectWithResponseAsync(BinaryData imageContent, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> detectImplWithResponseAsync(BinaryData imageContent,
+        RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.detect(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            contentType, accept, imageContent, requestOptions, context));
+        return FluxUtil.withContext(context -> service.detectImpl(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), contentType, accept, imageContent, requestOptions, context));
     }
 
     /**
@@ -1012,7 +833,7 @@ public final class FaceClientImpl {
      * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
      * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
      * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
-     * * 'detection_03': Face attributes (mask and headPose only) and landmarks are supported if you choose this
+     * * 'detection_03': Face attributes (mask, blur, and headPose) and landmarks are supported if you choose this
      * detection model.
      * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
      * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
@@ -1163,10 +984,10 @@ public final class FaceClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectWithResponse(BinaryData imageContent, RequestOptions requestOptions) {
+    public Response<BinaryData> detectImplWithResponse(BinaryData imageContent, RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
-        return service.detectSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
+        return service.detectImplSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
             imageContent, requestOptions, Context.NONE);
     }
 
@@ -1279,742 +1100,6 @@ public final class FaceClientImpl {
     }
 
     /**
-     * Given query face's faceId, to search the similar-looking faces from a Face List. A 'faceListId' is created by
-     * Create Face List.
-     * 
-     * Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
-     * 
-     * Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it
-     * tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find
-     * a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds.
-     * "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is
-     * low. It can be used in the cases like searching celebrity-looking faces.
-     * 
-     * The 'recognitionModel' associated with the query faceId should be the same as the 'recognitionModel' used by the
-     * target Face List.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     mode: String(matchPerson/matchFace) (Optional)
-     *     faceListId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         confidence: double (Required)
-     *         faceId: String (Optional)
-     *         persistedFaceId: String (Optional)
-     *     }
-     * ]
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> findSimilarFromFaceListWithResponseAsync(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.findSimilarFromFaceList(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, request, requestOptions, context));
-    }
-
-    /**
-     * Given query face's faceId, to search the similar-looking faces from a Face List. A 'faceListId' is created by
-     * Create Face List.
-     * 
-     * Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
-     * 
-     * Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it
-     * tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find
-     * a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds.
-     * "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is
-     * low. It can be used in the cases like searching celebrity-looking faces.
-     * 
-     * The 'recognitionModel' associated with the query faceId should be the same as the 'recognitionModel' used by the
-     * target Face List.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     mode: String(matchPerson/matchFace) (Optional)
-     *     faceListId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         confidence: double (Required)
-     *         faceId: String (Optional)
-     *         persistedFaceId: String (Optional)
-     *     }
-     * ]
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> findSimilarFromFaceListWithResponse(BinaryData request, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.findSimilarFromFaceListSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            request, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Given query face's faceId, to search the similar-looking faces from a Large Face List. A 'largeFaceListId' is
-     * created by Create Large Face List.
-     * 
-     * Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
-     * 
-     * Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it
-     * tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find
-     * a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds.
-     * "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is
-     * low. It can be used in the cases like searching celebrity-looking faces.
-     * 
-     * The 'recognitionModel' associated with the query faceId should be the same as the 'recognitionModel' used by the
-     * target Large Face List.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     mode: String(matchPerson/matchFace) (Optional)
-     *     largeFaceListId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         confidence: double (Required)
-     *         faceId: String (Optional)
-     *         persistedFaceId: String (Optional)
-     *     }
-     * ]
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> findSimilarFromLargeFaceListWithResponseAsync(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.findSimilarFromLargeFaceList(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, request, requestOptions, context));
-    }
-
-    /**
-     * Given query face's faceId, to search the similar-looking faces from a Large Face List. A 'largeFaceListId' is
-     * created by Create Large Face List.
-     * 
-     * Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
-     * 
-     * Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it
-     * tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find
-     * a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds.
-     * "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is
-     * low. It can be used in the cases like searching celebrity-looking faces.
-     * 
-     * The 'recognitionModel' associated with the query faceId should be the same as the 'recognitionModel' used by the
-     * target Large Face List.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     mode: String(matchPerson/matchFace) (Optional)
-     *     largeFaceListId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         confidence: double (Required)
-     *         faceId: String (Optional)
-     *         persistedFaceId: String (Optional)
-     *     }
-     * ]
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> findSimilarFromLargeFaceListWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.findSimilarFromLargeFaceListSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, request, requestOptions, Context.NONE);
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Person Group.
-     * 
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Person Group (given by personGroupId), and return candidate person(s) for that face ranked by
-     * similarity confidence. The Person Group should be trained to make it ready for identification. See more in "Train
-     * Person Group".
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * Try "Find Similar" when you need to find similar faces from a Face List/Large Face List instead of a
-     * Person Group.
-     * &gt; * The 'recognitionModel' associated with the query faces' faceIds should be the same as the
-     * 'recognitionModel' used by the target Person Group.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     *     personGroupId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     confidenceThreshold: Double (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Required)
-     *         candidates (Required): [
-     *              (Required){
-     *                 personId: String (Required)
-     *                 confidence: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> identifyFromPersonGroupWithResponseAsync(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.identifyFromPersonGroup(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, request, requestOptions, context));
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Person Group.
-     * 
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Person Group (given by personGroupId), and return candidate person(s) for that face ranked by
-     * similarity confidence. The Person Group should be trained to make it ready for identification. See more in "Train
-     * Person Group".
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * Try "Find Similar" when you need to find similar faces from a Face List/Large Face List instead of a
-     * Person Group.
-     * &gt; * The 'recognitionModel' associated with the query faces' faceIds should be the same as the
-     * 'recognitionModel' used by the target Person Group.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     *     personGroupId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     confidenceThreshold: Double (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Required)
-     *         candidates (Required): [
-     *              (Required){
-     *                 personId: String (Required)
-     *                 confidence: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> identifyFromPersonGroupWithResponse(BinaryData request, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.identifyFromPersonGroupSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            request, requestOptions, Context.NONE);
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Large Person Group.
-     * 
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Large Person Group (given by largePersonGroupId), and return candidate person(s) for that face
-     * ranked by similarity confidence. The Large Person Group should be trained to make it ready for identification.
-     * See more in "Train Large Person Group".
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * Try "Find Similar" when you need to find similar faces from a Face List/Large Face List instead of a
-     * Person Group/Large Person Group.
-     * &gt; * The 'recognitionModel' associated with the query faces' faceIds should be the same as the
-     * 'recognitionModel' used by the target Person Group or Large Person Group.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     *     largePersonGroupId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     confidenceThreshold: Double (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Required)
-     *         candidates (Required): [
-     *              (Required){
-     *                 personId: String (Required)
-     *                 confidence: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> identifyFromLargePersonGroupWithResponseAsync(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.identifyFromLargePersonGroup(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, request, requestOptions, context));
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Large Person Group.
-     * 
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Large Person Group (given by largePersonGroupId), and return candidate person(s) for that face
-     * ranked by similarity confidence. The Large Person Group should be trained to make it ready for identification.
-     * See more in "Train Large Person Group".
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * Try "Find Similar" when you need to find similar faces from a Face List/Large Face List instead of a
-     * Person Group/Large Person Group.
-     * &gt; * The 'recognitionModel' associated with the query faces' faceIds should be the same as the
-     * 'recognitionModel' used by the target Person Group or Large Person Group.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     *     largePersonGroupId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     confidenceThreshold: Double (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Required)
-     *         candidates (Required): [
-     *              (Required){
-     *                 personId: String (Required)
-     *                 confidence: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> identifyFromLargePersonGroupWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.identifyFromLargePersonGroupSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, request, requestOptions, Context.NONE);
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a person directory
-     * personIds array.
-     * 
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Person Directory Persons (given by personIds), and return candidate person(s) for that face ranked
-     * by similarity confidence.
-     * Passing personIds with an array with one element "*" can perform the operation over entire person directory.
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * The Identify operation can only match faces obtained with the same recognition model, that is associated
-     * with the query faces.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     *     personIds (Required): [
-     *         String (Required)
-     *     ]
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     confidenceThreshold: Double (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Required)
-     *         candidates (Required): [
-     *              (Required){
-     *                 personId: String (Required)
-     *                 confidence: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> identifyFromPersonDirectoryWithResponseAsync(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.identifyFromPersonDirectory(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, request, requestOptions, context));
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a person directory
-     * personIds array.
-     * 
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Person Directory Persons (given by personIds), and return candidate person(s) for that face ranked
-     * by similarity confidence.
-     * Passing personIds with an array with one element "*" can perform the operation over entire person directory.
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * The Identify operation can only match faces obtained with the same recognition model, that is associated
-     * with the query faces.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     *     personIds (Required): [
-     *         String (Required)
-     *     ]
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     confidenceThreshold: Double (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Required)
-     *         candidates (Required): [
-     *              (Required){
-     *                 personId: String (Required)
-     *                 confidence: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> identifyFromPersonDirectoryWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.identifyFromPersonDirectorySync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, request, requestOptions, Context.NONE);
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Dynamic Person
-     * Group.
-     * 
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Dynamic Person Group (given by dynamicPersonGroupId), and return candidate person(s) for that face
-     * ranked by similarity confidence.
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * The Identify operation can only match faces obtained with the same recognition model, that is associated
-     * with the query faces.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     *     dynamicPersonGroupId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     confidenceThreshold: Double (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Required)
-     *         candidates (Required): [
-     *              (Required){
-     *                 personId: String (Required)
-     *                 confidence: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> identifyFromDynamicPersonGroupWithResponseAsync(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.identifyFromDynamicPersonGroup(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, request, requestOptions, context));
-    }
-
-    /**
-     * 1-to-many identification to find the closest matches of the specific query person face from a Dynamic Person
-     * Group.
-     * 
-     * For each face in the faceIds array, Face Identify will compute similarities between the query face and all the
-     * faces in the Dynamic Person Group (given by dynamicPersonGroupId), and return candidate person(s) for that face
-     * ranked by similarity confidence.
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * The algorithm allows more than one face to be identified independently at the same request, but no more
-     * than 10 faces.
-     * &gt; * Each person could have more than one face, but no more than 248 faces.
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * Number of candidates returned is restricted by maxNumOfCandidatesReturned and confidenceThreshold. If no
-     * person is identified, the returned candidates will be an empty array.
-     * &gt; * The Identify operation can only match faces obtained with the same recognition model, that is associated
-     * with the query faces.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceIds (Required): [
-     *         String (Required)
-     *     ]
-     *     dynamicPersonGroupId: String (Required)
-     *     maxNumOfCandidatesReturned: Integer (Optional)
-     *     confidenceThreshold: Double (Optional)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         faceId: String (Required)
-     *         candidates (Required): [
-     *              (Required){
-     *                 personId: String (Required)
-     *                 confidence: double (Required)
-     *             }
-     *         ]
-     *     }
-     * ]
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> identifyFromDynamicPersonGroupWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.identifyFromDynamicPersonGroupSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            accept, request, requestOptions, Context.NONE);
-    }
-
-    /**
      * Verify whether two faces belong to a same person.
      * 
      * &gt; [!NOTE]
@@ -2099,279 +1184,6 @@ public final class FaceClientImpl {
         final String accept = "application/json";
         return service.verifyFaceToFaceSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, request,
             requestOptions, Context.NONE);
-    }
-
-    /**
-     * Verify whether a face belongs to a person in a Person Group.
-     * 
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
-     * &gt; * The 'recognitionModel' associated with the query face should be the same as the 'recognitionModel' used by
-     * the Person Group.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     personGroupId: String (Required)
-     *     personId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     isIdentical: boolean (Required)
-     *     confidence: double (Required)
-     * }
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return verify result along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> verifyFromPersonGroupWithResponseAsync(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.verifyFromPersonGroup(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, request, requestOptions, context));
-    }
-
-    /**
-     * Verify whether a face belongs to a person in a Person Group.
-     * 
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
-     * &gt; * The 'recognitionModel' associated with the query face should be the same as the 'recognitionModel' used by
-     * the Person Group.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     personGroupId: String (Required)
-     *     personId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     isIdentical: boolean (Required)
-     *     confidence: double (Required)
-     * }
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return verify result along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> verifyFromPersonGroupWithResponse(BinaryData request, RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.verifyFromPersonGroupSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            request, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Verify whether a face belongs to a person in a Large Person Group.
-     * 
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
-     * &gt; * The 'recognitionModel' associated with the query face should be the same as the 'recognitionModel' used by
-     * the Large Person Group.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     largePersonGroupId: String (Required)
-     *     personId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     isIdentical: boolean (Required)
-     *     confidence: double (Required)
-     * }
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return verify result along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> verifyFromLargePersonGroupWithResponseAsync(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.verifyFromLargePersonGroup(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, request, requestOptions, context));
-    }
-
-    /**
-     * Verify whether a face belongs to a person in a Large Person Group.
-     * 
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
-     * &gt; * The 'recognitionModel' associated with the query face should be the same as the 'recognitionModel' used by
-     * the Large Person Group.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     largePersonGroupId: String (Required)
-     *     personId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     isIdentical: boolean (Required)
-     *     confidence: double (Required)
-     * }
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return verify result along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> verifyFromLargePersonGroupWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.verifyFromLargePersonGroupSync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            request, requestOptions, Context.NONE);
-    }
-
-    /**
-     * Verify whether a face belongs to a person in Person Directory.
-     * 
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
-     * &gt; * The Verify operation can only match faces obtained with the same recognition model, that is associated
-     * with the query face.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     personId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     isIdentical: boolean (Required)
-     *     confidence: double (Required)
-     * }
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return verify result along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> verifyFromPersonDirectoryWithResponseAsync(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.verifyFromPersonDirectory(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), accept, request, requestOptions, context));
-    }
-
-    /**
-     * Verify whether a face belongs to a person in Person Directory.
-     * 
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
-     * &gt; * The Verify operation can only match faces obtained with the same recognition model, that is associated
-     * with the query face.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     faceId: String (Required)
-     *     personId: String (Required)
-     * }
-     * }</pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>{@code
-     * {
-     *     isIdentical: boolean (Required)
-     *     confidence: double (Required)
-     * }
-     * }</pre>
-     * 
-     * @param request The request parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return verify result along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> verifyFromPersonDirectoryWithResponse(BinaryData request,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return service.verifyFromPersonDirectorySync(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
-            request, requestOptions, Context.NONE);
     }
 
     /**

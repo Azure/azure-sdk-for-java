@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -286,9 +287,11 @@ public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskE
                 } else if ("requeueCount".equals(fieldName)) {
                     requeueCount = reader.getInt();
                 } else if ("startTime".equals(fieldName)) {
-                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    endTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("exitCode".equals(fieldName)) {
                     exitCode = reader.getNullable(JsonReader::getInt);
                 } else if ("containerInfo".equals(fieldName)) {
@@ -296,11 +299,11 @@ public final class BatchTaskExecutionInfo implements JsonSerializable<BatchTaskE
                 } else if ("failureInfo".equals(fieldName)) {
                     failureInfo = BatchTaskFailureInfo.fromJson(reader);
                 } else if ("lastRetryTime".equals(fieldName)) {
-                    lastRetryTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastRetryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastRequeueTime".equals(fieldName)) {
-                    lastRequeueTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastRequeueTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("result".equals(fieldName)) {
                     result = BatchTaskExecutionResult.fromString(reader.getString());
                 } else {
