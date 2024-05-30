@@ -23,12 +23,12 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RecurrenceValidatorTest {
-    private final String RECURRENCE_PATTERN = "Recurrence.Pattern";
-    private final String RECURRENCE_RANGE = "Recurrence.Range";
-    private final String RECURRENCE_PATTERN_INTERVAL = "Recurrence.Pattern.Interval";
-    private final String RECURRENCE_PATTERN_DAYS_OF_WEEK = "Recurrence.Pattern.DaysOfWeek";
-    private final String RECURRENCE_RANGE_NUMBER_OF_OCCURRENCES = "Recurrence.Range.NumberOfOccurrences";
-    private final String RECURRENCE_RANGE_END_DATE = "Recurrence.Range.EndDate";
+    private final String recurrencePatter = "Recurrence.Pattern";
+    private final String recurrenceRange = "Recurrence.Range";
+    private final String recurrencePatternInterval = "Recurrence.Pattern.Interval";
+    private final String recurrencePatternDaysOfWeek = "Recurrence.Pattern.DaysOfWeek";
+    private final String recurrenceRangeNumberOfOccurrences = "Recurrence.Range.NumberOfOccurrences";
+    private final String recurrenceRangeEndDate = "Recurrence.Range.EndDate";
 
     @Test
     public void generalRequiredParameterTest() {
@@ -44,7 +44,7 @@ public class RecurrenceValidatorTest {
         parameters1.put("Start", startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
         parameters1.put("End", endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
         parameters1.put("Recurrence", recurrence1);
-        consumeValidationTestData(parameters1, RECURRENCE_PATTERN);
+        consumeValidationTestData(parameters1, recurrencePatter);
 
         // no range in recurrence parameter
         final HashMap<String, Object> pattern2 = new HashMap<>();
@@ -55,7 +55,7 @@ public class RecurrenceValidatorTest {
         parameters2.put("Start", startTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
         parameters2.put("End", endTime.format(DateTimeFormatter.RFC_1123_DATE_TIME));
         parameters2.put("Recurrence", recurrence2);
-        consumeValidationTestData(parameters2, RECURRENCE_RANGE);
+        consumeValidationTestData(parameters2, recurrenceRange);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class RecurrenceValidatorTest {
         parameters.put("End", "2023-09-01T02:00:00+08:00");
         parameters.put("Recurrence", recurrence);
 
-        consumeValidationTestData(parameters, RECURRENCE_PATTERN_INTERVAL);
+        consumeValidationTestData(parameters, recurrencePatternInterval);
     }
 
     @Test
@@ -180,7 +180,7 @@ public class RecurrenceValidatorTest {
         parameters.put("End", "2023-09-01T02:00:00+08:00");
         parameters.put("Recurrence", recurrence);
 
-        consumeValidationTestData(parameters, RECURRENCE_RANGE_NUMBER_OF_OCCURRENCES);
+        consumeValidationTestData(parameters, recurrenceRangeNumberOfOccurrences);
     }
 
     @Test
@@ -267,7 +267,7 @@ public class RecurrenceValidatorTest {
         parameters5.put("Start", "2023-09-01T00:00:00+08:00");
         parameters5.put("End", "2023-09-01T00:00:01+08:00");
         parameters5.put("Recurrence", recurrence5);
-        consumeValidationTestData(parameters5, RECURRENCE_RANGE_END_DATE);
+        consumeValidationTestData(parameters5, recurrenceRangeEndDate);
     }
 
     @Test
@@ -288,7 +288,7 @@ public class RecurrenceValidatorTest {
         parameters.put("Recurrence", recurrence);
 
         // daysOfWeek parameter is required
-        consumeValidationTestData(parameters, RECURRENCE_PATTERN_DAYS_OF_WEEK);
+        consumeValidationTestData(parameters, recurrencePatternDaysOfWeek);
     }
 
     @Test
