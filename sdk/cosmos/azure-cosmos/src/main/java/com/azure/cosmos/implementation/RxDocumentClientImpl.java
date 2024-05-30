@@ -2322,10 +2322,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return response
             .doOnSuccess(ignore -> {
-                RxDocumentServiceRequest succeededRequest = requestReference.get();
 
-                PointOperationContext pointOperationContext = succeededRequest.requestContext.getPointOperationContext();
-                pointOperationContext.setHasOperationSeenSuccess();
+                if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+                    RxDocumentServiceRequest succeededRequest = requestReference.get();
+
+                    PointOperationContext pointOperationContext = succeededRequest.requestContext.getPointOperationContext();
+                    pointOperationContext.setHasOperationSeenSuccess();
+                }
             })
             .doOnError(throwable -> {
                 if (throwable instanceof OperationCancelledException) {
