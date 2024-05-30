@@ -68,6 +68,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.feedRange = options.feedRange;
         this.cancelledRequestDiagnosticsTracker = options.cancelledRequestDiagnosticsTracker;
         this.maxItemCountForVectorSearch = options.maxItemCountForVectorSearch;
+        this.collectionRid = options.collectionRid;
     }
 
     /**

@@ -3795,6 +3795,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 String collectionRid = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getCollectionRid(queryRequestOptions);
 
+                checkNotNull(collectionRid, "collectionRid cannot be null!");
+
                 if (RxDocumentClientImpl.this.requiresFeedRangeFiltering(request)) {
                     return RxDocumentClientImpl.this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), collectionRid, null, null)
                         .flatMap(collectionRoutingMapValueHolder -> {

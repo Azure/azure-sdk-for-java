@@ -313,6 +313,7 @@ public class DocumentQueryExecutionContextFactory {
         return collectionObs.single().flatMap(collectionValueHolder -> {
 
             queryRequestOptionsAccessor.setPartitionKeyDefinition(cosmosQueryRequestOptions, collectionValueHolder.v.getPartitionKey());
+            queryRequestOptionsAccessor.setCollectionRid(cosmosQueryRequestOptions, collectionValueHolder.v.getResourceId());
 
             Mono<Pair<List<Range<String>>, QueryInfo>> queryPlanTask =
                 getPartitionKeyRangesAndQueryInfo(diagnosticsClientContext,
