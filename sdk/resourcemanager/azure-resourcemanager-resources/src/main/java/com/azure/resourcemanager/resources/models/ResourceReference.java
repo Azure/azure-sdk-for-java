@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * The resource Id model.
  */
 @Immutable
-public final class ResourceReference {
+public class ResourceReference {
     /*
      * The fully qualified resource Id.
      */
@@ -26,7 +26,7 @@ public final class ResourceReference {
 
     /**
      * Get the id property: The fully qualified resource Id.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -35,7 +35,7 @@ public final class ResourceReference {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
