@@ -1,11 +1,5 @@
 package com.azure.ai.openai.assistants.implementation;
 
-import com.azure.ai.openai.assistants.models.ApiResponseFormat;
-import com.azure.ai.openai.assistants.models.Assistant;
-import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
-import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormat;
-import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormatMode;
-import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormatOption;
 import com.azure.ai.openai.assistants.models.AssistantsApiToolChoiceOption;
 import com.azure.ai.openai.assistants.models.AssistantsApiToolChoiceOptionMode;
 import com.azure.ai.openai.assistants.models.AssistantsNamedToolChoice;
@@ -14,7 +8,6 @@ import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.FunctionName;
 import com.azure.ai.openai.assistants.models.ThreadRun;
-import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
