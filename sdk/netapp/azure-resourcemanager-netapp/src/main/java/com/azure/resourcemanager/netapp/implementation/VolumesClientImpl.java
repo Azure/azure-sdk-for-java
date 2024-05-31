@@ -2874,8 +2874,10 @@ public final class VolumesClientImpl implements VolumesClient {
     public SyncPoller<PollResult<GetGroupIdListForLdapUserResponseInner>, GetGroupIdListForLdapUserResponseInner>
         beginListGetGroupIdListForLdapUser(String resourceGroupName, String accountName, String poolName,
             String volumeName, GetGroupIdListForLdapUserRequest body, Context context) {
-        return this.beginListGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body,
-            context).getSyncPoller();
+        return this
+            .beginListGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -2897,7 +2899,8 @@ public final class VolumesClientImpl implements VolumesClient {
     private Mono<GetGroupIdListForLdapUserResponseInner> listGetGroupIdListForLdapUserAsync(String resourceGroupName,
         String accountName, String poolName, String volumeName, GetGroupIdListForLdapUserRequest body) {
         return beginListGetGroupIdListForLdapUserAsync(resourceGroupName, accountName, poolName, volumeName, body)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -3543,7 +3546,8 @@ public final class VolumesClientImpl implements VolumesClient {
     private Mono<Void> reestablishReplicationAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, ReestablishReplicationRequest body, Context context) {
         return beginReestablishReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -4698,7 +4702,8 @@ public final class VolumesClientImpl implements VolumesClient {
     private Mono<Void> authorizeReplicationAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, AuthorizeRequest body, Context context) {
         return beginAuthorizeReplicationAsync(resourceGroupName, accountName, poolName, volumeName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
