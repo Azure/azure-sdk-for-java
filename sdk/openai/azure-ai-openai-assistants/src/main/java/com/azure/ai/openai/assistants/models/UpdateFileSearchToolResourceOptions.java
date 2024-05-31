@@ -57,11 +57,10 @@ public final class UpdateFileSearchToolResourceOptions
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("vectorStoreIds", this.vectorStoreIds,
+        jsonWriter.writeArrayField("vector_store_ids", this.vectorStoreIds,
             (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
@@ -82,7 +81,7 @@ public final class UpdateFileSearchToolResourceOptions
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("vectorStoreIds".equals(fieldName)) {
+                if ("vector_store_ids".equals(fieldName)) {
                     List<String> vectorStoreIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedUpdateFileSearchToolResourceOptions.vectorStoreIds = vectorStoreIds;
                 } else {

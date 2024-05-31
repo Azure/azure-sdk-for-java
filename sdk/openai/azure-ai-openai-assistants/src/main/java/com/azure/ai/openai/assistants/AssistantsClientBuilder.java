@@ -269,7 +269,7 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         localClientOptions.getHeaders()
             .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
         if (!useAzureOpenAIService(this.endpoint)) {
-            headers.add("OpenAI-Beta", "assistants=v1");
+            headers.add("OpenAI-Beta", "assistants=v2");
         }
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
