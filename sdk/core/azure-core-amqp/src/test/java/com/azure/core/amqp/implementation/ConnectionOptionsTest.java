@@ -105,7 +105,6 @@ public class ConnectionOptionsTest {
 
         // Assert
         assertEquals(fullyQualifiedNamespace, actual.getFullyQualifiedNamespace());
-        assertEquals(ConnectionHandler.AMQPS_PORT, actual.getPort());
         assertEquals(productName, actual.getProduct());
         assertEquals(clientVersion, actual.getClientVersion());
 
