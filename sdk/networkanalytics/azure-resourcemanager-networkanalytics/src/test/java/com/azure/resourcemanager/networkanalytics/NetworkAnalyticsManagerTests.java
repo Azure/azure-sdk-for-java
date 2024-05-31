@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
-import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ public class NetworkAnalyticsManagerTests extends TestBase {
     }
 
     @Test
-    @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testListDataProducts() {
         networkAnalyticsManager.dataProducts().list();
     }
