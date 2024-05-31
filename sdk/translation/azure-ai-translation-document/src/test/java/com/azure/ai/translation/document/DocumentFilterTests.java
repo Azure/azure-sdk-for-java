@@ -40,6 +40,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.core.util.polling.SyncPoller;
@@ -50,6 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DocumentFilterTests extends DocumentTranslationClientTestBase {
     
+    @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesFilterByStatus() {
         // create translation job
@@ -77,6 +79,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         }
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesFilterByIds() {
         // create translation job and get all the document IDs        
@@ -108,6 +111,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         }  
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesFilterByCreatedAfter() {
         // create translation job and get all the document IDs        
@@ -165,6 +169,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         } 
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesFilterByCreatedBefore() {
         // create translation job         
@@ -222,6 +227,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         } 
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusesOrderByCreatedOn() {
         // create translation job         

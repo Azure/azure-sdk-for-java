@@ -39,6 +39,7 @@ import com.azure.ai.translation.document.models.Glossary;
 import com.azure.ai.translation.document.models.SourceInput;
 import com.azure.ai.translation.document.models.SupportedFileFormats;
 import com.azure.ai.translation.document.models.TargetInput;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.azure.core.test.TestMode;
 
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -57,6 +59,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class DocumentTranslationTests extends DocumentTranslationClientTestBase {
     static int retryCount = 10;
     
+    @RecordWithoutRequestBody
     @Test
     public void testClientCannotAuthenticateWithFakeApiKey() {
         String testEndpoint = "https://t7d8641d8f25ec940-doctranslation.cognitiveservices.azure.com";
@@ -70,7 +73,8 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
             assertEquals(401, httpResponse.getStatusCode());
         }
     }
-            
+
+    @RecordWithoutRequestBody
     @Test
     public void testSingleSourceSingleTarget() {
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
@@ -92,6 +96,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         ValidateTranslationStatus(translationStatus, 1);
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testSingleSourceMultipleTargets() {
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
@@ -124,6 +129,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         ValidateTranslationStatus(translationStatus, 3);
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testMultipleSourcesSingleTarget() {
         String sourceUrl1 = createSourceContainer(ONE_TEST_DOCUMENTS);
@@ -156,6 +162,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         ValidateTranslationStatus(translationStatus, 2);
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testSingleSourceSingleTargetWithPrefix() {
         String sourceUrl = createSourceContainer(TWO_TEST_DOCUMENTS);
@@ -180,6 +187,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         ValidateTranslationStatus(translationStatus, 1);
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testSingleSourceSingleTargetWithSuffix() {
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
@@ -204,6 +212,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         ValidateTranslationStatus(translationStatus, 1);
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testSingleSourceSingleTargetListDocuments() {
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);        
@@ -232,6 +241,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         assertEquals(translationStatus.getSummary().getTotalCharacterCharged(), (long)firstItem.getCharacterCharged());
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatus() {
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);        
@@ -259,7 +269,8 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         DocumentStatus documentStatus = getDocumentTranslationClient().getDocumentStatus(translationId, documentId);
         ValidateDocumentStatus(documentStatus, targetLanguageCode);
     }
-        
+      
+    @RecordWithoutRequestBody
     @Test
     public void testWrongSourceRightTarget() {
         String sourceUrl = "https://idont.ex.ist";
@@ -290,6 +301,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         assertEquals(innerErrorCode, "InvalidDocumentAccessLevel");    
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testRightSourceWrongTarget() {
         String sourceUrl =  createSourceContainer(ONE_TEST_DOCUMENTS);
@@ -320,6 +332,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         assertEquals("InvalidTargetDocumentAccessLevel", innerErrorCode); 
     }
 
+    @RecordWithoutRequestBody
     @Test
     public void testContainerWithSupportedAndUnsupportedFiles() {
         List<TestDocument> documents = new ArrayList<>();
@@ -346,6 +359,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         ValidateTranslationStatus(translationStatus, 1);
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testEmptyDocumentError() {
         List<TestDocument> documents = new ArrayList<>();
@@ -381,6 +395,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         assertEquals("NoTranslatableText", innerErrorCode);
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testExistingFileInTargetContainer() {
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);        
@@ -411,6 +426,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         assertEquals("TargetFileAlreadyExists", innerErrorCode); 
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testGetDocumentStatusWithInvalidGuid() {
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);        
@@ -440,6 +456,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         }, "Expected ResourceNotFoundException was not thrown");  
     }
             
+    @RecordWithoutRequestBody
     @Test
     public void testDocumentTranslationWithGlossary() {
         String documentName = "Document1.txt";
@@ -491,12 +508,14 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         assertEquals(0, translationStatus.getSummary().getInProgress());
     }
     
-    public static void ValidateDocumentStatus(DocumentStatus documentStatus, String targetLanguageCode) {
+    private void ValidateDocumentStatus(DocumentStatus documentStatus, String targetLanguageCode) {
         assertEquals("Succeeded", documentStatus.getStatus().toString());
         assertNotNull(documentStatus.getId());
         assertNotNull(documentStatus.getSourcePath());
         assertNotNull(documentStatus.getPath());
+        if (getTestMode() == TestMode.LIVE) { 
         assertEquals(targetLanguageCode, documentStatus.getTo());
+        }
         assertNotEquals(new Date(), documentStatus.getCreatedDateTimeUtc());
         assertNotEquals(new Date(), documentStatus.getLastActionDateTimeUtc());
         assertEquals(1, documentStatus.getProgress());

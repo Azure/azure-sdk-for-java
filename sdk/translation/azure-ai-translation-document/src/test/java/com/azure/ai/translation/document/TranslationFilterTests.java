@@ -39,6 +39,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.azure.core.util.polling.SyncPoller;
@@ -48,6 +49,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TranslationFilterTests extends DocumentTranslationClientTestBase {
     static int retryCount = 10;
+    
+    @RecordWithoutRequestBody
     @Test
     public void testGetTranslationStatusesFilterByStatus() {
         createTranslationJobs(1, 1, DocumentTranslationStatus.SUCCEEDED);
@@ -79,6 +82,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         }
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testGetTranslationStatusesFilterByIds() {
         List<String> allIds = createTranslationJobs(2, 1, DocumentTranslationStatus.SUCCEEDED);
@@ -106,6 +110,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         }
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testGetTranslationStatusesFilterByCreatedAfter() {
         // timestamp before creating a translation job
@@ -133,6 +138,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         }
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testGetTranslationStatusesFilterByCreatedBefore() {
         //create some translations     
@@ -166,6 +172,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         }
     }
     
+    @RecordWithoutRequestBody
     @Test
     public void testGetTranslationStatusesOrderByCreatedOn() {
         //create some translations     
