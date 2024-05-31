@@ -1081,7 +1081,7 @@ public class DataLakePathClient {
                 throw LOGGER.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
                     continuationToken));
             } else {
-                throw LOGGER.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, continuationToken));
+                throw LOGGER.logExceptionAsError(ModelHelper.changeAclFailed(e, continuationToken));
             }
         }
     }
@@ -1198,7 +1198,7 @@ public class DataLakePathClient {
                 throw LOGGER.logExceptionAsError(ModelHelper.changeAclRequestFailed((DataLakeStorageException) e,
                     effectiveNextToken));
             } else {
-                throw LOGGER.logExceptionAsError(ModelHelper.changeAclFailed((Exception) e, effectiveNextToken));
+                throw LOGGER.logExceptionAsError(ModelHelper.changeAclFailed(e, effectiveNextToken));
             }
 
         }

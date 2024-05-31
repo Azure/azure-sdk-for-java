@@ -138,9 +138,8 @@ public class DataLakeFileSystemClientBuilder implements
          */
         String dataLakeFileSystemName = CoreUtils.isNullOrEmpty(fileSystemName)
             ? DataLakeFileSystemClient.ROOT_FILESYSTEM_NAME : fileSystemName;
-        return new DataLakeFileSystemClient(buildAsyncClient(),
-            blobContainerClientBuilder.buildClient(), constructPipeline(), endpoint, getServiceVersion(), accountName,
-            dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient(), azureSasCredential,
+        return new DataLakeFileSystemClient(buildAsyncClient(), blobContainerClientBuilder.buildClient(),
+            constructPipeline(), endpoint, getServiceVersion(), accountName, dataLakeFileSystemName, azureSasCredential,
             tokenCredential != null);
     }
 
@@ -167,8 +166,7 @@ public class DataLakeFileSystemClientBuilder implements
         to read and debug.
          */
         String dataLakeFileSystemName = CoreUtils.isNullOrEmpty(fileSystemName)
-            ? DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME
-            : fileSystemName;
+            ? DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME : fileSystemName;
 
         return new DataLakeFileSystemAsyncClient(constructPipeline(), endpoint, getServiceVersion(), accountName,
             dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient(), azureSasCredential,
