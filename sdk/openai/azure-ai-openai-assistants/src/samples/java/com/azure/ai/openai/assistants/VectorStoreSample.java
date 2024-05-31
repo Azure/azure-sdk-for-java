@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.Assistant;
@@ -5,7 +8,6 @@ import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
-import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FileSearchToolDefinition;
 import com.azure.ai.openai.assistants.models.MessageAttachment;
@@ -36,6 +38,10 @@ import java.util.List;
 import static com.azure.ai.openai.assistants.AssistantsClientTestBase.openResourceFile;
 import static com.azure.ai.openai.assistants.models.FilePurpose.ASSISTANTS;
 
+/**
+ * Sample demonstrates how to create an Assistant with a Vector Store and interact with it.
+ * It creates an assistant that can help answer questions about companies’ financial statements.
+ */
 public class VectorStoreSample {
     static String apiKey = Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY");
 
@@ -43,45 +49,44 @@ public class VectorStoreSample {
             .credential(new KeyCredential(apiKey))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
+
+    /**
+     * Runs the sample algorithm and demonstrates how to create an Assistant with a Vector Store and interact with it.
+     *
+     * @param args Unused. Arguments to the program.
+     */
     public static void main(String[] args) throws InterruptedException {
         String deploymentOrModelId = "gpt-4o";
 
         // Step 1: Create a new Assistant with File Search Enabled
-        Assistant mathTutorAssistant = client.createAssistant(new AssistantCreationOptions(deploymentOrModelId)
+        Assistant financialAnalystAssistant = client.createAssistant(new AssistantCreationOptions(deploymentOrModelId)
                 .setName("Financial Analyst Assistant")
                 .setInstructions("You are an expert financial analyst. Use you knowledge base to answer questions about audited financial statements.")
                 .setTools(Arrays.asList(new FileSearchToolDefinition()))
         );
 
+        // Step 2: Upload files and add them to a Vector Store
         String fileName = "20210203_alphabet_10K.pdf";
         FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
                 .setFilename(fileName);
-        OpenAIFile file = client.uploadFile(fileDetails, ASSISTANTS);
+        OpenAIFile googleFile = client.uploadFile(fileDetails, ASSISTANTS);
 
         fileName = "20231231_brk_10k.pdf";
         fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
                 .setFilename(fileName);
-        OpenAIFile file2 = client.uploadFile(fileDetails, ASSISTANTS);
+        OpenAIFile berkshireFile = client.uploadFile(fileDetails, ASSISTANTS);
 
-
-
-
-        // Step 2: Upload files and add them to a Vector Store
-        // Create a vector store caled "Financial Statements"
+        // Create a vector store called "Financial Statements"
         VectorStoreOptions vectorStoreOptions = new VectorStoreOptions().setName("Financial Statements")
-                .setFileIds(Arrays.asList(file.getId(), file2.getId()));
+                .setFileIds(Arrays.asList(googleFile.getId(), berkshireFile.getId()));
         VectorStore vectorStore = client.createVectorStore(vectorStoreOptions);
-
-
 
         while (VectorStoreStatus.IN_PROGRESS.equals(vectorStore.getStatus())) {
             vectorStore = client.getVectorStore(vectorStore.getId());
         }
 
-        System.out.println("Vector Store ID: " + vectorStore.getId());
-
         // Step 3: Update the assistant to use the new Vector Store
-        Assistant assistantWithVectorStore = client.updateAssistant(mathTutorAssistant.getId(),
+        Assistant assistantWithVectorStore = client.updateAssistant(financialAnalystAssistant.getId(),
                 new UpdateAssistantOptions()
                         .setToolResources(
                                 new UpdateToolResourcesOptions()
@@ -93,13 +98,12 @@ public class VectorStoreSample {
                         )
         );
 
-
         // Step 4: Create a thread
         // Upload the user provided file to OpenAI
         fileName = "20220924_aapl_10k.pdf";
         fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
                 .setFilename(fileName);
-        OpenAIFile userFile = client.uploadFile(fileDetails, ASSISTANTS);
+        OpenAIFile appleFile = client.uploadFile(fileDetails, ASSISTANTS);
 
         // Create a thread and attach the file to the message
         AssistantThread thread = client.createThread(
@@ -107,10 +111,10 @@ public class VectorStoreSample {
                         .setMessages(Arrays.asList(
                                 new ThreadMessageOptions(
                                         MessageRole.USER,
-                                        "How many shares of AAPL were outstanding at the end of of October 2023?")
+                                        "How many shares of AAPL were outstanding at the end of of October 2021?")
                                         .setAttachments(Arrays.asList(
                                                 new MessageAttachment(
-                                                        userFile.getId(),
+                                                        appleFile.getId(),
                                                         Arrays.asList(
                                                                 BinaryData.fromObject(new FileSearchToolDefinition())
                                                         )
@@ -119,15 +123,11 @@ public class VectorStoreSample {
                         ))
         );
         //  The thread now has a vector store with that file in its tool resources.
-
-
+        String threadId = thread.getId();
 
         // Step 5: Create a run and check the output
-
-
-        ThreadRun run = client.createRun(thread.getId(), new CreateRunOptions(assistantWithVectorStore.getId()));
-
-        ThreadRun threadRun = waitOnRun(run, thread.getId());
+        ThreadRun run = client.createRun(threadId, new CreateRunOptions(assistantWithVectorStore.getId()));
+        ThreadRun threadRun = waitOnRun(run, threadId);
         PageableList<ThreadMessage> messages = client.listMessages(threadRun.getThreadId());
         List<ThreadMessage> data = messages.getData();
         for (int i = 0; i < data.size(); i++) {
@@ -139,11 +139,13 @@ public class VectorStoreSample {
             }
         }
 
-        // Delete file
-        FileDeletionStatus deletionStatus = client.deleteFile(file.getId());
-        deletionStatus = client.deleteFile(file2.getId());
-        deletionStatus = client.deleteFile(userFile.getId());
-
+        // Clean up resources
+        client.deleteFile(googleFile.getId());
+        client.deleteFile(berkshireFile.getId());
+        client.deleteFile(appleFile.getId());
+        client.deleteThread(threadId);
+        client.deleteVectorStore(vectorStore.getId());
+        client.deleteAssistant(financialAnalystAssistant.getId());
     }
 
     private static ThreadRun waitOnRun(ThreadRun run, String threadId) throws InterruptedException {
@@ -156,5 +158,4 @@ public class VectorStoreSample {
         }
         return run;
     }
-
 }
