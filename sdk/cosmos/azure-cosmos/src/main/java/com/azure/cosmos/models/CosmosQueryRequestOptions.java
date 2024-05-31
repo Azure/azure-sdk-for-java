@@ -541,11 +541,6 @@ public class CosmosQueryRequestOptions {
                     return options.actualRequestOptions;
                 }
 
-                /*@Override
-                public void setImpl(CosmosQueryRequestOptions options, CosmosQueryRequestOptionsImpl optionsImpl) {
-                    options.actualRequestOptions = optionsImpl;
-                }*/
-
                 @Override
                 public CosmosQueryRequestOptions clone(CosmosQueryRequestOptions toBeCloned) {
                     return new CosmosQueryRequestOptions(toBeCloned);

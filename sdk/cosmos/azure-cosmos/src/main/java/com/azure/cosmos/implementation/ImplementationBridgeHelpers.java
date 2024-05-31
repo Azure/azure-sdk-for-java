@@ -271,7 +271,6 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosQueryRequestOptionsAccessor {
             CosmosQueryRequestOptionsBase<?> getImpl(CosmosQueryRequestOptions options);
-//            void setImpl(CosmosQueryRequestOptions options, CosmosQueryRequestOptionsImpl optionsImpl);
             CosmosQueryRequestOptions clone(CosmosQueryRequestOptions toBeCloned);
             CosmosQueryRequestOptions clone(CosmosQueryRequestOptionsBase<?> toBeCloned);
             boolean isQueryPlanRetrievalDisallowed(CosmosQueryRequestOptions queryRequestOptions);
@@ -406,22 +405,13 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosItemRequestOptionsAccessor {
-            RequestOptions toRequestOptions(CosmosItemRequestOptions itemRequestOptions, CosmosItemSerializer effectiveItemSerializer);
+            RequestOptions toRequestOptions(CosmosItemRequestOptions itemRequestOptions);
             void setOperationContext(CosmosItemRequestOptions queryRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosItemRequestOptions queryRequestOptions);
             CosmosItemRequestOptions clone(CosmosItemRequestOptions options);
             CosmosItemRequestOptions setHeader(CosmosItemRequestOptions cosmosItemRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosItemRequestOptions cosmosItemRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosItemRequestOptions cosmosItemRequestOptions);
-            CosmosItemRequestOptions setNonIdempotentWriteRetryPolicy(
-                CosmosItemRequestOptions options,
-                boolean enabled,
-                boolean useTrackingIds);
-            WriteRetryPolicy calculateAndGetEffectiveNonIdempotentRetriesEnabled(
-                CosmosItemRequestOptions cosmosItemRequestOptions,
-                WriteRetryPolicy clientDefault,
-                boolean operationDefault);
-
             CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
                 CosmosItemRequestOptions options);
 

@@ -5,7 +5,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OverridableRequestOptions;
 
 /**
- * Encapsulates the details of an operation and allows for override some options in the internal request options.
+ * Encapsulates the details of an operation and allows for overriding some properties in the internal request options.
  *
  */
 public class CosmosOperationDetails {

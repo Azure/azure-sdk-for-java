@@ -3,11 +3,11 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 
 import java.util.List;
 
 public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOptions {
-// ------------------------------- Remember validation -------------------------
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
 
     private ConsistencyLevel consistencyLevel;
@@ -256,7 +256,10 @@ public final class CosmosCommonRequestOptions implements ICosmosCommonRequestOpt
 
     @Override
     public List<String> getExcludedRegions() {
-        return this.excludeRegions;
+         if (this.excludeRegions == null) {
+            return null;
+        }
+        return UnmodifiableList.unmodifiableList(this.excludeRegions);
     }
 
     @Override

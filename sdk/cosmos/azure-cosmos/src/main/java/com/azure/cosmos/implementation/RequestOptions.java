@@ -10,7 +10,6 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
-import com.azure.cosmos.models.ICosmosCommonRequestOptions;
 import com.azure.cosmos.models.IndexingDirective;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.CosmosCommonRequestOptions;
@@ -49,9 +48,9 @@ public class RequestOptions implements OverridableRequestOptions {
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
     private DedicatedGatewayRequestOptions dedicatedGatewayRequestOptions;
     private CosmosDiagnosticsThresholds thresholds;
-
+    private boolean useTrackingIds;
     private String trackingId;
-    private boolean nonIdempotentWriteRetriesEnabled = false;
+    private Boolean nonIdempotentWriteRetriesEnabled;
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
     private List<String> excludeRegions;
 
@@ -572,4 +571,47 @@ public class RequestOptions implements OverridableRequestOptions {
     public void setEffectiveItemSerializer(CosmosItemSerializer serializer) {
         this.effectiveItemSerializer = serializer;
     }
+
+    public void setUseTrackingIds(boolean useTrackingIds) {
+        this.useTrackingIds = useTrackingIds;
+    }
+
+    public boolean getUseTrackingIds() {
+        return this.useTrackingIds;
+    }
+
+    public WriteRetryPolicy calculateAndGetEffectiveNonIdempotentRetriesEnabled(
+        WriteRetryPolicy clientDefault,
+        boolean operationDefault) {
+
+        if (this.nonIdempotentWriteRetriesEnabled != null) {
+            return new WriteRetryPolicy(
+                this.nonIdempotentWriteRetriesEnabled,
+                this.useTrackingIds);
+        }
+
+        if (!operationDefault) {
+            this.setNonIdempotentWriteRetriesEnabled(false);
+            this.setUseTrackingIds(false);
+            return WriteRetryPolicy.DISABLED;
+        }
+
+        if (clientDefault != null) {
+            if (clientDefault.isEnabled()) {
+                this.setNonIdempotentWriteRetriesEnabled(true);
+                this.setUseTrackingIds(clientDefault.useTrackingIdProperty());
+            } else {
+                this.setNonIdempotentWriteRetriesEnabled(false);
+                this.setUseTrackingIds(false);
+            }
+
+            return clientDefault;
+        }
+
+        this.setNonIdempotentWriteRetriesEnabled(false);
+        this.setUseTrackingIds(false);
+        return WriteRetryPolicy.DISABLED;
+    }
+
+
 }

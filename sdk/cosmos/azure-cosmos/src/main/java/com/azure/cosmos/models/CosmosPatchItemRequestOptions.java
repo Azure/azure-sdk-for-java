@@ -47,9 +47,8 @@ public class CosmosPatchItemRequestOptions extends CosmosItemRequestOptions {
         return this;
     }
 
-    @Override
-    RequestOptions toRequestOptions(CosmosItemSerializer effectiveItemSerializer) {
-        RequestOptions requestOptions = super.toRequestOptions(effectiveItemSerializer);
+    RequestOptions toRequestOptions() {
+        RequestOptions requestOptions = super.toRequestOptions();
         requestOptions.setFilterPredicate(filterPredicate);
         return requestOptions;
     }

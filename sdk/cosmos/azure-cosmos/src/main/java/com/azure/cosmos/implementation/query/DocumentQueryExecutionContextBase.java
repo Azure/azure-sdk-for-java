@@ -130,7 +130,7 @@ implements IDocumentQueryExecutionContext<T> {
         request.applyFeedRangeFilter(FeedRangeInternal.convert(feedRange));
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig = qryOptAccessor
             .getImpl(cosmosQueryRequestOptions)
-            .getEndToEndOperationLatencyConfig();
+            .getCosmosEndToEndLatencyPolicyConfig();
 
         if (endToEndOperationLatencyConfig != null) {
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
@@ -328,7 +328,7 @@ implements IDocumentQueryExecutionContext<T> {
                 requestHeaders);
             CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig = qryOptAccessor
                 .getImpl(cosmosQueryRequestOptions)
-                .getEndToEndOperationLatencyConfig();
+                .getCosmosEndToEndLatencyPolicyConfig();
             if (endToEndOperationLatencyConfig != null) {
                 executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
             }

@@ -15,6 +15,7 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.CosmosOperationPolicy;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
@@ -70,6 +71,7 @@ import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosOperationDetails;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -164,6 +166,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor itemResponseAccessor =
         ImplementationBridgeHelpers.CosmosItemResponseHelper.getCosmosItemResponseBuilderAccessor();
 
+    private static final ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.CosmosChangeFeedRequestOptionsAccessor changeFeedOptionsAccessor =
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor();
+
+    private static final ImplementationBridgeHelpers.CosmosOperationDetailsHelper.CosmosOperationDetailsAccessor operationDetailsAccessor =
+        ImplementationBridgeHelpers.CosmosOperationDetailsHelper.getCosmosOperationDetailsAccessor();
+
     private static final String tempMachineId = "uuid:" + UUID.randomUUID();
     private static final AtomicInteger activeClientsCnt = new AtomicInteger(0);
     private static final Map<String, Integer> clientMap = new ConcurrentHashMap<>();
@@ -243,6 +251,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean sessionCapturingOverrideEnabled;
     private final boolean sessionCapturingDisabled;
     private final boolean isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig;
+    private List<CosmosOperationPolicy> operationPolicies;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -308,7 +317,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 SessionRetryOptions sessionRetryOptions,
                                 CosmosContainerProactiveInitConfig containerProactiveInitConfig,
                                 CosmosItemSerializer defaultCustomSerializer,
-                                boolean isRegionScopedSessionCapturingEnabled) {
+                                boolean isRegionScopedSessionCapturingEnabled,
+                                List<CosmosOperationPolicy> operationPolicies) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -331,6 +341,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 defaultCustomSerializer,
                 isRegionScopedSessionCapturingEnabled);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
+        this.operationPolicies = operationPolicies;
     }
 
     private RxDocumentClientImpl(URI serviceEndpoint,
@@ -3584,13 +3595,38 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         checkNotNull(collection, "Argument 'collection' must not be null.");
 
+        CosmosChangeFeedRequestOptions clonedOptions = changeFeedOptionsAccessor.clone(changeFeedOptions);
+
+        CosmosChangeFeedRequestOptionsImpl optionsImpl = changeFeedOptionsAccessor.getImpl(clonedOptions);
+        CosmosDiagnosticsContext cosmosCtx = ctxAccessor.create(
+            null,
+            null,
+            null,
+            null,
+            null,
+            ResourceType.Document,
+            OperationType.ReadFeed,
+            null,
+            consistencyLevel,
+            null,
+            null,
+            null,
+            connectionPolicy.getConnectionMode().toString(),
+            getUserAgent(),
+            null,
+            null);
+
+        CosmosOperationDetails operationDetails = operationDetailsAccessor.create(optionsImpl, cosmosCtx);
+        this.operationPolicies.forEach(policy -> policy.process(operationDetails));
+
         ChangeFeedQueryImpl<T> changeFeedQueryImpl = new ChangeFeedQueryImpl<>(
             this,
             ResourceType.Document,
             classOfT,
             collection.getAltLink(),
             collection.getResourceId(),
-            changeFeedOptions);
+            clonedOptions);
+
 
         return changeFeedQueryImpl.executeAsync();
     }

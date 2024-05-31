@@ -34,7 +34,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class CosmosChangeFeedRequestOptions {
    private final CosmosChangeFeedRequestOptionsImpl actualRequestOptions;
-   //-------------------------- does not have consistency level --------------------------------------------------
 
     CosmosChangeFeedRequestOptions(CosmosChangeFeedRequestOptions topBeCloned) {
        this.actualRequestOptions  = new CosmosChangeFeedRequestOptionsImpl(topBeCloned.actualRequestOptions);

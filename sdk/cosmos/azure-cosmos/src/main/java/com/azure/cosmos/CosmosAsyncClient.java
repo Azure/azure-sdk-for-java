@@ -105,7 +105,7 @@ public final class CosmosAsyncClient implements Closeable {
             ImplementationBridgeHelpers.CosmosContainerIdentityHelper.getCosmosContainerIdentityAccessor();
     private final ConsistencyLevel accountConsistencyLevel;
     private final WriteRetryPolicy nonIdempotentWriteRetryPolicy;
-    private List<CosmosOperationPolicy> requestPolicies;
+    private final List<CosmosOperationPolicy> requestPolicies;
     private final CosmosItemSerializer defaultCustomSerializer;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
@@ -152,6 +152,7 @@ public final class CosmosAsyncClient implements Closeable {
         }
 
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
+                                       .withRequestPolicies(this.requestPolicies)
                                        .withServiceEndpoint(this.serviceEndpoint)
                                        .withMasterKeyOrResourceToken(keyOrResourceToken)
                                        .withConnectionPolicy(this.connectionPolicy)
