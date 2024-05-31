@@ -30,8 +30,6 @@ public class NetworkAnalyticsManagerTests extends TestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testListDataProducts() {
-        // @embedStart
         networkAnalyticsManager.dataProducts().list();
-        // @embedEd
     }
 }
