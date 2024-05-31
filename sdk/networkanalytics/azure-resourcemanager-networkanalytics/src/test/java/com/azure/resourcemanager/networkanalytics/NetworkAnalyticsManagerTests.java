@@ -30,6 +30,6 @@ public class NetworkAnalyticsManagerTests extends TestBase {
     @Test
     @LiveOnly
     public void testListDataProducts() {
-        networkAnalyticsManager.dataProducts().list();
+        networkAnalyticsManager.dataProducts().list().stream().count();
     }
 }
