@@ -4,15 +4,14 @@
 package com.azure.cosmos.implementation;
 
 import java.util.Map;
-import java.util.Set;
 
-public class FeedOperationContext {
+public class FeedOperationContextForCircuitBreaker {
 
     private final Map<GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper, GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess;
     private final boolean isThresholdBasedAvailabilityStrategyEnabled;
     private boolean isRequestHedged;
 
-    public FeedOperationContext(Map<GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper, GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess, boolean isThresholdBasedAvailabilityStrategyEnabled) {
+    public FeedOperationContextForCircuitBreaker(Map<GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper, GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper> partitionKeyRangesWithSuccess, boolean isThresholdBasedAvailabilityStrategyEnabled) {
         this.partitionKeyRangesWithSuccess = partitionKeyRangesWithSuccess;
         this.isThresholdBasedAvailabilityStrategyEnabled = isThresholdBasedAvailabilityStrategyEnabled;
     }

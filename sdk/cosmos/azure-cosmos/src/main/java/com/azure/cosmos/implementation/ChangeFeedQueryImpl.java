@@ -3,8 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosItemSerializer;
-import com.azure.cosmos.implementation.apachecommons.collections.CollectionUtils;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -18,8 +16,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -147,7 +143,7 @@ class ChangeFeedQueryImpl<T> {
 
         if (request.requestContext != null) {
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
-            request.requestContext.setFeedOperationContext(new FeedOperationContext(new ConcurrentHashMap<>(), false));
+            request.requestContext.setFeedOperationContext(new FeedOperationContextForCircuitBreaker(new ConcurrentHashMap<>(), false));
         }
 
         return request;

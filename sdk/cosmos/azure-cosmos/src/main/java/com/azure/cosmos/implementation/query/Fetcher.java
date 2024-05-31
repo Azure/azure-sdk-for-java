@@ -4,14 +4,11 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.FeedOperationContext;
+import com.azure.cosmos.implementation.FeedOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -21,7 +18,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -180,11 +176,11 @@ abstract class Fetcher<T> {
 
                     checkNotNull(request.requestContext, "Argument 'request.requestContext' must not be null!");
 
-                    FeedOperationContext feedOperationContext = request.requestContext.getFeedOperationContext();
+                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker = request.requestContext.getFeedOperationContext();
 
-                    checkNotNull(feedOperationContext, "Argument 'feedOperationContext' must not be null!");
+                    checkNotNull(feedOperationContextForCircuitBreaker, "Argument 'feedOperationContextForCircuitBreaker' must not be null!");
 
-                    feedOperationContext.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId());
+                    feedOperationContextForCircuitBreaker.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId());
                 }
             })
             .doOnError(throwable -> completed.set(true))
@@ -205,12 +201,12 @@ abstract class Fetcher<T> {
 
                     checkNotNull(request.requestContext, "Argument 'request.requestContext' must not be null!");
 
-                    FeedOperationContext feedOperationContext = request.requestContext.getFeedOperationContext();
+                    FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker = request.requestContext.getFeedOperationContext();
 
-                    checkNotNull(feedOperationContext, "Argument 'feedOperationContext' must not be null!");
+                    checkNotNull(feedOperationContextForCircuitBreaker, "Argument 'feedOperationContextForCircuitBreaker' must not be null!");
 
-                    if (feedOperationContext.isThresholdBasedAvailabilityStrategyEnabled()) {
-                        if (!feedOperationContext.getIsRequestHedged() && feedOperationContext.hasPartitionKeyRangeSeenSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId())) {
+                    if (feedOperationContextForCircuitBreaker.isThresholdBasedAvailabilityStrategyEnabled()) {
+                        if (!feedOperationContextForCircuitBreaker.getIsRequestHedged() && feedOperationContextForCircuitBreaker.hasPartitionKeyRangeSeenSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId())) {
 
                             if (this.globalEndpointManager != null && this.globalPartitionEndpointManagerForCircuitBreaker != null) {
                                 this.handleLocationExceptionForPartitionKeyRange(request);

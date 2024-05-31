@@ -59,9 +59,9 @@ public class DocumentServiceRequestContext implements Cloneable {
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
 
-    private PointOperationContext pointOperationContext;
+    private PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker;
 
-    private FeedOperationContext feedOperationContext;
+    private FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
 
     public DocumentServiceRequestContext() {}
@@ -189,20 +189,20 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.unavailableRegionsForPartition = unavailableRegionsForPartition;
     }
 
-    public PointOperationContext getPointOperationContext() {
-        return pointOperationContext;
+    public PointOperationContextForCircuitBreaker getPointOperationContext() {
+        return pointOperationContextForCircuitBreaker;
     }
 
-    public void setPointOperationContext(PointOperationContext pointOperationContext) {
-        this.pointOperationContext = pointOperationContext;
+    public void setPointOperationContext(PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+        this.pointOperationContextForCircuitBreaker = pointOperationContextForCircuitBreaker;
     }
 
-    public FeedOperationContext getFeedOperationContext() {
-        return feedOperationContext;
+    public FeedOperationContextForCircuitBreaker getFeedOperationContext() {
+        return feedOperationContextForCircuitBreaker;
     }
 
-    public void setFeedOperationContext(FeedOperationContext feedOperationContext) {
-        this.feedOperationContext = feedOperationContext;
+    public void setFeedOperationContext(FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker) {
+        this.feedOperationContextForCircuitBreaker = feedOperationContextForCircuitBreaker;
     }
 
     public long getApproximateBloomFilterInsertionCount() {

@@ -3,11 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class PointOperationContext {
+public class PointOperationContextForCircuitBreaker {
 
     private final AtomicBoolean hasOperationSeenSuccess;
 
@@ -15,7 +13,7 @@ public class PointOperationContext {
 
     private boolean isRequestHedged;
 
-    public PointOperationContext(AtomicBoolean hasOperationSeenSuccess, boolean isThresholdBasedAvailabilityStrategyEnabled) {
+    public PointOperationContextForCircuitBreaker(AtomicBoolean hasOperationSeenSuccess, boolean isThresholdBasedAvailabilityStrategyEnabled) {
         this.hasOperationSeenSuccess = hasOperationSeenSuccess;
         this.isThresholdBasedAvailabilityStrategyEnabled = isThresholdBasedAvailabilityStrategyEnabled;
     }
