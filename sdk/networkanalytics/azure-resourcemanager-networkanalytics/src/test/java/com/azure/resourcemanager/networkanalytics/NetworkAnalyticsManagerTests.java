@@ -23,7 +23,7 @@ public class NetworkAnalyticsManagerTests extends TestBase {
 
         networkAnalyticsManager = NetworkAnalyticsManager
             .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
     }
 
