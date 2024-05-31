@@ -165,6 +165,7 @@
     "com.azure.ai.openai.assistants.AssistantsClient.uploadFileWithResponse": "Azure.AI.OpenAI.Assistants.uploadFile",
     "com.azure.ai.openai.assistants.AssistantsClientBuilder": "Azure.AI.OpenAI.Assistants.AssistantsClient",
     "com.azure.ai.openai.assistants.implementation.models.CreateVectorStoreFileBatchRequest": "",
+    "com.azure.ai.openai.assistants.implementation.models.CreateVectorStoreFileRequest": "",
     "com.azure.ai.openai.assistants.implementation.models.FileListResponse": "Azure.AI.OpenAI.Assistants.FileListResponse",
     "com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistant": "Azure.AI.OpenAI.Assistants.OpenAIPageableListOf",
     "com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfRunStep": "Azure.AI.OpenAI.Assistants.OpenAIPageableListOf",

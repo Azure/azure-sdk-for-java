@@ -5,6 +5,7 @@
 ### Features Added
 
 - Added `createRunStream` and `createThreadAndRunStream` methods to `AssistantsClient` and `AssistantsAsyncClient` classes. A suite of classes extending from `StreamUpdate` were added for users to be able to consume the incremental updates from the service
+- Added support for vector store, vector store with file and a batch of files operations. 
 
 ### Breaking Changes
 

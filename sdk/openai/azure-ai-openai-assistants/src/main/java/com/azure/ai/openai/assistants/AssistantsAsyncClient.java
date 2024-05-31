@@ -6,6 +6,7 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
 import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.assistants.implementation.models.CreateVectorStoreFileBatchRequest;
+import com.azure.ai.openai.assistants.implementation.models.CreateVectorStoreFileRequest;
 import com.azure.ai.openai.assistants.implementation.models.FileListResponse;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistant;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfRunStep;
@@ -2691,9 +2692,9 @@ public final class AssistantsAsyncClient {
      * @return the response data for a requested list of items along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listVectorStoresWithResponse(RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listVectorStoresWithResponseAsync(requestOptions);
     }
 
@@ -2755,10 +2756,10 @@ public final class AssistantsAsyncClient {
      * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
      * {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createVectorStoreWithResponse(BinaryData vectorStoreOptions,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createVectorStoreWithResponseAsync(vectorStoreOptions, requestOptions);
     }
 
@@ -2802,9 +2803,9 @@ public final class AssistantsAsyncClient {
      * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
      * {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getVectorStoreWithResponse(String vectorStoreId, RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getVectorStoreWithResponseAsync(vectorStoreId, requestOptions);
     }
 
@@ -2864,10 +2865,10 @@ public final class AssistantsAsyncClient {
      * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
      * {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> modifyVectorStoreWithResponse(String vectorStoreId,
         BinaryData vectorStoreUpdateOptions, RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.modifyVectorStoreWithResponseAsync(vectorStoreId, vectorStoreUpdateOptions,
             requestOptions);
     }
@@ -2893,10 +2894,10 @@ public final class AssistantsAsyncClient {
      * @return response object for deleting a vector store along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteVectorStoreWithResponse(String vectorStoreId,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.deleteVectorStoreWithResponseAsync(vectorStoreId, requestOptions);
     }
 
@@ -2906,8 +2907,8 @@ public final class AssistantsAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. One of `in_progress`, `completed`,
-     * `failed`, `cancelled`. Allowed values: "in_progress", "completed", "failed", "cancelled".</td></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. Allowed values: "in_progress",
+     * "completed", "failed", "cancelled".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the default is 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
@@ -2955,10 +2956,10 @@ public final class AssistantsAsyncClient {
      * @return the response data for a requested list of items along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listVectorStoreFilesWithResponse(String vectorStoreId,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listVectorStoreFilesWithResponseAsync(vectorStoreId, requestOptions);
     }
 
@@ -2967,7 +2968,9 @@ public final class AssistantsAsyncClient {
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
-     * String
+     * {
+     *     file_id: String (Required)
+     * }
      * }</pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
@@ -2988,8 +2991,7 @@ public final class AssistantsAsyncClient {
      * }</pre>
      *
      * @param vectorStoreId The ID of the vector store for which to create a File.
-     * @param fileId A File ID that the vector store should use. Useful for tools like `file_search` that can access
-     * files.
+     * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2998,11 +3000,11 @@ public final class AssistantsAsyncClient {
      * @return description of a file attached to a vector store along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createVectorStoreFileWithResponse(String vectorStoreId, BinaryData fileId,
+    public Mono<Response<BinaryData>> createVectorStoreFileWithResponse(String vectorStoreId, BinaryData request,
         RequestOptions requestOptions) {
-        return this.serviceClient.createVectorStoreFileWithResponseAsync(vectorStoreId, fileId, requestOptions);
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
+        return this.serviceClient.createVectorStoreFileWithResponseAsync(vectorStoreId, request, requestOptions);
     }
 
     /**
@@ -3034,10 +3036,10 @@ public final class AssistantsAsyncClient {
      * @return description of a file attached to a vector store along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getVectorStoreFileWithResponse(String vectorStoreId, String fileId,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getVectorStoreFileWithResponseAsync(vectorStoreId, fileId, requestOptions);
     }
 
@@ -3065,10 +3067,10 @@ public final class AssistantsAsyncClient {
      * @return response object for deleting a vector store file relationship along with {@link Response} on successful
      * completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteVectorStoreFileWithResponse(String vectorStoreId, String fileId,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.deleteVectorStoreFileWithResponseAsync(vectorStoreId, fileId, requestOptions);
     }
 
@@ -3113,10 +3115,10 @@ public final class AssistantsAsyncClient {
      * @return a batch of files attached to a vector store along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createVectorStoreFileBatchWithResponse(String vectorStoreId, BinaryData request,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createVectorStoreFileBatchWithResponseAsync(vectorStoreId, request, requestOptions);
     }
 
@@ -3151,10 +3153,10 @@ public final class AssistantsAsyncClient {
      * @return a batch of files attached to a vector store along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getVectorStoreFileBatchWithResponse(String vectorStoreId, String batchId,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getVectorStoreFileBatchWithResponseAsync(vectorStoreId, batchId, requestOptions);
     }
 
@@ -3190,10 +3192,10 @@ public final class AssistantsAsyncClient {
      * @return a batch of files attached to a vector store along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cancelVectorStoreFileBatchWithResponse(String vectorStoreId, String batchId,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.cancelVectorStoreFileBatchWithResponseAsync(vectorStoreId, batchId, requestOptions);
     }
 
@@ -3203,8 +3205,8 @@ public final class AssistantsAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. One of `in_progress`, `completed`,
-     * `failed`, `cancelled`. Allowed values: "in_progress", "completed", "failed", "cancelled".</td></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. Allowed values: "in_progress",
+     * "completed", "failed", "cancelled".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the default is 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
@@ -3253,10 +3255,10 @@ public final class AssistantsAsyncClient {
      * @return the response data for a requested list of items along with {@link Response} on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listVectorStoreFileBatchFilesWithResponse(String vectorStoreId, String batchId,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listVectorStoreFileBatchFilesWithResponseAsync(vectorStoreId, batchId,
             requestOptions);
     }
@@ -3550,8 +3552,9 @@ public final class AssistantsAsyncClient {
     public Mono<VectorStoreFile> createVectorStoreFile(String vectorStoreId, String fileId) {
         // Generated convenience method for createVectorStoreFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createVectorStoreFileWithResponse(vectorStoreId, BinaryData.fromObject(fileId), requestOptions)
-            .flatMap(FluxUtil::toMono)
+        CreateVectorStoreFileRequest requestObj = new CreateVectorStoreFileRequest(fileId);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return createVectorStoreFileWithResponse(vectorStoreId, request, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(VectorStoreFile.class));
     }
 

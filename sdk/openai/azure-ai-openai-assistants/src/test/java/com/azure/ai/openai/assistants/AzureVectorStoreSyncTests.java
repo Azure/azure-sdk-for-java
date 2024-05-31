@@ -10,6 +10,7 @@ import com.azure.ai.openai.assistants.models.VectorStoreFileDeletionStatus;
 import com.azure.ai.openai.assistants.models.VectorStoreFileStatus;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.CoreUtils;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -22,26 +23,27 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class VectorStoreSyncTests extends AssistantsClientTestBase {
+public class AzureVectorStoreSyncTests extends AssistantsClientTestBase {
     private AssistantsClient client;
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    @Disabled("Azure resource won't able to create a vector store with files")
     public void createVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-         client = getAssistantsClient(httpClient);
-         createVectorStoreRunner((vectorStoreDetails) -> {
-             VectorStore vectorStore = client.createVectorStore(vectorStoreDetails);
-             assertNotNull(vectorStore);
-             assertNotNull(vectorStore.getId());
-             // clean up the created vector store
-             deleteVectorStores(client, vectorStore.getId());
-         }, client);
-     }
+        client = getAssistantsClient(httpClient, serviceVersion);
+        createVectorStoreRunner(vectorStoreDetails -> {
+            VectorStore vectorStore = client.createVectorStore(vectorStoreDetails);
+            assertNotNull(vectorStore);
+            assertNotNull(vectorStore.getId());
+            // clean up the created vector store
+            deleteVectorStores(client, vectorStore.getId());
+        }, client);
+    }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void updateVectorStoreName(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         modifyVectorStoreRunner((vectorStoreId, vectorStoreDetails) -> {
             // Modify Vector Store
             VectorStore vectorStore = client.modifyVectorStore(vectorStoreId, vectorStoreDetails);
@@ -57,7 +59,7 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void getVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         getVectorStoreRunner((vectorStoreId) -> {
             // Get Vector Store
             VectorStore vectorStore = client.getVectorStore(vectorStoreId);
@@ -72,7 +74,7 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void deleteVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         deleteVectorStoreRunner((vectorStoreId) -> {
             // Delete Vector Store
             VectorStoreDeletionStatus deletionStatus = client.deleteVectorStore(vectorStoreId);
@@ -84,7 +86,7 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         listVectorStoreRunner((store1, store2) -> {
             // List Vector Stores
             PageableList<VectorStore> vectorStores = client.listVectorStores();
@@ -103,8 +105,9 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     // Vector Store with Files
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    @Disabled("Azure resource won't able to create a vector store with files")
     public void createVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         createVectorStoreWithFileRunner((storeId, fileId) -> {
             VectorStoreFile vectorStoreFile = client.createVectorStoreFile(storeId, fileId);
             assertNotNull(vectorStoreFile);
@@ -116,8 +119,9 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    @Disabled("Azure resource won't able to create a vector store with files")
     public void getVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         getVectorStoreFileRunner((vectorStoreFile, fileId) -> {
             String storeId = vectorStoreFile.getVectorStoreId();
             // Get Vector Store File
@@ -135,8 +139,9 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    @Disabled("Azure resource won't able to create a vector store with files")
     public void listVectorStoreFiles(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         listVectorStoreFilesRunner((vectorStoreFile1, vectorStoreFile2) -> {
             String storeId = vectorStoreFile1.getVectorStoreId();
             // List Vector Store Files
@@ -157,8 +162,9 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    @Disabled("Azure resource won't able to create a vector store with files")
     public void deleteVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         deleteVectorStoreFileRunner((vectorStoreFile, fileId) -> {
             String storeId = vectorStoreFile.getVectorStoreId();
             // Delete Vector Store File
@@ -174,8 +180,9 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     // Vector Store File Batch
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    @Disabled("Azure resource won't able to create a vector store with files")
     public void createVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         createVectorStoreWithFileBatchRunner((storeId, batchFiles) -> {
             VectorStoreFileBatch vectorStoreFileBatch = client.createVectorStoreFileBatch(storeId, batchFiles);
             assertNotNull(vectorStoreFileBatch);
@@ -188,8 +195,9 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    @Disabled("Azure resource won't able to create a vector store with files")
     public void getVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         getVectorStoreFileBatchRunner(vectorStoreFileBatch -> {
             String storeId = vectorStoreFileBatch.getVectorStoreId();
             String batchId = vectorStoreFileBatch.getId();
@@ -206,8 +214,9 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    @Disabled("Azure resource won't able to create a vector store with files")
     public void listVectorStoreFilesBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         listVectorStoreFilesBatchFilesRunner((storeId, batchId) -> {
             // List Vector Store Files
             PageableList<VectorStoreFile> vectorStoreFiles = client.listVectorStoreFileBatchFiles(storeId, batchId);
@@ -227,8 +236,9 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    @Disabled("Azure resource won't able to create a vector store with files")
     public void cancelVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
         cancelVectorStoreFileBatchRunner(vectorStore -> {
             String storeId = vectorStore.getId();
             String fileId = uploadFile(client, "20210203_alphabet_10K.pdf", ASSISTANTS);

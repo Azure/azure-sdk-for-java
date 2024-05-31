@@ -6,6 +6,7 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.implementation.AssistantsClientImpl;
 import com.azure.ai.openai.assistants.implementation.MultipartFormDataHelper;
 import com.azure.ai.openai.assistants.implementation.models.CreateVectorStoreFileBatchRequest;
+import com.azure.ai.openai.assistants.implementation.models.CreateVectorStoreFileRequest;
 import com.azure.ai.openai.assistants.implementation.models.FileListResponse;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfAssistant;
 import com.azure.ai.openai.assistants.implementation.models.OpenAIPageableListOfRunStep;
@@ -2723,9 +2724,9 @@ public final class AssistantsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response data for a requested list of items along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listVectorStoresWithResponse(RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listVectorStoresWithResponse(requestOptions);
     }
 
@@ -2787,10 +2788,10 @@ public final class AssistantsClient {
      * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
      * {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createVectorStoreWithResponse(BinaryData vectorStoreOptions,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createVectorStoreWithResponse(vectorStoreOptions, requestOptions);
     }
 
@@ -2834,9 +2835,9 @@ public final class AssistantsClient {
      * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
      * {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getVectorStoreWithResponse(String vectorStoreId, RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getVectorStoreWithResponse(vectorStoreId, requestOptions);
     }
 
@@ -2896,10 +2897,10 @@ public final class AssistantsClient {
      * @return a vector store is a collection of processed files can be used by the `file_search` tool along with
      * {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> modifyVectorStoreWithResponse(String vectorStoreId, BinaryData vectorStoreUpdateOptions,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.modifyVectorStoreWithResponse(vectorStoreId, vectorStoreUpdateOptions,
             requestOptions);
     }
@@ -2924,9 +2925,9 @@ public final class AssistantsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return response object for deleting a vector store along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteVectorStoreWithResponse(String vectorStoreId, RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.deleteVectorStoreWithResponse(vectorStoreId, requestOptions);
     }
 
@@ -2936,8 +2937,8 @@ public final class AssistantsClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. One of `in_progress`, `completed`,
-     * `failed`, `cancelled`. Allowed values: "in_progress", "completed", "failed", "cancelled".</td></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. Allowed values: "in_progress",
+     * "completed", "failed", "cancelled".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the default is 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
@@ -2984,9 +2985,9 @@ public final class AssistantsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response data for a requested list of items along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listVectorStoreFilesWithResponse(String vectorStoreId, RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listVectorStoreFilesWithResponse(vectorStoreId, requestOptions);
     }
 
@@ -2995,7 +2996,9 @@ public final class AssistantsClient {
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
-     * String
+     * {
+     *     file_id: String (Required)
+     * }
      * }</pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
@@ -3016,8 +3019,7 @@ public final class AssistantsClient {
      * }</pre>
      *
      * @param vectorStoreId The ID of the vector store for which to create a File.
-     * @param fileId A File ID that the vector store should use. Useful for tools like `file_search` that can access
-     * files.
+     * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3025,11 +3027,11 @@ public final class AssistantsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return description of a file attached to a vector store along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createVectorStoreFileWithResponse(String vectorStoreId, BinaryData fileId,
+    public Response<BinaryData> createVectorStoreFileWithResponse(String vectorStoreId, BinaryData request,
         RequestOptions requestOptions) {
-        return this.serviceClient.createVectorStoreFileWithResponse(vectorStoreId, fileId, requestOptions);
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
+        return this.serviceClient.createVectorStoreFileWithResponse(vectorStoreId, request, requestOptions);
     }
 
     /**
@@ -3060,10 +3062,10 @@ public final class AssistantsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return description of a file attached to a vector store along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getVectorStoreFileWithResponse(String vectorStoreId, String fileId,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getVectorStoreFileWithResponse(vectorStoreId, fileId, requestOptions);
     }
 
@@ -3090,10 +3092,10 @@ public final class AssistantsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return response object for deleting a vector store file relationship along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteVectorStoreFileWithResponse(String vectorStoreId, String fileId,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.deleteVectorStoreFileWithResponse(vectorStoreId, fileId, requestOptions);
     }
 
@@ -3137,10 +3139,10 @@ public final class AssistantsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a batch of files attached to a vector store along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createVectorStoreFileBatchWithResponse(String vectorStoreId, BinaryData request,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createVectorStoreFileBatchWithResponse(vectorStoreId, request, requestOptions);
     }
 
@@ -3174,10 +3176,10 @@ public final class AssistantsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a batch of files attached to a vector store along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getVectorStoreFileBatchWithResponse(String vectorStoreId, String batchId,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.getVectorStoreFileBatchWithResponse(vectorStoreId, batchId, requestOptions);
     }
 
@@ -3212,10 +3214,10 @@ public final class AssistantsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a batch of files attached to a vector store along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelVectorStoreFileBatchWithResponse(String vectorStoreId, String batchId,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.cancelVectorStoreFileBatchWithResponse(vectorStoreId, batchId, requestOptions);
     }
 
@@ -3225,8 +3227,8 @@ public final class AssistantsClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. One of `in_progress`, `completed`,
-     * `failed`, `cancelled`. Allowed values: "in_progress", "completed", "failed", "cancelled".</td></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. Allowed values: "in_progress",
+     * "completed", "failed", "cancelled".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the default is 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
@@ -3274,10 +3276,10 @@ public final class AssistantsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response data for a requested list of items along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listVectorStoreFileBatchFilesWithResponse(String vectorStoreId, String batchId,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.listVectorStoreFileBatchFilesWithResponse(vectorStoreId, batchId, requestOptions);
     }
 
@@ -3563,8 +3565,9 @@ public final class AssistantsClient {
     public VectorStoreFile createVectorStoreFile(String vectorStoreId, String fileId) {
         // Generated convenience method for createVectorStoreFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createVectorStoreFileWithResponse(vectorStoreId, BinaryData.fromObject(fileId), requestOptions)
-            .getValue()
+        CreateVectorStoreFileRequest requestObj = new CreateVectorStoreFileRequest(fileId);
+        BinaryData request = BinaryData.fromObject(requestObj);
+        return createVectorStoreFileWithResponse(vectorStoreId, request, requestOptions).getValue()
             .toObject(VectorStoreFile.class);
     }
 
