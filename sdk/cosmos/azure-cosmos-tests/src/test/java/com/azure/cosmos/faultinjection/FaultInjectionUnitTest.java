@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.faultinjection;
 
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
@@ -151,10 +150,5 @@ public class FaultInjectionUnitTest {
         } catch (IllegalArgumentException e) {
             assertTrue(e.getMessage().contains("STALED_ADDRESSES exception can not be injected for rule with gateway connection type"));
         }
-    }
-
-    @Test
-    public void test() {
-        ChangeFeedState.fromString("\"1\"");
     }
 }
