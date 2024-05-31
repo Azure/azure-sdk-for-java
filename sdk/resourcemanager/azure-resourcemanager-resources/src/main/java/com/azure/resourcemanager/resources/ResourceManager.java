@@ -315,6 +315,16 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     /**
+     * Wrapped inner deployment stack client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     *
+     * @return wrapped inner deployment stack client.
+     */
+    public DeploymentStacksManagementClient deploymentStackClient() {
+        return deploymentStackClient;
+    }
+
+    /**
      * @return the resource group management API entry point
      */
     public ResourceGroups resourceGroups() {
@@ -422,16 +432,6 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
             tagOperations = new TagOperationsImpl(this);
         }
         return tagOperations;
-    }
-
-    /**
-     * Wrapped inner deployment stack client providing direct access to auto-generated API implementation,
-     * based on Azure REST API.
-     *
-     * @return wrapped inner deployment stack client.
-     */
-    public DeploymentStacksManagementClient deploymentStackClient() {
-        return deploymentStackClient;
     }
 
     /**
