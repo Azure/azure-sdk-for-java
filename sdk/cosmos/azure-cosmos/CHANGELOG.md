@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue causing `IllegalArgumentException` when using `handleChanges` on change feed processor startup - See[PR 40420](https://github.com/Azure/azure-sdk-for-java/pull/40420)
 
 #### Other Changes
 
