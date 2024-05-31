@@ -150,17 +150,32 @@ made to `https://REDACTED-secondary.table.core.windows.net`, and URLs will also 
 For more details about sanitizers and their options, please refer to [TestProxySanitizer][test_proxy_sanitizer].
 
 ### Removing sanitizers
-Azure SDK tools now include a [common set of sanitizers](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/Common/SanitizerDictionary.cs) applied by default to all test cases.
-These sanitizers are designed to remove sensitive information from the test recordings.
-Users have the option to disable specific sanitizers if needed.
-To disable a sanitizer, the `interceptorManager.removeSanitizer("SanitizerID")` method can be used within the test setup. 
-This flexibility allows developers to customize the sanitization process according to their testing requirements.
+The Azure SDK tools come with a [standard set of sanitizers](https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/Common/SanitizerDictionary.cs) that are automatically applied to all test cases. These sanitizers are designed to eliminate sensitive data from the test recordings. However, users have the flexibility to deactivate specific sanitizers if necessary. This can be done by using the `interceptorManager.removeSanitizer("SanitizerID")` method within the test setup, allowing developers to tailor the sanitization process to their specific testing needs.
 
-- For example, to remove the sanitizer that targets the `$..id` body key, one would use `interceptorManager.removeSanitizer("AZSDK3440")`.
+For instance, to deactivate the sanitizer that targets the `$..id` body key, you would use `interceptorManager.removeSanitizer("AZSDK3440")`.
+
 ```java
 if (!interceptorManager.isLiveMode()) {
-    // Remove the default sanitizer that redacts the value of JSON key "id" from the response body
+    // Deactivate the default sanitizer that redacts the value of JSON key "id" from the response body
     interceptorManager.removeSanitizer("AZSDK3440");
+}
+```
+
+Here's an example of a recording before and after the sanitizer is removed:
+
+Before:
+```json
+{
+  "id": "Sanitized", 
+  "name": "test"
+}
+```
+
+After removing the sanitizer:
+```json
+{
+  "id": "1234-5678-9012-3456", 
+  "name": "test"
 }
 ```
 
