@@ -152,9 +152,4 @@ public class FaultInjectionUnitTest {
             assertTrue(e.getMessage().contains("STALED_ADDRESSES exception can not be injected for rule with gateway connection type"));
         }
     }
-
-    @Test
-    public void test() {
-        ChangeFeedState.fromString("\"1\"");
-    }
 }
