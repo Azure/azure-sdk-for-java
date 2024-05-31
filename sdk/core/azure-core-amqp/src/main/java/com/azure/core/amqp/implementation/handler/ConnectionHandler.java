@@ -207,8 +207,8 @@ public class ConnectionHandler extends Handler {
             logger.warning("'{}' is not secure.", verifyMode);
             sslDomain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
         } else {
-            throw logger.logExceptionAsError(
-                new UnsupportedOperationException("verifyMode is not supported: " + verifyMode));
+            throw logger
+                .logExceptionAsError(new UnsupportedOperationException("verifyMode is not supported: " + verifyMode));
         }
 
         transport.ssl(sslDomain);
