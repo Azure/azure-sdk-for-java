@@ -144,12 +144,8 @@ public class TelemetryItemExporter {
             telemetryItems.add(0, createOtelResourceMetric(telemetryItemBatchKey));
         }
 
-        try {
-            // remove micrometer jvm metric because we now emit otel runtime metric by default.
-            telemetryItems.removeIf(this::isMicrometerJvmMetric);
-        } catch (Exception e) {
-            logger.verbose(e.getMessage());
-        }
+        // remove micrometer jvm metric because we now emit otel runtime metric by default.
+        telemetryItems.removeIf(this::isMicrometerJvmMetric);
 
         try {
             byteBuffers = encode(telemetryItems);
