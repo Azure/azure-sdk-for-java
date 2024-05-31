@@ -4,18 +4,21 @@
 package com.azure.storage.file.datalake.models;
 
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.storage.common.implementation.FluxInputStream;
+
+import java.io.InputStream;
 
 /**
  * This class contains the response information return from the server when querying a file.
  */
-public final class FileQueryResponse extends ResponseBase<FileQueryHeaders, Void> {
+public final class FileQueryResponse extends ResponseBase<FileQueryHeaders, InputStream> {
     /**
      * Constructs a {@link FileQueryResponse}.
      *
      * @param response Response returned from the service.
      */
     public FileQueryResponse(FileQueryAsyncResponse response) {
-        super(response.getRequest(), response.getStatusCode(), response.getHeaders(), null,
-            response.getDeserializedHeaders());
+        super(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            new FluxInputStream(response.getValue()), response.getDeserializedHeaders());
     }
 }
