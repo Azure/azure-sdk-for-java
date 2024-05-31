@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Deployment What-if properties. */
+/**
+ * Deployment What-if properties.
+ */
 @Fluent
 public final class DeploymentWhatIfProperties extends DeploymentProperties {
     /*
@@ -17,13 +19,15 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
     @JsonProperty(value = "whatIfSettings")
     private DeploymentWhatIfSettings whatIfSettings;
 
-    /** Creates an instance of DeploymentWhatIfProperties class. */
+    /**
+     * Creates an instance of DeploymentWhatIfProperties class.
+     */
     public DeploymentWhatIfProperties() {
     }
 
     /**
      * Get the whatIfSettings property: Optional What-If operation settings.
-     *
+     * 
      * @return the whatIfSettings value.
      */
     public DeploymentWhatIfSettings whatIfSettings() {
@@ -32,7 +36,7 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
 
     /**
      * Set the whatIfSettings property: Optional What-If operation settings.
-     *
+     * 
      * @param whatIfSettings the whatIfSettings value to set.
      * @return the DeploymentWhatIfProperties object itself.
      */
@@ -41,66 +45,82 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeploymentWhatIfProperties withTemplate(Object template) {
         super.withTemplate(template);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeploymentWhatIfProperties withTemplateLink(TemplateLink templateLink) {
         super.withTemplateLink(templateLink);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeploymentWhatIfProperties withParameters(Map<String, DeploymentParameter> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeploymentWhatIfProperties withParametersLink(ParametersLink parametersLink) {
         super.withParametersLink(parametersLink);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeploymentWhatIfProperties withMode(DeploymentMode mode) {
         super.withMode(mode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeploymentWhatIfProperties withDebugSetting(DebugSetting debugSetting) {
         super.withDebugSetting(debugSetting);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeploymentWhatIfProperties withOnErrorDeployment(OnErrorDeployment onErrorDeployment) {
         super.withOnErrorDeployment(onErrorDeployment);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public DeploymentWhatIfProperties withExpressionEvaluationOptions(
-        ExpressionEvaluationOptions expressionEvaluationOptions) {
+    public DeploymentWhatIfProperties
+        withExpressionEvaluationOptions(ExpressionEvaluationOptions expressionEvaluationOptions) {
         super.withExpressionEvaluationOptions(expressionEvaluationOptions);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The data effect definition. */
+/**
+ * The data effect definition.
+ */
 @Fluent
 public final class DataEffect {
     /*
@@ -22,13 +24,15 @@ public final class DataEffect {
     @JsonProperty(value = "detailsSchema")
     private Object detailsSchema;
 
-    /** Creates an instance of DataEffect class. */
+    /**
+     * Creates an instance of DataEffect class.
+     */
     public DataEffect() {
     }
 
     /**
      * Get the name property: The data effect name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class DataEffect {
 
     /**
      * Set the name property: The data effect name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DataEffect object itself.
      */
@@ -48,7 +52,7 @@ public final class DataEffect {
 
     /**
      * Get the detailsSchema property: The data effect details schema.
-     *
+     * 
      * @return the detailsSchema value.
      */
     public Object detailsSchema() {
@@ -57,7 +61,7 @@ public final class DataEffect {
 
     /**
      * Set the detailsSchema property: The data effect details schema.
-     *
+     * 
      * @param detailsSchema the detailsSchema value to set.
      * @return the DataEffect object itself.
      */
@@ -68,7 +72,7 @@ public final class DataEffect {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
