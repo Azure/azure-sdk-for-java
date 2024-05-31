@@ -1146,7 +1146,10 @@ public class EventHubClientBuilder implements
             ? verifyMode
             : SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
-        if (useDevelopmentEmulator != null && useDevelopmentEmulator) {
+        final boolean usingDevelopmentEmulator = connectionStringProperties != null
+            && connectionStringProperties.useDevelopmentEmulator();
+
+        if (usingDevelopmentEmulator) {
             verificationMode = SslDomain.VerifyMode.ANONYMOUS_PEER;
         }
 
@@ -1164,15 +1167,22 @@ public class EventHubClientBuilder implements
             port = endpoint.getPort();
         } else {
             hostname = fullyQualifiedNamespace;
-            port = getPort(transport);
+            port = -1;
         }
+
+        // No explicit port was listed, so choose a default port.
+        final int portToUse = port != -1 ? port : getPort(transport, usingDevelopmentEmulator);
 
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
             ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-            options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, hostname, port);
+            options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, hostname, portToUse);
     }
 
-    private static int getPort(AmqpTransportType transport) {
+    private static int getPort(AmqpTransportType transport, boolean useDevelopmentEmulator) {
+        if (useDevelopmentEmulator) {
+            return ConnectionHandler.AMQP_PORT;
+        }
+
         switch (transport) {
             case AMQP:
                 return ConnectionHandler.AMQPS_PORT;
