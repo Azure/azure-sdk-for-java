@@ -13,6 +13,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -197,6 +198,23 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
 
                 return Mono.empty();
             });
+    }
+
+    public boolean isPartitionLevelCircuitBreakingApplicable(RxDocumentServiceRequest request) {
+
+        if (!Configs.isPartitionLevelCircuitBreakerEnabled()) {
+            return false;
+        }
+
+        GlobalEndpointManager globalEndpointManager = this.globalEndpointManager;
+
+        if (!globalEndpointManager.canUseMultipleWriteLocations(request)) {
+            return false;
+        }
+
+        UnmodifiableList<URI> applicableWriteEndpoints = globalEndpointManager.getApplicableWriteEndpoints(Collections.emptyList());
+
+        return applicableWriteEndpoints != null && applicableWriteEndpoints.size() > 1;
     }
 
     private class PartitionLevelLocationUnavailabilityInfo {

@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.implementation.apachecommons.collections.CollectionUtils;
+import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
@@ -16,6 +18,8 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -151,33 +155,7 @@ class ChangeFeedQueryImpl<T> {
 
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         if (this.operationContextAndListener == null) {
-            return Mono.just(request)
-                .flatMap(req -> client.populateHeadersAsync(req, RequestVerb.GET))
-                .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req)
-                    .flatMap(documentCollectionValueHolder -> {
-
-                        checkNotNull(documentCollectionValueHolder, "documentCollectionValueHolder cannot be null!");
-                        checkNotNull(documentCollectionValueHolder.v, "documentCollectionValueHolder.v cannot be null!");
-
-                        return client.getPartitionKeyRangeCache().tryLookupAsync(null, documentCollectionValueHolder.v.getResourceId(), null, null)
-                            .flatMap(collectionRoutingMapValueHolder -> {
-
-                                checkNotNull(collectionRoutingMapValueHolder, "collectionRoutingMapValueHolder cannot be null!");
-                                checkNotNull(collectionRoutingMapValueHolder.v, "collectionRoutingMapValueHolder.v cannot be null!");
-
-                                changeFeedRequestOptionsAccessor.setPartitionKeyDefinition(options, documentCollectionValueHolder.v.getPartitionKey());
-                                changeFeedRequestOptionsAccessor.setCollectionRid(options, documentCollectionValueHolder.v.getResourceId());
-
-                                client.addPartitionLevelUnavailableRegionsForChangeFeedRequest(req, options, collectionRoutingMapValueHolder.v);
-
-                                if (req.requestContext.getClientRetryPolicySupplier() != null) {
-                                    DocumentClientRetryPolicy documentClientRetryPolicy = req.requestContext.getClientRetryPolicySupplier().get();
-                                    documentClientRetryPolicy.onBeforeSendRequest(req);
-                                }
-
-                                return Mono.just(req);
-                            });
-                    }))
+            return handlePartitionLevelCircuitBreakingPrerequisites(request)
                 .flatMap(client::readFeed)
                 .map(rsp -> feedResponseAccessor.createChangeFeedResponse(rsp, this.itemSerializer, klass, rsp.getCosmosDiagnostics()));
         } else {
@@ -188,6 +166,42 @@ class ChangeFeedQueryImpl<T> {
                 .put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, operationContext.getCorrelationActivityId());
             listener.requestListener(operationContext, request);
 
+            return handlePartitionLevelCircuitBreakingPrerequisites(request)
+                .flatMap(client::readFeed)
+                .map(rsp -> {
+                    listener.responseListener(operationContext, rsp);
+
+                    final FeedResponse<T> feedResponse = feedResponseAccessor.createChangeFeedResponse(
+                        rsp, this.itemSerializer, klass, rsp.getCosmosDiagnostics());
+
+                    Map<String, String> rspHeaders = feedResponse.getResponseHeaders();
+                    String requestPkRangeId = null;
+                    if (!rspHeaders.containsKey(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID) &&
+                        (requestPkRangeId = request
+                            .getHeaders()
+                            .get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID)) != null) {
+
+                        rspHeaders.put(
+                            HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID,
+                            requestPkRangeId
+                        );
+                    }
+                    listener.feedResponseReceivedListener(operationContext, feedResponse);
+
+                    return feedResponse;
+                })
+                .doOnError(ex -> listener.exceptionListener(operationContext, ex));
+        }
+    }
+
+    private Mono<RxDocumentServiceRequest> handlePartitionLevelCircuitBreakingPrerequisites(RxDocumentServiceRequest request) {
+
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
+            = client.getGlobalPartitionEndpointManagerForCircuitBreaker();
+
+        checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "Argument 'globalPartitionEndpointManagerForCircuitBreaker' must not be null!");
+
+        if (globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
             return Mono.just(request)
                 .flatMap(req -> client.populateHeadersAsync(req, RequestVerb.GET))
                 .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req)
@@ -214,31 +228,9 @@ class ChangeFeedQueryImpl<T> {
 
                                 return Mono.just(req);
                             });
-                    })).flatMap(client::readFeed)
-                         .map(rsp -> {
-                             listener.responseListener(operationContext, rsp);
-
-                             final FeedResponse<T> feedResponse = feedResponseAccessor.createChangeFeedResponse(
-                                 rsp, this.itemSerializer, klass, rsp.getCosmosDiagnostics());
-
-                             Map<String, String> rspHeaders = feedResponse.getResponseHeaders();
-                             String requestPkRangeId = null;
-                             if (!rspHeaders.containsKey(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID) &&
-                                 (requestPkRangeId = request
-                                     .getHeaders()
-                                     .get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID)) != null) {
-
-                                 rspHeaders.put(
-                                     HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID,
-                                     requestPkRangeId
-                                 );
-                             }
-                             listener.feedResponseReceivedListener(operationContext, feedResponse);
-
-                             return feedResponse;
-                         })
-                         .doOnError(ex -> listener.exceptionListener(operationContext, ex)
-            );
+                    }));
+        } else {
+            return Mono.just(request);
         }
     }
 }

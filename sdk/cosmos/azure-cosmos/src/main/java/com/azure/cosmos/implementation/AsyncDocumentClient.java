@@ -1581,6 +1581,8 @@ public interface AsyncDocumentClient {
      */
     GlobalEndpointManager getGlobalEndpointManager();
 
+    GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker();
+
     /***
      * Get the address selector.
      * @return the address selector.

@@ -2323,19 +2323,31 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return response
             .doOnSuccess(ignore -> {
 
-                if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
-                    RxDocumentServiceRequest succeededRequest = requestReference.get();
+                RxDocumentServiceRequest succeededRequest = requestReference.get();
+
+                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(succeededRequest)) {
+
+                    checkNotNull(succeededRequest.requestContext, "Argument 'succeededRequest.requestContext' must not be null!");
 
                     PointOperationContext pointOperationContext = succeededRequest.requestContext.getPointOperationContext();
+
+                    checkNotNull(pointOperationContext, "Argument 'pointOperationContext' must not be null!");
+
                     pointOperationContext.setHasOperationSeenSuccess();
                 }
             })
             .doOnError(throwable -> {
                 if (throwable instanceof OperationCancelledException) {
 
-                    if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
-                        RxDocumentServiceRequest failedRequest = requestReference.get();
+                    RxDocumentServiceRequest failedRequest = requestReference.get();
+
+                    if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(failedRequest)) {
+
+                        checkNotNull(failedRequest.requestContext, "Argument 'failedRequest.requestContext' must not be null!");
+
                         PointOperationContext pointOperationContext = failedRequest.requestContext.getPointOperationContext();
+
+                        checkNotNull(pointOperationContext, "Argument 'pointOperationContext' must not be null!");
 
                         if (pointOperationContext.isThresholdBasedAvailabilityStrategyEnabled()) {
 
@@ -2350,17 +2362,27 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             })
             .doFinally(signalType -> {
 
-                if (signalType == SignalType.CANCEL && Configs.isPartitionLevelCircuitBreakerEnabled()) {
-                    RxDocumentServiceRequest failedRequest = requestReference.get();
-                    PointOperationContext pointOperationContext = failedRequest.requestContext.getPointOperationContext();
+                if (signalType != SignalType.CANCEL) {
+                    return;
+                }
+
+                RxDocumentServiceRequest potentiallyFailedRequest = requestReference.get();
+
+                if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(potentiallyFailedRequest)) {
+
+                    checkNotNull(potentiallyFailedRequest.requestContext, "Argument 'potentiallyFailedRequest.requestContext' must not be null!");
+
+                    PointOperationContext pointOperationContext = potentiallyFailedRequest.requestContext.getPointOperationContext();
+
+                    checkNotNull(pointOperationContext, "Argument 'pointOperationContext' must not be null!");
 
                     if (pointOperationContext.isThresholdBasedAvailabilityStrategyEnabled()) {
 
                         if (!pointOperationContext.getIsRequestHedged() && pointOperationContext.getHasOperationSeenSuccess()) {
-                            this.handleLocationExceptionForPartitionKeyRange(failedRequest);
+                            this.handleLocationExceptionForPartitionKeyRange(potentiallyFailedRequest);
                         }
                     } else {
-                        this.handleLocationExceptionForPartitionKeyRange(failedRequest);
+                        this.handleLocationExceptionForPartitionKeyRange(potentiallyFailedRequest);
                     }
                 }
             });
@@ -5387,6 +5409,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
+    public GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker() {
+        return this.globalPartitionEndpointManagerForCircuitBreaker;
+    }
+
+    @Override
     public AddressSelector getAddressSelector() {
         return new AddressSelector(this.addressResolver, this.configs.getProtocol());
     }
@@ -5818,7 +5845,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
                         getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, resourceType, operationType);
 
-                    // todo: validate if the below is possible
+                    // todo: investigate retry policy in stale cache scenarios
                     if (collectionRoutingMapValueHolder.v == null) {
                         return Mono.error(new NotFoundException("collectionRoutingMapValueHolder.v cannot be null!"));
                     }
