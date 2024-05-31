@@ -109,7 +109,9 @@ public class Paginator {
                 top,
                 maxPageSize,
                 isSplitHandlingDisabled,
-                operationContext
+                operationContext,
+                client.getGlobalEndpointManager(),
+                client.getGlobalPartitionEndpointManagerForCircuitBreaker()
             ),
             preFetchCount);
     }

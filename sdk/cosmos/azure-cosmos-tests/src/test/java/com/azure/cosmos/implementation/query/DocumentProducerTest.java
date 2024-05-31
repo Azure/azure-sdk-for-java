@@ -548,6 +548,8 @@ public class DocumentProducerTest {
                     , responses));
 
             IDocumentQueryClient queryClient = Mockito.mock(IDocumentQueryClient.class);
+            GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+
             doAnswer(invocation -> {
                 Supplier<DocumentClientRetryPolicy> retryPolicyFactory = invocation.getArgument(2);
                 RxDocumentServiceRequest req = invocation.getArgument(3);
@@ -566,6 +568,9 @@ public class DocumentProducerTest {
                 RxDocumentServiceRequest req = invocation.getArgument(0);
                 return Mono.just(req);
             }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any());
+
+            doReturn(globalPartitionEndpointManagerForCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
+            doReturn(false).when(globalPartitionEndpointManagerForCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
 
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
@@ -645,6 +650,7 @@ public class DocumentProducerTest {
                                                                                   behaviourAfterException);
 
             IDocumentQueryClient queryClient = Mockito.mock(IDocumentQueryClient.class);
+            GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
             doAnswer(invocation -> {
                 Supplier<DocumentClientRetryPolicy> retryPolicyFactory = invocation.getArgument(2);
@@ -664,6 +670,9 @@ public class DocumentProducerTest {
                 RxDocumentServiceRequest req = invocation.getArgument(0);
                 return Mono.just(req);
             }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any());
+
+            doReturn(globalPartitionEndpointManagerForCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
+            doReturn(false).when(globalPartitionEndpointManagerForCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
 
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
@@ -747,6 +756,8 @@ public class DocumentProducerTest {
                                                                                   exceptionBehaviour);
 
             IDocumentQueryClient queryClient = Mockito.mock(IDocumentQueryClient.class);
+            GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+
             doAnswer(invocation -> {
                 Supplier<DocumentClientRetryPolicy> retryPolicyFactory = invocation.getArgument(2);
                 RxDocumentServiceRequest req = invocation.getArgument(3);
@@ -765,6 +776,9 @@ public class DocumentProducerTest {
                 RxDocumentServiceRequest req = invocation.getArgument(0);
                 return Mono.just(req);
             }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any());
+
+            doReturn(globalPartitionEndpointManagerForCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
+            doReturn(false).when(globalPartitionEndpointManagerForCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
 
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
@@ -879,6 +893,7 @@ public class DocumentProducerTest {
     private IDocumentQueryClient mockQueryClient(List<PartitionKeyRange> replacementRanges) {
         IDocumentQueryClient client = Mockito.mock(IDocumentQueryClient.class);
         RxPartitionKeyRangeCache cache = Mockito.mock(RxPartitionKeyRangeCache.class);
+        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
         doAnswer(invocation -> {
             Supplier<DocumentClientRetryPolicy> retryPolicyFactory = invocation.getArgument(2);
@@ -888,17 +903,25 @@ public class DocumentProducerTest {
 
             return feedOperation.apply(retryPolicyFactory, req);
         }).when(client).executeFeedOperationWithAvailabilityStrategy(any(), any(), any(), any(), any());
+
         doReturn(cache).when(client).getPartitionKeyRangeCache();
+
         doReturn(Mono.just(new Utils.ValueHolder<>(replacementRanges)))
             .when(cache).tryGetOverlappingRangesAsync(any(), any(), any(), anyBoolean(), ArgumentMatchers.any());
+
         doAnswer(invocation -> {
             RxDocumentServiceRequest req = invocation.getArgument(0);
             return Mono.just(req);
         }).when(client).populateFeedRangeHeader(any());
+
         doAnswer(invocation -> {
             RxDocumentServiceRequest req = invocation.getArgument(0);
             return Mono.just(req);
         }).when(client).addPartitionLevelUnavailableRegionsOnRequest(any(), any());
+
+        doReturn(globalPartitionEndpointManagerForCircuitBreaker).when(client).getGlobalPartitionEndpointManagerForCircuitBreaker();
+        doReturn(false).when(globalPartitionEndpointManagerForCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
+
         return client;
     }
 

@@ -472,6 +472,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     Instant unavailableSinceActual = locationSpecificContext.unavailableSince;
                     if (!forceStatusChange) {
                         if (Duration.between(unavailableSinceActual, Instant.now()).compareTo(Duration.ofSeconds(30)) > 0) {
+
+                            // todo: make debug
                             logger.info("Partition {}-{} of collection : {} marked as HealthyTentative from Unavailable for region : {}",
                                 partitionKeyRangeWrapper.partitionKeyRange.getMinInclusive(),
                                 partitionKeyRangeWrapper.partitionKeyRange.getMaxExclusive(),
