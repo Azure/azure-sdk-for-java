@@ -2936,8 +2936,8 @@ public final class AssistantsClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. One of `in_progress`, `completed`,
-     * `failed`, `cancelled`. Allowed values: "in_progress", "completed", "failed", "cancelled".</td></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. Allowed values: "in_progress",
+     * "completed", "failed", "cancelled".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the default is 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
@@ -3225,8 +3225,8 @@ public final class AssistantsClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. One of `in_progress`, `completed`,
-     * `failed`, `cancelled`. Allowed values: "in_progress", "completed", "failed", "cancelled".</td></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter by file status. Allowed values: "in_progress",
+     * "completed", "failed", "cancelled".</td></tr>
      * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
      * between 1 and 100, and the default is 20.</td></tr>
      * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for

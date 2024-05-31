@@ -334,6 +334,7 @@ public final class AssistantCreationOptions implements JsonSerializable<Assistan
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -345,9 +346,8 @@ public final class AssistantCreationOptions implements JsonSerializable<Assistan
         jsonWriter.writeJsonField("tool_resources", this.toolResources);
         jsonWriter.writeNumberField("temperature", this.temperature);
         jsonWriter.writeNumberField("top_p", this.topP);
-        // Removed @Generated because of this field's customization
         if (this.responseFormat != null) {
-            jsonWriter.writeRawField("response_format", this.responseFormat.toString());
+            jsonWriter.writeUntypedField("response_format", this.responseFormat.toObject(Object.class));
         }
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
