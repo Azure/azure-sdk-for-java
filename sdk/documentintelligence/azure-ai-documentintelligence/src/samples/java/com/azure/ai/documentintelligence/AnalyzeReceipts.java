@@ -41,7 +41,7 @@ public class AnalyzeReceipts {
         File sourceFile = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
             + "sample-forms/receipts/contoso-allinone.jpg");
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeReceiptPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeReceiptPoller =
             client.beginAnalyzeDocument("prebuilt-receipt",
                 null,
                 null,
@@ -51,7 +51,7 @@ public class AnalyzeReceipts {
                 null,
                 new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(sourceFile.toPath())));
 
-        AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 
         for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
             Document analyzedReceipt = receiptResults.getDocuments().get(i);

@@ -28,7 +28,7 @@ public class AnalyzeLayoutFromUrl {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        SyncPoller<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutPoller =
+        SyncPoller<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutPoller =
             client.beginAnalyzeDocument("prebuilt-layout",
                 null,
                 null,
@@ -39,7 +39,7 @@ public class AnalyzeLayoutFromUrl {
                 new AnalyzeDocumentRequest().setUrlSource("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/"
                     + "azure-ai-documentintelligence/src/samples/resources/sample-forms/forms/selectionMarkForm.pdf"));
 
-        AnalyzeResult analyzeLayoutResult = analyzeLayoutPoller.getFinalResult().getAnalyzeResult();
+        AnalyzeResult analyzeLayoutResult = analyzeLayoutPoller.getFinalResult();
 
         // pages
         analyzeLayoutResult.getPages().forEach(documentPage -> {

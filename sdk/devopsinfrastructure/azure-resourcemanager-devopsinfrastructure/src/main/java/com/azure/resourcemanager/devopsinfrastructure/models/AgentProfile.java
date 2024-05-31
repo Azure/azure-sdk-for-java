@@ -26,7 +26,7 @@ public class AgentProfile {
      */
     @JsonTypeId
     @JsonProperty(value = "kind", required = true)
-    private String kind;
+    private String kind = "AgentProfile";
 
     /*
      * Defines pool buffer/stand-by agents.
@@ -44,7 +44,6 @@ public class AgentProfile {
      * Creates an instance of AgentProfile class.
      */
     public AgentProfile() {
-        this.kind = "AgentProfile";
     }
 
     /**

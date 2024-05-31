@@ -4,20 +4,51 @@
 
 ### Features Added
 
-- Added support for service API version, `2024-04-01-preview`. 
+- Added support for service API versions, `2024-04-01-preview` and `2024-05-01-preview`. 
 - Note that `AOAI` refers to Azure OpenAI and `OAI` refers to OpenAI.
-
-**Audio**
-
-- Added timestamp granularity to Whisper transcription; this is an array of enumerated string values 
+- Added timestamp granularity to Whisper transcription; this is an array of enumerated string values
   (word and/or segment) that controls which, if any, timestamp information is emitted to transcription results.
   - `AudioTranscriptionTimestampGranularity` enum to represent the timestamp granularity options for Whisper transcription.
   - `AudioTranscriptionWord` class to represent the word timestamp information in the transcription results.
-- Added two new audio formats, 'wav' and 'pcm', to the `SpeechGenerationResponseFormat` enum.
+- Added two new audio formats, `wav` and `pcm`, to the `SpeechGenerationResponseFormat` enum.
 
-**Chat**
+*AOAI ONLY*
 
-- [AOAI] Added a new property `indirectAttack` in `ContentFilterResultDetailsForPrompt` class to represent the indirect attack results.
+- Added a new RAI content filter schema type, `ContentFilterDetailedResults`, that features:
+    - The boolean `filtered` property from `ContentFilterResult`.
+    - An array named `details` of the existing `ContentFilterBlocklistIdResult` type, each of which has:
+      - The base boolean `filtered`
+      - A string `id`
+- Added a new property `indirectAttack` in `ContentFilterResultDetailsForPrompt` class to represent the indirect attack results.
+- Added a new property `custom_blocklists` in `ImageGenerationPromptFilterResults` class to represent the prompt filter results.
+
+**On Your Data**
+
+- New string enum type used in options: `OnYourDataContextProperty`: "citations" | "intent" | "allRetrievedDocuments"
+  - This is used in arrays like a bitmasked flag; "give me citations and documents" == `[ "citations", "allRetrievedDocuments" ]`
+  - It's not dissimilar to how transcription uses `timestamp_granularities[]`
+- New model type used in response extensions: `retrievedDocument`
+  - Inherits from existing `citation`
+  - Required properties: `content` (string, inherited), `search_queries` (array of strings), `data_source_index` (int32), `original_search_score` (double)
+  - Optional properties: `title`, `url`, `filepath`, `chunk_id` (all strings inherited from `citation`); `re_rank_score` (double)
+- New options fields for chat extension parameters (request options):
+  - `max_search_queries` (optional int32)
+  - `allow_partial_result` (optional boolean)
+  - `include_contexts` (optional array of the above `OnYourDataContextProperty` enum (effective flag selection))
+  - Affected `*parameters` types:
+    - `AzureSearchChatExtensionParameters`
+    - `AzureMachineLearningIndexChatExtensionParameters`
+    - `AzureCosmosDBChatExtensionParameters`
+    - `ElasticsearchChatExtensionParameters`
+    - `PineconeChatExtensionParameters`
+- Vectorization source types have a new `dimensions` property (optional int32)
+    - Affected: `OnYourDataEndpointVectorizationSource`, `OnYourDataDeploymentNameVectorizationSource`
+- `AzureSearchChatExtensionParameters` now supports `OnYourDataAccessTokenAuthenticationOptions` in its named `authentication` field
+- `OnYourDataEndpointVectorizationSource` now supports `OnYourDataAccessTokenAuthenticationOptions` for its named `authentication` field.
+- Added new class `OnYourDataVectorSearchAuthenticationType`, `OnYourDataVectorSearchAuthenticationOptions`,
+  `OnYourDataVectorSearchApiKeyAuthenticationOptions`, `OnYourDataVectorSearchAccessTokenAuthenticationOptions` for the
+  vector search authentication options.
+- The response extension type `AzureChatExtensionsMessageContext` has a new `all_retrieved_documents` field, which is an optional array of the new `retrievedDocument` type defined earlier.
 
 ### Breaking Changes
 
@@ -25,6 +56,8 @@
 - [AOAI] Added a new class `ContentFilterDetailedResults` to represent detailed content filter results, which replaces the
   `customBlocklists` response property type, `List<ContentFilterBlocklistIdResult>` in 
   `ContentFilterResultDetailsForPrompt` and `ContentFilterResultsForChoice` class.
+- [AOAI] Replaced `OnYourDataAuthenticationOptions` with `OnYourDataVectorSearchAuthenticationOptions` in the `OnYourDataEndpointVectorizationSource` class.
+  Currently, `OnYourDataEndpointVectorizationSource` only supports `OnYourDataApiKeyAuthenticationOptions` and `OnYourDataAccessTokenAuthenticationOptions` as authentication options.
 
 ### Bugs Fixed
 

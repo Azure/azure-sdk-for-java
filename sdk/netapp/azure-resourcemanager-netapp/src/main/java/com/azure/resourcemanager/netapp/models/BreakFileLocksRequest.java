@@ -19,8 +19,7 @@ public final class BreakFileLocksRequest {
     private String clientIp;
 
     /*
-     * Break File locks could be a disruptive operation for application as locks on the volume will be broken, if want
-     * to process, set to true.
+     * Break File locks could be a disruptive operation for application as locks on the volume will be broken, if want to process, set to true.
      */
     @JsonProperty(value = "confirmRunningDisruptiveOperation")
     private Boolean confirmRunningDisruptiveOperation;

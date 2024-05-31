@@ -149,6 +149,7 @@
     <module>sdk/oep</module>
     <module>sdk/openai</module>
     <module>sdk/operationsmanagement</module>
+    <module>sdk/oracledatabase</module>
     <module>sdk/orbital</module>
     <module>sdk/paloaltonetworks</module>
     <module>sdk/parents</module>

@@ -556,7 +556,9 @@ public final class BlocklistAsyncClient {
         // Generated convenience method for createOrUpdateTextBlocklistWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getTextBlocklistAccessor().prepareModelForJsonMergePatch(options, true);
-        BinaryData optionsInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(options).toBytes());
+        BinaryData optionsInBinaryData = BinaryData.fromObject(options);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        optionsInBinaryData.getLength();
         JsonMergePatchHelper.getTextBlocklistAccessor().prepareModelForJsonMergePatch(options, false);
         return createOrUpdateTextBlocklistWithResponse(name, optionsInBinaryData, requestOptions)
             .flatMap(FluxUtil::toMono)

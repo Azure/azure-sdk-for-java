@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -594,23 +595,23 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                 } else if ("eTag".equals(fieldName)) {
                     deserializedBatchTask.eTag = reader.getString();
                 } else if ("lastModified".equals(fieldName)) {
-                    deserializedBatchTask.lastModified
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchTask.lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("creationTime".equals(fieldName)) {
-                    deserializedBatchTask.creationTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchTask.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("exitConditions".equals(fieldName)) {
                     deserializedBatchTask.exitConditions = ExitConditions.fromJson(reader);
                 } else if ("state".equals(fieldName)) {
                     deserializedBatchTask.state = BatchTaskState.fromString(reader.getString());
                 } else if ("stateTransitionTime".equals(fieldName)) {
-                    deserializedBatchTask.stateTransitionTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchTask.stateTransitionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("previousState".equals(fieldName)) {
                     deserializedBatchTask.previousState = BatchTaskState.fromString(reader.getString());
                 } else if ("previousStateTransitionTime".equals(fieldName)) {
-                    deserializedBatchTask.previousStateTransitionTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedBatchTask.previousStateTransitionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("commandLine".equals(fieldName)) {
                     deserializedBatchTask.commandLine = reader.getString();
                 } else if ("containerSettings".equals(fieldName)) {

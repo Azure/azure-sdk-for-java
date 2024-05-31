@@ -22,14 +22,14 @@ public class OnYourDataAuthenticationOptions implements JsonSerializable<OnYourD
      */
     @Generated
     public OnYourDataAuthenticationOptions() {
-        this.type = OnYourDataAuthenticationType.fromString("OnYourDataAuthenticationOptions");
     }
 
     /*
      * The authentication type.
      */
     @Generated
-    private OnYourDataAuthenticationType type;
+    private OnYourDataAuthenticationType type
+        = OnYourDataAuthenticationType.fromString("OnYourDataAuthenticationOptions");
 
     /**
      * Get the type property: The authentication type.

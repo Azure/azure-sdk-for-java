@@ -16,7 +16,6 @@ import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.clienttelemetry.ShowQueryOptions;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.guava25.base.Splitter;
@@ -25,6 +24,7 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
+import com.azure.cosmos.models.ShowQueryMode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -1167,8 +1167,8 @@ public final class DiagnosticsProvider {
         }
         
         private boolean showQueryStatement() {
-            if(ShowQueryOptions.ALL.equals(clientTelemetryConfigAccessor.showQueryOptions(this.config))
-                   || ShowQueryOptions.PARAMETERIZED_ONLY.equals(clientTelemetryConfigAccessor.showQueryOptions(this.config))) {
+            if(ShowQueryMode.ALL.equals(clientTelemetryConfigAccessor.showQueryMode(this.config))
+                   || ShowQueryMode.PARAMETERIZED_ONLY.equals(clientTelemetryConfigAccessor.showQueryMode(this.config))) {
                    return true;
             }
             return false;
