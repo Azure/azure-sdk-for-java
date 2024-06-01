@@ -189,7 +189,7 @@ directive:
     to: SpeechResultInternal
 - rename-model:
     from: ExternalStorage
-    to: ExternalStorageInternal
+    to: RecordingStorageInternal
 - rename-model:
     from: BlobStorage
     to: BlobStorageInternal

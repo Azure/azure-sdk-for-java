@@ -6,7 +6,6 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.models.AzureBlobContainerRecordingStorageInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
 import com.azure.communication.callautomation.implementation.models.ChannelAffinityInternal;
@@ -15,7 +14,7 @@ import com.azure.communication.callautomation.implementation.models.RecordingCha
 import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingStorageInternal;
-import com.azure.communication.callautomation.implementation.models.RecordingStorageTypeInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingStorageKind;
 import com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal;
 import com.azure.communication.callautomation.models.AzureBlobContainerRecordingStorage;
 import com.azure.communication.callautomation.models.CallLocator;
@@ -179,7 +178,7 @@ public final class CallRecordingAsync {
                 AzureBlobContainerRecordingStorage blobStorage = (AzureBlobContainerRecordingStorage) options.getRecordingStorage();
                 RecordingStorageInternal recordingStorageInternal = new RecordingStorageInternal()
                     .setRecordingDestinationContainerUrl(blobStorage.getRecordingDestinationContainerUrl())
-                    .setRecordingStorageKind(RecordingStorageTypeInternal.AZURE_BLOB_STORAGE);
+                    .setRecordingStorageKind(RecordingStorageKind.AZURE_BLOB_STORAGE);
                 request.setExternalStorage(recordingStorageInternal);
             }
         }
@@ -574,10 +573,6 @@ public final class CallRecordingAsync {
         } catch (MalformedURLException ex) {
             throw logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
-    }
-
-    private AzureBlobContainerRecordingStorageInternal getBlobStorageInternalFromBlobStorage(AzureBlobContainerRecordingStorage blobStorage) {
-        return new AzureBlobContainerRecordingStorageInternal().setRecordingDestinationContainerUrl(blobStorage.getRecordingDestinationContainerUrl());
     }
 
     private ChannelAffinityInternal getChannelAffinityInternal(ChannelAffinity channelAffinity) {

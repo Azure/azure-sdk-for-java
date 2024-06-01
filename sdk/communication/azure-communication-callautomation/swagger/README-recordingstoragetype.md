@@ -21,7 +21,7 @@ There is one swagger for Calling management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README-recordingstoragetype.md --java --use=@autorest/java@4.1.27 --use=@autorest/modelerfour@4.27.0 --debug
+autorest README-recordingstoragetype.md --java --use=@autorest/java@4.1.27 --use=@autorest/modelerfour@4.27.0
 ```
 
 ### Code generation settings

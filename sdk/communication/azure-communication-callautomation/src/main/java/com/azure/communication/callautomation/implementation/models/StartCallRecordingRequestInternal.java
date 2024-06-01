@@ -69,7 +69,7 @@ public final class StartCallRecordingRequestInternal {
      * Optional property to specify location where recording will be stored
      */
     @JsonProperty(value = "externalStorage")
-    private ExternalStorageInternal externalStorage;
+    private RecordingStorageInternal externalStorage;
 
     /*
      * When set to true will start recording in Pause mode, which can be
@@ -236,7 +236,7 @@ public final class StartCallRecordingRequestInternal {
      *
      * @return the externalStorage value.
      */
-    public ExternalStorageInternal getExternalStorage() {
+    public RecordingStorageInternal getExternalStorage() {
         return this.externalStorage;
     }
 
@@ -246,7 +246,7 @@ public final class StartCallRecordingRequestInternal {
      * @param externalStorage the externalStorage value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
-    public StartCallRecordingRequestInternal setExternalStorage(ExternalStorageInternal externalStorage) {
+    public StartCallRecordingRequestInternal setExternalStorage(RecordingStorageInternal externalStorage) {
         this.externalStorage = externalStorage;
         return this;
     }
