@@ -8,10 +8,10 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The MediaStreamingFailed model.
+ * The TranscriptionUpdated model.
  */
 @Immutable
-public final class MediaStreamingFailed {
+public final class TranscriptionUpdated {
     /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
@@ -25,10 +25,10 @@ public final class MediaStreamingFailed {
     private ResultInformation resultInformation;
 
     /*
-     * Defines the result for audio streaming update with the current status and the details about the status
+     * Defines the result for TranscriptionUpdate with the current status and the details about the status
      */
-    @JsonProperty(value = "mediaStreamingUpdate", access = JsonProperty.Access.WRITE_ONLY)
-    private MediaStreamingUpdate mediaStreamingUpdate;
+    @JsonProperty(value = "transcriptionUpdate", access = JsonProperty.Access.WRITE_ONLY)
+    private TranscriptionUpdate transcriptionUpdate;
 
     /*
      * Call connection ID.
@@ -49,9 +49,9 @@ public final class MediaStreamingFailed {
     private String correlationId;
 
     /**
-     * Creates an instance of MediaStreamingFailed class.
+     * Creates an instance of TranscriptionUpdated class.
      */
-    public MediaStreamingFailed() {
+    public TranscriptionUpdated() {
     }
 
     /**
@@ -74,13 +74,13 @@ public final class MediaStreamingFailed {
     }
 
     /**
-     * Get the mediaStreamingUpdate property: Defines the result for audio streaming update with the current status and
-     * the details about the status.
+     * Get the transcriptionUpdate property: Defines the result for TranscriptionUpdate with the current status and the
+     * details about the status.
      * 
-     * @return the mediaStreamingUpdate value.
+     * @return the transcriptionUpdate value.
      */
-    public MediaStreamingUpdate getMediaStreamingUpdate() {
-        return this.mediaStreamingUpdate;
+    public TranscriptionUpdate getTranscriptionUpdate() {
+        return this.transcriptionUpdate;
     }
 
     /**

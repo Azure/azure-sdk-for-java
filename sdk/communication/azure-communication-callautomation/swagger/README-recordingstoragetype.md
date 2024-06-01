@@ -26,9 +26,9 @@ autorest README-recordingstoragetype.md --java --use=@autorest/java@4.1.27 --use
 
 ### Code generation settings
 ``` yaml
-tag: package-2024-04-15
+tag: package-2023-10-03-preview
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/ebedc156cf07929f3f72e71e5323ecdfa402267d/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/156ff363e44f764ddd8a0a6adcd371610240ba15/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -41,7 +41,7 @@ sync-methods: all
 add-context-parameter: true
 context-client-method-parameter: true
 title: Azure Communication Call Automation Service
-customization-class: src/main/java/CallautomationCustomizations.java
+customization-class: /src/main/java/CallautomationCustomizations.java
 directive:
 - rename-model:
     from: CallParticipant

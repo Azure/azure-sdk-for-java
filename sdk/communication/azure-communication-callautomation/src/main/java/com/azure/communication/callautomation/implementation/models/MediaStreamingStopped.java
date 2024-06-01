@@ -7,12 +7,13 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MediaStreamingStopped model. */
+/**
+ * The MediaStreamingStopped model.
+ */
 @Immutable
 public final class MediaStreamingStopped {
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext", access = JsonProperty.Access.WRITE_ONLY)
     private String operationContext;
@@ -24,8 +25,7 @@ public final class MediaStreamingStopped {
     private ResultInformation resultInformation;
 
     /*
-     * Defines the result for audio streaming update with the current status
-     * and the details about the status
+     * Defines the result for audio streaming update with the current status and the details about the status
      */
     @JsonProperty(value = "mediaStreamingUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private MediaStreamingUpdate mediaStreamingUpdate;
@@ -43,16 +43,21 @@ public final class MediaStreamingStopped {
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
     @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /**
+     * Creates an instance of MediaStreamingStopped class.
+     */
+    public MediaStreamingStopped() {
+    }
+
+    /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -61,7 +66,7 @@ public final class MediaStreamingStopped {
 
     /**
      * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
-     *
+     * 
      * @return the resultInformation value.
      */
     public ResultInformation getResultInformation() {
@@ -71,7 +76,7 @@ public final class MediaStreamingStopped {
     /**
      * Get the mediaStreamingUpdate property: Defines the result for audio streaming update with the current status and
      * the details about the status.
-     *
+     * 
      * @return the mediaStreamingUpdate value.
      */
     public MediaStreamingUpdate getMediaStreamingUpdate() {
@@ -80,7 +85,7 @@ public final class MediaStreamingStopped {
 
     /**
      * Get the callConnectionId property: Call connection ID.
-     *
+     * 
      * @return the callConnectionId value.
      */
     public String getCallConnectionId() {
@@ -89,7 +94,7 @@ public final class MediaStreamingStopped {
 
     /**
      * Get the serverCallId property: Server call ID.
-     *
+     * 
      * @return the serverCallId value.
      */
     public String getServerCallId() {
@@ -97,9 +102,9 @@ public final class MediaStreamingStopped {
     }
 
     /**
-     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
-     *
+     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype
+     * chain ID.
+     * 
      * @return the correlationId value.
      */
     public String getCorrelationId() {

@@ -4,31 +4,43 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The MediaStreamingFailed model.
+ * The DialogSensitivityUpdate model.
  */
-@Immutable
-public final class MediaStreamingFailed {
+@Fluent
+public final class DialogSensitivityUpdate {
     /*
-     * Used by customers when calling mid-call actions to correlate the request to the response event.
+     * SensitiveMask
+     */
+    @JsonProperty(value = "sensitiveMask", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean sensitiveMask;
+
+    /*
+     * Used by customers when calling answerCall action to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext", access = JsonProperty.Access.WRITE_ONLY)
     private String operationContext;
 
     /*
-     * Contains the resulting SIP code, sub-code and message.
+     * Contains the resulting SIP code/sub-code and message from NGC services.
      */
     @JsonProperty(value = "resultInformation", access = JsonProperty.Access.WRITE_ONLY)
     private ResultInformation resultInformation;
 
     /*
-     * Defines the result for audio streaming update with the current status and the details about the status
+     * Determines the type of the dialog.
      */
-    @JsonProperty(value = "mediaStreamingUpdate", access = JsonProperty.Access.WRITE_ONLY)
-    private MediaStreamingUpdate mediaStreamingUpdate;
+    @JsonProperty(value = "dialogInputType")
+    private DialogInputType dialogInputType;
+
+    /*
+     * Dialog ID
+     */
+    @JsonProperty(value = "dialogId", access = JsonProperty.Access.WRITE_ONLY)
+    private String dialogId;
 
     /*
      * Call connection ID.
@@ -49,13 +61,22 @@ public final class MediaStreamingFailed {
     private String correlationId;
 
     /**
-     * Creates an instance of MediaStreamingFailed class.
+     * Creates an instance of DialogSensitivityUpdate class.
      */
-    public MediaStreamingFailed() {
+    public DialogSensitivityUpdate() {
     }
 
     /**
-     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * Get the sensitiveMask property: SensitiveMask.
+     * 
+     * @return the sensitiveMask value.
+     */
+    public Boolean isSensitiveMask() {
+        return this.sensitiveMask;
+    }
+
+    /**
+     * Get the operationContext property: Used by customers when calling answerCall action to correlate the request to
      * the response event.
      * 
      * @return the operationContext value.
@@ -65,7 +86,7 @@ public final class MediaStreamingFailed {
     }
 
     /**
-     * Get the resultInformation property: Contains the resulting SIP code, sub-code and message.
+     * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
      * 
      * @return the resultInformation value.
      */
@@ -74,13 +95,32 @@ public final class MediaStreamingFailed {
     }
 
     /**
-     * Get the mediaStreamingUpdate property: Defines the result for audio streaming update with the current status and
-     * the details about the status.
+     * Get the dialogInputType property: Determines the type of the dialog.
      * 
-     * @return the mediaStreamingUpdate value.
+     * @return the dialogInputType value.
      */
-    public MediaStreamingUpdate getMediaStreamingUpdate() {
-        return this.mediaStreamingUpdate;
+    public DialogInputType getDialogInputType() {
+        return this.dialogInputType;
+    }
+
+    /**
+     * Set the dialogInputType property: Determines the type of the dialog.
+     * 
+     * @param dialogInputType the dialogInputType value to set.
+     * @return the DialogSensitivityUpdate object itself.
+     */
+    public DialogSensitivityUpdate setDialogInputType(DialogInputType dialogInputType) {
+        this.dialogInputType = dialogInputType;
+        return this;
+    }
+
+    /**
+     * Get the dialogId property: Dialog ID.
+     * 
+     * @return the dialogId value.
+     */
+    public String getDialogId() {
+        return this.dialogId;
     }
 
     /**

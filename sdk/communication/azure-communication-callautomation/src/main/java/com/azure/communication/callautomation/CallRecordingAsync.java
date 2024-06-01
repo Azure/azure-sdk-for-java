@@ -14,6 +14,7 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.RecordingChannelInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingStorageInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingStorageTypeInternal;
 import com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal;
 import com.azure.communication.callautomation.models.AzureBlobContainerRecordingStorage;
