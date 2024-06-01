@@ -5,7 +5,7 @@
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "3.3.0",
-    "spring-cloud-version" : "2023.0.1"
+    "spring-cloud-version" : "NONE_SUPPORTED_SPRING_CLOUD_VERSION"
   },
   {
     "current" : false,
@@ -157,7 +157,7 @@
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "3.1.12",
-    "spring-cloud-version" : "2022.0.5"
+    "spring-cloud-version" : "NONE_SUPPORTED_SPRING_CLOUD_VERSION"
   },
   {
     "current" : false,
@@ -349,7 +349,7 @@
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "3.0.13",
-    "spring-cloud-version" : "2022.0.5"
+    "spring-cloud-version" : "NONE_SUPPORTED_SPRING_CLOUD_VERSION"
   },
   {
     "current" : false,
