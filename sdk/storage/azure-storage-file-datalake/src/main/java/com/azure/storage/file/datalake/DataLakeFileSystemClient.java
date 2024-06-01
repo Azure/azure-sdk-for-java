@@ -114,8 +114,6 @@ public class DataLakeFileSystemClient {
         BlobContainerClient blobContainerClient, HttpPipeline pipeline, String url,
         DataLakeServiceVersion serviceVersion, String accountName, String fileSystemName,
         AzureSasCredential sasToken, boolean isTokenCredentialAuthenticated) {
-        this.dataLakeFileSystemAsyncClient = dataLakeFileSystemAsyncClient;
-        this.blobContainerClient = blobContainerClient;
         this.azureDataLakeStorage = new AzureDataLakeStorageRestAPIImplBuilder()
             .pipeline(pipeline)
             .url(url)
@@ -130,6 +128,8 @@ public class DataLakeFileSystemClient {
             .version(serviceVersion.getVersion())
             .buildClient();
 
+        this.dataLakeFileSystemAsyncClient = dataLakeFileSystemAsyncClient;
+        this.blobContainerClient = blobContainerClient;
         this.serviceVersion = serviceVersion;
         this.accountName = accountName;
         this.fileSystemName = fileSystemName;
@@ -239,7 +239,7 @@ public class DataLakeFileSystemClient {
      * @return the URL of the storage account
      */
     public String getAccountUrl() {
-        return this.accountName;
+        return azureDataLakeStorage.getUrl();
     }
 
     /**

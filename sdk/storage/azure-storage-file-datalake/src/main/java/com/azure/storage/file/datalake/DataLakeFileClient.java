@@ -104,13 +104,13 @@ public class DataLakeFileClient extends DataLakePathClient {
 
     private final DataLakeFileAsyncClient dataLakeFileAsyncClient;
 
-    DataLakeFileClient(DataLakeFileAsyncClient pathAsyncClient, BlockBlobClient blockBlobClient, HttpPipeline pipeline,
+    DataLakeFileClient(DataLakeFileAsyncClient fileAsyncClient, BlockBlobClient blockBlobClient, HttpPipeline pipeline,
         String url, DataLakeServiceVersion serviceVersion, String accountName, String fileSystemName, String fileName,
         AzureSasCredential sasToken, CpkInfo customerProvidedKey, boolean isTokenCredentialAuthenticated) {
-        super(pathAsyncClient.getPathAsyncClient(fileSystemName, fileName), blockBlobClient, pipeline, url,
+        super(fileAsyncClient.getPathAsyncClient(fileSystemName, fileName), blockBlobClient, pipeline, url,
             serviceVersion, accountName, fileSystemName, fileName, PathResourceType.FILE, sasToken, customerProvidedKey,
             isTokenCredentialAuthenticated);
-        this.dataLakeFileAsyncClient = pathAsyncClient;
+        this.dataLakeFileAsyncClient = fileAsyncClient;
     }
 
     DataLakeFileClient(DataLakePathClient dataLakePathClient) {
