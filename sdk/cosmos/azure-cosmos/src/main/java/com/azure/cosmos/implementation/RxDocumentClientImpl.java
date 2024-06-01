@@ -89,6 +89,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 import reactor.util.concurrent.Queues;
+import reactor.util.retry.Retry;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -5827,7 +5828,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DiagnosticsClientContext innerDiagnosticsFactory,
         String collectionLink) {
 
-        return this.collectionCache.resolveByNameAsync(null, collectionLink, null)
+        return Mono.defer(() -> this.collectionCache.resolveByNameAsync(null, collectionLink, null)
             .flatMap(collection -> this.partitionKeyRangeCache.tryLookupAsync(null, collection.getResourceId(), null, null)
                 .flatMap(collectionRoutingMapValueHolder -> {
 
@@ -6001,7 +6002,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             return exception;
                         })
                         .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
-                }));
+                }))
+            ).retryWhen(Retry.fixedDelay(10, Duration.ofSeconds(1)).filter(throwable -> {
+                Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
+
+                if (unwrappedThrowable instanceof NotFoundException) {
+                    // NotFoundException ex = Utils.as(unwrappedThrowable, NotFoundException.class);
+                    // return ex.getMessage().contains("collectionRoutingMapValueHolder.v cannot be null!");
+                    return true;
+                }
+
+                return false;
+            }).doBeforeRetry((retrySignal) -> this.collectionCache
+                .refresh(
+                    null,
+                    collectionLink,
+                    null)
+            )
+        );
     }
 
 
