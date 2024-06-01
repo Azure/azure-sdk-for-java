@@ -275,6 +275,7 @@ public class EventHubClientBuilder implements
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
      */
     private final AtomicInteger openClients = new AtomicInteger();
+    private final V2StackSupport v2StackSupport = new V2StackSupport(LOGGER);
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP} and a non-shared connection. A
