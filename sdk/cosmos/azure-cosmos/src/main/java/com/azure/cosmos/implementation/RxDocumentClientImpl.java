@@ -36,6 +36,7 @@ import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -5848,7 +5849,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                     // todo: investigate retry policy in stale cache scenarios
                     if (collectionRoutingMapValueHolder.v == null) {
-                        return Mono.error(new NotFoundException("collectionRoutingMapValueHolder.v cannot be null!"));
+                        return Mono.error(new CollectionRoutingMapNotFoundException("collectionRoutingMapValueHolder.v cannot be null!"));
                     }
 
                     nonNullRequestOptions.setPartitionKeyDefinition(collection.getPartitionKey());
@@ -6003,17 +6004,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         })
                         .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
                 }))
-            ).retryWhen(Retry.fixedDelay(10, Duration.ofSeconds(1)).filter(throwable -> {
-                Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
-
-                if (unwrappedThrowable instanceof NotFoundException) {
-                    // NotFoundException ex = Utils.as(unwrappedThrowable, NotFoundException.class);
-                    // return ex.getMessage().contains("collectionRoutingMapValueHolder.v cannot be null!");
-                    return true;
-                }
-
-                return false;
-            }).doBeforeRetry((retrySignal) -> this.collectionCache
+            )
+            .retryWhen(Retry.fixedDelay(10, Duration.ofSeconds(1))
+                .filter(throwable -> throwable instanceof CollectionRoutingMapNotFoundException)
+                .doBeforeRetry((retrySignal) -> this.collectionCache
                 .refresh(
                     null,
                     collectionLink,
@@ -6530,6 +6524,27 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         public void reset() {
             this.createdDiagnostics.clear();
             this.isMerged.set(false);
+        }
+    }
+
+    static class CollectionRoutingMapNotFoundException extends CosmosException {
+
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Instantiates a new Invalid partition exception.
+         *
+         * @param msg the msg
+         */
+        public CollectionRoutingMapNotFoundException(String msg) {
+            super(HttpConstants.StatusCodes.NOTFOUND, msg);
+            setSubStatus();
+        }
+
+        private void setSubStatus() {
+            this.getResponseHeaders().put(
+                WFConstants.BackendHeaders.SUB_STATUS,
+                Integer.toString(HttpConstants.SubStatusCodes.INCORRECT_CONTAINER_RID_SUB_STATUS));
         }
     }
 }
