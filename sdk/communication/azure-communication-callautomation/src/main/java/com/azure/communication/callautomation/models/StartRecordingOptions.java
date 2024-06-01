@@ -194,7 +194,7 @@ public final class StartRecordingOptions {
     /**
      * Set the externalStorage property: Used to specify external storage for call recording
      *
-     * @param externalStorage the external storage for call recording
+     * @param recordingStorage the external storage for call recording
      * @return the StartRecordingOptions object itself.
      */
     public StartRecordingOptions setRecordingStorage(RecordingStorage recordingStorage) {
