@@ -102,16 +102,9 @@ steps:
         azurePowerShellVersion: LatestVersion
         pwsh: true
         ScriptType: InlineScript
-        Inline: >
-          $PSNativeCommandArgumentPassing='Legacy';
-          & "mvn --% -f $(Build.SourcesDirectory)/pom.xml
-          $(DefaultTestOptions)
-          -DAZURE_TEST_DEBUG=$(IsDebug)
-          -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }}
-          ${{ parameters.TestOptions }}
-          -T ${{ parameters.TestParallelization }}
-          ${{ parameters.TestGoals }}";
-          exit $LASTEXITCODE;
+        Inline: |
+          mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} ${{ parameters.TestGoals }}
+          exit $LASTEXITCODE
       env:
         JAVA_HOME: $(PowerShellJavaHome)
         MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
