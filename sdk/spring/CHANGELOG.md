@@ -11,7 +11,7 @@
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
-### Bugs Fixed
+#### Bugs Fixed
 - Fixed `IllegalArgumentException: Subscription cannot be null` error when only configured one subscription name of `AzureServiceBusConsumerClient` or `AzureServiceBusProcessorClient` [#40283](https://github.com/Azure/azure-sdk-for-java/pull/40283).
 
 ### Azure Spring Data Cosmos
