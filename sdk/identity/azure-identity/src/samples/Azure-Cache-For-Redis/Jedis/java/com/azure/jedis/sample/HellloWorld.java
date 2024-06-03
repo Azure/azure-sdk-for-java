@@ -21,7 +21,6 @@ public class HellloWorld {
     public static void main(String[] args) {
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
-        AzureCliCredential azureCliCredential = new AzureCliCredentialBuilder().build();
         // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
         String token = defaultAzureCredential
             .getTokenSync(new TokenRequestContext()
@@ -31,7 +30,7 @@ public class HellloWorld {
         // SSL connection is required.
         boolean useSsl = true;
         // TODO: Replace Host Name with Azure Cache for Redis Host Name.
-        String cacheHostname = "<HOST_NAME>";
+        String cacheHostname = "azdsdktest.redis.cache.windows.net";
         String username = extractUsernameFromToken(token);
 
         // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
