@@ -104,13 +104,13 @@ steps:
         ScriptType: InlineScript
         Inline: >
           $PSNativeCommandArgumentPassing='Legacy';
-          mvn --% -f $(Build.SourcesDirectory)/pom.xml
+          & "mvn --% -f $(Build.SourcesDirectory)/pom.xml
           $(DefaultTestOptions)
           -DAZURE_TEST_DEBUG=$(IsDebug)
           -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }}
           ${{ parameters.TestOptions }}
           -T ${{ parameters.TestParallelization }}
-          ${{ parameters.TestGoals }};
+          ${{ parameters.TestGoals }}";
           exit $LASTEXITCODE;
       env:
         JAVA_HOME: $(PowerShellJavaHome)
