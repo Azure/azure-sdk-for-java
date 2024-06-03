@@ -19,6 +19,7 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
+import com.azure.messaging.servicebus.models.PurgeMessagesOptions;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -42,6 +43,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,6 +78,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
     private static final AmqpRetryOptions DEFAULT_RETRY_OPTIONS = null;
+    private static final ServiceBusMessage END = new ServiceBusMessage(new byte[0]);
     private final boolean isSessionEnabled = false;
     private final ClientCreationOptions defaultClientCreationOptions = new ClientCreationOptions()
         .setMaxAutoLockRenewDuration(Duration.ofMinutes(5));
@@ -1464,6 +1467,27 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
         }
     }
 
+    @Test
+    void batchDelete() {
+        setSenderAndReceiver(MessagingEntityType.QUEUE, TestUtils.USE_CASE_BATCH_DELETE, false);
+
+        final int totalMessages = ServiceBusReceiverAsyncClient.MAX_DELETE_MESSAGES_COUNT * 2 + 100;
+        final List<ServiceBusMessage> messages = new ArrayList<>(totalMessages);
+        for (int i = 0; i < totalMessages; i++) {
+            messages.add(getMessage(UUID.randomUUID().toString(), false));
+        }
+
+        StepVerifier.create(sendMessages(messages))
+            .verifyComplete();
+
+        final PurgeMessagesOptions options = new PurgeMessagesOptions()
+            .setBeforeEnqueueTimeUtc(OffsetDateTime.now().plusSeconds(5)); // 5-sec buffer time to account any clock skew.
+
+        StepVerifier.create(receiver.purgeMessages(options))
+            .assertNext(count -> assertEquals(totalMessages, count))
+            .verifyComplete();
+    }
+
     /**
      * Asserts the length and values with in the map.
      */
@@ -1521,6 +1545,41 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
     private Mono<Void> sendMessage(ServiceBusMessage message) {
         return sender.sendMessage(message).doOnSuccess(aVoid -> {
             logMessage(message, sender.getEntityPath(), "sent");
+        });
+    }
+
+    private Mono<Void> sendMessages(List<ServiceBusMessage> messages) {
+        final Iterator<ServiceBusMessage> messagesItr = messages.iterator();
+        if (messagesItr.hasNext()) {
+            return sendNextBatch(messagesItr.next(), messagesItr);
+        } else {
+            return Mono.empty();
+        }
+    }
+
+    private Mono<Void> sendNextBatch(ServiceBusMessage first, Iterator<ServiceBusMessage> messagesItr) {
+        return sender.createMessageBatch().flatMap(batch -> {
+            ServiceBusMessage next = first;
+            do {
+                if (!batch.tryAddMessage(next)) {
+                    if (next == first) {
+                        return Mono.error(
+                            new IllegalArgumentException("The event " + first + " is too big to send even in a Batch."));
+                    }
+                    return sender.sendMessages(batch).then(Mono.just(next));
+                }
+                if (messagesItr.hasNext()) {
+                    next = messagesItr.next();
+                } else {
+                    return sender.sendMessages(batch).then(Mono.just(END));
+                }
+            } while (true);
+        }).flatMap(missed -> {
+            if (missed == END) {
+                return Mono.empty();
+            } else {
+                return sendNextBatch(missed, messagesItr);
+            }
         });
     }
 
