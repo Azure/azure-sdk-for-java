@@ -61,6 +61,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -190,6 +191,14 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             }
         }
         return sshPublicKey;
+    }
+
+    private static final Pattern SUBSCRIPTION_ID_PATTERN = Pattern.compile("(?<=/subscriptions/)([^/?]+)");
+
+    protected void assertResourceIdEquals(String expected, String actual) {
+        String sanitizedExpected = SUBSCRIPTION_ID_PATTERN.matcher(expected).replaceAll(ZERO_UUID);
+        String sanitizedActual = SUBSCRIPTION_ID_PATTERN.matcher(actual).replaceAll(ZERO_UUID);
+        Assertions.assertTrue(sanitizedExpected.equalsIgnoreCase(sanitizedActual), String.format("expected: %s but was: %s", expected, actual));
     }
 
     /**
