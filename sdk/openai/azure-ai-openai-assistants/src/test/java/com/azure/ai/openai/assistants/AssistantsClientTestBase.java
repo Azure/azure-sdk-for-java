@@ -122,7 +122,8 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
-            removeDefaultSanitizers();
+            // TODO verify what's going on. Seems like we shouldn't remove these on PLAYBACK mode
+//            removeDefaultSanitizers();
         }
 
         return builder;
@@ -145,7 +146,8 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
-            removeDefaultSanitizers();
+            // TODO verify what's going on. Seems like we shouldn't remove these on PLAYBACK mode
+//            removeDefaultSanitizers();
         }
 
         return builder;
