@@ -16,10 +16,9 @@ import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.core.http.HttpClient;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.Arrays;
 
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,14 +26,15 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class RetrievalSyncTest extends AssistantsClientTestBase {
+public class AzureFileSearchSyncTest extends AssistantsClientTestBase {
 
     AssistantsClient client;
 
+    @Disabled("Retrieval tools are not supported in Azure")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void basicRetrieval(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient);
+        client = getAssistantsClient(httpClient, serviceVersion);
 
         createRetrievalRunner((fileDetails, assistantCreationOptions) -> {
             // Upload file for assistant
