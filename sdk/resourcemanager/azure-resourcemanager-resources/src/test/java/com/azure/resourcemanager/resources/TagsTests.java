@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.resources;
 
 import com.azure.resourcemanager.resources.implementation.TypeSerializationTests;
-import com.azure.resourcemanager.resources.models.GenericResource;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.models.TagResource;
 import org.junit.jupiter.api.Assertions;
