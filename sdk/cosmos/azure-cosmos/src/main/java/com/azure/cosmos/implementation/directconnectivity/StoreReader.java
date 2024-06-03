@@ -216,7 +216,8 @@ public class StoreReader {
                                                            final MutableVolatile<ISessionToken> requestSessionToken,
                                                            final MutableVolatile<Boolean> hasGoneException,
                                                            boolean enforceSessionCheck,
-                                                           final MutableVolatile<ReadReplicaResult> shortCircut) {
+                                                           final MutableVolatile<ReadReplicaResult> shortCircut,
+                                                           List<Uri> allApiResults) {
         if (entity.requestContext.timeoutHelper.isElapsed()) {
             return Flux.error(new GoneException());
         }
@@ -231,7 +232,7 @@ public class StoreReader {
             replicaStatusesAttempting.add(uri.getHealthStatusDiagnosticString());
         });
         Map<String, Set<String>> replicaStatusList = new HashMap<>();
-        resolveApiResults.stream().filter(uri -> !replicaStatusesAttempting.contains(uri.getHealthStatusDiagnosticString())).forEach(uri ->
+        allApiResults.stream().filter(uri -> !replicaStatusesAttempting.contains(uri.getHealthStatusDiagnosticString())).forEach(uri ->
             replicaStatusesNotAttempting.add(uri.getHealthStatusDiagnosticString())
         );
         replicaStatusList.put(Uri.ATTEMPTING , replicaStatusesAttempting);
@@ -417,7 +418,7 @@ public class StoreReader {
             requestedCollectionId = entity.requestContext.resolvedCollectionRid;
         }
 
-        Mono<List<Uri>> resolveApiResultsObs = this.addressSelector.resolveAllUriAsync(
+        Mono<List<List<Uri>>> resolveApiResultsObs = this.addressSelector.resolveAndStoreAllUriAsync(
                 entity,
                 includePrimary,
                 entity.requestContext.forceRefreshAddressCache);
@@ -431,8 +432,10 @@ public class StoreReader {
         return resolveApiResultsObs.flux()
                 .map(list -> Collections.synchronizedList(new ArrayList<>(list)))
                 .flatMap(
-                resolveApiResults -> {
+                resolveApiResultsTuple -> {
                     try {
+                        List<Uri> resolveApiResults = resolveApiResultsTuple.get(0);
+                        List<Uri> allApiResults = resolveApiResultsTuple.get(1);
                         MutableVolatile<ISessionToken> requestSessionToken = new MutableVolatile<>();
                         if (useSessionToken) {
                             SessionTokenHelper.setPartitionLocalSessionToken(entity, this.sessionContainer);
@@ -476,7 +479,8 @@ public class StoreReader {
                                                                             requestSessionToken,
                                                                             hasGoneException,
                                                                             enforceSessionCheck,
-                                                                            shortCircuitResult))
+                                                                            shortCircuitResult,
+                                                                            allApiResults))
                                             // repeat().takeUntil() simulate a while loop pattern
                                             .repeat()
                                             .takeUntil(x -> {
@@ -775,7 +779,7 @@ public class StoreReader {
             logger.error("Unexpected failure while recording response", e);
         }
 
-        if (responseException !=null) {
+        if (responseException != null) {
             verifyCanContinueOnException(storeResult.getException());
         }
 

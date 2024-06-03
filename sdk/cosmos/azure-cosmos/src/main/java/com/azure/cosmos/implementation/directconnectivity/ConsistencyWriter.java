@@ -209,7 +209,7 @@ public class ConsistencyWriter {
                     return Mono.error(e);
                 }
                 replicaStatusList.put(Uri.IGNORING, replicaStatuses);
-                replicaStatusList.put(Uri.ATTEMPTING,new HashSet<>(Arrays.asList(primaryUri.getHealthStatusDiagnosticString())));
+                replicaStatusList.put(Uri.ATTEMPTING, new HashSet<>(Arrays.asList(primaryUri.getHealthStatusDiagnosticString())));
 
                 return this.transportClient.invokeResourceOperationAsync(primaryUri, request)
                                            .doOnError(

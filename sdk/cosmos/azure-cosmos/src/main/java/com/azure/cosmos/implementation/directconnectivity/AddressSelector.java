@@ -11,7 +11,9 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +37,28 @@ public class AddressSelector {
         Mono<List<AddressInformation>> allReplicaAddressesObs = this.resolveAddressesAsync(request, forceRefresh);
         return allReplicaAddressesObs.map(allReplicaAddresses -> allReplicaAddresses.stream().filter(a -> includePrimary || !a.isPrimary())
             .map(a -> a.getPhysicalUri()).collect(Collectors.toList()));
+    }
+
+    public Mono<List<List<Uri>>> resolveAndStoreAllUriAsync(
+        RxDocumentServiceRequest request,
+        boolean includePrimary,
+        boolean forceRefresh) {
+        Mono<List<AddressInformation>> allReplicaAddressesObs = this.resolveAddressesAsync(request, forceRefresh);
+        return allReplicaAddressesObs.map(allReplicaAddresses -> {
+            List<Uri> readReplicas = new ArrayList<>();
+            List<Uri> allReplicas = new ArrayList<>();
+            allReplicaAddresses.forEach(a -> {
+                if (!a.isPrimary() || includePrimary) {
+                    readReplicas.add(a.getPhysicalUri());
+                }
+                allReplicas.add(a.getPhysicalUri());
+            });
+            List<List<Uri>> replicasTuple = new ArrayList<>();
+            replicasTuple.add(readReplicas);
+            replicasTuple.add(allReplicas);
+
+            return replicasTuple;
+        });
     }
 
     public Mono<Uri> resolvePrimaryUriAsync(RxDocumentServiceRequest request, boolean forceAddressRefresh) {
