@@ -10,7 +10,9 @@ import com.azure.resourcemanager.resources.fluent.models.TenantIdDescriptionInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Tenant Ids information. */
+/**
+ * Tenant Ids information.
+ */
 @Fluent
 public final class TenantListResult {
     /*
@@ -25,13 +27,15 @@ public final class TenantListResult {
     @JsonProperty(value = "nextLink", required = true)
     private String nextLink;
 
-    /** Creates an instance of TenantListResult class. */
+    /**
+     * Creates an instance of TenantListResult class.
+     */
     public TenantListResult() {
     }
 
     /**
      * Get the value property: An array of tenants.
-     *
+     * 
      * @return the value value.
      */
     public List<TenantIdDescriptionInner> value() {
@@ -40,7 +44,7 @@ public final class TenantListResult {
 
     /**
      * Set the value property: An array of tenants.
-     *
+     * 
      * @param value the value value to set.
      * @return the TenantListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class TenantListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class TenantListResult {
 
     /**
      * Set the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the TenantListResult object itself.
      */
@@ -71,7 +75,7 @@ public final class TenantListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -79,9 +83,8 @@ public final class TenantListResult {
             value().forEach(e -> e.validate());
         }
         if (nextLink() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nextLink in model TenantListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property nextLink in model TenantListResult"));
         }
     }
 

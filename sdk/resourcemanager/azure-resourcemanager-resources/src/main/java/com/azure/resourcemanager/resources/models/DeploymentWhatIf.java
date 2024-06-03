@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deployment What-if operation parameters. */
+/**
+ * Deployment What-if operation parameters.
+ */
 @Fluent
 public final class DeploymentWhatIf {
     /*
@@ -23,13 +25,15 @@ public final class DeploymentWhatIf {
     @JsonProperty(value = "properties", required = true)
     private DeploymentWhatIfProperties properties;
 
-    /** Creates an instance of DeploymentWhatIf class. */
+    /**
+     * Creates an instance of DeploymentWhatIf class.
+     */
     public DeploymentWhatIf() {
     }
 
     /**
      * Get the location property: The location to store the deployment data.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -38,7 +42,7 @@ public final class DeploymentWhatIf {
 
     /**
      * Set the location property: The location to store the deployment data.
-     *
+     * 
      * @param location the location value to set.
      * @return the DeploymentWhatIf object itself.
      */
@@ -49,7 +53,7 @@ public final class DeploymentWhatIf {
 
     /**
      * Get the properties property: The deployment properties.
-     *
+     * 
      * @return the properties value.
      */
     public DeploymentWhatIfProperties properties() {
@@ -58,7 +62,7 @@ public final class DeploymentWhatIf {
 
     /**
      * Set the properties property: The deployment properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DeploymentWhatIf object itself.
      */
@@ -69,14 +73,13 @@ public final class DeploymentWhatIf {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model DeploymentWhatIf"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model DeploymentWhatIf"));
         } else {
             properties().validate();
         }

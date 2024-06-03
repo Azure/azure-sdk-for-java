@@ -22,14 +22,13 @@ public class ChatCompletionsToolDefinition implements JsonSerializable<ChatCompl
      */
     @Generated
     public ChatCompletionsToolDefinition() {
-        this.type = "ChatCompletionsToolDefinition";
     }
 
     /*
      * The object type.
      */
     @Generated
-    private String type;
+    private String type = "ChatCompletionsToolDefinition";
 
     /**
      * Get the type property: The object type.

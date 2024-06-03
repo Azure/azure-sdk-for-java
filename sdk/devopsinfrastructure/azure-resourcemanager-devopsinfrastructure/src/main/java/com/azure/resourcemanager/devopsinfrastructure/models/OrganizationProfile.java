@@ -26,13 +26,12 @@ public class OrganizationProfile {
      */
     @JsonTypeId
     @JsonProperty(value = "kind", required = true)
-    private String kind;
+    private String kind = "OrganizationProfile";
 
     /**
      * Creates an instance of OrganizationProfile class.
      */
     public OrganizationProfile() {
-        this.kind = "OrganizationProfile";
     }
 
     /**

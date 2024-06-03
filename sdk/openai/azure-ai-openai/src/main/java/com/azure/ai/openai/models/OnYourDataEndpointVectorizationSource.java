@@ -29,19 +29,7 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
      * Specifies the authentication options to use when retrieving embeddings from the specified endpoint.
      */
     @Generated
-    private final OnYourDataAuthenticationOptions authentication;
-
-    /**
-     * Creates an instance of OnYourDataEndpointVectorizationSource class.
-     *
-     * @param endpoint the endpoint value to set.
-     * @param authentication the authentication value to set.
-     */
-    @Generated
-    public OnYourDataEndpointVectorizationSource(String endpoint, OnYourDataAuthenticationOptions authentication) {
-        this.endpoint = endpoint;
-        this.authentication = authentication;
-    }
+    private final OnYourDataVectorSearchAuthenticationOptions authentication;
 
     /**
      * Get the endpoint property: Specifies the resource endpoint URL from which embeddings should be retrieved. It
@@ -63,7 +51,7 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
      * @return the authentication value.
      */
     @Generated
-    public OnYourDataAuthenticationOptions getAuthentication() {
+    public OnYourDataVectorSearchAuthenticationOptions getAuthentication() {
         return this.authentication;
     }
 
@@ -110,7 +98,7 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
     public static OnYourDataEndpointVectorizationSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String endpoint = null;
-            OnYourDataAuthenticationOptions authentication = null;
+            OnYourDataVectorSearchAuthenticationOptions authentication = null;
             OnYourDataVectorizationSourceType type = OnYourDataVectorizationSourceType.ENDPOINT;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -118,7 +106,7 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
                 if ("endpoint".equals(fieldName)) {
                     endpoint = reader.getString();
                 } else if ("authentication".equals(fieldName)) {
-                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
+                    authentication = OnYourDataVectorSearchAuthenticationOptions.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = OnYourDataVectorizationSourceType.fromString(reader.getString());
                 } else {
@@ -130,5 +118,18 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
             deserializedOnYourDataEndpointVectorizationSource.type = type;
             return deserializedOnYourDataEndpointVectorizationSource;
         });
+    }
+
+    /**
+     * Creates an instance of OnYourDataEndpointVectorizationSource class.
+     *
+     * @param endpoint the endpoint value to set.
+     * @param authentication the authentication value to set.
+     */
+    @Generated
+    public OnYourDataEndpointVectorizationSource(String endpoint,
+        OnYourDataVectorSearchAuthenticationOptions authentication) {
+        this.endpoint = endpoint;
+        this.authentication = authentication;
     }
 }

@@ -32,6 +32,7 @@ import static com.azure.ai.documentintelligence.TestUtils.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.documentintelligence.TestUtils.EXPECTED_MERCHANT_NAME;
 import static com.azure.ai.documentintelligence.TestUtils.INVALID_KEY;
 import static com.azure.ai.documentintelligence.TestUtils.ONE_NANO_DURATION;
+import static com.azure.ai.documentintelligence.TestUtils.REMOVE_SANITIZER_ID;
 import static com.azure.ai.documentintelligence.TestUtils.getTestProxySanitizers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -42,6 +43,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         "{\"urlSource\":\"https://fakeuri.com/blank%20space\"}";
 
     Duration durationTestMode;
+    private boolean sanitizersRemoved = false;
 
     /**
      * Use duration of nearly zero value for PLAYBACK test mode, otherwise, use default duration value for LIVE mode.
@@ -83,8 +85,10 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
                 builder.credential(new DefaultAzureCredentialBuilder().build());
             }
         }
-        if (!interceptorManager.isLiveMode()) {
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
             interceptorManager.addSanitizers(getTestProxySanitizers());
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+            sanitizersRemoved = true;
         }
         return builder;
     }
@@ -124,8 +128,10 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
                 builder.credential(new DefaultAzureCredentialBuilder().build());
             }
         }
-        if (!interceptorManager.isLiveMode()) {
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
             interceptorManager.addSanitizers(getTestProxySanitizers());
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+            sanitizersRemoved = true;
         }
         return builder;
     }

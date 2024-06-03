@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-/** Samples for Subscriptions Get. */
+/**
+ * Samples for Subscriptions Get.
+ */
 public final class SubscriptionsGetSamples {
     /*
      * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-12-01/examples/GetSubscription.json
      */
     /**
      * Sample code: GetASingleSubscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getASingleSubscription(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .subscriptionClient()
             .getSubscriptions()
