@@ -361,17 +361,19 @@ public class BlobApiTests extends BlobTestBase {
         BlobProperties properties = bc.getProperties();
         assertEquals(AccessTier.COLD, properties.getAccessTier());
     }
+
     @LiveOnly
     @Test
     public void uploadAndDownloadAndUploadAgain() {
         byte[] randomData = getRandomByteArray(20 * Constants.MB);
         ByteArrayInputStream input = new ByteArrayInputStream(randomData);
 
-        String blobName = "testblob";
+        String blobName = generateBlobName();
         BlobClient blobClient = cc.getBlobClient(blobName);
 
-        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(1024L)
-            .setMaxSingleUploadSizeLong(2048L)
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong((long) Constants.MB)
+            .setMaxSingleUploadSizeLong(2L * Constants.MB)
             .setMaxConcurrency(5);
         BlobParallelUploadOptions parallelUploadOptions = new BlobParallelUploadOptions(input)
             .setParallelTransferOptions(parallelTransferOptions);
@@ -381,9 +383,39 @@ public class BlobApiTests extends BlobTestBase {
         InputStream inputStream = blobClient.openInputStream();
 
         // Upload the downloaded content to a different location
-        String blobName2 = "testblob2";
+        String blobName2 = generateBlobName();
 
         parallelUploadOptions = new BlobParallelUploadOptions(inputStream)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        BlobClient blobClient2 = cc.getBlobClient(blobName2);
+        blobClient2.uploadWithResponse(parallelUploadOptions, null, null);
+    }
+
+    @LiveOnly
+    @Test
+    public void uploadAndDownloadAndUploadAgainWithSize() {
+        byte[] randomData = getRandomByteArray(20 * Constants.MB);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+
+        String blobName = generateBlobName();
+        BlobClient blobClient = cc.getBlobClient(blobName);
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong((long) Constants.MB)
+            .setMaxSingleUploadSizeLong(2L * Constants.MB)
+            .setMaxConcurrency(5);
+        BlobParallelUploadOptions parallelUploadOptions = new BlobParallelUploadOptions(input)
+            .setParallelTransferOptions(parallelTransferOptions);
+
+        blobClient.uploadWithResponse(parallelUploadOptions, null, null);
+
+        InputStream inputStream = blobClient.openInputStream();
+
+        // Upload the downloaded content to a different location
+        String blobName2 = generateBlobName();
+
+        parallelUploadOptions = new BlobParallelUploadOptions(inputStream, 20 * Constants.MB)
             .setParallelTransferOptions(parallelTransferOptions);
 
         BlobClient blobClient2 = cc.getBlobClient(blobName2);
