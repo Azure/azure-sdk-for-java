@@ -38,7 +38,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
 
     /**
      * Get the blobPrefixes property: The BlobPrefixes property.
-     * 
+     *
      * @return the blobPrefixes value.
      */
     public List<BlobPrefix> getBlobPrefixes() {
@@ -47,7 +47,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
 
     /**
      * Set the blobPrefixes property: The BlobPrefixes property.
-     * 
+     *
      * @param blobPrefixes the blobPrefixes value to set.
      * @return the BlobHierarchyListSegment object itself.
      */
@@ -58,7 +58,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
 
     /**
      * Get the blobItems property: The BlobItems property.
-     * 
+     *
      * @return the blobItems value.
      */
     public List<BlobItemInternal> getBlobItems() {
@@ -67,7 +67,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
 
     /**
      * Set the blobItems property: The BlobItems property.
-     * 
+     *
      * @param blobItems the blobItems value to set.
      * @return the BlobHierarchyListSegment object itself.
      */
@@ -86,25 +86,21 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
         rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Blobs" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (this.blobPrefixes != null) {
-            xmlWriter.writeStartElement("BlobPrefixes");
             for (BlobPrefix element : this.blobPrefixes) {
                 xmlWriter.writeXml(element, "BlobPrefix");
             }
-            xmlWriter.writeEndElement();
         }
         if (this.blobItems != null) {
-            xmlWriter.writeStartElement("BlobItems");
             for (BlobItemInternal element : this.blobItems) {
                 xmlWriter.writeXml(element, "Blob");
             }
-            xmlWriter.writeEndElement();
         }
         return xmlWriter.writeEndElement();
     }
 
     /**
      * Reads an instance of BlobHierarchyListSegment from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobHierarchyListSegment if the XmlReader was pointing to an instance of it, or null if it
      * was pointing to XML null.
@@ -117,7 +113,7 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
 
     /**
      * Reads an instance of BlobHierarchyListSegment from the XmlReader.
-     * 
+     *
      * @param xmlReader The XmlReader being read.
      * @param rootElementName Optional root element name to override the default defined by the model. Used to support
      * cases where the model can deserialize from different root element names.
@@ -134,32 +130,18 @@ public final class BlobHierarchyListSegment implements XmlSerializable<BlobHiera
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                 QName elementName = reader.getElementName();
 
-                if ("BlobPrefixes".equals(elementName.getLocalPart())) {
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        elementName = reader.getElementName();
-                        if ("BlobPrefix".equals(elementName.getLocalPart())) {
-                            if (deserializedBlobHierarchyListSegment.blobPrefixes == null) {
-                                deserializedBlobHierarchyListSegment.blobPrefixes = new ArrayList<>();
-                            }
-                            deserializedBlobHierarchyListSegment.blobPrefixes
-                                .add(BlobPrefix.fromXml(reader, "BlobPrefix"));
-                        } else {
-                            reader.skipElement();
-                        }
+                if ("BlobPrefix".equals(elementName.getLocalPart())) {
+                    if (deserializedBlobHierarchyListSegment.blobPrefixes == null) {
+                        deserializedBlobHierarchyListSegment.blobPrefixes = new ArrayList<>();
                     }
-                } else if ("BlobItems".equals(elementName.getLocalPart())) {
-                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                        elementName = reader.getElementName();
-                        if ("Blob".equals(elementName.getLocalPart())) {
-                            if (deserializedBlobHierarchyListSegment.blobItems == null) {
-                                deserializedBlobHierarchyListSegment.blobItems = new ArrayList<>();
-                            }
-                            deserializedBlobHierarchyListSegment.blobItems
-                                .add(BlobItemInternal.fromXml(reader, "Blob"));
-                        } else {
-                            reader.skipElement();
-                        }
+                    deserializedBlobHierarchyListSegment.blobPrefixes
+                        .add(BlobPrefix.fromXml(reader, "BlobPrefix"));
+                } else if ("Blob".equals(elementName.getLocalPart())) {
+                    if (deserializedBlobHierarchyListSegment.blobItems == null) {
+                        deserializedBlobHierarchyListSegment.blobItems = new ArrayList<>();
                     }
+                    deserializedBlobHierarchyListSegment.blobItems
+                        .add(BlobItemInternal.fromXml(reader, "Blob"));
                 } else {
                     reader.skipElement();
                 }
