@@ -16,8 +16,6 @@ import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Locale;
-
 public class VirtualMachineEncryptionTests extends DiskEncryptionTestBase {
 
     @Test
