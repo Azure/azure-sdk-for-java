@@ -26,9 +26,7 @@ public final class QueryNetworkSiblingSetRequest {
     /*
      * Subnet resource Id
      * 
-     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
-     * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/
-     * subnets/{mySubnet}
+     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}
      */
     @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
@@ -96,12 +94,14 @@ public final class QueryNetworkSiblingSetRequest {
      */
     public void validate() {
         if (networkSiblingSetId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkSiblingSetId in model QueryNetworkSiblingSetRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkSiblingSetId in model QueryNetworkSiblingSetRequest"));
         }
         if (subnetId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property subnetId in model QueryNetworkSiblingSetRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subnetId in model QueryNetworkSiblingSetRequest"));
         }
     }
 

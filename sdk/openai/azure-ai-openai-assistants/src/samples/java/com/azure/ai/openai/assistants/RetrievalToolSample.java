@@ -9,6 +9,7 @@ import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
+import com.azure.ai.openai.assistants.models.FileSearchToolDefinition;
 import com.azure.ai.openai.assistants.models.MessageImageFileContent;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
@@ -16,7 +17,6 @@ import com.azure.ai.openai.assistants.models.MessageTextDetails;
 import com.azure.ai.openai.assistants.models.MessageTextFileCitationAnnotation;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.PageableList;
-import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
@@ -60,7 +60,7 @@ public class RetrievalToolSample {
             new AssistantCreationOptions(deploymentOrModelId)
                 .setName("Java SDK Retrieval Sample")
                 .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
-                .setTools(Arrays.asList(new RetrievalToolDefinition()))
+                .setTools(Arrays.asList(new FileSearchToolDefinition()))
             // TODO - setup with VectorStore
 //                .setFileIds(Arrays.asList(openAIFile.getId()))
         );

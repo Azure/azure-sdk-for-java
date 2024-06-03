@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -25,8 +26,13 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.netapp.fluent.AccountsClient;
 import com.azure.resourcemanager.netapp.fluent.BackupPoliciesClient;
 import com.azure.resourcemanager.netapp.fluent.BackupsClient;
+import com.azure.resourcemanager.netapp.fluent.BackupsUnderAccountsClient;
+import com.azure.resourcemanager.netapp.fluent.BackupsUnderBackupVaultsClient;
+import com.azure.resourcemanager.netapp.fluent.BackupsUnderVolumesClient;
+import com.azure.resourcemanager.netapp.fluent.BackupVaultsClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppManagementClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsClient;
+import com.azure.resourcemanager.netapp.fluent.NetAppResourceRegionInfosClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourcesClient;
 import com.azure.resourcemanager.netapp.fluent.OperationsClient;
 import com.azure.resourcemanager.netapp.fluent.PoolsClient;
@@ -177,6 +183,20 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
     }
 
     /**
+     * The NetAppResourceRegionInfosClient object to access its operations.
+     */
+    private final NetAppResourceRegionInfosClient netAppResourceRegionInfos;
+
+    /**
+     * Gets the NetAppResourceRegionInfosClient object to access its operations.
+     * 
+     * @return the NetAppResourceRegionInfosClient object.
+     */
+    public NetAppResourceRegionInfosClient getNetAppResourceRegionInfos() {
+        return this.netAppResourceRegionInfos;
+    }
+
+    /**
      * The AccountsClient object to access its operations.
      */
     private final AccountsClient accounts;
@@ -247,20 +267,6 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
     }
 
     /**
-     * The BackupsClient object to access its operations.
-     */
-    private final BackupsClient backups;
-
-    /**
-     * Gets the BackupsClient object to access its operations.
-     * 
-     * @return the BackupsClient object.
-     */
-    public BackupsClient getBackups() {
-        return this.backups;
-    }
-
-    /**
      * The BackupPoliciesClient object to access its operations.
      */
     private final BackupPoliciesClient backupPolicies;
@@ -317,6 +323,76 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
     }
 
     /**
+     * The BackupsClient object to access its operations.
+     */
+    private final BackupsClient backups;
+
+    /**
+     * Gets the BackupsClient object to access its operations.
+     * 
+     * @return the BackupsClient object.
+     */
+    public BackupsClient getBackups() {
+        return this.backups;
+    }
+
+    /**
+     * The BackupVaultsClient object to access its operations.
+     */
+    private final BackupVaultsClient backupVaults;
+
+    /**
+     * Gets the BackupVaultsClient object to access its operations.
+     * 
+     * @return the BackupVaultsClient object.
+     */
+    public BackupVaultsClient getBackupVaults() {
+        return this.backupVaults;
+    }
+
+    /**
+     * The BackupsUnderBackupVaultsClient object to access its operations.
+     */
+    private final BackupsUnderBackupVaultsClient backupsUnderBackupVaults;
+
+    /**
+     * Gets the BackupsUnderBackupVaultsClient object to access its operations.
+     * 
+     * @return the BackupsUnderBackupVaultsClient object.
+     */
+    public BackupsUnderBackupVaultsClient getBackupsUnderBackupVaults() {
+        return this.backupsUnderBackupVaults;
+    }
+
+    /**
+     * The BackupsUnderVolumesClient object to access its operations.
+     */
+    private final BackupsUnderVolumesClient backupsUnderVolumes;
+
+    /**
+     * Gets the BackupsUnderVolumesClient object to access its operations.
+     * 
+     * @return the BackupsUnderVolumesClient object.
+     */
+    public BackupsUnderVolumesClient getBackupsUnderVolumes() {
+        return this.backupsUnderVolumes;
+    }
+
+    /**
+     * The BackupsUnderAccountsClient object to access its operations.
+     */
+    private final BackupsUnderAccountsClient backupsUnderAccounts;
+
+    /**
+     * Gets the BackupsUnderAccountsClient object to access its operations.
+     * 
+     * @return the BackupsUnderAccountsClient object.
+     */
+    public BackupsUnderAccountsClient getBackupsUnderAccounts() {
+        return this.backupsUnderAccounts;
+    }
+
+    /**
      * Initializes an instance of NetAppManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -333,20 +409,25 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-07-01";
+        this.apiVersion = "2023-11-01";
         this.operations = new OperationsClientImpl(this);
         this.netAppResources = new NetAppResourcesClientImpl(this);
         this.netAppResourceQuotaLimits = new NetAppResourceQuotaLimitsClientImpl(this);
+        this.netAppResourceRegionInfos = new NetAppResourceRegionInfosClientImpl(this);
         this.accounts = new AccountsClientImpl(this);
         this.pools = new PoolsClientImpl(this);
         this.volumes = new VolumesClientImpl(this);
         this.snapshots = new SnapshotsClientImpl(this);
         this.snapshotPolicies = new SnapshotPoliciesClientImpl(this);
-        this.backups = new BackupsClientImpl(this);
         this.backupPolicies = new BackupPoliciesClientImpl(this);
         this.volumeQuotaRules = new VolumeQuotaRulesClientImpl(this);
         this.volumeGroups = new VolumeGroupsClientImpl(this);
         this.subvolumes = new SubvolumesClientImpl(this);
+        this.backups = new BackupsClientImpl(this);
+        this.backupVaults = new BackupVaultsClientImpl(this);
+        this.backupsUnderBackupVaults = new BackupsUnderBackupVaultsClientImpl(this);
+        this.backupsUnderVolumes = new BackupsUnderVolumesClientImpl(this);
+        this.backupsUnderAccounts = new BackupsUnderAccountsClientImpl(this);
     }
 
     /**
@@ -409,8 +490,8 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -451,7 +532,7 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

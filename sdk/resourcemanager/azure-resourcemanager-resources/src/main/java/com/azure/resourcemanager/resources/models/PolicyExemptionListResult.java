@@ -9,7 +9,9 @@ import com.azure.resourcemanager.resources.fluent.models.PolicyExemptionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of policy exemptions. */
+/**
+ * List of policy exemptions.
+ */
 @Fluent
 public final class PolicyExemptionListResult {
     /*
@@ -24,13 +26,15 @@ public final class PolicyExemptionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PolicyExemptionListResult class. */
+    /**
+     * Creates an instance of PolicyExemptionListResult class.
+     */
     public PolicyExemptionListResult() {
     }
 
     /**
      * Get the value property: An array of policy exemptions.
-     *
+     * 
      * @return the value value.
      */
     public List<PolicyExemptionInner> value() {
@@ -39,7 +43,7 @@ public final class PolicyExemptionListResult {
 
     /**
      * Set the value property: An array of policy exemptions.
-     *
+     * 
      * @param value the value value to set.
      * @return the PolicyExemptionListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class PolicyExemptionListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class PolicyExemptionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

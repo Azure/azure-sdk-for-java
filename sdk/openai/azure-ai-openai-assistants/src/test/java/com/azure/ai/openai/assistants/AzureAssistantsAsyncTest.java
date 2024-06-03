@@ -186,9 +186,10 @@ public class AzureAssistantsAsyncTest extends AssistantsClientTestBase {
                             assistantId4))
                     .assertNext(assistantsAscending -> {
                         List<Assistant> dataAscending = assistantsAscending.getData();
-                        assertEquals(2, dataAscending.size());
+                        // consecutive re-runs will result in more than 2 assistants, we want to check for at least 2
+                        assertTrue(2 <= dataAscending.size());
                         assertEquals(assistantId2, dataAscending.get(0).getId());
-                        assertEquals(assistantId3, dataAscending.get(1).getId());
+                        assertEquals(assistantId3, dataAscending.get(dataAscending.size() - 1).getId());
                     })
                     .verifyComplete();
 
@@ -197,9 +198,10 @@ public class AzureAssistantsAsyncTest extends AssistantsClientTestBase {
                             ListSortOrder.DESCENDING, assistantId4, assistantId1))
                     .assertNext(assistantsDescending -> {
                         List<Assistant> dataDescending = assistantsDescending.getData();
-                        assertEquals(2, dataDescending.size());
+                        // consecutive re-runs will result in more than 2 assistants, we want to check for at least 2
+                        assertTrue(2 <= dataDescending.size());
                         assertEquals(assistantId3, dataDescending.get(0).getId());
-                        assertEquals(assistantId2, dataDescending.get(1).getId());
+                        assertEquals(assistantId2, dataDescending.get(dataDescending.size() - 1).getId());
                     })
                     .verifyComplete();
 

@@ -97,8 +97,7 @@ public final class ExportPolicyRule {
     private Boolean hasRootAccess;
 
     /*
-     * This parameter specifies who is authorized to change the ownership of a file. restricted - Only root user can
-     * change the ownership of the file. unrestricted - Non-root users can change ownership of files that they own.
+     * This parameter specifies who is authorized to change the ownership of a file. restricted - Only root user can change the ownership of the file. unrestricted - Non-root users can change ownership of files that they own.
      */
     @JsonProperty(value = "chownMode")
     private ChownMode chownMode;
@@ -236,8 +235,8 @@ public final class ExportPolicyRule {
     }
 
     /**
-     * Get the kerberos5IReadWrite property: Kerberos5i Read and write access. To be use with swagger version
-     * 2020-05-01 or later.
+     * Get the kerberos5IReadWrite property: Kerberos5i Read and write access. To be use with swagger version 2020-05-01
+     * or later.
      * 
      * @return the kerberos5IReadWrite value.
      */
@@ -246,8 +245,8 @@ public final class ExportPolicyRule {
     }
 
     /**
-     * Set the kerberos5IReadWrite property: Kerberos5i Read and write access. To be use with swagger version
-     * 2020-05-01 or later.
+     * Set the kerberos5IReadWrite property: Kerberos5i Read and write access. To be use with swagger version 2020-05-01
+     * or later.
      * 
      * @param kerberos5IReadWrite the kerberos5IReadWrite value to set.
      * @return the ExportPolicyRule object itself.
@@ -280,8 +279,8 @@ public final class ExportPolicyRule {
     }
 
     /**
-     * Get the kerberos5PReadWrite property: Kerberos5p Read and write access. To be use with swagger version
-     * 2020-05-01 or later.
+     * Get the kerberos5PReadWrite property: Kerberos5p Read and write access. To be use with swagger version 2020-05-01
+     * or later.
      * 
      * @return the kerberos5PReadWrite value.
      */
@@ -290,8 +289,8 @@ public final class ExportPolicyRule {
     }
 
     /**
-     * Set the kerberos5PReadWrite property: Kerberos5p Read and write access. To be use with swagger version
-     * 2020-05-01 or later.
+     * Set the kerberos5PReadWrite property: Kerberos5p Read and write access. To be use with swagger version 2020-05-01
+     * or later.
      * 
      * @param kerberos5PReadWrite the kerberos5PReadWrite value to set.
      * @return the ExportPolicyRule object itself.

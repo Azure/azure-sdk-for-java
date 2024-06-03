@@ -9,7 +9,9 @@ import com.azure.resourcemanager.resources.fluent.models.ChangeResourceResultInn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of resources. */
+/**
+ * The list of resources.
+ */
 @Fluent
 public final class ChangeResourceListResult {
     /*
@@ -24,13 +26,15 @@ public final class ChangeResourceListResult {
     @JsonProperty(value = "value")
     private List<ChangeResourceResultInner> value;
 
-    /** Creates an instance of ChangeResourceListResult class. */
+    /**
+     * Creates an instance of ChangeResourceListResult class.
+     */
     public ChangeResourceListResult() {
     }
 
     /**
      * Get the nextLink property: The link used to get the next page of Change Resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -39,7 +43,7 @@ public final class ChangeResourceListResult {
 
     /**
      * Set the nextLink property: The link used to get the next page of Change Resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ChangeResourceListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ChangeResourceListResult {
 
     /**
      * Get the value property: The list of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ChangeResourceResultInner> value() {
@@ -59,7 +63,7 @@ public final class ChangeResourceListResult {
 
     /**
      * Set the value property: The list of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ChangeResourceListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class ChangeResourceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

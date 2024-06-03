@@ -46,6 +46,11 @@ public class SecretClientTest extends SecretClientTestBase {
         secretClient = getClientBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode()
             ? interceptorManager.getPlaybackClient() : httpClient), testTenantId, getEndpoint(), serviceVersion)
             .buildClient();
+
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+        }
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {

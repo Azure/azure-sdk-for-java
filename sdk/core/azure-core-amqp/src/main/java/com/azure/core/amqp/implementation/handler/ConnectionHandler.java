@@ -37,7 +37,23 @@ import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
  * Creates an AMQP connection using sockets.
  */
 public class ConnectionHandler extends Handler {
+    /**
+     * Gets the secure AMQP (amqps) port. The standard AMQP port number that has been assigned by IANA for secure
+     * TCP using TLS.
+     * When using <b>secure</b> AMQP, the TCP connection is first overlaid with TLS before entering the AMQP protocol
+     * handshake.
+     *
+     * @see <a href="https://learn.microsoft.com/azure/service-bus-messaging/service-bus-amqp-protocol-guide">
+     *     Connections and sessions</a>
+     */
     public static final int AMQPS_PORT = 5671;
+    /**
+     * Gets the AMQP (amqp) port.  The standard AMQP port number that has been assigned by IANA for TCP, UDP, and SCTP.
+     * Currently, there is no mapping for UDP nor SCTP.
+     * When using AMQP, the TCP connection does not, initially, need to be overlaid with TLS, whereby the server
+     * immediately <b>offers a mandatory upgrade of connection</b> to TLS using the AMQP-prescribed model.
+     */
+    public static final int AMQP_PORT = 5672;
 
     static final Symbol PRODUCT = Symbol.valueOf("product");
     static final Symbol VERSION = Symbol.valueOf("version");

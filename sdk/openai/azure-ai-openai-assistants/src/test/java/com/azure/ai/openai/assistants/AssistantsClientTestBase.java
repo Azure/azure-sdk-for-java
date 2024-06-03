@@ -17,12 +17,12 @@ import com.azure.ai.openai.assistants.models.CreateRunOptions;
 import com.azure.ai.openai.assistants.models.FileDeletionStatus;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
+import com.azure.ai.openai.assistants.models.FileSearchToolDefinition;
 import com.azure.ai.openai.assistants.models.FunctionDefinition;
 import com.azure.ai.openai.assistants.models.FunctionToolDefinition;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.PageableList;
-import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
@@ -71,6 +71,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AssistantsClientTestBase extends TestProxyTestBase {
+    // Remove the `id` and `name` sanitizers from the list of common sanitizers.
+    private static final List<String> REMOVE_SANITIZER_ID = Arrays.asList("AZSDK3430", "AZSDK3493", "AZSDK2015");
 
     private static final String JAVA_SDK_TESTS_ASSISTANTS_TXT =  "java_sdk_tests_assistants.txt";
     private static final String JAVA_SDK_TESTS_FINE_TUNING_JSON = "java_sdk_tests_fine_tuning.json";
@@ -126,8 +128,8 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
-            // Disable "Set-Cookie"=AZSDK2015 for non-azure client only.
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK2015"));
+            // TODO verify what's going on. Seems like we shouldn't remove these on PLAYBACK mode
+//            removeDefaultSanitizers();
         }
 
         return builder;
@@ -150,6 +152,8 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
+            // TODO verify what's going on. Seems like we shouldn't remove these on PLAYBACK mode
+//            removeDefaultSanitizers();
         }
 
         return builder;
@@ -166,6 +170,10 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     private void addCustomMatchers() {
         interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Cookie", "Set-Cookie")));
+    }
+
+    private void removeDefaultSanitizers() {
+        interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
     }
 
     public static final String GPT_4_1106_PREVIEW = "gpt-4-1106-preview";
@@ -222,7 +230,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         AssistantCreationOptions assistantOptions = new AssistantCreationOptions(GPT_4_1106_PREVIEW)
             .setName("Java SDK Retrieval Sample")
             .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
-            .setTools(Arrays.asList(new RetrievalToolDefinition()));
+            .setTools(Arrays.asList(new FileSearchToolDefinition()));
 
         testRunner.accept(fileDetails, assistantOptions);
     }

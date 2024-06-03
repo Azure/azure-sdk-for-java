@@ -29,9 +29,7 @@ public final class NetworkSiblingSetInner {
     /*
      * Subnet resource Id
      * 
-     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
-     * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/
-     * subnets/{mySubnet}
+     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}
      */
     @JsonProperty(value = "subnetId")
     private String subnetId;

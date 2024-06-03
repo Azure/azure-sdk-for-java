@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * The pipeline policy that handles logging of HTTP requests and responses.
  */
-public class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
+public final class HttpDebugLoggingPolicy implements HttpPipelinePolicy {
 
     private static final ObjectMapper PRETTY_PRINTER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final String REDACTED_PLACEHOLDER = "REDACTED";
