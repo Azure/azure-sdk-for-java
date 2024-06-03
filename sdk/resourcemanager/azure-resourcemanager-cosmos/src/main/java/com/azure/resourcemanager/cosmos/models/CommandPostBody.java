@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Map;
 
 /**
@@ -54,7 +55,7 @@ public final class CommandPostBody {
 
     /**
      * Get the command property: The command which should be run.
-     * 
+     *
      * @return the command value.
      */
     public String command() {
@@ -63,7 +64,7 @@ public final class CommandPostBody {
 
     /**
      * Set the command property: The command which should be run.
-     * 
+     *
      * @param command the command value to set.
      * @return the CommandPostBody object itself.
      */
@@ -74,7 +75,7 @@ public final class CommandPostBody {
 
     /**
      * Get the arguments property: The arguments for the command to be run.
-     * 
+     *
      * @return the arguments value.
      */
     public Map<String, String> arguments() {
@@ -83,7 +84,7 @@ public final class CommandPostBody {
 
     /**
      * Set the arguments property: The arguments for the command to be run.
-     * 
+     *
      * @param arguments the arguments value to set.
      * @return the CommandPostBody object itself.
      */
@@ -94,7 +95,7 @@ public final class CommandPostBody {
 
     /**
      * Get the host property: IP address of the cassandra host to run the command on.
-     * 
+     *
      * @return the host value.
      */
     public String host() {
@@ -103,7 +104,7 @@ public final class CommandPostBody {
 
     /**
      * Set the host property: IP address of the cassandra host to run the command on.
-     * 
+     *
      * @param host the host value to set.
      * @return the CommandPostBody object itself.
      */
@@ -115,7 +116,7 @@ public final class CommandPostBody {
     /**
      * Get the cassandraStopStart property: If true, stops cassandra before executing the command and then start it
      * again.
-     * 
+     *
      * @return the cassandraStopStart value.
      */
     public Boolean cassandraStopStart() {
@@ -125,7 +126,7 @@ public final class CommandPostBody {
     /**
      * Set the cassandraStopStart property: If true, stops cassandra before executing the command and then start it
      * again.
-     * 
+     *
      * @param cassandraStopStart the cassandraStopStart value to set.
      * @return the CommandPostBody object itself.
      */
@@ -137,7 +138,7 @@ public final class CommandPostBody {
     /**
      * Get the readwrite property: If true, allows the command to *write* to the cassandra directory, otherwise
      * read-only.
-     * 
+     *
      * @return the readwrite value.
      */
     public Boolean readwrite() {
@@ -147,7 +148,7 @@ public final class CommandPostBody {
     /**
      * Set the readwrite property: If true, allows the command to *write* to the cassandra directory, otherwise
      * read-only.
-     * 
+     *
      * @param readwrite the readwrite value to set.
      * @return the CommandPostBody object itself.
      */
@@ -158,17 +159,17 @@ public final class CommandPostBody {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (command() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property command in model CommandPostBody"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property command in model CommandPostBody"));
         }
         if (host() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property host in model CommandPostBody"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property host in model CommandPostBody"));
         }
     }
 

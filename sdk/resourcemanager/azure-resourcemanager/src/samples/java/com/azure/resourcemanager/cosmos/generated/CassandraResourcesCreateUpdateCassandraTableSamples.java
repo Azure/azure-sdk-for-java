@@ -11,6 +11,7 @@ import com.azure.resourcemanager.cosmos.models.CassandraTableResource;
 import com.azure.resourcemanager.cosmos.models.ClusterKey;
 import com.azure.resourcemanager.cosmos.models.Column;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,25 +21,29 @@ import java.util.Map;
  */
 public final class CassandraResourcesCreateUpdateCassandraTableSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBCassandraTableCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBCassandraTableCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBCassandraTableCreateUpdate.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBCassandraTableCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getCassandraResources().createUpdateCassandraTable("rg1",
-            "ddb1", "keyspaceName", "tableName",
-            new CassandraTableCreateUpdateParameters().withLocation("West US").withTags(mapOf())
-                .withResource(new CassandraTableResource().withId("tableName").withDefaultTtl(100)
-                    .withSchema(new CassandraSchema()
-                        .withColumns(Arrays.asList(new Column().withName("columnA").withType("Ascii")))
-                        .withPartitionKeys(Arrays.asList(new CassandraPartitionKey().withName("columnA")))
-                        .withClusterKeys(Arrays.asList(new ClusterKey().withName("columnA").withOrderBy("Asc")))))
-                .withOptions(new CreateUpdateOptions()),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getCassandraResources()
+            .createUpdateCassandraTable("rg1", "ddb1", "keyspaceName", "tableName",
+                new CassandraTableCreateUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new CassandraTableResource().withId("tableName")
+                        .withDefaultTtl(100)
+                        .withSchema(new CassandraSchema()
+                            .withColumns(Arrays.asList(new Column().withName("columnA").withType("Ascii")))
+                            .withPartitionKeys(Arrays.asList(new CassandraPartitionKey().withName("columnA")))
+                            .withClusterKeys(Arrays.asList(new ClusterKey().withName("columnA").withOrderBy("Asc")))))
+                    .withOptions(new CreateUpdateOptions()),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
