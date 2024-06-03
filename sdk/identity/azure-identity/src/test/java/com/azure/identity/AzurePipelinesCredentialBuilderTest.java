@@ -27,12 +27,12 @@ public class AzurePipelinesCredentialBuilderTest {
 
         // test
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(CredentialUnavailableException.class, () -> {
             AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder()
                 .build();
         });
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(CredentialUnavailableException.class, () -> {
             AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder()
                 .clientId(clientId)
                 .tenantId(tenantId)

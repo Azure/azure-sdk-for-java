@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
 
@@ -30,7 +31,7 @@ import java.util.Arrays;
  */
 public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<AzurePipelinesCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(AzurePipelinesCredentialBuilder.class);
-    private static final String OIDC_API_VERSION = "7.1-preview.1";
+    private static final String OIDC_API_VERSION = "7.1";
     private String serviceConnectionId;
     private String systemAccessToken;
 
@@ -64,26 +65,35 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
      * @return an instance of the {@link AzurePipelinesCredential}.
      */
     public AzurePipelinesCredential build() {
-        ValidationUtil.validate(getClass().getSimpleName(),
-            LOGGER,
-            Arrays.asList("clientId", "tenantId", "serviceConnectionId", "systemAccessToken"),
-            Arrays.asList(this.clientId, this.tenantId, this.serviceConnectionId, this.systemAccessToken));
-
         Configuration configuration = identityClientOptions.getConfiguration();
         if (configuration == null) {
             configuration = Configuration.getGlobalConfiguration();
         }
-        String teamFoundationCollectionUri = configuration.get("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI");
-        String teamProjectId = configuration.get("SYSTEM_TEAMPROJECTID");
-        String planId = configuration.get("SYSTEM_PLANID");
-        String jobId = configuration.get("SYSTEM_JOBID");
 
-        ValidationUtil.validate(getClass().getSimpleName(), LOGGER,
-            Arrays.asList("SYSTEM_TEAMFOUNDATIONCOLLECTIONURI", "SYSTEM_TEAMPROJECTID", "SYSTEM_PLANID", "SYSTEM_JOBID"),
-            Arrays.asList(teamFoundationCollectionUri, teamProjectId, planId, jobId));
-
-        String requestUrl = String.format("%s%s/_apis/distributedtask/hubs/build/plans/%s/jobs/%s/oidctoken?api-version=%s&serviceConnectionId=%s",
-            teamFoundationCollectionUri, teamProjectId, planId, jobId, OIDC_API_VERSION, serviceConnectionId);
-        return new AzurePipelinesCredential(this.clientId, this.tenantId, requestUrl, systemAccessToken, identityClientOptions.clone());
+        String clientId = CoreUtils.isNullOrEmpty(this.clientId)
+            ? configuration.get("AZURESUBSCRIPTION_CLIENT_ID")
+            : this.clientId;
+        String tenantId = CoreUtils.isNullOrEmpty(this.tenantId)
+            ? configuration.get("AZURESUBSCRIPTION_TENANT_ID")
+            : this.tenantId;
+        String serviceConnectionId = CoreUtils.isNullOrEmpty(this.serviceConnectionId)
+            ? configuration.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID")
+            : this.serviceConnectionId;
+        String oidcEndpoint = configuration.get("SYSTEM_OIDCREQUESTURI");
+        try {
+            ValidationUtil.validate(getClass().getSimpleName(),
+                LOGGER,
+                Arrays.asList("clientId", "tenantId", "serviceConnectionId", "systemAccessToken", "oidcEndpoint"),
+                Arrays.asList(clientId, tenantId, serviceConnectionId, this.systemAccessToken, oidcEndpoint));
+        } catch (IllegalArgumentException e) {
+            throw LOGGER.logExceptionAsError(new CredentialUnavailableException(
+                "One or more required properties are null or empty. Please either set the appropriate value on the builder or"
+                    + " use a supported task that properly sets the environment. See https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot"
+                    + " for more information.",
+                e));
+        }
+        String requestUrl = String.format("%s?api-version=%s&serviceConnectionId=%s",
+            oidcEndpoint, OIDC_API_VERSION, serviceConnectionId);
+        return new AzurePipelinesCredential(clientId, tenantId, requestUrl, systemAccessToken, identityClientOptions.clone());
     }
 }

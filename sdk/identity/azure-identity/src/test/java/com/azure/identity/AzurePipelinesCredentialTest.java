@@ -6,9 +6,14 @@ package com.azure.identity;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
-import org.junit.jupiter.api.Test;
+import com.azure.identity.util.TestUtils;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -20,7 +25,7 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
     static String serviceConnectionId = Configuration.getGlobalConfiguration().get("AZURE_SERVICE_CONNECTION_ID");
     static String systemAccessToken = Configuration.getGlobalConfiguration().get("SYSTEM_ACCESSTOKEN");
 
-    private AzurePipelinesCredential getCredential() {
+    private static AzurePipelinesCredential getCredential() {
         return new AzurePipelinesCredentialBuilder()
             .clientId(clientId)
             .tenantId(tenantId)
@@ -29,12 +34,27 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
             .build();
     }
 
-    @Test
-    @LiveOnly
-    public void testGetToken() {
-        // Arrange
+    private static AzurePipelinesCredential getPresetEnvironmentCredential() {
+        TestConfigurationSource configurationSource = new TestConfigurationSource()
+            .put("AZURESUBSCRIPTION_CLIENT_ID", clientId)
+            .put("AZURESUBSCRIPTION_TENANT_ID", tenantId)
+            .put("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID", serviceConnectionId);
+        Configuration confguration = TestUtils.createTestConfiguration(configurationSource);
+        return new AzurePipelinesCredentialBuilder()
+            .configuration(confguration)
+            .systemAccessToken(systemAccessToken)
+            .build();
+    }
 
-        AzurePipelinesCredential credential = getCredential();
+    private static Stream<AzurePipelinesCredential> getCredentials() {
+        return Stream.of(getCredential(), getPresetEnvironmentCredential());
+    }
+
+    @ParameterizedTest
+    @LiveOnly
+    @MethodSource("getCredentials")
+    public void testGetToken(AzurePipelinesCredential credential) {
+
 
         // Act & Assert
         StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
@@ -45,11 +65,11 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
             .verifyComplete();
     }
 
-    @Test
+    @ParameterizedTest
     @LiveOnly
-    public void testGetTokenSync() {
-        // Arrange
-        AzurePipelinesCredential credential = getCredential();
+    @MethodSource("getCredentials")
+    public void testGetTokenSync(AzurePipelinesCredential credential) {
+
 
         // Act & Assert
         assertNotNull(credential.getTokenSync(new TokenRequestContext().addScopes("https://vault.azure.net/.default")));
