@@ -31,7 +31,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * Endpoint for requesting new configurations to be loaded in all registered instances on the Bus.
  */
 @ControllerEndpoint(id = APPCONFIGURATION_REFRESH_BUS)
-public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
+public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationBusRefreshEndpoint.class);
 

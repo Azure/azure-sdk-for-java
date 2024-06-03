@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+* Removes final from App Configuration refresh endpoints, which caused errors when creating Spring AOP Aspects.
+
 ### Other Changes
 
 ## 5.12.0 (2024-05-09)
