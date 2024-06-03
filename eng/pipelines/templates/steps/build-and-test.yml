@@ -185,16 +185,9 @@ steps:
         azurePowerShellVersion: LatestVersion
         pwsh: true
         ScriptType: InlineScript
-        Inline: >-
-          $PSNativeCommandArgumentPassing='Legacy';
-          mvn -f $(Build.SourcesDirectory)/ClientFromSourcePom.xml
-          ${{ parameters.TestGoals }}
-          $(DefaultTestOptions)
-          -DAZURE_TEST_DEBUG=$(IsDebug)
-          -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }}
-          ${{ parameters.TestOptions }}
-          $(LiveTestSourceParams)
-          -T ${{ parameters.TestParallelization }}
+        Inline: |
+          mvn --% -f $(Build.SourcesDirectory)/ClientFromSourcePom.xml ${{ parameters.TestGoals }} $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} $(LiveTestSourceParams) -T ${{ parameters.TestParallelization }}
+          exit $LASTEXITCODE
       env:
         # PowerShellJavaHome is set in the 'Set PowerShellJavaHome'
         # task above
