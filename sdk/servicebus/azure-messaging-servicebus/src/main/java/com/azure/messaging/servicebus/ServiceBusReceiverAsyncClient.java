@@ -337,7 +337,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     /**
      * The maximum number of messages to delete in a single batch.  This cap is established and enforced by the service.
      */
-    private static final int MAX_DELETE_MESSAGES_COUNT = 4000;
+    static final int MAX_DELETE_MESSAGES_COUNT = 4000;
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClient.class);
 
     private final LockContainer<LockRenewalOperation> renewalContainer;
