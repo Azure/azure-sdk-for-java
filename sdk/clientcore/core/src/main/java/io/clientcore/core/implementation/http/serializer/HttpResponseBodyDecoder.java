@@ -30,6 +30,7 @@ import java.util.Set;
 public final class HttpResponseBodyDecoder {
     // HttpResponseBodyDecoder is a commonly used class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpResponseBodyDecoder.class);
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /**
      * Decodes the body of an {@link Response} into the type returned by the called API.
@@ -151,7 +152,7 @@ public final class HttpResponseBodyDecoder {
     }
 
     private static Object deserialize(BinaryData value, Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromBytes(value == null ? new byte[0] : value.toBytes(), type);
+        return serializer.deserializeFromBytes(value == null ? EMPTY_BYTE_ARRAY : value.toBytes(), type);
     }
 
     /**
