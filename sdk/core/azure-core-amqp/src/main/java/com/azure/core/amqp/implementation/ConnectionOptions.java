@@ -44,7 +44,7 @@ public class ConnectionOptions {
      * Creates an instance with the following options set. The AMQP connection is created to the
      * {@code fullyQualifiedNamespace} using a port based on the {@code transport}.
      *
-     * @param fullyQualifiedNamespace Fully qualified namespace for the AMQP broker. (ie.
+     * @param fullyQualifiedNamespace Fully qualified namespace for the AMQP broker. (i.e.
      *     namespace.servicebus.windows.net)
      * @param tokenCredential The credential for connecting to the AMQP broker.
      * @param authorizationType The authorisation type used for authorizing with the CBS node.
@@ -74,7 +74,7 @@ public class ConnectionOptions {
      * Creates an instance with the connection options set. Used when an alternative address should be made for the
      * connection rather than through the fullyQualifiedNamespace.
      *
-     * @param fullyQualifiedNamespace Fully qualified namespace for the AMQP broker. (ie.
+     * @param fullyQualifiedNamespace Fully qualified namespace for the AMQP broker. (i.e.
      *     namespace.servicebus.windows.net)
      * @param tokenCredential The credential for connecting to the AMQP broker.
      * @param authorizationType The authorisation type used for authorizing with the CBS node.
@@ -147,7 +147,7 @@ public class ConnectionOptions {
     }
 
     /**
-     * Gets the product information for this AMQP connection. (ie. Service Bus or Event Hubs.)
+     * Gets the product information for this AMQP connection. (i.e. Service Bus or Event Hubs.)
      *
      * @return The product information for this AMQP connection.
      */
@@ -165,7 +165,7 @@ public class ConnectionOptions {
     }
 
     /**
-     * The fully qualified domain name for the AMQP broker. Typically of the form
+     * The fully qualified domain name for the AMQP broker. Typically, of the form
      * {@literal "<your-namespace>.service.windows.net"}.
      *
      * @return The fully qualified domain name for the AMQP broker.
@@ -229,7 +229,7 @@ public class ConnectionOptions {
     }
 
     /**
-     * Gets the DNS hostname or IP address of the service. Typically of the form
+     * Gets the DNS hostname or IP address of the service. Typically, of the form
      * {@literal "<your-namespace>.service.windows.net"}, unless connecting to the service through an intermediary.
      *
      * @return The DNS hostname or IP address to connect to.

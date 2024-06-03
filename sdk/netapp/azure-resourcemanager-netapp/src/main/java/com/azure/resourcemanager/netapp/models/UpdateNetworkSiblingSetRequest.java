@@ -26,9 +26,7 @@ public final class UpdateNetworkSiblingSetRequest {
     /*
      * Subnet resource Id
      * 
-     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example
-     * /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/
-     * subnets/{mySubnet}
+     * The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. Example /subscriptions/subscriptionId/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/testVnet/subnets/{mySubnet}
      */
     @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
@@ -44,7 +42,7 @@ public final class UpdateNetworkSiblingSetRequest {
     /*
      * Network features
      * 
-     * Network features available to the volume, some such
+     * Network features available to the volume.
      */
     @JsonProperty(value = "networkFeatures", required = true)
     private NetworkFeatures networkFeatures;
@@ -132,7 +130,7 @@ public final class UpdateNetworkSiblingSetRequest {
     /**
      * Get the networkFeatures property: Network features
      * 
-     * Network features available to the volume, some such.
+     * Network features available to the volume.
      * 
      * @return the networkFeatures value.
      */
@@ -143,7 +141,7 @@ public final class UpdateNetworkSiblingSetRequest {
     /**
      * Set the networkFeatures property: Network features
      * 
-     * Network features available to the volume, some such.
+     * Network features available to the volume.
      * 
      * @param networkFeatures the networkFeatures value to set.
      * @return the UpdateNetworkSiblingSetRequest object itself.
@@ -160,20 +158,24 @@ public final class UpdateNetworkSiblingSetRequest {
      */
     public void validate() {
         if (networkSiblingSetId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkSiblingSetId in model UpdateNetworkSiblingSetRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkSiblingSetId in model UpdateNetworkSiblingSetRequest"));
         }
         if (subnetId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property subnetId in model UpdateNetworkSiblingSetRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property subnetId in model UpdateNetworkSiblingSetRequest"));
         }
         if (networkSiblingSetStateId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkSiblingSetStateId in model UpdateNetworkSiblingSetRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkSiblingSetStateId in model UpdateNetworkSiblingSetRequest"));
         }
         if (networkFeatures() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property networkFeatures in model UpdateNetworkSiblingSetRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property networkFeatures in model UpdateNetworkSiblingSetRequest"));
         }
     }
 

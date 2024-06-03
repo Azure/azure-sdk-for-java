@@ -30,13 +30,13 @@ public class ResourcePredictionsProfile {
      */
     @JsonTypeId
     @JsonProperty(value = "kind", required = true)
-    private ResourcePredictionsProfileType kind;
+    private ResourcePredictionsProfileType kind
+        = ResourcePredictionsProfileType.fromString("ResourcePredictionsProfile");
 
     /**
      * Creates an instance of ResourcePredictionsProfile class.
      */
     public ResourcePredictionsProfile() {
-        this.kind = ResourcePredictionsProfileType.fromString("ResourcePredictionsProfile");
     }
 
     /**

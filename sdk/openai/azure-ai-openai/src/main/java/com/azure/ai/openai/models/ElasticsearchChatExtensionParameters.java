@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Parameters to use when configuring Elasticsearch® as an Azure OpenAI chat extension. The supported authentication
@@ -326,6 +327,10 @@ public final class ElasticsearchChatExtensionParameters
         jsonWriter.writeBooleanField("in_scope", this.inScope);
         jsonWriter.writeNumberField("strictness", this.strictness);
         jsonWriter.writeStringField("role_information", this.roleInformation);
+        jsonWriter.writeNumberField("max_search_queries", this.maxSearchQueries);
+        jsonWriter.writeBooleanField("allow_partial_result", this.allowPartialResult);
+        jsonWriter.writeArrayField("include_contexts", this.includeContexts,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("fields_mapping", this.fieldsMapping);
         jsonWriter.writeStringField("query_type", this.queryType == null ? null : this.queryType.toString());
         jsonWriter.writeJsonField("embedding_dependency", this.embeddingDependency);
@@ -351,6 +356,9 @@ public final class ElasticsearchChatExtensionParameters
             Boolean inScope = null;
             Integer strictness = null;
             String roleInformation = null;
+            Integer maxSearchQueries = null;
+            Boolean allowPartialResult = null;
+            List<OnYourDataContextProperty> includeContexts = null;
             ElasticsearchIndexFieldMappingOptions fieldsMapping = null;
             ElasticsearchQueryType queryType = null;
             OnYourDataVectorizationSource embeddingDependency = null;
@@ -371,6 +379,13 @@ public final class ElasticsearchChatExtensionParameters
                     strictness = reader.getNullable(JsonReader::getInt);
                 } else if ("role_information".equals(fieldName)) {
                     roleInformation = reader.getString();
+                } else if ("max_search_queries".equals(fieldName)) {
+                    maxSearchQueries = reader.getNullable(JsonReader::getInt);
+                } else if ("allow_partial_result".equals(fieldName)) {
+                    allowPartialResult = reader.getNullable(JsonReader::getBoolean);
+                } else if ("include_contexts".equals(fieldName)) {
+                    includeContexts
+                        = reader.readArray(reader1 -> OnYourDataContextProperty.fromString(reader1.getString()));
                 } else if ("fields_mapping".equals(fieldName)) {
                     fieldsMapping = ElasticsearchIndexFieldMappingOptions.fromJson(reader);
                 } else if ("query_type".equals(fieldName)) {
@@ -388,10 +403,110 @@ public final class ElasticsearchChatExtensionParameters
             deserializedElasticsearchChatExtensionParameters.inScope = inScope;
             deserializedElasticsearchChatExtensionParameters.strictness = strictness;
             deserializedElasticsearchChatExtensionParameters.roleInformation = roleInformation;
+            deserializedElasticsearchChatExtensionParameters.maxSearchQueries = maxSearchQueries;
+            deserializedElasticsearchChatExtensionParameters.allowPartialResult = allowPartialResult;
+            deserializedElasticsearchChatExtensionParameters.includeContexts = includeContexts;
             deserializedElasticsearchChatExtensionParameters.fieldsMapping = fieldsMapping;
             deserializedElasticsearchChatExtensionParameters.queryType = queryType;
             deserializedElasticsearchChatExtensionParameters.embeddingDependency = embeddingDependency;
             return deserializedElasticsearchChatExtensionParameters;
         });
+    }
+
+    /*
+     * The max number of rewritten queries should be send to search provider for one user message. If not specified,
+     * the system will decide the number of queries to send.
+     */
+    @Generated
+    private Integer maxSearchQueries;
+
+    /*
+     * If specified as true, the system will allow partial search results to be used and the request fails if all the
+     * queries fail.
+     * If not specified, or specified as false, the request will fail if any search query fails.
+     */
+    @Generated
+    private Boolean allowPartialResult;
+
+    /*
+     * The included properties of the output context. If not specified, the default value is `citations` and `intent`.
+     */
+    @Generated
+    private List<OnYourDataContextProperty> includeContexts;
+
+    /**
+     * Get the maxSearchQueries property: The max number of rewritten queries should be send to search provider for one
+     * user message. If not specified,
+     * the system will decide the number of queries to send.
+     *
+     * @return the maxSearchQueries value.
+     */
+    @Generated
+    public Integer getMaxSearchQueries() {
+        return this.maxSearchQueries;
+    }
+
+    /**
+     * Set the maxSearchQueries property: The max number of rewritten queries should be send to search provider for one
+     * user message. If not specified,
+     * the system will decide the number of queries to send.
+     *
+     * @param maxSearchQueries the maxSearchQueries value to set.
+     * @return the ElasticsearchChatExtensionParameters object itself.
+     */
+    @Generated
+    public ElasticsearchChatExtensionParameters setMaxSearchQueries(Integer maxSearchQueries) {
+        this.maxSearchQueries = maxSearchQueries;
+        return this;
+    }
+
+    /**
+     * Get the allowPartialResult property: If specified as true, the system will allow partial search results to be
+     * used and the request fails if all the queries fail.
+     * If not specified, or specified as false, the request will fail if any search query fails.
+     *
+     * @return the allowPartialResult value.
+     */
+    @Generated
+    public Boolean isAllowPartialResult() {
+        return this.allowPartialResult;
+    }
+
+    /**
+     * Set the allowPartialResult property: If specified as true, the system will allow partial search results to be
+     * used and the request fails if all the queries fail.
+     * If not specified, or specified as false, the request will fail if any search query fails.
+     *
+     * @param allowPartialResult the allowPartialResult value to set.
+     * @return the ElasticsearchChatExtensionParameters object itself.
+     */
+    @Generated
+    public ElasticsearchChatExtensionParameters setAllowPartialResult(Boolean allowPartialResult) {
+        this.allowPartialResult = allowPartialResult;
+        return this;
+    }
+
+    /**
+     * Get the includeContexts property: The included properties of the output context. If not specified, the default
+     * value is `citations` and `intent`.
+     *
+     * @return the includeContexts value.
+     */
+    @Generated
+    public List<OnYourDataContextProperty> getIncludeContexts() {
+        return this.includeContexts;
+    }
+
+    /**
+     * Set the includeContexts property: The included properties of the output context. If not specified, the default
+     * value is `citations` and `intent`.
+     *
+     * @param includeContexts the includeContexts value to set.
+     * @return the ElasticsearchChatExtensionParameters object itself.
+     */
+    @Generated
+    public ElasticsearchChatExtensionParameters setIncludeContexts(List<OnYourDataContextProperty> includeContexts) {
+        this.includeContexts = includeContexts;
+        return this;
     }
 }

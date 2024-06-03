@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Availability zone mappings for the region. */
+/**
+ * Availability zone mappings for the region.
+ */
 @Immutable
 public final class AvailabilityZoneMappings {
     /*
@@ -22,13 +24,15 @@ public final class AvailabilityZoneMappings {
     @JsonProperty(value = "physicalZone", access = JsonProperty.Access.WRITE_ONLY)
     private String physicalZone;
 
-    /** Creates an instance of AvailabilityZoneMappings class. */
+    /**
+     * Creates an instance of AvailabilityZoneMappings class.
+     */
     public AvailabilityZoneMappings() {
     }
 
     /**
      * Get the logicalZone property: The logical zone id for the availability zone.
-     *
+     * 
      * @return the logicalZone value.
      */
     public String logicalZone() {
@@ -38,7 +42,7 @@ public final class AvailabilityZoneMappings {
     /**
      * Get the physicalZone property: The fully qualified physical zone id of availability zone to which logical zone id
      * is mapped to.
-     *
+     * 
      * @return the physicalZone value.
      */
     public String physicalZone() {
@@ -47,7 +51,7 @@ public final class AvailabilityZoneMappings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

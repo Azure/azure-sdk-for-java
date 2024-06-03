@@ -36,7 +36,7 @@ public class FhirR4DomainResource extends FhirR4Resource {
     @Generated
     @JsonTypeId
     @JsonProperty(value = "resourceType")
-    private String resourceType;
+    private String resourceType = "Fhir_R4_DomainResource";
 
     /*
      * Text summary of the resource, for human interpretation

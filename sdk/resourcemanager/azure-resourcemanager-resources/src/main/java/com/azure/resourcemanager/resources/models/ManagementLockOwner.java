@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Lock owner properties. */
+/**
+ * Lock owner properties.
+ */
 @Fluent
 public final class ManagementLockOwner {
     /*
@@ -16,13 +18,15 @@ public final class ManagementLockOwner {
     @JsonProperty(value = "applicationId")
     private String applicationId;
 
-    /** Creates an instance of ManagementLockOwner class. */
+    /**
+     * Creates an instance of ManagementLockOwner class.
+     */
     public ManagementLockOwner() {
     }
 
     /**
      * Get the applicationId property: The application ID of the lock owner.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -31,7 +35,7 @@ public final class ManagementLockOwner {
 
     /**
      * Set the applicationId property: The application ID of the lock owner.
-     *
+     * 
      * @param applicationId the applicationId value to set.
      * @return the ManagementLockOwner object itself.
      */
@@ -42,7 +46,7 @@ public final class ManagementLockOwner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

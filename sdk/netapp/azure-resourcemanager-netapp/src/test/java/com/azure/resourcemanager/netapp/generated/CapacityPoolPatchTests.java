@@ -15,24 +15,27 @@ public final class CapacityPoolPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CapacityPoolPatch model = BinaryData.fromString(
-            "{\"properties\":{\"size\":2542526403950408941,\"qosType\":\"Auto\",\"coolAccess\":false},\"location\":\"fadmws\",\"tags\":{\"gomz\":\"gvxp\"},\"id\":\"fmisg\",\"name\":\"bnbbeldawkz\",\"type\":\"ali\"}")
+            "{\"properties\":{\"size\":8570792443067790415,\"qosType\":\"Manual\",\"coolAccess\":false},\"location\":\"jyzhpvgq\",\"tags\":{\"xkvugfhzov\":\"rvxdjzlmw\"},\"id\":\"wjvzunluthnn\",\"name\":\"rnxipei\",\"type\":\"pjzu\"}")
             .toObject(CapacityPoolPatch.class);
-        Assertions.assertEquals("fadmws", model.location());
-        Assertions.assertEquals("gvxp", model.tags().get("gomz"));
-        Assertions.assertEquals(2542526403950408941L, model.size());
-        Assertions.assertEquals(QosType.AUTO, model.qosType());
+        Assertions.assertEquals("jyzhpvgq", model.location());
+        Assertions.assertEquals("rvxdjzlmw", model.tags().get("xkvugfhzov"));
+        Assertions.assertEquals(8570792443067790415L, model.size());
+        Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertEquals(false, model.coolAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CapacityPoolPatch model = new CapacityPoolPatch().withLocation("fadmws").withTags(mapOf("gomz", "gvxp"))
-            .withSize(2542526403950408941L).withQosType(QosType.AUTO).withCoolAccess(false);
+        CapacityPoolPatch model = new CapacityPoolPatch().withLocation("jyzhpvgq")
+            .withTags(mapOf("xkvugfhzov", "rvxdjzlmw"))
+            .withSize(8570792443067790415L)
+            .withQosType(QosType.MANUAL)
+            .withCoolAccess(false);
         model = BinaryData.fromObject(model).toObject(CapacityPoolPatch.class);
-        Assertions.assertEquals("fadmws", model.location());
-        Assertions.assertEquals("gvxp", model.tags().get("gomz"));
-        Assertions.assertEquals(2542526403950408941L, model.size());
-        Assertions.assertEquals(QosType.AUTO, model.qosType());
+        Assertions.assertEquals("jyzhpvgq", model.location());
+        Assertions.assertEquals("rvxdjzlmw", model.tags().get("xkvugfhzov"));
+        Assertions.assertEquals(8570792443067790415L, model.size());
+        Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertEquals(false, model.coolAccess());
     }
 

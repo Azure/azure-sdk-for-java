@@ -23,21 +23,6 @@ public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
     private final MessageTextFilePathDetails filePath;
 
     /**
-     * Creates an instance of MessageTextFilePathAnnotation class.
-     *
-     * @param text the text value to set.
-     * @param startIndex the startIndex value to set.
-     * @param endIndex the endIndex value to set.
-     * @param filePath the filePath value to set.
-     */
-    @Generated
-    private MessageTextFilePathAnnotation(String text, int startIndex, int endIndex,
-        MessageTextFilePathDetails filePath) {
-        super(text, startIndex, endIndex);
-        this.filePath = filePath;
-    }
-
-    /**
      * Get the filePath property: A URL for the file that's generated when the assistant used the code_interpreter tool
      * to generate a file.
      *
@@ -56,10 +41,10 @@ public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("text", getText());
-        jsonWriter.writeIntField("start_index", getStartIndex());
-        jsonWriter.writeIntField("end_index", getEndIndex());
         jsonWriter.writeJsonField("file_path", this.filePath);
         jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeNumberField("start_index", this.startIndex);
+        jsonWriter.writeNumberField("end_index", this.endIndex);
         return jsonWriter.writeEndObject();
     }
 
@@ -76,30 +61,32 @@ public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
     public static MessageTextFilePathAnnotation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String text = null;
-            int startIndex = 0;
-            int endIndex = 0;
             MessageTextFilePathDetails filePath = null;
             String type = "file_path";
+            Integer startIndex = null;
+            Integer endIndex = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("text".equals(fieldName)) {
                     text = reader.getString();
-                } else if ("start_index".equals(fieldName)) {
-                    startIndex = reader.getInt();
-                } else if ("end_index".equals(fieldName)) {
-                    endIndex = reader.getInt();
                 } else if ("file_path".equals(fieldName)) {
                     filePath = MessageTextFilePathDetails.fromJson(reader);
                 } else if ("type".equals(fieldName)) {
                     type = reader.getString();
+                } else if ("start_index".equals(fieldName)) {
+                    startIndex = reader.getNullable(JsonReader::getInt);
+                } else if ("end_index".equals(fieldName)) {
+                    endIndex = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
             MessageTextFilePathAnnotation deserializedMessageTextFilePathAnnotation
-                = new MessageTextFilePathAnnotation(text, startIndex, endIndex, filePath);
+                = new MessageTextFilePathAnnotation(text, filePath);
             deserializedMessageTextFilePathAnnotation.type = type;
+            deserializedMessageTextFilePathAnnotation.startIndex = startIndex;
+            deserializedMessageTextFilePathAnnotation.endIndex = endIndex;
             return deserializedMessageTextFilePathAnnotation;
         });
     }
@@ -119,5 +106,49 @@ public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
     @Override
     public String getType() {
         return this.type;
+    }
+
+    /*
+     * The first text index associated with this text annotation.
+     */
+    @Generated
+    private Integer startIndex;
+
+    /*
+     * The last text index associated with this text annotation.
+     */
+    @Generated
+    private Integer endIndex;
+
+    /**
+     * Creates an instance of MessageTextFilePathAnnotation class.
+     *
+     * @param text the text value to set.
+     * @param filePath the filePath value to set.
+     */
+    @Generated
+    private MessageTextFilePathAnnotation(String text, MessageTextFilePathDetails filePath) {
+        super(text);
+        this.filePath = filePath;
+    }
+
+    /**
+     * Get the startIndex property: The first text index associated with this text annotation.
+     *
+     * @return the startIndex value.
+     */
+    @Generated
+    public Integer getStartIndex() {
+        return this.startIndex;
+    }
+
+    /**
+     * Get the endIndex property: The last text index associated with this text annotation.
+     *
+     * @return the endIndex value.
+     */
+    @Generated
+    public Integer getEndIndex() {
+        return this.endIndex;
     }
 }
