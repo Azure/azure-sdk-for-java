@@ -196,6 +196,12 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
 
     private static final Pattern SUBSCRIPTION_ID_PATTERN = Pattern.compile(SUBSCRIPTION_ID_REGEX);
 
+    /**
+     * Asserts that the resource ID is same.
+     *
+     * @param expected the expected resource ID.
+     * @param actual the actual resource ID.
+     */
     protected void assertResourceIdEquals(String expected, String actual) {
         String sanitizedExpected = SUBSCRIPTION_ID_PATTERN.matcher(expected).replaceAll(ZERO_UUID);
         String sanitizedActual = SUBSCRIPTION_ID_PATTERN.matcher(actual).replaceAll(ZERO_UUID);
