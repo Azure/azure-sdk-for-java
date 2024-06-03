@@ -30,7 +30,6 @@ import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.implementation.util.CoreUtils;
 import io.clientcore.core.implementation.util.UrlBuilder;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.Context;
