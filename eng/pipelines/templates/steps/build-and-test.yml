@@ -108,7 +108,8 @@ steps:
           -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }}
           ${{ parameters.TestOptions }}
           -T ${{ parameters.TestParallelization }}
-          ${{ parameters.TestGoals }}
+          ${{ parameters.TestGoals }};
+          exit $LASTEXITCODE;
       env:
         JAVA_HOME: $(PowerShellJavaTestVersion)
         MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
@@ -171,7 +172,6 @@ steps:
       publishJUnitResults: false
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
     - ${{ if eq(parameters.IsLiveTest, 'true') }}:
       - pwsh: |
@@ -181,6 +181,7 @@ steps:
       - pwsh: |
           Write-Host "##vso[task.setvariable variable=LiveTestSourceParams]-amd"
         displayName: Set live test source params (-amd)
+
     - task: AzurePowerShell@5
       displayName: 'Run tests for From Source run (Federated Auth)'
       condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
@@ -205,6 +206,7 @@ steps:
         JAVA_HOME: $(PowerShellJavaTestVersion)
         MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
         ${{ insert }}: ${{ parameters.TestEnvVars }}
+
   - ${{ else }}:
     - task: Maven@3
       displayName: 'Run tests for From Source run'
