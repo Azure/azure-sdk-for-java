@@ -1505,12 +1505,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Attempts to purge all messages from an entity. Locked messages are not eligible for removal and will remain in
-     * the entity.
+     * Attempts to purge all messages from an entity.
      * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
      * <p>
      * This method may invoke multiple service requests to delete all messages. Because multiple service requests may be
-     * made, the possibility of partial success exists.  In this scenario, the method will stop attempting to delete
+     * made, the possibility of partial success exists, in such scenario, the method will stop attempting to delete
      * additional messages and throw the exception that was encountered. Also, due to the multiple service requests,
      * purge operation may exceed the configured {@link AmqpRetryOptions#getTryTimeout()}.
      * </p>
@@ -1522,12 +1521,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Attempts to purge all messages from an entity. Locked messages are not eligible for removal and will remain in
-     * the entity.
+     * Attempts to purge all messages from an entity.
      * <p>If the lock for a message is held by a receiver, it will be respected and the message will not be deleted.</p>
      * <p>
      * This method may invoke multiple service requests to delete all messages. Because multiple service requests may be
-     * made, the possibility of partial success exists.  In this scenario, the method will stop attempting to delete
+     * made, the possibility of partial success exists, in such scenario, the method will stop attempting to delete
      * additional messages and throw the exception that was encountered. Also, due to the multiple service requests,
      * purge operation may exceed the configured {@link AmqpRetryOptions#getTryTimeout()}.
      * </p>

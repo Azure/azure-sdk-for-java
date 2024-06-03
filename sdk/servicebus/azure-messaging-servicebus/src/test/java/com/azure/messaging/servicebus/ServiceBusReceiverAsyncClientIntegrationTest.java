@@ -1468,10 +1468,10 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
     }
 
     @Test
-    void batchDelete() {
+    void purgeMessages() {
         setSenderAndReceiver(MessagingEntityType.QUEUE, TestUtils.USE_CASE_BATCH_DELETE, false);
 
-        final int totalMessages = ServiceBusReceiverAsyncClient.MAX_DELETE_MESSAGES_COUNT * 2 + 100;
+        final int totalMessages = ServiceBusReceiverAsyncClient.MAX_DELETE_MESSAGES_COUNT * 2 + 100; // 8200
         final List<ServiceBusMessage> messages = new ArrayList<>(totalMessages);
         for (int i = 0; i < totalMessages; i++) {
             messages.add(getMessage(UUID.randomUUID().toString(), false));
@@ -1481,8 +1481,11 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
             .verifyComplete();
 
         final PurgeMessagesOptions options = new PurgeMessagesOptions()
-            .setBeforeEnqueueTimeUtc(OffsetDateTime.now().plusSeconds(5)); // 5-sec buffer time to account any clock skew.
+            .setBeforeEnqueueTimeUtc(OffsetDateTime.now().plusSeconds(5)); // 5-sec buffer to account for any clock skew.
 
+        // since the service can delete upto 4000 messages in a single batch, the purge operation will make
+        // 3 batch delete API calls to delete the 8200 messages.
+        //
         StepVerifier.create(receiver.purgeMessages(options))
             .assertNext(count -> assertEquals(totalMessages, count))
             .verifyComplete();

@@ -16,14 +16,15 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
     /** Error while completing the message.*/
     public static final ServiceBusErrorSource COMPLETE = fromString("COMPLETE", ServiceBusErrorSource.class);
 
+    /** Error while deleting messages. */
+    public static final ServiceBusErrorSource DELETE_MESSAGES = fromString("DELETE_MESSAGES", ServiceBusErrorSource.class);
+
     /** Error while receiving the message(s).*/
     public static final ServiceBusErrorSource RECEIVE = fromString("RECEIVE", ServiceBusErrorSource.class);
 
     /** Error while renewing lock.*/
     public static final ServiceBusErrorSource RENEW_LOCK = fromString("RENEW_LOCK", ServiceBusErrorSource.class);
-    /** Error while deleting messages. */
-    public static final ServiceBusErrorSource DELETE_MESSAGES = fromString("DELETE_MESSAGES", ServiceBusErrorSource.class);
-    /** Error while purging messages. */
+
     /** Error when we could not determine the source.*/
     public static final ServiceBusErrorSource UNKNOWN = fromString("UNKNOWN", ServiceBusErrorSource.class);
 
