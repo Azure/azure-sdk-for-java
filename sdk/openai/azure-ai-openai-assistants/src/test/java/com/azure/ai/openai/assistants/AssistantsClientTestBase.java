@@ -66,7 +66,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     // Remove the `id` and `name` sanitizers from the list of common sanitizers.
-    private static final String[] REMOVE_SANITIZER_ID = {"AZSDK3430", "AZSDK3493", "AZSDK2015"};
+    private static final List<String> REMOVE_SANITIZER_ID = Arrays.asList("AZSDK3430", "AZSDK3493", "AZSDK2015");
 
     private static final String JAVA_SDK_TESTS_ASSISTANTS_TXT =  "java_sdk_tests_assistants.txt";
     private static final String JAVA_SDK_TESTS_FINE_TUNING_JSON = "java_sdk_tests_fine_tuning.json";
@@ -122,7 +122,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
-            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+            removeDefaultSanitizers();
         }
 
         return builder;
@@ -145,7 +145,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
-            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+            removeDefaultSanitizers();
         }
 
         return builder;
@@ -162,6 +162,10 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
 
     private void addCustomMatchers() {
         interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Cookie", "Set-Cookie")));
+    }
+
+    private void removeDefaultSanitizers() {
+        interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
     }
 
     public static final String GPT_4_1106_PREVIEW = "gpt-4-1106-preview";
