@@ -6,6 +6,7 @@ package com.azure.ai.openai.assistants.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -71,9 +72,8 @@ public final class CreateToolResourcesOptions implements JsonSerializable<Create
      *
      * @return the fileSearch value.
      */
-    @Generated
-    public BinaryData getFileSearch() {
-        return this.fileSearch;
+    public CreateFileSearchToolResourceOptions getFileSearch() {
+        return CreateFileSearchToolResourceOptions.fromBinaryData(this.fileSearch);
     }
 
     /**
@@ -82,9 +82,14 @@ public final class CreateToolResourcesOptions implements JsonSerializable<Create
      * @param fileSearch the fileSearch value to set.
      * @return the CreateToolResourcesOptions object itself.
      */
-    @Generated
-    public CreateToolResourcesOptions setFileSearch(BinaryData fileSearch) {
-        this.fileSearch = fileSearch;
+    public CreateToolResourcesOptions setFileSearch(CreateFileSearchToolResourceOptions fileSearch) {
+        if (fileSearch.getVectorStoreIds() != null) {
+            this.fileSearch = BinaryData.fromObject(fileSearch.getVectorStoreIds());
+        } else if (!CoreUtils.isNullOrEmpty(fileSearch.getVectorStores())) {
+            this.fileSearch = BinaryData.fromObject(fileSearch.getVectorStores());
+        } else {
+            this.fileSearch = null;
+        }
         return this;
     }
 
