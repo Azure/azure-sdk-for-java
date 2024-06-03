@@ -299,6 +299,10 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 policies,
                 generateHttpClientWithProxy(null, null));
         }
+        if (!interceptorManager.isLiveMode()) {
+            // Remove sanitizer Location, operation-location, `id` and `name` from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493");
+        }
         initializeClients(httpPipeline, testProfile);
     }
 

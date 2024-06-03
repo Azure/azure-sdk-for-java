@@ -121,6 +121,8 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
         }
         if (!interceptorManager.isLiveMode()) {
             addTestProxySanitizers();
+            // Remove `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3493");
         }
 
         return builder;
@@ -147,6 +149,8 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
         }
         if (!interceptorManager.isLiveMode()) {
             addTestProxySanitizers();
+            // Remove `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3493");
         }
 
         return builder;
