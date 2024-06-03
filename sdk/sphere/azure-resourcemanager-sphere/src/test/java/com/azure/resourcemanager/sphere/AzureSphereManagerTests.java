@@ -23,7 +23,8 @@ import java.util.Random;
 
 public class AzureSphereManagerTests extends TestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_EAST;
+    private static final Region REGION_USEAST = Region.US_EAST;
+    private static final Region REGION_GLOBAL = Region.create("global", "Global");
     private String resourceGroupName = "rg" + randomPadding();
     private AzureSphereManager azureSphereManager = null;
     private ResourceManager resourceManager;
@@ -53,7 +54,7 @@ public class AzureSphereManagerTests extends TestBase {
         } else {
             resourceManager.resourceGroups()
                 .define(resourceGroupName)
-                .withRegion(REGION)
+                .withRegion(REGION_USEAST)
                 .create();
         }
     }
@@ -74,7 +75,7 @@ public class AzureSphereManagerTests extends TestBase {
             // @embedStart
             catalog = azureSphereManager.catalogs()
                 .define(catalogName)
-                .withRegion(Region.create("global", "Global"))
+                .withRegion(REGION_GLOBAL)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
             // @embedEnd
