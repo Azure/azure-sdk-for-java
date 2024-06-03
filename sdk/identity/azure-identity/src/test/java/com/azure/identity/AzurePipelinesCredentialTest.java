@@ -9,6 +9,7 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.util.TestUtils;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -34,25 +35,8 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
             .build();
     }
 
-    private static AzurePipelinesCredential getPresetEnvironmentCredential() {
-        TestConfigurationSource configurationSource = new TestConfigurationSource()
-            .put("AZURESUBSCRIPTION_CLIENT_ID", clientId)
-            .put("AZURESUBSCRIPTION_TENANT_ID", tenantId)
-            .put("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID", serviceConnectionId);
-        Configuration confguration = TestUtils.createTestConfiguration(configurationSource);
-        return new AzurePipelinesCredentialBuilder()
-            .configuration(confguration)
-            .systemAccessToken(systemAccessToken)
-            .build();
-    }
-
-    private static Stream<AzurePipelinesCredential> getCredentials() {
-        return Stream.of(getCredential(), getPresetEnvironmentCredential());
-    }
-
-    @ParameterizedTest
+    @Test
     @LiveOnly
-    @MethodSource("getCredentials")
     public void testGetToken(AzurePipelinesCredential credential) {
 
 
@@ -65,9 +49,8 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
             .verifyComplete();
     }
 
-    @ParameterizedTest
+    @Test
     @LiveOnly
-    @MethodSource("getCredentials")
     public void testGetTokenSync(AzurePipelinesCredential credential) {
 
 

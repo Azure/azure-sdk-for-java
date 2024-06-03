@@ -70,15 +70,6 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
             configuration = Configuration.getGlobalConfiguration();
         }
 
-        String clientId = CoreUtils.isNullOrEmpty(this.clientId)
-            ? configuration.get("AZURESUBSCRIPTION_CLIENT_ID")
-            : this.clientId;
-        String tenantId = CoreUtils.isNullOrEmpty(this.tenantId)
-            ? configuration.get("AZURESUBSCRIPTION_TENANT_ID")
-            : this.tenantId;
-        String serviceConnectionId = CoreUtils.isNullOrEmpty(this.serviceConnectionId)
-            ? configuration.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID")
-            : this.serviceConnectionId;
         String oidcEndpoint = configuration.get("SYSTEM_OIDCREQUESTURI");
         try {
             ValidationUtil.validate(getClass().getSimpleName(),
