@@ -285,6 +285,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 // don't match api-version when matching url
                 interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version")).setExcludedHeaders(Arrays.asList("If-Match"))));
                 addSanitizers();
+                removeSanitizers();
             }
         } else {
             Configuration configuration = Configuration.getGlobalConfiguration();
@@ -303,6 +304,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             if (interceptorManager.isRecordMode() && !testContextManager.doNotRecordTest()) {
                 policies.add(this.interceptorManager.getRecordPolicy());
                 addSanitizers();
+                removeSanitizers();
             }
             if (httpLogDetailLevel == HttpLogDetailLevel.BODY_AND_HEADERS) {
                 policies.add(new HttpDebugLoggingPolicy());
@@ -314,10 +316,6 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel),
                 policies,
                 generateHttpClientWithProxy(null, null));
-        }
-        if (!interceptorManager.isLiveMode()) {
-            // Remove sanitizer Location, operation-location, `id` and `name` from the list of common sanitizers.
-            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493");
         }
         initializeClients(httpPipeline, testProfile);
     }
@@ -512,6 +510,11 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             );
         sanitizers.addAll(this.sanitizers);
         interceptorManager.addSanitizers(sanitizers);
+    }
+
+    private void removeSanitizers() {
+        // Remove sanitizer Location, operation-location, `id` and `name` from the list of common sanitizers.
+        interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493");
     }
 
     /**
