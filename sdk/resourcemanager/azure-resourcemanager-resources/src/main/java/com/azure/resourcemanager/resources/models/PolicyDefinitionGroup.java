@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The policy definition group. */
+/**
+ * The policy definition group.
+ */
 @Fluent
 public final class PolicyDefinitionGroup {
     /*
@@ -41,13 +43,15 @@ public final class PolicyDefinitionGroup {
     @JsonProperty(value = "additionalMetadataId")
     private String additionalMetadataId;
 
-    /** Creates an instance of PolicyDefinitionGroup class. */
+    /**
+     * Creates an instance of PolicyDefinitionGroup class.
+     */
     public PolicyDefinitionGroup() {
     }
 
     /**
      * Get the name property: The name of the group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +60,7 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Set the name property: The name of the group.
-     *
+     * 
      * @param name the name value to set.
      * @return the PolicyDefinitionGroup object itself.
      */
@@ -67,7 +71,7 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Get the displayName property: The group's display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -76,7 +80,7 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Set the displayName property: The group's display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PolicyDefinitionGroup object itself.
      */
@@ -87,7 +91,7 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Get the category property: The group's category.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -96,7 +100,7 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Set the category property: The group's category.
-     *
+     * 
      * @param category the category value to set.
      * @return the PolicyDefinitionGroup object itself.
      */
@@ -107,7 +111,7 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Get the description property: The group's description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -116,7 +120,7 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Set the description property: The group's description.
-     *
+     * 
      * @param description the description value to set.
      * @return the PolicyDefinitionGroup object itself.
      */
@@ -128,7 +132,7 @@ public final class PolicyDefinitionGroup {
     /**
      * Get the additionalMetadataId property: A resource ID of a resource that contains additional metadata about the
      * group.
-     *
+     * 
      * @return the additionalMetadataId value.
      */
     public String additionalMetadataId() {
@@ -138,7 +142,7 @@ public final class PolicyDefinitionGroup {
     /**
      * Set the additionalMetadataId property: A resource ID of a resource that contains additional metadata about the
      * group.
-     *
+     * 
      * @param additionalMetadataId the additionalMetadataId value to set.
      * @return the PolicyDefinitionGroup object itself.
      */
@@ -149,14 +153,13 @@ public final class PolicyDefinitionGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model PolicyDefinitionGroup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model PolicyDefinitionGroup"));
         }
     }
 

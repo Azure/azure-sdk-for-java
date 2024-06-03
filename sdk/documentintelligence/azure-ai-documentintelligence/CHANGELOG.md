@@ -6,6 +6,9 @@
 
 ### Breaking Changes
 
+- Modified the final result of `beginAnalyzeDocument` API in `DocumentIntelligenceClient` to `AnalyzeResult` class.
+- Modified the final result of `beginClassifyDocument` API in `DocumentIntelligenceClient` to `AnalyzeResult` class.
+
 ### Bugs Fixed
 
 ### Other Changes

@@ -124,6 +124,13 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     final PlaybackTimeoutInterceptor playbackTimeoutInterceptor = new PlaybackTimeoutInterceptor(() -> Duration.ofSeconds(60));
 
     /**
+     * Initializes ResourceManagerTestProxyTestBase class.
+     */
+    protected ResourceManagerTestProxyTestBase() {
+
+    }
+
+    /**
      * Generates a random resource name.
      *
      * @param prefix Prefix for the resource name.
@@ -135,6 +142,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Generates a random UUID.
      * @return A randomly generated UUID.
      */
     protected String generateRandomUuid() {
@@ -142,6 +150,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Generates a random password.
      * @return random password
      */
     public static String password() {
@@ -154,6 +163,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     private static String sshPublicKey;
 
     /**
+     * Generates an SSH public key.
      * @return an SSH public key
      */
     public static String sshPublicKey() {
@@ -193,6 +203,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Gets the test profile.
      * @return The test profile.
      */
     protected AzureProfile profile() {
@@ -200,6 +211,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Checks whether test mode is {@link TestMode#PLAYBACK}.
      * @return Whether the test mode is {@link TestMode#PLAYBACK}.
      */
     protected boolean isPlaybackMode() {
@@ -207,6 +219,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     }
 
     /**
+     * Checks whether test should be skipped in playback.
      * @return Whether the test should be skipped in playback.
      */
     protected boolean skipInPlayback() {
@@ -285,6 +298,10 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel),
                 policies,
                 generateHttpClientWithProxy(null, null));
+        }
+        if (!interceptorManager.isLiveMode()) {
+            // Remove sanitizer Location, operation-location, `id` and `name` from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493");
         }
         initializeClients(httpPipeline, testProfile);
     }

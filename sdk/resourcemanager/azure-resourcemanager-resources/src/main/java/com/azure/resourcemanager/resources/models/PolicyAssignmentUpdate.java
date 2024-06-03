@@ -9,7 +9,9 @@ import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentUpdateP
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The policy assignment for Patch request. */
+/**
+ * The policy assignment for Patch request.
+ */
 @Fluent
 public final class PolicyAssignmentUpdate {
     /*
@@ -30,13 +32,15 @@ public final class PolicyAssignmentUpdate {
     @JsonProperty(value = "identity")
     private Identity identity;
 
-    /** Creates an instance of PolicyAssignmentUpdate class. */
+    /**
+     * Creates an instance of PolicyAssignmentUpdate class.
+     */
     public PolicyAssignmentUpdate() {
     }
 
     /**
      * Get the innerProperties property: The policy assignment properties for Patch request.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PolicyAssignmentUpdateProperties innerProperties() {
@@ -45,7 +49,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Get the location property: The location of the policy assignment. Only required when utilizing managed identity.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -54,7 +58,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Set the location property: The location of the policy assignment. Only required when utilizing managed identity.
-     *
+     * 
      * @param location the location value to set.
      * @return the PolicyAssignmentUpdate object itself.
      */
@@ -65,7 +69,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Get the identity property: The managed identity associated with the policy assignment.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -74,7 +78,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Set the identity property: The managed identity associated with the policy assignment.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the PolicyAssignmentUpdate object itself.
      */
@@ -85,7 +89,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Get the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @return the resourceSelectors value.
      */
     public List<ResourceSelector> resourceSelectors() {
@@ -94,7 +98,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Set the resourceSelectors property: The resource selector list to filter policies by resource properties.
-     *
+     * 
      * @param resourceSelectors the resourceSelectors value to set.
      * @return the PolicyAssignmentUpdate object itself.
      */
@@ -108,7 +112,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Get the overrides property: The policy property value override.
-     *
+     * 
      * @return the overrides value.
      */
     public List<OverrideModel> overrides() {
@@ -117,7 +121,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Set the overrides property: The policy property value override.
-     *
+     * 
      * @param overrides the overrides value to set.
      * @return the PolicyAssignmentUpdate object itself.
      */
@@ -131,7 +135,7 @@ public final class PolicyAssignmentUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

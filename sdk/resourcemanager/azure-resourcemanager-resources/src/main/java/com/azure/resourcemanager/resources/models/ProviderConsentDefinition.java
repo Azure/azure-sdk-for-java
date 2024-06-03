@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The provider consent. */
+/**
+ * The provider consent.
+ */
 @Fluent
 public final class ProviderConsentDefinition {
     /*
@@ -16,13 +18,15 @@ public final class ProviderConsentDefinition {
     @JsonProperty(value = "consentToAuthorization")
     private Boolean consentToAuthorization;
 
-    /** Creates an instance of ProviderConsentDefinition class. */
+    /**
+     * Creates an instance of ProviderConsentDefinition class.
+     */
     public ProviderConsentDefinition() {
     }
 
     /**
      * Get the consentToAuthorization property: A value indicating whether authorization is consented or not.
-     *
+     * 
      * @return the consentToAuthorization value.
      */
     public Boolean consentToAuthorization() {
@@ -31,7 +35,7 @@ public final class ProviderConsentDefinition {
 
     /**
      * Set the consentToAuthorization property: A value indicating whether authorization is consented or not.
-     *
+     * 
      * @param consentToAuthorization the consentToAuthorization value to set.
      * @return the ProviderConsentDefinition object itself.
      */
@@ -42,7 +46,7 @@ public final class ProviderConsentDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -84,6 +84,12 @@
     "package": "com.azure.resourcemanager.cosmos",
     "args": "--tag=package-2023-11"
   },
+  "deploymentstacks": {
+    "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-deploymentstacks-2024-03 --graalvm-config-suffix=deploymentstacks"
+  },
   "dns": {
     "dir": "azure-resourcemanager-dns",
     "source": "specification/dns/resource-manager/readme.md",
@@ -220,7 +226,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2022-09 --add-inner=Deployment"
+    "args": "--tag=package-resources-2024-03 --add-inner=Deployment"
   },
   "resources-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",

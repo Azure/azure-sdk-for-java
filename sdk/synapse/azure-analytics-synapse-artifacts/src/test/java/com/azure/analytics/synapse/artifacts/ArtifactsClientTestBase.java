@@ -20,6 +20,8 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -42,6 +44,8 @@ public abstract class ArtifactsClientTestBase extends TestProxyTestBase {
     private final Map<String, String> properties = CoreUtils.getProperties(SYNAPSE_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
+    // Disable `name` and `id` sanitizers from the list of common sanitizers
+    public static final String[] REMOVE_SANITIZER_ID = {"AZSDK3430", "AZSDK3493"};
 
     private static final String[] DEFAULT_SCOPES = new String[] {"https://dev.azuresynapse.net/.default"};
 
@@ -93,6 +97,11 @@ public abstract class ArtifactsClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isRecordMode()) {
             policies.add(interceptorManager.getRecordPolicy());
+        }
+
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(new TestProxySanitizer("$..id", null, "00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY));
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
         }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
