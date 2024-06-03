@@ -460,6 +460,8 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             new TestProxySanitizer("(?<=%2Fsubscriptions%2F)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
             // Retry-After
             new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER),
+            // subscription id in body "id" property
+            new TestProxySanitizer("$..id", "(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.BODY_KEY),
             // Microsoft Graph secret
             new TestProxySanitizer("$..secretText", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // Storage secret
