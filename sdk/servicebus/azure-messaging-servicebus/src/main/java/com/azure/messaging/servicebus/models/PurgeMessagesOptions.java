@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 /**
  * Options to specify when purging messages.
  */
-public class PurgeMessagesOptions {
+public final class PurgeMessagesOptions {
     private OffsetDateTime beforeEnqueueTimeUtc;
 
     /**
