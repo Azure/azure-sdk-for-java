@@ -38,6 +38,7 @@ import reactor.test.StepVerifier;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -1481,7 +1482,8 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
             .verifyComplete();
 
         final PurgeMessagesOptions options = new PurgeMessagesOptions()
-            .setBeforeEnqueueTimeUtc(OffsetDateTime.now().plusSeconds(5)); // 5-sec buffer to account for any clock skew.
+            // 5-sec buffer to account for any clock skew.
+            .setBeforeEnqueueTimeUtc(OffsetDateTime.now(ZoneOffset.UTC).plusSeconds(5));
 
         // since the service can delete upto 4000 messages in a single batch, the purge operation will make
         // 3 batch delete API calls to delete the 8200 messages.

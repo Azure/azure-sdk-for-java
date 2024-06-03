@@ -5,7 +5,7 @@
 ### Features Added
 
 - Setting the v2 stack as the default for "Synchronous Receiver Client".
-- Added the support for batch-delete APIs in Receiver client.
+- Added the support for batch delete APIs in `ServiceBusReceiverClient` and `ServiceBusReceiverAsyncClient`.
 
 ### Breaking Changes
 

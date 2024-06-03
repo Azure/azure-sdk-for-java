@@ -43,6 +43,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
@@ -1545,7 +1546,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 .setBeforeEnqueueTimeUtc(options.getBeforeEnqueueTimeUtc());
         } else {
             deleteMessagesOptions = new DeleteMessagesOptions()
-                .setBeforeEnqueueTimeUtc(OffsetDateTime.now());
+                .setBeforeEnqueueTimeUtc(OffsetDateTime.now(ZoneOffset.UTC));
         }
         return deleteMessages(MAX_DELETE_MESSAGES_COUNT, deleteMessagesOptions, receiverOptions.getSessionId())
             .expand(deleted -> {
@@ -1592,7 +1593,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (options.getBeforeEnqueueTimeUtc() != null) {
             beforeEnqueueTimeUtc = options.getBeforeEnqueueTimeUtc();
         } else {
-            beforeEnqueueTimeUtc = OffsetDateTime.now();
+            beforeEnqueueTimeUtc = OffsetDateTime.now(ZoneOffset.UTC);
         }
         final Mono<Integer> deleteMessages = connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
