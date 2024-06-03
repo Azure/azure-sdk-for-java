@@ -51,9 +51,6 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
         
 	DocumentFileDetails document = createDocumentContent();
         DocumentTranslateContent documentTranslateContent = new DocumentTranslateContent(document);
-				
-        //DocumentTranslateContent translateContent = new DocumentTranslateContent(document)
-            //.setGlossary(glossaryList);
         String targetLanguage = "hi";    
         
         BinaryData response = getSingleDocumentTranslationClient().documentTranslate(targetLanguage, documentTranslateContent);        
