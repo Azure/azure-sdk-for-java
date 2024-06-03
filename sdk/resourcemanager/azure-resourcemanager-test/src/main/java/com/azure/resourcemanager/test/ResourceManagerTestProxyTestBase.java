@@ -74,6 +74,7 @@ import java.util.stream.Collectors;
  */
 public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase {
     private static final String ZERO_UUID = "00000000-0000-0000-0000-000000000000";
+    private static final String SUBSCRIPTION_ID_REGEX = "(?<=/subscriptions/)([^/?]+)";
     private static final String ZERO_SUBSCRIPTION = ZERO_UUID;
     private static final String ZERO_TENANT = ZERO_UUID;
     private static final String PLAYBACK_URI_BASE = "https://localhost:";
@@ -193,7 +194,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         return sshPublicKey;
     }
 
-    private static final Pattern SUBSCRIPTION_ID_PATTERN = Pattern.compile("(?<=/subscriptions/)([^/?]+)");
+    private static final Pattern SUBSCRIPTION_ID_PATTERN = Pattern.compile(SUBSCRIPTION_ID_REGEX);
 
     protected void assertResourceIdEquals(String expected, String actual) {
         String sanitizedExpected = SUBSCRIPTION_ID_PATTERN.matcher(expected).replaceAll(ZERO_UUID);
@@ -465,12 +466,12 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     private void addSanitizers() {
         List<TestProxySanitizer> sanitizers = Arrays.asList(
             // subscription id
-            new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
+            new TestProxySanitizer(SUBSCRIPTION_ID_REGEX, ZERO_UUID, TestProxySanitizerType.URL),
             new TestProxySanitizer("(?<=%2Fsubscriptions%2F)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
             // Retry-After
             new TestProxySanitizer("Retry-After", null, "0", TestProxySanitizerType.HEADER),
             // subscription id in body "id" property
-            new TestProxySanitizer("$..id", "(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..id", SUBSCRIPTION_ID_REGEX, ZERO_UUID, TestProxySanitizerType.BODY_KEY),
             // Microsoft Graph secret
             new TestProxySanitizer("$..secretText", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             // Storage secret
