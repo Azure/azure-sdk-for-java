@@ -454,7 +454,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
     protected abstract void cleanUpResources();
 
     private void addSanitizers() {
-        List<TestProxySanitizer> sanitizers = new ArrayList<>(Arrays.asList(
+        List<TestProxySanitizer> sanitizers = Arrays.asList(
             // subscription id
             new TestProxySanitizer("(?<=/subscriptions/)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
             new TestProxySanitizer("(?<=%2Fsubscriptions%2F)([^/?]+)", ZERO_UUID, TestProxySanitizerType.URL),
@@ -491,7 +491,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             new TestProxySanitizer("(?:AccountKey=)(?<accountKey>.*?)(?:;)", REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX).setGroupForReplace("accountKey"),
             new TestProxySanitizer("$.properties.WEBSITE_AUTH_ENCRYPTION_KEY", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$.properties.DOCKER_REGISTRY_SERVER_PASSWORD", null, REDACTED_VALUE, TestProxySanitizerType.BODY_KEY)
-            ));
+            );
         sanitizers.addAll(this.sanitizers);
         interceptorManager.addSanitizers(sanitizers);
     }
