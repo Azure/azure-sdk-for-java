@@ -28,7 +28,7 @@ public final class VersionGenerator {
         sdkVersionString =
             "java"
                 + getJavaVersion()
-                + getJavaRuntimeVersion()
+                + getJavaRuntime()
                 + ":"
                 + "otel"
                 + getOpenTelemetryApiVersion()
@@ -69,7 +69,7 @@ public final class VersionGenerator {
         return System.getProperty("java.version");
     }
 
-    private static String getJavaRuntimeVersion() {
+    private static String getJavaRuntime() {
         if(isNativeRuntimeExecution()) {
             return "!native";
         }
