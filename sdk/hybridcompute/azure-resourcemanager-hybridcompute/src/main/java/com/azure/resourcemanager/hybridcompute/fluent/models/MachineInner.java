@@ -13,7 +13,6 @@ import com.azure.resourcemanager.hybridcompute.models.AgentUpgrade;
 import com.azure.resourcemanager.hybridcompute.models.ArcKindEnum;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
 import com.azure.resourcemanager.hybridcompute.models.Identity;
-import com.azure.resourcemanager.hybridcompute.models.LicenseProfileMachineInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
@@ -283,7 +282,7 @@ public final class MachineInner extends Resource {
      * 
      * @return the licenseProfile value.
      */
-    public LicenseProfileMachineInstanceView licenseProfile() {
+    public LicenseProfileMachineInstanceViewInner licenseProfile() {
         return this.innerProperties() == null ? null : this.innerProperties().licenseProfile();
     }
 
@@ -293,7 +292,7 @@ public final class MachineInner extends Resource {
      * @param licenseProfile the licenseProfile value to set.
      * @return the MachineInner object itself.
      */
-    public MachineInner withLicenseProfile(LicenseProfileMachineInstanceView licenseProfile) {
+    public MachineInner withLicenseProfile(LicenseProfileMachineInstanceViewInner licenseProfile) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MachinePropertiesInner();
         }
