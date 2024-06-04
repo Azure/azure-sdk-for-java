@@ -30,7 +30,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * Endpoint for requesting new configurations to be loaded.
  */
 @ControllerEndpoint(id = APPCONFIGURATION_REFRESH)
-public final class AppConfigurationRefreshEndpoint implements ApplicationEventPublisherAware {
+public class AppConfigurationRefreshEndpoint implements ApplicationEventPublisherAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshEndpoint.class);
 
