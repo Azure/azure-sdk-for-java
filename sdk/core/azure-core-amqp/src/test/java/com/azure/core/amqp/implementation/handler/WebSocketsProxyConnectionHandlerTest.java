@@ -234,7 +234,7 @@ public class WebSocketsProxyConnectionHandlerTest {
         final ConnectionOptions connectionOptionsWithCustomEndpoint
             = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope",
                 AmqpTransportType.AMQP_WEB_SOCKETS, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler,
-                CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, customEndpointHostname, customEndpointPort);
+                CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION, customEndpointHostname, customEndpointPort, true);
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptionsWithCustomEndpoint,
             proxyOptions, peerDetails, AmqpMetricsProvider.noop());
