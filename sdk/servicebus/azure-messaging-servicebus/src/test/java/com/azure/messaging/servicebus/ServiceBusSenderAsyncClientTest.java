@@ -1032,6 +1032,47 @@ class ServiceBusSenderAsyncClientTest {
         messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
     }
 
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void canBatchMessagesInIterable() {
+        // Arrange
+        final ServiceBusSenderAsyncClient sender = mock(ServiceBusSenderAsyncClient.class);
+        final ServiceBusMessageBatch batch0 = mock(ServiceBusMessageBatch.class);
+        when(batch0.tryAddMessage(any(ServiceBusMessage.class))).thenReturn(true, true, true, true, false);
+        final ServiceBusMessageBatch batch1 = mock(ServiceBusMessageBatch.class);
+        when(batch1.tryAddMessage(any(ServiceBusMessage.class))).thenReturn(true, true, true, true, true, false);
+        final ServiceBusMessageBatch batch2 = mock(ServiceBusMessageBatch.class);
+        when(batch2.tryAddMessage(any(ServiceBusMessage.class))).thenReturn(true, true, true, true, true, true, false);
+        when(sender.createMessageBatch()).thenReturn(Mono.just(batch0), Mono.just(batch1), Mono.just(batch2));
+        when(sender.sendMessages(any(ServiceBusMessageBatch.class))).thenReturn(Mono.empty());
+        when(sender.sendMessages(anyList())).thenCallRealMethod();
+        final List<ServiceBusMessage> messages = new ArrayList<>();
+        for (int i = 0; i < 15; i++) {
+            messages.add(new ServiceBusMessage(new byte[0]));
+        }
+        ArgumentCaptor<ServiceBusMessage> messagesCaptor0 = ArgumentCaptor.forClass(ServiceBusMessage.class);
+        ArgumentCaptor<ServiceBusMessage> messagesCaptor1 = ArgumentCaptor.forClass(ServiceBusMessage.class);
+        ArgumentCaptor<ServiceBusMessage> messagesCaptor2 = ArgumentCaptor.forClass(ServiceBusMessage.class);
+
+        // Act & Assert
+        StepVerifier.create(sender.sendMessages(messages))
+            .verifyComplete();
+
+        Mockito.verify(sender, Mockito.times(3)).createMessageBatch();
+        Mockito.verify(batch0, Mockito.times(5)).tryAddMessage(messagesCaptor0.capture());
+        Mockito.verify(batch1, Mockito.times(6)).tryAddMessage(messagesCaptor1.capture());
+        Mockito.verify(batch2, Mockito.times(6)).tryAddMessage(messagesCaptor2.capture());
+
+        Assertions.assertEquals(5, messagesCaptor0.getAllValues().size());
+        Assertions.assertEquals(6, messagesCaptor1.getAllValues().size());
+        Assertions.assertEquals(6, messagesCaptor2.getAllValues().size());
+
+        Assertions.assertEquals(messages.subList(0, 5), messagesCaptor0.getAllValues());
+        Assertions.assertEquals(messages.subList(4, 10), messagesCaptor1.getAllValues());
+        Assertions.assertEquals(messages.subList(9, 15), messagesCaptor2.getAllValues());
+    }
+
     /**
      * Verifies that the onClientClose is called.
      */
