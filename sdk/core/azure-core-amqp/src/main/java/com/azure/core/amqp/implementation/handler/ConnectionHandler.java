@@ -11,6 +11,7 @@ import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UserAgentUtil;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
@@ -244,10 +245,12 @@ public class ConnectionHandler extends Handler {
     public void onConnectionBound(Event event) {
         final Transport transport = event.getTransport();
 
-        logger.atInfo()
-            .addKeyValue(HOSTNAME_KEY, getHostname())
-            .addKeyValue("peerDetails", () -> peerDetails.getHostname() + ":" + peerDetails.getPort())
-            .log("onConnectionBound");
+        final LoggingEventBuilder builder = logger.atInfo().addKeyValue(HOSTNAME_KEY, getHostname());
+        if (peerDetails != null) {
+            builder.addKeyValue("peerDetails", () -> peerDetails.getHostname() + ":" + peerDetails.getPort());
+        }
+
+        builder.log("onConnectionBound");
 
         this.addTransportLayers(event, (TransportInternal) transport);
 
