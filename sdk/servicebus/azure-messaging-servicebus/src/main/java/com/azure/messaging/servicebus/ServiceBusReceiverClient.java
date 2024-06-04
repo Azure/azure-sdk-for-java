@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
@@ -879,7 +878,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws NullPointerException if {@code options} is null.
      */
     public int deleteMessages(int messageCount, DeleteMessagesOptions options) {
-        return asyncClient.deleteMessages(messageCount, options).block(operationTimeout);
+        return asyncClient.deleteMessages(messageCount, options).block();
     }
 
     /**
@@ -889,7 +888,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * This method may invoke multiple service requests to delete all messages. Because multiple service requests may be
      * made, the possibility of partial success exists, in such scenario, the method will stop attempting to delete
      * additional messages and throw the exception that was encountered. Also, due to the multiple service requests,
-     * purge operation may exceed the configured {@link AmqpRetryOptions#getTryTimeout()}.
+     * purge operation may take longer if there are a lot of messages to delete.
+     * </p>
+     * <p>
+     * The api will purge all the messages enqueued before {@link OffsetDateTime#now()} UTC.
      * </p>
      *
      * @return the number of messages deleted.
@@ -905,10 +907,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * This method may invoke multiple service requests to delete all messages. Because multiple service requests may be
      * made, the possibility of partial success exists, in such scenario, the method will stop attempting to delete
      * additional messages and throw the exception that was encountered. Also, due to the multiple service requests,
-     * purge operation may exceed the configured {@link AmqpRetryOptions#getTryTimeout()}.
+     * purge operation may take longer if there are a lot of messages to delete.
      * </p>
      *
-     * @param options options used to purge the messages.
+     * @param options options used to purge the messages, application may specify a UTC timestamp in the options
+     *  indicating only purge messages enqueued before that time, if such a cut of time is not specified then
+     *  {@link OffsetDateTime#now()} UTC will be used.
      *
      * @return the number of messages deleted.
      * @throws NullPointerException if {@code options} is null.

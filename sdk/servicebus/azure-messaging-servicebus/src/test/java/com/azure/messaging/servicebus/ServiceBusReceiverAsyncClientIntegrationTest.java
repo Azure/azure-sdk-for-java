@@ -44,7 +44,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1478,7 +1477,7 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
             messages.add(getMessage(UUID.randomUUID().toString(), false));
         }
 
-        StepVerifier.create(sendMessages(messages))
+        StepVerifier.create(sender.sendMessages(messages))
             .verifyComplete();
 
         final PurgeMessagesOptions options = new PurgeMessagesOptions()
@@ -1550,41 +1549,6 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
     private Mono<Void> sendMessage(ServiceBusMessage message) {
         return sender.sendMessage(message).doOnSuccess(aVoid -> {
             logMessage(message, sender.getEntityPath(), "sent");
-        });
-    }
-
-    private Mono<Void> sendMessages(List<ServiceBusMessage> messages) {
-        final Iterator<ServiceBusMessage> messagesItr = messages.iterator();
-        if (messagesItr.hasNext()) {
-            return sendNextBatch(messagesItr.next(), messagesItr);
-        } else {
-            return Mono.empty();
-        }
-    }
-
-    private Mono<Void> sendNextBatch(ServiceBusMessage first, Iterator<ServiceBusMessage> messagesItr) {
-        return sender.createMessageBatch().flatMap(batch -> {
-            ServiceBusMessage next = first;
-            do {
-                if (!batch.tryAddMessage(next)) {
-                    if (next == first) {
-                        return Mono.error(
-                            new IllegalArgumentException("The event " + first + " is too big to send even in a Batch."));
-                    }
-                    return sender.sendMessages(batch).then(Mono.just(next));
-                }
-                if (messagesItr.hasNext()) {
-                    next = messagesItr.next();
-                } else {
-                    return sender.sendMessages(batch).then(Mono.just(END));
-                }
-            } while (true);
-        }).flatMap(missed -> {
-            if (missed == END) {
-                return Mono.empty();
-            } else {
-                return sendNextBatch(missed, messagesItr);
-            }
         });
     }
 
