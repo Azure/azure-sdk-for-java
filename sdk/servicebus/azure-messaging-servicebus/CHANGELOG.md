@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixes the sender API that takes `Iterable` to not drop messages that cannot be fit in the batch. ([#40462](https://github.com/Azure/azure-sdk-for-java/pull/40462))
+
 ### Other Changes
 
 ## 7.18.0-beta.1 (2024-05-15)
