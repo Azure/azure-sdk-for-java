@@ -206,7 +206,8 @@ public class ConnectionOptions {
     }
 
     /**
-     * Gets the verification mode for the SSL certificate.
+     * Gets the verification mode for the SSL certificate.  The verification mode used when {@link #isEnableSsl()} is
+     * true.
      *
      * @return The verification mode for the SSL certificate.
      */
@@ -253,9 +254,9 @@ public class ConnectionOptions {
     }
 
     /**
-     * True to enable SSL when initially creating AMQP connection, false otherwise.
+     * Check if SSL should be enabled when creating the AMQP connection.
      *
-     * @return {@code true} to enable SSL when initially creating AMQP connection, false otherwise.
+     * @return {@code true} to enable SSL when creating AMQP connection, false otherwise.
      */
     public boolean isEnableSsl() {
         return enableSsl;
@@ -274,5 +275,4 @@ public class ConnectionOptions {
                     .logThrowableAsError(new IllegalArgumentException("Transport Type is not supported: " + transport));
         }
     }
-
 }
