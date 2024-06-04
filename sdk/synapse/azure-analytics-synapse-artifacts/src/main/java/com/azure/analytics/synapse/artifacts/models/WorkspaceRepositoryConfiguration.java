@@ -5,78 +5,72 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * Git integration settings.
  */
 @Fluent
-public final class WorkspaceRepositoryConfiguration {
+public final class WorkspaceRepositoryConfiguration implements JsonSerializable<WorkspaceRepositoryConfiguration> {
     /*
      * Type of workspace repositoryID configuration. Example WorkspaceVSTSConfiguration, WorkspaceGitHubConfiguration
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * GitHub Enterprise host name. For example: https://github.mydomain.com
      */
-    @JsonProperty(value = "hostName")
     private String hostName;
 
     /*
      * Account name
      */
-    @JsonProperty(value = "accountName")
     private String accountName;
 
     /*
      * VSTS project name
      */
-    @JsonProperty(value = "projectName")
     private String projectName;
 
     /*
      * Repository name
      */
-    @JsonProperty(value = "repositoryName")
     private String repositoryName;
 
     /*
      * Collaboration branch
      */
-    @JsonProperty(value = "collaborationBranch")
     private String collaborationBranch;
 
     /*
      * Root folder to use in the repository
      */
-    @JsonProperty(value = "rootFolder")
     private String rootFolder;
 
     /*
      * The last commit ID
      */
-    @JsonProperty(value = "lastCommitId")
     private String lastCommitId;
 
     /*
      * The VSTS tenant ID
      */
-    @JsonProperty(value = "tenantId")
     private UUID tenantId;
 
     /*
      * GitHub bring your own app client id
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * GitHub bring your own app client secret information.
      */
-    @JsonProperty(value = "clientSecret")
     private GitHubClientSecret clientSecret;
 
     /**
@@ -305,5 +299,73 @@ public final class WorkspaceRepositoryConfiguration {
     public WorkspaceRepositoryConfiguration setClientSecret(GitHubClientSecret clientSecret) {
         this.clientSecret = clientSecret;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("hostName", this.hostName);
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("projectName", this.projectName);
+        jsonWriter.writeStringField("repositoryName", this.repositoryName);
+        jsonWriter.writeStringField("collaborationBranch", this.collaborationBranch);
+        jsonWriter.writeStringField("rootFolder", this.rootFolder);
+        jsonWriter.writeStringField("lastCommitId", this.lastCommitId);
+        jsonWriter.writeStringField("tenantId", Objects.toString(this.tenantId, null));
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceRepositoryConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceRepositoryConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspaceRepositoryConfiguration.
+     */
+    public static WorkspaceRepositoryConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceRepositoryConfiguration deserializedWorkspaceRepositoryConfiguration
+                = new WorkspaceRepositoryConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.type = reader.getString();
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.hostName = reader.getString();
+                } else if ("accountName".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.accountName = reader.getString();
+                } else if ("projectName".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.projectName = reader.getString();
+                } else if ("repositoryName".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.repositoryName = reader.getString();
+                } else if ("collaborationBranch".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.collaborationBranch = reader.getString();
+                } else if ("rootFolder".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.rootFolder = reader.getString();
+                } else if ("lastCommitId".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.lastCommitId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.clientId = reader.getString();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedWorkspaceRepositoryConfiguration.clientSecret = GitHubClientSecret.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceRepositoryConfiguration;
+        });
     }
 }
