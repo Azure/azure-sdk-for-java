@@ -4,12 +4,16 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
+import com.azure.resourcemanager.cosmos.models.CreateMode;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.MongoDBCollectionResource;
 import com.azure.resourcemanager.cosmos.models.MongoIndex;
 import com.azure.resourcemanager.cosmos.models.MongoIndexKeys;
 import com.azure.resourcemanager.cosmos.models.MongoIndexOptions;
+import com.azure.resourcemanager.cosmos.models.ResourceRestoreParameters;
+
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,26 +23,56 @@ import java.util.Map;
  */
 public final class MongoDBResourcesCreateUpdateMongoDBCollectionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBMongoDBCollectionCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-05-15-preview/examples/CosmosDBMongoDBCollectionRestore.json
+     */
+    /**
+     * Sample code: CosmosDBMongoDBCollectionRestore.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void cosmosDBMongoDBCollectionRestore(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getMongoDBResources()
+            .createUpdateMongoDBCollection("rg1", "ddb1", "databaseName", "collectionName",
+                new MongoDBCollectionCreateUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new MongoDBCollectionResource().withId("collectionName")
+                        .withRestoreParameters(new ResourceRestoreParameters().withRestoreSource(
+                            "/subscriptions/subid/providers/Microsoft.DocumentDB/locations/WestUS/restorableDatabaseAccounts/restorableDatabaseAccountId")
+                            .withRestoreTimestampInUtc(OffsetDateTime.parse("2022-07-20T18:28:00Z"))
+                            .withRestoreWithTtlDisabled(false))
+                        .withCreateMode(CreateMode.RESTORE))
+                    .withOptions(new CreateUpdateOptions()),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-05-15-preview/examples/CosmosDBMongoDBCollectionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionCreateUpdate.
-     * 
+     *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBMongoDBCollectionCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getMongoDBResources().createUpdateMongoDBCollection("rg1",
-            "ddb1", "databaseName", "collectionName",
-            new MongoDBCollectionCreateUpdateParameters().withLocation("West US").withTags(mapOf())
-                .withResource(new MongoDBCollectionResource().withId("collectionName")
-                    .withShardKey(mapOf("testKey", "fakeTokenPlaceholder"))
-                    .withIndexes(Arrays.asList(
-                        new MongoIndex().withKey(new MongoIndexKeys().withKeys(Arrays.asList("_ts")))
-                            .withOptions(new MongoIndexOptions().withExpireAfterSeconds(100).withUnique(true)),
-                        new MongoIndex().withKey(new MongoIndexKeys().withKeys(Arrays.asList("_id"))))))
-                .withOptions(new CreateUpdateOptions()),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getMongoDBResources()
+            .createUpdateMongoDBCollection("rg1", "ddb1", "databaseName", "collectionName",
+                new MongoDBCollectionCreateUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new MongoDBCollectionResource().withId("collectionName")
+                        .withShardKey(mapOf("testKey", "fakeTokenPlaceholder"))
+                        .withIndexes(Arrays.asList(
+                            new MongoIndex().withKey(new MongoIndexKeys().withKeys(Arrays.asList("_ts")))
+                                .withOptions(new MongoIndexOptions().withExpireAfterSeconds(100).withUnique(true)),
+                            new MongoIndex().withKey(new MongoIndexKeys().withKeys(Arrays.asList("_id")))))
+                        .withAnalyticalStorageTtl(500))
+                    .withOptions(new CreateUpdateOptions()),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

@@ -1,5 +1,13 @@
 # Release History
 
+## 2.40.0-beta.1 (2024-06-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-05-15-preview`.
+
 ## 2.39.0 (2024-05-24)
 
 ### Other Changes

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -21,8 +22,7 @@ public class SqlContainerResource {
     private String id;
 
     /*
-     * The configuration of the indexing policy. By default, the indexing is automatic for all document paths within
-     * the container
+     * The configuration of the indexing policy. By default, the indexing is automatic for all document paths within the container
      */
     @JsonProperty(value = "indexingPolicy")
     private IndexingPolicy indexingPolicy;
@@ -40,8 +40,7 @@ public class SqlContainerResource {
     private Integer defaultTtl;
 
     /*
-     * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the
-     * Azure Cosmos DB service.
+     * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the Azure Cosmos DB service.
      */
     @JsonProperty(value = "uniqueKeyPolicy")
     private UniqueKeyPolicy uniqueKeyPolicy;
@@ -77,6 +76,12 @@ public class SqlContainerResource {
     private CreateMode createMode;
 
     /*
+     * The configuration for defining Materialized Views. This must be specified only for creating a Materialized View container.
+     */
+    @JsonProperty(value = "materializedViewDefinition")
+    private MaterializedViewDefinition materializedViewDefinition;
+
+    /*
      * List of computed properties
      */
     @JsonProperty(value = "computedProperties")
@@ -90,7 +95,7 @@ public class SqlContainerResource {
 
     /**
      * Get the id property: Name of the Cosmos DB SQL container.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -99,7 +104,7 @@ public class SqlContainerResource {
 
     /**
      * Set the id property: Name of the Cosmos DB SQL container.
-     * 
+     *
      * @param id the id value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -111,7 +116,7 @@ public class SqlContainerResource {
     /**
      * Get the indexingPolicy property: The configuration of the indexing policy. By default, the indexing is automatic
      * for all document paths within the container.
-     * 
+     *
      * @return the indexingPolicy value.
      */
     public IndexingPolicy indexingPolicy() {
@@ -121,7 +126,7 @@ public class SqlContainerResource {
     /**
      * Set the indexingPolicy property: The configuration of the indexing policy. By default, the indexing is automatic
      * for all document paths within the container.
-     * 
+     *
      * @param indexingPolicy the indexingPolicy value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -133,7 +138,7 @@ public class SqlContainerResource {
     /**
      * Get the partitionKey property: The configuration of the partition key to be used for partitioning data into
      * multiple partitions.
-     * 
+     *
      * @return the partitionKey value.
      */
     public ContainerPartitionKey partitionKey() {
@@ -143,7 +148,7 @@ public class SqlContainerResource {
     /**
      * Set the partitionKey property: The configuration of the partition key to be used for partitioning data into
      * multiple partitions.
-     * 
+     *
      * @param partitionKey the partitionKey value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -154,7 +159,7 @@ public class SqlContainerResource {
 
     /**
      * Get the defaultTtl property: Default time to live.
-     * 
+     *
      * @return the defaultTtl value.
      */
     public Integer defaultTtl() {
@@ -163,7 +168,7 @@ public class SqlContainerResource {
 
     /**
      * Set the defaultTtl property: Default time to live.
-     * 
+     *
      * @param defaultTtl the defaultTtl value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -175,7 +180,7 @@ public class SqlContainerResource {
     /**
      * Get the uniqueKeyPolicy property: The unique key policy configuration for specifying uniqueness constraints on
      * documents in the collection in the Azure Cosmos DB service.
-     * 
+     *
      * @return the uniqueKeyPolicy value.
      */
     public UniqueKeyPolicy uniqueKeyPolicy() {
@@ -185,7 +190,7 @@ public class SqlContainerResource {
     /**
      * Set the uniqueKeyPolicy property: The unique key policy configuration for specifying uniqueness constraints on
      * documents in the collection in the Azure Cosmos DB service.
-     * 
+     *
      * @param uniqueKeyPolicy the uniqueKeyPolicy value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -196,7 +201,7 @@ public class SqlContainerResource {
 
     /**
      * Get the conflictResolutionPolicy property: The conflict resolution policy for the container.
-     * 
+     *
      * @return the conflictResolutionPolicy value.
      */
     public ConflictResolutionPolicy conflictResolutionPolicy() {
@@ -205,7 +210,7 @@ public class SqlContainerResource {
 
     /**
      * Set the conflictResolutionPolicy property: The conflict resolution policy for the container.
-     * 
+     *
      * @param conflictResolutionPolicy the conflictResolutionPolicy value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -216,7 +221,7 @@ public class SqlContainerResource {
 
     /**
      * Get the clientEncryptionPolicy property: The client encryption policy for the container.
-     * 
+     *
      * @return the clientEncryptionPolicy value.
      */
     public ClientEncryptionPolicy clientEncryptionPolicy() {
@@ -225,7 +230,7 @@ public class SqlContainerResource {
 
     /**
      * Set the clientEncryptionPolicy property: The client encryption policy for the container.
-     * 
+     *
      * @param clientEncryptionPolicy the clientEncryptionPolicy value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -236,7 +241,7 @@ public class SqlContainerResource {
 
     /**
      * Get the analyticalStorageTtl property: Analytical TTL.
-     * 
+     *
      * @return the analyticalStorageTtl value.
      */
     public Long analyticalStorageTtl() {
@@ -245,7 +250,7 @@ public class SqlContainerResource {
 
     /**
      * Set the analyticalStorageTtl property: Analytical TTL.
-     * 
+     *
      * @param analyticalStorageTtl the analyticalStorageTtl value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -256,7 +261,7 @@ public class SqlContainerResource {
 
     /**
      * Get the restoreParameters property: Parameters to indicate the information about the restore.
-     * 
+     *
      * @return the restoreParameters value.
      */
     public ResourceRestoreParameters restoreParameters() {
@@ -265,7 +270,7 @@ public class SqlContainerResource {
 
     /**
      * Set the restoreParameters property: Parameters to indicate the information about the restore.
-     * 
+     *
      * @param restoreParameters the restoreParameters value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -276,7 +281,7 @@ public class SqlContainerResource {
 
     /**
      * Get the createMode property: Enum to indicate the mode of resource creation.
-     * 
+     *
      * @return the createMode value.
      */
     public CreateMode createMode() {
@@ -285,7 +290,7 @@ public class SqlContainerResource {
 
     /**
      * Set the createMode property: Enum to indicate the mode of resource creation.
-     * 
+     *
      * @param createMode the createMode value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -295,8 +300,30 @@ public class SqlContainerResource {
     }
 
     /**
+     * Get the materializedViewDefinition property: The configuration for defining Materialized Views. This must be
+     * specified only for creating a Materialized View container.
+     *
+     * @return the materializedViewDefinition value.
+     */
+    public MaterializedViewDefinition materializedViewDefinition() {
+        return this.materializedViewDefinition;
+    }
+
+    /**
+     * Set the materializedViewDefinition property: The configuration for defining Materialized Views. This must be
+     * specified only for creating a Materialized View container.
+     *
+     * @param materializedViewDefinition the materializedViewDefinition value to set.
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withMaterializedViewDefinition(MaterializedViewDefinition materializedViewDefinition) {
+        this.materializedViewDefinition = materializedViewDefinition;
+        return this;
+    }
+
+    /**
      * Get the computedProperties property: List of computed properties.
-     * 
+     *
      * @return the computedProperties value.
      */
     public List<ComputedProperty> computedProperties() {
@@ -305,7 +332,7 @@ public class SqlContainerResource {
 
     /**
      * Set the computedProperties property: List of computed properties.
-     * 
+     *
      * @param computedProperties the computedProperties value to set.
      * @return the SqlContainerResource object itself.
      */
@@ -316,13 +343,13 @@ public class SqlContainerResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property id in model SqlContainerResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model SqlContainerResource"));
         }
         if (indexingPolicy() != null) {
             indexingPolicy().validate();
@@ -341,6 +368,9 @@ public class SqlContainerResource {
         }
         if (restoreParameters() != null) {
             restoreParameters().validate();
+        }
+        if (materializedViewDefinition() != null) {
+            materializedViewDefinition().validate();
         }
         if (computedProperties() != null) {
             computedProperties().forEach(e -> e.validate());

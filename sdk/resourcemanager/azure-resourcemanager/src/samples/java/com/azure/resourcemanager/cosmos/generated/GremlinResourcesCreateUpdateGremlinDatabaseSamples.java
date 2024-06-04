@@ -15,8 +15,7 @@ import java.util.Map;
  */
 public final class GremlinResourcesCreateUpdateGremlinDatabaseSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
-     * CosmosDBGremlinDatabaseCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-05-15-preview/examples/CosmosDBGremlinDatabaseCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBGremlinDatabaseCreateUpdate.
@@ -24,12 +23,16 @@ public final class GremlinResourcesCreateUpdateGremlinDatabaseSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBGremlinDatabaseCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cosmosDBAccounts().manager().serviceClient().getGremlinResources().createUpdateGremlinDatabase("rg1",
-            "ddb1", "databaseName",
-            new GremlinDatabaseCreateUpdateParameters().withLocation("West US").withTags(mapOf())
-                .withResource(new GremlinDatabaseResource().withId("databaseName"))
-                .withOptions(new CreateUpdateOptions()),
-            com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts()
+            .manager()
+            .serviceClient()
+            .getGremlinResources()
+            .createUpdateGremlinDatabase("rg1", "ddb1", "databaseName",
+                new GremlinDatabaseCreateUpdateParameters().withLocation("West US")
+                    .withTags(mapOf())
+                    .withResource(new GremlinDatabaseResource().withId("databaseName"))
+                    .withOptions(new CreateUpdateOptions()),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

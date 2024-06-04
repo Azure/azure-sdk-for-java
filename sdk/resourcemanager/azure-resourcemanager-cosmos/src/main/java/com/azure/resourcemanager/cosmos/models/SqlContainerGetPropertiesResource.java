@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -39,7 +40,7 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
 
     /**
      * Get the rid property: A system generated property. A unique identifier.
-     * 
+     *
      * @return the rid value.
      */
     public String rid() {
@@ -48,7 +49,7 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
 
     /**
      * Get the ts property: A system generated property that denotes the last updated timestamp of the resource.
-     * 
+     *
      * @return the ts value.
      */
     public Float ts() {
@@ -58,7 +59,7 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
     /**
      * Get the etag property: A system generated property representing the resource etag required for optimistic
      * concurrency control.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -160,6 +161,16 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
      * {@inheritDoc}
      */
     @Override
+    public SqlContainerGetPropertiesResource
+        withMaterializedViewDefinition(MaterializedViewDefinition materializedViewDefinition) {
+        super.withMaterializedViewDefinition(materializedViewDefinition);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public SqlContainerGetPropertiesResource withComputedProperties(List<ComputedProperty> computedProperties) {
         super.withComputedProperties(computedProperties);
         return this;
@@ -167,7 +178,7 @@ public final class SqlContainerGetPropertiesResource extends SqlContainerResourc
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
