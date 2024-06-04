@@ -6,6 +6,10 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptionsList;
+import com.azure.ai.openai.assistants.models.CreateToolResourcesOptions;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
@@ -23,6 +27,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.util.Arrays;
 
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,8 +51,12 @@ public class AzureFileSearchAsyncTest extends AssistantsClientTestBase {
                 .flatMap(openAIFile -> {
                     // Create assistant
                     AsyncUtils cleanUp = new AsyncUtils();
-                    // TODO (jose): setup with VectorStore
-//                    assistantCreationOptions.setFileIds(Arrays.asList(openAIFile.getId()));
+                    CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
+                    createToolResourcesOptions.setFileSearch(
+                        new CreateFileSearchToolResourceOptions(
+                            new CreateFileSearchToolResourceVectorStoreOptionsList(
+                                Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
+                    assistantCreationOptions.setToolResources(createToolResourcesOptions);
                     cleanUp.setFile(openAIFile);
                     return client.createAssistant(assistantCreationOptions).zipWith(Mono.just(cleanUp));
                 }).flatMap(tuple -> {
@@ -71,7 +80,7 @@ public class AzureFileSearchAsyncTest extends AssistantsClientTestBase {
                         client.createRun(cleanUp.getThread(), cleanUp.getAssistant())
                             .flatMap(createdRun ->
                                 client.getRun(cleanUp.getThread().getId(), createdRun.getId()).zipWith(Mono.just(cleanUp))
-                                    .repeatWhen(completed -> completed.delayElements(Duration.ofMillis(500)))
+                                    .repeatWhen(completed -> completed.delayElements(Duration.ofMillis(1000)))
                                     .takeUntil(tuple2 -> {
                                         ThreadRun run = tuple2.getT1();
 

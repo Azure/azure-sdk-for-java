@@ -12,16 +12,16 @@ public final class LicenseProfileUpdatePropertiesSoftwareAssuranceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LicenseProfileUpdatePropertiesSoftwareAssurance model
-            = BinaryData.fromString("{\"softwareAssuranceCustomer\":true}")
+            = BinaryData.fromString("{\"softwareAssuranceCustomer\":false}")
                 .toObject(LicenseProfileUpdatePropertiesSoftwareAssurance.class);
-        Assertions.assertEquals(true, model.softwareAssuranceCustomer());
+        Assertions.assertEquals(false, model.softwareAssuranceCustomer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LicenseProfileUpdatePropertiesSoftwareAssurance model
-            = new LicenseProfileUpdatePropertiesSoftwareAssurance().withSoftwareAssuranceCustomer(true);
+            = new LicenseProfileUpdatePropertiesSoftwareAssurance().withSoftwareAssuranceCustomer(false);
         model = BinaryData.fromObject(model).toObject(LicenseProfileUpdatePropertiesSoftwareAssurance.class);
-        Assertions.assertEquals(true, model.softwareAssuranceCustomer());
+        Assertions.assertEquals(false, model.softwareAssuranceCustomer());
     }
 }

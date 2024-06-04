@@ -5,10 +5,8 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.serializer.TypeReference;
 
 import java.io.UncheckedIOException;
-import java.util.List;
 
 /**
  * A set of resources that are used by the assistant's tools. The resources are specific to the type of tool.
@@ -16,7 +14,7 @@ import java.util.List;
  * a list of vector store IDs.
  */
 @Immutable
-public class CreateFileSearchToolResourceOptions {
+public final class CreateFileSearchToolResourceOptions {
     /**
      * The vector store attached to this assistant. There can be a maximum of 1 vector store attached to the assistant.
      */
@@ -26,20 +24,18 @@ public class CreateFileSearchToolResourceOptions {
      * A helper to create a vector store with file_ids and attach it to this assistant. There can be a maximum of 1 vector
      * store attached to the assistant.
      */
-    private final List<CreateFileSearchToolResourceVectorStoreOptions> vectorStores;
+    private final CreateFileSearchToolResourceVectorStoreOptionsList vectorStores;
 
-    // using variadic type to avoid clashing signatures after type erasure.
     /**
      * Creates an instance of CreateFileSearchToolResourceOptions class.
      *
      * @param vectorStores the vector stores to set.
      */
-    public CreateFileSearchToolResourceOptions(List<CreateFileSearchToolResourceVectorStoreOptions> vectorStores) {
+    public CreateFileSearchToolResourceOptions(CreateFileSearchToolResourceVectorStoreOptionsList vectorStores) {
         this.vectorStoreIds = null;
         this.vectorStores = vectorStores;
     }
 
-    // using variadic type to avoid clashing signatures after type erasure.
     /**
      * Creates an instance of CreateFileSearchToolResourceOptions class.
      *
@@ -55,7 +51,7 @@ public class CreateFileSearchToolResourceOptions {
      *
      * @return the vectorStores value.
      */
-    public List<CreateFileSearchToolResourceVectorStoreOptions> getVectorStores() {
+    public CreateFileSearchToolResourceVectorStoreOptionsList getVectorStores() {
         return this.vectorStores;
     }
 
@@ -72,8 +68,8 @@ public class CreateFileSearchToolResourceOptions {
      * Creates a new instance of CreateFileSearchToolResourceOptions based on a JSON string.
      *
      * @param responseFormatBinaryData input JSON string
+     * @throws IllegalArgumentException If the provided JSON string does not match the expected format.
      * @return a new instance of CreateFileSearchToolResourceOptions
-     * @throws IllegalArgumentException if the provided JSON string does not match the expected format
      */
     public static CreateFileSearchToolResourceOptions fromBinaryData(BinaryData responseFormatBinaryData) {
         if (responseFormatBinaryData == null) {
@@ -86,8 +82,8 @@ public class CreateFileSearchToolResourceOptions {
             }
 
         } catch (UncheckedIOException e) {
-            List<CreateFileSearchToolResourceVectorStoreOptions> vectorStoreOptions = responseFormatBinaryData.toObject(new TypeReference<List<CreateFileSearchToolResourceVectorStoreOptions>>() {
-            });
+            CreateFileSearchToolResourceVectorStoreOptionsList vectorStoreOptions =
+                responseFormatBinaryData.toObject(CreateFileSearchToolResourceVectorStoreOptionsList.class);
             if (vectorStoreOptions != null) {
                 return new CreateFileSearchToolResourceOptions(vectorStoreOptions);
             }

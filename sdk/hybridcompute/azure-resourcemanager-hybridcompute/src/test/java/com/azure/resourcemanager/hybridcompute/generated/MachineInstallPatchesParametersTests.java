@@ -20,53 +20,52 @@ public final class MachineInstallPatchesParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MachineInstallPatchesParameters model = BinaryData.fromString(
-            "{\"maximumDuration\":\"PT56H48M27S\",\"rebootSetting\":\"IfRequired\",\"windowsParameters\":{\"classificationsToInclude\":[\"Security\",\"Tools\",\"Updates\"],\"kbNumbersToInclude\":[\"fkts\",\"hsucoc\"],\"kbNumbersToExclude\":[\"yazttbtwwrqpue\",\"ckzywbiexzfeyue\"],\"excludeKbsRequiringReboot\":false,\"maxPatchPublishDate\":\"2021-05-01T16:37:43Z\"},\"linuxParameters\":{\"classificationsToInclude\":[\"Other\",\"Critical\"],\"packageNameMasksToInclude\":[\"almuzyoxaepdkzja\"],\"packageNameMasksToExclude\":[\"xrhdwbavxbniwdjs\"]}}")
+            "{\"maximumDuration\":\"PT199H48M34S\",\"rebootSetting\":\"Always\",\"windowsParameters\":{\"classificationsToInclude\":[\"Critical\",\"UpdateRollUp\",\"ServicePack\"],\"kbNumbersToInclude\":[\"vlxotogtwrupqsx\",\"nmic\",\"kvceoveilovnotyf\",\"fcnj\"],\"kbNumbersToExclude\":[\"nxdhbt\"],\"excludeKbsRequiringReboot\":false,\"maxPatchPublishDate\":\"2021-06-24T08:22:45Z\"},\"linuxParameters\":{\"classificationsToInclude\":[\"Other\"],\"packageNameMasksToInclude\":[\"oqnermclfpl\"],\"packageNameMasksToExclude\":[\"xus\",\"rpabg\",\"epsbjtazqu\",\"xywpmueefjzwfqkq\"]}}")
             .toObject(MachineInstallPatchesParameters.class);
-        Assertions.assertEquals(Duration.parse("PT56H48M27S"), model.maximumDuration());
-        Assertions.assertEquals(VMGuestPatchRebootSetting.IF_REQUIRED, model.rebootSetting());
-        Assertions.assertEquals(VMGuestPatchClassificationWindows.SECURITY,
+        Assertions.assertEquals(Duration.parse("PT199H48M34S"), model.maximumDuration());
+        Assertions.assertEquals(VMGuestPatchRebootSetting.ALWAYS, model.rebootSetting());
+        Assertions.assertEquals(VMGuestPatchClassificationWindows.CRITICAL,
             model.windowsParameters().classificationsToInclude().get(0));
-        Assertions.assertEquals("fkts", model.windowsParameters().kbNumbersToInclude().get(0));
-        Assertions.assertEquals("yazttbtwwrqpue", model.windowsParameters().kbNumbersToExclude().get(0));
+        Assertions.assertEquals("vlxotogtwrupqsx", model.windowsParameters().kbNumbersToInclude().get(0));
+        Assertions.assertEquals("nxdhbt", model.windowsParameters().kbNumbersToExclude().get(0));
         Assertions.assertEquals(false, model.windowsParameters().excludeKbsRequiringReboot());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-01T16:37:43Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T08:22:45Z"),
             model.windowsParameters().maxPatchPublishDate());
         Assertions.assertEquals(VMGuestPatchClassificationLinux.OTHER,
             model.linuxParameters().classificationsToInclude().get(0));
-        Assertions.assertEquals("almuzyoxaepdkzja", model.linuxParameters().packageNameMasksToInclude().get(0));
-        Assertions.assertEquals("xrhdwbavxbniwdjs", model.linuxParameters().packageNameMasksToExclude().get(0));
+        Assertions.assertEquals("oqnermclfpl", model.linuxParameters().packageNameMasksToInclude().get(0));
+        Assertions.assertEquals("xus", model.linuxParameters().packageNameMasksToExclude().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MachineInstallPatchesParameters model
-            = new MachineInstallPatchesParameters().withMaximumDuration(Duration.parse("PT56H48M27S"))
-                .withRebootSetting(VMGuestPatchRebootSetting.IF_REQUIRED)
-                .withWindowsParameters(new WindowsParameters()
-                    .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationWindows.SECURITY,
-                        VMGuestPatchClassificationWindows.TOOLS, VMGuestPatchClassificationWindows.UPDATES))
-                    .withKbNumbersToInclude(Arrays.asList("fkts", "hsucoc"))
-                    .withKbNumbersToExclude(Arrays.asList("yazttbtwwrqpue", "ckzywbiexzfeyue"))
-                    .withExcludeKbsRequiringReboot(false)
-                    .withMaxPatchPublishDate(OffsetDateTime.parse("2021-05-01T16:37:43Z")))
-                .withLinuxParameters(new LinuxParameters()
-                    .withClassificationsToInclude(
-                        Arrays.asList(VMGuestPatchClassificationLinux.OTHER, VMGuestPatchClassificationLinux.CRITICAL))
-                    .withPackageNameMasksToInclude(Arrays.asList("almuzyoxaepdkzja"))
-                    .withPackageNameMasksToExclude(Arrays.asList("xrhdwbavxbniwdjs")));
+        MachineInstallPatchesParameters model = new MachineInstallPatchesParameters()
+            .withMaximumDuration(Duration.parse("PT199H48M34S"))
+            .withRebootSetting(VMGuestPatchRebootSetting.ALWAYS)
+            .withWindowsParameters(new WindowsParameters()
+                .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationWindows.CRITICAL,
+                    VMGuestPatchClassificationWindows.UPDATE_ROLL_UP, VMGuestPatchClassificationWindows.SERVICE_PACK))
+                .withKbNumbersToInclude(Arrays.asList("vlxotogtwrupqsx", "nmic", "kvceoveilovnotyf", "fcnj"))
+                .withKbNumbersToExclude(Arrays.asList("nxdhbt"))
+                .withExcludeKbsRequiringReboot(false)
+                .withMaxPatchPublishDate(OffsetDateTime.parse("2021-06-24T08:22:45Z")))
+            .withLinuxParameters(
+                new LinuxParameters().withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationLinux.OTHER))
+                    .withPackageNameMasksToInclude(Arrays.asList("oqnermclfpl"))
+                    .withPackageNameMasksToExclude(Arrays.asList("xus", "rpabg", "epsbjtazqu", "xywpmueefjzwfqkq")));
         model = BinaryData.fromObject(model).toObject(MachineInstallPatchesParameters.class);
-        Assertions.assertEquals(Duration.parse("PT56H48M27S"), model.maximumDuration());
-        Assertions.assertEquals(VMGuestPatchRebootSetting.IF_REQUIRED, model.rebootSetting());
-        Assertions.assertEquals(VMGuestPatchClassificationWindows.SECURITY,
+        Assertions.assertEquals(Duration.parse("PT199H48M34S"), model.maximumDuration());
+        Assertions.assertEquals(VMGuestPatchRebootSetting.ALWAYS, model.rebootSetting());
+        Assertions.assertEquals(VMGuestPatchClassificationWindows.CRITICAL,
             model.windowsParameters().classificationsToInclude().get(0));
-        Assertions.assertEquals("fkts", model.windowsParameters().kbNumbersToInclude().get(0));
-        Assertions.assertEquals("yazttbtwwrqpue", model.windowsParameters().kbNumbersToExclude().get(0));
+        Assertions.assertEquals("vlxotogtwrupqsx", model.windowsParameters().kbNumbersToInclude().get(0));
+        Assertions.assertEquals("nxdhbt", model.windowsParameters().kbNumbersToExclude().get(0));
         Assertions.assertEquals(false, model.windowsParameters().excludeKbsRequiringReboot());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-01T16:37:43Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-24T08:22:45Z"),
             model.windowsParameters().maxPatchPublishDate());
         Assertions.assertEquals(VMGuestPatchClassificationLinux.OTHER,
             model.linuxParameters().classificationsToInclude().get(0));
-        Assertions.assertEquals("almuzyoxaepdkzja", model.linuxParameters().packageNameMasksToInclude().get(0));
-        Assertions.assertEquals("xrhdwbavxbniwdjs", model.linuxParameters().packageNameMasksToExclude().get(0));
+        Assertions.assertEquals("oqnermclfpl", model.linuxParameters().packageNameMasksToInclude().get(0));
+        Assertions.assertEquals("xus", model.linuxParameters().packageNameMasksToExclude().get(0));
     }
 }

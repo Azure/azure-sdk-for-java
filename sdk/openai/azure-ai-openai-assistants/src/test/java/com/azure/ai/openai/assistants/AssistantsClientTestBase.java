@@ -128,8 +128,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
-            // TODO (shawn): verify what's going on. Seems like we shouldn't remove these on PLAYBACK mode
-//            removeDefaultSanitizers();
+            removeDefaultSanitizers();
         }
 
         return builder;
@@ -152,8 +151,7 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
-            // TODO (shawn): verify what's going on. Seems like we shouldn't remove these on PLAYBACK mode
-//            removeDefaultSanitizers();
+            removeDefaultSanitizers();
         }
 
         return builder;
@@ -173,17 +171,27 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     private void removeDefaultSanitizers() {
+        // Removing sanitizers in PLAYBACK model throws an exception
+        if (getTestMode() != TestMode.RECORD) {
+            return;
+        }
         interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
     }
 
     public static final String GPT_4_1106_PREVIEW = "gpt-4-1106-preview";
-    public static final String GPT_4O = "gpt-4o";
 
     void createAssistantsRunner(Consumer<AssistantCreationOptions> testRunner) {
         testRunner.accept(new AssistantCreationOptions(GPT_4_1106_PREVIEW)
                 .setName("Math Tutor")
                 .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
                 .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
+    }
+
+    void createAssistantsFileRunner(Consumer<AssistantCreationOptions> testRunner) {
+        testRunner.accept(new AssistantCreationOptions(GPT_4_1106_PREVIEW)
+                        .setName("Math Tutor")
+                        .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
+                        .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
     }
 
     void createRunRunner(Consumer<AssistantThreadCreationOptions> testRunner) {

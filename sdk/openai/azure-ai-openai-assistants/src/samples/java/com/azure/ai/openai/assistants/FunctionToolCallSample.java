@@ -64,7 +64,7 @@ public class FunctionToolCallSample {
         // Pool the run and call methods as requested by the service
         do {
             // We sleep to prevent requesting too many times for an update
-            Thread.sleep(500);
+            Thread.sleep(1000);
             run = client.getRun(thread.getId(), run.getId());
 
             if (run.getStatus() == RunStatus.REQUIRES_ACTION

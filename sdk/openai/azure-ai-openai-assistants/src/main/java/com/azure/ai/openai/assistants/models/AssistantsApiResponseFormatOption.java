@@ -74,7 +74,7 @@ public final class AssistantsApiResponseFormatOption {
      *
      * @param responseFormatBinaryData input JSON string
      * @return a new instance of AssistantsApiResponseFormatOption
-     * @throws IllegalArgumentException if the provided JSON string does not match the expected format
+     * @throws IllegalArgumentException If the provided JSON string does not match the expected format.
      */
     public static AssistantsApiResponseFormatOption fromBinaryData(BinaryData responseFormatBinaryData) {
         if (responseFormatBinaryData == null) {

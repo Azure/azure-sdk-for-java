@@ -69,7 +69,7 @@ public class AzureFunctionsAsyncTests extends AssistantsClientTestBase {
 
                         // Poll the run
                         return client.getRun(cleanUp.getThread().getId(), createdRun.getId()).zipWith(Mono.just(cleanUp))
-                            .repeatWhen(complete -> complete.delayElements(java.time.Duration.ofMillis(500)))
+                            .repeatWhen(complete -> complete.delayElements(java.time.Duration.ofMillis(1000)))
                             .takeUntil(tuple2 -> {
                                 ThreadRun run = tuple2.getT1();
 

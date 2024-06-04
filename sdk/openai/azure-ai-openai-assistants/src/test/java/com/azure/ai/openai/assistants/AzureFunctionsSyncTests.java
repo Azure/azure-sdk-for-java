@@ -32,7 +32,6 @@ public class AzureFunctionsSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void parallelFunctionCallTest(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        // TODO (jose): returns a 404
         client = getAssistantsClient(httpClient, serviceVersion);
 
         createFunctionToolCallRunner((assistantCreationOptions, assistantThreadCreationOptions) -> {
@@ -55,7 +54,7 @@ public class AzureFunctionsSyncTests extends AssistantsClientTestBase {
 
             // Poll the run
             do {
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
                 run = client.getRun(assistantThread.getId(), run.getId());
             } while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS);
 

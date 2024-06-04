@@ -54,7 +54,7 @@ public class FunctionsSyncTests extends AssistantsClientTestBase {
 
             // Poll the run
             do {
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
                 run = client.getRun(assistantThread.getId(), run.getId());
             } while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS);
 

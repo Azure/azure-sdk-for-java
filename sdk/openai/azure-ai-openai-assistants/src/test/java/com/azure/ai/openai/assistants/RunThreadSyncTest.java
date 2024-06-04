@@ -51,7 +51,7 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -91,7 +91,7 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -126,7 +126,7 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -164,7 +164,7 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -266,7 +266,7 @@ public class RunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());

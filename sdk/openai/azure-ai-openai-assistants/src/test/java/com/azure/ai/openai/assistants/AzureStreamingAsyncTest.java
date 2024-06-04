@@ -46,7 +46,6 @@ public class AzureStreamingAsyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void runThreadWithTools(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        // TODO (jose): not a 404 but something is not right
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
         String mathTutorAssistantId = createMathTutorAssistantWithFunctionTool(client);
 

@@ -33,7 +33,6 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void submitMessageAndRun(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        // TODO (jose): this returns a 404
         client = getAssistantsClient(httpClient, serviceVersion);
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
@@ -52,7 +51,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -71,7 +70,6 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void submitMessageAndRunWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        // TODO (jose): this returns a 404
         client = getAssistantsClient(httpClient, serviceVersion);
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
@@ -93,7 +91,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -129,7 +127,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -167,7 +165,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -270,7 +268,7 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             // Wait on Run and poll the Run in a loop
             do {
                 run = client.getRun(run.getThreadId(), run.getId());
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());

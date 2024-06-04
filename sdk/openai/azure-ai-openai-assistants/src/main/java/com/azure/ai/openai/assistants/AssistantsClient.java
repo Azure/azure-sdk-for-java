@@ -736,7 +736,7 @@ public final class AssistantsClient {
     /**
      * Creates a new run for an assistant thread.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -797,9 +797,9 @@ public final class AssistantsClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -858,10 +858,10 @@ public final class AssistantsClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createRunWithResponse(String threadId, BinaryData createRunOptions,
         RequestOptions requestOptions) {
+        addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions, serviceClient.getServiceVersion());
         return this.serviceClient.createRunWithResponse(threadId, createRunOptions, requestOptions);
     }
 

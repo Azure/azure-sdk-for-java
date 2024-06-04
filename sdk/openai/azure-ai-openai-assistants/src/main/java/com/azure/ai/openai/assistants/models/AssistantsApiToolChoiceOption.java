@@ -27,9 +27,9 @@ public class AssistantsApiToolChoiceOption {
     private final AssistantsNamedToolChoice toolChoice;
 
     /**
-     * Initializes a new instance of the AssistantsApiToolChoiceOption class.
+     * Creates a new instance of AssistantsApiToolChoiceOption.
      *
-     * @param mode Specifies how the tool choice will be used. It could be `none` or `auto`.
+     * @param mode The mode to use.
      */
     public AssistantsApiToolChoiceOption(AssistantsApiToolChoiceOptionMode mode) {
         this.mode = mode;
@@ -37,9 +37,9 @@ public class AssistantsApiToolChoiceOption {
     }
 
     /**
-     * Initializes a new instance of the AssistantsApiToolChoiceOption class.
+     * Creates a new instance of AssistantsApiToolChoiceOption.
      *
-     * @param toolChoice Specifies a tool the model should use. Use to force the model to call a specific tool choice.
+     * @param toolChoice The tool choice to use.
      */
     public AssistantsApiToolChoiceOption(AssistantsNamedToolChoice toolChoice) {
         this.mode = null;
@@ -47,29 +47,29 @@ public class AssistantsApiToolChoiceOption {
     }
 
     /**
-     * Get the mode property: Specifies how the tool choice will be used.
+     * Gets the mode of the model will handle tool choices.
      *
-     * @return the mode value.
+     * @return The serialized JSON string.
      */
     public AssistantsApiToolChoiceOptionMode getMode() {
         return this.mode;
     }
 
     /**
-     * Get the toolChoice property: Specifies a tool the model should use. Use to force the model to call a specific tool.
+     * Gets the tool choice to use.
      *
-     * @return the toolChoice value.
+     * @return The tool choice to use.
      */
     public AssistantsNamedToolChoice getToolChoice() {
         return this.toolChoice;
     }
 
     /**
-     * Serialize the object to a JSON string.
+     * Deserializes the BinaryData into either type this model holds. Note that mode and toolChoice are mutually exclusive.
      *
-     * @param toolChoiceBinaryData the object to deserialize.
-     * @return the JSON string representation of the object.
-     * @throws IllegalArgumentException if the provided JSON string does not match the expected format.
+     * @param toolChoiceBinaryData The binary data to deserialize.
+     * @throws IllegalArgumentException If the provided JSON string does not match the expected format.
+     * @return The deserialized model.
      */
     public static AssistantsApiToolChoiceOption fromBinaryData(BinaryData toolChoiceBinaryData) {
         if (toolChoiceBinaryData == null) {
