@@ -337,7 +337,7 @@ def generate_typespec_project(
 
     try:
         url_match = re.match(
-            r"^https://github.com/(?P<repo>[^/]*/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$",
+            r"^https://github.com/(?P<repo>[^/]*/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[^/]*)/(?P<path>.*)/tspconfig.yaml$",
             tsp_project,
             re.IGNORECASE,
         )
@@ -367,7 +367,7 @@ def generate_typespec_project(
             ]
 
         if tspconfig_valid:
-            check_call(tsp_cmd, sdk_root)
+            check_call(tsp_cmd, sdk_root, shell=True)
 
             sdk_folder = find_sdk_folder(sdk_root)
             logging.info("SDK folder: " + sdk_folder)
@@ -393,7 +393,7 @@ def generate_typespec_project(
                     drop_changes(sdk_root)
                     remove_generated_source_code(sdk_folder, f"{group_id}.{service}")
                     # regenerate
-                    check_call(tsp_cmd, sdk_root)
+                    check_call(tsp_cmd, sdk_root, shell=True)
                 succeeded = True
     except subprocess.CalledProcessError as error:
         error_message = (
@@ -406,9 +406,9 @@ def generate_typespec_project(
     return succeeded, require_sdk_integration, sdk_folder, service, module
 
 
-def check_call(cmd: List[str], work_dir: str):
+def check_call(cmd: List[str], work_dir: str, shell: bool = False):
     logging.info("Command line: " + " ".join(cmd))
-    subprocess.check_call(cmd, cwd=work_dir)
+    subprocess.check_call(cmd, cwd=work_dir, shell=shell)
 
 
 def drop_changes(work_dir: str):
