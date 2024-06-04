@@ -13,9 +13,7 @@ import java.util.Arrays;
  */
 public final class LocalNetworkGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/LocalNetworkGatewayCreate.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/LocalNetworkGatewayCreate.json
      */
     /**
      * Sample code: CreateLocalNetworkGateway.
@@ -23,10 +21,15 @@ public final class LocalNetworkGatewaysCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createLocalNetworkGateway(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLocalNetworkGateways().createOrUpdate("rg1", "localgw",
-            new LocalNetworkGatewayInner().withLocation("Central US")
-                .withLocalNetworkAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.1.0.0/16")))
-                .withGatewayIpAddress("11.12.13.14").withFqdn("site1.contoso.com"),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLocalNetworkGateways()
+            .createOrUpdate("rg1", "localgw",
+                new LocalNetworkGatewayInner().withLocation("Central US")
+                    .withLocalNetworkAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("10.1.0.0/16")))
+                    .withGatewayIpAddress("11.12.13.14")
+                    .withFqdn("site1.contoso.com"),
+                com.azure.core.util.Context.NONE);
     }
 }

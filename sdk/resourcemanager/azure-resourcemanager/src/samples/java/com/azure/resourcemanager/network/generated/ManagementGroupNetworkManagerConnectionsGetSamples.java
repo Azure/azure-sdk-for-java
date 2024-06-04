@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ManagementGroupNetworkManagerConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * NetworkManagerConnectionManagementGroupGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerConnectionManagementGroupGet.json
      */
     /**
      * Sample code: Get Management Group Network Manager Connection.
@@ -19,7 +18,10 @@ public final class ManagementGroupNetworkManagerConnectionsGetSamples {
      */
     public static void
         getManagementGroupNetworkManagerConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getManagementGroupNetworkManagerConnections()
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getManagementGroupNetworkManagerConnections()
             .getWithResponse("managementGroupA", "TestNMConnection", com.azure.core.util.Context.NONE);
     }
 }

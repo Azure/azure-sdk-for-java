@@ -34,9 +34,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.HubVirtualNetworkConnectionsClient;
 import com.azure.resourcemanager.network.fluent.models.HubVirtualNetworkConnectionInner;
 import com.azure.resourcemanager.network.models.ListHubVirtualNetworkConnectionsResult;
-import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
 
 /**
  * An instance of this class provides access to all the operations defined in HubVirtualNetworkConnectionsClient.
@@ -54,7 +55,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Initializes an instance of HubVirtualNetworkConnectionsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     HubVirtualNetworkConnectionsClientImpl(NetworkManagementClientImpl client) {
@@ -64,8 +65,8 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
     }
 
     /**
-     * The interface defining all the services for NetworkManagementClientHubVirtualNetworkConnections to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for NetworkManagementClientHubVirtualNetworkConnections to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
@@ -123,7 +124,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -163,7 +164,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         } else {
             hubVirtualNetworkConnectionParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -174,7 +175,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -215,7 +216,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         } else {
             hubVirtualNetworkConnectionParameters.validate();
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -224,7 +225,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -248,7 +249,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -274,7 +275,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -289,13 +290,15 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
     public SyncPoller<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner>
         beginCreateOrUpdate(String resourceGroupName, String virtualHubName, String connectionName,
             HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName,
-            hubVirtualNetworkConnectionParameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName,
+                hubVirtualNetworkConnectionParameters)
+            .getSyncPoller();
     }
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -311,13 +314,15 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
     public SyncPoller<PollResult<HubVirtualNetworkConnectionInner>, HubVirtualNetworkConnectionInner>
         beginCreateOrUpdate(String resourceGroupName, String virtualHubName, String connectionName,
             HubVirtualNetworkConnectionInner hubVirtualNetworkConnectionParameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName,
-            hubVirtualNetworkConnectionParameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName,
+                hubVirtualNetworkConnectionParameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -337,7 +342,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -359,7 +364,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -379,7 +384,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Creates a hub virtual network connection if it doesn't exist else updates the existing one.
-     * 
+     *
      * @param resourceGroupName The resource group name of the HubVirtualNetworkConnection.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -401,7 +406,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -431,7 +436,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -441,7 +446,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -472,7 +477,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -481,7 +486,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -501,7 +506,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -523,7 +528,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -540,7 +545,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -558,7 +563,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -575,7 +580,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -594,7 +599,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -609,7 +614,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Deletes a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the HubVirtualNetworkConnection.
@@ -625,7 +630,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Retrieves the details of a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
@@ -656,7 +661,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -666,7 +671,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Retrieves the details of a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
@@ -698,7 +703,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -707,7 +712,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Retrieves the details of a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
@@ -725,7 +730,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Retrieves the details of a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
@@ -743,7 +748,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Retrieves the details of a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
@@ -760,7 +765,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Retrieves the details of all HubVirtualNetworkConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -787,7 +792,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -799,7 +804,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Retrieves the details of all HubVirtualNetworkConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -827,7 +832,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2023-09-01";
+        final String apiVersion = "2023-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -839,7 +844,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Retrieves the details of all HubVirtualNetworkConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -856,7 +861,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Retrieves the details of all HubVirtualNetworkConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -875,7 +880,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Retrieves the details of all HubVirtualNetworkConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -891,7 +896,7 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Retrieves the details of all HubVirtualNetworkConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -909,9 +914,9 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -937,9 +942,9 @@ public final class HubVirtualNetworkConnectionsClientImpl implements HubVirtualN
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
+     *
      * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class VirtualNetworkGatewaysGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualNetworkGatewayGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkGatewayGet.json
      */
     /**
      * Sample code: GetVirtualNetworkGateway.
@@ -18,13 +17,15 @@ public final class VirtualNetworkGatewaysGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualNetworkGateway(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGateways().getByResourceGroupWithResponse("rg1",
-            "vpngw", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGateways()
+            .getByResourceGroupWithResponse("rg1", "vpngw", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * VirtualNetworkScalableGatewayGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/VirtualNetworkScalableGatewayGet.json
      */
     /**
      * Sample code: GetVirtualNetworkScalableGateway.
@@ -32,7 +33,10 @@ public final class VirtualNetworkGatewaysGetByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualNetworkScalableGateway(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVirtualNetworkGateways().getByResourceGroupWithResponse("rg1",
-            "ergw", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworkGateways()
+            .getByResourceGroupWithResponse("rg1", "ergw", com.azure.core.util.Context.NONE);
     }
 }

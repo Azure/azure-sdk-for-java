@@ -12,9 +12,7 @@ import java.util.Arrays;
  */
 public final class LoadBalancersMigrateToIpBasedSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/MigrateLoadBalancerToIPBased.
-     * json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/MigrateLoadBalancerToIPBased.json
      */
     /**
      * Sample code: Migrate load balancer to IP Based.
@@ -22,8 +20,12 @@ public final class LoadBalancersMigrateToIpBasedSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void migrateLoadBalancerToIPBased(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancers().migrateToIpBasedWithResponse("rg1", "lb1",
-            new MigrateLoadBalancerToIpBasedRequest().withPools(Arrays.asList("pool1", "pool2")),
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .migrateToIpBasedWithResponse("rg1", "lb1",
+                new MigrateLoadBalancerToIpBasedRequest().withPools(Arrays.asList("pool1", "pool2")),
+                com.azure.core.util.Context.NONE);
     }
 }

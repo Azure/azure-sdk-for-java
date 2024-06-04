@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkManagersListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/NetworkManagerList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerList.json
      */
     /**
      * Sample code: List Network Manager.
@@ -18,7 +17,10 @@ public final class NetworkManagersListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listNetworkManager(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkManagers().listByResourceGroup("rg1", null, null,
-            com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkManagers()
+            .listByResourceGroup("rg1", null, null, com.azure.core.util.Context.NONE);
     }
 }

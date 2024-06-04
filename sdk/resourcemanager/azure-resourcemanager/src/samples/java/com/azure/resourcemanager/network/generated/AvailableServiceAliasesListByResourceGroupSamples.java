@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class AvailableServiceAliasesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * AvailableServiceAliasesListByResourceGroup.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/AvailableServiceAliasesListByResourceGroup.json
      */
     /**
      * Sample code: Get available service aliases in the resource group.
@@ -19,7 +18,10 @@ public final class AvailableServiceAliasesListByResourceGroupSamples {
      */
     public static void
         getAvailableServiceAliasesInTheResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getAvailableServiceAliases().listByResourceGroup("rg1",
-            "westcentralus", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getAvailableServiceAliases()
+            .listByResourceGroup("rg1", "westcentralus", com.azure.core.util.Context.NONE);
     }
 }

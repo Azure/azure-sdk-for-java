@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
 import com.azure.resourcemanager.network.models.PacketCaptureMachineScope;
+import com.azure.resourcemanager.network.models.PacketCaptureSettings;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
 import com.azure.resourcemanager.network.models.PacketCaptureTargetType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -108,6 +109,24 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
     @Override
     public PacketCaptureResultProperties withFilters(List<PacketCaptureFilter> filters) {
         super.withFilters(filters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PacketCaptureResultProperties withContinuousCapture(Boolean continuousCapture) {
+        super.withContinuousCapture(continuousCapture);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PacketCaptureResultProperties withCaptureSettings(PacketCaptureSettings captureSettings) {
+        super.withCaptureSettings(captureSettings);
         return this;
     }
 

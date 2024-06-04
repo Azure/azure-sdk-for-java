@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class ConnectivityConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * NetworkManagerConnectivityConfigurationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkManagerConnectivityConfigurationGet.json
      */
     /**
      * Sample code: ConnectivityConfigurationsGet.
@@ -18,7 +17,11 @@ public final class ConnectivityConfigurationsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void connectivityConfigurationsGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getConnectivityConfigurations().getWithResponse("myResourceGroup",
-            "testNetworkManager", "myTestConnectivityConfig", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getConnectivityConfigurations()
+            .getWithResponse("myResourceGroup", "testNetworkManager", "myTestConnectivityConfig",
+                com.azure.core.util.Context.NONE);
     }
 }

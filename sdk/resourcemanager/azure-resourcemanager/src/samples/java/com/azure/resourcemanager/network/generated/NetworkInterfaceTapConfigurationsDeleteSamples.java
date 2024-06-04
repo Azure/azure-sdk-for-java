@@ -9,8 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfaceTapConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/
-     * NetworkInterfaceTapConfigurationDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2023-11-01/examples/NetworkInterfaceTapConfigurationDelete.json
      */
     /**
      * Sample code: Delete tap configuration.
@@ -18,7 +17,10 @@ public final class NetworkInterfaceTapConfigurationsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteTapConfiguration(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkInterfaceTapConfigurations().delete("rg1",
-            "test-networkinterface", "test-tapconfiguration", com.azure.core.util.Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getNetworkInterfaceTapConfigurations()
+            .delete("rg1", "test-networkinterface", "test-tapconfiguration", com.azure.core.util.Context.NONE);
     }
 }
