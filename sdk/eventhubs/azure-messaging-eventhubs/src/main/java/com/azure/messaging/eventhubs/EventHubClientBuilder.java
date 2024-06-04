@@ -1172,10 +1172,11 @@ public class EventHubClientBuilder implements
 
         // No explicit port was listed, so choose a default port.
         final int portToUse = port != -1 ? port : getPort(transport, usingDevelopmentEmulator);
+        final boolean enableSsl = !usingDevelopmentEmulator;
 
         return new ConnectionOptions(fullyQualifiedNamespace, credentials, authorizationType,
             ClientConstants.AZURE_ACTIVE_DIRECTORY_SCOPE, transport, retryOptions, proxyOptions, scheduler,
-            options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, hostname, portToUse);
+            options, verificationMode, LIBRARY_NAME, LIBRARY_VERSION, hostname, portToUse, enableSsl);
     }
 
     private static int getPort(AmqpTransportType transport, boolean useDevelopmentEmulator) {
