@@ -346,6 +346,7 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
      * @return an instance of AssistantsClientImpl.
      */
     private AssistantsClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         AssistantsServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AssistantsServiceVersion.getLatest();
@@ -358,10 +359,8 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
         return client;
     }
 
-    @Generated
     private void validateClient() {
         // This method is invoked from 'buildInnerClient'/'buildClient' method.
         // Developer can customize this method, to validate that the necessary conditions are met for the new client.
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 }
