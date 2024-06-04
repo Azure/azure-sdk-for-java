@@ -7,6 +7,10 @@ import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptionsList;
+import com.azure.ai.openai.assistants.models.CreateToolResourcesOptions;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.FileSearchToolDefinition;
@@ -36,7 +40,7 @@ import java.util.Arrays;
  * the thread until we get a result. Running the sample should result on one of the ids return while the assistant requesting
  * for further information to be able to proceed.
  */
-public class RetrievalToolSample {
+public class FileSearchToolSample {
 
     public static void main(String[] args) throws InterruptedException {
         String apiKey = Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY");
@@ -54,6 +58,12 @@ public class RetrievalToolSample {
         // Upload file for assistant
         OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
 
+        // Create Tool Resources. This is how we pass files to the Assistant.
+        CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
+        createToolResourcesOptions.setFileSearch(
+            new CreateFileSearchToolResourceOptions(
+                new CreateFileSearchToolResourceVectorStoreOptionsList(
+                    Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
 
         // Create assistant passing the file ID
         Assistant assistant = client.createAssistant(
@@ -61,8 +71,7 @@ public class RetrievalToolSample {
                 .setName("Java SDK Retrieval Sample")
                 .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
                 .setTools(Arrays.asList(new FileSearchToolDefinition()))
-            // TODO - setup with VectorStore
-//                .setFileIds(Arrays.asList(openAIFile.getId()))
+                .setToolResources(createToolResourcesOptions)
         );
 
         // Create a thread with the assistant just created
