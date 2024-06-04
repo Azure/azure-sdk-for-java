@@ -42,7 +42,7 @@ public class AadCredentialTest extends TestProxyTestBase {
                 .buildClient();
         } else {
             connectionString = Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
-            tokenCredential = new AzurePipelinesCredentialBuilder().build();
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
             String endpoint = new ConfigurationClientCredentials(connectionString).getBaseUri();
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
                 .endpoint(endpoint)

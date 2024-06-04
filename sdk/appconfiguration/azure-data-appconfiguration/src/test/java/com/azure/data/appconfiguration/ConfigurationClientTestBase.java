@@ -83,7 +83,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         if (tokenCredential == null) {
             tokenCredential = interceptorManager.isPlaybackMode()
                 ? (trc) -> Mono.just(new AccessToken("Dummy", OffsetDateTime.now().plusHours(2)))
-                : new AzurePipelinesCredentialBuilder().build();
+                : new DefaultAzureCredentialBuilder().build();
         }
 
         Objects.requireNonNull(tokenCredential, "Token Credential expected to be set.");
