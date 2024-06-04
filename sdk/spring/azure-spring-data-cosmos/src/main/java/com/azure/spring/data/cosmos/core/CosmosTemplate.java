@@ -20,7 +20,6 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyBuilder;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.models.PartitionKind;
@@ -223,15 +222,23 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.notNull(objectToSave, "objectToSave should not be null");
 
         @SuppressWarnings("unchecked") final Class<T> domainType = (Class<T>) objectToSave.getClass();
-        containerName = getContainerName(domainType);
 
         markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
 
-        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
+        List<String> transientFields = mappingCosmosConverter.getTransientFields(objectToSave, null);
+        Map<Field, Object> transientFieldValuesMap = new HashMap<>();
+        JsonNode originalItem;
+        if (!transientFields.isEmpty()) {
+            originalItem = mappingCosmosConverter.writeJsonNode(objectToSave, transientFields);
+            transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsAndValuesMap(objectToSave, transientFields);
+        } else {
+            originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
+        }
 
-        LOGGER.debug("execute createItem in database {} container {}", this.getDatabaseName(),
-            containerName);
+        containerName = getContainerName(domainType);
+
+        LOGGER.debug("execute createItem in database {} container {}", this.getDatabaseName(), containerName);
 
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
@@ -250,7 +257,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
 
         assert response != null;
-        return toDomainObject(domainType, response.getItem());
+        return toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFieldsFromMap(
+            response.getItem(), transientFieldValuesMap));
     }
 
     /**
@@ -265,8 +273,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     @SuppressWarnings("unchecked")
     public <S extends T, T> Iterable<S> insertAll(CosmosEntityInformation<T, ?> information, Iterable<S> entities) {
         Assert.notNull(entities, "entities to be inserted should not be null");
+
         String containerName = information.getContainerName();
         Class<T> domainType = information.getJavaType();
+
         List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
         Map<String, Map<Field, Object>> mapOfTransientFieldValuesMaps = new HashMap<>();
         entities.forEach(entity -> {
@@ -305,7 +315,16 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     r.getResponse().getCosmosDiagnostics(), null);
                 JsonNode responseItem = r.getResponse().getItem(JsonNode.class);
-                return responseItem != null ? Flux.just(toDomainObject(domainType, responseItem)) : Flux.empty();
+                if (responseItem != null) {
+                    if (!mapOfTransientFieldValuesMaps.isEmpty()) {
+                        Map<Field, Object> transientFieldValuesMap = mapOfTransientFieldValuesMaps.get(responseItem.get("id").asText());
+                        return Flux.just(toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFieldsFromMap(responseItem, transientFieldValuesMap)));
+                    } else {
+                        return Flux.just(toDomainObject(domainType, responseItem));
+                    }
+                } else {
+                    return Flux.empty();
+                }
             })
             .collectList().block();
     }
@@ -499,7 +518,15 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         containerName = getContainerName(object.getClass());
         markAuditedIfConfigured(object);
 
-        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
+        List<String> transientFields = mappingCosmosConverter.getTransientFields(object, null);
+        Map<Field, Object> transientFieldValuesMap = new HashMap<>();
+        JsonNode originalItem;
+        if (!transientFields.isEmpty()) {
+            originalItem = mappingCosmosConverter.writeJsonNode(object, transientFields);
+            transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsAndValuesMap(object, transientFields);
+        } else {
+            originalItem = mappingCosmosConverter.writeJsonNode(object);
+        }
 
         LOGGER.debug("execute upsert item in database {} container {}", this.getDatabaseName(),
             containerName);
@@ -523,7 +550,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .block();
 
         assert cosmosItemResponse != null;
-        return toDomainObject(domainType, cosmosItemResponse.getItem());
+        return toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFieldsFromMap(
+            cosmosItemResponse.getItem(), transientFieldValuesMap));
     }
 
     /**
@@ -1296,23 +1324,14 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     @SuppressWarnings("unchecked")
     private <T, S extends T> PartitionKey getPartitionKeyFromValue(CosmosEntityInformation<T, ?> information, S entity) {
         Object pkFieldValue = information.getPartitionKeyFieldValue(entity);
-        PartitionKeyBuilder partitionKeyBuilder = new PartitionKeyBuilder();
         PartitionKey partitionKey;
-        if (pkFieldValue.getClass().isArray() || pkFieldValue instanceof Collection<?>) {
-            for (final Object pkValue : (ArrayList<Object>) pkFieldValue) {
-                if (pkValue instanceof String || pkValue instanceof UUID) {
-                    partitionKeyBuilder.add(pkValue.toString());
-                } else if (pkValue instanceof Integer) {
-                    partitionKeyBuilder.add((Integer) pkValue);
-                } else if (pkValue instanceof Long) {
-                    partitionKeyBuilder.add((Long) pkValue);
-                } else if (pkValue instanceof Double) {
-                    partitionKeyBuilder.add((Double) pkValue);
-                } else if (pkValue instanceof Boolean) {
-                    partitionKeyBuilder.add((Boolean) pkValue);
-                }
+        if (pkFieldValue instanceof Collection<?>) {
+            ArrayList<Object> valueArray = ((ArrayList<Object>) pkFieldValue);
+            Object[] objectArray = new Object[valueArray.size()];
+            for (int i=0; i<valueArray.size(); i++) {
+                objectArray[i] = valueArray.get(i);
             }
-            partitionKey = partitionKeyBuilder.build();
+            partitionKey = PartitionKey.fromObjectArray(objectArray, false);
         } else {
             partitionKey = new PartitionKey(pkFieldValue);
         }

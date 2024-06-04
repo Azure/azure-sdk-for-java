@@ -18,7 +18,6 @@ import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.PartitionKeyBuilder;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.models.PartitionKind;
@@ -56,12 +55,12 @@ import org.springframework.util.ReflectionUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -452,7 +451,16 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         final Class<T> domainType = (Class<T>) objectToSave.getClass();
         markAuditedIfConfigured(objectToSave);
         generateIdIfNullAndAutoGenerationEnabled(objectToSave, domainType);
-        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
+        List<String> transientFields = mappingCosmosConverter.getTransientFields(objectToSave, null);
+        Map<Field, Object> transientFieldValuesMap = new HashMap<>();
+        JsonNode originalItem;
+        if (!transientFields.isEmpty()) {
+            originalItem = mappingCosmosConverter.writeJsonNode(objectToSave, transientFields);
+            transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsAndValuesMap(objectToSave, transientFields);
+        } else {
+            originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
+        }
+        Map<Field, Object> finalTransientFieldValuesMap = transientFieldValuesMap;
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         //  if the partition key is null, SDK will get the partitionKey from the object
         return this.getCosmosAsyncClient()
@@ -466,7 +474,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .flatMap(cosmosItemResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemResponse.getDiagnostics(), null);
-                return Mono.just(toDomainObject(domainType, cosmosItemResponse.getItem()));
+                return Mono.just(toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFieldsFromMap(
+                    cosmosItemResponse.getItem(), finalTransientFieldValuesMap)));
             });
     }
 
@@ -547,7 +556,16 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                  CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                      r.getResponse().getCosmosDiagnostics(), null);
                                  JsonNode responseItem = r.getResponse().getItem(JsonNode.class);
-                                 return responseItem != null ? Flux.just(toDomainObject(domainType, responseItem)) : Flux.empty();
+                                 if (responseItem != null) {
+                                     if (mapOfTransientFieldValuesMaps.containsKey(responseItem.get("id").asText())) {
+                                         Map<Field, Object> transientFieldValuesMap = mapOfTransientFieldValuesMaps.get(responseItem.get("id").asText());
+                                         return Flux.just(toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFieldsFromMap(responseItem, transientFieldValuesMap)));
+                                     } else {
+                                         return Flux.just(toDomainObject(domainType, responseItem));
+                                     }
+                                 } else {
+                                     return Flux.empty();
+                                 }
                              });
     }
 
@@ -639,9 +657,17 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         containerName = getContainerNameOverride(containerName);
         final Class<T> domainType = (Class<T>) object.getClass();
         markAuditedIfConfigured(object);
-        final JsonNode originalItem = mappingCosmosConverter.writeJsonNode(object);
+        List<String> transientFields = mappingCosmosConverter.getTransientFields(object, null);
+        Map<Field, Object> transientFieldValuesMap = new HashMap<>();
+        JsonNode originalItem;
+        if (!transientFields.isEmpty()) {
+            originalItem = mappingCosmosConverter.writeJsonNode(object, transientFields);
+            transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsAndValuesMap(object, transientFields);
+        } else {
+            originalItem = mappingCosmosConverter.writeJsonNode(object);
+        }
+        Map<Field, Object> finalTransientFieldValuesMap = transientFieldValuesMap;
         final CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-
         applyVersioning(object.getClass(), originalItem, options);
 
         return this.getCosmosAsyncClient().getDatabase(this.getDatabaseName())
@@ -651,8 +677,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                 .flatMap(cosmosItemResponse -> {
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
-                                    return Mono.just(toDomainObject(domainType,
-                                        cosmosItemResponse.getItem()));
+                                    return Mono.just(toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFieldsFromMap(
+                                        cosmosItemResponse.getItem(), finalTransientFieldValuesMap)));
                                 })
                                 .onErrorResume(throwable ->
                                     CosmosExceptionUtils.exceptionHandler("Failed to upsert item", throwable,
@@ -1113,23 +1139,14 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     @SuppressWarnings("unchecked")
     private <T, S extends T> PartitionKey getPartitionKeyFromValue(CosmosEntityInformation<T, ?> information, S entity) {
         Object pkFieldValue = information.getPartitionKeyFieldValue(entity);
-        PartitionKeyBuilder partitionKeyBuilder = new PartitionKeyBuilder();
         PartitionKey partitionKey;
-        if (pkFieldValue.getClass().isArray() || pkFieldValue instanceof Collection<?>) {
-            for (final Object pkValue : (ArrayList<Object>) pkFieldValue) {
-                if (pkValue instanceof String || pkValue instanceof UUID) {
-                    partitionKeyBuilder.add(pkValue.toString());
-                } else if (pkValue instanceof Integer) {
-                    partitionKeyBuilder.add((Integer) pkValue);
-                } else if (pkValue instanceof Long) {
-                    partitionKeyBuilder.add((Long) pkValue);
-                } else if (pkValue instanceof Double) {
-                    partitionKeyBuilder.add((Double) pkValue);
-                } else if (pkValue instanceof Boolean) {
-                    partitionKeyBuilder.add((Boolean) pkValue);
-                }
+        if (pkFieldValue instanceof Collection<?>) {
+            ArrayList<Object> valueArray = ((ArrayList<Object>) pkFieldValue);
+            Object[] objectArray = new Object[valueArray.size()];
+            for (int i=0; i<valueArray.size(); i++) {
+                objectArray[i] = valueArray.get(i);
             }
-            partitionKey = partitionKeyBuilder.build();
+            partitionKey = PartitionKey.fromObjectArray(objectArray, false);
         } else {
             partitionKey = new PartitionKey(pkFieldValue);
         }
