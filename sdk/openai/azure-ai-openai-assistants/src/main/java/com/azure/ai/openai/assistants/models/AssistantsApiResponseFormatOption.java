@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Immutable;
@@ -70,6 +72,7 @@ public final class AssistantsApiResponseFormatOption {
      * Creates a new instance of AssistantsApiResponseFormatOption based on a JSON string.
      *
      * @param responseFormatBinaryData input JSON string
+     * @throws IllegalArgumentException If the provided JSON string does not match the expected format.
      * @return a new instance of AssistantsApiResponseFormatOption
      */
     public static AssistantsApiResponseFormatOption fromBinaryData(BinaryData responseFormatBinaryData) {

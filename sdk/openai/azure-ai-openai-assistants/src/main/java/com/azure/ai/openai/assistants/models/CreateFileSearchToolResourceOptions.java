@@ -5,13 +5,8 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.TypeReference;
 
 import java.io.UncheckedIOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * A set of resources that are used by the assistant's tools. The resources are specific to the type of tool.
@@ -73,6 +68,7 @@ public final class CreateFileSearchToolResourceOptions {
      * Creates a new instance of CreateFileSearchToolResourceOptions based on a JSON string.
      *
      * @param responseFormatBinaryData input JSON string
+     * @throws IllegalArgumentException If the provided JSON string does not match the expected format.
      * @return a new instance of CreateFileSearchToolResourceOptions
      */
     public static CreateFileSearchToolResourceOptions fromBinaryData(BinaryData responseFormatBinaryData) {

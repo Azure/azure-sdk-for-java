@@ -4,7 +4,6 @@
 package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -12,7 +11,6 @@ import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Vector Store IDs associated to the vector store to be passed to the helper.
@@ -21,7 +19,7 @@ import java.util.Map;
 public final class  CreateFileSearchToolResourceVectorStoreIds
     implements JsonSerializable<CreateFileSearchToolResourceVectorStoreIds> {
 
-    /*
+    /**
      * A list of file IDs to add to the vector store. There can be a maximum of 10000 files in a vector store.
      */
     private final List<String> vectorStoreIds;
@@ -60,8 +58,7 @@ public final class  CreateFileSearchToolResourceVectorStoreIds
      * Reads an instance of CreateFileSearchToolResourceVectorStoreIds from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CreateFileSearchToolResourceVectorStoreOptions if the JsonReader was pointing to an
-     * instance of it, or null if it was pointing to JSON null.
+     * @return An instance of CreateFileSearchToolResourceVectorStoreOptions
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CreateFileSearchToolResourceVectorStoreOptions.
      */

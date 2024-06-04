@@ -1,8 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.util.BinaryData;
 
-import java.io.IOException;
 import java.io.UncheckedIOException;
 
 /**
@@ -64,9 +65,10 @@ public class AssistantsApiToolChoiceOption {
 
     /**
      * Deserializes the BinaryData into either type this model holds. Note that mode and toolChoice are mutually exclusive.
-     * 
-     * @param toolChoiceBinaryData
-     * @return
+     *
+     * @param toolChoiceBinaryData The binary data to deserialize.
+     * @throws IllegalArgumentException If the provided JSON string does not match the expected format.
+     * @return The deserialized model.
      */
     public static AssistantsApiToolChoiceOption fromBinaryData(BinaryData toolChoiceBinaryData) {
         if (toolChoiceBinaryData == null) {

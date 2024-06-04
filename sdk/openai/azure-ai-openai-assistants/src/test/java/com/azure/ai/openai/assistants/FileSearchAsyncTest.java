@@ -7,7 +7,6 @@ import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceOptions;
-import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreIds;
 import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptions;
 import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptionsList;
 import com.azure.ai.openai.assistants.models.CreateToolResourcesOptions;

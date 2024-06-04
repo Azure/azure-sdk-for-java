@@ -3,11 +3,8 @@
 
 package com.azure.ai.openai.assistants;
 
-import com.azure.ai.openai.assistants.models.ApiResponseFormat;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantDeletionStatus;
-import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormat;
-import com.azure.ai.openai.assistants.models.AssistantsApiResponseFormatOption;
 import com.azure.ai.openai.assistants.models.ListSortOrder;
 import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
