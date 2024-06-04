@@ -45,6 +45,7 @@ extends:
         scanType: LogOnly
         useAgentBuildDirectory: true
         sourceScanPath: $(Agent.BuildDirectory)/sdk/core
+        ignoreDirectories: $(Agent.BuildDirectory)/sdk
         alertWarningLevel: Low
         failOnAlert: true
         verbosity: Verbose
