@@ -281,7 +281,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     /**
      * Get the snapshotId property: Snapshot ID
      * 
-     * UUID v4 or resource identifier used to identify the Snapshot.
+     * Resource identifier used to identify the Snapshot.
      * 
      * @return the snapshotId value.
      */
@@ -292,7 +292,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     /**
      * Set the snapshotId property: Snapshot ID
      * 
-     * UUID v4 or resource identifier used to identify the Snapshot.
+     * Resource identifier used to identify the Snapshot.
      * 
      * @param snapshotId the snapshotId value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -333,7 +333,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     /**
      * Get the backupId property: Backup ID
      * 
-     * UUID v4 or resource identifier used to identify the Backup.
+     * Resource identifier used to identify the Backup.
      * 
      * @return the backupId value.
      */
@@ -344,7 +344,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     /**
      * Set the backupId property: Backup ID
      * 
-     * UUID v4 or resource identifier used to identify the Backup.
+     * Resource identifier used to identify the Backup.
      * 
      * @param backupId the backupId value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -579,8 +579,8 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
-     * Get the securityStyle property: The security style of volume, default unix, defaults to ntfs for dual protocol
-     * or CIFS protocol.
+     * Get the securityStyle property: The security style of volume, default unix, defaults to ntfs for dual protocol or
+     * CIFS protocol.
      * 
      * @return the securityStyle value.
      */
@@ -589,8 +589,8 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
-     * Set the securityStyle property: The security style of volume, default unix, defaults to ntfs for dual protocol
-     * or CIFS protocol.
+     * Set the securityStyle property: The security style of volume, default unix, defaults to ntfs for dual protocol or
+     * CIFS protocol.
      * 
      * @param securityStyle the securityStyle value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -867,9 +867,9 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
-     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior
-     * from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible
-     * values for this field are:
+     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are:
      * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
      * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
      * reads.
@@ -882,9 +882,9 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
-     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior
-     * from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible
-     * values for this field are:
+     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are:
      * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
      * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
      * reads.
@@ -1085,8 +1085,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
-     * Get the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume
-     * group.
+     * Get the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume group.
      * 
      * @return the capacityPoolResourceId value.
      */
@@ -1095,8 +1094,7 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
-     * Set the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume
-     * group.
+     * Set the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume group.
      * 
      * @param capacityPoolResourceId the capacityPoolResourceId value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -1283,8 +1281,9 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model VolumeGroupVolumeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model VolumeGroupVolumeProperties"));
         } else {
             innerProperties().validate();
         }

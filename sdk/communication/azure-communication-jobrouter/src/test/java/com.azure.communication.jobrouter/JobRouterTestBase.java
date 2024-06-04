@@ -41,6 +41,8 @@ import java.util.Objects;
 
 class JobRouterTestBase extends TestProxyTestBase {
     protected static final String JAVA_LIVE_TESTS = "JAVA_LIVE_TEST";
+    private static final String[] REMOVE_SANITIZER_ID = {"AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493", "AZSDK3490"};
+    private boolean sanitizersRemoved = false;
 
     protected String getConnectionString() {
         String connectionString = interceptorManager.isPlaybackMode()
@@ -57,10 +59,6 @@ class JobRouterTestBase extends TestProxyTestBase {
             .endpoint(connectionString.getEndpoint())
             .pipeline(httpPipeline)
             .buildClient();
-        // Disable `$..etag` sanitizer
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3490"));
-        }
         return jobRouterAdministrationClient;
     }
 
@@ -71,10 +69,6 @@ class JobRouterTestBase extends TestProxyTestBase {
             .endpoint(connectionString.getEndpoint())
             .pipeline(httpPipeline)
             .buildAsyncClient();
-        // Disable `$..etag` sanitizer
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3490"));
-        }
         return jobRouterAdministrationAsyncClient;
     }
 
@@ -125,7 +119,11 @@ class JobRouterTestBase extends TestProxyTestBase {
         if (interceptorManager.isRecordMode()) {
             policies.add(interceptorManager.getRecordPolicy());
         }
-
+        // Disable `$..etag` and name sanitizer
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
+            sanitizersRemoved = true;
+        }
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)

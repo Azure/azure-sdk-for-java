@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The SubscriptionFeatureRegistrationProperties model. */
+/**
+ * The SubscriptionFeatureRegistrationProperties model.
+ */
 @Fluent
 public final class SubscriptionFeatureRegistrationProperties {
     /*
@@ -98,13 +100,15 @@ public final class SubscriptionFeatureRegistrationProperties {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of SubscriptionFeatureRegistrationProperties class. */
+    /**
+     * Creates an instance of SubscriptionFeatureRegistrationProperties class.
+     */
     public SubscriptionFeatureRegistrationProperties() {
     }
 
     /**
      * Get the tenantId property: The tenantId.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -113,7 +117,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Get the subscriptionId property: The subscriptionId.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -122,7 +126,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Get the featureName property: The featureName.
-     *
+     * 
      * @return the featureName value.
      */
     public String featureName() {
@@ -131,7 +135,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Get the displayName property: The featureDisplayName.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -140,7 +144,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Get the providerNamespace property: The providerNamespace.
-     *
+     * 
      * @return the providerNamespace value.
      */
     public String providerNamespace() {
@@ -149,7 +153,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Get the state property: The state.
-     *
+     * 
      * @return the state value.
      */
     public SubscriptionFeatureRegistrationState state() {
@@ -158,7 +162,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Set the state property: The state.
-     *
+     * 
      * @param state the state value to set.
      * @return the SubscriptionFeatureRegistrationProperties object itself.
      */
@@ -169,7 +173,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Get the authorizationProfile property: Authorization Profile.
-     *
+     * 
      * @return the authorizationProfile value.
      */
     public AuthorizationProfile authorizationProfile() {
@@ -178,19 +182,19 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Set the authorizationProfile property: Authorization Profile.
-     *
+     * 
      * @param authorizationProfile the authorizationProfile value to set.
      * @return the SubscriptionFeatureRegistrationProperties object itself.
      */
-    public SubscriptionFeatureRegistrationProperties withAuthorizationProfile(
-        AuthorizationProfile authorizationProfile) {
+    public SubscriptionFeatureRegistrationProperties
+        withAuthorizationProfile(AuthorizationProfile authorizationProfile) {
         this.authorizationProfile = authorizationProfile;
         return this;
     }
 
     /**
      * Get the metadata property: Key-value pairs for meta data.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -199,7 +203,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Set the metadata property: Key-value pairs for meta data.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the SubscriptionFeatureRegistrationProperties object itself.
      */
@@ -210,7 +214,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Get the releaseDate property: The feature release date.
-     *
+     * 
      * @return the releaseDate value.
      */
     public OffsetDateTime releaseDate() {
@@ -219,7 +223,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Get the registrationDate property: The feature registration date.
-     *
+     * 
      * @return the registrationDate value.
      */
     public OffsetDateTime registrationDate() {
@@ -228,7 +232,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Get the documentationLink property: The feature documentation link.
-     *
+     * 
      * @return the documentationLink value.
      */
     public String documentationLink() {
@@ -237,7 +241,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Get the approvalType property: The feature approval type.
-     *
+     * 
      * @return the approvalType value.
      */
     public SubscriptionFeatureRegistrationApprovalType approvalType() {
@@ -246,7 +250,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Get the shouldFeatureDisplayInPortal property: Indicates whether feature should be displayed in Portal.
-     *
+     * 
      * @return the shouldFeatureDisplayInPortal value.
      */
     public Boolean shouldFeatureDisplayInPortal() {
@@ -255,19 +259,19 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Set the shouldFeatureDisplayInPortal property: Indicates whether feature should be displayed in Portal.
-     *
+     * 
      * @param shouldFeatureDisplayInPortal the shouldFeatureDisplayInPortal value to set.
      * @return the SubscriptionFeatureRegistrationProperties object itself.
      */
-    public SubscriptionFeatureRegistrationProperties withShouldFeatureDisplayInPortal(
-        Boolean shouldFeatureDisplayInPortal) {
+    public SubscriptionFeatureRegistrationProperties
+        withShouldFeatureDisplayInPortal(Boolean shouldFeatureDisplayInPortal) {
         this.shouldFeatureDisplayInPortal = shouldFeatureDisplayInPortal;
         return this;
     }
 
     /**
      * Get the description property: The feature description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -276,7 +280,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Set the description property: The feature description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SubscriptionFeatureRegistrationProperties object itself.
      */
@@ -287,7 +291,7 @@ public final class SubscriptionFeatureRegistrationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

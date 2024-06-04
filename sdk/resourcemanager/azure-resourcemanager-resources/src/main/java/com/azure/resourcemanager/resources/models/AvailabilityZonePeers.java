@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of availability zones shared by the subscriptions. */
+/**
+ * List of availability zones shared by the subscriptions.
+ */
 @Fluent
 public final class AvailabilityZonePeers {
     /*
@@ -23,13 +25,15 @@ public final class AvailabilityZonePeers {
     @JsonProperty(value = "peers")
     private List<Peers> peers;
 
-    /** Creates an instance of AvailabilityZonePeers class. */
+    /**
+     * Creates an instance of AvailabilityZonePeers class.
+     */
     public AvailabilityZonePeers() {
     }
 
     /**
      * Get the availabilityZone property: The availabilityZone.
-     *
+     * 
      * @return the availabilityZone value.
      */
     public String availabilityZone() {
@@ -38,7 +42,7 @@ public final class AvailabilityZonePeers {
 
     /**
      * Get the peers property: Details of shared availability zone.
-     *
+     * 
      * @return the peers value.
      */
     public List<Peers> peers() {
@@ -47,7 +51,7 @@ public final class AvailabilityZonePeers {
 
     /**
      * Set the peers property: Details of shared availability zone.
-     *
+     * 
      * @param peers the peers value to set.
      * @return the AvailabilityZonePeers object itself.
      */
@@ -58,7 +62,7 @@ public final class AvailabilityZonePeers {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

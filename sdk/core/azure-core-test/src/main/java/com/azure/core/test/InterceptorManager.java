@@ -478,14 +478,14 @@ public class InterceptorManager implements AutoCloseable {
      * @param testProxySanitizersId the list of sanitizer rule Id to disable.
      * @throws RuntimeException Neither playback or record has started.
      */
-    public void removeSanitizers(List<String> testProxySanitizersId) {
+    public void removeSanitizers(String... testProxySanitizersId) {
         if (CoreUtils.isNullOrEmpty(testProxySanitizersId)) {
             return;
         }
         if (testProxyPlaybackClient != null) {
-            testProxyPlaybackClient.removeProxySanitization(testProxySanitizersId);
+            testProxyPlaybackClient.removeProxySanitization(Arrays.asList(testProxySanitizersId));
         } else if (testProxyRecordPolicy != null) {
-            testProxyRecordPolicy.removeProxySanitization(testProxySanitizersId);
+            testProxyRecordPolicy.removeProxySanitization(Arrays.asList(testProxySanitizersId));
         } else {
             throw new RuntimeException("Playback or record must have been started before removing sanitizers.");
         }

@@ -3,6 +3,7 @@
 ### 3.46.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for `@Transient` annotation - see [PR 39760](https://github.com/Azure/azure-sdk-for-java/pull/39760).
 
 #### Breaking Changes
 

@@ -8,6 +8,10 @@ package com.azure.resourcemanager.devopsinfrastructure.generated;
  * Samples for Pools GetByResourceGroup.
  */
 public final class PoolsGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/devopsinfrastructure/Microsoft.DevOpsInfrastructure/examples/2024-04-04-preview/GetPool.json
+     */
     /**
      * Sample code: Pools_Get.
      * 

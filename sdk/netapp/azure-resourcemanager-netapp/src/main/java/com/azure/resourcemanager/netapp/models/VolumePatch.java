@@ -344,9 +344,9 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior
-     * from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible
-     * values for this field are:
+     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are:
      * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
      * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
      * reads.
@@ -359,9 +359,9 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior
-     * from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible
-     * values for this field are:
+     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
+     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
+     * for this field are:
      * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
      * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
      * reads.

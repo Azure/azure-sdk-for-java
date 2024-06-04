@@ -8,6 +8,10 @@ package com.azure.resourcemanager.standbypool.generated;
  * Samples for StandbyContainerGroupPools List.
  */
 public final class StandbyContainerGroupPoolsListSamples {
+    /*
+     * x-ms-original-file: specification/standbypool/StandbyPool.Management/examples/2023-12-01-preview/
+     * StandbyContainerGroupPools_ListBySubscription.json
+     */
     /**
      * Sample code: StandbyContainerGroupPools_ListBySubscription.
      * 

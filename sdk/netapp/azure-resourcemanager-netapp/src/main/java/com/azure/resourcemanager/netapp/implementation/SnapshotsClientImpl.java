@@ -740,7 +740,8 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     private Mono<SnapshotInner> createAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, String snapshotName, SnapshotInner body, Context context) {
         return beginCreateAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1038,7 +1039,8 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     private Mono<SnapshotInner> updateAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, String snapshotName, Object body, Context context) {
         return beginUpdateAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1621,7 +1623,8 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     private Mono<Void> restoreFilesAsync(String resourceGroupName, String accountName, String poolName,
         String volumeName, String snapshotName, SnapshotRestoreFiles body, Context context) {
         return beginRestoreFilesAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

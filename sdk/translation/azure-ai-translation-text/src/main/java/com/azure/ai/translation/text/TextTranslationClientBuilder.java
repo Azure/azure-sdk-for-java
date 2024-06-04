@@ -442,4 +442,11 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TextTranslationClientBuilder.class);
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
 }

@@ -40,7 +40,7 @@ public class AnalyzeAddOnQueryFieldsAsync {
         File invoiceDocument = new File("../documentintelligence/azure-ai-documentintelligence/src/samples/resources/"
                 + "sample-forms/invoices/Invoice_1.pdf");
 
-        PollerFlux<AnalyzeResultOperation, AnalyzeResultOperation> analyzeLayoutPoller =
+        PollerFlux<AnalyzeResultOperation, AnalyzeResult> analyzeLayoutPoller =
                 client.beginAnalyzeDocument("prebuilt-layout",
                         null,
                         null,
@@ -62,7 +62,7 @@ public class AnalyzeAddOnQueryFieldsAsync {
                                         new RuntimeException(
                                                 "Polling completed unsuccessfully with status:" + pollResponse.getStatus()));
                             }
-                        }).map(AnalyzeResultOperation::getAnalyzeResult);
+                        });
 
         analyzeLayoutResultMono.subscribe(analyzeLayoutResult -> {
             analyzeLayoutResult.getDocuments().forEach(

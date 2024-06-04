@@ -1,15 +1,28 @@
 ## Release History
 
-### 4.61.0-beta.1 (Unreleased)
+### 4.62.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added query statement conditionally in diagnostics and tracing. - See[PR 39990](https://github.com/Azure/azure-sdk-for-java/pull/39990)
 
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed a rare issue causing `StackOverflowError` when `RntbdRequestRecord` expires and tries to serialize `CosmosException` using default Jackson Object Mapper - See[PR 40272](https://github.com/Azure/azure-sdk-for-java/pull/40272)
-* Fixed UserAgent encoding when the suffix contains non-ASCII characters. - See[PR 40293](https://github.com/Azure/azure-sdk-for-java/pull/40293)
+
+#### Other Changes
+
+### 4.61.1 (2024-05-31)
+
+#### Bugs Fixed
+* Fixed an issue causing `IllegalArgumentException` when using `handleChanges` on change feed processor startup - See [PR 40420](https://github.com/Azure/azure-sdk-for-java/pull/40420)
+
+### 4.61.0 (2024-05-24)
+
+#### Features Added
+* Added query statement conditionally in diagnostics and tracing. - See [PR 39990](https://github.com/Azure/azure-sdk-for-java/pull/39990)
+
+#### Bugs Fixed
+* Fixed a rare issue causing `StackOverflowError` when `RntbdRequestRecord` expires and tries to serialize `CosmosException` using default Jackson Object Mapper - See [PR 40272](https://github.com/Azure/azure-sdk-for-java/pull/40272)
+* Fixed UserAgent encoding when the suffix contains non-ASCII characters. - See [PR 40293](https://github.com/Azure/azure-sdk-for-java/pull/40293)
 
 #### Other Changes
 * Added robustness improvement to avoid client-side parsing errors `java.lang.IllegalArgumentException: Unable to parse JSON` when Gateway returns duplicate `unqiueKeyPolicy` in IndexPolicy (invalid json) - See[PR 40306](https://github.com/Azure/azure-sdk-for-java/pull/40306)

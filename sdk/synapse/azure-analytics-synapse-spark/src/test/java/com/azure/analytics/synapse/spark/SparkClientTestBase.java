@@ -101,7 +101,7 @@ public abstract class SparkClientTestBase extends TestProxyTestBase {
         }
 
         if (!interceptorManager.isLiveMode()) {
-            interceptorManager.removeSanitizers(Arrays.asList("AZSDK3425"));
+            interceptorManager.removeSanitizers("AZSDK3425", "AZSDK3430");
         }
 
         HttpPipeline pipeline = new HttpPipelineBuilder()

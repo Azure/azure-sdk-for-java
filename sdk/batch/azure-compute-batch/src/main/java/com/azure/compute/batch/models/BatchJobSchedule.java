@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -370,19 +371,21 @@ public final class BatchJobSchedule implements JsonSerializable<BatchJobSchedule
                 } else if ("eTag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else if ("lastModified".equals(fieldName)) {
-                    lastModified = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("creationTime".equals(fieldName)) {
-                    creationTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("state".equals(fieldName)) {
                     state = BatchJobScheduleState.fromString(reader.getString());
                 } else if ("stateTransitionTime".equals(fieldName)) {
-                    stateTransitionTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    stateTransitionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("previousState".equals(fieldName)) {
                     previousState = BatchJobScheduleState.fromString(reader.getString());
                 } else if ("previousStateTransitionTime".equals(fieldName)) {
-                    previousStateTransitionTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    previousStateTransitionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("schedule".equals(fieldName)) {
                     schedule = BatchJobScheduleConfiguration.fromJson(reader);
                 } else if ("executionInfo".equals(fieldName)) {
