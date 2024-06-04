@@ -43,9 +43,9 @@ extends:
     sdl:
       componentgovernance:
         scanType: LogOnly
-        sourceScanPath: $(Build.SourcesDirectory)/sdk/core
+        sourceScanPath: $(Build.SourcesDirectory)/doesNotExist
         ignoreDirectories: $(Build.SourcesDirectory)
-        detectorsFilter: Maven
+        useDefaultDetectors: false
         alertWarningLevel: Low
         failOnAlert: true
         verbosity: Verbose
