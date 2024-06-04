@@ -524,7 +524,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName1, webappName1);
 
-        Assertions.assertEquals(managedEnvironmentId, functionApp.managedEnvironmentId());
+        assertResourceIdEquals(managedEnvironmentId, functionApp.managedEnvironmentId());
         Assertions.assertEquals(10, functionApp.maxReplicas());
         Assertions.assertEquals(3, functionApp.minReplicas());
 

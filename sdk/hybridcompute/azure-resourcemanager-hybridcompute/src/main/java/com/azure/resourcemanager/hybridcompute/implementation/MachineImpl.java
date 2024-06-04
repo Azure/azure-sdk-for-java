@@ -6,6 +6,7 @@ package com.azure.resourcemanager.hybridcompute.implementation;
 
 import com.azure.core.management.SystemData;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseProfileMachineInstanceViewInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineExtensionInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.MachineInner;
 import com.azure.resourcemanager.hybridcompute.fluent.models.NetworkProfileInner;
@@ -113,7 +114,12 @@ public final class MachineImpl implements Machine {
     }
 
     public LicenseProfileMachineInstanceView licenseProfile() {
-        return this.innerModel().licenseProfile();
+        LicenseProfileMachineInstanceViewInner inner = this.innerModel().licenseProfile();
+        if (inner != null) {
+            return new LicenseProfileMachineInstanceViewImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public String provisioningState() {
