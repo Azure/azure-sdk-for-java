@@ -13,10 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class IpAddressOrRange {
     /*
-     * A single IPv4 address or a single IPv4 address range in CIDR format. Provided IPs must be well-formatted and
-     * cannot be contained in one of the following ranges: 10.0.0.0/8, 100.64.0.0/10, 172.16.0.0/12, 192.168.0.0/16,
-     * since these are not enforceable by the IP address filter. Example of valid inputs: “23.40.210.245” or
-     * “23.40.210.0/8”.
+     * A single IPv4 address or a single IPv4 address range in CIDR format. Provided IPs must be well-formatted and cannot be contained in one of the following ranges: 10.0.0.0/8, 100.64.0.0/10, 172.16.0.0/12, 192.168.0.0/16, since these are not enforceable by the IP address filter. Example of valid inputs: “23.40.210.245” or “23.40.210.0/8”.
      */
     @JsonProperty(value = "ipAddressOrRange")
     private String ipAddressOrRange;
@@ -30,8 +27,8 @@ public final class IpAddressOrRange {
     /**
      * Get the ipAddressOrRange property: A single IPv4 address or a single IPv4 address range in CIDR format. Provided
      * IPs must be well-formatted and cannot be contained in one of the following ranges: 10.0.0.0/8, 100.64.0.0/10,
-     * 172.16.0.0/12, 192.168.0.0/16, since these are not enforceable by the IP address filter. Example of valid
-     * inputs: “23.40.210.245” or “23.40.210.0/8”.
+     * 172.16.0.0/12, 192.168.0.0/16, since these are not enforceable by the IP address filter. Example of valid inputs:
+     * “23.40.210.245” or “23.40.210.0/8”.
      * 
      * @return the ipAddressOrRange value.
      */
@@ -42,8 +39,8 @@ public final class IpAddressOrRange {
     /**
      * Set the ipAddressOrRange property: A single IPv4 address or a single IPv4 address range in CIDR format. Provided
      * IPs must be well-formatted and cannot be contained in one of the following ranges: 10.0.0.0/8, 100.64.0.0/10,
-     * 172.16.0.0/12, 192.168.0.0/16, since these are not enforceable by the IP address filter. Example of valid
-     * inputs: “23.40.210.245” or “23.40.210.0/8”.
+     * 172.16.0.0/12, 192.168.0.0/16, since these are not enforceable by the IP address filter. Example of valid inputs:
+     * “23.40.210.245” or “23.40.210.0/8”.
      * 
      * @param ipAddressOrRange the ipAddressOrRange value to set.
      * @return the IpAddressOrRange object itself.
