@@ -98,7 +98,7 @@ private static String extractUsernameFromToken(String token) {
     JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
 
     return jwt.get("oid").getAsString();
-    }
+}
 ```
 
 ##### Supported Token Credentials for Microsoft Entra Authentication

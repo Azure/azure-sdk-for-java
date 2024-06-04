@@ -52,7 +52,7 @@ public class AuthenticateWithTokenCache {
         // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
         RedisCommands<String, String> sync = connection.sync();
 
-        // Configure the jedis instance for proactive authentication before token expires.
+        // Configure the lettuce instance for proactive authentication before token expires.
         tokenRefreshCache
             .setLettuceInstanceToAuthenticate(sync);
 
@@ -76,7 +76,7 @@ public class AuthenticateWithTokenCache {
                     connection = client.connect(StringCodec.UTF8);
                     sync = connection.sync();
 
-                    // Configure the jedis instance for proactive authentication before token expires.
+                    // Configure the lettuce instance for proactive authentication before token expires.
                     tokenRefreshCache
                         .setLettuceInstanceToAuthenticate(sync);
                 }

@@ -36,7 +36,7 @@ public class HelloWorld {
         RedisURI redisURI = RedisURI.Builder.redis("<HOST_NAME>") // Host Name is Required
             .withPort(6380) // Port is Required
             .withSsl(true) // SSL Connections are required.
-            .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials("<USERNAME>", defaultAzureCredential))) // Username and Token Credential are required.
+            .withAuthentication(RedisCredentialsProvider.from(() -> new AzureRedisCredentials(defaultAzureCredential))) // Username and Token Credential are required.
             .withClientName("LettuceClient")
             .build();
 
