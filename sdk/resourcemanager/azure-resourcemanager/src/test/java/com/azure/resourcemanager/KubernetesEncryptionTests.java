@@ -8,10 +8,7 @@ import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.Locale;
 
 public class KubernetesEncryptionTests extends DiskEncryptionTestBase {
 
@@ -49,6 +46,6 @@ public class KubernetesEncryptionTests extends DiskEncryptionTestBase {
             .withDnsPrefix("mp1" + dnsPrefix)
             .create();
 
-        Assertions.assertEquals(diskEncryptionSet.id().toLowerCase(Locale.ROOT), kubernetesCluster.diskEncryptionSetId().toLowerCase(Locale.ROOT));
+        assertResourceIdEquals(diskEncryptionSet.id(), kubernetesCluster.diskEncryptionSetId());
     }
 }
