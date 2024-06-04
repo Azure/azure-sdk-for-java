@@ -646,15 +646,17 @@ public class DataLakePathAsyncClient {
 
         Context finalContext = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths()
-            .deleteWithResponseAsync(null, null, recursive, null, paginated, lac, mac, context).expand(resp -> {
+            .deleteNoCustomHeadersWithResponseAsync(null, null, recursive, null, paginated, lac, mac, context)
+            .expand(resp -> {
                 String continuation = resp.getHeaders().getValue(Transforms.X_MS_CONTINUATION);
                 if (continuation != null && !continuation.isEmpty()) {
-                    return this.dataLakeStorage.getPaths()
-                        .deleteWithResponseAsync(null, null, recursive, continuation, paginated, lac, mac, finalContext);
+                    return this.dataLakeStorage.getPaths().deleteNoCustomHeadersWithResponseAsync(null, null, recursive,
+                        continuation, paginated, lac, mac, finalContext);
                 } else {
                     return Mono.empty();
                 }
-            }).last().map(res -> new SimpleResponse<>(res, null));
+            })
+            .last();
     }
 
     /**

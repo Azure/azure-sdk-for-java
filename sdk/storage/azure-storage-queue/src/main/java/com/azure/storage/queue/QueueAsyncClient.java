@@ -225,8 +225,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getQueues().createWithResponseAsync(queueName, null, metadata, null, context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return client.getQueues().createNoCustomHeadersWithResponseAsync(queueName, null, metadata, null, context);
     }
 
     /**
@@ -362,8 +361,7 @@ public final class QueueAsyncClient {
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getQueues().deleteWithResponseAsync(queueName, null, null, context)
-            .map(response -> new SimpleResponse<>(response, null));
+        return client.getQueues().deleteNoCustomHeadersWithResponseAsync(queueName, null, null, context);
     }
 
     /**
@@ -579,8 +577,7 @@ public final class QueueAsyncClient {
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata) {
         try {
             return withContext(context -> client.getQueues()
-                .setMetadataWithResponseAsync(queueName, null, metadata, null, context)
-                .map(response -> new SimpleResponse<>(response, null)));
+                .setMetadataNoCustomHeadersWithResponseAsync(queueName, null, metadata, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -714,8 +711,7 @@ public final class QueueAsyncClient {
             .collect(Collectors.toList());
 
         return client.getQueues()
-            .setAccessPolicyWithResponseAsync(queueName, null, null, permissionsList, context)
-            .map(response -> new SimpleResponse<>(response, null));
+            .setAccessPolicyNoCustomHeadersWithResponseAsync(queueName, null, null, permissionsList, context);
     }
 
     /**
@@ -767,8 +763,8 @@ public final class QueueAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> clearMessagesWithResponse() {
         try {
-            return withContext(context -> client.getMessages().clearWithResponseAsync(queueName, null, null, context)
-                .map(response -> new SimpleResponse<>(response, null)));
+            return withContext(context -> client.getMessages()
+                .clearNoCustomHeadersWithResponseAsync(queueName, null, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1399,9 +1395,8 @@ public final class QueueAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteMessageWithResponse(String messageId, String popReceipt) {
         try {
-            return withContext(context -> client.getMessageIds().deleteWithResponseAsync(queueName, messageId,
-                    popReceipt, null, null, context)
-                .map(response -> new SimpleResponse<>(response, null)));
+            return withContext(context -> client.getMessageIds()
+                .deleteNoCustomHeadersWithResponseAsync(queueName, messageId, popReceipt, null, null, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
