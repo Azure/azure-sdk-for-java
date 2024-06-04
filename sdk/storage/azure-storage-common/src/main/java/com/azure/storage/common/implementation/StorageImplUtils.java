@@ -5,9 +5,9 @@ package com.azure.storage.common.implementation;
 
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -35,8 +35,6 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -98,9 +96,6 @@ public class StorageImplUtils {
 
     private static final DateTimeFormatter NO_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         .withLocale(Locale.ROOT);
-
-    public static final ExecutorService THREAD_POOL = getThreadPoolWithShutdownHook();
-    private static final long THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS = 30;
     private static final String ENCRYPTION_DATA_KEY = "encryptiondata";
 
 
@@ -462,17 +457,13 @@ public class StorageImplUtils {
     public static <T> T submitThreadPool(Supplier<T> operation, ClientLogger logger, Duration timeout) {
         try {
             return timeout != null
-                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+                ? SharedExecutorService.getInstance().submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS)
+                : operation.get();
         }  catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
-    }
-
-    public static ExecutorService getThreadPoolWithShutdownHook() {
-        return CoreUtils.addShutdownHookSafely(Executors.newCachedThreadPool(),
-            Duration.ofSeconds(THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS));
     }
 
     public static String getEncryptionDataKey(Map<String, String> metadata) {
@@ -490,13 +481,13 @@ public class StorageImplUtils {
         return null;
     }
 
-    public static <T, U> ResponseBase<T, U> sendRequest(Callable<ResponseBase<T, U>> operation, Duration timeout,
+    public static <T> T sendRequest(Callable<T> operation, Duration timeout,
         Class<? extends RuntimeException> exceptionType) {
         try {
             if (timeout == null) {
                 return operation.call();
             }
-            Future<ResponseBase<T, U>> future = THREAD_POOL.submit(operation);
+            Future<T> future = SharedExecutorService.getInstance().submit(operation);
             return getResultWithTimeout(future, timeout.toMillis(), exceptionType);
         } catch (Exception e) {
             Throwable cause = e.getCause();
