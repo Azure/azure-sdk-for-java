@@ -9,6 +9,7 @@ import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceOptions;
 import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreIds;
 import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptionsList;
 import com.azure.ai.openai.assistants.models.CreateToolResourcesOptions;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
@@ -51,7 +52,8 @@ public class FileSearchAsyncTest extends AssistantsClientTestBase {
                     AsyncUtils cleanUp = new AsyncUtils();
                     CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
                     createToolResourcesOptions.setFileSearch(new CreateFileSearchToolResourceOptions(
-                        Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId())))));
+                        new CreateFileSearchToolResourceVectorStoreOptionsList(
+                        Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
                     // TODO - setup with VectorStore
 //                    assistantCreationOptions.setFileIds(Arrays.asList(openAIFile.getId()));
                     assistantCreationOptions.setToolResources(createToolResourcesOptions);

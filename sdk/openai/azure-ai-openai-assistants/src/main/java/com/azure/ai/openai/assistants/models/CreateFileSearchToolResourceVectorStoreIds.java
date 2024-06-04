@@ -18,23 +18,21 @@ import java.util.Map;
  * Vector Store IDs associated to the vector store to be passed to the helper.
  */
 @Fluent
-public final class CreateFileSearchToolResourceVectorStoreIds
+public final class  CreateFileSearchToolResourceVectorStoreIds
     implements JsonSerializable<CreateFileSearchToolResourceVectorStoreIds> {
 
     /*
      * A list of file IDs to add to the vector store. There can be a maximum of 10000 files in a vector store.
      */
-    @Generated
     private final List<String> vectorStoreIds;
 
     /**
      * Creates an instance of CreateFileSearchToolResourceVectorStoreIds class.
      *
-     * @param fileIds the fileIds value to set.
+     * @param vectorStoreIds the fileIds value to set.
      */
-    @Generated
-    public CreateFileSearchToolResourceVectorStoreIds(List<String> fileIds) {
-        this.vectorStoreIds = fileIds;
+    public CreateFileSearchToolResourceVectorStoreIds(List<String> vectorStoreIds) {
+        this.vectorStoreIds = vectorStoreIds;
     }
 
     /**
@@ -43,7 +41,6 @@ public final class CreateFileSearchToolResourceVectorStoreIds
      *
      * @return the fileIds value.
      */
-    @Generated
     public List<String> getVectorStoreIds() {
         return this.vectorStoreIds;
     }
@@ -68,20 +65,19 @@ public final class CreateFileSearchToolResourceVectorStoreIds
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CreateFileSearchToolResourceVectorStoreOptions.
      */
-    @Generated
     public static CreateFileSearchToolResourceVectorStoreIds fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<String> fileIds = null;
+            List<String> vectorStoreIds = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("vector_store_ids".equals(fieldName)) {
-                    fileIds = reader.readArray(reader1 -> reader1.getString());
+                    vectorStoreIds = reader.readArray(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new CreateFileSearchToolResourceVectorStoreIds(fileIds);
+            return new CreateFileSearchToolResourceVectorStoreIds(vectorStoreIds);
         });
     }
 }
