@@ -239,6 +239,7 @@ public final class JobRouterAdministrationClientBuilder implements HttpTrait<Job
      */
     @Generated
     private JobRouterAdministrationClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         JobRouterServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : JobRouterServiceVersion.getLatest();
@@ -367,5 +368,12 @@ public final class JobRouterAdministrationClientBuilder implements HttpTrait<Job
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Missing credential information while building a client."));
         }
+    }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 }

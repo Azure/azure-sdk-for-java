@@ -357,4 +357,11 @@ public final class AssistantsClientBuilder implements HttpTrait<AssistantsClient
                 localServiceVersion);
         return client;
     }
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
 }
