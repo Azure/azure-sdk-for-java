@@ -50,13 +50,15 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             documentTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
         } else if (interceptorManager.isRecordMode()) {
             documentTranslationClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
-            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
         }
+        
 
         if (!interceptorManager.isLiveMode()) {
-            addTestProxySanitizers();
+            //addTestProxySanitizers();
         }
 
         documentTranslationClientbuilder.credential(new AzureKeyCredential(key));
@@ -88,13 +90,14 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             singleDocumentTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (!interceptorManager.isLiveMode()) {
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
         } else if (interceptorManager.isRecordMode()) {
             singleDocumentTranslationClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
-            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
         }
 
         if (!interceptorManager.isLiveMode()) {
-            addTestProxySanitizers();
+            //addTestProxySanitizers();
         }
 
         singleDocumentTranslationClientbuilder.credential(new AzureKeyCredential(key));
@@ -138,14 +141,12 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
             blobContainerClientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isRecordMode()) {
             blobContainerClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        if (interceptorManager.isRecordMode()) {
+        }else if (!interceptorManager.isLiveMode()) {
             interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
-        }
+        }      
 
         if (!interceptorManager.isLiveMode()) {
-            addTestProxySanitizers();
+            //addTestProxySanitizers();
         }
 
         return blobContainerClientBuilder.buildClient();
@@ -161,14 +162,12 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
             blobClientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isRecordMode()) {
             blobClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-
-        if (interceptorManager.isRecordMode()) {
+        }else if (!interceptorManager.isLiveMode()) {
             interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
         }
 
         if (!interceptorManager.isLiveMode()) {
-            addTestProxySanitizers();
+            //addTestProxySanitizers();
         }
 
         return blobClientBuilder.buildClient();

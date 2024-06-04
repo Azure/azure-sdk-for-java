@@ -104,7 +104,7 @@ Gets a list of document and glossary formats supported by the Document Translati
 ```java getSupportedFormats
 SupportedFileFormats documentResponse = documentTranslationClient.getSupportedFormats(FileFormatType.DOCUMENT);
 List<FileFormat> documentFileFormats = documentResponse.getValue();
-for (FileFormat fileFormat : documentFileFormats) {            
+for (FileFormat fileFormat : documentFileFormats) {
     System.out.println("FileFormat:" + fileFormat.getFormat());
     System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
     System.out.println("ContentTypes:" + fileFormat.getContentTypes());
