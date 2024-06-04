@@ -107,7 +107,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         }
 
         String resourceId = request.getResourceId();
-        logger.info("Handling success : {}", resourceId);
+//        logger.info("Handling success : {}", resourceId);
 
         PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, resourceId);
         URI succeededLocation = request.requestContext.locationEndpointToRoute;
@@ -132,7 +132,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         checkNotNull(partitionKeyRange, "Supplied partitionKeyRange cannot be null!");
         checkNotNull(resourceId, "Supplied resourceId cannot be null!");
 
-        logger.info("Fetching unavailable regions for resource address : {}", resourceId);
+//        logger.info("Fetching unavailable regions for resource address : {}", resourceId);
 
         PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, resourceId);
 
@@ -701,6 +701,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                 case HealthyTentative:
                     return 5;
                 case Healthy:
+                case Unavailable:
                     return 0;
                 default:
                     throw new IllegalStateException("Unsupported health status: " + status);
@@ -743,5 +744,20 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
                     throw new IllegalStateException("Unsupported health status: " + status);
             }
         }
+    }
+
+    // todo: keep private and access through reflection
+    public int getExceptionCountByPartitionKeyRange(PartitionKeyRangeWrapper partitionKeyRangeWrapper) {
+
+        PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfoSnapshot =
+            this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
+
+        int count = 0;
+
+        for (LocationSpecificContext locationSpecificContext : partitionLevelLocationUnavailabilityInfoSnapshot.locationEndpointToLocationSpecificContextForPartition.values()) {
+            count += locationSpecificContext.exceptionCountForRead + locationSpecificContext.exceptionCountForWrite;
+        }
+
+        return count;
     }
 }

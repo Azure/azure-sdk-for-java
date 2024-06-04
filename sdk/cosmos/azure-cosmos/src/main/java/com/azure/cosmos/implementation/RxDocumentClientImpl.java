@@ -2383,9 +2383,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         if (!pointOperationContextForCircuitBreaker.getIsRequestHedged() && pointOperationContextForCircuitBreaker.getHasOperationSeenSuccess()) {
                             this.handleLocationExceptionForPartitionKeyRange(potentiallyFailedRequest);
                         }
-                    } else {
-                        this.handleLocationExceptionForPartitionKeyRange(potentiallyFailedRequest);
                     }
+                    // todo: investigate below scenario - gets called when INTERNAL_SERVER_ERROR injected
+                    // todo: something is causing cancellation w/o e2e operation timeout set
+//                    else {
+//                        this.handleLocationExceptionForPartitionKeyRange(potentiallyFailedRequest);
+//                    }
                 }
             });
     }

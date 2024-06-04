@@ -9,13 +9,20 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosRegionSwitchHint;
+import com.azure.cosmos.SessionRetryOptionsBuilder;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.ThresholdBasedAvailabilityStrategy;
 import com.azure.cosmos.faultinjection.FaultInjectionTestBase;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
@@ -43,6 +50,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import org.testng.SkipException;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
@@ -55,28 +63,51 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
+import java.util.function.Consumer;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.fail;
 
 
 public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
+    private static final ImplementationBridgeHelpers.CosmosAsyncContainerHelper.CosmosAsyncContainerAccessor containerAccessor
+        = ImplementationBridgeHelpers.CosmosAsyncContainerHelper.getCosmosAsyncContainerAccessor();
     private List<String> writeRegions;
 
-    private static final CosmosEndToEndOperationLatencyPolicyConfig TWO_SECOND_TIMEOUT_WITH_THRESHOLD_BASED_AVAILABILITY_STRATEGY
+    private static final CosmosEndToEndOperationLatencyPolicyConfig noEndToEndTimeout
+        = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofDays(1)).build();
+
+    private static final CosmosEndToEndOperationLatencyPolicyConfig twoSecondEndToEndTimeoutWithThresholdBasedAvailabilityStrategy
         = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
         .availabilityStrategy(new ThresholdBasedAvailabilityStrategy())
         .build();
 
-    private static final CosmosEndToEndOperationLatencyPolicyConfig TWO_SECOND_TIMEOUT
+    private static final CosmosEndToEndOperationLatencyPolicyConfig twoSecondEndToEndTimeoutWithoutAvailabilityStrategy
         = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(2))
         .build();
+
+    private Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasFirstPreferredRegionOnly = null;
+
+    private Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasSecondPreferredRegionOnly = null;
+
+    private Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasFirstAndSecondPreferredRegions = null;
+
+    private static final CosmosRegionSwitchHint noRegionSwitchHint = null;
+
+    private String firstPreferredRegion = null;
+
+    private String secondPreferredRegion = null;
+
+    private String sharedAsyncDatabaseId = null;
+
+    private String sharedMultiPartitionAsyncContainerId = null;
+
+    private String singlePartitionAsyncContainerId = null;
 
     @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
     public PartitionLevelCircuitBreakerTests(CosmosClientBuilder cosmosClientBuilder) {
@@ -91,6 +122,22 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
             DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
             this.writeRegions = new ArrayList<>(this.getRegionMap(databaseAccount, true).keySet());
+
+            CosmosAsyncDatabase sharedAsyncDatabase = getSharedCosmosDatabase(testClient);
+            CosmosAsyncContainer sharedAsyncMultiPartitionContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(testClient);
+
+            this.sharedAsyncDatabaseId = sharedAsyncDatabase.getId();
+            this.sharedMultiPartitionAsyncContainerId = sharedAsyncMultiPartitionContainer.getId();
+
+            this.singlePartitionAsyncContainerId = UUID.randomUUID().toString();
+            sharedAsyncDatabase.createContainerIfNotExists(this.singlePartitionAsyncContainerId, "/id").block();
+
+            try {
+                Thread.sleep(3000);
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+
         } finally {
             logger.debug("beforeClass executed...");
         }
@@ -108,134 +155,359 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> transitTimeoutRuleGenerator
             = PartitionLevelCircuitBreakerTests::buildTransitTimeoutRules;
 
+        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> internalServerErrorRuleGenerator
+            = PartitionLevelCircuitBreakerTests::buildInternalServerErrorRules;
+
+        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> tooManyRequestsRuleGenerator
+            = PartitionLevelCircuitBreakerTests::buildTooManyRequestsRules;
+
+        Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> readSessionNotAvailableRuleGenerator
+            = PartitionLevelCircuitBreakerTests::buildReadSessionNotAvailableRules;
+
+        this.validateDiagnosticsContextHasFirstPreferredRegionOnly = (ctx) -> {
+            assertThat(ctx).isNotNull();
+            assertThat(ctx.getContactedRegionNames()).isNotNull();
+            assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
+            assertThat(ctx.getContactedRegionNames().stream().iterator().next()).isEqualTo(this.firstPreferredRegion.toLowerCase(Locale.ROOT));
+        };
+
+        this.validateDiagnosticsContextHasSecondPreferredRegionOnly = (ctx) -> {
+            assertThat(ctx).isNotNull();
+            assertThat(ctx.getContactedRegionNames()).isNotNull();
+            assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
+            assertThat(ctx.getContactedRegionNames().stream().iterator().next()).isEqualTo(this.secondPreferredRegion.toLowerCase(Locale.ROOT));
+        };
+
+        this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions = (ctx) -> {
+            assertThat(ctx).isNotNull();
+            assertThat(ctx.getContactedRegionNames()).isNotNull();
+            assertThat(ctx.getContactedRegionNames().size()).isEqualTo(2);
+            assertThat(ctx.getContactedRegionNames()).contains(this.firstPreferredRegion.toLowerCase(Locale.ROOT));
+            assertThat(ctx.getContactedRegionNames()).contains(this.secondPreferredRegion.toLowerCase(Locale.ROOT));
+        };
+
         return new Object[][] {
             new Object[] {
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withHitLimit(12),
                 serviceUnavailableRulesGenerator,
-                null
+                noEndToEndTimeout,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.UPSERT_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
                     .withHitLimit(7),
                 serviceUnavailableRulesGenerator,
-                null
+                noEndToEndTimeout,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
                     .withHitLimit(7),
                 serviceUnavailableRulesGenerator,
-                null
+                noEndToEndTimeout,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.DELETE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
                     .withHitLimit(7),
                 serviceUnavailableRulesGenerator,
-                null
+                noEndToEndTimeout,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.PATCH_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
                     .withHitLimit(7),
                 serviceUnavailableRulesGenerator,
-                null
+                noEndToEndTimeout,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-                    .withHitLimit(7),
+                    .withHitLimit(6),
                 serviceUnavailableRulesGenerator,
-                null
+                noEndToEndTimeout,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withHitLimit(7),
+                    .withHitLimit(12),
                 serviceUnavailableRulesGenerator,
-                null
+                noEndToEndTimeout,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.BATCH_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
-                    .withHitLimit(7),
+                    .withHitLimit(6),
                 serviceUnavailableRulesGenerator,
-                null
+                noEndToEndTimeout,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
                     .withHitLimit(12),
                 serviceUnavailableRulesGenerator,
-                null
+                noEndToEndTimeout,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 serverGeneratedGoneRuleGenerator,
-                TWO_SECOND_TIMEOUT
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.UPSERT_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 serverGeneratedGoneRuleGenerator,
-                TWO_SECOND_TIMEOUT
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 serverGeneratedGoneRuleGenerator,
-                TWO_SECOND_TIMEOUT
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.DELETE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 serverGeneratedGoneRuleGenerator,
-                TWO_SECOND_TIMEOUT
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.PATCH_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 serverGeneratedGoneRuleGenerator,
-                TWO_SECOND_TIMEOUT
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
+
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 serverGeneratedGoneRuleGenerator,
-                TWO_SECOND_TIMEOUT
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
                 serverGeneratedGoneRuleGenerator,
-                TWO_SECOND_TIMEOUT
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with response delay in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
                     .withResponseDelay(Duration.ofSeconds(6)),
                 transitTimeoutRuleGenerator,
-                null
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             },
             new Object[] {
+                String.format("Test with faulty %s with response delay in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
                     .withFaultInjectionDuration(Duration.ofSeconds(60))
                     .withResponseDelay(Duration.ofSeconds(6)),
                 transitTimeoutRuleGenerator,
-                null
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
+            },
+            {
+                String.format("Test with faulty %s with internal service error in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withHitLimit(12),
+                internalServerErrorRuleGenerator,
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
+            },
+            {
+                String.format("Test with faulty %s with internal service error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withHitLimit(12),
+                internalServerErrorRuleGenerator,
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
+            },
+            {
+                String.format("Test with faulty %s with internal service error in the first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
+                    .withHitLimit(12),
+                internalServerErrorRuleGenerator,
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
+            },
+            {
+                String.format("Test with faulty %s with internal service error in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withHitLimit(12),
+                internalServerErrorRuleGenerator,
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
+            },
+            {
+                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                tooManyRequestsRuleGenerator,
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
+            },
+            {
+                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                tooManyRequestsRuleGenerator,
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
+            },
+            {
+                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                tooManyRequestsRuleGenerator,
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
+            },
+            {
+                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                tooManyRequestsRuleGenerator,
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                noRegionSwitchHint,
+                this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
+            },
+            {
+                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                readSessionNotAvailableRuleGenerator,
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
+            },
+            {
+                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                readSessionNotAvailableRuleGenerator,
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
+            },
+            {
+                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                readSessionNotAvailableRuleGenerator,
+                twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
+                CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly
             }
         };
     }
@@ -252,13 +524,21 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
     @Test(groups = {"multi-master"}, dataProvider = "partitionLevelCircuitBreakerTestConfigs")
     public void operationHitsTerminalExceptionInFirstPreferredRegion(
+        String testType,
         FaultInjectionRuleParamsWrapper faultInjectionRuleParamsWrapper,
         Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> faultInjectionRuleGenerator,
-        CosmosEndToEndOperationLatencyPolicyConfig e2eLatencyPolicyCfg) {
+        CosmosEndToEndOperationLatencyPolicyConfig e2eLatencyPolicyCfg,
+        CosmosRegionSwitchHint regionSwitchHint,
+        Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitRegionMarkedAsUnavailable,
+        Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative) {
 
-        logger.info("Checking circuit breaking behavior for {}", faultInjectionRuleParamsWrapper.getFaultInjectionOperationType());
+        logger.info("Checking circuit breaking behavior for test type {}", testType);
 
         List<String> preferredRegions = this.writeRegions;
+
+        this.firstPreferredRegion = preferredRegions.get(0);
+        this.secondPreferredRegion = preferredRegions.get(1);
+
         CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
 
         ConnectionPolicy connectionPolicy = ReflectionUtils.getConnectionPolicy(clientBuilder);
@@ -267,25 +547,35 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             throw new SkipException("Test is not applicable to GATEWAY connectivity mode!");
         }
 
+        if (regionSwitchHint != null) {
+            clientBuilder = clientBuilder
+                .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build());
+        }
+
         CosmosAsyncClient client = clientBuilder.buildAsyncClient();
-        CosmosAsyncDatabase database = getSharedCosmosDatabase(client);
 
-        String multiPartitionContainerId = UUID.randomUUID() + "-multi-partition-test-container";
+        validateStringArg(this.sharedAsyncDatabaseId);
+        CosmosAsyncDatabase database = client.getDatabase(this.sharedAsyncDatabaseId);
 
-        CosmosAsyncContainer container = null;
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(multiPartitionContainerId, "/id");
-        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(getProvisionedThroughputForContainer(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType()));
-
+        CosmosAsyncContainer container;
         OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
 
         try {
 
             System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED", "true");
 
-            database.createContainerIfNotExists(containerProperties, throughputProperties).block();
-            container = database.getContainer(multiPartitionContainerId);
+            String designatedContainerId = getContainerIdByFaultInjectionOperationType(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType());
 
-            Thread.sleep(10_000);
+            validateStringArg(designatedContainerId);
+            container = database.getContainer(designatedContainerId);
+
+            RxDocumentClientImpl documentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
+
+            RxCollectionCache collectionCache = ReflectionUtils.getClientCollectionCache(documentClient);
+            RxPartitionKeyRangeCache partitionKeyRangeCache = ReflectionUtils.getPartitionKeyRangeCache(documentClient);
+
+            GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
+                = documentClient.getGlobalPartitionEndpointManagerForCircuitBreaker();
 
             int testObjCountToBootstrapFrom = getTestObjectCountToBootstrapFrom(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType(), 15);
             List<TestObject> testObjects = new ArrayList<>();
@@ -298,15 +588,48 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
             FeedRange faultyFeedRange;
 
+            final Utils.ValueHolder<FeedRangeEpkImpl> faultyFeedRangeEpkImpl = new Utils.ValueHolder<>();
+            final Utils.ValueHolder<FeedRangePartitionKeyImpl> faultyFeedRangePartitionKeyImpl = new Utils.ValueHolder<>();
+            final Utils.ValueHolder<List<PartitionKeyRange>> faultyPartitionKeyRanges = new Utils.ValueHolder<>();
+            final Utils.ValueHolder<DocumentCollection> faultyDocumentCollection = new Utils.ValueHolder<>();
+
             if (testObjects.size() != 1) {
                 faultyFeedRange = FeedRange.forFullRange();
+                faultyFeedRangeEpkImpl.v = (FeedRangeEpkImpl) faultyFeedRange;
             } else {
                 faultyFeedRange = FeedRange.forLogicalPartition(new PartitionKey(testObjects.get(0).getId()));
+                faultyFeedRangePartitionKeyImpl.v = (FeedRangePartitionKeyImpl) faultyFeedRange;
             }
 
             faultInjectionRuleParamsWrapper.withFaultInjectionApplicableFeedRange(faultyFeedRange);
             faultInjectionRuleParamsWrapper.withFaultInjectionApplicableAsyncContainer(container);
             faultInjectionRuleParamsWrapper.withFaultInjectionApplicableRegions(Arrays.asList(preferredRegions.get(0)));
+
+            if (faultyFeedRangeEpkImpl.v != null) {
+                collectionCache.resolveByNameAsync(null, containerAccessor.getLinkWithoutTrailingSlash(container), null)
+                    .flatMap(collection -> {
+                        faultyDocumentCollection.v = collection;
+                        return partitionKeyRangeCache.tryGetOverlappingRangesAsync(null, collection.getResourceId(), faultyFeedRangeEpkImpl.v.getRange(), true, null);
+                    })
+                    .flatMap(listValueHolder -> {
+                        faultyPartitionKeyRanges.v = listValueHolder.v;
+                        return Mono.just(listValueHolder);
+                    }).block();
+            } else if (faultyFeedRangePartitionKeyImpl.v != null) {
+                collectionCache.resolveByNameAsync(null, containerAccessor.getLinkWithoutTrailingSlash(container), null)
+                    .flatMap(collection -> {
+                        faultyDocumentCollection.v = collection;
+                        return partitionKeyRangeCache.tryGetOverlappingRangesAsync(null, collection.getResourceId(), faultyFeedRangePartitionKeyImpl.v.getEffectiveRange(collection.getPartitionKey()), true, null);
+                    })
+                    .flatMap(listValueHolder -> {
+                        faultyPartitionKeyRanges.v = listValueHolder.v;
+                        return Mono.just(listValueHolder);
+                    }).block();
+            }
+
+            assertThat(faultyPartitionKeyRanges.v).isNotNull();
+            assertThat(faultyPartitionKeyRanges.v).isNotEmpty();
+            assertThat(faultyDocumentCollection.v).isNotNull();
 
             List<FaultInjectionRule> faultInjectionRules = faultInjectionRuleGenerator.apply(faultInjectionRuleParamsWrapper);
 
@@ -316,7 +639,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     generateOperation(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType());
 
                 assertThat(faultInjectedFunc).isNotNull().as("faultInjectedFunc cannot be null!");
-
 
                 if (e2eLatencyPolicyCfg != null) {
                     operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions()
@@ -331,50 +653,70 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
                 operationInvocationParamsWrapper.asyncContainer = container;
                 operationInvocationParamsWrapper.feedRangeToDrainForChangeFeed = faultyFeedRange;
+                operationInvocationParamsWrapper.feedRangeForQuery = faultyFeedRange;
 
                 CosmosFaultInjectionHelper
                     .configureFaultInjectionRules(faultInjectionRuleParamsWrapper.getFaultInjectionApplicableAsyncContainer(), faultInjectionRules)
                     .block();
 
+                boolean hasReachedCircuitBreakingThreshold = false;
+                int executionCountAfterCircuitBreakingThreshold = 0;
+
                 for (int i = 1; i <= 15; i++) {
+
                     operationInvocationParamsWrapper.createdTestObject = testObjects.isEmpty() ? null : testObjects.get(i % testObjects.size());
                     OperationExecutionResult<?> response = faultInjectedFunc.apply(operationInvocationParamsWrapper);
 
-                    logger.info("Hit count : {}", faultInjectionRules.stream().mapToLong(FaultInjectionRule::getHitCount).sum());
+                    int expectedCircuitBreakingThreshold = doesOperationHaveWriteSemantics(faultInjectionRuleParamsWrapper.getFaultInjectionOperationType()) ? 5 : 10;
+
+                    if (!hasReachedCircuitBreakingThreshold) {
+                        hasReachedCircuitBreakingThreshold = expectedCircuitBreakingThreshold == globalPartitionEndpointManagerForCircuitBreaker.getExceptionCountByPartitionKeyRange(
+                            new GlobalPartitionEndpointManagerForCircuitBreaker.PartitionKeyRangeWrapper(faultyPartitionKeyRanges.v.get(0), faultyDocumentCollection.v.getResourceId()));
+                    } else {
+                        executionCountAfterCircuitBreakingThreshold++;
+                    }
 
                     if (response.cosmosItemResponse != null) {
                         assertThat(response.cosmosItemResponse).isNotNull();
                         assertThat(response.cosmosItemResponse.getDiagnostics()).isNotNull();
 
-                        response.cosmosItemResponse.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                        );
+                        if (executionCountAfterCircuitBreakingThreshold > 1) {
+                            logger.info("In circuit breaking assertion for item response...");
+                            validateRegionsContactedWhenShortCircuitRegionMarkedAsUnavailable.accept(response.cosmosItemResponse.getDiagnostics().getDiagnosticsContext());
+                        }
                     } else if (response.feedResponse != null) {
                         assertThat(response.feedResponse).isNotNull();
                         assertThat(response.feedResponse.getCosmosDiagnostics()).isNotNull();
 
-                        response.feedResponse.getCosmosDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                        );
+                        if (executionCountAfterCircuitBreakingThreshold > 1) {
+                            logger.info("In circuit breaking assertion for feed response...");
+                            validateRegionsContactedWhenShortCircuitRegionMarkedAsUnavailable.accept(response.feedResponse.getCosmosDiagnostics().getDiagnosticsContext());
+                        }
                     } else if (response.cosmosException != null) {
                         assertThat(response.cosmosException).isNotNull();
                         assertThat(response.cosmosException.getDiagnostics()).isNotNull();
 
-                        response.cosmosException.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                        );
+                        if (!hasReachedCircuitBreakingThreshold) {
+
+                            logger.info("In circuit breaking assertion for exception...");
+                            CosmosDiagnosticsContext ctx = response.cosmosException.getDiagnostics().getDiagnosticsContext();
+
+                            assertThat(ctx.getContactedRegionNames().size()).isEqualTo(1);
+                            assertThat(ctx.getContactedRegionNames().iterator().next()).isEqualTo(preferredRegions.get(0).toLowerCase(Locale.ROOT));
+                        }
                     } else if (response.batchResponse != null) {
                         assertThat(response.batchResponse).isNotNull();
                         assertThat(response.batchResponse.getDiagnostics()).isNotNull();
 
-                        response.batchResponse.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                        );
+                        if (executionCountAfterCircuitBreakingThreshold > 1) {
+                            logger.info("In circuit breaking assertion for batch response...");
+                            validateRegionsContactedWhenShortCircuitRegionMarkedAsUnavailable.accept(response.batchResponse.getDiagnostics().getDiagnosticsContext());
+                        }
                     }
                 }
 
-                logger.info("Sleep for 120 seconds");
-                Thread.sleep(120_000);
+                logger.info("Sleep for 90 seconds");
+                Thread.sleep(90_000);
 
                 for (int i = 16; i <= 30; i++) {
                     operationInvocationParamsWrapper.createdTestObject = testObjects.isEmpty() ? null : testObjects.get(i % testObjects.size());
@@ -386,16 +728,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                         assertThat(response.cosmosItemResponse).isNotNull();
                         assertThat(response.cosmosItemResponse.getDiagnostics()).isNotNull();
 
-                        response.cosmosItemResponse.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                        );
+                        validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative.accept(response.cosmosItemResponse.getDiagnostics().getDiagnosticsContext());
                     } else if (response.feedResponse != null) {
                         assertThat(response.feedResponse).isNotNull();
                         assertThat(response.feedResponse.getCosmosDiagnostics()).isNotNull();
 
-                        response.feedResponse.getCosmosDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                        );
+                        validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative.accept(response.feedResponse.getCosmosDiagnostics().getDiagnosticsContext());
                     } else if (response.cosmosException != null) {
                         assertThat(response.cosmosException).isNotNull();
                         assertThat(response.cosmosException.getDiagnostics()).isNotNull();
@@ -407,9 +745,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                         assertThat(response.batchResponse).isNotNull();
                         assertThat(response.batchResponse.getDiagnostics()).isNotNull();
 
-                        response.batchResponse.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
-                            regionContacted -> logger.info("Region contacted : {}", regionContacted)
-                        );
+                        validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative.accept(response.batchResponse.getDiagnostics().getDiagnosticsContext());
                     }
                 }
             }
@@ -422,7 +758,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             fail("Test should have passed!");
         } finally {
             System.clearProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED");
-            safeDeleteCollection(container);
             safeClose(client);
         }
     }
@@ -693,7 +1028,6 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     if (response1.cosmosItemResponse != null) {
                         assertThat(response1.cosmosItemResponse).isNotNull();
                         assertThat(response1.cosmosItemResponse.getDiagnostics()).isNotNull();
-
                         response1.cosmosItemResponse.getDiagnostics().getDiagnosticsContext().getContactedRegionNames().forEach(
                             regionContacted -> logger.info("Region contacted : {}", regionContacted)
                         );
@@ -975,6 +1309,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
                     CosmosQueryRequestOptions queryRequestOptions = paramsWrapper.queryRequestOptions;
+                    queryRequestOptions = queryRequestOptions.setFeedRange(paramsWrapper.feedRangeForQuery);
 
                     try {
 
@@ -1074,19 +1409,19 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     }
 
-    private static int getProvisionedThroughputForContainer(FaultInjectionOperationType faultInjectionOperationType) {
+    private String getContainerIdByFaultInjectionOperationType(FaultInjectionOperationType faultInjectionOperationType) {
         switch (faultInjectionOperationType) {
             case READ_ITEM:
             case UPSERT_ITEM:
             case REPLACE_ITEM:
             case QUERY_ITEM:
             case PATCH_ITEM:
-                return 12_000;
+                return this.sharedMultiPartitionAsyncContainerId;
             case DELETE_ITEM:
             case CREATE_ITEM:
             case BATCH_ITEM:
             case READ_FEED_ITEM:
-                return 6_000;
+                return this.singlePartitionAsyncContainerId;
             default:
                 throw new UnsupportedOperationException(String.format("Operation of type : %s is not supported", faultInjectionOperationType));
         }
@@ -1094,6 +1429,33 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
     @Test(groups = {"multi-master"})
     public void operationHitsServiceUnavailableInSecondPreferredRegion() {}
+
+    @AfterClass(groups = { "multi-master" })
+    public void afterClass() {
+        CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true)
+            .directMode();
+
+        CosmosAsyncClient dummyClient = null;
+        if (this.sharedAsyncDatabaseId != null) {
+            try {
+
+                dummyClient = clientBuilder.buildAsyncClient();
+
+                CosmosAsyncDatabase sharedAsyncDatabase = dummyClient
+                    .getDatabase(this.sharedAsyncDatabaseId);
+                CosmosAsyncContainer singlePartitionAsyncContainer =
+                    sharedAsyncDatabase.getContainer(this.singlePartitionAsyncContainerId);
+
+                safeDeleteCollection(singlePartitionAsyncContainer);
+            } finally {
+                safeClose(dummyClient);
+            }
+        }
+    }
+
 
     private static class OperationExecutionResult<T> {
 
@@ -1138,6 +1500,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         public CosmosQueryRequestOptions queryRequestOptions;
         public CosmosItemRequestOptions patchItemRequestOptions;
         public FeedRange feedRangeToDrainForChangeFeed;
+        public FeedRange feedRangeForQuery;
     }
 
     private static class FaultInjectionRuleParamsWrapper {
@@ -1314,5 +1677,116 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
 
         return faultInjectionRules;
+    }
+
+    private static List<FaultInjectionRule> buildReadSessionNotAvailableRules(FaultInjectionRuleParamsWrapper paramsWrapper) {
+
+        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
+            .build();
+
+        List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
+
+        for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
+
+            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
+                .operationType(paramsWrapper.getFaultInjectionOperationType())
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
+                .region(applicableRegion)
+                .build();
+
+            FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("read-session-not-available-rule-" + UUID.randomUUID())
+                .condition(faultInjectionCondition)
+                .result(faultInjectionServerErrorResult)
+                .duration(paramsWrapper.getFaultInjectionDuration())
+                .build();
+
+            faultInjectionRules.add(faultInjectionRule);
+        }
+
+        return faultInjectionRules;
+    }
+
+    private static List<FaultInjectionRule> buildTooManyRequestsRules(FaultInjectionRuleParamsWrapper paramsWrapper) {
+
+        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST)
+            .build();
+
+        List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
+
+        for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
+
+            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
+                .operationType(paramsWrapper.getFaultInjectionOperationType())
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
+                .region(applicableRegion)
+                .build();
+
+            FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("too-many-requests-rule-" + UUID.randomUUID())
+                .condition(faultInjectionCondition)
+                .result(faultInjectionServerErrorResult)
+                .duration(paramsWrapper.getFaultInjectionDuration())
+                .build();
+
+            faultInjectionRules.add(faultInjectionRule);
+        }
+
+        return faultInjectionRules;
+    }
+
+    private static List<FaultInjectionRule> buildInternalServerErrorRules(FaultInjectionRuleParamsWrapper paramsWrapper) {
+
+        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR)
+            .build();
+
+        List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
+
+        for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
+
+            FaultInjectionCondition faultInjectionCondition = new FaultInjectionConditionBuilder()
+                .operationType(paramsWrapper.getFaultInjectionOperationType())
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build())
+                .region(applicableRegion)
+                .build();
+
+            FaultInjectionRule faultInjectionRule = new FaultInjectionRuleBuilder("internal-server-error-rule-" + UUID.randomUUID())
+                .condition(faultInjectionCondition)
+                .result(faultInjectionServerErrorResult)
+                .hitLimit(paramsWrapper.getHitLimit())
+                .build();
+
+            faultInjectionRules.add(faultInjectionRule);
+        }
+
+        return faultInjectionRules;
+    }
+
+    private static boolean doesOperationHaveWriteSemantics(FaultInjectionOperationType faultInjectionOperationType) {
+        switch (faultInjectionOperationType) {
+
+            case DELETE_ITEM:
+            case PATCH_ITEM:
+            case UPSERT_ITEM:
+            case BATCH_ITEM:
+            case REPLACE_ITEM:
+            case CREATE_ITEM:
+                return true;
+            case READ_ITEM:
+            case QUERY_ITEM:
+            case READ_FEED_ITEM:
+                return false;
+            default:
+                throw new IllegalArgumentException("Unsupported operation type : " + faultInjectionOperationType);
+        }
+    }
+
+    private static void validateStringArg(String input) {
+        assertThat(input).isNotNull();
+        assertThat(input).isNotEmpty();
     }
 }
