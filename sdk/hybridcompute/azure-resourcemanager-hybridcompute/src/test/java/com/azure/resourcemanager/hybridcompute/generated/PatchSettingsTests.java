@@ -14,18 +14,18 @@ public final class PatchSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PatchSettings model
-            = BinaryData.fromString("{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"ImageDefault\"}")
+            = BinaryData.fromString("{\"assessmentMode\":\"AutomaticByPlatform\",\"patchMode\":\"AutomaticByOS\"}")
                 .toObject(PatchSettings.class);
-        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.patchMode());
+        Assertions.assertEquals(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM, model.assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_OS, model.patchMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchSettings model = new PatchSettings().withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
-            .withPatchMode(PatchModeTypes.IMAGE_DEFAULT);
+        PatchSettings model = new PatchSettings().withAssessmentMode(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM)
+            .withPatchMode(PatchModeTypes.AUTOMATIC_BY_OS);
         model = BinaryData.fromObject(model).toObject(PatchSettings.class);
-        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.patchMode());
+        Assertions.assertEquals(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM, model.assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_OS, model.patchMode());
     }
 }

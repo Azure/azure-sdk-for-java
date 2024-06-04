@@ -17,38 +17,29 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PolicyAssignments Update. */
+/**
+ * Samples for PolicyAssignments Update.
+ */
 public final class PolicyAssignmentsUpdateSamples {
     /*
      * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/updatePolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Update a policy assignment with resource selectors.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void updateAPolicyAssignmentWithResourceSelectors(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+    public static void
+        updateAPolicyAssignmentWithResourceSelectors(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .updateWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "CostManagement",
+            .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
                 new PolicyAssignmentUpdate()
-                    .withResourceSelectors(
-                        Arrays
-                            .asList(
-                                new ResourceSelector()
-                                    .withName("SDPRegions")
-                                    .withSelectors(
-                                        Arrays
-                                            .asList(
-                                                new Selector()
-                                                    .withKind(SelectorKind.RESOURCE_LOCATION)
-                                                    .withIn(Arrays.asList("eastus2euap", "centraluseuap")))))),
+                    .withResourceSelectors(Arrays.asList(new ResourceSelector().withName("SDPRegions")
+                        .withSelectors(Arrays.asList(new Selector().withKind(SelectorKind.RESOURCE_LOCATION)
+                            .withIn(Arrays.asList("eastus2euap", "centraluseuap")))))),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -57,28 +48,21 @@ public final class PolicyAssignmentsUpdateSamples {
      */
     /**
      * Sample code: Update a policy assignment with a user assigned identity.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void updateAPolicyAssignmentWithAUserAssignedIdentity(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+    public static void
+        updateAPolicyAssignmentWithAUserAssignedIdentity(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .updateWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "EnforceNaming",
-                new PolicyAssignmentUpdate()
-                    .withLocation("eastus")
-                    .withIdentity(
-                        new Identity()
-                            .withType(ResourceIdentityType.USER_ASSIGNED)
-                            .withUserAssignedIdentities(
-                                mapOf(
-                                    "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/testResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity",
-                                    new IdentityUserAssignedIdentitiesValue()))),
+            .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
+                new PolicyAssignmentUpdate().withLocation("eastus")
+                    .withIdentity(new Identity().withType(ResourceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf(
+                            "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/testResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/test-identity",
+                            new IdentityUserAssignedIdentitiesValue()))),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -87,31 +71,20 @@ public final class PolicyAssignmentsUpdateSamples {
      */
     /**
      * Sample code: Update a policy assignment with overrides.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAPolicyAssignmentWithOverrides(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .updateWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "CostManagement",
-                new PolicyAssignmentUpdate()
-                    .withOverrides(
-                        Arrays
-                            .asList(
-                                new OverrideModel()
-                                    .withKind(OverrideKind.POLICY_EFFECT)
-                                    .withValue("Audit")
-                                    .withSelectors(
-                                        Arrays
-                                            .asList(
-                                                new Selector()
-                                                    .withKind(SelectorKind.POLICY_DEFINITION_REFERENCE_ID)
-                                                    .withIn(Arrays.asList("Limit_Skus", "Limit_Locations")))))),
+            .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement",
+                new PolicyAssignmentUpdate().withOverrides(Arrays.asList(new OverrideModel()
+                    .withKind(OverrideKind.POLICY_EFFECT)
+                    .withValue("Audit")
+                    .withSelectors(Arrays.asList(new Selector().withKind(SelectorKind.POLICY_DEFINITION_REFERENCE_ID)
+                        .withIn(Arrays.asList("Limit_Skus", "Limit_Locations")))))),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -120,21 +93,17 @@ public final class PolicyAssignmentsUpdateSamples {
      */
     /**
      * Sample code: Update a policy assignment with a system assigned identity.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void updateAPolicyAssignmentWithASystemAssignedIdentity(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+    public static void
+        updateAPolicyAssignmentWithASystemAssignedIdentity(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyAssignments()
-            .updateWithResponse(
-                "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2",
-                "EnforceNaming",
-                new PolicyAssignmentUpdate()
-                    .withLocation("eastus")
+            .updateWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNaming",
+                new PolicyAssignmentUpdate().withLocation("eastus")
                     .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)),
                 com.azure.core.util.Context.NONE);
     }

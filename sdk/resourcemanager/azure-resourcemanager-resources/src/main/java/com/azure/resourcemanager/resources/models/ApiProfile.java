@@ -7,7 +7,9 @@ package com.azure.resourcemanager.resources.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApiProfile model. */
+/**
+ * The ApiProfile model.
+ */
 @Immutable
 public final class ApiProfile {
     /*
@@ -22,13 +24,15 @@ public final class ApiProfile {
     @JsonProperty(value = "apiVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String apiVersion;
 
-    /** Creates an instance of ApiProfile class. */
+    /**
+     * Creates an instance of ApiProfile class.
+     */
     public ApiProfile() {
     }
 
     /**
      * Get the profileVersion property: The profile version.
-     *
+     * 
      * @return the profileVersion value.
      */
     public String profileVersion() {
@@ -37,7 +41,7 @@ public final class ApiProfile {
 
     /**
      * Get the apiVersion property: The API version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String apiVersion() {
@@ -46,7 +50,7 @@ public final class ApiProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

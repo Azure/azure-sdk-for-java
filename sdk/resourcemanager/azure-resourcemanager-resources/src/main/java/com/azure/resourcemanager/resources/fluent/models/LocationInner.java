@@ -11,12 +11,13 @@ import com.azure.resourcemanager.resources.models.LocationType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Location information. */
+/**
+ * Location information.
+ */
 @Fluent
 public final class LocationInner {
     /*
-     * The fully qualified ID of the location. For example,
-     * /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74/locations/westus.
+     * The fully qualified ID of the location. For example, /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74/locations/westus.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -63,14 +64,16 @@ public final class LocationInner {
     @JsonProperty(value = "availabilityZoneMappings")
     private List<AvailabilityZoneMappings> availabilityZoneMappings;
 
-    /** Creates an instance of LocationInner class. */
+    /**
+     * Creates an instance of LocationInner class.
+     */
     public LocationInner() {
     }
 
     /**
      * Get the id property: The fully qualified ID of the location. For example,
      * /subscriptions/8d65815f-a5b6-402f-9298-045155da7d74/locations/westus.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -79,7 +82,7 @@ public final class LocationInner {
 
     /**
      * Get the subscriptionId property: The subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -88,7 +91,7 @@ public final class LocationInner {
 
     /**
      * Get the name property: The location name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -97,7 +100,7 @@ public final class LocationInner {
 
     /**
      * Get the type property: The location type.
-     *
+     * 
      * @return the type value.
      */
     public LocationType type() {
@@ -106,7 +109,7 @@ public final class LocationInner {
 
     /**
      * Get the displayName property: The display name of the location.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -115,7 +118,7 @@ public final class LocationInner {
 
     /**
      * Get the regionalDisplayName property: The display name of the location and its region.
-     *
+     * 
      * @return the regionalDisplayName value.
      */
     public String regionalDisplayName() {
@@ -124,7 +127,7 @@ public final class LocationInner {
 
     /**
      * Get the metadata property: Metadata of the location, such as lat/long, paired region, and others.
-     *
+     * 
      * @return the metadata value.
      */
     public LocationMetadata metadata() {
@@ -133,7 +136,7 @@ public final class LocationInner {
 
     /**
      * Set the metadata property: Metadata of the location, such as lat/long, paired region, and others.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the LocationInner object itself.
      */
@@ -144,7 +147,7 @@ public final class LocationInner {
 
     /**
      * Get the availabilityZoneMappings property: The availability zone mappings for this region.
-     *
+     * 
      * @return the availabilityZoneMappings value.
      */
     public List<AvailabilityZoneMappings> availabilityZoneMappings() {
@@ -153,7 +156,7 @@ public final class LocationInner {
 
     /**
      * Set the availabilityZoneMappings property: The availability zone mappings for this region.
-     *
+     * 
      * @param availabilityZoneMappings the availabilityZoneMappings value to set.
      * @return the LocationInner object itself.
      */
@@ -164,7 +167,7 @@ public final class LocationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

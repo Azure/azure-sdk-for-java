@@ -62,6 +62,7 @@ public class EasmClientTestBase extends TestProxyTestBase {
         customSanitizers.add(new TestProxySanitizer("$..uuid", uuidRegex, sanitizedUuid, TestProxySanitizerType.BODY_KEY));
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addSanitizers(customSanitizers);
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
         }
         easmClient = easmClientbuilder.buildClient();
         easmAsyncClient = easmClientbuilder.buildAsyncClient();

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,172 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.5 (2024-06-04)
+
+- Azure Resource Manager HybridCompute client library for Java. This package contains Microsoft Azure SDK for HybridCompute Management SDK. The Hybrid Compute Management Client. Package tag package-preview-2024-03. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.LicenseProfileMachineInstanceViewEsuProperties` was modified
+
+* `withAssignedLicense(models.License)` was removed
+* `models.LicenseAssignmentState licenseAssignmentState()` -> `models.LicenseAssignmentState licenseAssignmentState()`
+* `validate()` was removed
+* `models.License assignedLicense()` -> `models.License assignedLicense()`
+* `withLicenseAssignmentState(models.LicenseAssignmentState)` was removed
+
+#### `models.EsuKey` was modified
+
+* `java.lang.String licenseStatus()` -> `java.lang.Integer licenseStatus()`
+* `withLicenseStatus(java.lang.String)` was removed
+
+#### `models.MachineRunCommand$Update` was modified
+
+* `withParameters(java.util.List)` was removed
+* `withTimeoutInSeconds(java.lang.Integer)` was removed
+* `withSource(models.MachineRunCommandScriptSource)` was removed
+* `withAsyncExecution(java.lang.Boolean)` was removed
+* `withOutputBlobUri(java.lang.String)` was removed
+* `withErrorBlobManagedIdentity(models.RunCommandManagedIdentity)` was removed
+* `withOutputBlobManagedIdentity(models.RunCommandManagedIdentity)` was removed
+* `withProtectedParameters(java.util.List)` was removed
+* `withRunAsUser(java.lang.String)` was removed
+* `withRunAsPassword(java.lang.String)` was removed
+* `withErrorBlobUri(java.lang.String)` was removed
+
+#### `models.LicenseProfileMachineInstanceView` was modified
+
+* `validate()` was removed
+* `java.util.List productFeatures()` -> `java.util.List productFeatures()`
+* `java.lang.Boolean softwareAssuranceCustomer()` -> `java.lang.Boolean softwareAssuranceCustomer()`
+* `withProductType(models.LicenseProfileProductType)` was removed
+* `withProductFeatures(java.util.List)` was removed
+* `java.time.OffsetDateTime disenrollmentDate()` -> `java.time.OffsetDateTime disenrollmentDate()`
+* `models.LicenseProfileProductType productType()` -> `models.LicenseProfileProductType productType()`
+* `models.LicenseProfileMachineInstanceViewEsuProperties esuProfile()` -> `models.LicenseProfileMachineInstanceViewEsuProperties esuProfile()`
+* `models.LicenseProfileSubscriptionStatus subscriptionStatus()` -> `models.LicenseProfileSubscriptionStatus subscriptionStatus()`
+* `java.time.OffsetDateTime enrollmentDate()` -> `java.time.OffsetDateTime enrollmentDate()`
+* `withSoftwareAssuranceCustomer(java.lang.Boolean)` was removed
+* `withSubscriptionStatus(models.LicenseProfileSubscriptionStatus)` was removed
+* `withEsuProfile(models.LicenseProfileMachineInstanceViewEsuProperties)` was removed
+* `java.time.OffsetDateTime billingStartDate()` -> `java.time.OffsetDateTime billingStartDate()`
+* `models.LicenseStatus licenseStatus()` -> `models.LicenseStatus licenseStatus()`
+* `java.lang.String licenseChannel()` -> `java.lang.String licenseChannel()`
+
+#### `models.License` was modified
+
+* `withLicenseType(models.LicenseType)` was removed
+* `models.LicenseType licenseType()` -> `models.LicenseType licenseType()`
+* `withLocation(java.lang.String)` was removed
+* `validate()` was removed
+* `models.ProvisioningState provisioningState()` -> `models.ProvisioningState provisioningState()`
+* `models.LicenseDetails licenseDetails()` -> `models.LicenseDetails licenseDetails()`
+* `withTags(java.util.Map)` was removed
+* `com.azure.core.management.SystemData systemData()` -> `com.azure.core.management.SystemData systemData()`
+* `withLicenseDetails(models.LicenseDetails)` was removed
+* `withTenantId(java.lang.String)` was removed
+* `java.lang.String tenantId()` -> `java.lang.String tenantId()`
+
+### Features Added
+
+* `models.Gateway$DefinitionStages` was added
+
+* `models.GatewaysListResult` was added
+
+* `models.NetworkSecurityPerimeterConfiguration` was added
+
+* `models.AccessMode` was added
+
+* `models.NetworkSecurityPerimeterConfigurations` was added
+
+* `models.Settings` was added
+
+* `models.Licenses` was added
+
+* `models.ProvisioningIssue` was added
+
+* `models.Gateway$Definition` was added
+
+* `models.SettingsOperations` was added
+
+* `models.License$Definition` was added
+
+* `models.GatewayUpdate` was added
+
+* `models.Gateway$Update` was added
+
+* `models.ResourceAssociation` was added
+
+* `models.VolumeLicenseDetails` was added
+
+* `models.Gateway` was added
+
+* `models.NetworkSecurityPerimeterProfile` was added
+
+* `models.License$UpdateStages` was added
+
+* `models.GatewayType` was added
+
+* `models.Gateways` was added
+
+* `models.NetworkSecurityPerimeterConfigurationListResult` was added
+
+* `models.Gateway$UpdateStages` was added
+
+* `models.License$Update` was added
+
+* `models.LicensesListResult` was added
+
+* `models.License$DefinitionStages` was added
+
+* `models.ProgramYear` was added
+
+* `models.NetworkSecurityPerimeter` was added
+
+#### `models.LicenseProfileMachineInstanceViewEsuProperties` was modified
+
+* `esuKeys()` was added
+* `serverType()` was added
+* `assignedLicenseImmutableId()` was added
+* `esuEligibility()` was added
+* `innerModel()` was added
+* `esuKeyState()` was added
+
+#### `models.EsuKey` was modified
+
+* `withLicenseStatus(java.lang.Integer)` was added
+
+#### `models.LicenseProfileMachineInstanceView` was modified
+
+* `innerModel()` was added
+
+#### `models.License` was modified
+
+* `innerModel()` was added
+* `resourceGroupName()` was added
+* `location()` was added
+* `tags()` was added
+* `update()` was added
+* `id()` was added
+* `regionName()` was added
+* `refresh(com.azure.core.util.Context)` was added
+* `name()` was added
+* `region()` was added
+* `refresh()` was added
+* `type()` was added
+
+#### `models.LicenseDetails` was modified
+
+* `withVolumeLicenseDetails(java.util.List)` was added
+* `volumeLicenseDetails()` was added
+
+#### `HybridComputeManager` was modified
+
+* `gateways()` was added
+* `licenses()` was added
+* `networkSecurityPerimeterConfigurations()` was added
+* `settingsOperations()` was added
 
 ## 1.0.0-beta.4 (2024-04-23)
 

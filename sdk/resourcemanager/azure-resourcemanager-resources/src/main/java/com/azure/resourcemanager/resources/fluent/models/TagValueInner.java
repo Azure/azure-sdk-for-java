@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.models.TagCount;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Tag information. */
+/**
+ * Tag information.
+ */
 @Fluent
 public final class TagValueInner {
     /*
@@ -29,13 +31,15 @@ public final class TagValueInner {
     @JsonProperty(value = "count")
     private TagCount count;
 
-    /** Creates an instance of TagValueInner class. */
+    /**
+     * Creates an instance of TagValueInner class.
+     */
     public TagValueInner() {
     }
 
     /**
      * Get the id property: The tag value ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +48,7 @@ public final class TagValueInner {
 
     /**
      * Get the tagValue property: The tag value.
-     *
+     * 
      * @return the tagValue value.
      */
     public String tagValue() {
@@ -53,7 +57,7 @@ public final class TagValueInner {
 
     /**
      * Set the tagValue property: The tag value.
-     *
+     * 
      * @param tagValue the tagValue value to set.
      * @return the TagValueInner object itself.
      */
@@ -64,7 +68,7 @@ public final class TagValueInner {
 
     /**
      * Get the count property: The tag value count.
-     *
+     * 
      * @return the count value.
      */
     public TagCount count() {
@@ -73,7 +77,7 @@ public final class TagValueInner {
 
     /**
      * Set the count property: The tag value count.
-     *
+     * 
      * @param count the count value to set.
      * @return the TagValueInner object itself.
      */
@@ -84,7 +88,7 @@ public final class TagValueInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
