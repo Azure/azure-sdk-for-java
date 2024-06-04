@@ -6,8 +6,6 @@ package com.azure.ai.openai.assistants.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
