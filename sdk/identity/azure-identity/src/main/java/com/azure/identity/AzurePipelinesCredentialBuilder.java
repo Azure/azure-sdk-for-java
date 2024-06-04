@@ -78,9 +78,8 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
                 Arrays.asList(clientId, tenantId, serviceConnectionId, this.systemAccessToken, oidcEndpoint));
         } catch (IllegalArgumentException e) {
             throw LOGGER.logExceptionAsError(new CredentialUnavailableException(
-                "One or more required properties are null or empty. Please either set the appropriate value on the builder or"
-                    + " use a supported task that properly sets the environment. See https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot"
-                    + " for more information.",
+                "One or more required properties are null or empty. Set the appropriate value on the builder."
+                + " See https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot for more information.",
                 e));
         }
         String requestUrl = String.format("%s?api-version=%s&serviceConnectionId=%s",
