@@ -1,8 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.util.BinaryData;
 
-import java.io.IOException;
 import java.io.UncheckedIOException;
 
 /**
@@ -24,24 +26,51 @@ public class AssistantsApiToolChoiceOption {
      */
     private final AssistantsNamedToolChoice toolChoice;
 
+    /**
+     * Initializes a new instance of the AssistantsApiToolChoiceOption class.
+     *
+     * @param mode Specifies how the tool choice will be used. It could be `none` or `auto`.
+     */
     public AssistantsApiToolChoiceOption(AssistantsApiToolChoiceOptionMode mode) {
         this.mode = mode;
         this.toolChoice = null;
     }
 
+    /**
+     * Initializes a new instance of the AssistantsApiToolChoiceOption class.
+     *
+     * @param toolChoice Specifies a tool the model should use. Use to force the model to call a specific tool choice.
+     */
     public AssistantsApiToolChoiceOption(AssistantsNamedToolChoice toolChoice) {
         this.mode = null;
         this.toolChoice = toolChoice;
     }
 
+    /**
+     * Get the mode property: Specifies how the tool choice will be used.
+     *
+     * @return the mode value.
+     */
     public AssistantsApiToolChoiceOptionMode getMode() {
         return this.mode;
     }
 
+    /**
+     * Get the toolChoice property: Specifies a tool the model should use. Use to force the model to call a specific tool.
+     *
+     * @return the toolChoice value.
+     */
     public AssistantsNamedToolChoice getToolChoice() {
         return this.toolChoice;
     }
 
+    /**
+     * Serialize the object to a JSON string.
+     *
+     * @param toolChoiceBinaryData the object to deserialize.
+     * @return the JSON string representation of the object.
+     * @throws IllegalArgumentException if the provided JSON string does not match the expected format.
+     */
     public static AssistantsApiToolChoiceOption fromBinaryData(BinaryData toolChoiceBinaryData) {
         if (toolChoiceBinaryData == null) {
             return null;

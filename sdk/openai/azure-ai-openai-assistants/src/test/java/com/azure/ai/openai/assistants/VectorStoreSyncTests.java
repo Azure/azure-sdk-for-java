@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.PageableList;
@@ -28,15 +31,15 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-         client = getAssistantsClient(httpClient);
-         createVectorStoreRunner((vectorStoreDetails) -> {
-             VectorStore vectorStore = client.createVectorStore(vectorStoreDetails);
-             assertNotNull(vectorStore);
-             assertNotNull(vectorStore.getId());
-             // clean up the created vector store
-             deleteVectorStores(client, vectorStore.getId());
-         }, client);
-     }
+        client = getAssistantsClient(httpClient);
+        createVectorStoreRunner(vectorStoreDetails -> {
+            VectorStore vectorStore = client.createVectorStore(vectorStoreDetails);
+            assertNotNull(vectorStore);
+            assertNotNull(vectorStore.getId());
+            // clean up the created vector store
+            deleteVectorStores(client, vectorStore.getId());
+        }, client);
+    }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")

@@ -12,7 +12,6 @@ import com.azure.json.JsonWriter;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Vector Store IDs associated to the vector store to be passed to the helper.

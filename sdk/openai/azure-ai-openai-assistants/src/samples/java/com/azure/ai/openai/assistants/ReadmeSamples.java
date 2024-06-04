@@ -179,7 +179,7 @@ public final class ReadmeSamples {
                 .setName("Java SDK Retrieval Sample")
                 .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
                 .setTools(Arrays.asList(new FileSearchToolDefinition()))
-                // TODO - setup with VectorStore
+                // TODO (jose): setup with VectorStore
 //                .setFileIds(Arrays.asList(openAIFile.getId()))
         );
         // END: readme-sample-createRetrievalAssistant

@@ -36,8 +36,6 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
-import static com.azure.ai.openai.assistants.implementation.OpenAIUtils.addAzureVersionToRequestOptions;
-
 /**
  * Initializes a new instance of the AssistantsClient type.
  */

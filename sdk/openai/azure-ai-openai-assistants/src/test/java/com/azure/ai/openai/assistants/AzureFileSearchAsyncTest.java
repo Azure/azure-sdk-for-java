@@ -34,7 +34,6 @@ public class AzureFileSearchAsyncTest extends AssistantsClientTestBase {
 
     AssistantsAsyncClient client;
 
-    // TODO verify
     @Disabled("file_search tools are not supported in Azure")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
@@ -47,7 +46,7 @@ public class AzureFileSearchAsyncTest extends AssistantsClientTestBase {
                 .flatMap(openAIFile -> {
                     // Create assistant
                     AsyncUtils cleanUp = new AsyncUtils();
-                    // TODO - setup with VectorStore
+                    // TODO (jose): setup with VectorStore
 //                    assistantCreationOptions.setFileIds(Arrays.asList(openAIFile.getId()));
                     cleanUp.setFile(openAIFile);
                     return client.createAssistant(assistantCreationOptions).zipWith(Mono.just(cleanUp));

@@ -5,12 +5,9 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.TypeReference;
 
 import java.io.UncheckedIOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -76,6 +73,7 @@ public class CreateFileSearchToolResourceOptions {
      *
      * @param responseFormatBinaryData input JSON string
      * @return a new instance of CreateFileSearchToolResourceOptions
+     * @throws IllegalArgumentException if the provided JSON string does not match the expected format
      */
     public static CreateFileSearchToolResourceOptions fromBinaryData(BinaryData responseFormatBinaryData) {
         if (responseFormatBinaryData == null) {

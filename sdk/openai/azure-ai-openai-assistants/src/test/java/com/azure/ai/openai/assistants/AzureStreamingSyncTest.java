@@ -89,7 +89,7 @@ public class AzureStreamingSyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void runSimpleTest(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        // TODO - returns a 404
+        // TODO (jose): returns a 404
         client = getAssistantsClient(httpClient, serviceVersion);
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
@@ -105,7 +105,7 @@ public class AzureStreamingSyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void runWithTools(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        // TODO - returns a 404
+        // TODO (jose): returns a 404
         client = getAssistantsClient(httpClient, serviceVersion);
         String assistantId = createMathTutorAssistantWithFunctionTool(client);
         createRunRunner(createThreadOption -> {

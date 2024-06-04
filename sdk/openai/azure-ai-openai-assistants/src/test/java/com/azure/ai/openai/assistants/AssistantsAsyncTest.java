@@ -19,7 +19,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AssistantsAsyncTest extends AssistantsClientTestBase {

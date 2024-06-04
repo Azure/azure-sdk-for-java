@@ -39,7 +39,7 @@ public class FileSearchSyncTest extends AssistantsClientTestBase {
             OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
 
             // Create assistant
-            // TODO - setup with VectorStore
+            // TODO (jose) : setup with VectorStore
 //            assistantCreationOptions.setFileIds(Arrays.asList(openAIFile.getId()));
             Assistant assistant = client.createAssistant(assistantCreationOptions);
 
