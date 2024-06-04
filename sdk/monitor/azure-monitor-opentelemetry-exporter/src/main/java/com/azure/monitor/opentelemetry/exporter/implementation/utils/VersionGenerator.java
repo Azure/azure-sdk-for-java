@@ -70,13 +70,13 @@ public final class VersionGenerator {
     }
 
     private static String getJavaRuntime() {
-        if(isNativeRuntimeExecution()) {
+        if(isGraalVmNative()) {
             return "!native";
         }
         return "";
     }
 
-    private static boolean isNativeRuntimeExecution() {
+    private static boolean isGraalVmNative() {
         String imageCode = System.getProperty("org.graalvm.nativeimage.imagecode");
         return imageCode != null;
     }
