@@ -37,9 +37,9 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
 
     @Test
     @LiveOnly
-    public void testGetToken(AzurePipelinesCredential credential) {
-
-
+    public void testGetToken() {
+        // Arrange
+        AzurePipelinesCredential credential = getCredential();
         // Act & Assert
         StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
             .assertNext(accessToken -> {
@@ -51,8 +51,9 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
 
     @Test
     @LiveOnly
-    public void testGetTokenSync(AzurePipelinesCredential credential) {
-
+    public void testGetTokenSync() {
+        // Arrange
+        AzurePipelinesCredential credential = getCredential();
 
         // Act & Assert
         assertNotNull(credential.getTokenSync(new TokenRequestContext().addScopes("https://vault.azure.net/.default")));
