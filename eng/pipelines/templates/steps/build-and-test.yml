@@ -86,8 +86,10 @@ steps:
     # This is required to set JAVA_HOME correctly for the Java version
     - pwsh: |
         $javaTestVersion = "$(JavaTestVersion)" -replace '^\d*?\.', ''
-        Write-Host "##vso[task.setvariable variable=PowerShellJavaTestVersion;]JAVA_HOME_$javaTestVersion_X64"
-      displayName: 'Set PowerShellJavaTestVersion'
+        $javaHomeValue = [System.Environment]::GetEnvironmentVariable("JAVA_HOME_$javaTestVersion`_X64")
+        Write-Host "Setting PowerShellJavaHome to '$javaHomeValue'"
+        Write-Host "##vso[task.setvariable variable=PowerShellJavaHome;]$javaHomeValue"
+      displayName: 'Set PowerShellJavaHome'
 
     - task: AzurePowerShell@5
       condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
@@ -100,16 +102,11 @@ steps:
         azurePowerShellVersion: LatestVersion
         pwsh: true
         ScriptType: InlineScript
-        Inline: >-
-          mvn -f pom.xml
-          $(DefaultTestOptions)
-          -DAZURE_TEST_DEBUG=$(IsDebug)
-          -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }}
-          ${{ parameters.TestOptions }}
-          -T ${{ parameters.TestParallelization }}
-          ${{ parameters.TestGoals }}
+        Inline: |
+          mvn --% -f $(Build.SourcesDirectory)/pom.xml $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }} ${{ parameters.TestGoals }}
+          exit $LASTEXITCODE
       env:
-        JAVA_HOME: $(PowerShellJavaTestVersion)
+        JAVA_HOME: $(PowerShellJavaHome)
         MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
         ${{ insert }}: ${{ parameters.TestEnvVars }}
 
@@ -170,7 +167,6 @@ steps:
       publishJUnitResults: false
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
     - ${{ if eq(parameters.IsLiveTest, 'true') }}:
       - pwsh: |
@@ -180,6 +176,7 @@ steps:
       - pwsh: |
           Write-Host "##vso[task.setvariable variable=LiveTestSourceParams]-amd"
         displayName: Set live test source params (-amd)
+
     - task: AzurePowerShell@5
       displayName: 'Run tests for From Source run (Federated Auth)'
       condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
@@ -188,21 +185,16 @@ steps:
         azurePowerShellVersion: LatestVersion
         pwsh: true
         ScriptType: InlineScript
-        Inline: >-
-          mvn -f ClientFromSourcePom.xml
-          $(DefaultTestOptions)
-          -DAZURE_TEST_DEBUG=$(IsDebug)
-          -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }}
-          ${{ parameters.TestOptions }}
-          $(LiveTestSourceParams)
-          -T ${{ parameters.TestParallelization }}
-          ${{ parameters.TestGoals }}
+        Inline: |
+          mvn --% -f $(Build.SourcesDirectory)/ClientFromSourcePom.xml ${{ parameters.TestGoals }} $(DefaultTestOptions) -DAZURE_TEST_DEBUG=$(IsDebug) -Dparallel-test-playback=${{ parameters.ParallelTestPlayback }} ${{ parameters.TestOptions }} $(LiveTestSourceParams) -T ${{ parameters.TestParallelization }}
+          exit $LASTEXITCODE
       env:
-        # PowerShellJavaTestVersion is set in the 'Set PowerShellJavaTestVersion'
+        # PowerShellJavaHome is set in the 'Set PowerShellJavaHome'
         # task above
-        JAVA_HOME: $(PowerShellJavaTestVersion)
+        JAVA_HOME: $(PowerShellJavaHome)
         MAVEN_OPTS: '$(MemoryOptions) $(LoggingOptions)'
         ${{ insert }}: ${{ parameters.TestEnvVars }}
+
   - ${{ else }}:
     - task: Maven@3
       displayName: 'Run tests for From Source run'
