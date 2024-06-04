@@ -1,26 +1,6 @@
-/*
- * The MIT License
- *
- * Copyright 2024 Microsoft Corporation.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.translation.document;
 
 import com.azure.core.util.BinaryData;
@@ -40,58 +20,58 @@ import java.util.logging.Logger;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.test.annotation.LiveOnly;
 
-public class SingleDocumentTranslationTests extends DocumentTranslationClientTestBase {   
+public class SingleDocumentTranslationTests extends DocumentTranslationClientTestBase {
     private static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
-    private static final Path DOCUMENT_FILE_PATH = Paths.get(CURRENT_DIRECTORY, "src", "test", "java", "com", "azure", "ai", "translation", "document", "TestData", "test-input.txt");
-    private static final Path GLOSSARY_FILE_PATH = Paths.get(CURRENT_DIRECTORY, "src", "test", "java", "com", "azure", "ai", "translation", "document", "TestData", "test-glossary.csv");
-    
+    private static final Path DOCUMENT_FILE_PATH = Paths.get(CURRENT_DIRECTORY, "src", "test", "java", "com", "azure",
+            "ai", "translation", "document", "TestData", "test-input.txt");
+    private static final Path GLOSSARY_FILE_PATH = Paths.get(CURRENT_DIRECTORY, "src", "test", "java", "com", "azure",
+            "ai", "translation", "document", "TestData", "test-glossary.csv");
+
     @LiveOnly
     @Test
-    public void testTranslateDocument() { 
-        
-	DocumentFileDetails document = createDocumentContent();
+    public void testTranslateDocument() {
+        DocumentFileDetails document = createDocumentContent();
         DocumentTranslateContent documentTranslateContent = new DocumentTranslateContent(document);
-        String targetLanguage = "hi";    
-        
-        BinaryData response = getSingleDocumentTranslationClient().documentTranslate(targetLanguage, documentTranslateContent);        
+        String targetLanguage = "hi";
+
+        BinaryData response = getSingleDocumentTranslationClient().documentTranslate(targetLanguage,
+                documentTranslateContent);
         String translatedResponse = response.toString();
-        System.out.println("Translated Response: " + translatedResponse);
-        Assertions.assertNotNull(translatedResponse);        
+        Assertions.assertNotNull(translatedResponse);
     }
-    
+
     @LiveOnly
     @Test
-    public void testTranslateSingleCSVGlossary() { 
-        
-	DocumentFileDetails document = createDocumentContent();        
+    public void testTranslateSingleCSVGlossary() {
+        DocumentFileDetails document = createDocumentContent();
         List<GlossaryFileDetails> glossaryList = createSingleGlossaryContent();
         DocumentTranslateContent documentTranslateContent = new DocumentTranslateContent(document)
-            .setGlossary(glossaryList);
-        String targetLanguage = "hi";    
-        
-        BinaryData response = getSingleDocumentTranslationClient().documentTranslate(targetLanguage, documentTranslateContent);
+                .setGlossary(glossaryList);
+        String targetLanguage = "hi";
+
+        BinaryData response = getSingleDocumentTranslationClient().documentTranslate(targetLanguage,
+                documentTranslateContent);
         String translatedResponse = response.toString();
-        System.out.println("Translated Response: " + translatedResponse);
-              
-        Assertions.assertNotNull(translatedResponse.contains("test"),"Glossary 'test' not found in translated response");
+
+        Assertions.assertNotNull(translatedResponse.contains("test"),
+                "Glossary 'test' not found in translated response");
     }
-    
+
     @LiveOnly
     @Test
-    public void testTranslateMultipleCSVGlossary() { 
-        
-	DocumentFileDetails document = createDocumentContent();        
+    public void testTranslateMultipleCSVGlossary() {
+        DocumentFileDetails document = createDocumentContent();
         List<GlossaryFileDetails> glossaryList = createMultipleGlossaryContent();
         DocumentTranslateContent documentTranslateContent = new DocumentTranslateContent(document)
-            .setGlossary(glossaryList);
-        String targetLanguage = "hi";    
-        
+                .setGlossary(glossaryList);
+        String targetLanguage = "hi";
+
         try {
-            BinaryData response = getSingleDocumentTranslationClient().documentTranslate(targetLanguage, documentTranslateContent);
-        } catch (HttpResponseException e) {            
+            BinaryData response = getSingleDocumentTranslationClient().documentTranslate(targetLanguage,
+                    documentTranslateContent);
+        } catch (HttpResponseException e) {
             int statusCode = e.getResponse().getStatusCode();
-            System.out.println("Response status code: " + statusCode);
-            Assertions.assertEquals(400, statusCode);            
+            Assertions.assertEquals(400, statusCode);
         }
     }
 
@@ -100,27 +80,27 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
         try {
             byte[] fileData = Files.readAllBytes(DOCUMENT_FILE_PATH);
             BinaryData documentContent = BinaryData.fromBytes(fileData);
-            
+
             String documentFilename = DOCUMENT_FILE_PATH.getFileName().toString();
             String documentContentType = "text/html";
-            
+
             document = new DocumentFileDetails(documentContent)
                     .setFilename(documentFilename)
-                    .setContentType(documentContentType);            
-            
+                    .setContentType(documentContentType);
+
         } catch (IOException ex) {
             Logger.getLogger(SingleDocumentTranslationTests.class.getName()).log(Level.SEVERE, null, ex);
         }
         return document;
     }
-	
+
     private static List<GlossaryFileDetails> createSingleGlossaryContent() {
         GlossaryFileDetails glossaryFileDetails = getGlossaryFileDetails();
         List<GlossaryFileDetails> glossaryList = new ArrayList<>();
         glossaryList.add(glossaryFileDetails);
         return glossaryList;
     }
-	
+
     private static List<GlossaryFileDetails> createMultipleGlossaryContent() {
         GlossaryFileDetails glossaryFileDetails = getGlossaryFileDetails();
         List<GlossaryFileDetails> glossaryList = new ArrayList<>();
@@ -128,7 +108,7 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
         glossaryList.add(glossaryFileDetails);
         return glossaryList;
     }
-    
+
     private static GlossaryFileDetails getGlossaryFileDetails() {
         GlossaryFileDetails glossaryFileDetails = null;
         try {
@@ -136,11 +116,11 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
             BinaryData glossaryContent = BinaryData.fromBytes(fileData);
             String glossaryFilename = GLOSSARY_FILE_PATH.getFileName().toString();
             String glossaryContentType = "text/csv";
-            
+
             glossaryFileDetails = new GlossaryFileDetails(glossaryContent)
                     .setFilename(glossaryFilename)
                     .setContentType(glossaryContentType);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(SingleDocumentTranslationTests.class.getName()).log(Level.SEVERE, null, ex);
         }

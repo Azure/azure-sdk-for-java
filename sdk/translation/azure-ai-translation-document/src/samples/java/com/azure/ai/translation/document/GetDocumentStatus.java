@@ -3,8 +3,6 @@
 
 package com.azure.ai.translation.document;
 
-import com.azure.ai.translation.document.DocumentTranslationClient;
-import com.azure.ai.translation.document.DocumentTranslationClientBuilder;
 import com.azure.ai.translation.document.models.BatchRequest;
 import com.azure.ai.translation.document.models.DocumentStatus;
 import com.azure.ai.translation.document.models.Glossary;
@@ -14,11 +12,17 @@ import com.azure.ai.translation.document.models.StorageInputType;
 import com.azure.ai.translation.document.models.StorageSource;
 import com.azure.ai.translation.document.models.TargetInput;
 import com.azure.ai.translation.document.models.TranslationStatus;
+import com.azure.ai.translation.document.models.DocumentFilter;
 import com.azure.core.credential.AzureKeyCredential;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.BinaryData;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Sample for getting documents status
@@ -67,9 +71,9 @@ public class GetDocumentStatus {
                     .collect(Collectors.joining(",")),
                 false); 
         
-         try {
-            PagedIterable<BinaryData> response = documentTranslationClient.getDocumentsStatus(translationId, requestOptions);
-            for (BinaryData d: response) {                
+        try {
+            PagedIterable<BinaryData> documentStatusResponse = documentTranslationClient.getDocumentsStatus(translationId, requestOptions);
+            for (BinaryData d: documentStatusResponse) {
                 String id = new ObjectMapper().readTree(d.toBytes()).get("id").asText();
                 System.out.println("Document Translation ID is: " + id);
                 DocumentStatus documentStatus = documentTranslationClient.getDocumentStatus(translationId, id);
@@ -78,9 +82,8 @@ public class GetDocumentStatus {
                 System.out.println("Characters Charged is: " + documentStatus.getCharacterCharged().toString());
                 System.out.println("Document path is: " + documentStatus.getPath());
                 System.out.println("Document source path is: " + documentStatus.getSourcePath());
-                              
-            }           
-        } catch (Exception e) {
+            }
+        } catch (Exception e) {            
             System.err.println("An exception occurred: " + e.getMessage());
             e.printStackTrace();
         }

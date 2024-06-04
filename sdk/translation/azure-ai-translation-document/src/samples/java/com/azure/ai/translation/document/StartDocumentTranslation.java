@@ -4,25 +4,17 @@
 package com.azure.ai.translation.document;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.ai.translation.document.DocumentTranslationClient;
-import com.azure.ai.translation.document.DocumentTranslationClientBuilder;
 import com.azure.ai.translation.document.models.BatchRequest;
-import com.azure.ai.translation.document.models.FileFormat;
-import com.azure.ai.translation.document.models.FileFormatType;
 import com.azure.ai.translation.document.models.Glossary;
 import com.azure.ai.translation.document.models.SourceInput;
 import com.azure.ai.translation.document.models.StartTranslationDetails;
 import com.azure.ai.translation.document.models.StorageInputType;
 import com.azure.ai.translation.document.models.StorageSource;
-import com.azure.ai.translation.document.models.SupportedFileFormats;
+import com.azure.ai.translation.document.models.DocumentFilter;
 import com.azure.ai.translation.document.models.TargetInput;
 import com.azure.ai.translation.document.models.TranslationStatus;
 import java.util.Arrays;
-import java.util.List;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.azure.core.util.polling.SyncPoller;
 
 /**
  * Sample for starting document translation

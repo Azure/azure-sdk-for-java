@@ -4,8 +4,6 @@
 package com.azure.ai.translation.document;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.ai.translation.document.DocumentTranslationClient;
-import com.azure.ai.translation.document.DocumentTranslationClientBuilder;
 import com.azure.ai.translation.document.models.FileFormat;
 import com.azure.ai.translation.document.models.FileFormatType;
 import com.azure.ai.translation.document.models.SupportedFileFormats;
@@ -28,20 +26,20 @@ public class GetSupportedFormats {
         // BEGIN: getSupportedFormats
         SupportedFileFormats documentResponse = documentTranslationClient.getSupportedFormats(FileFormatType.DOCUMENT);
         List<FileFormat> documentFileFormats = documentResponse.getValue();
-        for (FileFormat fileFormat : documentFileFormats) {
-                System.out.println("FileFormat:" + fileFormat.getFormat());
-                System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
-                System.out.println("ContentTypes:" + fileFormat.getContentTypes());
-                System.out.println("Type:" + fileFormat.getType());
+        for (FileFormat fileFormat : documentFileFormats) {            
+            System.out.println("FileFormat:" + fileFormat.getFormat());
+            System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
+            System.out.println("ContentTypes:" + fileFormat.getContentTypes());
+            System.out.println("Type:" + fileFormat.getType());
         }
         
         SupportedFileFormats glossarResponse = documentTranslationClient.getSupportedFormats(FileFormatType.GLOSSARY);
         List<FileFormat> glossaryFileFormats = glossarResponse.getValue();
         for (FileFormat fileFormat : glossaryFileFormats) {
-                System.out.println("FileFormat:" + fileFormat.getFormat());
-                System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
-                System.out.println("ContentTypes:" + fileFormat.getContentTypes());
-                System.out.println("Type:" + fileFormat.getType());
+            System.out.println("FileFormat:" + fileFormat.getFormat());
+            System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
+            System.out.println("ContentTypes:" + fileFormat.getContentTypes());
+            System.out.println("Type:" + fileFormat.getType());
         }
         // END: getSupportedFormats
     }

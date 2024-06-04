@@ -57,24 +57,26 @@ With the value of the `endpoint` and `AzureKeyCredential` , you can create the [
 ```java createDocumentTranslationClient
 String endpoint = System.getenv("DOCUMENT_TRANSLATION_ENDPOINT");
 String apiKey = System.getenv("DOCUMENT_TRANSLATION_API_KEY");
+
 AzureKeyCredential credential = new AzureKeyCredential(apiKey);
 
 DocumentTranslationClient client = new DocumentTranslationClientBuilder()
-    .endpoint(endpoint)
-    .credential(credential)
-    .buildClient();
+                    .endpoint(endpoint)
+                    .credential(credential)
+                    .buildClient();
 ```
 
 You can similarly create the [SingleDocumentTranslationClient][single_document_translator_client_class]:
 ```java createSingleDocumentTranslationClient
 String endpoint = System.getenv("DOCUMENT_TRANSLATION_ENDPOINT");
 String apiKey = System.getenv("DOCUMENT_TRANSLATION_API_KEY");
+
 AzureKeyCredential credential = new AzureKeyCredential(apiKey);
 
 SingleDocumentTranslationClient client = new SingleDocumentTranslationClientBuilder()
-    .endpoint(endpoint)
-    .credential(credential)
-    .buildClient();
+                    .endpoint(endpoint)
+                    .credential(credential)
+                    .buildClient();
 ```
 
 ## Key concepts
@@ -102,20 +104,20 @@ Gets a list of document and glossary formats supported by the Document Translati
 ```java getSupportedFormats
 SupportedFileFormats documentResponse = documentTranslationClient.getSupportedFormats(FileFormatType.DOCUMENT);
 List<FileFormat> documentFileFormats = documentResponse.getValue();
-for (FileFormat fileFormat : documentFileFormats) {
-        System.out.println("FileFormat:" + fileFormat.getFormat());
-        System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
-        System.out.println("ContentTypes:" + fileFormat.getContentTypes());
-        System.out.println("Type:" + fileFormat.getType());
+for (FileFormat fileFormat : documentFileFormats) {            
+    System.out.println("FileFormat:" + fileFormat.getFormat());
+    System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
+    System.out.println("ContentTypes:" + fileFormat.getContentTypes());
+    System.out.println("Type:" + fileFormat.getType());
 }
 
 SupportedFileFormats glossarResponse = documentTranslationClient.getSupportedFormats(FileFormatType.GLOSSARY);
 List<FileFormat> glossaryFileFormats = glossarResponse.getValue();
 for (FileFormat fileFormat : glossaryFileFormats) {
-        System.out.println("FileFormat:" + fileFormat.getFormat());
-        System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
-        System.out.println("ContentTypes:" + fileFormat.getContentTypes());
-        System.out.println("Type:" + fileFormat.getType());
+    System.out.println("FileFormat:" + fileFormat.getFormat());
+    System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
+    System.out.println("ContentTypes:" + fileFormat.getContentTypes());
+    System.out.println("Type:" + fileFormat.getType());
 }
 ```
 
@@ -126,25 +128,25 @@ Executes an asynchronous batch translation request. The method requires an Azure
 
 ```java startDocumentTranslation
 SyncPoller<TranslationStatus, Void> response
-= documentTranslationClient
-    .beginStartTranslation(
-        new StartTranslationDetails(Arrays.asList(new BatchRequest(
-            new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
-                .setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"))
-                .setLanguage("en")
-                .setStorageSource(StorageSource.AZURE_BLOB),
-            Arrays
-                .asList(
-                    new TargetInput("https://myblob.blob.core.windows.net/destinationContainer1", "fr")
-                        .setCategory("general")
-                        .setGlossaries(Arrays.asList(new Glossary(
-                            "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf", "XLIFF")
+    = documentTranslationClient
+        .beginStartTranslation(
+            new StartTranslationDetails(Arrays.asList(new BatchRequest(
+                new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
+                    .setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"))
+                    .setLanguage("en")
+                    .setStorageSource(StorageSource.AZURE_BLOB),
+                Arrays
+                    .asList(
+                        new TargetInput("https://myblob.blob.core.windows.net/destinationContainer1", "fr")
+                            .setCategory("general")
+                            .setGlossaries(Arrays.asList(new Glossary(
+                                "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf", "XLIFF")
+                                .setStorageSource(StorageSource.AZURE_BLOB)))
+                            .setStorageSource(StorageSource.AZURE_BLOB),
+                        new TargetInput("https://myblob.blob.core.windows.net/destinationContainer2", "es")
+                            .setCategory("general")
                             .setStorageSource(StorageSource.AZURE_BLOB)))
-                        .setStorageSource(StorageSource.AZURE_BLOB),
-                    new TargetInput("https://myblob.blob.core.windows.net/destinationContainer2", "es")
-                        .setCategory("general")
-                        .setStorageSource(StorageSource.AZURE_BLOB)))
-            .setStorageType(StorageInputType.FOLDER))));
+                .setStorageType(StorageInputType.FOLDER))));
 ```
 Please refer to the service documentation for a conceptual discussion of [batchTranslation][batchTranslation_doc].
 
@@ -152,25 +154,7 @@ Please refer to the service documentation for a conceptual discussion of [batchT
 Synchronously translate a single document.
 
 ```java SingleDocumentTranslation
-String CURRENT_DIRECTORY = System.getProperty("user.dir");
-Path DOCUMENT_FILE_PATH = Paths.get(CURRENT_DIRECTORY, "src", "test", "java", "com", "azure", "ai", "translation", "document", "TestData", "test-input.txt");
-    
-DocumentFileDetails document = null;
-try {
-    byte[] fileData = Files.readAllBytes(DOCUMENT_FILE_PATH);
-    BinaryData documentContent = BinaryData.fromBytes(fileData);
-    
-    String documentFilename = DOCUMENT_FILE_PATH.getFileName().toString();
-    String documentContentType = "text/html";
-    
-    document = new DocumentFileDetails(documentContent)
-            .setFilename(documentFilename)
-            .setContentType(documentContentType);            
-    
-} catch (IOException ex) {
-    Logger.getLogger(SingleDocumentTranslationTests.class.getName()).log(Level.SEVERE, null, ex);
-}
-
+DocumentFileDetails document = createDocumentContent();
 DocumentTranslateContent documentTranslateContent = new DocumentTranslateContent(document);
 String targetLanguage = "hi";    
 
@@ -184,6 +168,11 @@ Please refer to the service documentation for a conceptual discussion of [single
 Cancels a translation job that is currently processing or queued (pending) as indicated in the request by the id query parameter.
 
 ```java CancelDocumentTranslation
+DocumentTranslationClient documentTranslationClient = new DocumentTranslationClientBuilder()
+    .endpoint("{endpoint}")
+    .credential(new AzureKeyCredential("{key}"))
+    .buildClient();
+       
 SyncPoller<TranslationStatus, Void> response
     = documentTranslationClient
         .beginStartTranslation(
@@ -317,9 +306,9 @@ requestOptions.addQueryParam("statuses",
             .collect(Collectors.joining(",")),
         false); 
 
-    try {
-    PagedIterable<BinaryData> response = documentTranslationClient.getDocumentsStatus(translationId, requestOptions);
-    for (BinaryData d: response) {                
+try {
+    PagedIterable<BinaryData> documentStatusResponse = documentTranslationClient.getDocumentsStatus(translationId, requestOptions);
+    for (BinaryData d: documentStatusResponse) {
         String id = new ObjectMapper().readTree(d.toBytes()).get("id").asText();
         System.out.println("Document Translation ID is: " + id);
         String status = new ObjectMapper().readTree(d.toBytes()).get("status").asText();
@@ -368,9 +357,9 @@ requestOptions.addQueryParam("statuses",
             .collect(Collectors.joining(",")),
         false); 
 
-    try {
-    PagedIterable<BinaryData> response = documentTranslationClient.getDocumentsStatus(translationId, requestOptions);
-    for (BinaryData d: response) {                
+try {
+    PagedIterable<BinaryData> documentStatusResponse = documentTranslationClient.getDocumentsStatus(translationId, requestOptions);
+    for (BinaryData d: documentStatusResponse) {
         String id = new ObjectMapper().readTree(d.toBytes()).get("id").asText();
         System.out.println("Document Translation ID is: " + id);
         DocumentStatus documentStatus = documentTranslationClient.getDocumentStatus(translationId, id);
@@ -379,9 +368,8 @@ requestOptions.addQueryParam("statuses",
         System.out.println("Characters Charged is: " + documentStatus.getCharacterCharged().toString());
         System.out.println("Document path is: " + documentStatus.getPath());
         System.out.println("Document source path is: " + documentStatus.getSourcePath());
-                        
-    }           
-} catch (Exception e) {
+    }
+} catch (Exception e) {            
     System.err.println("An exception occurred: " + e.getMessage());
     e.printStackTrace();
 }
