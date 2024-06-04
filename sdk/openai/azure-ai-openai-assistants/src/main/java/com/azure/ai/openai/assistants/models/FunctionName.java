@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The function name that will be used, if using the `funtion` tool.
+ * The function name that will be used, if using the `function` tool.
  */
 @Immutable
 public final class FunctionName implements JsonSerializable<FunctionName> {
