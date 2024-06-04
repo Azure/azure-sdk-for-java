@@ -514,6 +514,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
 
     private void removeSanitizers() {
         // Remove sanitizer Location, operation-location, `id` and `name` from the list of common sanitizers.
+        // See https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/Common/SanitizerDictionary.cs for "testProxySanitizersId"
         interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030", "AZSDK3430", "AZSDK3493");
     }
 
