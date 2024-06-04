@@ -200,8 +200,7 @@ def update_version(sdk_root: str, output_folder: str):
         )
         subprocess.run(
             "{0} eng/versioning/update_versions.py --ut library --bt client --tf {1}/README.md".format(
-                python_cmd,
-                output_folder
+                python_cmd, output_folder
             ),
             stdout=subprocess.DEVNULL,
             stderr=sys.stderr,

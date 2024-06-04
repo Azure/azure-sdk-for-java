@@ -100,13 +100,13 @@ def remove_generated_source_code(sdk_folder: str, namespace: str):
     test_folder = os.path.join(sdk_folder, "src/test/java", namespace.replace(".", "/"), "generated")
     sample_folder = os.path.join(sdk_folder, "src/samples/java", namespace.replace(".", "/"), "generated")
 
-    logging.info(f'Removing main source folder: {main_folder}')
+    logging.info(f"Removing main source folder: {main_folder}")
     shutil.rmtree(main_folder, ignore_errors=True)
 
-    logging.info(f'Removing generated test folder: {test_folder}')
+    logging.info(f"Removing generated test folder: {test_folder}")
     shutil.rmtree(test_folder, ignore_errors=True)
 
-    logging.info(f'Removing generated samples folder: {sample_folder}')
+    logging.info(f"Removing generated samples folder: {sample_folder}")
     shutil.rmtree(sample_folder, ignore_errors=True)
 
 
