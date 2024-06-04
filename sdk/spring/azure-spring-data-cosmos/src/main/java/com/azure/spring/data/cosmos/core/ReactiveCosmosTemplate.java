@@ -1143,7 +1143,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         if (pkFieldValue instanceof Collection<?>) {
             ArrayList<Object> valueArray = ((ArrayList<Object>) pkFieldValue);
             Object[] objectArray = new Object[valueArray.size()];
-            for (int i=0; i<valueArray.size(); i++) {
+            for (int i = 0; i<valueArray.size(); i++) {
                 objectArray[i] = valueArray.get(i);
             }
             partitionKey = PartitionKey.fromObjectArray(objectArray, false);
