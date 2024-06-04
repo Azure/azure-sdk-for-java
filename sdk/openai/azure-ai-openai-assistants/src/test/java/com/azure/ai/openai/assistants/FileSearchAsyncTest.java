@@ -51,11 +51,10 @@ public class FileSearchAsyncTest extends AssistantsClientTestBase {
                     // Create assistant
                     AsyncUtils cleanUp = new AsyncUtils();
                     CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
-                    createToolResourcesOptions.setFileSearch(new CreateFileSearchToolResourceOptions(
-                        new CreateFileSearchToolResourceVectorStoreOptionsList(
-                        Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
-                    // TODO - setup with VectorStore
-//                    assistantCreationOptions.setFileIds(Arrays.asList(openAIFile.getId()));
+                    createToolResourcesOptions.setFileSearch(
+                        new CreateFileSearchToolResourceOptions(
+                            new CreateFileSearchToolResourceVectorStoreOptionsList(
+                                Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
                     assistantCreationOptions.setToolResources(createToolResourcesOptions);
                     cleanUp.setFile(openAIFile);
                     return client.createAssistant(assistantCreationOptions).zipWith(Mono.just(cleanUp));

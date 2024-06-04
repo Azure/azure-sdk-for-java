@@ -6,6 +6,10 @@ package com.azure.ai.openai.assistants;
 import com.azure.ai.openai.assistants.models.Assistant;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptionsList;
+import com.azure.ai.openai.assistants.models.CreateToolResourcesOptions;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
@@ -19,6 +23,8 @@ import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.Arrays;
 
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,8 +47,12 @@ public class AzureFileSearchSyncTest extends AssistantsClientTestBase {
             OpenAIFile openAIFile = client.uploadFile(fileDetails, FilePurpose.ASSISTANTS);
 
             // Create assistant
-            // TODO - setup with VectorStore
-//            assistantCreationOptions.setFileIds(Arrays.asList(openAIFile.getId()));
+            CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
+            createToolResourcesOptions.setFileSearch(
+                new CreateFileSearchToolResourceOptions(
+                    new CreateFileSearchToolResourceVectorStoreOptionsList(
+                        Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
+            assistantCreationOptions.setToolResources(createToolResourcesOptions);
             Assistant assistant = client.createAssistant(assistantCreationOptions);
 
             // Create thread
