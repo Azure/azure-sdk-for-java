@@ -32,8 +32,7 @@ import java.util.Map;
 class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
     private static final String HOST_NAME_REGEX = "(?<=http://|https://)(?<host>[^/?\\\\.]+)";
-    private static final String REDACTED = "REDACTED";
-    private static final List<String> DISABLE_SANITIZER_LIST = Arrays.asList("AZSDK3430", "AZSDK2030");
+    private static final String REDACTED = "REDACTED";    
 
     @Override
     public void beforeTest() {
@@ -53,7 +52,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
             documentTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isRecordMode()) {
             documentTranslationClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
-            interceptorManager.removeSanitizers(DISABLE_SANITIZER_LIST);
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
         }
 
         if (!interceptorManager.isLiveMode()) {
@@ -91,7 +90,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
             singleDocumentTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isRecordMode()) {
             singleDocumentTranslationClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
-            interceptorManager.removeSanitizers(DISABLE_SANITIZER_LIST);
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
         }
 
         if (!interceptorManager.isLiveMode()) {
@@ -142,7 +141,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         }
 
         if (interceptorManager.isRecordMode()) {
-            interceptorManager.removeSanitizers(DISABLE_SANITIZER_LIST);
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
         }
 
         if (!interceptorManager.isLiveMode()) {
@@ -165,7 +164,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         }
 
         if (interceptorManager.isRecordMode()) {
-            interceptorManager.removeSanitizers(DISABLE_SANITIZER_LIST);
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK2030");
         }
 
         if (!interceptorManager.isLiveMode()) {
