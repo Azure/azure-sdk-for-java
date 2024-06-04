@@ -163,14 +163,20 @@ Once uploaded, the file ID can then be provided to an assistant upon creation. N
 an appropriate tool like Code Interpreter or Retrieval is enabled.
 
 ```java readme-sample-createRetrievalAssistant
-        Assistant assistant = client.createAssistant(
-            new AssistantCreationOptions(deploymentOrModelId)
-                .setName("Java SDK Retrieval Sample")
-                .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
-                .setTools(Arrays.asList(new FileSearchToolDefinition()))
-                // TODO - setup with VectorStore
-//                .setFileIds(Arrays.asList(openAIFile.getId()))
-        );
+// Create Tool Resources. This is how we pass files to the Assistant.
+CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
+createToolResourcesOptions.setFileSearch(
+    new CreateFileSearchToolResourceOptions(
+        new CreateFileSearchToolResourceVectorStoreOptionsList(
+            Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
+
+Assistant assistant = client.createAssistant(
+    new AssistantCreationOptions(deploymentOrModelId)
+        .setName("Java SDK Retrieval Sample")
+        .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
+        .setTools(Arrays.asList(new FileSearchToolDefinition()))
+        .setToolResources(createToolResourcesOptions)
+);
 ```
 
 With a file ID association and a supported tool enabled, the assistant will then be able to consume the associated data 

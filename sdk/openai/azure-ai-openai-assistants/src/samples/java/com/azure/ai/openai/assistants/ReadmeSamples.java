@@ -8,7 +8,11 @@ import com.azure.ai.openai.assistants.models.AssistantCreationOptions;
 import com.azure.ai.openai.assistants.models.AssistantThread;
 import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.CreateAndRunThreadOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptions;
+import com.azure.ai.openai.assistants.models.CreateFileSearchToolResourceVectorStoreOptionsList;
 import com.azure.ai.openai.assistants.models.CreateRunOptions;
+import com.azure.ai.openai.assistants.models.CreateToolResourcesOptions;
 import com.azure.ai.openai.assistants.models.FileDetails;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.FileSearchToolDefinition;
@@ -174,13 +178,19 @@ public final class ReadmeSamples {
         // END: readme-sample-uploadFile
 
         // BEGIN: readme-sample-createRetrievalAssistant
+        // Create Tool Resources. This is how we pass files to the Assistant.
+        CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesOptions();
+        createToolResourcesOptions.setFileSearch(
+            new CreateFileSearchToolResourceOptions(
+                new CreateFileSearchToolResourceVectorStoreOptionsList(
+                    Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
+
         Assistant assistant = client.createAssistant(
             new AssistantCreationOptions(deploymentOrModelId)
                 .setName("Java SDK Retrieval Sample")
                 .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
                 .setTools(Arrays.asList(new FileSearchToolDefinition()))
-                // TODO - setup with VectorStore
-//                .setFileIds(Arrays.asList(openAIFile.getId()))
+                .setToolResources(createToolResourcesOptions)
         );
         // END: readme-sample-createRetrievalAssistant
 
