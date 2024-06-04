@@ -29,6 +29,7 @@ This section includes changes in `spring-cloud-azure-starter-appconfiguration-co
 
 #### Bugs Fixed
 - Fixing App Configuration expose the value of key in error message when parsing invalid JSON [#40132](https://github.com/Azure/azure-sdk-for-java/pull/40132).
+- Remove final from App Configuration refresh endpoints, which caused errors when creating Spring AOP Aspects [#40452](https://github.com/Azure/azure-sdk-for-java/pull/40452).
 
 ### Spring Cloud Azure Starter Data Redis with Lettuce
 This section includes changes in `spring-cloud-azure-starter-data-redis-lettuce` module.
