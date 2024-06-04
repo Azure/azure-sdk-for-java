@@ -26,11 +26,11 @@ import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
-import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
+import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolDefinition;
-import com.azure.ai.openai.assistants.models.VectorStoreOptions;
+import com.azure.ai.openai.assistants.models.VectorStoreDeletionStatus;
 import com.azure.ai.openai.assistants.models.VectorStoreUpdateOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
@@ -181,13 +181,6 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                 .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
     }
 
-    void createAssistantsFileRunner(Consumer<AssistantCreationOptions> testRunner) {
-        testRunner.accept(new AssistantCreationOptions(GPT_4_1106_PREVIEW)
-                        .setName("Math Tutor")
-                        .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
-                        .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
-    }
-
     void createRunRunner(Consumer<AssistantThreadCreationOptions> testRunner) {
         testRunner.accept(new AssistantThreadCreationOptions()
                 .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
@@ -275,30 +268,10 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         testRunner.accept(fileDetails, FilePurpose.FINE_TUNE);
     }
 
-    void createVectorStoreRunner(Consumer<VectorStoreOptions> testRunner) {
-        VectorStoreOptions vectorStoreOptions = new VectorStoreOptions();
-        // TODO fill out with file IDs and low expiry date
-        testRunner.accept(vectorStoreOptions);
-    }
-
-    void listVectorStoreRunner(Runnable testRunner) {
-        testRunner.run();
-    }
-
-    void getVectorStoreRunner(Consumer<String> testRunner) {
-        // TODO upload a file
-        testRunner.accept("vectorStoreId");
-    }
-
-    void modifyVectorStoreRunner(BiConsumer<String, VectorStoreUpdateOptions> testRunner) {
-        VectorStoreUpdateOptions updateVectorStoreOptions = new VectorStoreUpdateOptions();
-        // TODO fill out with file IDs and low expiry date
-        testRunner.accept("vectorStoreId", updateVectorStoreOptions);
-    }
-
-    void deleteVectorStoreRunner(Consumer<String> testRunner) {
-        // TODO
-        testRunner.accept("vectorStoreId");
+    void modifyVectorStoreRunner(Consumer<VectorStoreUpdateOptions> testRunner) {
+        VectorStoreUpdateOptions updateVectorStoreOptions = new VectorStoreUpdateOptions()
+                .setName("updatedName");
+        testRunner.accept(updateVectorStoreOptions);
     }
 
     public HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
@@ -417,54 +390,74 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return createAssistant(client, assistantCreationOptions);
     }
 
-    String uploadFile(AssistantsClient client) {
-        String fileName = JAVA_SDK_TESTS_ASSISTANTS_TXT;
+    String uploadFile(AssistantsClient client, String fileName, FilePurpose filePurpose) {
         FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
             .setFilename(fileName);
 
         OpenAIFile openAIFile = client.uploadFile(
             fileDetails,
-            FilePurpose.ASSISTANTS);
+            filePurpose);
         assertNotNull(openAIFile.getId());
         assertNotNull(openAIFile.getCreatedAt());
         return openAIFile.getId();
     }
 
-    void deleteFile(AssistantsClient client, String fileId) {
-        if (CoreUtils.isNullOrEmpty(fileId)) {
-            return;
-        }
-        FileDeletionStatus deletionStatus = client.deleteFile(fileId);
-        assertEquals(fileId, deletionStatus.getId());
-        assertTrue(deletionStatus.isDeleted());
+    String uploadFileAsync(AssistantsAsyncClient client, String fileName, FilePurpose filePurpose) {
+        FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
+                .setFilename(fileName);
+
+        OpenAIFile openAIFile = client.uploadFile(
+                fileDetails,
+                filePurpose).block();
+        assertNotNull(openAIFile.getId());
+        assertNotNull(openAIFile.getCreatedAt());
+        return openAIFile.getId();
     }
 
-    String uploadFile(AssistantsAsyncClient client) {
-        AtomicReference<String> openAIFileRef = new AtomicReference<>();
-        String fileName = JAVA_SDK_TESTS_ASSISTANTS_TXT;
-        StepVerifier.create(client.uploadFile(
-            new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-                .setFilename(fileName),
-            FilePurpose.ASSISTANTS))
-                .assertNext(openAIFile -> {
-                    assertNotNull(openAIFile.getId());
-                    assertNotNull(openAIFile.getCreatedAt());
-                    openAIFileRef.set(openAIFile.getId());
-                })
-                .verifyComplete();
-        return openAIFileRef.get();
-    }
-
-    void deleteFile(AssistantsAsyncClient client, String fileId) {
-        if (CoreUtils.isNullOrEmpty(fileId)) {
+    void deleteFiles(AssistantsClient client, String... fileIds) {
+        if (CoreUtils.isNullOrEmpty(fileIds)) {
             return;
         }
-        StepVerifier.create(client.deleteFile(fileId))
-                .assertNext(deletionStatus -> {
-                    assertEquals(fileId, deletionStatus.getId());
-                    assertTrue(deletionStatus.isDeleted());
-                })
-                .verifyComplete();
+        for (String fileId : fileIds) {
+            FileDeletionStatus deletionStatus = client.deleteFile(fileId);
+            assertEquals(fileId, deletionStatus.getId());
+            assertTrue(deletionStatus.isDeleted());
+        }
+    }
+
+    void deleteFilesAsync(AssistantsAsyncClient client, String... fileIds) {
+        if (CoreUtils.isNullOrEmpty(fileIds)) {
+            return;
+        }
+        for (String fileId : fileIds) {
+            StepVerifier.create(client.deleteFile(fileId))
+                    .assertNext(deletionStatus -> {
+                        assertEquals(fileId, deletionStatus.getId());
+                        assertTrue(deletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
+        }
+    }
+
+    void deleteVectorStores(AssistantsClient client, String... vectorStoreIds) {
+        if (!CoreUtils.isNullOrEmpty(vectorStoreIds)) {
+            for (String vectorStoreId : vectorStoreIds) {
+                VectorStoreDeletionStatus vectorStoreDeletionStatus = client.deleteVectorStore(vectorStoreId);
+                assertTrue(vectorStoreDeletionStatus.isDeleted());
+            }
+        }
+    }
+
+    void deleteVectorStoresAsync(AssistantsAsyncClient client, String... vectorStoreIds) {
+        if (!CoreUtils.isNullOrEmpty(vectorStoreIds)) {
+            for (String vectorStoreId : vectorStoreIds) {
+                StepVerifier.create(client.deleteVectorStore(vectorStoreId))
+                        .assertNext(vectorStoreDeletionStatus -> {
+                            assertTrue(vectorStoreDeletionStatus.isDeleted());
+                        })
+                        .verifyComplete();
+            }
+        }
     }
 
     String createAssistant(AssistantsClient client, AssistantCreationOptions assistantCreationOptions) {

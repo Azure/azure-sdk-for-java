@@ -5,7 +5,6 @@ package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.VectorStore;
-import com.azure.ai.openai.assistants.models.VectorStoreExpirationPolicy;
 import com.azure.ai.openai.assistants.models.VectorStoreFile;
 import com.azure.ai.openai.assistants.models.VectorStoreFileBatch;
 import com.azure.ai.openai.assistants.models.VectorStoreFileBatchStatus;
@@ -14,6 +13,7 @@ import com.azure.ai.openai.assistants.models.VectorStoreFileStatus;
 import com.azure.ai.openai.assistants.models.VectorStoreOptions;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -23,25 +23,23 @@ import java.util.List;
 
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.openai.assistants.models.FilePurpose.ASSISTANTS;
-import static com.azure.ai.openai.assistants.models.VectorStoreExpirationPolicyAnchor.LAST_ACTIVE_AT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class VectorStoreSyncTests extends AssistantsClientTestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(VectorStoreSyncTests.class);
+public class AzureVectorStoreSyncTests extends AssistantsClientTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(AzureVectorStoreSyncTests.class);
 
     private AssistantsClient client;
     private VectorStore vectorStore;
     private List<String> fileIds = new ArrayList<>();
 
-    protected void beforeTest(HttpClient httpClient) {
-        client = getAssistantsClient(httpClient);
+    protected void beforeTest(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        client = getAssistantsClient(httpClient, serviceVersion);
         fileIds.add(uploadFile(client, "20210203_alphabet_10K.pdf", ASSISTANTS));
         VectorStoreOptions vectorStoreOptions = new VectorStoreOptions()
                 .setName("Financial Statements")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1))
                 .setFileIds(fileIds);
         vectorStore = client.createVectorStore(vectorStoreOptions);
 
@@ -61,7 +59,8 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void updateVectorStoreName(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        beforeTest(httpClient);
+        beforeTest(httpClient, serviceVersion);
+
         modifyVectorStoreRunner(vectorStoreDetails -> {
             String vectorStoreId = vectorStore.getId();
             // Modify Vector Store
@@ -75,7 +74,8 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void getVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        beforeTest(httpClient);
+        beforeTest(httpClient, serviceVersion);
+
         String vectorStoreId = vectorStore.getId();
         // Get Vector Store
         VectorStore vectorStore = client.getVectorStore(vectorStoreId);
@@ -86,7 +86,7 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        beforeTest(httpClient);
+        beforeTest(httpClient, serviceVersion);
         // List Vector Stores
         PageableList<VectorStore> vectorStores = client.listVectorStores();
         assertNotNull(vectorStores);
@@ -101,7 +101,8 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        beforeTest(httpClient);
+        beforeTest(httpClient, serviceVersion);
+
         String storeId = vectorStore.getId();
         VectorStoreFile vectorStoreFile = client.createVectorStoreFile(storeId, fileIds.get(0));
         assertNotNull(vectorStoreFile);
@@ -111,11 +112,11 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void getVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        beforeTest(httpClient);
+        beforeTest(httpClient, serviceVersion);
+
         String storeId = vectorStore.getId();
         String fileId = fileIds.get(0);
         VectorStoreFile vectorStoreFile = client.createVectorStoreFile(storeId, fileId);
-
         VectorStoreFile vectorStoreFileResponse = client.getVectorStoreFile(storeId, fileId);
         // Get Vector Store File
         while (VectorStoreFileStatus.IN_PROGRESS == vectorStoreFileResponse.getStatus()) {
@@ -130,7 +131,8 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listVectorStoreFiles(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        beforeTest(httpClient);
+        beforeTest(httpClient, serviceVersion);
+
         String storeId = vectorStore.getId();
         String fileId = fileIds.get(0);
         String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);
@@ -153,7 +155,8 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void deleteVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        beforeTest(httpClient);
+        beforeTest(httpClient, serviceVersion);
+
         String storeId = vectorStore.getId();
         String fileId = fileIds.get(0);
 
@@ -167,7 +170,8 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        beforeTest(httpClient);
+        beforeTest(httpClient, serviceVersion);
+
         String storeId = vectorStore.getId();
         String fileId = fileIds.get(0);
         String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);
@@ -181,7 +185,8 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void getVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        beforeTest(httpClient);
+        beforeTest(httpClient, serviceVersion);
+
         String storeId = vectorStore.getId();
         String fileId = fileIds.get(0);
         String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);
@@ -199,8 +204,12 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    @Disabled("This test is failing with 500. The server had an error processing your request. Sorry about that! "
+            + "You can retry your request, or contact us through our help center at oai-assistants@microsoft.com if "
+            + "you keep seeing this error.")
     public void listVectorStoreFilesBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        beforeTest(httpClient);
+        beforeTest(httpClient, serviceVersion);
+
         String storeId = vectorStore.getId();
         String fileId = fileIds.get(0);
         String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);
@@ -220,7 +229,7 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void cancelVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        beforeTest(httpClient);
+        beforeTest(httpClient, serviceVersion);
         String storeId = vectorStore.getId();
         String fileId = fileIds.get(0);
         String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);

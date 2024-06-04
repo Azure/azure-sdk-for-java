@@ -826,7 +826,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createVectorStoreFile(@HostParam("endpoint") String endpoint,
             @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData fileId, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
 
         @Post("/vector_stores/{vectorStoreId}/files")
         @ExpectedResponses({ 200 })
@@ -836,7 +836,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createVectorStoreFileSync(@HostParam("endpoint") String endpoint,
             @PathParam("vectorStoreId") String vectorStoreId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData fileId, RequestOptions requestOptions, Context context);
+            @BodyParam("application/json") BinaryData request, RequestOptions requestOptions, Context context);
 
         @Get("/vector_stores/{vectorStoreId}/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -1416,7 +1416,7 @@ public final class AssistantsClientImpl {
      *             ]
      *         }
      *         file_search (Optional): {
-     *             vectorStoreIds (Optional): [
+     *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
      *         }
@@ -1507,7 +1507,7 @@ public final class AssistantsClientImpl {
      *             ]
      *         }
      *         file_search (Optional): {
-     *             vectorStoreIds (Optional): [
+     *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
      *         }
@@ -1884,7 +1884,7 @@ public final class AssistantsClientImpl {
      *             ]
      *         }
      *         file_search (Optional): {
-     *             vectorStoreIds (Optional): [
+     *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
      *         }
@@ -1951,7 +1951,7 @@ public final class AssistantsClientImpl {
      *             ]
      *         }
      *         file_search (Optional): {
-     *             vectorStoreIds (Optional): [
+     *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
      *         }
@@ -3730,7 +3730,7 @@ public final class AssistantsClientImpl {
      *             ]
      *         }
      *         file_search (Optional): {
-     *             vectorStoreIds (Optional): [
+     *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
      *         }
@@ -3871,7 +3871,7 @@ public final class AssistantsClientImpl {
      *             ]
      *         }
      *         file_search (Optional): {
-     *             vectorStoreIds (Optional): [
+     *             vector_store_ids (Optional): [
      *                 String (Optional)
      *             ]
      *         }
@@ -5218,7 +5218,9 @@ public final class AssistantsClientImpl {
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
-     * String
+     * {
+     *     file_id: String (Required)
+     * }
      * }</pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
@@ -5239,8 +5241,7 @@ public final class AssistantsClientImpl {
      * }</pre>
      * 
      * @param vectorStoreId The ID of the vector store for which to create a File.
-     * @param fileId A File ID that the vector store should use. Useful for tools like `file_search` that can access
-     * files.
+     * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5250,11 +5251,11 @@ public final class AssistantsClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createVectorStoreFileWithResponseAsync(String vectorStoreId, BinaryData fileId,
+    public Mono<Response<BinaryData>> createVectorStoreFileWithResponseAsync(String vectorStoreId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createVectorStoreFile(this.getEndpoint(), vectorStoreId, accept,
-            fileId, requestOptions, context));
+            request, requestOptions, context));
     }
 
     /**
@@ -5262,7 +5263,9 @@ public final class AssistantsClientImpl {
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
-     * String
+     * {
+     *     file_id: String (Required)
+     * }
      * }</pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
@@ -5283,8 +5286,7 @@ public final class AssistantsClientImpl {
      * }</pre>
      * 
      * @param vectorStoreId The ID of the vector store for which to create a File.
-     * @param fileId A File ID that the vector store should use. Useful for tools like `file_search` that can access
-     * files.
+     * @param request The request parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5293,10 +5295,10 @@ public final class AssistantsClientImpl {
      * @return description of a file attached to a vector store along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createVectorStoreFileWithResponse(String vectorStoreId, BinaryData fileId,
+    public Response<BinaryData> createVectorStoreFileWithResponse(String vectorStoreId, BinaryData request,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createVectorStoreFileSync(this.getEndpoint(), vectorStoreId, accept, fileId, requestOptions,
+        return service.createVectorStoreFileSync(this.getEndpoint(), vectorStoreId, accept, request, requestOptions,
             Context.NONE);
     }
 
