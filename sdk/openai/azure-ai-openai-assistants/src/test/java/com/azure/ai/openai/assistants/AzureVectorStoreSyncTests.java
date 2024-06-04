@@ -5,19 +5,21 @@ package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.VectorStore;
-import com.azure.ai.openai.assistants.models.VectorStoreDeletionStatus;
 import com.azure.ai.openai.assistants.models.VectorStoreFile;
 import com.azure.ai.openai.assistants.models.VectorStoreFileBatch;
 import com.azure.ai.openai.assistants.models.VectorStoreFileBatchStatus;
 import com.azure.ai.openai.assistants.models.VectorStoreFileDeletionStatus;
 import com.azure.ai.openai.assistants.models.VectorStoreFileStatus;
+import com.azure.ai.openai.assistants.models.VectorStoreOptions;
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.openai.assistants.models.FilePurpose.ASSISTANTS;
@@ -27,247 +29,221 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AzureVectorStoreSyncTests extends AssistantsClientTestBase {
-    private AssistantsClient client;
+    private static final ClientLogger LOGGER = new ClientLogger(AzureVectorStoreSyncTests.class);
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    @Disabled("Azure resource won't able to create a vector store with files")
-    public void createVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+    private AssistantsClient client;
+    private VectorStore vectorStore;
+    private List<String> fileIds = new ArrayList<>();
+
+    protected void beforeTest(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient, serviceVersion);
-        createVectorStoreRunner(vectorStoreDetails -> {
-            VectorStore vectorStore = client.createVectorStore(vectorStoreDetails);
-            assertNotNull(vectorStore);
-            assertNotNull(vectorStore.getId());
-            // clean up the created vector store
-            deleteVectorStores(client, vectorStore.getId());
-        }, client);
+        fileIds.add(uploadFile(client, "20210203_alphabet_10K.pdf", ASSISTANTS));
+        VectorStoreOptions vectorStoreOptions = new VectorStoreOptions()
+                .setName("Financial Statements")
+                .setFileIds(fileIds);
+        vectorStore = client.createVectorStore(vectorStoreOptions);
+
+        assertNotNull(vectorStore);
+        assertNotNull(vectorStore.getId());
+    }
+
+    @Override
+    protected void afterTest() {
+        LOGGER.info("Cleaning up created resources.");
+        // clean up the created vector store
+        deleteVectorStores(client, vectorStore.getId());
+        deleteFiles(client, fileIds.toArray(new String[0]));
+        LOGGER.info("Finished cleaning up resources.");
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void updateVectorStoreName(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
-        modifyVectorStoreRunner((vectorStoreId, vectorStoreDetails) -> {
+        beforeTest(httpClient, serviceVersion);
+
+        modifyVectorStoreRunner(vectorStoreDetails -> {
+            String vectorStoreId = vectorStore.getId();
             // Modify Vector Store
             VectorStore vectorStore = client.modifyVectorStore(vectorStoreId, vectorStoreDetails);
             assertNotNull(vectorStore);
             assertEquals(vectorStoreId, vectorStore.getId());
             assertEquals(vectorStoreDetails.getName(), vectorStore.getName());
-
-            // clean up the created vector store
-            deleteVectorStores(client, vectorStoreId);
-        }, client);
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void getVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
-        getVectorStoreRunner((vectorStoreId) -> {
-            // Get Vector Store
-            VectorStore vectorStore = client.getVectorStore(vectorStoreId);
-            assertNotNull(vectorStore);
-            assertEquals(vectorStoreId, vectorStore.getId());
+        beforeTest(httpClient, serviceVersion);
 
-            // clean up the created vector store
-            deleteVectorStores(client, vectorStoreId);
-        }, client);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void deleteVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
-        deleteVectorStoreRunner((vectorStoreId) -> {
-            // Delete Vector Store
-            VectorStoreDeletionStatus deletionStatus = client.deleteVectorStore(vectorStoreId);
-            assertTrue(deletionStatus.isDeleted());
-            assertEquals(deletionStatus.getId(), vectorStoreId);
-        }, client);
+        String vectorStoreId = vectorStore.getId();
+        // Get Vector Store
+        VectorStore vectorStore = client.getVectorStore(vectorStoreId);
+        assertNotNull(vectorStore);
+        assertEquals(vectorStoreId, vectorStore.getId());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void listVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
-        listVectorStoreRunner((store1, store2) -> {
-            // List Vector Stores
-            PageableList<VectorStore> vectorStores = client.listVectorStores();
-            assertNotNull(vectorStores);
-            assertFalse(vectorStores.getData().isEmpty());
-            vectorStores.getData().forEach(vectorStore -> {
-                assertNotNull(vectorStore.getId());
-                assertNotNull(vectorStore.getCreatedAt());
-            });
-
-            // clean up the created vector stores
-            deleteVectorStores(client, store1.getId(), store2.getId());
-        }, client);
+        beforeTest(httpClient, serviceVersion);
+        // List Vector Stores
+        PageableList<VectorStore> vectorStores = client.listVectorStores();
+        assertNotNull(vectorStores);
+        assertFalse(vectorStores.getData().isEmpty());
+        vectorStores.getData().forEach(vectorStore -> {
+            assertNotNull(vectorStore.getId());
+            assertNotNull(vectorStore.getCreatedAt());
+        });
     }
 
     // Vector Store with Files
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    @Disabled("Azure resource won't able to create a vector store with files")
     public void createVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
-        createVectorStoreWithFileRunner((storeId, fileId) -> {
-            VectorStoreFile vectorStoreFile = client.createVectorStoreFile(storeId, fileId);
-            assertNotNull(vectorStoreFile);
-            assertNotNull(vectorStoreFile.getId());
-            // clean up the created vector store
-            deleteVectorStores(client, storeId);
-        }, client);
+        beforeTest(httpClient, serviceVersion);
+
+        String storeId = vectorStore.getId();
+        VectorStoreFile vectorStoreFile = client.createVectorStoreFile(storeId, fileIds.get(0));
+        assertNotNull(vectorStoreFile);
+        assertNotNull(vectorStoreFile.getId());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    @Disabled("Azure resource won't able to create a vector store with files")
     public void getVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
-        getVectorStoreFileRunner((vectorStoreFile, fileId) -> {
-            String storeId = vectorStoreFile.getVectorStoreId();
-            // Get Vector Store File
-            while (VectorStoreFileStatus.IN_PROGRESS == vectorStoreFile.getStatus()) {
-                vectorStoreFile = client.getVectorStoreFile(storeId, fileId);
-            }
-            assertNotNull(vectorStoreFile);
-            assertEquals(fileId, vectorStoreFile.getId());
+        beforeTest(httpClient, serviceVersion);
 
-            // clean up the created vector store
-            deleteVectorStores(client, storeId);
-            client.deleteFile(fileId);
-        }, client);
+        String storeId = vectorStore.getId();
+        String fileId = fileIds.get(0);
+        VectorStoreFile vectorStoreFile = client.createVectorStoreFile(storeId, fileId);
+        VectorStoreFile vectorStoreFileResponse = client.getVectorStoreFile(storeId, fileId);
+        // Get Vector Store File
+        while (VectorStoreFileStatus.IN_PROGRESS == vectorStoreFileResponse.getStatus()) {
+            vectorStoreFileResponse = client.getVectorStoreFile(storeId, fileId);
+        }
+        assertNotNull(vectorStoreFileResponse);
+        assertEquals(vectorStoreFile.getVectorStoreId(), vectorStoreFileResponse.getVectorStoreId());
+        assertEquals(vectorStoreFile.getId(), vectorStoreFileResponse.getId());
+        assertEquals(fileId, vectorStoreFileResponse.getId());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    @Disabled("Azure resource won't able to create a vector store with files")
     public void listVectorStoreFiles(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
-        listVectorStoreFilesRunner((vectorStoreFile1, vectorStoreFile2) -> {
-            String storeId = vectorStoreFile1.getVectorStoreId();
-            // List Vector Store Files
-            PageableList<VectorStoreFile> vectorStoreFiles = client.listVectorStoreFiles(storeId);
-            assertNotNull(vectorStoreFiles);
-            assertFalse(vectorStoreFiles.getData().isEmpty());
-            vectorStoreFiles.getData().forEach(vectorStoreFile -> {
-                assertNotNull(vectorStoreFile.getId());
-                assertNotNull(vectorStoreFile.getCreatedAt());
-            });
+        beforeTest(httpClient, serviceVersion);
 
-            // clean up the created vector stores
-            deleteVectorStores(client, storeId);
-            client.deleteFile(vectorStoreFile1.getId());
-            client.deleteFile(vectorStoreFile2.getId());
-        }, client);
+        String storeId = vectorStore.getId();
+        String fileId = fileIds.get(0);
+        String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);
+        fileIds.add(fileId2);
+        VectorStoreFile vectorStoreFile = client.createVectorStoreFile(storeId, fileId);
+        VectorStoreFile vectorStoreFile2 = client.createVectorStoreFile(storeId, fileId2);
+        assertEquals(fileId, vectorStoreFile.getId());
+        assertEquals(fileId2, vectorStoreFile2.getId());
+
+        // List Vector Store Files
+        PageableList<VectorStoreFile> vectorStoreFiles = client.listVectorStoreFiles(storeId);
+        assertNotNull(vectorStoreFiles);
+        assertFalse(vectorStoreFiles.getData().isEmpty());
+        vectorStoreFiles.getData().forEach(storeFile -> {
+            assertNotNull(storeFile.getId());
+            assertNotNull(storeFile.getCreatedAt());
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    @Disabled("Azure resource won't able to create a vector store with files")
     public void deleteVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
-        deleteVectorStoreFileRunner((vectorStoreFile, fileId) -> {
-            String storeId = vectorStoreFile.getVectorStoreId();
-            // Delete Vector Store File
-            VectorStoreFileDeletionStatus deletionStatus = client.deleteVectorStoreFile(storeId, fileId);
-            assertTrue(deletionStatus.isDeleted());
-            assertEquals(deletionStatus.getId(), fileId);
+        beforeTest(httpClient, serviceVersion);
 
-            // clean up the created vector store
-            deleteVectorStores(client, storeId);
-        }, client);
+        String storeId = vectorStore.getId();
+        String fileId = fileIds.get(0);
+
+        // Delete Vector Store File
+        VectorStoreFileDeletionStatus deletionStatus = client.deleteVectorStoreFile(storeId, fileId);
+        assertTrue(deletionStatus.isDeleted());
+        assertEquals(fileId, deletionStatus.getId());
     }
 
     // Vector Store File Batch
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    @Disabled("Azure resource won't able to create a vector store with files")
     public void createVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
-        createVectorStoreWithFileBatchRunner((storeId, batchFiles) -> {
-            VectorStoreFileBatch vectorStoreFileBatch = client.createVectorStoreFileBatch(storeId, batchFiles);
-            assertNotNull(vectorStoreFileBatch);
-            assertNotNull(vectorStoreFileBatch.getId());
-            assertEquals(2, vectorStoreFileBatch.getFileCounts().getTotal());
-            // clean up the created vector store
-            deleteVectorStores(client, storeId);
-        }, client);
+        beforeTest(httpClient, serviceVersion);
+
+        String storeId = vectorStore.getId();
+        String fileId = fileIds.get(0);
+        String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);
+        fileIds.add(fileId2);
+        VectorStoreFileBatch vectorStoreFileBatch = client.createVectorStoreFileBatch(storeId, Arrays.asList(fileId, fileId2));
+        assertNotNull(vectorStoreFileBatch);
+        assertNotNull(vectorStoreFileBatch.getId());
+        assertEquals(2, vectorStoreFileBatch.getFileCounts().getTotal());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    @Disabled("Azure resource won't able to create a vector store with files")
     public void getVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
-        getVectorStoreFileBatchRunner(vectorStoreFileBatch -> {
-            String storeId = vectorStoreFileBatch.getVectorStoreId();
-            String batchId = vectorStoreFileBatch.getId();
-            int totalFileCounts = vectorStoreFileBatch.getFileCounts().getTotal();
-            // Get Vector Store File
-            VectorStoreFileBatch vectorStoreFileBatchResponse = client.getVectorStoreFileBatch(storeId, vectorStoreFileBatch.getId());
-            assertEquals(storeId, vectorStoreFileBatchResponse.getVectorStoreId());
-            assertEquals(batchId, vectorStoreFileBatchResponse.getId());
-            assertEquals(totalFileCounts, vectorStoreFileBatchResponse.getFileCounts().getTotal());
-            // clean up the created vector store
-            deleteVectorStores(client, storeId);
-        }, client);
+        beforeTest(httpClient, serviceVersion);
+
+        String storeId = vectorStore.getId();
+        String fileId = fileIds.get(0);
+        String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);
+        fileIds.add(fileId2);
+        VectorStoreFileBatch vectorStoreFileBatch = client.createVectorStoreFileBatch(storeId, Arrays.asList(fileId, fileId2));
+        String batchId = vectorStoreFileBatch.getId();
+        int totalFileCounts = vectorStoreFileBatch.getFileCounts().getTotal();
+
+        // Get Vector Store File
+        VectorStoreFileBatch vectorStoreFileBatchResponse = client.getVectorStoreFileBatch(storeId, batchId);
+        assertEquals(storeId, vectorStoreFileBatchResponse.getVectorStoreId());
+        assertEquals(batchId, vectorStoreFileBatchResponse.getId());
+        assertEquals(totalFileCounts, vectorStoreFileBatchResponse.getFileCounts().getTotal());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    @Disabled("Azure resource won't able to create a vector store with files")
+    @Disabled("This test is failing with 500. The server had an error processing your request. Sorry about that! "
+            + "You can retry your request, or contact us through our help center at oai-assistants@microsoft.com if "
+            + "you keep seeing this error.")
     public void listVectorStoreFilesBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
-        listVectorStoreFilesBatchFilesRunner((storeId, batchId) -> {
-            // List Vector Store Files
-            PageableList<VectorStoreFile> vectorStoreFiles = client.listVectorStoreFileBatchFiles(storeId, batchId);
-            assertNotNull(vectorStoreFiles);
-            assertFalse(vectorStoreFiles.getData().isEmpty());
-            vectorStoreFiles.getData().forEach(vectorStoreFile -> {
-                assertNotNull(vectorStoreFile.getId());
-                assertNotNull(vectorStoreFile.getCreatedAt());
-            });
+        beforeTest(httpClient, serviceVersion);
 
-            // clean up the created vector stores
-            deleteVectorStores(client, storeId);
-            client.deleteFile(vectorStoreFiles.getData().get(0).getId());
-            client.deleteFile(vectorStoreFiles.getData().get(1).getId());
-        }, client);
+        String storeId = vectorStore.getId();
+        String fileId = fileIds.get(0);
+        String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);
+        fileIds.add(fileId2);
+        VectorStoreFileBatch vectorStoreFileBatch = client.createVectorStoreFileBatch(storeId, Arrays.asList(fileId, fileId2));
+
+        // List Vector Store Files
+        PageableList<VectorStoreFile> vectorStoreFiles = client.listVectorStoreFileBatchFiles(storeId, vectorStoreFileBatch.getId());
+        assertNotNull(vectorStoreFiles);
+        assertFalse(vectorStoreFiles.getData().isEmpty());
+        vectorStoreFiles.getData().forEach(vectorStoreFile -> {
+            assertNotNull(vectorStoreFile.getId());
+            assertNotNull(vectorStoreFile.getCreatedAt());
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    @Disabled("Azure resource won't able to create a vector store with files")
     public void cancelVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsClient(httpClient, serviceVersion);
-        cancelVectorStoreFileBatchRunner(vectorStore -> {
-            String storeId = vectorStore.getId();
-            String fileId = uploadFile(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-            String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);
-            VectorStoreFileBatch vectorStoreFileBatch = client.createVectorStoreFileBatch(storeId, Arrays.asList(fileId, fileId2));
-            // Cancel Vector Store File
-            VectorStoreFileBatch cancelVectorStoreFileBatch = client.cancelVectorStoreFileBatch(storeId, vectorStoreFileBatch.getId());
-            while (VectorStoreFileBatchStatus.IN_PROGRESS == cancelVectorStoreFileBatch.getStatus()) {
-                cancelVectorStoreFileBatch = client.getVectorStoreFileBatch(storeId, vectorStoreFileBatch.getId());
-            }
-            assertNotNull(vectorStoreFileBatch);
-            assertNotNull(cancelVectorStoreFileBatch);
-            assertEquals(vectorStoreFileBatch.getId(), cancelVectorStoreFileBatch.getId());
-            assertEquals(vectorStoreFileBatch.getFileCounts().getTotal(), cancelVectorStoreFileBatch.getFileCounts().getTotal());
-            // TODO: investigate why the status is not CANCELLED but FAILED instead
-//            assertEquals(VectorStoreFileStatus.CANCELLED, cancelVectorStoreFileBatch.getStatus());
-            // clean up the created vector store
-            deleteVectorStores(client, storeId);
-        }, client);
-    }
+        beforeTest(httpClient, serviceVersion);
+        String storeId = vectorStore.getId();
+        String fileId = fileIds.get(0);
+        String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);
+        fileIds.add(fileId2);
+        VectorStoreFileBatch vectorStoreFileBatch = client.createVectorStoreFileBatch(storeId, Arrays.asList(fileId, fileId2));
 
-    private void deleteVectorStores(AssistantsClient client, String... vectorStoreIds) {
-        if (!CoreUtils.isNullOrEmpty(vectorStoreIds)) {
-            for (String vectorStoreId : vectorStoreIds) {
-                client.deleteVectorStore(vectorStoreId);
-            }
+        // Cancel Vector Store File
+        VectorStoreFileBatch cancelVectorStoreFileBatch = client.cancelVectorStoreFileBatch(storeId, vectorStoreFileBatch.getId());
+        while (VectorStoreFileBatchStatus.IN_PROGRESS == cancelVectorStoreFileBatch.getStatus()) {
+            cancelVectorStoreFileBatch = client.getVectorStoreFileBatch(storeId, vectorStoreFileBatch.getId());
         }
+        assertNotNull(vectorStoreFileBatch);
+        assertNotNull(cancelVectorStoreFileBatch);
+        assertEquals(vectorStoreFileBatch.getId(), cancelVectorStoreFileBatch.getId());
+        assertEquals(vectorStoreFileBatch.getFileCounts().getTotal(), cancelVectorStoreFileBatch.getFileCounts().getTotal());
     }
 }

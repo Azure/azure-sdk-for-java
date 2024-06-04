@@ -30,11 +30,7 @@ import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadMessageOptions;
 import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolDefinition;
-import com.azure.ai.openai.assistants.models.VectorStore;
-import com.azure.ai.openai.assistants.models.VectorStoreExpirationPolicy;
-import com.azure.ai.openai.assistants.models.VectorStoreFile;
-import com.azure.ai.openai.assistants.models.VectorStoreFileBatch;
-import com.azure.ai.openai.assistants.models.VectorStoreOptions;
+import com.azure.ai.openai.assistants.models.VectorStoreDeletionStatus;
 import com.azure.ai.openai.assistants.models.VectorStoreUpdateOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
@@ -62,8 +58,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.azure.ai.openai.assistants.models.FilePurpose.ASSISTANTS;
-import static com.azure.ai.openai.assistants.models.VectorStoreExpirationPolicyAnchor.LAST_ACTIVE_AT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -187,13 +181,6 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
                 .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
     }
 
-    void createAssistantsFileRunner(Consumer<AssistantCreationOptions> testRunner) {
-        testRunner.accept(new AssistantCreationOptions(GPT_4_1106_PREVIEW)
-                        .setName("Math Tutor")
-                        .setInstructions("You are a personal math tutor. Answer questions briefly, in a sentence or less.")
-                        .setTools(Arrays.asList(new CodeInterpreterToolDefinition())));
-    }
-
     void createRunRunner(Consumer<AssistantThreadCreationOptions> testRunner) {
         testRunner.accept(new AssistantThreadCreationOptions()
                 .setMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.USER,
@@ -281,228 +268,10 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         testRunner.accept(fileDetails, FilePurpose.FINE_TUNE);
     }
 
-    void createVectorStoreRunner(Consumer<VectorStoreOptions> testRunner, AssistantsClient client) {
-        String fileId = uploadFile(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        VectorStoreOptions vectorStoreOptions = new VectorStoreOptions()
-                .setName("Financial Statements")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1))
-                .setFileIds(Arrays.asList(fileId));
-        testRunner.accept(vectorStoreOptions);
-    }
-
-    void createVectorStoreAsyncRunner(Consumer<VectorStoreOptions> testRunner, AssistantsAsyncClient client) {
-        String fileId = uploadFileAsync(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        VectorStoreOptions vectorStoreOptions = new VectorStoreOptions()
-                .setName("Financial Statements")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1))
-                .setFileIds(Arrays.asList(fileId));
-        testRunner.accept(vectorStoreOptions);
-    }
-
-    void createVectorStoreWithFileRunner(BiConsumer<String, String> testRunner, AssistantsClient client) {
-        String fileId = uploadFile(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("FirstVectorStore")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)));
-        testRunner.accept(vectorStore.getId(), fileId);
-    }
-
-    void createVectorStoreWithFileAsyncRunner(BiConsumer<String, String> testRunner, AssistantsAsyncClient client) {
-        String fileId = uploadFileAsync(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("FirstVectorStore")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1))).block();
-        testRunner.accept(vectorStore.getId(), fileId);
-    }
-
-    void createVectorStoreWithFileBatchRunner(BiConsumer<String, List<String>> testRunner, AssistantsClient client) {
-        String fileId = uploadFile(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("FirstVectorStore")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)));
-        testRunner.accept(vectorStore.getId(), Arrays.asList(fileId, fileId2));
-    }
-
-    void createVectorStoreWithFileBatchAsyncRunner(BiConsumer<String, List<String>> testRunner, AssistantsAsyncClient client) {
-        String fileId = uploadFileAsync(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        String fileId2 = uploadFileAsync(client, "20220924_aapl_10k.pdf", ASSISTANTS);
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("FirstVectorStore")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1))).block();
-        testRunner.accept(vectorStore.getId(), Arrays.asList(fileId, fileId2));
-    }
-    void listVectorStoreRunner(BiConsumer<VectorStore, VectorStore> testRunner, AssistantsClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("FirstVectorStore")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)));
-        VectorStore vectorStore2 = client.createVectorStore(new VectorStoreOptions().setName("SecondVectorStore")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)));
-        testRunner.accept(vectorStore, vectorStore2);
-    }
-
-    void listVectorStoreAsyncRunner(BiConsumer<VectorStore, VectorStore> testRunner, AssistantsAsyncClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("FirstVectorStore")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1))).block();
-        VectorStore vectorStore2 = client.createVectorStore(new VectorStoreOptions().setName("SecondVectorStore")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1))).block();
-        testRunner.accept(vectorStore, vectorStore2);
-    }
-
-    void listVectorStoreFilesRunner(BiConsumer<VectorStoreFile, VectorStoreFile> testRunner, AssistantsClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("FirstVectorStore")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)));
-        String storeId = vectorStore.getId();
-        String fileId = uploadFile(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);
-        VectorStoreFile vectorStoreFile = client.createVectorStoreFile(storeId, fileId);
-        VectorStoreFile vectorStoreFile2 = client.createVectorStoreFile(storeId, fileId2);
-        testRunner.accept(vectorStoreFile, vectorStoreFile2);
-    }
-
-
-    void listVectorStoreFilesAsyncRunner(BiConsumer<VectorStoreFile, VectorStoreFile> testRunner, AssistantsAsyncClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("FirstVectorStore")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1))).block();
-        String storeId = vectorStore.getId();
-        String fileId = uploadFileAsync(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        String fileId2 = uploadFileAsync(client, "20220924_aapl_10k.pdf", ASSISTANTS);
-        VectorStoreFile vectorStoreFile = client.createVectorStoreFile(storeId, fileId).block();
-        VectorStoreFile vectorStoreFile2 = client.createVectorStoreFile(storeId, fileId2).block();
-        testRunner.accept(vectorStoreFile, vectorStoreFile2);
-    }
-
-    void listVectorStoreFilesBatchFilesRunner(BiConsumer<String, String> testRunner, AssistantsClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("FirstVectorStore")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)));
-        String storeId = vectorStore.getId();
-        String fileId = uploadFile(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);
-
-        VectorStoreFileBatch vectorStoreFileBatch = client.createVectorStoreFileBatch(storeId, Arrays.asList(fileId, fileId2));
-        testRunner.accept(storeId, vectorStoreFileBatch.getId());
-    }
-
-    void listVectorStoreFilesBatchFilesAsyncRunner(BiConsumer<String, String> testRunner, AssistantsAsyncClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("FirstVectorStore")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1))).block();
-        String storeId = vectorStore.getId();
-        String fileId = uploadFileAsync(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        String fileId2 = uploadFileAsync(client, "20220924_aapl_10k.pdf", ASSISTANTS);
-
-        VectorStoreFileBatch block = client.createVectorStoreFileBatch(storeId, Arrays.asList(fileId, fileId2)).block();
-        testRunner.accept(storeId, block.getId());
-    }
-
-    void getVectorStoreRunner(Consumer<String> testRunner, AssistantsClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions()
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)));
-        testRunner.accept(vectorStore.getId());
-    }
-
-    void getVectorStoreAsyncRunner(Consumer<String> testRunner, AssistantsAsyncClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions()
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)))
-                .block();
-        testRunner.accept(vectorStore.getId());
-    }
-
-    void getVectorStoreFileRunner(BiConsumer<VectorStoreFile, String> testRunner, AssistantsClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("originalName")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)));
-        String storeId = vectorStore.getId();
-        String fileId = uploadFile(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        VectorStoreFile vectorStoreFile = client.createVectorStoreFile(storeId, fileId);
-        testRunner.accept(vectorStoreFile, fileId);
-    }
-
-    void getVectorStoreFileAsyncRunner(BiConsumer<VectorStoreFile, String> testRunner, AssistantsAsyncClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("originalName")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1))).block();
-        String storeId = vectorStore.getId();
-        String fileId = uploadFileAsync(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        VectorStoreFile vectorStoreFile = client.createVectorStoreFile(storeId, fileId).block();
-        testRunner.accept(vectorStoreFile, fileId);
-    }
-
-    void getVectorStoreFileBatchRunner(Consumer<VectorStoreFileBatch> testRunner, AssistantsClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("originalName")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)));
-        String storeId = vectorStore.getId();
-        String fileId = uploadFile(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        String fileId2 = uploadFile(client, "20220924_aapl_10k.pdf", ASSISTANTS);
-        VectorStoreFileBatch vectorStoreFileBatch = client.createVectorStoreFileBatch(storeId, Arrays.asList(fileId, fileId2));
-        testRunner.accept(vectorStoreFileBatch);
-    }
-
-    void getVectorStoreFileBatchAsyncRunner(Consumer<VectorStoreFileBatch> testRunner, AssistantsAsyncClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("originalName")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1))).block();
-        String storeId = vectorStore.getId();
-        String fileId = uploadFileAsync(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        String fileId2 = uploadFileAsync(client, "20220924_aapl_10k.pdf", ASSISTANTS);
-        VectorStoreFileBatch vectorStoreFileBatch = client.createVectorStoreFileBatch(storeId, Arrays.asList(fileId, fileId2)).block();
-        testRunner.accept(vectorStoreFileBatch);
-    }
-
-    void modifyVectorStoreRunner(BiConsumer<String, VectorStoreUpdateOptions> testRunner, AssistantsClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("originalName")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)));
-
+    void modifyVectorStoreRunner(Consumer<VectorStoreUpdateOptions> testRunner) {
         VectorStoreUpdateOptions updateVectorStoreOptions = new VectorStoreUpdateOptions()
                 .setName("updatedName");
-
-        testRunner.accept(vectorStore.getId(), updateVectorStoreOptions);
-    }
-
-    void modifyVectorStoreAsyncRunner(BiConsumer<String, VectorStoreUpdateOptions> testRunner, AssistantsAsyncClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("originalName")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)))
-                .block();
-
-        VectorStoreUpdateOptions updateVectorStoreOptions = new VectorStoreUpdateOptions()
-                .setName("updatedName");
-
-        testRunner.accept(vectorStore.getId(), updateVectorStoreOptions);
-    }
-
-    void deleteVectorStoreRunner(Consumer<String> testRunner, AssistantsClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("originalName")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)));
-
-        testRunner.accept(vectorStore.getId());
-    }
-
-    void deleteVectorStoreAsyncRunner(Consumer<String> testRunner, AssistantsAsyncClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("originalName")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)))
-                .block();
-        testRunner.accept(vectorStore.getId());
-    }
-
-    void deleteVectorStoreFileRunner(BiConsumer<VectorStoreFile, String> testRunner, AssistantsClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("originalName")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)));
-        String storeId = vectorStore.getId();
-        String fileId = uploadFile(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        VectorStoreFile vectorStoreFile = client.createVectorStoreFile(storeId, fileId);
-        testRunner.accept(vectorStoreFile, fileId);
-    }
-
-    void deleteVectorStoreFileAsyncRunner(BiConsumer<VectorStoreFile, String> testRunner, AssistantsAsyncClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("originalName")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1))).block();
-        String storeId = vectorStore.getId();
-        String fileId = uploadFileAsync(client, "20210203_alphabet_10K.pdf", ASSISTANTS);
-        VectorStoreFile vectorStoreFile = client.createVectorStoreFile(storeId, fileId).block();
-        testRunner.accept(vectorStoreFile, fileId);
-    }
-
-    void cancelVectorStoreFileBatchRunner(Consumer<VectorStore> testRunner, AssistantsClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("originalName")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1)));
-        testRunner.accept(vectorStore);
-    }
-
-    void cancelVectorStoreFileBatchAsyncRunner(Consumer<VectorStore> testRunner, AssistantsAsyncClient client) {
-        VectorStore vectorStore = client.createVectorStore(new VectorStoreOptions().setName("originalName")
-                .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1))).block();
-        testRunner.accept(vectorStore);
+        testRunner.accept(updateVectorStoreOptions);
     }
 
     public HttpClient buildAssertingClient(HttpClient httpClient, boolean sync) {
@@ -645,41 +414,50 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         return openAIFile.getId();
     }
 
-    void deleteFile(AssistantsClient client, String fileId) {
-        if (CoreUtils.isNullOrEmpty(fileId)) {
+    void deleteFiles(AssistantsClient client, String... fileIds) {
+        if (CoreUtils.isNullOrEmpty(fileIds)) {
             return;
         }
-        FileDeletionStatus deletionStatus = client.deleteFile(fileId);
-        assertEquals(fileId, deletionStatus.getId());
-        assertTrue(deletionStatus.isDeleted());
+        for (String fileId : fileIds) {
+            FileDeletionStatus deletionStatus = client.deleteFile(fileId);
+            assertEquals(fileId, deletionStatus.getId());
+            assertTrue(deletionStatus.isDeleted());
+        }
     }
 
-    String uploadFile(AssistantsAsyncClient client) {
-        AtomicReference<String> openAIFileRef = new AtomicReference<>();
-        String fileName = JAVA_SDK_TESTS_ASSISTANTS_TXT;
-        StepVerifier.create(client.uploadFile(
-            new FileDetails(BinaryData.fromFile(openResourceFile(fileName)))
-                .setFilename(fileName),
-            FilePurpose.ASSISTANTS))
-                .assertNext(openAIFile -> {
-                    assertNotNull(openAIFile.getId());
-                    assertNotNull(openAIFile.getCreatedAt());
-                    openAIFileRef.set(openAIFile.getId());
-                })
-                .verifyComplete();
-        return openAIFileRef.get();
-    }
-
-    void deleteFile(AssistantsAsyncClient client, String fileId) {
-        if (CoreUtils.isNullOrEmpty(fileId)) {
+    void deleteFilesAsync(AssistantsAsyncClient client, String... fileIds) {
+        if (CoreUtils.isNullOrEmpty(fileIds)) {
             return;
         }
-        StepVerifier.create(client.deleteFile(fileId))
-                .assertNext(deletionStatus -> {
-                    assertEquals(fileId, deletionStatus.getId());
-                    assertTrue(deletionStatus.isDeleted());
-                })
-                .verifyComplete();
+        for (String fileId : fileIds) {
+            StepVerifier.create(client.deleteFile(fileId))
+                    .assertNext(deletionStatus -> {
+                        assertEquals(fileId, deletionStatus.getId());
+                        assertTrue(deletionStatus.isDeleted());
+                    })
+                    .verifyComplete();
+        }
+    }
+
+    void deleteVectorStores(AssistantsClient client, String... vectorStoreIds) {
+        if (!CoreUtils.isNullOrEmpty(vectorStoreIds)) {
+            for (String vectorStoreId : vectorStoreIds) {
+                VectorStoreDeletionStatus vectorStoreDeletionStatus = client.deleteVectorStore(vectorStoreId);
+                assertTrue(vectorStoreDeletionStatus.isDeleted());
+            }
+        }
+    }
+
+    void deleteVectorStoresAsync(AssistantsAsyncClient client, String... vectorStoreIds) {
+        if (!CoreUtils.isNullOrEmpty(vectorStoreIds)) {
+            for (String vectorStoreId : vectorStoreIds) {
+                StepVerifier.create(client.deleteVectorStore(vectorStoreId))
+                        .assertNext(vectorStoreDeletionStatus -> {
+                            assertTrue(vectorStoreDeletionStatus.isDeleted());
+                        })
+                        .verifyComplete();
+            }
+        }
     }
 
     String createAssistant(AssistantsClient client, AssistantCreationOptions assistantCreationOptions) {
