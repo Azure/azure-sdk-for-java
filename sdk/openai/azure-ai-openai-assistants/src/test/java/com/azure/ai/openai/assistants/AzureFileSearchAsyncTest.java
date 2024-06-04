@@ -80,7 +80,7 @@ public class AzureFileSearchAsyncTest extends AssistantsClientTestBase {
                         client.createRun(cleanUp.getThread(), cleanUp.getAssistant())
                             .flatMap(createdRun ->
                                 client.getRun(cleanUp.getThread().getId(), createdRun.getId()).zipWith(Mono.just(cleanUp))
-                                    .repeatWhen(completed -> completed.delayElements(Duration.ofMillis(500)))
+                                    .repeatWhen(completed -> completed.delayElements(Duration.ofMillis(1000)))
                                     .takeUntil(tuple2 -> {
                                         ThreadRun run = tuple2.getT1();
 

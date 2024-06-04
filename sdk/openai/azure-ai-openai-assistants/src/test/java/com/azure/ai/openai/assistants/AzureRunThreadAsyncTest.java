@@ -70,7 +70,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
                         .verifyComplete();
                 run = runReference.get();
 
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -133,7 +133,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
                         .verifyComplete();
                 run = runReference.get();
 
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -189,7 +189,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
                         .verifyComplete();
                 run = runReference.get();
 
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -250,7 +250,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
                         .verifyComplete();
                 run = runReference.get();
 
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
 
             assertSame(RunStatus.COMPLETED, run.getStatus());
@@ -379,7 +379,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
                             runReference.set(threadRun);
                         })
                         .verifyComplete();
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
                 run = runReference.get();
             } while (run.getStatus() == RunStatus.IN_PROGRESS || run.getStatus() == RunStatus.QUEUED);
             assertSame(RunStatus.COMPLETED, run.getStatus());

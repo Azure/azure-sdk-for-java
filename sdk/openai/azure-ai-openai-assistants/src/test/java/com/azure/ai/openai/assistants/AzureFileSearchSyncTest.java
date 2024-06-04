@@ -69,7 +69,7 @@ public class AzureFileSearchSyncTest extends AssistantsClientTestBase {
             ThreadRun run = client.createRun(thread, assistant);
 
             do {
-                sleepIfRunningAgainstService(500);
+                sleepIfRunningAgainstService(1000);
                 run = client.getRun(thread.getId(), run.getId());
             } while (run.getStatus() == RunStatus.IN_PROGRESS
                 || run.getStatus() == RunStatus.QUEUED);

@@ -89,7 +89,7 @@ public class FileSearchToolSample {
 
         // Wait for the run to complete
         do {
-            Thread.sleep(500);
+            Thread.sleep(1000);
             run = client.getRun(thread.getId(), run.getId());
         } while (run.getStatus() == RunStatus.IN_PROGRESS
             || run.getStatus() == RunStatus.QUEUED);

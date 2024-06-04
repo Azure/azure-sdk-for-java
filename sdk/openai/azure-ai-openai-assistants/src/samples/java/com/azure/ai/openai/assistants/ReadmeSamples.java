@@ -197,7 +197,7 @@ public final class ReadmeSamples {
         ThreadRun run = client.createRun(thread, assistant);
 
         do {
-            Thread.sleep(500);
+            Thread.sleep(1000);
             run = client.getRun(thread.getId(), run.getId());
         } while (run.getStatus() == RunStatus.IN_PROGRESS
             || run.getStatus() == RunStatus.QUEUED);
@@ -256,7 +256,7 @@ public final class ReadmeSamples {
 
         // BEGIN: readme-sample-functionHandlingRunPolling
         do {
-            Thread.sleep(500);
+            Thread.sleep(1000);
             run = client.getRun(thread.getId(), run.getId());
 
             if (run.getStatus() == RunStatus.REQUIRES_ACTION
