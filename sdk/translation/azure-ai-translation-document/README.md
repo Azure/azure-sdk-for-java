@@ -111,8 +111,8 @@ for (FileFormat fileFormat : documentFileFormats) {
     System.out.println("Type:" + fileFormat.getType());
 }
 
-SupportedFileFormats glossarResponse = documentTranslationClient.getSupportedFormats(FileFormatType.GLOSSARY);
-List<FileFormat> glossaryFileFormats = glossarResponse.getValue();
+SupportedFileFormats glossaryResponse = documentTranslationClient.getSupportedFormats(FileFormatType.GLOSSARY);
+List<FileFormat> glossaryFileFormats = glossaryResponse.getValue();
 for (FileFormat fileFormat : glossaryFileFormats) {
     System.out.println("FileFormat:" + fileFormat.getFormat());
     System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
@@ -121,7 +121,7 @@ for (FileFormat fileFormat : glossaryFileFormats) {
 }
 ```
 
-Please refer to the service documentation for a conceptual discussion of [documentFormats][documentFormats_doc] and [glossayFormats][glossaryFormats_doc].
+Please refer to the service documentation for a conceptual discussion of [documentFormats][documentFormats_doc] and [glossaryFormats][glossaryFormats_doc].
 
 ### Batch Translation
 Executes an asynchronous batch translation request. The method requires an Azure Blob storage account with storage containers for your source and translated documents.
@@ -411,7 +411,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [documentFormats_doc]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/get-supported-document-formats
-[glossayFormats]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/get-supported-glossary-formats
+[glossaryFormats]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/get-supported-glossary-formats
 [batchTranslation_doc]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/start-batch-translation
 [singleDocumentTranslation_doc]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/translate-document
 [cancelTranslation_doc]: https://learn.microsoft.com/en-us/azure/ai-services/translator/document-translation/reference/cancel-translation
