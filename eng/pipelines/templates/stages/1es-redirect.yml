@@ -44,7 +44,8 @@ extends:
       componentgovernance:
         scanType: LogOnly
         sourceScanPath: $(Build.SourcesDirectory)/sdk/core
-        ignoreDirectories: $(Build.SourcesDirectory)/**
+        ignoreDirectories: $(Build.SourcesDirectory)
+        detectorsFilter: Maven
         alertWarningLevel: Low
         failOnAlert: true
         verbosity: Verbose
