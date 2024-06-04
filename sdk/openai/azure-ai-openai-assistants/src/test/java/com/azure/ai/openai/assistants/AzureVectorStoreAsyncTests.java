@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AzureVectorStoreAsyncTests extends AssistantsClientTestBase  {
+public class AzureVectorStoreAsyncTests extends AssistantsClientTestBase {
     private AssistantsAsyncClient client;
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
