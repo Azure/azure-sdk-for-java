@@ -2648,7 +2648,7 @@ public final class AssistantsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2701,7 +2701,7 @@ public final class AssistantsAsyncClient {
     /**
      * Creates a vector store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     file_ids (Optional): [
@@ -2717,9 +2717,9 @@ public final class AssistantsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2766,7 +2766,7 @@ public final class AssistantsAsyncClient {
     /**
      * Returns the vector store object matching the specified ID.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2812,7 +2812,7 @@ public final class AssistantsAsyncClient {
     /**
      * The ID of the vector store to modify.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -2825,9 +2825,9 @@ public final class AssistantsAsyncClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2876,7 +2876,7 @@ public final class AssistantsAsyncClient {
     /**
      * Deletes the vector store object matching the specified ID.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2923,7 +2923,7 @@ public final class AssistantsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2966,15 +2966,15 @@ public final class AssistantsAsyncClient {
     /**
      * Create a vector store file by attaching a file to a vector store.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     file_id: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3010,7 +3010,7 @@ public final class AssistantsAsyncClient {
     /**
      * Retrieves a vector store file.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3048,7 +3048,7 @@ public final class AssistantsAsyncClient {
      * deleted.
      * To delete the file, use the delete file endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3077,7 +3077,7 @@ public final class AssistantsAsyncClient {
     /**
      * Create a vector store file batch.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     file_ids (Required): [
@@ -3085,9 +3085,9 @@ public final class AssistantsAsyncClient {
      *     ]
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3125,7 +3125,7 @@ public final class AssistantsAsyncClient {
     /**
      * Retrieve a vector store file batch.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3164,7 +3164,7 @@ public final class AssistantsAsyncClient {
      * Cancel a vector store file batch. This attempts to cancel the processing of files in this batch as soon as
      * possible.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3221,7 +3221,7 @@ public final class AssistantsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     object: String (Required)
