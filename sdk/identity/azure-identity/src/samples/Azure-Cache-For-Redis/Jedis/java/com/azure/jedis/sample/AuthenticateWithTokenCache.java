@@ -30,7 +30,6 @@ public class AuthenticateWithTokenCache {
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
         // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
-        // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
         TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
         TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
         AccessToken accessToken = tokenRefreshCache.getAccessToken();
@@ -42,13 +41,12 @@ public class AuthenticateWithTokenCache {
         String username = extractUsernameFromToken(accessToken.getToken());
 
         // Create Jedis client and connect to the Azure Cache for Redis over the TLS/SSL port using the access token as password.
-        // Note: Cache Host Name, Port, Username, Microsoft Entra access token, and SSL connections are required below.
+        // Note: Cache Host Name, Port, Username, Microsoft Entra access token and SSL connections are required below.
         Jedis jedis = createJedisClient(cacheHostname, 6380, username, accessToken, useSsl);
 
         // Configure the jedis instance for proactive authentication before token expires.
         tokenRefreshCache
-            .setJedisInstanceToAuthenticate(jedis)
-            .setUsername(username);
+            .setJedisInstanceToAuthenticate(jedis);
 
         int maxTries = 3;
         int i = 0;
@@ -73,8 +71,7 @@ public class AuthenticateWithTokenCache {
 
                     // Configure the jedis instance for proactive authentication before token expires.
                     tokenRefreshCache
-                        .setJedisInstanceToAuthenticate(jedis)
-                        .setUsername(username);
+                        .setJedisInstanceToAuthenticate(jedis);
                 }
             }
             i++;
@@ -156,6 +153,7 @@ public class AuthenticateWithTokenCache {
             // Add your task here
             public void run() {
                 accessToken = tokenCredential.getToken(tokenRequestContext).block();
+                username = extractUsernameFromToken(accessToken.getToken());
                 System.out.println("Refreshed Token with Expiry: " + accessToken.getExpiresAt().toEpochSecond());
 
                 if (jedisInstanceToAuthenticate != null && !CoreUtils.isNullOrEmpty(username)) {
@@ -180,16 +178,6 @@ public class AuthenticateWithTokenCache {
          */
         public TokenRefreshCache setJedisInstanceToAuthenticate(Jedis jedisInstanceToAuthenticate) {
             this.jedisInstanceToAuthenticate = jedisInstanceToAuthenticate;
-            return this;
-        }
-
-        /**
-         * Sets the username to authenticate jedis instance with.
-         * @param username the username to authenticate with
-         * @return the updated instance
-         */
-        public TokenRefreshCache setUsername(String username) {
-            this.username = username;
             return this;
         }
     }

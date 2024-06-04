@@ -226,8 +226,7 @@ Jedis jedis = createJedisClient(cacheHostname, 6380, username, accessToken, useS
 
 // Configure the jedis instance for proactive authentication before token expires.
 tokenRefreshCache
-    .setJedisInstanceToAuthenticate(jedis)
-    .setUsername(username);
+    .setJedisInstanceToAuthenticate(jedis);
     
 int maxTries = 3;
 int i = 0;
@@ -252,8 +251,7 @@ while (i < maxTries) {
             
             // Configure the jedis instance for proactive authentication before token expires.
             tokenRefreshCache
-                .setJedisInstanceToAuthenticate(jedis)
-                .setUsername(username);
+                .setJedisInstanceToAuthenticate(jedis);
         }
     }
     i++;
@@ -333,6 +331,7 @@ public static class TokenRefreshCache {
         // Add your task here
         public void run() {
             accessToken = tokenCredential.getToken(tokenRequestContext).block();
+            username = extractUsernameFromToken(accessToken.getToken());
             System.out.println("Refreshed Token with Expiry: " + accessToken.getExpiresAt().toEpochSecond());
 
             if (jedisInstanceToAuthenticate != null && !CoreUtils.isNullOrEmpty(username)) {
@@ -357,16 +356,6 @@ public static class TokenRefreshCache {
      */
     public TokenRefreshCache setJedisInstanceToAuthenticate(Jedis jedisInstanceToAuthenticate) {
         this.jedisInstanceToAuthenticate = jedisInstanceToAuthenticate;
-        return this;
-    }
-
-    /**
-     * Sets the username to authenticate jedis instance with.
-     * @param username the username to authenticate with
-     * @return the updated instance
-     */
-    public TokenRefreshCache setUsername(String username) {
-        this.username = username;
         return this;
     }
 }
