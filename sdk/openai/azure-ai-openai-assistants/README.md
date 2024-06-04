@@ -167,7 +167,7 @@ an appropriate tool like Code Interpreter or Retrieval is enabled.
             new AssistantCreationOptions(deploymentOrModelId)
                 .setName("Java SDK Retrieval Sample")
                 .setInstructions("You are a helpful assistant that can help fetch data from files you know about.")
-                .setTools(Arrays.asList(new RetrievalToolDefinition()))
+                .setTools(Arrays.asList(new FileSearchToolDefinition()))
                 // TODO - setup with VectorStore
 //                .setFileIds(Arrays.asList(openAIFile.getId()))
         );
@@ -284,7 +284,7 @@ run via the `SubmitRunToolOutputs` method so that the run can continue:
 
 ```java readme-sample-functionHandlingRunPolling
 do {
-    Thread.sleep(500);
+    Thread.sleep(1000);
     run = client.getRun(thread.getId(), run.getId());
 
     if (run.getStatus() == RunStatus.REQUIRES_ACTION

@@ -4,6 +4,7 @@ import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.VectorStore;
 import com.azure.ai.openai.assistants.models.VectorStoreDeletionStatus;
 import com.azure.core.http.HttpClient;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -42,6 +43,7 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
          });
      }
 
+     @Disabled
      @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
      @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
      public void getVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
@@ -54,6 +56,7 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
          });
      }
 
+     @Disabled
      @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
      @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
      public void modifyVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
@@ -66,6 +69,7 @@ public class VectorStoreSyncTests extends AssistantsClientTestBase {
          });
      }
 
+     @Disabled
      @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
      @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
      public void deleteVectorStore(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {

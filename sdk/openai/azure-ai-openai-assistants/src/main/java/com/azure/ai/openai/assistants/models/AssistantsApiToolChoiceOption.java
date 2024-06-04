@@ -24,24 +24,50 @@ public class AssistantsApiToolChoiceOption {
      */
     private final AssistantsNamedToolChoice toolChoice;
 
+    /**
+     * Creates a new instance of AssistantsApiToolChoiceOption.
+     *
+     * @param mode The mode to use.
+     */
     public AssistantsApiToolChoiceOption(AssistantsApiToolChoiceOptionMode mode) {
         this.mode = mode;
         this.toolChoice = null;
     }
 
+    /**
+     * Creates a new instance of AssistantsApiToolChoiceOption.
+     *
+     * @param toolChoice The tool choice to use.
+     */
     public AssistantsApiToolChoiceOption(AssistantsNamedToolChoice toolChoice) {
         this.mode = null;
         this.toolChoice = toolChoice;
     }
 
+    /**
+     * Gets the mode of the model will handle tool choices.
+     *
+     * @return The serialized JSON string.
+     */
     public AssistantsApiToolChoiceOptionMode getMode() {
         return this.mode;
     }
 
+    /**
+     * Gets the tool choice to use.
+     *
+     * @return The tool choice to use.
+     */
     public AssistantsNamedToolChoice getToolChoice() {
         return this.toolChoice;
     }
 
+    /**
+     * Deserializes the BinaryData into either type this model holds. Note that mode and toolChoice are mutually exclusive.
+     * 
+     * @param toolChoiceBinaryData
+     * @return
+     */
     public static AssistantsApiToolChoiceOption fromBinaryData(BinaryData toolChoiceBinaryData) {
         if (toolChoiceBinaryData == null) {
             return null;

@@ -19,7 +19,7 @@ import java.util.List;
  * a list of vector store IDs.
  */
 @Immutable
-public class CreateFileSearchToolResourceOptions {
+public final class CreateFileSearchToolResourceOptions {
     /**
      * The vector store attached to this assistant. There can be a maximum of 1 vector store attached to the assistant.
      */
