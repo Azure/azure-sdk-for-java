@@ -1,81 +1,84 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2024-06-07)
 
 ### Features Added
 
 #### Streaming
 
 - Operation updates:
-  - Added `createRunStream`, `createThreadAndRunStream` and `submitToolOutputsToRunStream` methods to `AssistantsClient` and `AssistantsAsyncClient` classes. A suite of classes extending from `StreamUpdate` were added for users to be able to consume the incremental updates from the service
+  - Added `createRunStream`, `createThreadAndRunStream` and `submitToolOutputsToRunStream` methods to `AssistantsClient` and `AssistantsAsyncClient` classes.
+    A suite of classes extending from `StreamUpdate` were added for users to be able to consume the incremental updates from the service.
 
 #### Assistants
 
 - Model updates:
-  - `Assistant`, `AssistantCreateOptions` and `UpdateAssistantOptions` models:
-    - new fields: `toolResources` , `temperature`, `topP` and `responseFormat`
+  - `Assistant`, `AssistantCreationOptions` and `UpdateAssistantOptions` models:
+    - Added new fields: `toolResources` , `temperature`, `topP` and `responseFormat`.
 
 #### Files
 
 - Model updates:
   - `OpenAIFile` model changes:
-      - new fields: `status` of `FileState` type and `status_details` of `string` type.
-  - New enum `FileState` representing the type of the `status` field mentioned in the previous point.
-  - New possible values for `FilePurpose`: `batch`, `batch_output` and `vision`
+      - Added new fields: `status` of `FileState` type and `status_details` of `String` type.
+  - Added new enum `FileState` representing the type of the `status` field mentioned in the previous point.
+  - Added new possible values for `FilePurpose`: `batch`, `batch_output` and `vision`.
 
 #### Messages
 
 - Operation updates: 
-  - Updated `listMessages` to accept the filter `runId`
+  - Updated `listMessages` to accept the filter `runId`.
 
 - Model updates:
-  - New model `MessageAttachment`
-  - Updated docs renaming mentions of `retrieval` tool to `file_search`
-
+  - Added new model `MessageAttachment`.
+  - Updated docs renaming mentions of `retrieval` tool to `file_search`.
+  - Added new field, `startIndex` and `endIndex` to `MessageTextFileCitationAnnotation`, `MessageTextFilePathAnnotation` model.
 #### Run Step
 
 - Model updates:
   - `ThreadRun` model updates:
     - Added fields: `temperature`, `topP`, `maxPromptTokens`, `maxCompletionTokens`, `truncationStrategy`, `toolChoice` and `responseFormat`.
-  - Updated documentation for `RunCompletionUsage`
+  - Updated documentation for `RunCompletionUsage`.
   - `CreateRunOptions` model updates:
-    - Added fields: `temperature`, `topP`, `maxPromptTokens`, `maxCompletionTokens`, `truncationStrategy`, `toolChoice` and `responseFormat`
+    - Added fields: `additionalMessages`, `temperature`, `topP`, `maxPromptTokens`, `maxCompletionTokens`, `truncationStrategy`, `toolChoice` and `responseFormat`.
   - `CreateAndRunThreadOptions` model updates:
     - Added fields: `toolResources`, `temperature`, `topP`, `maxPromptTokens`, `maxCompletionTokens`, `truncationStrategy`, `toolChoice` and `responseFormat`.
-  - Added new model for all the `truncationStrategy` fields called `TruncationObject`
+  - Added new model for all the `truncationStrategy` fields called `TruncationObject`.
 
 #### Threads
 
 - Model updates:
   - `AssistantThread` model now includes `toolResources` field as nullable.
-  - `AssistantThreadCreationOptions` updates include: `messages` type using renamed type `ThreadInitializationMessage` -> `ThreadMessageOptions`, `toolResources`
+  - `AssistantThreadCreationOptions` updates include: `messages` type using renamed type `ThreadInitializationMessage` -> `ThreadMessageOptions`, `toolResources`.
 
 #### Tool Resources (new)
 
 - Model updates:
-    - There are 3 new models that were added: `ToolResources`, `CreateToolResourcesOptions` and `UpdateToolResourcesOptions`. As the name implies, wherever there is a field `toolResource` we use the appropriate type, depending on the model declaring it is meant to be a response object, create request object or update request object, respectively.
+  - There are 3 new models that were added: `ToolResources`, `CreateToolResourcesOptions` and `UpdateToolResourcesOptions`. As the name implies, wherever there is 
+    a field `toolResource` we use the appropriate type, depending on the model declaring it is meant to be a response object, create request object or update request object, respectively.
 
 #### Vector Stores (new)
 
 There are 3 main areas for vector stores into which its models and operations can be divided. That is vector stores themselves, vector store files and vector store file batches.
 
 - Model updates:
-    - new models (I will just list the top level response and request objects, but there are several subtypes describing more complex JSON object fields):  `VectorStore` and `VectorStoreOptions`,  `VectorStoreFile` and there is no request object, `VectorStoreFileBatch` and there is no request object.
+  - new models (I will just list the top level response and request objects, but there are several subtypes describing more complex JSON object fields):  `VectorStore` and `VectorStoreOptions`,  `VectorStoreFile` and there is no request object, `VectorStoreFileBatch` and there is no request object.
 
 - Operation Updates:
-    - new operations `listVectorStores` , `createVectorStore`, `getVectorStore`, `modifyVectorStore` and `deleteVectorStore`
-    - new vector store file operations: `listVectorStoreFiles`, `createVectorStoreFile`, `getVectorStoreFile` and `deleteVectorStoreFile`
-    - new vector store file batch operations: `createVectorStoreFileBatch`, `getVectorStoreFileBatch`, `cancelVectorStoreFileBatch` and `listVectorStoreFileBatchFiles`
+  - new operations `listVectorStores` , `createVectorStore`, `getVectorStore`, `modifyVectorStore` and `deleteVectorStore`.
+  - new vector store file operations: `listVectorStoreFiles`, `createVectorStoreFile`, `getVectorStoreFile` and `deleteVectorStoreFile`.
+  - new vector store file batch operations: `createVectorStoreFileBatch`, `getVectorStoreFileBatch`, `cancelVectorStoreFileBatch` and `listVectorStoreFileBatchFiles`.
 
 ### Breaking Changes
 
 #### Assistants
 
 - Model updates:
-    - `Assistant`, `AssistantCreateOptions` and `UpdateAssistantOptions` models:
-        - removed fields: `fileIds`
+  - Removed `AssistantFile` model.  
+  - `Assistant`, `AssistantCreateOptions` and `UpdateAssistantOptions` models:
+    - removed fields: `fileIds`.
 - Operation updates:
-  - Removed operations: `createAssistantFile` , `listAssistantFiles`, `getAssistantFile` and `deleteAssistantFile`
+  - Removed operations: `createAssistantFile` , `listAssistantFiles`, `getAssistantFile` and `deleteAssistantFile`.
 
 #### Files
 
@@ -90,7 +93,7 @@ There are 3 main areas for vector stores into which its models and operations ca
     - The field `incomplete_details` was of the wrong type. Corrected from `MessageIncompleteDetailsReason` -> `MessageIncompleteDetails`.
     - `assistantId` was marked as optional, but it was in fact nullable
     - `runId` was marked as optional, but it was in fact nullable
-    - removed field `fileIds`
+    - Removed field `fileIds`
     - Added new field `attachments` a nullable array of `MessageAttachment`
     
 - Operation updates:
@@ -100,8 +103,8 @@ There are 3 main areas for vector stores into which its models and operations ca
 #### Run Step
 
 - Model updates:
-    - `ThreadRun` model updates:
-        - removed field `fileIds`
+  - `ThreadRun` model updates:
+    - Removed field `fileIds`
 
 #### Threads
 
@@ -113,15 +116,15 @@ There are 3 main areas for vector stores into which its models and operations ca
 
 #### Tools
 
-- Model updates: (mostly about renaming tool `retrieval` to `file_search`
-  - Renamed model `RetrievalToolDefinition` to `FileSearchToolDefintion` and the associated discriminator value.
+- Model updates: (mostly about renaming tool `retrieval` to `file_search`)
+  - Renamed model `RetrievalToolDefinition` to `FileSearchToolDefinition` and the associated discriminator value.
+  - Renamed model `RunStepDeltaRetrievalToolCall` to `RunStepDeltaFileSearchToolCall`.
   - `RunStepToolCall` variant `RunStepRetrievalToolCall` renamed to `RunStepFileSearchToolCall` and the associated discriminator value.
 
 ### Bugs Fixed
 
 - A combination of inputs for `uploadFile` would allow users to not send `String filename` to the service resulting always in an error, as this is actually mandatory.
 
-### Other Changes
 
 ## 1.0.0-beta.2 (2024-02-13)
 
@@ -147,7 +150,7 @@ client.listFilesWithResponse(requestOptions)
 
 ### Other Changes
 
-- On `uploadFile` method in `AssistantsClient` and `AssistantsAsyncClient`, it is required to set the "filename" of the file, via `setFilename` method in `FileDetails` class. The double quote character `"`, the newline charactor `0x0A`, the return charactor `0x0D` in "filename" would be escaped by the client library.
+- On `uploadFile` method in `AssistantsClient` and `AssistantsAsyncClient`, it is required to set the "filename" of the file, via `setFilename` method in `FileDetails` class. The double quote character `"`, the newline character `0x0A`, the return character `0x0D` in "filename" would be escaped by the client library.
 
 
 ## 1.0.0-beta.1 (2024-02-07)
