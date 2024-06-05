@@ -482,6 +482,18 @@
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.data\\.tables\\.models.*",
           "justification": "Removing Jackson annotations from Tables in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.attributeRemoved",
+          "old": ".*? com\\.azure\\.resourcemanager\\.network\\.models.*",
+          "justification": "Removing Jackson annotations from Network in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.attributeAdded",
+          "old": ".*? com\\.azure\\.resourcemanager\\.network\\.models.*",
+          "justification": "Adding Jackson annotations to Network in transition to stream-style."
         }
       ]
     }
