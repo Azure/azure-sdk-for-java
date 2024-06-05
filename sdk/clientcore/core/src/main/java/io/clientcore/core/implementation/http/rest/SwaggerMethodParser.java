@@ -165,7 +165,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                 final String paramValue;
 
                 if (equalsIndex >= 0) {
-                    paramName = queryParam.substring(0, equalsIndex);
+                    paramName = UrlEscapers.QUERY_ESCAPER.escape(queryParam.substring(0, equalsIndex));
 
                     if (!paramName.isEmpty()) {
                         paramValue = UrlEscapers.QUERY_ESCAPER.escape(queryParam.substring(equalsIndex + 1));
@@ -174,7 +174,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                     }
                 } else {
                     // No equals sign was found, so the entire string is considered the name of the query parameter.
-                    paramName = queryParam;
+                    paramName = UrlEscapers.QUERY_ESCAPER.escape(queryParam);
                     paramValue = null;
                 }
 
