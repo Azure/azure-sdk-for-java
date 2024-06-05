@@ -20,6 +20,8 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.options.BlobContainerCreateOptions;
+import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
@@ -186,9 +188,10 @@ public class DataLakeFileSystemClient {
     public DataLakeDirectoryClient getDirectoryClient(String directoryName) {
         Objects.requireNonNull(directoryName, "'directoryName' can not be set to null");
 
+        BlockBlobClient blockBlobClient = blobContainerClient.getBlobClient(directoryName).getBlockBlobClient();
         return new DataLakeDirectoryClient(dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(directoryName),
-            blobContainerClient.getBlobClient(directoryName).getBlockBlobClient(), getHttpPipeline(), getAccountUrl(),
-            getServiceVersion(), getAccountName(), getFileSystemName(), directoryName, sasToken,
+            blockBlobClient, getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getFileSystemName(), directoryName, sasToken,
             Transforms.fromBlobCpkInfo(blobContainerClient.getCustomerProvidedKey()), isTokenCredentialAuthenticated);
     }
 
@@ -731,8 +734,8 @@ public class DataLakeFileSystemClient {
 
         ResponseBase<FileSystemsListPathsHeaders, PathList> response = StorageImplUtils.sendRequest(operation, timeout,
             DataLakeStorageException.class);
-        List<PathItem> items = response.getValue() == null ? Collections.emptyList() :
-            response.getValue().getPaths().stream().map(Transforms::toPathItem).collect(Collectors.toList());
+        List<PathItem> items = response.getValue() == null ? Collections.emptyList()
+            : response.getValue().getPaths().stream().map(Transforms::toPathItem).collect(Collectors.toList());
 
         // Create and return a page response with the list of items and the continuation token.
         return new PagedResponseBase<>(
@@ -811,8 +814,8 @@ public class DataLakeFileSystemClient {
         ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse> response =
             StorageImplUtils.sendRequest(operation, timeout, DataLakeStorageException.class);
 
-        List<PathDeletedItem> items = response.getValue().getSegment() == null ? Collections.emptyList() :
-            Stream.concat(
+        List<PathDeletedItem> items = response.getValue().getSegment() == null ? Collections.emptyList()
+            : Stream.concat(
                 response.getValue().getSegment().getBlobItems().stream().map(Transforms::toPathDeletedItem),
                 response.getValue().getSegment().getBlobPrefixes().stream().map(Transforms::toPathDeletedItem)
             ).collect(Collectors.toList());

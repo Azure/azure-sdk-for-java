@@ -136,11 +136,12 @@ public class DataLakeFileSystemClientBuilder implements
         Implicit and explicit root file system access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
+        DataLakeFileSystemAsyncClient asyncClient = buildAsyncClient();
         String dataLakeFileSystemName = CoreUtils.isNullOrEmpty(fileSystemName)
             ? DataLakeFileSystemClient.ROOT_FILESYSTEM_NAME : fileSystemName;
-        return new DataLakeFileSystemClient(buildAsyncClient(), blobContainerClientBuilder.buildClient(),
-            constructPipeline(), endpoint, getServiceVersion(), accountName, dataLakeFileSystemName, azureSasCredential,
-            tokenCredential != null);
+        return new DataLakeFileSystemClient(asyncClient, blobContainerClientBuilder.buildClient(),
+            asyncClient.getHttpPipeline(), endpoint, getServiceVersion(), accountName, dataLakeFileSystemName,
+            azureSasCredential, tokenCredential != null);
     }
 
     /**

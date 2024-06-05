@@ -18,9 +18,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -42,7 +40,6 @@ import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
-import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.AccessControlChangeCounters;
 import com.azure.storage.file.datalake.models.AccessControlChangeFailure;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
@@ -70,12 +67,9 @@ import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveO
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -101,6 +95,7 @@ public class DataLakePathAsyncClient {
     private final String accountName;
     private final String fileSystemName;
     final String pathName;
+    private final String objectName;
     private final DataLakeServiceVersion serviceVersion;
     private final CpkInfo customerProvidedKey;
 
@@ -160,6 +155,11 @@ public class DataLakePathAsyncClient {
 
         this.customerProvidedKey = customerProvidedKey;
         this.isTokenCredentialAuthenticated = isTokenCredentialAuthenticated;
+
+        // Split on / in the path
+        String[] pathParts = pathName.split("/");
+        // Grab last part of path
+        this.objectName = pathParts[pathParts.length - 1];
     }
 
     /**
@@ -213,10 +213,7 @@ public class DataLakePathAsyncClient {
      * @return The name of the object.
      */
     String getObjectName() {
-        // Split on / in the path
-        String[] pathParts = getObjectPath().split("/");
-        // Return last part of path
-        return pathParts[pathParts.length - 1];
+        return this.objectName;
     }
 
     /**
@@ -434,7 +431,8 @@ public class DataLakePathAsyncClient {
 
     Mono<Response<PathInfo>> createWithResponse(DataLakePathCreateOptions options, Context context) {
         options = options == null ? new DataLakePathCreateOptions() : options;
-        DataLakeRequestConditions requestConditions = options.getRequestConditions() == null ? new DataLakeRequestConditions() : options.getRequestConditions();
+        DataLakeRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new DataLakeRequestConditions() : options.getRequestConditions();
 
         LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
         ModifiedAccessConditions mac = new ModifiedAccessConditions()
@@ -458,11 +456,13 @@ public class DataLakePathAsyncClient {
 
         context = context == null ? Context.NONE : context;
         return this.dataLakeStorage.getPaths().createWithResponseAsync(null, null, pathResourceType, null, null, null,
-                options.getSourceLeaseId(), ModelHelper.buildMetadataString(options.getMetadata()), options.getPermissions(),
-                options.getUmask(), options.getOwner(), options.getGroup(), acl, options.getProposedLeaseId(),
-                leaseDuration, expiryOptions, expiresOnString, options.getEncryptionContext(), options.getPathHttpHeaders(),
-                lac, mac, null, customerProvidedKey, context)
-            .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
+                options.getSourceLeaseId(), ModelHelper.buildMetadataString(options.getMetadata()),
+                options.getPermissions(), options.getUmask(), options.getOwner(), options.getGroup(), acl,
+                options.getProposedLeaseId(), leaseDuration, expiryOptions, expiresOnString,
+                options.getEncryptionContext(), options.getPathHttpHeaders(), lac, mac, null, customerProvidedKey,
+                context)
+            .map(response -> new SimpleResponse<>(response, new PathInfo(
+                response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),
                 response.getDeserializedHeaders().isXMsRequestServerEncrypted() != null,
                 response.getDeserializedHeaders().getXMsEncryptionKeySha256())));

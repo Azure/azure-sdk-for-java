@@ -142,9 +142,11 @@ public final class DataLakePathClientBuilder implements
         String dataLakeFileSystemName = CoreUtils.isNullOrEmpty(fileSystemName)
             ? DataLakeFileSystemClient.ROOT_FILESYSTEM_NAME : fileSystemName;
 
-        return new DataLakeFileClient(buildFileAsyncClient(), blobClientBuilder.buildClient().getBlockBlobClient(),
-            constructPipeline(), endpoint, getServiceVersion(), accountName, dataLakeFileSystemName, pathName, azureSasCredential,
-            customerProvidedKey, tokenCredential != null);
+        DataLakeFileAsyncClient fileAsyncClient = buildFileAsyncClient();
+
+        return new DataLakeFileClient(fileAsyncClient, blobClientBuilder.buildClient().getBlockBlobClient(),
+            fileAsyncClient.getHttpPipeline(), endpoint, getServiceVersion(), accountName, dataLakeFileSystemName,
+            pathName, azureSasCredential, customerProvidedKey, tokenCredential != null);
     }
 
     /**
@@ -207,13 +209,14 @@ public final class DataLakePathClientBuilder implements
         Implicit and explicit root container access are functionally equivalent, but explicit references are easier
         to read and debug.
          */
-        String dataLakeFileSystemName = CoreUtils.isNullOrEmpty(fileSystemName) ?
-            DataLakeFileSystemClient.ROOT_FILESYSTEM_NAME : fileSystemName;
+        String dataLakeFileSystemName = CoreUtils.isNullOrEmpty(fileSystemName)
+            ? DataLakeFileSystemClient.ROOT_FILESYSTEM_NAME : fileSystemName;
 
-        return new DataLakeDirectoryClient(buildDirectoryAsyncClient(),
-            blobClientBuilder.buildClient().getBlockBlobClient(), constructPipeline(), endpoint, getServiceVersion(),
-            accountName, dataLakeFileSystemName, pathName, azureSasCredential, customerProvidedKey,
-            tokenCredential != null);
+        DataLakeDirectoryAsyncClient directoryAsyncClient = buildDirectoryAsyncClient();
+
+        return new DataLakeDirectoryClient(directoryAsyncClient, blobClientBuilder.buildClient().getBlockBlobClient(),
+            directoryAsyncClient.getHttpPipeline(), endpoint, getServiceVersion(), accountName, dataLakeFileSystemName,
+            pathName, azureSasCredential, customerProvidedKey, tokenCredential != null);
     }
 
     /**

@@ -66,13 +66,13 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
     private static final ClientLogger LOGGER = new ClientLogger(DataLakeDirectoryClient.class);
     private final DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient;
 
-    DataLakeDirectoryClient(DataLakeDirectoryAsyncClient pathAsyncClient, BlockBlobClient blockBlobClient,
+    DataLakeDirectoryClient(DataLakeDirectoryAsyncClient dataLakeDirectoryAsyncClient, BlockBlobClient blockBlobClient,
         HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion, String accountName,
         String fileSystemName, String directoryName, AzureSasCredential sasToken, CpkInfo customerProvidedKey,
         boolean isTokenCredentialAuthenticated) {
-        super(pathAsyncClient, blockBlobClient, pipeline, url, serviceVersion, accountName, fileSystemName,
+        super(dataLakeDirectoryAsyncClient, blockBlobClient, pipeline, url, serviceVersion, accountName, fileSystemName,
             directoryName, PathResourceType.DIRECTORY, sasToken, customerProvidedKey, isTokenCredentialAuthenticated);
-        this.dataLakeDirectoryAsyncClient = pathAsyncClient;
+        this.dataLakeDirectoryAsyncClient = dataLakeDirectoryAsyncClient;
     }
 
     DataLakeDirectoryClient(DataLakePathClient dataLakePathClient) {

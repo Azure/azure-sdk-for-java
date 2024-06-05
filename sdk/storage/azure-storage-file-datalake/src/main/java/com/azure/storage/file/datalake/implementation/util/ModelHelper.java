@@ -110,6 +110,14 @@ public class ModelHelper {
         return new DataLakeAclChangeFailedException(message, e, continuationToken);
     }
 
+    /**
+     * Grab the proper {@link PathExpiryOptions} based on the options set in {@link DataLakePathCreateOptions}.
+     *
+     * @param options {@link DataLakePathCreateOptions}
+     * @param pathResourceType {@link PathResourceType}
+     * @return {@link PathExpiryOptions}
+     * @throws IllegalArgumentException if the options are invalid for the pathResourceType
+     */
     public static PathExpiryOptions setFieldsIfNull(DataLakePathCreateOptions options, PathResourceType pathResourceType) {
         if (pathResourceType == PathResourceType.DIRECTORY) {
             if (options.getProposedLeaseId() != null) {
@@ -178,10 +186,15 @@ public class ModelHelper {
      * Takes in a destination path and creates a SpecializedBlobClientBuilder with a new path name
      * @param destinationFileSystem The destination file system
      * @param destinationPath The destination path
+     * @param sourceFileSystem The source file system
+     * @param httpPipeline The http pipeline
+     * @param serviceVersion The service version
+     * @param pathUrl The path URL
      * @return An updated SpecializedBlobClientBuilder
      */
-    public static SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationFileSystem, String destinationPath,
-        String sourceFileSystem, HttpPipeline httpPipeline, DataLakeServiceVersion serviceVersion, String pathUrl) {
+    public static SpecializedBlobClientBuilder prepareBuilderReplacePath(String destinationFileSystem,
+        String destinationPath, String sourceFileSystem, HttpPipeline httpPipeline,
+        DataLakeServiceVersion serviceVersion, String pathUrl) {
         if (destinationFileSystem == null) {
             destinationFileSystem = sourceFileSystem;
         }

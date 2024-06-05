@@ -120,8 +120,10 @@ public class DataLakeServiceClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeServiceClient buildClient() {
-        return new DataLakeServiceClient(buildAsyncClient(), blobServiceClientBuilder.buildClient(),
-            constructPipeline(), endpoint, getServiceVersion(), accountName, azureSasCredential, tokenCredential != null);
+        DataLakeServiceAsyncClient asyncClient = buildAsyncClient();
+        return new DataLakeServiceClient(asyncClient, blobServiceClientBuilder.buildClient(),
+            asyncClient.getHttpPipeline(), endpoint, getServiceVersion(), accountName, azureSasCredential,
+            tokenCredential != null);
     }
 
     /**
