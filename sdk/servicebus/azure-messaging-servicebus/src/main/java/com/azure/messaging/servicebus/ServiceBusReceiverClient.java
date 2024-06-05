@@ -495,13 +495,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * receive operation will wait for a default 1 minute for receiving a message before it times out. You can
      * override it by using {@link #receiveMessages(int, Duration)}.
      * <p>
-     * The 1-minute timeout is a client-side feature. Each time the application calls receiveMessages, a timer is started
-     * on the client that when expires will terminate the IterableStream returned from this method. Timeout being
-     * a client-side feature means it is impossible to cancel any messages request that already made it to the broker.
+     * The 1-minute timeout is a client-side feature. Each time the application calls {@code receiveMessages}, a timer
+     * is started on the client that when expires will terminate the IterableStream returned from this method. Timeout
+     * being a client-side feature means it is impossible to cancel any message requests that already made it to the broker.
      * The messages can still arrive in the background after the IterableStream is transitioned to terminated state due
      * to the client-side timeout. If there is no active IterableStream, the client will attempt to release any buffered
      * messages back to the broker to avoid messages from going to dead letter. While messages are being released, if a
-     * new active IterableStream appears (due to a new receiveMessages call) then client will stop further release,
+     * new active IterableStream appears (due to a new {@code receiveMessages} call) then client will stop further release,
      * so application may receive some messages from the buffer or already in transit followed by previously released
      * messages when broker redeliver them, which can appear as out of order delivery.
      * <p>
@@ -537,19 +537,20 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * The default receive mode is {@link ServiceBusReceiveMode#PEEK_LOCK } unless it is changed during  creation of
      * {@link ServiceBusReceiverClient} using {@link ServiceBusReceiverClientBuilder#receiveMode(ServiceBusReceiveMode)}.
      * <p>
-     * The support for timeout {@code maxWaitTime} is a client-side feature. Each time the application calls receiveMessages,
-     * a timer is started on the client that when expires will terminate the IterableStream returned from this method.
-     * Timeout being a client-side feature means it is impossible to cancel any messages request that already made it to
-     * the broker. The messages can still arrive in the background after the IterableStream is transitioned
-     * to terminated state due to the client-side timeout. If there is no active IterableStream, the client will attempt
-     * to release any buffered messages back to the broker to avoid messages from going to dead letter. While messages
-     * are being released, if a new active IterableStream appears (due to a new receiveMessages call) then client will
-     * stop further release, so application may receive some messages from the buffer or already in transit followed by
-     * previously released messages when broker redeliver them, which can appear as out of order delivery. Consider these
-     * when choosing the timeout. For example, a small timeout with a higher {@code maxMessages} value while there are a
-     * lot of messages in the entity can increase the release network calls to the broker that might have adverse effect
-     * in namespace throttling and increases the chances of out of order deliveries. Also, frequent receiveMessages with
-     * low timeout means frequent scheduling of timer tasks, which may put more stress on low CPU environments.
+     * The support for timeout {@code maxWaitTime} is a client-side feature. Each time the application calls
+     * {@code receiveMessages}, a timer is started on the client that when expires will terminate the IterableStream
+     * returned from this method. Timeout being a client-side feature means it is impossible to cancel any message
+     * requests that already made it to the broker. The messages can still arrive in the background after
+     * the IterableStream is transitioned to terminated state due to the client-side timeout. If there is no active
+     * IterableStream, the client will attempt to release any buffered messages back to the broker to avoid messages from
+     * going to dead letter. While messages are being released, if a new active IterableStream appears (due to a new
+     * {@code receiveMessages} call) then client will stop further release, so application may receive some messages from
+     * the buffer or already in transit followed by previously released messages when broker redeliver them, which can
+     * appear as out of order delivery. Consider these when choosing the timeout. For example, a small timeout with
+     * a higher {@code maxMessages} value while there are a lot of messages in the entity can increase the release
+     * network calls to the broker that might have adverse effect in namespace throttling and increases the chances of
+     * out of order deliveries. Also, frequent receiveMessages with low timeout means frequent scheduling of timer tasks,
+     * which may put more stress on low CPU environments.
      * </p>
      * <p>
      * The client uses an AMQP link underneath to receive the messages; the client will transparently transition
