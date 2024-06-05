@@ -253,6 +253,7 @@ public final class RadiologyInsightsClientBuilder
      */
     @Generated
     private RadiologyInsightsClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         RadiologyInsightsServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : RadiologyInsightsServiceVersion.getLatest();
@@ -320,4 +321,11 @@ public final class RadiologyInsightsClientBuilder
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RadiologyInsightsClientBuilder.class);
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
 }

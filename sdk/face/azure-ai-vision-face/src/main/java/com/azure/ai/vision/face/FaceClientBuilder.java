@@ -273,6 +273,7 @@ public final class FaceClientBuilder implements HttpTrait<FaceClientBuilder>, Co
      */
     @Generated
     private FaceClientImpl buildInnerClient() {
+        this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         FaceServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : FaceServiceVersion.getLatest();
@@ -343,4 +344,11 @@ public final class FaceClientBuilder implements HttpTrait<FaceClientBuilder>, Co
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FaceClientBuilder.class);
+
+    @Generated
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
 }

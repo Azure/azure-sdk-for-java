@@ -11,7 +11,7 @@ public final class MachineInstallPatchesResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MachineInstallPatchesResultInner model = BinaryData.fromString(
-            "{\"status\":\"CompletedWithWarnings\",\"installationActivityId\":\"m\",\"rebootStatus\":\"Required\",\"maintenanceWindowExceeded\":false,\"excludedPatchCount\":865900212,\"notSelectedPatchCount\":1971435113,\"pendingPatchCount\":435215346,\"installedPatchCount\":746279797,\"failedPatchCount\":996509936,\"startDateTime\":\"2021-09-17T17:08:43Z\",\"lastModifiedDateTime\":\"2021-11-20T16:21:10Z\",\"startedBy\":\"Platform\",\"patchServiceUsed\":\"WU_WSUS\",\"osType\":\"Linux\"}")
+            "{\"status\":\"Succeeded\",\"installationActivityId\":\"tslhspkdeem\",\"rebootStatus\":\"Failed\",\"maintenanceWindowExceeded\":true,\"excludedPatchCount\":1437529213,\"notSelectedPatchCount\":375290729,\"pendingPatchCount\":230289658,\"installedPatchCount\":696697077,\"failedPatchCount\":683816537,\"startDateTime\":\"2021-06-04T11:35:51Z\",\"lastModifiedDateTime\":\"2021-09-27T01:04:36Z\",\"startedBy\":\"Platform\",\"patchServiceUsed\":\"Zypper\",\"osType\":\"Windows\"}")
             .toObject(MachineInstallPatchesResultInner.class);
     }
 

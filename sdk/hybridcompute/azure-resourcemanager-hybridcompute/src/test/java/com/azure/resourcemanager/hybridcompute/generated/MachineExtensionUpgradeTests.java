@@ -15,17 +15,17 @@ public final class MachineExtensionUpgradeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MachineExtensionUpgrade model
-            = BinaryData.fromString("{\"extensionTargets\":{\"qaqtdoqmcbxvwvxy\":{\"targetVersion\":\"t\"}}}")
+            = BinaryData.fromString("{\"extensionTargets\":{\"rruvwbhsq\":{\"targetVersion\":\"ohxcrsbfova\"}}}")
                 .toObject(MachineExtensionUpgrade.class);
-        Assertions.assertEquals("t", model.extensionTargets().get("qaqtdoqmcbxvwvxy").targetVersion());
+        Assertions.assertEquals("ohxcrsbfova", model.extensionTargets().get("rruvwbhsq").targetVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MachineExtensionUpgrade model = new MachineExtensionUpgrade()
-            .withExtensionTargets(mapOf("qaqtdoqmcbxvwvxy", new ExtensionTargetProperties().withTargetVersion("t")));
+            .withExtensionTargets(mapOf("rruvwbhsq", new ExtensionTargetProperties().withTargetVersion("ohxcrsbfova")));
         model = BinaryData.fromObject(model).toObject(MachineExtensionUpgrade.class);
-        Assertions.assertEquals("t", model.extensionTargets().get("qaqtdoqmcbxvwvxy").targetVersion());
+        Assertions.assertEquals("ohxcrsbfova", model.extensionTargets().get("rruvwbhsq").targetVersion());
     }
 
     // Use "Map.of" if available

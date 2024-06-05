@@ -153,7 +153,7 @@ class QueryParameter {
         if (value != null) {
             return name + "=" + value;
         } else if (CoreUtils.isNullOrEmpty(values)) {
-            return "";
+            return name;
         }
 
         checkCachedStringValue();

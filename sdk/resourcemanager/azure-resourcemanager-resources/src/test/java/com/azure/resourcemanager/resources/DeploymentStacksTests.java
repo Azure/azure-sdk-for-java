@@ -71,12 +71,12 @@ public class DeploymentStacksTests extends ResourceManagementTest {
                     .withDenySettings(new DenySettings()
                         .withMode(DenySettingsMode.NONE)));
 
-//        Assertions.assertEquals(dpName, deploymentStack.name());
+        Assertions.assertEquals(dpName, deploymentStack.name());
         Assertions.assertEquals(DeploymentStacksDeleteDetachEnum.DELETE, deploymentStack.actionOnUnmanage().resources());
 
         deploymentStack = resourceClient.deploymentStackClient().getDeploymentStacks()
             .getByResourceGroup(rgName, dpName);
-//        Assertions.assertEquals(dpName, deploymentStack.name());
+        Assertions.assertEquals(dpName, deploymentStack.name());
         Assertions.assertEquals(DeploymentStacksDeleteDetachEnum.DELETE, deploymentStack.actionOnUnmanage().resources());
     }
 }
