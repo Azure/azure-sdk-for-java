@@ -27,7 +27,6 @@ public class ListLabelsAsync {
         // Asynchronous sample
         // Instantiate a client that will be used to call the service.
         final ConfigurationAsyncClient client = new ConfigurationClientBuilder()
-                .serviceVersion(ConfigurationServiceVersion.V2023_10_01)
                 .connectionString(connectionString)
                 .buildAsyncClient();
         // Prepare three settings with different labels
@@ -48,18 +47,17 @@ public class ListLabelsAsync {
         // If you want to list all labels by wildcard, pass wildcard where AppConfig supports, such as "prod*",
         // If you want to list labels by exact match, use the exact label name as the filter.
         System.out.println("List all labels:");
-        client.listLabels(null).subscribe(
-                label -> System.out.println("\tLabel name = " + label.getName()));
+        client.listLabels(null).subscribe(label -> System.out.println("\tLabel name = " + label));
         TimeUnit.MILLISECONDS.sleep(1000);
 
-        System.out.println("List label by exact match:");
-        client.listLabels(new LabelSelector().setLabelFilter("prod2")).subscribe(
-                label -> System.out.println("\tLabel name = " + label.getName()));
-        TimeUnit.MILLISECONDS.sleep(1000);
-
-        System.out.println("List labels by wildcard:");
-        client.listLabels(new LabelSelector().setLabelFilter("prod*")).subscribe(
-                label -> System.out.println("\tLabel name = " + label.getName()));
+//        System.out.println("List label by exact match:");
+//        client.listLabels(new LabelSelector().setLabelFilter("prod2")).subscribe(
+//                label -> System.out.println("\tLabel name = " + label));
+//        TimeUnit.MILLISECONDS.sleep(1000);
+//
+//        System.out.println("List labels by wildcard:");
+//        client.listLabels(new LabelSelector().setLabelFilter("prod*")).subscribe(
+//                label -> System.out.println("\tLabel name = " + label));
         TimeUnit.MILLISECONDS.sleep(1000);
     }
 }

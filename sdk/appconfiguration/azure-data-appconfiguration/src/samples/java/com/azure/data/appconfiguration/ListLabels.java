@@ -25,7 +25,6 @@ public class ListLabels {
 
         final ConfigurationClient client = new ConfigurationClientBuilder()
                 .connectionString(connectionString)
-                .serviceVersion(V2023_10_01)
                 .buildClient();
 
         // Prepare three settings with different labels
@@ -38,14 +37,14 @@ public class ListLabels {
         // If you want to list labels by exact match, use the exact label name as the filter.
         System.out.println("List all labels:");
         client.listLabels(null, Context.NONE)
-                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
+                .forEach(label -> System.out.println("\tLabel name = " + label));
 
         System.out.println("List label by exact match:");
         client.listLabels(new LabelSelector().setLabelFilter("prod2"), Context.NONE)
-                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
+                .forEach(label -> System.out.println("\tLabel name = " + label));
 
         System.out.println("List labels by wildcard:");
         client.listLabels(new LabelSelector().setLabelFilter("prod*"), Context.NONE)
-                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
+                .forEach(label -> System.out.println("\tLabel name = " + label));
     }
 }

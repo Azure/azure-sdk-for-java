@@ -43,6 +43,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -52,6 +53,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
 import static com.azure.data.appconfiguration.implementation.Utility.getPageETag;
+import static com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotAsync;
@@ -1034,10 +1036,11 @@ public final class ConfigurationAsyncClient {
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
+        final Map<String, String> tagsFilter = selector == null ? null : selector.getTagsFilter();
         AtomicInteger pageETagIndex = new AtomicInteger(0);
         return new PagedFlux<>(() -> withContext(context -> serviceClient.getKeyValuesSinglePageAsync(keyFilter,
                 labelFilter, null, acceptDateTime, settingFields, null, null,
-                getPageETag(matchConditionsList, pageETagIndex), context)
+                getPageETag(matchConditionsList, pageETagIndex), getTagsFilterInString(tagsFilter), context)
             .onErrorResume(HttpResponseException.class,
                 (Function<HttpResponseException, Mono<PagedResponse<KeyValue>>>)
                     Utility::handleNotModifiedErrorToValidResponse)
@@ -1107,7 +1110,7 @@ public final class ConfigurationAsyncClient {
     public PagedFlux<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
         List<SettingFields> fields) {
         return new PagedFlux<>(() -> withContext(context -> serviceClient.getKeyValuesSinglePageAsync(null, null, null,
-                null, fields, snapshotName, null, null, context)
+                null, fields, snapshotName, null, null, null, context)
             .map(ConfigurationSettingDeserializationHelper::toConfigurationSettingWithPagedResponse)),
             nextLink -> withContext(context -> serviceClient.getKeyValuesNextSinglePageAsync(nextLink, null, null, null,
                     context)
@@ -1429,18 +1432,12 @@ public final class ConfigurationAsyncClient {
      * @return a list of labels as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Label> listLabels(LabelSelector selector) {
-        // TODO: Do we need to explore Label as enum or just keep it String?
-        //    Seems a Label Object maybe better
-        //    However, we already introduce String label. Which also need to take into the consideration
+    public PagedFlux<String> listLabels(LabelSelector selector) {
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
         final String acceptDatetime = selector == null ? null : selector.getAcceptDateTime();
-        // TODO: need to explore this LabelField as an public class or just use String representation.
         final List<LabelFields> labelFields = selector == null ? null : selector.getFields();
-//        return new PagedIterable<>(
-//                () -> serviceClient.getLabelsSinglePage(labelFilter, null, acceptDatetime, labelFields, context),
-//                nextLink -> serviceClient.getLabelsNextSinglePage(nextLink, acceptDatetime, context));
-        return serviceClient.getLabelsAsync(labelFilter, null, acceptDatetime, labelFields);
+        return serviceClient.getLabelsAsync(labelFilter, null, acceptDatetime, labelFields)
+                .mapPage(pagedResponse -> pagedResponse.getName());
     }
 
     /**

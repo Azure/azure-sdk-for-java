@@ -77,6 +77,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SnapshotFields;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
@@ -272,6 +273,7 @@ public final class AzureAppConfigurationImpl {
                 @QueryParam("snapshot") String snapshot,
                 @HeaderParam("If-Match") String ifMatch,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
+                @QueryParam("tags") String tags,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -290,6 +292,7 @@ public final class AzureAppConfigurationImpl {
                 @QueryParam("snapshot") String snapshot,
                 @HeaderParam("If-Match") String ifMatch,
                 @HeaderParam("If-None-Match") String ifNoneMatch,
+                @QueryParam("tags") String tags,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -1265,7 +1268,8 @@ public final class AzureAppConfigurationImpl {
             List<SettingFields> select,
             String snapshot,
             String ifMatch,
-            String ifNoneMatch) {
+            String ifNoneMatch,
+            String tags) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
                 (select == null)
@@ -1286,6 +1290,7 @@ public final class AzureAppConfigurationImpl {
                                         ifMatch,
                                         ifNoneMatch,
                                         accept,
+                                        tags,
                                         context))
                 .map(
                         res ->
@@ -1328,6 +1333,7 @@ public final class AzureAppConfigurationImpl {
             String snapshot,
             String ifMatch,
             String ifNoneMatch,
+            String tags,
             Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
@@ -1347,6 +1353,7 @@ public final class AzureAppConfigurationImpl {
                         ifMatch,
                         ifNoneMatch,
                         accept,
+                        tags,
                         context)
                 .map(
                         res ->
@@ -1387,11 +1394,12 @@ public final class AzureAppConfigurationImpl {
             List<SettingFields> select,
             String snapshot,
             String ifMatch,
-            String ifNoneMatch) {
+            String ifNoneMatch,
+            String tags) {
         return new PagedFlux<>(
                 () ->
                         getKeyValuesSinglePageAsync(
-                                key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch),
+                                key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch, tags),
                 nextLink -> getKeyValuesNextSinglePageAsync(nextLink, acceptDatetime, ifMatch, ifNoneMatch));
     }
 
@@ -1425,11 +1433,12 @@ public final class AzureAppConfigurationImpl {
             String snapshot,
             String ifMatch,
             String ifNoneMatch,
+            String tags,
             Context context) {
         return new PagedFlux<>(
                 () ->
                         getKeyValuesSinglePageAsync(
-                                key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch, context),
+                                key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch, tags, context),
                 nextLink -> getKeyValuesNextSinglePageAsync(nextLink, acceptDatetime, ifMatch, ifNoneMatch, context));
     }
 
@@ -1461,7 +1470,8 @@ public final class AzureAppConfigurationImpl {
             List<SettingFields> select,
             String snapshot,
             String ifMatch,
-            String ifNoneMatch) {
+            String ifNoneMatch,
+            String tags) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
                 (select == null)
@@ -1480,6 +1490,7 @@ public final class AzureAppConfigurationImpl {
                         snapshot,
                         ifMatch,
                         ifNoneMatch,
+                        tags,
                         accept,
                         Context.NONE);
         return new PagedResponseBase<>(
@@ -1521,6 +1532,7 @@ public final class AzureAppConfigurationImpl {
             String snapshot,
             String ifMatch,
             String ifNoneMatch,
+            String tags,
             Context context) {
         final String accept = "application/vnd.microsoft.appconfig.kvset+json, application/problem+json";
         String selectConverted =
@@ -1540,6 +1552,7 @@ public final class AzureAppConfigurationImpl {
                         snapshot,
                         ifMatch,
                         ifNoneMatch,
+                        tags,
                         accept,
                         context);
         return new PagedResponseBase<>(
@@ -1591,6 +1604,7 @@ public final class AzureAppConfigurationImpl {
                                 snapshot,
                                 ifMatch,
                                 ifNoneMatch,
+                                null,
                                 Context.NONE),
                 nextLink -> getKeyValuesNextSinglePage(nextLink, acceptDatetime, ifMatch, ifNoneMatch));
     }
@@ -1625,11 +1639,12 @@ public final class AzureAppConfigurationImpl {
             String snapshot,
             String ifMatch,
             String ifNoneMatch,
+            Map<String, String> tags,
             Context context) {
         return new PagedIterable<>(
                 () ->
                         getKeyValuesSinglePage(
-                                key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch, context),
+                                key, label, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch, null, context),
                 nextLink -> getKeyValuesNextSinglePage(nextLink, acceptDatetime, ifMatch, ifNoneMatch, context));
     }
 

@@ -43,7 +43,9 @@ import com.azure.data.appconfiguration.models.SnapshotFields;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.toConfigurationSettingWithPagedResponse;
@@ -51,6 +53,7 @@ import static com.azure.data.appconfiguration.implementation.ConfigurationSettin
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
 import static com.azure.data.appconfiguration.implementation.Utility.getPageETag;
+import static com.azure.data.appconfiguration.implementation.Utility.getTagsFilterInString;
 import static com.azure.data.appconfiguration.implementation.Utility.handleNotModifiedErrorToValidResponse;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
@@ -1059,29 +1062,31 @@ public final class ConfigurationClient {
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
-        final List<String> tagsFilter = selector == null ? null : List.of(selector.getTagsFilter());
+        final Map<String, String> tagsFilter = selector == null ? null : selector.getTagsFilter();
 
         AtomicInteger pageETagIndex = new AtomicInteger(0);
-        return new PagedIterable<>(() -> {
-            PagedResponse<KeyValue> pagedResponse;
-            try {
-                pagedResponse = serviceClient.getKeyValuesSinglePage(keyFilter, labelFilter, null, acceptDateTime,
-                    settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex), context);
-            } catch (HttpResponseException ex) {
-                return handleNotModifiedErrorToValidResponse(ex, LOGGER);
-            }
-            return toConfigurationSettingWithPagedResponse(pagedResponse);
-        },
-            nextLink -> {
-                PagedResponse<KeyValue> pagedResponse;
-                try {
-                    pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink, acceptDateTime, null,
-                        getPageETag(matchConditionsList, pageETagIndex), context);
-                } catch (HttpResponseException ex) {
-                    return handleNotModifiedErrorToValidResponse(ex, LOGGER);
+        return new PagedIterable<>(
+                () -> {
+                    PagedResponse<KeyValue> pagedResponse;
+                    try {
+                        pagedResponse = serviceClient.getKeyValuesSinglePage(keyFilter, labelFilter, null, acceptDateTime,
+                            settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
+                            getTagsFilterInString(tagsFilter), context);
+                    } catch (HttpResponseException ex) {
+                        return handleNotModifiedErrorToValidResponse(ex, LOGGER);
+                    }
+                    return toConfigurationSettingWithPagedResponse(pagedResponse);
+                },
+                nextLink -> {
+                    PagedResponse<KeyValue> pagedResponse;
+                    try {
+                        pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink, acceptDateTime, null,
+                            getPageETag(matchConditionsList, pageETagIndex), context);
+                    } catch (HttpResponseException ex) {
+                        return handleNotModifiedErrorToValidResponse(ex, LOGGER);
+                    }
+                    return toConfigurationSettingWithPagedResponse(pagedResponse);
                 }
-                return toConfigurationSettingWithPagedResponse(pagedResponse);
-            }
         );
     }
 
@@ -1143,7 +1148,7 @@ public final class ConfigurationClient {
         List<SettingFields> fields, Context context) {
         return new PagedIterable<>(() -> {
             final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(null, null, null, null,
-                fields, snapshotName, null, null, context);
+                fields, snapshotName, null, null, null, context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         }, nextLink -> {
             final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink, null, null,
@@ -1524,7 +1529,7 @@ public final class ConfigurationClient {
      * @return a list of labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Label> listLabels(LabelSelector selector) {
+    public PagedIterable<String> listLabels(LabelSelector selector) {
        return listLabels(selector, Context.NONE);
     }
 
@@ -1554,15 +1559,11 @@ public final class ConfigurationClient {
      * @return a list of labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Label> listLabels(LabelSelector selector, Context context) {
-        // TODO: Do we need to explore Label as enum or just keep it String?
-        //    Seems a Label Object maybe better
-        //    However, we already introduce String label. Which also need to take into the consideration
+    public PagedIterable<String> listLabels(LabelSelector selector, Context context) {
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
         final String acceptDatetime = selector == null ? null : selector.getAcceptDateTime();
-        // TODO: need to explore this LabelField as an public class or just use String representation.
         final List<LabelFields> labelFields = selector == null ? null : selector.getFields();
-        return serviceClient.getLabels(labelFilter, null, acceptDatetime, labelFields, context);
+        return serviceClient.getLabels(labelFilter, null, acceptDatetime, labelFields, context).mapPage(Label::getName);
     }
 
     /**
