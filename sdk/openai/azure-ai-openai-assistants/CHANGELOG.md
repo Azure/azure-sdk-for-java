@@ -50,6 +50,22 @@
   - `AssistantThread` model now includes `toolResources` field as nullable.
   - `AssistantThreadCreationOptions` updates include: `messages` type using renamed type `ThreadInitializationMessage` -> `ThreadMessageOptions`, `toolResources`
 
+#### Tool Resources (new)
+
+- Model updates:
+    - There are 3 new models that were added: `ToolResources`, `CreateToolResourcesOptions` and `UpdateToolResourcesOptions`. As the name implies, wherever there is a field `toolResource` we use the appropriate type, depending on the model declaring it is meant to be a response object, create request object or update request object, respectively.
+
+#### Vector Stores (new)
+
+There are 3 main areas for vector stores into which its models and operations can be divided. That is vector stores themselves, vector store files and vector store file batches.
+
+- Model updates:
+    - new models (I will just list the top level response and request objects, but there are several subtypes describing more complex JSON object fields):  `VectorStore` and `VectorStoreOptions`,  `VectorStoreFile` and there is no request object, `VectorStoreFileBatch` and there is no request object.
+
+- Operation Updates:
+    - new operations `listVectorStores` , `createVectorStore`, `getVectorStore`, `modifyVectorStore` and `deleteVectorStore`
+    - new vector store file operations: `listVectorStoreFiles`, `createVectorStoreFile`, `getVectorStoreFile` and `deleteVectorStoreFile`
+    - new vector store file batch operations: `createVectorStoreFileBatch`, `getVectorStoreFileBatch`, `cancelVectorStoreFileBatch` and `listVectorStoreFileBatchFiles`
 
 ### Breaking Changes
 
@@ -100,23 +116,6 @@
 - Model updates: (mostly about renaming tool `retrieval` to `file_search`
   - Renamed model `RetrievalToolDefinition` to `FileSearchToolDefintion` and the associated discriminator value.
   - `RunStepToolCall` variant `RunStepRetrievalToolCall` renamed to `RunStepFileSearchToolCall` and the associated discriminator value.
-
-#### Tool Resources (new)
-
-- Model updates:
-  - There are 3 new models that were added: `ToolResources`, `CreateToolResourcesOptions` and `UpdateToolResourcesOptions`. As the name implies, wherever there is a field `toolResource` we use the appropriate type, depending on the model declaring it is meant to be a reponse object, create request object or update request object, respectively.
-
-#### Vector Stores (new)
-
-There are 3 main areas for vector stores into which its models and operations can be divided. That is vector stores themselves, vector store files and vector store file batches.
-
-- Model updates:
-  - new models (I will just list the top level response and request objects, but there are several subtypes describing more complex JSON object fields):  `VectorStore` and `VectorStoreOptions`,  `VectorStoreFile` and there is no request object, `VectorStoreFileBatch` and there is no request object.
-
-- Operation Updates:
-  - new operations `listVectorStores` , `createVectorStore`, `getVectorStore`, `modifyVectorStore` and `deleteVectorStore`
-  - new vector store file operations: `listVectorStoreFiles`, `createVectorStoreFile`, `getVectorStoreFile` and `deleteVectorStoreFile`
-  - new vector store file batch operations: `createVectorStoreFileBatch`, `getVectorStoreFileBatch`, `cancelVectorStoreFileBatch` and `listVectorStoreFileBatchFiles`
 
 ### Bugs Fixed
 
