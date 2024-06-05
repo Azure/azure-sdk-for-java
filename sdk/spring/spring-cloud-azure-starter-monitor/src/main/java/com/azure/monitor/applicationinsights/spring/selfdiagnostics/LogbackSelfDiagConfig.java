@@ -6,7 +6,6 @@ package com.azure.monitor.applicationinsights.spring.selfdiagnostics;
 import ch.qos.logback.classic.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,14 +42,4 @@ public class LogbackSelfDiagConfig {
         }
     }
 
-    /**
-     * A bean execute the Logback self-diagnostics
-     *
-     * @param selfDiagnosticsLogger The self-diagnostics logger
-     * @return A CommandLineRunner bean execute the Logback self-diagnostics
-     */
-    @Bean
-    public CommandLineRunner logbackSelfDiagnostics(Logger selfDiagnosticsLogger) {
-        return new LogbackSelfDiag(selfDiagnosticsLogger);
-    }
 }
