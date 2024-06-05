@@ -482,6 +482,48 @@
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.data\\.tables\\.models.*",
           "justification": "Removing Jackson annotations from Tables in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded)",
+          "old": "class com\\.azure\\.resourcemanager\\.cosmos\\.models.*",
+          "justification": "Fix incorrect json attributes."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method java\\.lang\\.Integer com\\.azure\\.resourcemanager\\.cosmos\\.models\\.ServiceResourceCreateUpdateParameters::instanceCount\\(\\)",
+          "justification": "Remove getter for Value from ServiceResourceCreateUpdateParameters since it's in the constructor."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method com.azure\\.resourcemanager\\.cosmos\\.models\\.ServiceSize com\\.azure\\.resourcemanager\\.cosmos\\.models\\.ServiceResourceCreateUpdateParameters::instanceSize\\(\\)",
+          "justification": "Remove getter for Value from ServiceResourceCreateUpdateParameters since it's in the constructor."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method com.azure\\.resourcemanager\\.cosmos\\.models\\.ServiceType com\\.azure\\.resourcemanager\\.cosmos\\.models\\.ServiceResourceCreateUpdateParameters::serviceType\\(\\)",
+          "justification": "Remove getter for Value from ServiceResourceCreateUpdateParameters since it's in the constructor."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method com.azure\\.resourcemanager\\.cosmos\\.models\\.ServiceResourceCreateUpdateParameters com\\.azure\\.resourcemanager\\.cosmos\\.models\\.ServiceResourceCreateUpdateParameters::withInstanceCount\\(java\\.lang\\.Integer\\)",
+          "justification": "Remove setter for Value from ServiceResourceCreateUpdateParameters since it's in the constructor."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method com.azure\\.resourcemanager\\.cosmos\\.models\\.ServiceResourceCreateUpdateParameters com\\.azure\\.resourcemanager\\.cosmos\\.models\\.ServiceResourceCreateUpdateParameters::withInstanceSize\\(com\\.azure\\.resourcemanager\\.cosmos\\.models\\.ServiceSize\\)",
+          "justification": "Remove setter for Value from ServiceResourceCreateUpdateParameters since it's in the constructor."
+        },
+        {
+          "regex": true,
+          "code": "java\\.method\\.removed",
+          "old": "method com.azure\\.resourcemanager\\.cosmos\\.models\\.ServiceResourceCreateUpdateParameters com\\.azure\\.resourcemanager\\.cosmos\\.models\\.ServiceResourceCreateUpdateParameters::withServiceType\\(com\\.azure\\.resourcemanager\\.cosmos\\.models\\.ServiceType\\)",
+          "justification": "Remove setter for Value from ServiceResourceCreateUpdateParameters since it's in the constructor."
         }
       ]
     }
