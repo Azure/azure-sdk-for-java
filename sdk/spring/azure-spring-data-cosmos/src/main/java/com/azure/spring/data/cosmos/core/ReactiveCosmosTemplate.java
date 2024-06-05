@@ -450,7 +450,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         JsonNode originalItem;
         if (!transientFields.isEmpty()) {
             originalItem = mappingCosmosConverter.writeJsonNode(objectToSave, transientFields);
-            transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsAndValuesMap(objectToSave, transientFields);
+            transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsMap(objectToSave, transientFields);
         } else {
             originalItem = mappingCosmosConverter.writeJsonNode(objectToSave);
         }
@@ -468,7 +468,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             .flatMap(cosmosItemResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosItemResponse.getDiagnostics(), null);
-                return Mono.just(toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFieldsFromMap(cosmosItemResponse.getItem(), finalTransientFieldValuesMap)));
+                return Mono.just(toDomainObject(domainType, mappingCosmosConverter.repopulateTransientFields(cosmosItemResponse.getItem(), finalTransientFieldValuesMap)));
             });
     }
 
@@ -519,7 +519,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             JsonNode originalItem;
             if (!transientFields.isEmpty()) {
                 originalItem = mappingCosmosConverter.writeJsonNode(entity, transientFields);
-                Map<Field, Object> transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsAndValuesMap(entity, transientFields);
+                Map<Field, Object> transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsMap(entity, transientFields);
                 mapOfTransientFieldValuesMaps.put(originalItem.get("id").asText(), transientFieldValuesMap);
 
             } else {
@@ -552,7 +552,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                  if (responseItem != null) {
                                      if (mapOfTransientFieldValuesMaps.containsKey(responseItem.get("id").asText())) {
                                          Map<Field, Object> transientFieldValuesMap = mapOfTransientFieldValuesMaps.get(responseItem.get("id").asText());
-                                         return Flux.just(toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFieldsFromMap(responseItem, transientFieldValuesMap)));
+                                         return Flux.just(toDomainObject(domainType, mappingCosmosConverter.repopulateTransientFields(responseItem, transientFieldValuesMap)));
                                      } else {
                                          return Flux.just(toDomainObject(domainType, responseItem));
                                      }
@@ -655,7 +655,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         JsonNode originalItem;
         if (!transientFields.isEmpty()) {
             originalItem = mappingCosmosConverter.writeJsonNode(object, transientFields);
-            transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsAndValuesMap(object, transientFields);
+            transientFieldValuesMap = mappingCosmosConverter.getTransientFieldsMap(object, transientFields);
         } else {
             originalItem = mappingCosmosConverter.writeJsonNode(object);
         }
@@ -669,7 +669,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                                 .flatMap(cosmosItemResponse -> {
                                     CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                                         cosmosItemResponse.getDiagnostics(), null);
-                                    return Mono.just(toDomainObject(domainType, mappingCosmosConverter.repopulateAnyTransientFieldsFromMap(cosmosItemResponse.getItem(), finalTransientFieldValuesMap)));
+                                    return Mono.just(toDomainObject(domainType, mappingCosmosConverter.repopulateTransientFields(cosmosItemResponse.getItem(), finalTransientFieldValuesMap)));
                                 })
                                 .onErrorResume(throwable ->
                                     CosmosExceptionUtils.exceptionHandler("Failed to upsert item", throwable,
