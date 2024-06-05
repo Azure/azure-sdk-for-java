@@ -2,16 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.CosmosException
+import com.azure.cosmos.{CosmosException, spark}
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.{CosmosPagedFlux, CosmosPagedIterable}
 import reactor.core.scheduler.Schedulers
 
+import java.util.concurrent.{ExecutorService, SynchronousQueue, ThreadPoolExecutor, TimeUnit, TimeoutException}
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.util.Random
 import scala.util.control.Breaks
+import scala.concurrent.{Await, ExecutionContext, Future}
+import com.azure.cosmos.implementation.OperationCancelledException
+
+import scala.concurrent.duration.FiniteDuration
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -42,6 +47,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
 
   private[spark] var maxRetryIntervalInMs = CosmosConstants.maxRetryIntervalForTransientFailuresInMs
   private[spark] var maxRetryCount = CosmosConstants.maxRetryCountForTransientFailures
+  private val maxOperationTimeout = scala.concurrent.duration.FiniteDuration(65, scala.concurrent.duration.SECONDS)
 
   private val rnd = Random
   // scalastyle:off null
@@ -112,7 +118,26 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
           currentFeedResponseIterator.get
       }
 
-      if (feedResponseIterator.hasNext) {
+      val hasNext: Boolean = try {
+        Await.result(
+          Future {
+            feedResponseIterator.hasNext
+          }(TransientIOErrorsRetryingIterator.executionContext),
+          maxOperationTimeout)
+      } catch {
+        case timeoutException: TimeoutException =>
+          val exception = new OperationCancelledException(
+            s"Attempting to retrieve the next page timed out. Continuation" +
+              s"token: $lastContinuationToken, Context: $operationContextString",
+            null
+          );
+          exception.setStackTrace(timeoutException.getStackTrace());
+          throw exception
+
+        case other: Throwable => throw other
+      }
+
+      if (hasNext) {
         val feedResponse = feedResponseIterator.next()
         if (operationContextAndListener.isDefined) {
           operationContextAndListener.get.getOperationListener.feedResponseProcessedListener(
@@ -207,4 +232,24 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
       case None =>
     }
   }
+}
+
+private object TransientIOErrorsRetryingIterator extends BasicLoggingTrait {
+  private val maxConcurrency = SparkUtils.getNumberOfHostCPUCores
+
+  val executorService: ExecutorService = new ThreadPoolExecutor(
+    maxConcurrency,
+    maxConcurrency,
+    0L,
+    TimeUnit.MILLISECONDS,
+    // A synchronous queue does not have any internal capacity, not even a capacity of one.
+    new SynchronousQueue(),
+    SparkUtils.daemonThreadFactory(),
+    // if all worker threads are busy,
+    // this policy makes the caller thread execute the task.
+    // This provides a simple feedback control mechanism that will slow down the rate that new tasks are submitted.
+    new ThreadPoolExecutor.CallerRunsPolicy()
+  )
+
+  val executionContext = ExecutionContext.fromExecutorService(executorService)
 }
