@@ -1458,7 +1458,7 @@ public abstract class HttpClientTests {
     }
 
     private static Stream<Arguments> downloadTestArgumentProvider() {
-        return Stream.of(Arguments.of(Named.named("default", Context.EMPTY)));
+        return Stream.of(Arguments.of(Named.named("default", Context.none())));
     }
 
     @ServiceInterface(name = "BinaryDataUploadServ", host = "{url}")
