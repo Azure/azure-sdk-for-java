@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.feature.management.implementation.models;
 
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.DayOfWeek;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 /**
  * The recurrence pattern specifying how often the time window repeats
  * */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RecurrencePattern {
     /**
      * The recurrence pattern type

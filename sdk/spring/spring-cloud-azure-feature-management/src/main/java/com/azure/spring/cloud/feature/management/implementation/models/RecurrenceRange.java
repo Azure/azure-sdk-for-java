@@ -5,12 +5,14 @@ package com.azure.spring.cloud.feature.management.implementation.models;
 
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowUtils;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.time.ZonedDateTime;
 
 /**
  * The recurrence range specifying how long the recurrence pattern repeats
  * */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RecurrenceRange {
     /**
      * The recurrence range type. Default value is "NoEnd"

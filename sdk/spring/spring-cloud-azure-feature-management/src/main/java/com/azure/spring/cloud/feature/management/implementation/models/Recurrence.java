@@ -3,9 +3,12 @@
 
 package com.azure.spring.cloud.feature.management.implementation.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * A recurrence definition describing how time window recurs
  * */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Recurrence {
     /**
      * The recurrence pattern specifying how often the time window repeats
