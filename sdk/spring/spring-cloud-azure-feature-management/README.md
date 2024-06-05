@@ -190,9 +190,9 @@ feature-management:
     feature-v:
       enabled-for:
         -
-         name: TimeWindowFilter
+          name: TimeWindowFilter
           parameters:
-            start: "Wed, 01 May 2019 13:59:59 GMT",
+            start: "Wed, 01 May 2019 13:59:59 GMT"
             end: "Mon, 01 July 2019 00:00:00 GMT"
 ```
 
@@ -206,17 +206,17 @@ feature-management:
     feature-v:
       enabled-for:
         -
-         name: TimeWindowFilter
+          name: TimeWindowFilter
           parameters:
-            start: "Fri, 22 Mar 2024 20:00:00 GMT",
-            end: "Sat, 23 Mar 2024 02:00:00 GMT",
+            start: "Fri, 22 Mar 2024 20:00:00 GMT"
+            end: "Sat, 23 Mar 2024 02:00:00 GMT"
             recurrence:
               pattern:
-                type: "Daily",
+                type: "Daily"
                 interval: 1
               range:
-                  type: "Numbered"
-                  numberOfOccurrences: 3
+                type: "Numbered"
+                numberOfOccurrences: 3
 ```
 
 The `recurrence` settings is made up of two parts: `pattern` (how often the time window will repeat) and `range` (for how long the recurrence pattern will repeat). To create a recurrence rule, you must specify both `pattern` and `range`. Any pattern type can work with any range type.
@@ -244,11 +244,11 @@ There are two possible recurrence pattern types: `Daily` and `Weekly`. For examp
         The following example will repeat from 2:00 AM to 3:00 AM on every 2 days
 
         ```yaml
-        start: "Mon, 13 May 2024 02:00:00 GMT",
-        end: "Mon, 13 May 2024 03:00:00 GMT",
+        start: "Mon, 13 May 2024 02:00:00 GMT"
+        end: "Mon, 13 May 2024 03:00:00 GMT"
         recurrence:
           pattern:
-            type: "Daily",
+            type: "Daily"
             interval: 2
           range:
             type: "NoEnd"
@@ -261,12 +261,12 @@ There are two possible recurrence pattern types: `Daily` and `Weekly`. For examp
       The following example will repeat from 2:00 AM to 3:00 AM on every other Monday and Tuesday
 
         ```yaml
-        start: "Mon, 13 May 2024 02:00:00 GMT",
-        end: "Mon, 13 May 2024 03:00:00 GMT",
+        start: "Mon, 13 May 2024 02:00:00 GMT"
+        end: "Mon, 13 May 2024 03:00:00 GMT"
         recurrence:
           pattern:
-            type: "Weekly",
-            interval: 2,
+            type: "Weekly"
+            interval: 2
             daysOfWeek: 
               - Monday
               - Tuesday
@@ -296,14 +296,14 @@ There are three possible recurrence range type: `NoEnd`, `EndDate` and `Numbered
       The following example will repeat from 6:00 PM to 8:00 PM every day.
 
       ``` yaml
-      start: "Fri, 22 Mar 2024 18:00:00 GMT",
-      end: "Fri, 22 Mar 2024 20:00:00 GMT",
-      recurrence:
-        pattern:
-          type: "Daily",
-          interval: 1
-        range:
-          type: "NoEnd"
+        start: "Fri, 22 Mar 2024 18:00:00 GMT"
+        end: "Fri, 22 Mar 2024 20:00:00 GMT"
+        recurrence:
+          pattern:
+            type: "Daily"
+            interval: 1
+          range:
+            type: "NoEnd"
       ```
 
     * `EndDate`
@@ -313,14 +313,14 @@ There are three possible recurrence range type: `NoEnd`, `EndDate` and `Numbered
       The following example will repeat from 6:00 PM to 8:00 PM every day until the last occurrence happens on April 1st, 2024.
 
       ``` yaml
-      start: "Fri, 22 Mar 2024 18:00:00 GMT",
-      end: "Fri, 22 Mar 2024 20:00:00 GMT",
+      start: "Fri, 22 Mar 2024 18:00:00 GMT"
+      end: "Fri, 22 Mar 2024 20:00:00 GMT"
       recurrence:
         pattern:
-          type: "Daily",
+          type: "Daily"
           interval: 1
         range:
-          type: "EndDate",
+          type: "EndDate"
           endDate: "Mon, 1 Apr 2024 20:00:00 GMT"
       ```
 
@@ -331,17 +331,17 @@ There are three possible recurrence range type: `NoEnd`, `EndDate` and `Numbered
       The following example will repeat from 6:00 PM to 8:00 PM on Monday and Tuesday until the there are 3 occurrences, which respectively happens on April 1st(Mon), April 2nd(Tue) and April 8th(Mon).
 
         ``` yaml
-        start: "Mon, 1 Apr 2024 18:00:00 GMT",
-        end: "Mon, 1 Apr 2024 20:00:00 GMT",
+        start: "Mon, 1 Apr 2024 18:00:00 GMT"
+        end: "Mon, 1 Apr 2024 20:00:00 GMT"
         recurrence:
           pattern:
-            type: "Weekly",
+            type: "Weekly"
             interval: 1
             daysOfWeek:
                 - Monday
                 - Tuesday
           range:
-            type: "Numbered",
+            type: "Numbered"
             numberOfOccurrences: 3
         ```
 
