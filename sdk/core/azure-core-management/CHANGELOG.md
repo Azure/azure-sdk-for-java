@@ -1,16 +1,17 @@
 # Release History
 
-## 1.15.0-beta.1 (Unreleased)
+## 1.15.0 (2024-06-05)
 
 ### Features Added
 
 - Added new Azure region `Region.ISRAEL_CENTRAL`.
-
-### Breaking Changes
-
-### Bugs Fixed
+- `SubResource` now implements `JsonSerializable`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
 
 ## 1.14.0 (2024-05-01)
 
