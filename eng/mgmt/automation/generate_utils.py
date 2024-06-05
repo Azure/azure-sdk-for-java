@@ -337,7 +337,7 @@ def generate_typespec_project(
 
     try:
         url_match = re.match(
-            r"^https://github.com/(?P<repo>[^/]*/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[^/]*)/(?P<path>.*)/tspconfig.yaml$",
+            r"^https://github.com/(?P<repo>[^/]*/azure-rest-api-specs(-pr)?)/blob/(?P<commit>[0-9a-f]{40})/(?P<path>.*)/tspconfig.yaml$",
             tsp_project,
             re.IGNORECASE,
         )
