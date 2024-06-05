@@ -6,8 +6,6 @@ package com.azure.spring.cloud.feature.management.implementation.models;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowUtils;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
 
-import java.time.Instant;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 /**
@@ -22,12 +20,12 @@ public class RecurrenceRange {
     /**
      * The date to stop applying the recurrence pattern
      * */
-    private ZonedDateTime endDate = Instant.ofEpochMilli(Integer.MAX_VALUE).atZone(ZoneOffset.UTC);
+    private ZonedDateTime endDate;
 
     /**
      * The number of times to repeat the time window
      */
-    private int numberOfOccurrences = Integer.MAX_VALUE;
+    private int numberOfOccurrences;
 
     /**
      * @return the recurrence range type
@@ -38,8 +36,9 @@ public class RecurrenceRange {
 
     /**
      * @param type the range type to be set
+     * @throws IllegalArgumentException if type is invalid
      * */
-    public void setType(String type) {
+    public void setType(String type) throws IllegalArgumentException {
         // `RecurrenceRangeType.valueOf` may throw IllegalArgumentException if value is invalid
         this.type = RecurrenceRangeType.valueOf(type.toUpperCase());
     }
@@ -67,8 +66,9 @@ public class RecurrenceRange {
 
     /**
      * @param numberOfOccurrences the repeat times to be set
+     * @throws IllegalArgumentException if numberOfOccurrences is invalid
      * */
-    public void setNumberOfOccurrences(int numberOfOccurrences) {
+    public void setNumberOfOccurrences(int numberOfOccurrences) throws IllegalArgumentException {
         if (numberOfOccurrences < 1) {
             throw new IllegalArgumentException(
                 String.format(RecurrenceConstants.OUT_OF_RANGE, "Recurrence.Range.NumberOfOccurrences"));

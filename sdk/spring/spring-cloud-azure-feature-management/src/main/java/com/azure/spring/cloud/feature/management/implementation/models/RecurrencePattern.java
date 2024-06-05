@@ -43,8 +43,9 @@ public class RecurrencePattern {
 
     /**
      * @param type pattern type to be set
+     * @throws IllegalArgumentException if type is invalid
      * */
-    public void setType(String type) {
+    public void setType(String type) throws IllegalArgumentException {
         // `RecurrencePatternType.valueOf` may throw IllegalArgumentException if value is invalid
         this.type = RecurrencePatternType.valueOf(type.toUpperCase());
     }
@@ -58,8 +59,9 @@ public class RecurrencePattern {
 
     /**
      * @param interval the time units to be set
+     * @throws IllegalArgumentException if interval is invalid
      * */
-    public void setInterval(Integer interval) {
+    public void setInterval(Integer interval) throws IllegalArgumentException {
         if (interval == null || interval <= 0) {
             throw new IllegalArgumentException(
                 String.format(RecurrenceConstants.OUT_OF_RANGE, "Recurrence.Pattern.Interval"));
@@ -76,8 +78,9 @@ public class RecurrencePattern {
 
     /**
      * @param daysOfWeek the days that time window occurs
+     * @throws IllegalArgumentException if daysOfWeek is null/empty, or has invalid value
      * */
-    public void setDaysOfWeek(List<String> daysOfWeek) {
+    public void setDaysOfWeek(List<String> daysOfWeek) throws IllegalArgumentException {
         if (daysOfWeek == null || daysOfWeek.size() == 0) {
             throw new IllegalArgumentException(
                 String.format(RecurrenceConstants.REQUIRED_PARAMETER, "Recurrence.Pattern.DaysOfWeek"));
@@ -98,8 +101,9 @@ public class RecurrencePattern {
 
     /**
      * @param firstDayOfWeek the first day of the week
+     * @throws IllegalArgumentException if firstDayOfWeek is invalid
      * */
-    public void setFirstDayOfWeek(String firstDayOfWeek) {
+    public void setFirstDayOfWeek(String firstDayOfWeek) throws IllegalArgumentException {
         if (firstDayOfWeek == null) {
             throw new IllegalArgumentException(
                 String.format(RecurrenceConstants.REQUIRED_PARAMETER, "Recurrence.Pattern.FirstDayOfWeek"));
