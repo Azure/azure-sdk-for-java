@@ -119,30 +119,4 @@ jobs:
             Write-Host "##vso[task.setvariable variable=FirstTestOverrideRan]true"
           displayName: "Reset version override changes"
 
-      - task: Maven@3
-        displayName: 'Clean after tests'
-        inputs:
-          mavenPomFile: pom.xml
-          options: '$(DefaultTestOptions) ${{ parameters.TestOptions }} -T ${{ parameters.TestParallelization }}'
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaTestVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'clean'
-        condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
-
-      - task: Maven@3
-        displayName: 'Clean after tests for From Source run'
-        inputs:
-          mavenPomFile: ClientFromSourcePom.xml
-          options: $(DefaultTestOptions) ${{ parameters.TestOptions }} -amd -T ${{ parameters.TestParallelization }}
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaTestVersion)
-          jdkArchitectureOption: 'x64'
-          publishJUnitResults: false
-          goals: 'clean'
-        condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
-
-      - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
+      - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
