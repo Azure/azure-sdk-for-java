@@ -65,8 +65,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class AssistantsClientTestBase extends TestProxyTestBase {
-    // Remove the `id` and `name` sanitizers from the list of common sanitizers.
-    private static final List<String> REMOVE_SANITIZER_ID = Arrays.asList("AZSDK3430", "AZSDK3493", "AZSDK2015");
+    // Remove the `id`, `name`, `Set-Cookie` sanitizers from the list of common sanitizers.
+    // See list of sanitizers: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/Common/SanitizerDictionary.cs
+    private static final String[] REMOVE_SANITIZER_ID = {"AZSDK3430", "AZSDK3493", "AZSDK2015"};
 
     private static final String JAVA_SDK_TESTS_ASSISTANTS_TXT =  "java_sdk_tests_assistants.txt";
     private static final String JAVA_SDK_TESTS_FINE_TUNING_JSON = "java_sdk_tests_fine_tuning.json";
@@ -165,10 +166,6 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
     private void removeDefaultSanitizers() {
-        // Removing sanitizers in PLAYBACK model throws an exception
-        if (getTestMode() != TestMode.RECORD) {
-            return;
-        }
         interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
     }
 
