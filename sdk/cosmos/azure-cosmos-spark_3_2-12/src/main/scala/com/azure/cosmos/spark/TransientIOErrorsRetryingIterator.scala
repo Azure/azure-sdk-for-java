@@ -47,7 +47,9 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
 
   private[spark] var maxRetryIntervalInMs = CosmosConstants.maxRetryIntervalForTransientFailuresInMs
   private[spark] var maxRetryCount = CosmosConstants.maxRetryCountForTransientFailures
-  private val maxOperationTimeout = scala.concurrent.duration.FiniteDuration(65, scala.concurrent.duration.SECONDS)
+  private val maxPageRetrievalTimeout = scala.concurrent.duration.FiniteDuration(
+    5 + CosmosConstants.readOperationEndToEndTimeoutInSeconds,
+    scala.concurrent.duration.SECONDS)
 
   private val rnd = Random
   // scalastyle:off null
@@ -99,7 +101,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
           lastPagedFlux.getAndSet(newPagedFlux) match {
             case Some(oldPagedFlux) => {
               logInfo(s"Attempting to cancel oldPagedFlux, Context: $operationContextString")
-              oldPagedFlux.cancelOn(Schedulers.boundedElastic()).subscribe().dispose()
+              oldPagedFlux.cancelOn(Schedulers.boundedElastic()).onErrorComplete().subscribe().dispose()
             }
             case None =>
           }
@@ -123,7 +125,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
           Future {
             feedResponseIterator.hasNext
           }(TransientIOErrorsRetryingIterator.executionContext),
-          maxOperationTimeout)
+          maxPageRetrievalTimeout)
       } catch {
         case timeoutException: TimeoutException =>
 
@@ -233,7 +235,7 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   //  https://github.com/reactor/reactor-core/blob/main/reactor-core/src/test/java/reactor/core/publisher/scenarios/FluxTests.java#L837
   override def close(): Unit = {
     lastPagedFlux.getAndSet(None) match {
-      case Some(oldPagedFlux) => oldPagedFlux.cancelOn(Schedulers.boundedElastic()).subscribe().dispose()
+      case Some(oldPagedFlux) => oldPagedFlux.cancelOn(Schedulers.boundedElastic()).onErrorComplete().subscribe().dispose()
       case None =>
     }
   }
