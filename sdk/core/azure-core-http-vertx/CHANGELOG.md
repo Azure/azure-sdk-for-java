@@ -8,7 +8,7 @@
 
 ### Breaking Changes
 
-- Removed `VertxAsyncHttpClientBuilder.idelTimeout`, renamed `readIdleTimeout` to `readTimeout` and `writeIdleTimeout`
+- Removed `VertxAsyncHttpClientBuilder.idleTimeout`, renamed `readIdleTimeout` to `readTimeout` and `writeIdleTimeout`
   to `writeTimeout` in `VertxAsyncHttpClientBuilder`. ([#40017](https://github.com/Azure/azure-sdk-for-java/pull/40017))
 
 ### Other Changes
