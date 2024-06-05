@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added retries when retrieving new pages for query or readMany operations are timing out to avoid unbounded awaits. - See [PR 40506](https://github.com/Azure/azure-sdk-for-java/pull/40506)
 
 ### 4.32.0 (2024-05-24)
 
