@@ -170,7 +170,8 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
             return;
         }
         // TODO (jpalvarezl): Once we figure out what is the correct signature, let's update this.
-        interceptorManager.removeSanitizers({"AZSDK3430", "AZSDK3493", "AZSDK2015"});
+        String[] removeSanitizerIds = new String[]{"AZSDK3430", "AZSDK3493", "AZSDK2015"};
+        interceptorManager.removeSanitizers(removeSanitizerIds);
 //        interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
     }
 
