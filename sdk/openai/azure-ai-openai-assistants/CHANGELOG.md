@@ -4,13 +4,98 @@
 
 ### Features Added
 
-- Added `createRunStream` and `createThreadAndRunStream` methods to `AssistantsClient` and `AssistantsAsyncClient` classes. A suite of classes extending from `StreamUpdate` were added for users to be able to consume the incremental updates from the service
+- Added `createRunStream`, `createThreadAndRunStream` and `submitToolOutputsToRunStream` methods to `AssistantsClient` and `AssistantsAsyncClient` classes. A suite of classes extending from `StreamUpdate` were added for users to be able to consume the incremental updates from the service
 - Added support for vector store, vector store with file and a batch of files operations. 
+
+#### 1. Assistants
+
+- Model updates:
+    - `Assistant`, `AssistantCreateOptions` and `UpdateAssistantOptions` models:
+        - new fields: `toolResources` , `temperature`, `topP` and `responseFormat`
+
+#### 2. Files
+
+- Model updates:
+    - `OpenAIFile` model chages:
+        - new fields: `status` of `FileState` type and `status_details` of `string` type.
+    - New enum `FileState` representing the type of the `status` field mentioned in the previous point.
+    - New possible values for `FilePurpose`: `batch`, `batch_output` and `vision`
+
+#### 3. Messages
+
+- Operation updates: 
+  - Updated `listMessages` to accept the filter `runId`
+
+- Model updates:
+  - New model `MessageAttachment`
+  - Updated docs renaming mentions of `retrieval` tool to `file_search`
+
+#### 4. Run Step
+
+- Model updates:
+    - `ThreadRun` model updates:
+        - Added fields: `temperature`, `topP`, `maxPromptTokens`, `maxCompletionTokens`, `truncationStrategy`, `toolChoice` and `responseFormat`.
+    - Updated documentation for `RunCompletionUsage`
+    - `CreateRunOptions` model updates:
+        - Added fields: `temperature`, `topP`, `maxPromptTokens`, `maxCompletionTokens`, `truncationStrategy`, `toolChoice` and `responseFormat`
+    - `CreateAndRunThreadOptions` model updates:
+        - Added fields: `toolResources`, `temperature`, `topP`, `maxPromptTokens`, `maxCompletionTokens`, `truncationStrategy`, `toolChoice` and `responseFormat`.
+    - Added new model for all the `truncationStrategy` fields called `TruncationObject`
+
+#### 5. Threads
+
+#### 6. Tools
+
+#### 7. Tool Resources (new)
+
+#### 8. Vector Stores (new)
+
 
 ### Breaking Changes
 
-- Removed method `uploadFile(FileDetails file, FilePurpose purpose)`. Use `uploadFile(FileDetails file, FilePurpose purpose, String fileName)` instead.
-- Renamed `ThreadInitializationMessage` to `ThreadMessageOptions`.
+#### 1. Assistants
+
+- Model updates:
+    - `Assistant`, `AssistantCreateOptions` and `UpdateAssistantOptions` models:
+        - removed fields: `fileIds`
+- Operation updates:
+  - Removed operations: `createAssistantFile` , `listAssistantFiles`, `getAssistantFile` and `deleteAssistantFile`
+
+#### 2. Files
+
+- Removed method `uploadFile(FileDetails file, FilePurpose purpose)`. Use `uploadFile(FileDetails file, FilePurpose purpose, String fileName)` instead
+
+#### 3. Messages
+
+- Model updates:
+  - Renamed `ThreadInitializationMessage` to `ThreadMessageOptions`.
+  - Removed `MessageFile` model.
+  - Updated `ThreadMessage` model:
+    - The field `incomplete_details` was of the wrong type. Corrected from `MessageIncompleteDetailsReason` -> `MessageIncompleteDetails`.
+    - `assistant_id` was marked as optional, but it was in fact nullable
+    - `run_id` was marked as optional, but it was in fact nullable
+    - removed field `file_ids`
+    - Added new field `attachments` a nullable array of `MessageAttachment`
+    
+- Operation updates:
+  - Removed `MessageFile` related operations: `listMessageFiles` and `getMessageFile` 
+  - Updated `createMessage` to accept the `ThreadMessageOptions` model (also used in `AssistantThreadCreationOptions`) 
+
+#### 4. Run Step
+
+
+- Model updates:
+    - `ThreadRun` model updates:
+        - removed field `fileIds`
+
+#### 5. Threads
+
+#### 6. Tools
+
+#### 7. Tool Resources (new)
+
+#### 8. Vector Stores (new)
+
 
 ### Bugs Fixed
 
