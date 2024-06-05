@@ -180,7 +180,7 @@
 ## WorkloadNetworks
 
 - [Get](#workloadnetworks_get)
-- [ListByPrivateCloud](#workloadnetworks_listbyprivatecloud)
+- [List](#workloadnetworks_list)
 ### Addons_CreateOrUpdate
 
 ```java
@@ -2625,13 +2625,13 @@ public final class WorkloadNetworksGetSamples {
 }
 ```
 
-### WorkloadNetworks_ListByPrivateCloud
+### WorkloadNetworks_List
 
 ```java
 /**
- * Samples for WorkloadNetworks ListByPrivateCloud.
+ * Samples for WorkloadNetworks List.
  */
-public final class WorkloadNetworksListByPrivateCloudSamples {
+public final class WorkloadNetworksListSamples {
     /*
      * x-ms-original-file: specification/vmware/Microsoft.AVS/examples/2023-09-01/WorkloadNetworks_List.json
      */
@@ -2641,7 +2641,7 @@ public final class WorkloadNetworksListByPrivateCloudSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listByPrivateCloud("group1", "cloud1", com.azure.core.util.Context.NONE);
+        manager.workloadNetworks().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```

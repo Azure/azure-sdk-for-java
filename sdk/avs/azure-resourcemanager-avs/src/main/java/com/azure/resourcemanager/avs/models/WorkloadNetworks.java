@@ -47,7 +47,7 @@ public interface WorkloadNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a WorkloadNetwork list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetwork> listByPrivateCloud(String resourceGroupName, String privateCloudName);
+    PagedIterable<WorkloadNetwork> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetwork resources by PrivateCloud.
@@ -60,6 +60,5 @@ public interface WorkloadNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a WorkloadNetwork list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkloadNetwork> listByPrivateCloud(String resourceGroupName, String privateCloudName,
-        Context context);
+    PagedIterable<WorkloadNetwork> list(String resourceGroupName, String privateCloudName, Context context);
 }

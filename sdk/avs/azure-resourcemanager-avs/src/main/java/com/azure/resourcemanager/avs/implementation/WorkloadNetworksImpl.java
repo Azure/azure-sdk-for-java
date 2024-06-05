@@ -48,16 +48,14 @@ public final class WorkloadNetworksImpl implements WorkloadNetworks {
         }
     }
 
-    public PagedIterable<WorkloadNetwork> listByPrivateCloud(String resourceGroupName, String privateCloudName) {
-        PagedIterable<WorkloadNetworkInner> inner
-            = this.serviceClient().listByPrivateCloud(resourceGroupName, privateCloudName);
+    public PagedIterable<WorkloadNetwork> list(String resourceGroupName, String privateCloudName) {
+        PagedIterable<WorkloadNetworkInner> inner = this.serviceClient().list(resourceGroupName, privateCloudName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkloadNetwork> listByPrivateCloud(String resourceGroupName, String privateCloudName,
-        Context context) {
+    public PagedIterable<WorkloadNetwork> list(String resourceGroupName, String privateCloudName, Context context) {
         PagedIterable<WorkloadNetworkInner> inner
-            = this.serviceClient().listByPrivateCloud(resourceGroupName, privateCloudName, context);
+            = this.serviceClient().list(resourceGroupName, privateCloudName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkloadNetworkImpl(inner1, this.manager()));
     }
 

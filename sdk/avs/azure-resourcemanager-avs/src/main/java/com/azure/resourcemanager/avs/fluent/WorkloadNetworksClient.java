@@ -53,7 +53,7 @@ public interface WorkloadNetworksClient {
      * @return the response of a WorkloadNetwork list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkInner> listByPrivateCloud(String resourceGroupName, String privateCloudName);
+    PagedIterable<WorkloadNetworkInner> list(String resourceGroupName, String privateCloudName);
 
     /**
      * List WorkloadNetwork resources by PrivateCloud.
@@ -67,6 +67,5 @@ public interface WorkloadNetworksClient {
      * @return the response of a WorkloadNetwork list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadNetworkInner> listByPrivateCloud(String resourceGroupName, String privateCloudName,
-        Context context);
+    PagedIterable<WorkloadNetworkInner> list(String resourceGroupName, String privateCloudName, Context context);
 }

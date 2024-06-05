@@ -76,7 +76,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/workloadNetworks")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkListResult>> listByPrivateCloud(@HostParam("endpoint") String endpoint,
+        Mono<Response<WorkloadNetworkListResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("privateCloudName") String privateCloudName, @HeaderParam("accept") String accept,
@@ -86,7 +86,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadNetworkListResult>> listByPrivateCloudNext(
+        Mono<Response<WorkloadNetworkListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept, Context context);
     }
@@ -223,7 +223,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadNetworkInner>> listByPrivateCloudSinglePageAsync(String resourceGroupName,
+    private Mono<PagedResponse<WorkloadNetworkInner>> listSinglePageAsync(String resourceGroupName,
         String privateCloudName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -243,7 +243,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByPrivateCloud(this.client.getEndpoint(), this.client.getApiVersion(),
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, privateCloudName, accept, context))
             .<PagedResponse<WorkloadNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -263,7 +263,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadNetworkInner>> listByPrivateCloudSinglePageAsync(String resourceGroupName,
+    private Mono<PagedResponse<WorkloadNetworkInner>> listSinglePageAsync(String resourceGroupName,
         String privateCloudName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -284,7 +284,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByPrivateCloud(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
                 resourceGroupName, privateCloudName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -301,9 +301,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the response of a WorkloadNetwork list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkloadNetworkInner> listByPrivateCloudAsync(String resourceGroupName, String privateCloudName) {
-        return new PagedFlux<>(() -> listByPrivateCloudSinglePageAsync(resourceGroupName, privateCloudName),
-            nextLink -> listByPrivateCloudNextSinglePageAsync(nextLink));
+    private PagedFlux<WorkloadNetworkInner> listAsync(String resourceGroupName, String privateCloudName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, privateCloudName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -318,10 +318,10 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the response of a WorkloadNetwork list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkloadNetworkInner> listByPrivateCloudAsync(String resourceGroupName, String privateCloudName,
+    private PagedFlux<WorkloadNetworkInner> listAsync(String resourceGroupName, String privateCloudName,
         Context context) {
-        return new PagedFlux<>(() -> listByPrivateCloudSinglePageAsync(resourceGroupName, privateCloudName, context),
-            nextLink -> listByPrivateCloudNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, privateCloudName, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -335,8 +335,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the response of a WorkloadNetwork list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkloadNetworkInner> listByPrivateCloud(String resourceGroupName, String privateCloudName) {
-        return new PagedIterable<>(listByPrivateCloudAsync(resourceGroupName, privateCloudName));
+    public PagedIterable<WorkloadNetworkInner> list(String resourceGroupName, String privateCloudName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, privateCloudName));
     }
 
     /**
@@ -351,9 +351,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @return the response of a WorkloadNetwork list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkloadNetworkInner> listByPrivateCloud(String resourceGroupName, String privateCloudName,
+    public PagedIterable<WorkloadNetworkInner> list(String resourceGroupName, String privateCloudName,
         Context context) {
-        return new PagedIterable<>(listByPrivateCloudAsync(resourceGroupName, privateCloudName, context));
+        return new PagedIterable<>(listAsync(resourceGroupName, privateCloudName, context));
     }
 
     /**
@@ -367,7 +367,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadNetworkInner>> listByPrivateCloudNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<WorkloadNetworkInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -376,9 +376,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listByPrivateCloudNext(nextLink, this.client.getEndpoint(), accept, context))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<WorkloadNetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -396,8 +394,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadNetworkInner>> listByPrivateCloudNextSinglePageAsync(String nextLink,
-        Context context) {
+    private Mono<PagedResponse<WorkloadNetworkInner>> listNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -407,7 +404,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByPrivateCloudNext(nextLink, this.client.getEndpoint(), accept, context)
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }

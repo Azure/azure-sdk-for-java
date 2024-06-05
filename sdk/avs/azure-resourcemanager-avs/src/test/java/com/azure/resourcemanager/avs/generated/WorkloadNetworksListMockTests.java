@@ -17,9 +17,9 @@ import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class WorkloadNetworksListByPrivateCloudMockTests {
+public final class WorkloadNetworksListMockTests {
     @Test
-    public void testListByPrivateCloud() throws Exception {
+    public void testList() throws Exception {
         String responseStr
             = "{\"value\":[{\"properties\":{\"provisioningState\":\"Building\"},\"id\":\"yjdfqwmky\",\"name\":\"qufdvruzslzojh\",\"type\":\"ctfnmdxotng\"}]}";
 
@@ -30,8 +30,8 @@ public final class WorkloadNetworksListByPrivateCloudMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<WorkloadNetwork> response = manager.workloadNetworks()
-            .listByPrivateCloud("xfuojrn", "iflrzpasccbiu", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadNetwork> response
+            = manager.workloadNetworks().list("xfuojrn", "iflrzpasccbiu", com.azure.core.util.Context.NONE);
 
     }
 }
