@@ -7,6 +7,7 @@ package com.azure.resourcemanager.search.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.search.fluent.models.OperationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 @Immutable
 public final class OperationListResult {
     /*
-     * The list of operations supported by the resource provider.
+     * The list of operations by Azure AI Search, some supported by the resource provider and others by data plane APIs.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationInner> value;
@@ -27,12 +28,15 @@ public final class OperationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of OperationListResult class. */
+    /**
+     * Creates an instance of OperationListResult class.
+     */
     public OperationListResult() {
     }
 
     /**
-     * Get the value property: The list of operations supported by the resource provider.
+     * Get the value property: The list of operations by Azure AI Search, some supported by the resource provider and
+     * others by data plane APIs.
      *
      * @return the value value.
      */

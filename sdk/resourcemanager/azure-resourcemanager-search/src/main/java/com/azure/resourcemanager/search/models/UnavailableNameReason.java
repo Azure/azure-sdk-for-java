@@ -6,6 +6,7 @@ package com.azure.resourcemanager.search.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /**
@@ -14,10 +15,14 @@ import java.util.Collection;
  * use and is therefore unavailable.
  */
 public final class UnavailableNameReason extends ExpandableStringEnum<UnavailableNameReason> {
-    /** Static value Invalid for UnavailableNameReason. */
+    /**
+     * Static value Invalid for UnavailableNameReason.
+     */
     public static final UnavailableNameReason INVALID = fromString("Invalid");
 
-    /** Static value AlreadyExists for UnavailableNameReason. */
+    /**
+     * Static value AlreadyExists for UnavailableNameReason.
+     */
     public static final UnavailableNameReason ALREADY_EXISTS = fromString("AlreadyExists");
 
     /**

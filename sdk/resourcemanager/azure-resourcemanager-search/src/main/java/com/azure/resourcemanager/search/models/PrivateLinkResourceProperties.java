@@ -6,11 +6,12 @@ package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
- * Describes the properties of a supported private link resource for the search service. For a given API version, this
- * represents the 'supported' groupIds when creating a shared private link resource.
+ * Describes the properties of a supported private link resource for the Azure AI Search service. For a given API
+ * version, this represents the 'supported' groupIds when creating a shared private link resource.
  */
 @Immutable
 public final class PrivateLinkResourceProperties {
@@ -33,12 +34,14 @@ public final class PrivateLinkResourceProperties {
     private List<String> requiredZoneNames;
 
     /*
-     * The list of resources that are onboarded to private link service and that are supported by search.
+     * The list of resources that are onboarded to private link service, that are supported by Azure AI Search.
      */
     @JsonProperty(value = "shareablePrivateLinkResourceTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes;
 
-    /** Creates an instance of PrivateLinkResourceProperties class. */
+    /**
+     * Creates an instance of PrivateLinkResourceProperties class.
+     */
     public PrivateLinkResourceProperties() {
     }
 
@@ -71,7 +74,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Get the shareablePrivateLinkResourceTypes property: The list of resources that are onboarded to private link
-     * service and that are supported by search.
+     * service, that are supported by Azure AI Search.
      *
      * @return the shareablePrivateLinkResourceTypes value.
      */

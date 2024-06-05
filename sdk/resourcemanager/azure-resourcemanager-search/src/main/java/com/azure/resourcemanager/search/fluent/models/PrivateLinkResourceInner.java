@@ -9,23 +9,27 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.search.models.PrivateLinkResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a supported private link resource for the search service. */
+/**
+ * Describes a supported private link resource for the Azure AI Search service.
+ */
 @Immutable
 public final class PrivateLinkResourceInner extends ProxyResource {
     /*
-     * Describes the properties of a supported private link resource for the search service.
+     * Describes the properties of a supported private link resource for the Azure AI Search service.
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateLinkResourceProperties properties;
 
-    /** Creates an instance of PrivateLinkResourceInner class. */
+    /**
+     * Creates an instance of PrivateLinkResourceInner class.
+     */
     public PrivateLinkResourceInner() {
     }
 
     /**
-     * Get the properties property: Describes the properties of a supported private link resource for the search
-     * service.
-     *
+     * Get the properties property: Describes the properties of a supported private link resource for the Azure AI
+     * Search service.
+     * 
      * @return the properties value.
      */
     public PrivateLinkResourceProperties properties() {
@@ -34,7 +38,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -20,19 +20,20 @@ public final class DataPlaneAuthOptions {
     private Object apiKeyOnly;
 
     /*
-     * Indicates that either the API key or an access token from a Microsoft Entra ID tenant can be used for
-     * authentication.
+     * Indicates that either the API key or an access token from a Microsoft Entra ID tenant can be used for authentication.
      */
     @JsonProperty(value = "aadOrApiKey")
     private DataPlaneAadOrApiKeyAuthOption aadOrApiKey;
 
-    /** Creates an instance of DataPlaneAuthOptions class. */
+    /**
+     * Creates an instance of DataPlaneAuthOptions class.
+     */
     public DataPlaneAuthOptions() {
     }
 
     /**
      * Get the apiKeyOnly property: Indicates that only the API key can be used for authentication.
-     *
+     * 
      * @return the apiKeyOnly value.
      */
     public Object apiKeyOnly() {
@@ -41,7 +42,7 @@ public final class DataPlaneAuthOptions {
 
     /**
      * Set the apiKeyOnly property: Indicates that only the API key can be used for authentication.
-     *
+     * 
      * @param apiKeyOnly the apiKeyOnly value to set.
      * @return the DataPlaneAuthOptions object itself.
      */
@@ -53,7 +54,7 @@ public final class DataPlaneAuthOptions {
     /**
      * Get the aadOrApiKey property: Indicates that either the API key or an access token from a Microsoft Entra ID
      * tenant can be used for authentication.
-     *
+     * 
      * @return the aadOrApiKey value.
      */
     public DataPlaneAadOrApiKeyAuthOption aadOrApiKey() {
@@ -63,7 +64,7 @@ public final class DataPlaneAuthOptions {
     /**
      * Set the aadOrApiKey property: Indicates that either the API key or an access token from a Microsoft Entra ID
      * tenant can be used for authentication.
-     *
+     * 
      * @param aadOrApiKey the aadOrApiKey value to set.
      * @return the DataPlaneAuthOptions object itself.
      */
@@ -74,7 +75,7 @@ public final class DataPlaneAuthOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

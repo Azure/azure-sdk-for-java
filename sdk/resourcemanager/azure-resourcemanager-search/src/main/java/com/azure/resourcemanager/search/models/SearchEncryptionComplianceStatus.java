@@ -8,18 +8,23 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Describes whether the search service is compliant or not with respect to having non-customer-encrypted resources. If
- * a service has more than one non-customer-encrypted resource and 'Enforcement' is 'enabled' then the service will be
- * marked as 'nonCompliant'.
+ * Returns the status of search service compliance with respect to non-CMK-encrypted objects. If a service has more than
+ * one unencrypted object, and enforcement is enabled, the service is marked as noncompliant.
  */
 public enum SearchEncryptionComplianceStatus {
-    /** Enum value Compliant. */
+    /**
+     * Enum value Compliant.
+     */
     COMPLIANT("Compliant"),
 
-    /** Enum value NonCompliant. */
+    /**
+     * Enum value NonCompliant.
+     */
     NON_COMPLIANT("NonCompliant");
 
-    /** The actual serialized value for a SearchEncryptionComplianceStatus instance. */
+    /**
+     * The actual serialized value for a SearchEncryptionComplianceStatus instance.
+     */
     private final String value;
 
     SearchEncryptionComplianceStatus(String value) {
@@ -28,7 +33,7 @@ public enum SearchEncryptionComplianceStatus {
 
     /**
      * Parses a serialized value to a SearchEncryptionComplianceStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SearchEncryptionComplianceStatus object, or null if unable to parse.
      */
@@ -46,7 +51,9 @@ public enum SearchEncryptionComplianceStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {
