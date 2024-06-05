@@ -326,7 +326,7 @@ There are three possible recurrence range type: `NoEnd`, `EndDate` and `Numbered
 
     * `Numbered`
 
-      The `Numbered` range causes the time window to occur a fixed number of times (based on the pattern).
+      The `Numbered` range causes the time window to occur a fixed number of days (based on the pattern).
 
       The following example will repeat from 6:00 PM to 8:00 PM on Monday and Tuesday until the there are 3 occurrences, which respectively happens on April 1st(Mon), April 2nd(Tue) and April 8th(Mon).
 
