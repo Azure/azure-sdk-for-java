@@ -22,6 +22,7 @@ import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSettin
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotComposition;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -80,7 +81,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         if (tokenCredential == null) {
             tokenCredential = interceptorManager.isPlaybackMode()
                 ? (trc) -> Mono.just(new AccessToken("Dummy", OffsetDateTime.now().plusHours(2)))
-                : new DefaultAzureCredentialBuilder().build();
+                : new AzurePowerShellCredentialBuilder().build();
         }
 
         String endpoint = Configuration.getGlobalConfiguration().get("AZ_CONFIG_ENDPOINT");
