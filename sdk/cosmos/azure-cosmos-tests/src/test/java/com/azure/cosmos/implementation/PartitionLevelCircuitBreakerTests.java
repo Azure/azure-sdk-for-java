@@ -403,7 +403,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 String.format("Test with faulty %s with internal service error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-                    .withHitLimit(12),
+                    .withHitLimit(6),
                 internalServerErrorRuleGenerator,
                 twoSecondEndToEndTimeoutWithoutAvailabilityStrategy,
                 noRegionSwitchHint,

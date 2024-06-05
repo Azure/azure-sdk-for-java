@@ -340,7 +340,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         }
     }
 
-    private static class LocationSpecificContext {
+    // todo: (abhmohanty) decouple this?
+    public class LocationSpecificContext {
         private final int exceptionCountForWrite;
         private final int successCountForWrite;
         private final int exceptionCountForRead;
@@ -665,7 +666,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         }
     }
 
-    private enum LocationUnavailabilityStatus {
+    // todo (abhmohanty): does this need to be public
+    public enum LocationUnavailabilityStatus {
         Healthy, HealthyWithFailures, Unavailable, HealthyTentative
     }
 
@@ -759,5 +761,17 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker {
         }
 
         return count;
+    }
+
+    // todo: keep private and access through reflection
+    public Map<URI, LocationSpecificContext> getLocationToLocationSpecificContextMappings(PartitionKeyRangeWrapper partitionKeyRangeWrapper) {
+        PartitionLevelLocationUnavailabilityInfo partitionLevelLocationUnavailabilityInfoSnapshot =
+            this.partitionKeyRangeToLocationSpecificUnavailabilityInfo.get(partitionKeyRangeWrapper);
+
+        if (partitionLevelLocationUnavailabilityInfoSnapshot != null) {
+            return partitionLevelLocationUnavailabilityInfoSnapshot.locationEndpointToLocationSpecificContextForPartition;
+        }
+
+        return null;
     }
 }
