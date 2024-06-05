@@ -14,6 +14,12 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Bugs Fixed
 - Fixed `IllegalArgumentException: Subscription cannot be null` error when only configured one subscription name of `AzureServiceBusConsumerClient` or `AzureServiceBusProcessorClient` [#40283](https://github.com/Azure/azure-sdk-for-java/pull/40283).
 
+### Spring Cloud Azure Service
+This section includes changes in `spring-cloud-azure-service` module.
+
+#### Bugs Fixed
+- Update `REDIS_SCOPE_AZURE` to the latest [#](https://github.com/Azure/azure-sdk-for-java/pull/).
+
 ### Azure Spring Data Cosmos
 This section includes changes in `azure-spring-data-cosmos` module.
 Please refer to [azure-spring-data-cosmos/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/CHANGELOG.md#3460-2024-06-03) for more details.
