@@ -126,9 +126,14 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
           maxOperationTimeout)
       } catch {
         case timeoutException: TimeoutException =>
+
+          val message = s"Attempting to retrieve the next page timed out. Continuation" +
+            s"token: $lastContinuationToken, Context: $operationContextString"
+
+          logError(message, timeoutException)
+
           val exception = new OperationCancelledException(
-            s"Attempting to retrieve the next page timed out. Continuation" +
-              s"token: $lastContinuationToken, Context: $operationContextString",
+            message,
             null
           );
           exception.setStackTrace(timeoutException.getStackTrace());
