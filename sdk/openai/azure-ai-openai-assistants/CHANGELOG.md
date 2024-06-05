@@ -18,7 +18,7 @@
 #### Files
 
 - Model updates:
-  - `OpenAIFile` model chages:
+  - `OpenAIFile` model changes:
       - new fields: `status` of `FileState` type and `status_details` of `string` type.
   - New enum `FileState` representing the type of the `status` field mentioned in the previous point.
   - New possible values for `FilePurpose`: `batch`, `batch_output` and `vision`
@@ -47,8 +47,8 @@
 #### Threads
 
 - Model updates:
-  - `AssistantThread` model now includes `tool_resources` field as nullable.
-  - `AssistantThreadCreationOptions` updates include: `messages` type using renamed type `ThreadInitializationMessage` -> `ThreadMessageOptions`, `tool_resources`
+  - `AssistantThread` model now includes `toolResources` field as nullable.
+  - `AssistantThreadCreationOptions` updates include: `messages` type using renamed type `ThreadInitializationMessage` -> `ThreadMessageOptions`, `toolResources`
 
 
 ### Breaking Changes
@@ -72,9 +72,9 @@
   - Removed `MessageFile` model.
   - Updated `ThreadMessage` model:
     - The field `incomplete_details` was of the wrong type. Corrected from `MessageIncompleteDetailsReason` -> `MessageIncompleteDetails`.
-    - `assistant_id` was marked as optional, but it was in fact nullable
-    - `run_id` was marked as optional, but it was in fact nullable
-    - removed field `file_ids`
+    - `assistantId` was marked as optional, but it was in fact nullable
+    - `runId` was marked as optional, but it was in fact nullable
+    - removed field `fileIds`
     - Added new field `attachments` a nullable array of `MessageAttachment`
     
 - Operation updates:
@@ -90,7 +90,7 @@
 #### Threads
 
 - Model updates:
-  - Extracted fields used in `updateThread` operation into model `UpdateAssistantThreadOptions` which now includes the new fields `tool_resources`.
+  - Extracted fields used in `updateThread` operation into model `UpdateAssistantThreadOptions` which now includes the new fields `toolResources`.
 
 - Operation updates:
   - `updateThread` using extracted model `UpdatedAssistantThreadOptions` instead of parameters using the spread operator.
