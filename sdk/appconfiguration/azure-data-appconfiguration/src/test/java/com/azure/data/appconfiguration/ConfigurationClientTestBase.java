@@ -74,7 +74,7 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
         labelPrefix = testResourceNamer.randomName(LABEL_PREFIX, PREFIX_LENGTH);
     }
 
-    <T> T clientSetup(Function<TokenCredential, T> clientBuilder) {
+    <T> T clientSetup(BiFunction<TokenCredential, String, T> clientBuilder) {
 //        if (CoreUtils.isNullOrEmpty(connectionString)) {
 //            connectionString = interceptorManager.isPlaybackMode() ? FAKE_CONNECTION_STRING
 //                                   : Configuration.getGlobalConfiguration().get(AZURE_APPCONFIG_CONNECTION_STRING);
@@ -86,9 +86,12 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
                 : new DefaultAzureCredentialBuilder().build();
         }
 
-        Objects.requireNonNull(tokenCredential, "Token Credential expected to be set.");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZ_CONFIG_ENDPOINT");
 
-        return Objects.requireNonNull(clientBuilder.apply(tokenCredential));
+        Objects.requireNonNull(tokenCredential, "Token Credential expected to be set.");
+        Objects.requireNonNull(endpoint, "Az Config endpoint expected to be set.");
+
+        return Objects.requireNonNull(clientBuilder.apply(tokenCredential, endpoint));
     }
 
     String getKey() {

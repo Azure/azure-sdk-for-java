@@ -57,6 +57,10 @@
         }
     ],
     "outputs": {
+        "AZ_CONFIG_ENDPOINT": {
+          "type": "string",
+          "value": "[variables('endpointValue')]"
+        },
         "roleDefinitionId": {
             "type": "string",
             "value": "[ variables('roleDefinitionId')]"
