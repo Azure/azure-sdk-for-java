@@ -342,7 +342,7 @@ There are three possible recurrence range type: `NoEnd`, `EndDate` and `Numbered
 
       The `Numbered` range causes the time window to occur a fixed number of days (based on the pattern).
 
-      The following example will repeat from 6:00 PM to 8:00 PM on Monday and Tuesday until the there are 3 occurrences, which respectively happens on April 1st(Mon), April 2nd(Tue) and April 8th(Mon).
+      The following example will repeat from 6:00 PM to 8:00 PM on Monday and Tuesday until the there are 3 occurrences, which respectively happens on 2024/04/01(Mon), 2024/04/02(Tue) and 2024/04/08(Mon).
 
         ``` yaml
         start: "Mon, 1 Apr 2024 18:00:00 GMT"
