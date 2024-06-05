@@ -14,15 +14,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FailActivityTypeProperties {
     /*
-     * The error message that surfaced in the Fail activity. It can be dynamic content that's evaluated to a non
-     * empty/blank string at runtime. Type: string (or Expression with resultType string).
+     * The error message that surfaced in the Fail activity. It can be dynamic content that's evaluated to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "message", required = true)
     private Object message;
 
     /*
-     * The error code that categorizes the error type of the Fail activity. It can be dynamic content that's evaluated
-     * to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
+     * The error code that categorizes the error type of the Fail activity. It can be dynamic content that's evaluated to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "errorCode", required = true)
     private Object errorCode;
@@ -86,12 +84,14 @@ public final class FailActivityTypeProperties {
      */
     public void validate() {
         if (message() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property message in model FailActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property message in model FailActivityTypeProperties"));
         }
         if (errorCode() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property errorCode in model FailActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property errorCode in model FailActivityTypeProperties"));
         }
     }
 

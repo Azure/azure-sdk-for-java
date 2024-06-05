@@ -125,7 +125,10 @@ public class JacksonAdapter implements SerializerAdapter {
      *
      * @param configureSerialization Applies additional configuration to outer mapper using inner mapper for module
      * chaining.
+     * @deprecated This API will be removed in the future. Please use {@link #createDefaultSerializerAdapter()} if you
+     * need to use JacksonAdapter.
      */
+    @Deprecated
     public JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper> configureSerialization) {
         Objects.requireNonNull(configureSerialization, "'configureSerialization' cannot be null.");
         this.headerMapper = ObjectMapperShim.createHeaderMapper();

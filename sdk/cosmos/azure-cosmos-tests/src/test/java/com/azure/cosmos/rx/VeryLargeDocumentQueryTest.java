@@ -5,6 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -69,7 +70,7 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
 
         //Keep size as ~ 1.999MB to account for size of other props
         int size = (int) (ONE_MB * 1.999);
-        BridgeInternal.setProperty(docDefinition, "largeString", StringUtils.repeat("x", size));
+        docDefinition.set("largeString", StringUtils.repeat("x", size), CosmosItemSerializer.DEFAULT_SERIALIZER);
 
         Mono<CosmosItemResponse<InternalObjectNode>> createObservable =
             createdCollection.createItem(docDefinition, new CosmosItemRequestOptions());

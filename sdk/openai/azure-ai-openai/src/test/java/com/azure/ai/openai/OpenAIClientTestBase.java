@@ -4,15 +4,18 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.functions.FutureTemperatureArguments;
-import com.azure.ai.openai.functions.FutureTemperatureParameters;
-import com.azure.ai.openai.functions.Parameters;
+import com.azure.ai.openai.implementation.FutureTemperatureArguments;
+import com.azure.ai.openai.implementation.FutureTemperatureParameters;
+import com.azure.ai.openai.implementation.Parameters;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
+import com.azure.ai.openai.models.AudioTranscriptionSegment;
+import com.azure.ai.openai.models.AudioTranscriptionWord;
 import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AudioTranslationOptions;
 import com.azure.ai.openai.models.AzureChatExtensionDataSourceResponseCitation;
+import com.azure.ai.openai.models.AzureChatExtensionRetrievedDocument;
 import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
@@ -33,6 +36,10 @@ import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
+import com.azure.ai.openai.models.ContentFilterCitedDetectionResult;
+import com.azure.ai.openai.models.ContentFilterDetailedResults;
+import com.azure.ai.openai.models.ContentFilterDetectionResult;
+import com.azure.ai.openai.models.ContentFilterResult;
 import com.azure.ai.openai.models.ContentFilterResultDetailsForPrompt;
 import com.azure.ai.openai.models.ContentFilterResultsForChoice;
 import com.azure.ai.openai.models.ContentFilterResultsForPrompt;
@@ -64,6 +71,7 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -87,22 +95,28 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class OpenAIClientTestBase extends TestProxyTestBase {
+    private boolean sanitizersRemoved = false;
 
     OpenAIClientBuilder getOpenAIClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
                 .httpClient(httpClient)
                 .serviceVersion(serviceVersion);
-
-        if (getTestMode() != TestMode.LIVE) {
+        TestMode testMode = getTestMode();
+        if (testMode != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
+            // Disable "$..id"=AZSDK3430, "Set-Cookie"=AZSDK2015 for both azure and non-azure clients from the list of common sanitizers.
+            if (!sanitizersRemoved) {
+                interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+                sanitizersRemoved = true;
+            }
         }
 
-        if (getTestMode() == TestMode.PLAYBACK) {
+        if (testMode == TestMode.PLAYBACK) {
             builder
                     .endpoint("https://localhost:8080")
                     .credential(new AzureKeyCredential(FAKE_API_KEY));
-        } else if (getTestMode() == TestMode.RECORD) {
+        } else if (testMode == TestMode.RECORD) {
             builder
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
@@ -122,6 +136,11 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
             addCustomMatchers();
+            // Disable "$..id"=AZSDK3430, "Set-Cookie"=AZSDK2015 for both azure and non-azure clients from the list of common sanitizers.
+            if (!sanitizersRemoved) {
+                interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493", "AZSDK2015");
+                sanitizersRemoved = true;
+            }
         }
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -148,7 +167,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     private void addCustomMatchers() {
-        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Cookie", "Set-Cookie")));
+        interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Arrays.asList("Cookie", "Set-Cookie")));
     }
 
     protected String getAzureCognitiveSearchKey() {
@@ -260,7 +279,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getChatFunctionRunnerForNonAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
-        testRunner.accept("gpt-3.5-turbo-0613", getChatMessagesWithFunction());
+        testRunner.accept("gpt-4", getChatMessagesWithFunction());
     }
 
     void getChatFunctionForRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
@@ -574,11 +593,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(imageGenerationData.getPromptFilterResults());
     }
 
-    static <T> T assertFunctionCall(ChatChoice actual, String functionName, Class<T> myPropertiesClazz) {
+    static <T> T assertFunctionCall(ChatChoice actual, Class<T> myPropertiesClazz) {
         assertEquals(0, actual.getIndex());
         assertEquals("function_call", actual.getFinishReason().toString());
         FunctionCall functionCall = actual.getMessage().getFunctionCall();
-        assertEquals(functionName, functionCall.getName());
         BinaryData argumentJson = BinaryData.fromString(functionCall.getArguments());
         return argumentJson.toObject(myPropertiesClazz);
     }
@@ -587,26 +605,90 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(contentFilterResults);
         ContentFilterResultDetailsForPrompt promptFilterDetails = contentFilterResults.getContentFilterResults();
         assertNotNull(promptFilterDetails);
-        assertFalse(promptFilterDetails.getHate().isFiltered());
-        assertEquals(promptFilterDetails.getHate().getSeverity(), ContentFilterSeverity.SAFE);
-        assertFalse(promptFilterDetails.getSexual().isFiltered());
-        assertEquals(promptFilterDetails.getSexual().getSeverity(), ContentFilterSeverity.SAFE);
-        assertFalse(promptFilterDetails.getSelfHarm().isFiltered());
-        assertEquals(promptFilterDetails.getSelfHarm().getSeverity(), ContentFilterSeverity.SAFE);
-        assertFalse(promptFilterDetails.getViolence().isFiltered());
-        assertEquals(promptFilterDetails.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult hate = promptFilterDetails.getHate();
+        assertFalse(hate.isFiltered());
+        assertEquals(hate.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult sexual = promptFilterDetails.getSexual();
+        assertFalse(sexual.isFiltered());
+        assertEquals(sexual.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult selfHarm = promptFilterDetails.getSelfHarm();
+        assertFalse(selfHarm.isFiltered());
+        assertEquals(selfHarm.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult violence = promptFilterDetails.getViolence();
+        assertFalse(violence.isFiltered());
+        assertEquals(violence.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterDetailedResults customBlocklists = promptFilterDetails.getCustomBlocklists();
+        if (customBlocklists != null) {
+            assertFalse(customBlocklists.isFiltered());
+            assertNull(customBlocklists.getDetails());
+        }
+
+        ContentFilterDetectionResult indirectAttack = promptFilterDetails.getIndirectAttack();
+        if (indirectAttack != null) {
+            assertFalse(indirectAttack.isFiltered());
+            assertFalse(indirectAttack.isDetected());
+        }
+
+        ContentFilterDetectionResult profanity = promptFilterDetails.getProfanity();
+        if (profanity != null) {
+            assertFalse(profanity.isFiltered());
+            assertFalse(profanity.isDetected());
+        }
+
+        ContentFilterDetectionResult jailbreak = promptFilterDetails.getJailbreak();
+        if (jailbreak != null) {
+            assertFalse(jailbreak.isFiltered());
+            assertFalse(jailbreak.isDetected());
+        }
     }
 
     static void assertSafeChoiceContentFilterResults(ContentFilterResultsForChoice contentFilterResults) {
         assertNotNull(contentFilterResults);
-        assertFalse(contentFilterResults.getHate().isFiltered());
-        assertEquals(contentFilterResults.getHate().getSeverity(), ContentFilterSeverity.SAFE);
-        assertFalse(contentFilterResults.getSexual().isFiltered());
-        assertEquals(contentFilterResults.getSexual().getSeverity(), ContentFilterSeverity.SAFE);
-        assertFalse(contentFilterResults.getSelfHarm().isFiltered());
-        assertEquals(contentFilterResults.getSelfHarm().getSeverity(), ContentFilterSeverity.SAFE);
-        assertFalse(contentFilterResults.getViolence().isFiltered());
-        assertEquals(contentFilterResults.getViolence().getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult hate = contentFilterResults.getHate();
+        assertFalse(hate.isFiltered());
+        assertEquals(hate.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult sexual = contentFilterResults.getSexual();
+        assertFalse(sexual.isFiltered());
+        assertEquals(sexual.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult selfHarm = contentFilterResults.getSelfHarm();
+        assertFalse(selfHarm.isFiltered());
+        assertEquals(selfHarm.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterResult violence = contentFilterResults.getViolence();
+        assertFalse(violence.isFiltered());
+        assertEquals(violence.getSeverity(), ContentFilterSeverity.SAFE);
+
+        ContentFilterDetailedResults customBlocklists = contentFilterResults.getCustomBlocklists();
+        if (customBlocklists != null) {
+            assertFalse(customBlocklists.isFiltered());
+            assertNull(customBlocklists.getDetails());
+        }
+
+        ContentFilterDetectionResult profanity = contentFilterResults.getProfanity();
+        if (profanity != null) {
+            assertFalse(profanity.isFiltered());
+            assertFalse(profanity.isDetected());
+        }
+
+        ContentFilterDetectionResult protectedMaterialText = contentFilterResults.getProtectedMaterialText();
+        if (protectedMaterialText != null) {
+            assertFalse(protectedMaterialText.isFiltered());
+            assertFalse(protectedMaterialText.isDetected());
+        }
+
+        ContentFilterCitedDetectionResult protectedMaterialCode = contentFilterResults.getProtectedMaterialCode();
+        if (protectedMaterialCode != null) {
+            assertFalse(protectedMaterialCode.isFiltered());
+            assertFalse(protectedMaterialCode.isDetected());
+        }
     }
 
     static void assertChatCompletionsCognitiveSearch(ChatCompletions chatCompletions) {
@@ -621,6 +703,15 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(messageContext.getIntent());
         AzureChatExtensionDataSourceResponseCitation firstResponseCitation = messageContext.getCitations().get(0);
         assertNotNull(firstResponseCitation.getContent());
+        List<AzureChatExtensionRetrievedDocument> allRetrievedDocuments = messageContext.getAllRetrievedDocuments();
+
+        if (!CoreUtils.isNullOrEmpty(allRetrievedDocuments)) {
+            for (AzureChatExtensionRetrievedDocument retrievedDocument : allRetrievedDocuments) {
+                assertNotNull(retrievedDocument.getContent());
+                assertFalse(CoreUtils.isNullOrEmpty(retrievedDocument.getSearchQueries()));
+                assertNotNull(retrievedDocument.getFilterReason());
+            }
+        }
     }
 
     // Some of the quirks of stream ChatCompletions:
@@ -672,8 +763,27 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(transcription.getDuration());
         assertNotNull(transcription.getLanguage());
         assertEquals(audioTaskLabel, transcription.getTask());
-        assertNotNull(transcription.getSegments());
-        assertFalse(transcription.getSegments().isEmpty());
+        assertAudioTranscriptionSegments(transcription.getSegments());
+    }
+
+    static void assertAudioTranscriptionSegments(List<AudioTranscriptionSegment> segments) {
+        assertFalse(CoreUtils.isNullOrEmpty(segments));
+        for (AudioTranscriptionSegment segment : segments) {
+            assertTrue(segment.getId() > -1);
+            assertNotNull(segment.getText());
+            assertNotNull(segment.getStart());
+            assertNotNull(segment.getTokens());
+            assertNotNull(segment.getEnd());
+        }
+    }
+
+    static void assertAudioTranscriptionWords(List<AudioTranscriptionWord> words) {
+        assertFalse(CoreUtils.isNullOrEmpty(words));
+        for (AudioTranscriptionWord word : words) {
+            assertNotNull(word.getWord());
+            assertNotNull(word.getStart());
+            assertNotNull(word.getEnd());
+        }
     }
 
     static void assertAudioTranslationSimpleJson(AudioTranslation translation, String expectedText) {

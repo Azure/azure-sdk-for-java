@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceStatus model =
-            BinaryData
-                .fromString("{\"status\":\"fmxa\",\"startupType\":\"fjpgddtocjjxhvp\"}")
-                .toObject(ServiceStatus.class);
-        Assertions.assertEquals("fmxa", model.status());
-        Assertions.assertEquals("fjpgddtocjjxhvp", model.startupType());
+        ServiceStatus model = BinaryData.fromString("{\"status\":\"bisnja\",\"startupType\":\"mngnzscxaqw\"}")
+            .toObject(ServiceStatus.class);
+        Assertions.assertEquals("bisnja", model.status());
+        Assertions.assertEquals("mngnzscxaqw", model.startupType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceStatus model = new ServiceStatus().withStatus("fmxa").withStartupType("fjpgddtocjjxhvp");
+        ServiceStatus model = new ServiceStatus().withStatus("bisnja").withStartupType("mngnzscxaqw");
         model = BinaryData.fromObject(model).toObject(ServiceStatus.class);
-        Assertions.assertEquals("fmxa", model.status());
-        Assertions.assertEquals("fjpgddtocjjxhvp", model.startupType());
+        Assertions.assertEquals("bisnja", model.status());
+        Assertions.assertEquals("mngnzscxaqw", model.startupType());
     }
 }

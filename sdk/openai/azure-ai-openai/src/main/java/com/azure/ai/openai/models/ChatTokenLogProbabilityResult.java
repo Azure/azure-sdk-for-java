@@ -5,8 +5,11 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,37 +17,33 @@ import java.util.List;
  * tokens if 'top_logprobs' were requested.
  */
 @Immutable
-public final class ChatTokenLogProbabilityResult {
+public final class ChatTokenLogProbabilityResult implements JsonSerializable<ChatTokenLogProbabilityResult> {
 
     /*
      * The message content token.
      */
     @Generated
-    @JsonProperty(value = "token")
-    private String token;
+    private final String token;
 
     /*
      * The log probability of the message content token.
      */
     @Generated
-    @JsonProperty(value = "logprob")
-    private double logprob;
+    private final double logprob;
 
     /*
-     * A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where
-     * characters are represented by multiple tokens and their byte representations must be combined to generate the
-     * correct text representation. Can be null if there is no bytes representation for the token.
+     * A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters
+     * are represented by multiple tokens and their byte representations must be combined to generate the correct text
+     * representation. Can be null if there is no bytes representation for the token.
      */
     @Generated
-    @JsonProperty(value = "bytes")
-    private List<Integer> bytes;
+    private final List<Integer> bytes;
 
     /*
      * The list of most likely tokens and their log probability information, as requested via 'top_logprobs'.
      */
     @Generated
-    @JsonProperty(value = "top_logprobs")
-    private List<ChatTokenLogProbabilityInfo> topLogprobs;
+    private final List<ChatTokenLogProbabilityInfo> topLogprobs;
 
     /**
      * Creates an instance of ChatTokenLogProbabilityResult class.
@@ -55,10 +54,8 @@ public final class ChatTokenLogProbabilityResult {
      * @param topLogprobs the topLogprobs value to set.
      */
     @Generated
-    @JsonCreator
-    private ChatTokenLogProbabilityResult(@JsonProperty(value = "token") String token,
-        @JsonProperty(value = "logprob") double logprob, @JsonProperty(value = "bytes") List<Integer> bytes,
-        @JsonProperty(value = "top_logprobs") List<ChatTokenLogProbabilityInfo> topLogprobs) {
+    private ChatTokenLogProbabilityResult(String token, double logprob, List<Integer> bytes,
+        List<ChatTokenLogProbabilityInfo> topLogprobs) {
         this.token = token;
         this.logprob = logprob;
         this.bytes = bytes;
@@ -106,5 +103,54 @@ public final class ChatTokenLogProbabilityResult {
     @Generated
     public List<ChatTokenLogProbabilityInfo> getTopLogprobs() {
         return this.topLogprobs;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("token", this.token);
+        jsonWriter.writeDoubleField("logprob", this.logprob);
+        jsonWriter.writeArrayField("bytes", this.bytes, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeArrayField("top_logprobs", this.topLogprobs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChatTokenLogProbabilityResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChatTokenLogProbabilityResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ChatTokenLogProbabilityResult.
+     */
+    @Generated
+    public static ChatTokenLogProbabilityResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String token = null;
+            double logprob = 0.0;
+            List<Integer> bytes = null;
+            List<ChatTokenLogProbabilityInfo> topLogprobs = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("token".equals(fieldName)) {
+                    token = reader.getString();
+                } else if ("logprob".equals(fieldName)) {
+                    logprob = reader.getDouble();
+                } else if ("bytes".equals(fieldName)) {
+                    bytes = reader.readArray(reader1 -> reader1.getInt());
+                } else if ("top_logprobs".equals(fieldName)) {
+                    topLogprobs = reader.readArray(reader1 -> ChatTokenLogProbabilityInfo.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new ChatTokenLogProbabilityResult(token, logprob, bytes, topLogprobs);
+        });
     }
 }

@@ -1,8 +1,35 @@
 # Release History
 
-## 1.12.0-beta.2 (Unreleased)
+## 1.13.0-beta.2 (Unreleased)
 
 ### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.13.0-beta.1 (2024-05-23)
+
+### Features Added
+- Added `AzurePipelinesCredential` to support [Microsoft Entra Workload ID](https://learn.microsoft.com/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml) in Azure Pipelines service connections.
+
+### Other Changes
+- Migrated Managed Identity authentication flow to utilize Msal4j MI implementation. 
+
+## 1.12.1 (2024-05-02)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+
+## 1.12.0 (2024-04-08)
+
+### Features Added
+- Added default sign-in experience for brokered authentication. See the documentation in the `azure-identity-broker` package for more information. [#39284](https://github.com/Azure/azure-sdk-for-java/pull/39284) 
 
 ### Breaking Changes
 #### Behavioral Breaking Changes
@@ -16,7 +43,10 @@
 ### Other Changes
 
 #### Dependency Updates
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
 - Upgraded `msal4j` from `1.14.3` to version `1.15.0`.
+- Upgraded `msal4j-persistence-extension` from `1.2.0` to version `1.3.0`.
 
 ## 1.11.4 (2024-03-14)
 

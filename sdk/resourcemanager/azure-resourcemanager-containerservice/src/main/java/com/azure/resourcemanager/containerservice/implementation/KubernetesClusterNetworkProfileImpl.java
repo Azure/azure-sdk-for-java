@@ -5,7 +5,10 @@ package com.azure.resourcemanager.containerservice.implementation;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.LoadBalancerSku;
+import com.azure.resourcemanager.containerservice.models.NetworkDataplane;
+import com.azure.resourcemanager.containerservice.models.NetworkMode;
 import com.azure.resourcemanager.containerservice.models.NetworkPlugin;
+import com.azure.resourcemanager.containerservice.models.NetworkPluginMode;
 import com.azure.resourcemanager.containerservice.models.NetworkPolicy;
 
 /** The implementation for KubernetesClusterAgentPool and its create and update interfaces. */
@@ -71,5 +74,23 @@ public class KubernetesClusterNetworkProfileImpl
             this.parentKubernetesCluster.innerModel().withNetworkProfile(new ContainerServiceNetworkProfile());
         }
         return this.parentKubernetesCluster.innerModel().networkProfile();
+    }
+
+    @Override
+    public KubernetesClusterNetworkProfileImpl withNetworkPluginMode(NetworkPluginMode networkPluginMode) {
+        ensureNetworkProfile().withNetworkPluginMode(networkPluginMode);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterNetworkProfileImpl withNetworkMode(NetworkMode networkMode) {
+        ensureNetworkProfile().withNetworkMode(networkMode);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterNetworkProfileImpl withNetworkDataPlan(NetworkDataplane networkDataPlan) {
+        ensureNetworkProfile().withNetworkDataplane(networkDataPlan);
+        return this;
     }
 }

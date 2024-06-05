@@ -5,18 +5,15 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is
- * based
+ * The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is based
  * on a public Azure OpenAI endpoint call for embeddings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("endpoint")
 @Immutable
 public final class OnYourDataEndpointVectorizationSource extends OnYourDataVectorizationSource {
 
@@ -26,29 +23,13 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
      * query parameter is not allowed.
      */
     @Generated
-    @JsonProperty(value = "endpoint")
-    private String endpoint;
+    private final String endpoint;
 
     /*
      * Specifies the authentication options to use when retrieving embeddings from the specified endpoint.
      */
     @Generated
-    @JsonProperty(value = "authentication")
-    private OnYourDataAuthenticationOptions authentication;
-
-    /**
-     * Creates an instance of OnYourDataEndpointVectorizationSource class.
-     *
-     * @param endpoint the endpoint value to set.
-     * @param authentication the authentication value to set.
-     */
-    @Generated
-    @JsonCreator
-    public OnYourDataEndpointVectorizationSource(@JsonProperty(value = "endpoint") String endpoint,
-        @JsonProperty(value = "authentication") OnYourDataAuthenticationOptions authentication) {
-        this.endpoint = endpoint;
-        this.authentication = authentication;
-    }
+    private final OnYourDataVectorSearchAuthenticationOptions authentication;
 
     /**
      * Get the endpoint property: Specifies the resource endpoint URL from which embeddings should be retrieved. It
@@ -70,7 +51,85 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
      * @return the authentication value.
      */
     @Generated
-    public OnYourDataAuthenticationOptions getAuthentication() {
+    public OnYourDataVectorSearchAuthenticationOptions getAuthentication() {
         return this.authentication;
+    }
+
+    /*
+     * The type of vectorization source to use.
+     */
+    @Generated
+    private OnYourDataVectorizationSourceType type = OnYourDataVectorizationSourceType.ENDPOINT;
+
+    /**
+     * Get the type property: The type of vectorization source to use.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public OnYourDataVectorizationSourceType getType() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpoint", this.endpoint);
+        jsonWriter.writeJsonField("authentication", this.authentication);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OnYourDataEndpointVectorizationSource from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OnYourDataEndpointVectorizationSource if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OnYourDataEndpointVectorizationSource.
+     */
+    @Generated
+    public static OnYourDataEndpointVectorizationSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String endpoint = null;
+            OnYourDataVectorSearchAuthenticationOptions authentication = null;
+            OnYourDataVectorizationSourceType type = OnYourDataVectorizationSourceType.ENDPOINT;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("endpoint".equals(fieldName)) {
+                    endpoint = reader.getString();
+                } else if ("authentication".equals(fieldName)) {
+                    authentication = OnYourDataVectorSearchAuthenticationOptions.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = OnYourDataVectorizationSourceType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            OnYourDataEndpointVectorizationSource deserializedOnYourDataEndpointVectorizationSource
+                = new OnYourDataEndpointVectorizationSource(endpoint, authentication);
+            deserializedOnYourDataEndpointVectorizationSource.type = type;
+            return deserializedOnYourDataEndpointVectorizationSource;
+        });
+    }
+
+    /**
+     * Creates an instance of OnYourDataEndpointVectorizationSource class.
+     *
+     * @param endpoint the endpoint value to set.
+     * @param authentication the authentication value to set.
+     */
+    @Generated
+    public OnYourDataEndpointVectorizationSource(String endpoint,
+        OnYourDataVectorSearchAuthenticationOptions authentication) {
+        this.endpoint = endpoint;
+        this.authentication = authentication;
     }
 }

@@ -27,13 +27,15 @@ public final class AfdOriginGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AfdOriginGroupListResult class. */
+    /**
+     * Creates an instance of AfdOriginGroupListResult class.
+     */
     public AfdOriginGroupListResult() {
     }
 
     /**
      * Get the value property: List of Azure Front Door origin groups within an Azure Front Door endpoint.
-     *
+     * 
      * @return the value value.
      */
     public List<AfdOriginGroupInner> value() {
@@ -42,7 +44,7 @@ public final class AfdOriginGroupListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of origin objects if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -51,7 +53,7 @@ public final class AfdOriginGroupListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of origin objects if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AfdOriginGroupListResult object itself.
      */
@@ -62,7 +64,7 @@ public final class AfdOriginGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

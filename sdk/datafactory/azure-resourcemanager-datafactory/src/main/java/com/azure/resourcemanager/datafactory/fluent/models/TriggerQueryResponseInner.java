@@ -53,8 +53,8 @@ public final class TriggerQueryResponseInner {
     }
 
     /**
-     * Get the continuationToken property: The continuation token for getting the next page of results, if any
-     * remaining results exist, null otherwise.
+     * Get the continuationToken property: The continuation token for getting the next page of results, if any remaining
+     * results exist, null otherwise.
      * 
      * @return the continuationToken value.
      */
@@ -63,8 +63,8 @@ public final class TriggerQueryResponseInner {
     }
 
     /**
-     * Set the continuationToken property: The continuation token for getting the next page of results, if any
-     * remaining results exist, null otherwise.
+     * Set the continuationToken property: The continuation token for getting the next page of results, if any remaining
+     * results exist, null otherwise.
      * 
      * @param continuationToken the continuationToken value to set.
      * @return the TriggerQueryResponseInner object itself.
@@ -81,8 +81,9 @@ public final class TriggerQueryResponseInner {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model TriggerQueryResponseInner"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property value in model TriggerQueryResponseInner"));
         } else {
             value().forEach(e -> e.validate());
         }

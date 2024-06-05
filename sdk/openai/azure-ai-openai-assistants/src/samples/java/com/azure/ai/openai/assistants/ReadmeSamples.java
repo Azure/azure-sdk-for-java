@@ -18,6 +18,7 @@ import com.azure.ai.openai.assistants.models.MessageImageFileContent;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
 import com.azure.ai.openai.assistants.models.MessageTextDetails;
+import com.azure.ai.openai.assistants.models.MessageTextFileCitationAnnotation;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RequiredFunctionToolCall;
@@ -35,9 +36,11 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.TypeReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -203,9 +206,13 @@ public final class ReadmeSamples {
                 if (content instanceof MessageTextContent) {
                     MessageTextDetails messageTextDetails = ((MessageTextContent) content).getText();
                     System.out.println(messageTextDetails.getValue());
-                    messageTextDetails.getAnnotations().forEach(annotation ->
-                        System.out.println("\tAnnotation start: " + annotation.getStartIndex()
-                            + " ,end: " + annotation.getEndIndex() + " ,text: \"" + annotation.getText() + "\""));
+                    messageTextDetails.getAnnotations().forEach(annotation -> {
+                        if (annotation instanceof MessageTextFileCitationAnnotation) {
+                            MessageTextFileCitationAnnotation textAnnotation = (MessageTextFileCitationAnnotation) annotation;
+                            System.out.println("\tAnnotation start: " + textAnnotation.getStartIndex()
+                                + " ,end: " + textAnnotation.getEndIndex() + " ,text: \"" + textAnnotation.getText() + "\"");
+                        }
+                    });
                 } else if (content instanceof MessageImageFileContent) {
                     System.out.print("Image file ID: ");
                     System.out.println(((MessageImageFileContent) content).getImageFile().getFileId());
@@ -284,13 +291,24 @@ public final class ReadmeSamples {
     // BEGIN: readme-sample-functionDefinition
     private FunctionToolDefinition getUserFavoriteCityToolDefinition() {
 
-        class UserFavoriteCityParameters {
+        class UserFavoriteCityParameters implements JsonSerializable<UserFavoriteCityParameters> {
 
-            @JsonProperty("type")
             private String type = "object";
 
-            @JsonProperty("properties")
-            private Map<String, Object> properties = new HashMap<>();
+            private Map<String, JsonSerializable<?>> properties = new HashMap<>();
+
+            @Override
+            public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+                jsonWriter.writeStartObject();
+                jsonWriter.writeStringField("type", this.type);
+                jsonWriter.writeStartObject("properties");
+                for (Map.Entry<String, JsonSerializable<?>> entry : this.properties.entrySet()) {
+                    jsonWriter.writeFieldName(entry.getKey());
+                    entry.getValue().toJson(jsonWriter);
+                }
+                jsonWriter.writeEndObject();
+                return jsonWriter.writeEndObject();
+            }
         }
 
         return new FunctionToolDefinition(

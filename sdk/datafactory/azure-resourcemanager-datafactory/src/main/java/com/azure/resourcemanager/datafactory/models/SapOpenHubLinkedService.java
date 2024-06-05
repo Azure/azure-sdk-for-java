@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SapOpenHubLinkedServiceTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -16,10 +17,21 @@ import java.util.Map;
 /**
  * SAP Business Warehouse Open Hub Destination Linked Service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = SapOpenHubLinkedService.class,
+    visible = true)
 @JsonTypeName("SapOpenHub")
 @Fluent
 public final class SapOpenHubLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "SapOpenHub";
+
     /*
      * Properties specific to SAP Business Warehouse Open Hub Destination linked service type.
      */
@@ -30,6 +42,16 @@ public final class SapOpenHubLinkedService extends LinkedService {
      * Creates an instance of SapOpenHubLinkedService class.
      */
     public SapOpenHubLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -79,8 +101,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Get the server property: Host name of the SAP BW instance where the open hub destination is located. Type:
-     * string (or Expression with resultType string).
+     * Get the server property: Host name of the SAP BW instance where the open hub destination is located. Type: string
+     * (or Expression with resultType string).
      * 
      * @return the server value.
      */
@@ -89,8 +111,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Set the server property: Host name of the SAP BW instance where the open hub destination is located. Type:
-     * string (or Expression with resultType string).
+     * Set the server property: Host name of the SAP BW instance where the open hub destination is located. Type: string
+     * (or Expression with resultType string).
      * 
      * @param server the server value to set.
      * @return the SapOpenHubLinkedService object itself.
@@ -104,9 +126,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Get the systemNumber property: System number of the BW system where the open hub destination is located.
-     * (Usually a two-digit decimal number represented as a string.) Type: string (or Expression with resultType
-     * string).
+     * Get the systemNumber property: System number of the BW system where the open hub destination is located. (Usually
+     * a two-digit decimal number represented as a string.) Type: string (or Expression with resultType string).
      * 
      * @return the systemNumber value.
      */
@@ -115,9 +136,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Set the systemNumber property: System number of the BW system where the open hub destination is located.
-     * (Usually a two-digit decimal number represented as a string.) Type: string (or Expression with resultType
-     * string).
+     * Set the systemNumber property: System number of the BW system where the open hub destination is located. (Usually
+     * a two-digit decimal number represented as a string.) Type: string (or Expression with resultType string).
      * 
      * @param systemNumber the systemNumber value to set.
      * @return the SapOpenHubLinkedService object itself.
@@ -158,8 +178,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Get the language property: Language of the BW system where the open hub destination is located. The default
-     * value is EN. Type: string (or Expression with resultType string).
+     * Get the language property: Language of the BW system where the open hub destination is located. The default value
+     * is EN. Type: string (or Expression with resultType string).
      * 
      * @return the language value.
      */
@@ -168,8 +188,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Set the language property: Language of the BW system where the open hub destination is located. The default
-     * value is EN. Type: string (or Expression with resultType string).
+     * Set the language property: Language of the BW system where the open hub destination is located. The default value
+     * is EN. Type: string (or Expression with resultType string).
      * 
      * @param language the language value to set.
      * @return the SapOpenHubLinkedService object itself.
@@ -331,8 +351,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -341,8 +361,8 @@ public final class SapOpenHubLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapOpenHubLinkedService object itself.
@@ -364,8 +384,9 @@ public final class SapOpenHubLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerTypeProperties in model SapOpenHubLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SapOpenHubLinkedService"));
         } else {
             innerTypeProperties().validate();
         }

@@ -6,88 +6,61 @@ package com.azure.resourcemanager.containerservicefleet.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.containerservicefleet.ContainerServiceFleetManager;
 import com.azure.resourcemanager.containerservicefleet.models.FleetUpdateStrategy;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateGroup;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateRunStrategy;
 import com.azure.resourcemanager.containerservicefleet.models.UpdateStage;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class FleetUpdateStrategiesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"dbodacizsjqlhkrr\",\"groups\":[{\"name\":\"eibq\"},{\"name\":\"p\"}],\"afterStageWaitInSeconds\":1566726508}]}},\"eTag\":\"vxndz\",\"id\":\"krefajpjo\",\"name\":\"wkqnyhg\",\"type\":\"ij\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"mrv\",\"groups\":[{\"name\":\"tvb\"},{\"name\":\"qgsfraoyzkoow\"},{\"name\":\"lmnguxaw\"}],\"afterStageWaitInSeconds\":1823569828},{\"name\":\"dsyuuximerqfob\",\"groups\":[{\"name\":\"nkbykutwpfhp\"},{\"name\":\"gmhrskdsnfdsdoak\"},{\"name\":\"tdlmkkzevd\"},{\"name\":\"hewpusdsttwv\"}],\"afterStageWaitInSeconds\":221713689}]}},\"eTag\":\"bejdcn\",\"id\":\"qmoa\",\"name\":\"ufgmjzrwrdg\",\"type\":\"twaenuuzko\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ContainerServiceFleetManager manager = ContainerServiceFleetManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        FleetUpdateStrategy response = manager.fleetUpdateStrategies()
+            .define("scywuggwoluhc")
+            .withExistingFleet("piyylhalnswhccsp", "kaivwit")
+            .withStrategy(new UpdateRunStrategy().withStages(Arrays.asList(
+                new UpdateStage().withName("hairsbrgzdwms")
+                    .withGroups(Arrays.asList(new UpdateGroup().withName("pqwd"),
+                        new UpdateGroup().withName("ggicccnxqhue"), new UpdateGroup().withName("mkttlstvlzywem")))
+                    .withAfterStageWaitInSeconds(218184123),
+                new UpdateStage().withName("ncsdtclusiyp")
+                    .withGroups(Arrays.asList(new UpdateGroup().withName("gytguslfead"),
+                        new UpdateGroup().withName("ygqukyhejh"), new UpdateGroup().withName("isxgfp"),
+                        new UpdateGroup().withName("lolp")))
+                    .withAfterStageWaitInSeconds(1515177914),
+                new UpdateStage().withName("srp")
+                    .withGroups(
+                        Arrays.asList(new UpdateGroup().withName("jzraehtwdwrf"), new UpdateGroup().withName("swibyr")))
+                    .withAfterStageWaitInSeconds(66676019),
+                new UpdateStage().withName("bhshfwpracstwity")
+                    .withGroups(Arrays.asList(new UpdateGroup().withName("vxccedcp"), new UpdateGroup().withName("md"),
+                        new UpdateGroup().withName("odn")))
+                    .withAfterStageWaitInSeconds(987064963))))
+            .withIfMatch("wlmdjrkv")
+            .withIfNoneMatch("g")
+            .create();
 
-        ContainerServiceFleetManager manager =
-            ContainerServiceFleetManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        FleetUpdateStrategy response =
-            manager
-                .fleetUpdateStrategies()
-                .define("jcntuj")
-                .withExistingFleet("tpuqujmq", "gkfbtndoaong")
-                .withStrategy(
-                    new UpdateRunStrategy()
-                        .withStages(
-                            Arrays
-                                .asList(
-                                    new UpdateStage()
-                                        .withName("df")
-                                        .withGroups(
-                                            Arrays
-                                                .asList(
-                                                    new UpdateGroup().withName("ae"),
-                                                    new UpdateGroup().withName("kojvd"),
-                                                    new UpdateGroup().withName("pzfoqoui")))
-                                        .withAfterStageWaitInSeconds(1370358053))))
-                .withIfMatch("khazxkhnzbonlwn")
-                .withIfNoneMatch("oegokdwbwh")
-                .create();
-
-        Assertions.assertEquals("mrv", response.strategy().stages().get(0).name());
-        Assertions.assertEquals("tvb", response.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(1823569828, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("dbodacizsjqlhkrr", response.strategy().stages().get(0).name());
+        Assertions.assertEquals("eibq", response.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1566726508, response.strategy().stages().get(0).afterStageWaitInSeconds());
     }
 }

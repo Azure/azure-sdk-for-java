@@ -144,6 +144,10 @@ foreach ($targetFolder in (Get-ChildItem -Path $path -Filter "target" -Directory
   }
 }
 
+if ((Get-ChildItem -Path $OutputDirectory -Directory).Count -eq 0) {
+  exit 0
+}
+
 if (-not (Test-Path "$StagingDirectory/troubleshooting")) {
   New-Item -ItemType Directory -Path "$StagingDirectory/troubleshooting" | Out-Null
 }

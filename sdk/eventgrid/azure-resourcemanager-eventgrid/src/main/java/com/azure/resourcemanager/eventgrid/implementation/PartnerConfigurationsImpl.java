@@ -13,8 +13,8 @@ import com.azure.resourcemanager.eventgrid.fluent.PartnerConfigurationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerConfigurationInner;
 import com.azure.resourcemanager.eventgrid.models.Partner;
 import com.azure.resourcemanager.eventgrid.models.PartnerConfiguration;
-import com.azure.resourcemanager.eventgrid.models.PartnerConfigurationUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.PartnerConfigurations;
+import com.azure.resourcemanager.eventgrid.models.PartnerConfigurationUpdateParameters;
 
 public final class PartnerConfigurationsImpl implements PartnerConfigurations {
     private static final ClientLogger LOGGER = new ClientLogger(PartnerConfigurationsImpl.class);
@@ -103,23 +103,23 @@ public final class PartnerConfigurationsImpl implements PartnerConfigurations {
 
     public PagedIterable<PartnerConfiguration> listByResourceGroup(String resourceGroupName) {
         PagedIterable<PartnerConfigurationInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new PartnerConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PartnerConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PartnerConfiguration> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<PartnerConfigurationInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new PartnerConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PartnerConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PartnerConfiguration> list() {
         PagedIterable<PartnerConfigurationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new PartnerConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PartnerConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PartnerConfiguration> list(String filter, Integer top, Context context) {
         PagedIterable<PartnerConfigurationInner> inner = this.serviceClient().list(filter, top, context);
-        return Utils.mapPage(inner, inner1 -> new PartnerConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PartnerConfigurationImpl(inner1, this.manager()));
     }
 
     public Response<PartnerConfiguration> authorizePartnerWithResponse(String resourceGroupName, Partner partnerInfo,

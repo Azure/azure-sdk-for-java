@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.containerservicefleet.generated;
 
-/** Samples for Fleets ListCredentials. */
+/**
+ * Samples for Fleets ListCredentials.
+ */
 public final class FleetsListCredentialsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/Fleets_ListCredentialsResult.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2024-04-01/examples/Fleets_ListCredentialsResult.json
      */
     /**
      * Sample code: Lists the user credentials of a Fleet.
-     *
+     * 
      * @param manager Entry point to ContainerServiceFleetManager.
      */
     public static void listsTheUserCredentialsOfAFleet(

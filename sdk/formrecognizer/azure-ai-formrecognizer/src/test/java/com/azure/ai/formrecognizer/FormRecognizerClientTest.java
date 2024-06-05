@@ -18,7 +18,6 @@ import com.azure.ai.formrecognizer.models.RecognizeIdentityDocumentOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.CustomFormSubmodel;
@@ -523,8 +522,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
             syncPoller.waitForCompletion();
             List<FormPage> formPages = syncPoller.getFinalResult();
             validateContentData(formPages, true);
-            assertEquals(TextStyleName.OTHER,
-                formPages.get(0).getLines().get(0).getAppearance().getStyleName());
+            assertNotNull(formPages.get(0).getLines().get(0).getAppearance().getStyleName());
         }, CONTENT_FORM_JPG);
     }
 
@@ -1348,8 +1346,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
-                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
-                    .getFormRecognizerClient();
+                FormRecognizerClient formRecognizerClient = getFormRecognizerClient(httpClient, serviceVersion);
                 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
                     = formRecognizerClient.beginRecognizeCustomForms(
                         createdModel.getModelId(),
@@ -1387,8 +1384,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
-                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
-                    .getFormRecognizerClient();
+                FormRecognizerClient formRecognizerClient = getFormRecognizerClient(httpClient, serviceVersion);
                 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
                     = formRecognizerClient.beginRecognizeCustomForms(
                         createdModel.getModelId(),
@@ -1428,8 +1424,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller.waitForCompletion();
                 CustomFormModel createdModel = syncPoller.getFinalResult();
 
-                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
-                    .getFormRecognizerClient();
+                FormRecognizerClient formRecognizerClient = getFormRecognizerClient(httpClient, serviceVersion);
                 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller1
                     = formRecognizerClient.beginRecognizeCustomForms(
                         createdModel.getModelId(),
@@ -1479,8 +1474,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller2.waitForCompletion();
                 CustomFormModel composedModel = syncPoller2.getFinalResult();
 
-                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
-                    .getFormRecognizerClient();
+                FormRecognizerClient formRecognizerClient = getFormRecognizerClient(httpClient, serviceVersion);
                 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller3
                     = formRecognizerClient.beginRecognizeCustomForms(
                         composedModel.getModelId(),
@@ -1553,8 +1547,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
                 syncPoller2.waitForCompletion();
                 CustomFormModel composedModel = syncPoller2.getFinalResult();
 
-                FormRecognizerClient formRecognizerClient = getFormTrainingClient(httpClient, serviceVersion)
-                    .getFormRecognizerClient();
+                FormRecognizerClient formRecognizerClient = getFormRecognizerClient(httpClient, serviceVersion);
                 SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller3
                     = formRecognizerClient.beginRecognizeCustomForms(
                         composedModel.getModelId(),

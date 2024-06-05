@@ -5,38 +5,116 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The authentication options for Azure OpenAI On Your Data.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = OnYourDataAuthenticationOptions.class)
-@JsonTypeName("OnYourDataAuthenticationOptions")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "api_key", value = OnYourDataApiKeyAuthenticationOptions.class),
-    @JsonSubTypes.Type(name = "connection_string", value = OnYourDataConnectionStringAuthenticationOptions.class),
-    @JsonSubTypes.Type(name = "key_and_key_id", value = OnYourDataKeyAndKeyIdAuthenticationOptions.class),
-    @JsonSubTypes.Type(name = "encoded_api_key", value = OnYourDataEncodedApiKeyAuthenticationOptions.class),
-    @JsonSubTypes.Type(name = "access_token", value = OnYourDataAccessTokenAuthenticationOptions.class),
-    @JsonSubTypes.Type(
-        name = "system_assigned_managed_identity",
-        value = OnYourDataSystemAssignedManagedIdentityAuthenticationOptions.class),
-    @JsonSubTypes.Type(
-        name = "user_assigned_managed_identity",
-        value = OnYourDataUserAssignedManagedIdentityAuthenticationOptions.class) })
 @Immutable
-public class OnYourDataAuthenticationOptions {
+public class OnYourDataAuthenticationOptions implements JsonSerializable<OnYourDataAuthenticationOptions> {
 
     /**
      * Creates an instance of OnYourDataAuthenticationOptions class.
      */
     @Generated
     public OnYourDataAuthenticationOptions() {
+    }
+
+    /*
+     * The authentication type.
+     */
+    @Generated
+    private OnYourDataAuthenticationType type
+        = OnYourDataAuthenticationType.fromString("OnYourDataAuthenticationOptions");
+
+    /**
+     * Get the type property: The authentication type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public OnYourDataAuthenticationType getType() {
+        return this.type;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OnYourDataAuthenticationOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OnYourDataAuthenticationOptions if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OnYourDataAuthenticationOptions.
+     */
+    @Generated
+    public static OnYourDataAuthenticationOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("api_key".equals(discriminatorValue)) {
+                    return OnYourDataApiKeyAuthenticationOptions.fromJson(readerToUse.reset());
+                } else if ("connection_string".equals(discriminatorValue)) {
+                    return OnYourDataConnectionStringAuthenticationOptions.fromJson(readerToUse.reset());
+                } else if ("key_and_key_id".equals(discriminatorValue)) {
+                    return OnYourDataKeyAndKeyIdAuthenticationOptions.fromJson(readerToUse.reset());
+                } else if ("encoded_api_key".equals(discriminatorValue)) {
+                    return OnYourDataEncodedApiKeyAuthenticationOptions.fromJson(readerToUse.reset());
+                } else if ("access_token".equals(discriminatorValue)) {
+                    return OnYourDataAccessTokenAuthenticationOptions.fromJson(readerToUse.reset());
+                } else if ("system_assigned_managed_identity".equals(discriminatorValue)) {
+                    return OnYourDataSystemAssignedManagedIdentityAuthenticationOptions.fromJson(readerToUse.reset());
+                } else if ("user_assigned_managed_identity".equals(discriminatorValue)) {
+                    return OnYourDataUserAssignedManagedIdentityAuthenticationOptions.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    @Generated
+    static OnYourDataAuthenticationOptions fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OnYourDataAuthenticationOptions deserializedOnYourDataAuthenticationOptions
+                = new OnYourDataAuthenticationOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    deserializedOnYourDataAuthenticationOptions.type
+                        = OnYourDataAuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedOnYourDataAuthenticationOptions;
+        });
     }
 }

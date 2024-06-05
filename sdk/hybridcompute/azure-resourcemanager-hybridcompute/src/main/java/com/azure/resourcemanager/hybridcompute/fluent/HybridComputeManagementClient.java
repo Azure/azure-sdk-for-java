@@ -7,131 +7,140 @@ package com.azure.resourcemanager.hybridcompute.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for HybridComputeManagementClient class. */
+/**
+ * The interface for HybridComputeManagementClient class.
+ */
 public interface HybridComputeManagementClient {
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the LicensesClient object to access its operations.
-     *
+     * 
      * @return the LicensesClient object.
      */
     LicensesClient getLicenses();
 
     /**
      * Gets the MachinesClient object to access its operations.
-     *
+     * 
      * @return the MachinesClient object.
      */
     MachinesClient getMachines();
 
     /**
-     * Gets the LicenseProfilesClient object to access its operations.
-     *
-     * @return the LicenseProfilesClient object.
-     */
-    LicenseProfilesClient getLicenseProfiles();
-
-    /**
      * Gets the MachineExtensionsClient object to access its operations.
-     *
+     * 
      * @return the MachineExtensionsClient object.
      */
     MachineExtensionsClient getMachineExtensions();
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     ResourceProvidersClient getResourceProviders();
 
     /**
      * Gets the ExtensionMetadatasClient object to access its operations.
-     *
+     * 
      * @return the ExtensionMetadatasClient object.
      */
     ExtensionMetadatasClient getExtensionMetadatas();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the NetworkProfilesClient object to access its operations.
-     *
+     * 
      * @return the NetworkProfilesClient object.
      */
     NetworkProfilesClient getNetworkProfiles();
 
     /**
-     * Gets the HybridIdentityMetadatasClient object to access its operations.
-     *
-     * @return the HybridIdentityMetadatasClient object.
+     * Gets the MachineRunCommandsClient object to access its operations.
+     * 
+     * @return the MachineRunCommandsClient object.
      */
-    HybridIdentityMetadatasClient getHybridIdentityMetadatas();
+    MachineRunCommandsClient getMachineRunCommands();
 
     /**
-     * Gets the AgentVersionsClient object to access its operations.
-     *
-     * @return the AgentVersionsClient object.
+     * Gets the GatewaysClient object to access its operations.
+     * 
+     * @return the GatewaysClient object.
      */
-    AgentVersionsClient getAgentVersions();
+    GatewaysClient getGateways();
+
+    /**
+     * Gets the SettingsOperationsClient object to access its operations.
+     * 
+     * @return the SettingsOperationsClient object.
+     */
+    SettingsOperationsClient getSettingsOperations();
 
     /**
      * Gets the PrivateLinkScopesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkScopesClient object.
      */
     PrivateLinkScopesClient getPrivateLinkScopes();
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesClient object.
      */
     PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations();
 }

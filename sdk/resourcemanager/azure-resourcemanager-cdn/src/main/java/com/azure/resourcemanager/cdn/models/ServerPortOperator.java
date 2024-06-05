@@ -8,41 +8,63 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes operator to be matched. */
+/**
+ * Describes operator to be matched.
+ */
 public final class ServerPortOperator extends ExpandableStringEnum<ServerPortOperator> {
-    /** Static value Any for ServerPortOperator. */
+    /**
+     * Static value Any for ServerPortOperator.
+     */
     public static final ServerPortOperator ANY = fromString("Any");
 
-    /** Static value Equal for ServerPortOperator. */
+    /**
+     * Static value Equal for ServerPortOperator.
+     */
     public static final ServerPortOperator EQUAL = fromString("Equal");
 
-    /** Static value Contains for ServerPortOperator. */
+    /**
+     * Static value Contains for ServerPortOperator.
+     */
     public static final ServerPortOperator CONTAINS = fromString("Contains");
 
-    /** Static value BeginsWith for ServerPortOperator. */
+    /**
+     * Static value BeginsWith for ServerPortOperator.
+     */
     public static final ServerPortOperator BEGINS_WITH = fromString("BeginsWith");
 
-    /** Static value EndsWith for ServerPortOperator. */
+    /**
+     * Static value EndsWith for ServerPortOperator.
+     */
     public static final ServerPortOperator ENDS_WITH = fromString("EndsWith");
 
-    /** Static value LessThan for ServerPortOperator. */
+    /**
+     * Static value LessThan for ServerPortOperator.
+     */
     public static final ServerPortOperator LESS_THAN = fromString("LessThan");
 
-    /** Static value LessThanOrEqual for ServerPortOperator. */
+    /**
+     * Static value LessThanOrEqual for ServerPortOperator.
+     */
     public static final ServerPortOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
-    /** Static value GreaterThan for ServerPortOperator. */
+    /**
+     * Static value GreaterThan for ServerPortOperator.
+     */
     public static final ServerPortOperator GREATER_THAN = fromString("GreaterThan");
 
-    /** Static value GreaterThanOrEqual for ServerPortOperator. */
+    /**
+     * Static value GreaterThanOrEqual for ServerPortOperator.
+     */
     public static final ServerPortOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
-    /** Static value RegEx for ServerPortOperator. */
+    /**
+     * Static value RegEx for ServerPortOperator.
+     */
     public static final ServerPortOperator REG_EX = fromString("RegEx");
 
     /**
      * Creates a new instance of ServerPortOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,7 +73,7 @@ public final class ServerPortOperator extends ExpandableStringEnum<ServerPortOpe
 
     /**
      * Creates or finds a ServerPortOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServerPortOperator.
      */
@@ -62,7 +84,7 @@ public final class ServerPortOperator extends ExpandableStringEnum<ServerPortOpe
 
     /**
      * Gets known ServerPortOperator values.
-     *
+     * 
      * @return known ServerPortOperator values.
      */
     public static Collection<ServerPortOperator> values() {

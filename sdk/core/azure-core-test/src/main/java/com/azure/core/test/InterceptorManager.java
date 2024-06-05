@@ -7,9 +7,9 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.http.TestProxyPlaybackClient;
 import com.azure.core.test.models.NetworkCallRecord;
-import com.azure.core.test.models.TestProxyRecordingOptions;
 import com.azure.core.test.models.RecordedData;
 import com.azure.core.test.models.RecordingRedactor;
+import com.azure.core.test.models.TestProxyRecordingOptions;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.policy.RecordNetworkCallPolicy;
@@ -470,6 +470,24 @@ public class InterceptorManager implements AutoCloseable {
             testProxyRecordPolicy.addProxySanitization(testProxySanitizers);
         } else {
             throw new RuntimeException("Playback or record must have been started before adding sanitizers.");
+        }
+    }
+
+    /**
+     * Disable common sanitizer rule for sanitization during record or playback.
+     * @param testProxySanitizersId the list of sanitizer rule Id to disable.
+     * @throws RuntimeException Neither playback or record has started.
+     */
+    public void removeSanitizers(String... testProxySanitizersId) {
+        if (CoreUtils.isNullOrEmpty(testProxySanitizersId)) {
+            return;
+        }
+        if (testProxyPlaybackClient != null) {
+            testProxyPlaybackClient.removeProxySanitization(Arrays.asList(testProxySanitizersId));
+        } else if (testProxyRecordPolicy != null) {
+            testProxyRecordPolicy.removeProxySanitization(Arrays.asList(testProxySanitizersId));
+        } else {
+            throw new RuntimeException("Playback or record must have been started before removing sanitizers.");
         }
     }
 

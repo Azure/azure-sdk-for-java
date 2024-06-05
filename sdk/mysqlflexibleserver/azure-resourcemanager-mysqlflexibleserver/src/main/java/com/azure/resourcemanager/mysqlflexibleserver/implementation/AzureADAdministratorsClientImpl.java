@@ -39,23 +39,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AzureADAdministratorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AzureADAdministratorsClient.
+ */
 public final class AzureADAdministratorsClientImpl implements AzureADAdministratorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AzureADAdministratorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MySqlManagementClientImpl client;
 
     /**
      * Initializes an instance of AzureADAdministratorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AzureADAdministratorsClientImpl(MySqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(AzureADAdministratorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AzureADAdministratorsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,80 +71,58 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
     @Host("{$host}")
     @ServiceInterface(name = "MySqlManagementClien")
     public interface AzureADAdministratorsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/administrators/{administratorName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/administrators/{administratorName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("administratorName") AdministratorName administratorName,
-            @BodyParam("application/json") AzureADAdministratorInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AzureADAdministratorInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/administrators/{administratorName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/administrators/{administratorName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("administratorName") AdministratorName administratorName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("administratorName") AdministratorName administratorName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/administrators/{administratorName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/administrators/{administratorName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureADAdministratorInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("administratorName") AdministratorName administratorName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<AzureADAdministratorInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("administratorName") AdministratorName administratorName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/administrators")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/administrators")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AdministratorListResult>> listByServer(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AdministratorListResult>> listByServer(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AdministratorListResult>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -150,22 +133,15 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return represents a Administrator along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        AzureADAdministratorInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, AdministratorName administratorName, AzureADAdministratorInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -183,28 +159,18 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "2023-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            administratorName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, serverName, administratorName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -216,23 +182,15 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return represents a Administrator along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        AzureADAdministratorInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, AdministratorName administratorName, AzureADAdministratorInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -250,25 +208,16 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "2023-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                administratorName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, serverName, administratorName, parameters, accept, context);
     }
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -280,25 +229,18 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureADAdministratorInner>, AzureADAdministratorInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
+        String resourceGroupName, String serverName, AdministratorName administratorName,
         AzureADAdministratorInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, administratorName, parameters);
-        return this
-            .client
-            .<AzureADAdministratorInner, AzureADAdministratorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AzureADAdministratorInner.class,
-                AzureADAdministratorInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, administratorName, parameters);
+        return this.client.<AzureADAdministratorInner, AzureADAdministratorInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AzureADAdministratorInner.class, AzureADAdministratorInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -311,27 +253,18 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureADAdministratorInner>, AzureADAdministratorInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        AzureADAdministratorInner parameters,
-        Context context) {
+        String resourceGroupName, String serverName, AdministratorName administratorName,
+        AzureADAdministratorInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, administratorName, parameters, context);
-        return this
-            .client
-            .<AzureADAdministratorInner, AzureADAdministratorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AzureADAdministratorInner.class,
-                AzureADAdministratorInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serverName, administratorName, parameters, context);
+        return this.client.<AzureADAdministratorInner, AzureADAdministratorInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AzureADAdministratorInner.class, AzureADAdministratorInner.class, context);
     }
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -343,18 +276,15 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureADAdministratorInner>, AzureADAdministratorInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
+        String resourceGroupName, String serverName, AdministratorName administratorName,
         AzureADAdministratorInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -367,19 +297,15 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureADAdministratorInner>, AzureADAdministratorInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        AzureADAdministratorInner parameters,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters, context)
+        String resourceGroupName, String serverName, AdministratorName administratorName,
+        AzureADAdministratorInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -390,19 +316,15 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return represents a Administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureADAdministratorInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        AzureADAdministratorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters)
-            .last()
+    private Mono<AzureADAdministratorInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        AdministratorName administratorName, AzureADAdministratorInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -414,20 +336,15 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return represents a Administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureADAdministratorInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        AzureADAdministratorInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters, context)
-            .last()
+    private Mono<AzureADAdministratorInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        AdministratorName administratorName, AzureADAdministratorInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -438,17 +355,14 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return represents a Administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureADAdministratorInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        AzureADAdministratorInner parameters) {
+    public AzureADAdministratorInner createOrUpdate(String resourceGroupName, String serverName,
+        AdministratorName administratorName, AzureADAdministratorInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters).block();
     }
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -460,18 +374,14 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return represents a Administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureADAdministratorInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        AzureADAdministratorInner parameters,
-        Context context) {
+    public AzureADAdministratorInner createOrUpdate(String resourceGroupName, String serverName,
+        AdministratorName administratorName, AzureADAdministratorInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters, context).block();
     }
 
     /**
      * Deletes an Azure AD Administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -481,19 +391,15 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        AdministratorName administratorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -506,27 +412,17 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
             return Mono
                 .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "2023-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            administratorName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, serverName, administratorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an Azure AD Administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -537,19 +433,15 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        AdministratorName administratorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -562,24 +454,16 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
             return Mono
                 .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "2023-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                administratorName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            serverName, administratorName, accept, context);
     }
 
     /**
      * Deletes an Azure AD Administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -589,19 +473,17 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serverName, administratorName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        AdministratorName administratorName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serverName, administratorName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an Azure AD Administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -612,19 +494,18 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        AdministratorName administratorName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serverName, administratorName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serverName, administratorName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an Azure AD Administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -634,14 +515,14 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, AdministratorName administratorName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        AdministratorName administratorName) {
         return this.beginDeleteAsync(resourceGroupName, serverName, administratorName).getSyncPoller();
     }
 
     /**
      * Deletes an Azure AD Administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -652,14 +533,14 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        AdministratorName administratorName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, serverName, administratorName, context).getSyncPoller();
     }
 
     /**
      * Deletes an Azure AD Administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -670,14 +551,13 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serverName, AdministratorName administratorName) {
-        return beginDeleteAsync(resourceGroupName, serverName, administratorName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, serverName, administratorName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an Azure AD Administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -688,16 +568,15 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, administratorName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String serverName, AdministratorName administratorName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, serverName, administratorName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an Azure AD Administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -712,7 +591,7 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
 
     /**
      * Deletes an Azure AD Administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -722,14 +601,14 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
+    public void delete(String resourceGroupName, String serverName, AdministratorName administratorName,
+        Context context) {
         deleteAsync(resourceGroupName, serverName, administratorName, context).block();
     }
 
     /**
      * Gets information about an azure ad administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -737,22 +616,18 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about an azure ad administrator along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureADAdministratorInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName) {
+    private Mono<Response<AzureADAdministratorInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        AdministratorName administratorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -765,27 +640,17 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
             return Mono
                 .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "2023-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            administratorName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, serverName, administratorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about an azure ad administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -794,22 +659,18 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about an azure ad administrator along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureADAdministratorInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
+    private Mono<Response<AzureADAdministratorInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        AdministratorName administratorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -822,24 +683,16 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
             return Mono
                 .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "2023-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                administratorName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            serverName, administratorName, accept, context);
     }
 
     /**
      * Gets information about an azure ad administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -849,15 +702,15 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return information about an azure ad administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureADAdministratorInner> getAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName) {
+    private Mono<AzureADAdministratorInner> getAsync(String resourceGroupName, String serverName,
+        AdministratorName administratorName) {
         return getWithResponseAsync(resourceGroupName, serverName, administratorName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets information about an azure ad administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -868,14 +721,14 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return information about an azure ad administrator along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureADAdministratorInner> getWithResponse(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
+    public Response<AzureADAdministratorInner> getWithResponse(String resourceGroupName, String serverName,
+        AdministratorName administratorName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, administratorName, context).block();
     }
 
     /**
      * Gets information about an azure ad administrator.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param administratorName The name of the Azure AD Administrator.
@@ -885,36 +738,32 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return information about an azure ad administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureADAdministratorInner get(
-        String resourceGroupName, String serverName, AdministratorName administratorName) {
+    public AzureADAdministratorInner get(String resourceGroupName, String serverName,
+        AdministratorName administratorName) {
         return getWithResponse(resourceGroupName, serverName, administratorName, Context.NONE).getValue();
     }
 
     /**
      * List all the AAD administrators in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of azure ad administrators along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a List of azure ad administrators along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureADAdministratorInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName) {
+    private Mono<PagedResponse<AzureADAdministratorInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -923,58 +772,38 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "2023-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByServer(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            accept,
-                            context))
-            .<PagedResponse<AzureADAdministratorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByServer(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, serverName, accept, context))
+            .<PagedResponse<AzureADAdministratorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all the AAD administrators in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of azure ad administrators along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a List of azure ad administrators along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureADAdministratorInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, Context context) {
+    private Mono<PagedResponse<AzureADAdministratorInner>> listByServerSinglePageAsync(String resourceGroupName,
+        String serverName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -983,32 +812,19 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
         if (serverName == null) {
             return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
         }
-        final String apiVersion = "2021-12-01-preview";
+        final String apiVersion = "2023-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByServer(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByServer(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                serverName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all the AAD administrators in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1018,14 +834,13 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureADAdministratorInner> listByServerAsync(String resourceGroupName, String serverName) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName),
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName),
             nextLink -> listByServerNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all the AAD administrators in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -1035,16 +850,15 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return a List of azure ad administrators as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AzureADAdministratorInner> listByServerAsync(
-        String resourceGroupName, String serverName, Context context) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
+    private PagedFlux<AzureADAdministratorInner> listByServerAsync(String resourceGroupName, String serverName,
+        Context context) {
+        return new PagedFlux<>(() -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
             nextLink -> listByServerNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all the AAD administrators in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1059,7 +873,7 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
 
     /**
      * List all the AAD administrators in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -1069,21 +883,22 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
      * @return a List of azure ad administrators as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AzureADAdministratorInner> listByServer(
-        String resourceGroupName, String serverName, Context context) {
+    public PagedIterable<AzureADAdministratorInner> listByServer(String resourceGroupName, String serverName,
+        Context context) {
         return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of azure ad administrators along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a List of azure ad administrators along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureADAdministratorInner>> listByServerNextSinglePageAsync(String nextLink) {
@@ -1091,62 +906,44 @@ public final class AzureADAdministratorsClientImpl implements AzureADAdministrat
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AzureADAdministratorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AzureADAdministratorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a List of azure ad administrators along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a List of azure ad administrators along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureADAdministratorInner>> listByServerNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AzureADAdministratorInner>> listByServerNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

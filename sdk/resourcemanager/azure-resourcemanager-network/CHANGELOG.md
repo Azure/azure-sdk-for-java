@@ -1,16 +1,28 @@
 # Release History
 
-## 2.38.0-beta.1 (Unreleased)
+## 2.40.0-beta.1 (Unreleased)
 
 ### Features Added
-
-- Supported setting `DeleteOptions` for public IP addresses associated with `NetworkInterface`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.39.0 (2024-05-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.38.0 (2024-04-16)
+
+### Features Added
+
+- Supported setting `DeleteOptions` for public IP addresses associated with `NetworkInterface`.
 
 ## 2.37.0 (2024-03-22)
 

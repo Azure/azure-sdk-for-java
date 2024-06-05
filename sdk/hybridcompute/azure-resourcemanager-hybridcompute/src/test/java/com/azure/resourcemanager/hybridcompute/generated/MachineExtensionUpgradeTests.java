@@ -14,30 +14,18 @@ import org.junit.jupiter.api.Assertions;
 public final class MachineExtensionUpgradeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MachineExtensionUpgrade model =
-            BinaryData
-                .fromString(
-                    "{\"extensionTargets\":{\"zg\":{\"targetVersion\":\"j\"},\"xongmtsavjcbpwxq\":{\"targetVersion\":\"zmh\"},\"yvxqtayriwwroy\":{\"targetVersion\":\"rknftguvriuhprwm\"},\"mefqsgzvahapjyzh\":{\"targetVersion\":\"exrmcqibycnojvk\"}}}")
+        MachineExtensionUpgrade model
+            = BinaryData.fromString("{\"extensionTargets\":{\"rruvwbhsq\":{\"targetVersion\":\"ohxcrsbfova\"}}}")
                 .toObject(MachineExtensionUpgrade.class);
-        Assertions.assertEquals("j", model.extensionTargets().get("zg").targetVersion());
+        Assertions.assertEquals("ohxcrsbfova", model.extensionTargets().get("rruvwbhsq").targetVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MachineExtensionUpgrade model =
-            new MachineExtensionUpgrade()
-                .withExtensionTargets(
-                    mapOf(
-                        "zg",
-                        new ExtensionTargetProperties().withTargetVersion("j"),
-                        "xongmtsavjcbpwxq",
-                        new ExtensionTargetProperties().withTargetVersion("zmh"),
-                        "yvxqtayriwwroy",
-                        new ExtensionTargetProperties().withTargetVersion("rknftguvriuhprwm"),
-                        "mefqsgzvahapjyzh",
-                        new ExtensionTargetProperties().withTargetVersion("exrmcqibycnojvk")));
+        MachineExtensionUpgrade model = new MachineExtensionUpgrade()
+            .withExtensionTargets(mapOf("rruvwbhsq", new ExtensionTargetProperties().withTargetVersion("ohxcrsbfova")));
         model = BinaryData.fromObject(model).toObject(MachineExtensionUpgrade.class);
-        Assertions.assertEquals("j", model.extensionTargets().get("zg").targetVersion());
+        Assertions.assertEquals("ohxcrsbfova", model.extensionTargets().get("rruvwbhsq").targetVersion());
     }
 
     // Use "Map.of" if available

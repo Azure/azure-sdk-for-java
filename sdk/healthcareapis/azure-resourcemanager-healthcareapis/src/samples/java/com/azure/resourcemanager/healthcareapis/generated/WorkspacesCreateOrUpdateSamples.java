@@ -11,9 +11,7 @@ import com.azure.resourcemanager.healthcareapis.models.WorkspaceProperties;
  */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/workspaces/
-     * Workspaces_Create.json
+     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2024-03-31/examples/workspaces/Workspaces_Create.json
      */
     /**
      * Sample code: Create or update a workspace.
@@ -22,7 +20,11 @@ public final class WorkspacesCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateAWorkspace(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager.workspaces().define("workspace1").withExistingResourceGroup("testRG").withRegion("westus")
-            .withProperties(new WorkspaceProperties()).create();
+        manager.workspaces()
+            .define("workspace1")
+            .withExistingResourceGroup("testRG")
+            .withRegion("westus")
+            .withProperties(new WorkspaceProperties())
+            .create();
     }
 }

@@ -7,14 +7,8 @@ package com.azure.resourcemanager.migrationdiscoverysap.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.migrationdiscoverysap.fluent.models.ServerInstanceInner;
-import com.azure.resourcemanager.migrationdiscoverysap.fluent.models.ServerInstanceProperties;
-import com.azure.resourcemanager.migrationdiscoverysap.models.ConfigurationData;
-import com.azure.resourcemanager.migrationdiscoverysap.models.OperatingSystem;
-import com.azure.resourcemanager.migrationdiscoverysap.models.PerformanceData;
-import com.azure.resourcemanager.migrationdiscoverysap.models.ProvisioningState;
-import com.azure.resourcemanager.migrationdiscoverysap.models.SapInstanceType;
-import com.azure.resourcemanager.migrationdiscoverysap.models.SapMigrateError;
 import com.azure.resourcemanager.migrationdiscoverysap.models.ServerInstance;
+import com.azure.resourcemanager.migrationdiscoverysap.models.ServerInstanceProperties;
 import com.azure.resourcemanager.migrationdiscoverysap.models.UpdateServerInstanceRequest;
 
 public final class ServerInstanceImpl implements ServerInstance, ServerInstance.Definition, ServerInstance.Update {
@@ -34,48 +28,12 @@ public final class ServerInstanceImpl implements ServerInstance, ServerInstance.
         return this.innerModel().type();
     }
 
+    public ServerInstanceProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public String serverName() {
-        return this.innerModel().serverName();
-    }
-
-    public SapInstanceType sapInstanceType() {
-        return this.innerModel().sapInstanceType();
-    }
-
-    public String instanceSid() {
-        return this.innerModel().instanceSid();
-    }
-
-    public String sapProduct() {
-        return this.innerModel().sapProduct();
-    }
-
-    public String sapProductVersion() {
-        return this.innerModel().sapProductVersion();
-    }
-
-    public OperatingSystem operatingSystem() {
-        return this.innerModel().operatingSystem();
-    }
-
-    public ConfigurationData configurationData() {
-        return this.innerModel().configurationData();
-    }
-
-    public PerformanceData performanceData() {
-        return this.innerModel().performanceData();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public SapMigrateError errors() {
-        return this.innerModel().errors();
     }
 
     public String resourceGroupName() {
@@ -169,7 +127,16 @@ public final class ServerInstanceImpl implements ServerInstance, ServerInstance.
     }
 
     public ServerInstanceImpl withProperties(ServerInstanceProperties properties) {
-        this.updateProperties.withProperties(properties);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withProperties(properties);
+            return this;
+        } else {
+            this.updateProperties.withProperties(properties);
+            return this;
+        }
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

@@ -11,18 +11,15 @@ import com.azure.resourcemanager.hybridcompute.models.AvailablePatchCountByClass
 public final class MachineAssessPatchesResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MachineAssessPatchesResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"Unknown\",\"assessmentActivityId\":\"nmmqhgyxzkon\",\"rebootPending\":false,\"availablePatchCountByClassification\":{\"security\":470359400,\"critical\":1536043390,\"definition\":1474551833,\"updateRollup\":1609170177,\"featurePack\":489125368,\"servicePack\":809067988,\"tools\":447504444,\"updates\":1399923471,\"other\":731084227},\"startDateTime\":\"2021-01-29T23:28:32Z\",\"lastModifiedDateTime\":\"2021-03-31T17:10:24Z\",\"startedBy\":\"Platform\",\"patchServiceUsed\":\"WU\",\"osType\":\"Linux\"}")
-                .toObject(MachineAssessPatchesResultInner.class);
+        MachineAssessPatchesResultInner model = BinaryData.fromString(
+            "{\"status\":\"Unknown\",\"assessmentActivityId\":\"08a7a6d7-1403-4a80-962f-c9a14289b4f9\",\"rebootPending\":true,\"availablePatchCountByClassification\":{\"security\":1971435113,\"critical\":435215346,\"definition\":746279797,\"updateRollup\":996509936,\"featurePack\":52556598,\"servicePack\":611656940,\"tools\":1045887723,\"updates\":392832113,\"other\":578889985},\"startDateTime\":\"2021-02-02T01:52:53Z\",\"lastModifiedDateTime\":\"2021-03-12T10:20:21Z\",\"startedBy\":\"User\",\"patchServiceUsed\":\"Unknown\",\"osType\":\"Linux\"}")
+            .toObject(MachineAssessPatchesResultInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MachineAssessPatchesResultInner model =
-            new MachineAssessPatchesResultInner()
-                .withAvailablePatchCountByClassification(new AvailablePatchCountByClassification());
+        MachineAssessPatchesResultInner model = new MachineAssessPatchesResultInner()
+            .withAvailablePatchCountByClassification(new AvailablePatchCountByClassification());
         model = BinaryData.fromObject(model).toObject(MachineAssessPatchesResultInner.class);
     }
 }

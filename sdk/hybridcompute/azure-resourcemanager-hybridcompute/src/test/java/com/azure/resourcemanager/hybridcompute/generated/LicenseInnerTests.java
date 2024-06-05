@@ -12,6 +12,9 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseEdition;
 import com.azure.resourcemanager.hybridcompute.models.LicenseState;
 import com.azure.resourcemanager.hybridcompute.models.LicenseTarget;
 import com.azure.resourcemanager.hybridcompute.models.LicenseType;
+import com.azure.resourcemanager.hybridcompute.models.ProgramYear;
+import com.azure.resourcemanager.hybridcompute.models.VolumeLicenseDetails;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -19,15 +22,11 @@ import org.junit.jupiter.api.Assertions;
 public final class LicenseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LicenseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Creating\",\"tenantId\":\"uv\",\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Activated\",\"target\":\"Windows"
-                        + " Server"
-                        + " 2012\",\"edition\":\"Standard\",\"type\":\"pCore\",\"processors\":1567088551,\"assignedLicenses\":910142536,\"immutableId\":\"sphrupidgs\"}},\"location\":\"bejhphoycmsxa\",\"tags\":{\"zehtbmu\":\"dxbmtqioq\",\"wnoi\":\"p\",\"bqsoqijg\":\"hwlrx\"},\"id\":\"dmbpazlobcufpdz\",\"name\":\"rbt\",\"type\":\"qqjnqgl\"}")
-                .toObject(LicenseInner.class);
-        Assertions.assertEquals("bejhphoycmsxa", model.location());
-        Assertions.assertEquals("dxbmtqioq", model.tags().get("zehtbmu"));
+        LicenseInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Creating\",\"tenantId\":\"uv\",\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Activated\",\"target\":\"Windows Server 2012\",\"edition\":\"Standard\",\"type\":\"pCore\",\"processors\":1567088551,\"assignedLicenses\":910142536,\"immutableId\":\"sphrupidgs\",\"volumeLicenseDetails\":[{\"programYear\":\"Year 1\",\"invoiceId\":\"ph\"},{\"programYear\":\"Year 2\",\"invoiceId\":\"sx\"},{\"programYear\":\"Year 3\",\"invoiceId\":\"dxbmtqioq\"},{\"programYear\":\"Year 2\",\"invoiceId\":\"tbmufpo\"}]}},\"location\":\"oizh\",\"tags\":{\"k\":\"xybqsoqij\",\"btcqq\":\"mbpazlobcufpdzn\"},\"id\":\"nq\",\"name\":\"lhqgnufooojy\",\"type\":\"ifsqesaagdfmg\"}")
+            .toObject(LicenseInner.class);
+        Assertions.assertEquals("oizh", model.location());
+        Assertions.assertEquals("xybqsoqij", model.tags().get("k"));
         Assertions.assertEquals("uv", model.tenantId());
         Assertions.assertEquals(LicenseType.ESU, model.licenseType());
         Assertions.assertEquals(LicenseState.ACTIVATED, model.licenseDetails().state());
@@ -35,26 +34,30 @@ public final class LicenseInnerTests {
         Assertions.assertEquals(LicenseEdition.STANDARD, model.licenseDetails().edition());
         Assertions.assertEquals(LicenseCoreType.P_CORE, model.licenseDetails().type());
         Assertions.assertEquals(1567088551, model.licenseDetails().processors());
+        Assertions.assertEquals(ProgramYear.YEAR_1, model.licenseDetails().volumeLicenseDetails().get(0).programYear());
+        Assertions.assertEquals("ph", model.licenseDetails().volumeLicenseDetails().get(0).invoiceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LicenseInner model =
-            new LicenseInner()
-                .withLocation("bejhphoycmsxa")
-                .withTags(mapOf("zehtbmu", "dxbmtqioq", "wnoi", "p", "bqsoqijg", "hwlrx"))
+        LicenseInner model
+            = new LicenseInner().withLocation("oizh")
+                .withTags(mapOf("k", "xybqsoqij", "btcqq", "mbpazlobcufpdzn"))
                 .withTenantId("uv")
                 .withLicenseType(LicenseType.ESU)
-                .withLicenseDetails(
-                    new LicenseDetails()
-                        .withState(LicenseState.ACTIVATED)
-                        .withTarget(LicenseTarget.WINDOWS_SERVER_2012)
-                        .withEdition(LicenseEdition.STANDARD)
-                        .withType(LicenseCoreType.P_CORE)
-                        .withProcessors(1567088551));
+                .withLicenseDetails(new LicenseDetails().withState(LicenseState.ACTIVATED)
+                    .withTarget(LicenseTarget.WINDOWS_SERVER_2012)
+                    .withEdition(LicenseEdition.STANDARD)
+                    .withType(LicenseCoreType.P_CORE)
+                    .withProcessors(1567088551)
+                    .withVolumeLicenseDetails(Arrays.asList(
+                        new VolumeLicenseDetails().withProgramYear(ProgramYear.YEAR_1).withInvoiceId("ph"),
+                        new VolumeLicenseDetails().withProgramYear(ProgramYear.YEAR_2).withInvoiceId("sx"),
+                        new VolumeLicenseDetails().withProgramYear(ProgramYear.YEAR_3).withInvoiceId("dxbmtqioq"),
+                        new VolumeLicenseDetails().withProgramYear(ProgramYear.YEAR_2).withInvoiceId("tbmufpo"))));
         model = BinaryData.fromObject(model).toObject(LicenseInner.class);
-        Assertions.assertEquals("bejhphoycmsxa", model.location());
-        Assertions.assertEquals("dxbmtqioq", model.tags().get("zehtbmu"));
+        Assertions.assertEquals("oizh", model.location());
+        Assertions.assertEquals("xybqsoqij", model.tags().get("k"));
         Assertions.assertEquals("uv", model.tenantId());
         Assertions.assertEquals(LicenseType.ESU, model.licenseType());
         Assertions.assertEquals(LicenseState.ACTIVATED, model.licenseDetails().state());
@@ -62,6 +65,8 @@ public final class LicenseInnerTests {
         Assertions.assertEquals(LicenseEdition.STANDARD, model.licenseDetails().edition());
         Assertions.assertEquals(LicenseCoreType.P_CORE, model.licenseDetails().type());
         Assertions.assertEquals(1567088551, model.licenseDetails().processors());
+        Assertions.assertEquals(ProgramYear.YEAR_1, model.licenseDetails().volumeLicenseDetails().get(0).programYear());
+        Assertions.assertEquals("ph", model.licenseDetails().volumeLicenseDetails().get(0).invoiceId());
     }
 
     // Use "Map.of" if available

@@ -5,8 +5,11 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,41 +17,36 @@ import java.util.Map;
  * The details used when creating and immediately running a new assistant thread.
  */
 @Fluent
-public final class CreateAndRunThreadOptions {
+public final class CreateAndRunThreadOptions implements JsonSerializable<CreateAndRunThreadOptions> {
 
     /*
      * The ID of the assistant for which the thread should be created.
      */
     @Generated
-    @JsonProperty(value = "assistant_id")
-    private String assistantId;
+    private final String assistantId;
 
     /*
-     * The details used to create the new thread.
+     * The details used to create the new thread. If no thread is provided, an empty one will be created.
      */
     @Generated
-    @JsonProperty(value = "thread")
     private AssistantThreadCreationOptions thread;
 
     /*
      * The overridden model that the assistant should use to run the thread.
      */
     @Generated
-    @JsonProperty(value = "model")
     private String model;
 
     /*
      * The overridden system instructions the assistant should use to run the thread.
      */
     @Generated
-    @JsonProperty(value = "instructions")
     private String instructions;
 
     /*
      * The overridden list of enabled tools the assistant should use to run the thread.
      */
     @Generated
-    @JsonProperty(value = "tools")
     private List<ToolDefinition> tools;
 
     /*
@@ -57,7 +55,6 @@ public final class CreateAndRunThreadOptions {
      * characters in length.
      */
     @Generated
-    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /**
@@ -66,8 +63,7 @@ public final class CreateAndRunThreadOptions {
      * @param assistantId the assistantId value to set.
      */
     @Generated
-    @JsonCreator
-    public CreateAndRunThreadOptions(@JsonProperty(value = "assistant_id") String assistantId) {
+    public CreateAndRunThreadOptions(String assistantId) {
         this.assistantId = assistantId;
     }
 
@@ -82,7 +78,8 @@ public final class CreateAndRunThreadOptions {
     }
 
     /**
-     * Get the thread property: The details used to create the new thread.
+     * Get the thread property: The details used to create the new thread. If no thread is provided, an empty one will
+     * be created.
      *
      * @return the thread value.
      */
@@ -92,7 +89,8 @@ public final class CreateAndRunThreadOptions {
     }
 
     /**
-     * Set the thread property: The details used to create the new thread.
+     * Set the thread property: The details used to create the new thread. If no thread is provided, an empty one will
+     * be created.
      *
      * @param thread the thread value to set.
      * @return the CreateAndRunThreadOptions object itself.
@@ -192,6 +190,104 @@ public final class CreateAndRunThreadOptions {
     @Generated
     public CreateAndRunThreadOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("assistant_id", this.assistantId);
+        jsonWriter.writeJsonField("thread", this.thread);
+        jsonWriter.writeStringField("model", this.model);
+        jsonWriter.writeStringField("instructions", this.instructions);
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("stream", this.stream);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateAndRunThreadOptions from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateAndRunThreadOptions if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateAndRunThreadOptions.
+     */
+    @Generated
+    public static CreateAndRunThreadOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String assistantId = null;
+            AssistantThreadCreationOptions thread = null;
+            String model = null;
+            String instructions = null;
+            List<ToolDefinition> tools = null;
+            Boolean stream = null;
+            Map<String, String> metadata = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("assistant_id".equals(fieldName)) {
+                    assistantId = reader.getString();
+                } else if ("thread".equals(fieldName)) {
+                    thread = AssistantThreadCreationOptions.fromJson(reader);
+                } else if ("model".equals(fieldName)) {
+                    model = reader.getString();
+                } else if ("instructions".equals(fieldName)) {
+                    instructions = reader.getString();
+                } else if ("tools".equals(fieldName)) {
+                    tools = reader.readArray(reader1 -> ToolDefinition.fromJson(reader1));
+                } else if ("stream".equals(fieldName)) {
+                    stream = reader.getNullable(JsonReader::getBoolean);
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            CreateAndRunThreadOptions deserializedCreateAndRunThreadOptions
+                = new CreateAndRunThreadOptions(assistantId);
+            deserializedCreateAndRunThreadOptions.thread = thread;
+            deserializedCreateAndRunThreadOptions.model = model;
+            deserializedCreateAndRunThreadOptions.instructions = instructions;
+            deserializedCreateAndRunThreadOptions.tools = tools;
+            deserializedCreateAndRunThreadOptions.stream = stream;
+            deserializedCreateAndRunThreadOptions.metadata = metadata;
+            return deserializedCreateAndRunThreadOptions;
+        });
+    }
+
+    /*
+     * If `true`, returns a stream of events that happen during the Run as server-sent events,
+     * terminating when the Run enters a terminal state with a `data: [DONE]` message.
+     */
+    @Generated
+    private Boolean stream;
+
+    /**
+     * Get the stream property: If `true`, returns a stream of events that happen during the Run as server-sent events,
+     * terminating when the Run enters a terminal state with a `data: [DONE]` message.
+     *
+     * @return the stream value.
+     */
+    Boolean isStream() {
+        return this.stream;
+    }
+
+    /**
+     * Set the stream property: If `true`, returns a stream of events that happen during the Run as server-sent events,
+     * terminating when the Run enters a terminal state with a `data: [DONE]` message.
+     *
+     * @param stream the stream value to set.
+     * @return the CreateAndRunThreadOptions object itself.
+     */
+    CreateAndRunThreadOptions setStream(Boolean stream) {
+        this.stream = stream;
         return this;
     }
 }

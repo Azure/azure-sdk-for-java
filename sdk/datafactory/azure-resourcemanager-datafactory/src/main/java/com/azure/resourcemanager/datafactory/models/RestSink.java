@@ -6,47 +6,50 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A copy activity Rest service Sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = RestSink.class, visible = true)
 @JsonTypeName("RestSink")
 @Fluent
 public final class RestSink extends CopySink {
     /*
-     * The HTTP method used to call the RESTful API. The default is POST. Type: string (or Expression with resultType
-     * string).
+     * Copy sink type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "RestSink";
+
+    /*
+     * The HTTP method used to call the RESTful API. The default is POST. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
-     * The additional HTTP headers in the request to the RESTful API. Type: key value pairs (value should be string
-     * type).
+     * The additional HTTP headers in the request to the RESTful API. Type: key value pairs (value should be string type).
      */
     @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
 
     /*
-     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read
-     * response data. Default value: 00:01:40. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read response data. Default value: 00:01:40. Type: string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
     /*
-     * The time to await before sending next request, in milliseconds
+     * The time to await before sending next request, in milliseconds 
      */
     @JsonProperty(value = "requestInterval")
     private Object requestInterval;
 
     /*
-     * Http Compression Type to Send data in compressed format with Optimal Compression Level, Default is None. And The
-     * Only Supported option is Gzip. Type: string (or Expression with resultType string).
+     * Http Compression Type to Send data in compressed format with Optimal Compression Level, Default is None. And The Only Supported option is Gzip. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "httpCompressionType")
     private Object httpCompressionType;
@@ -55,6 +58,16 @@ public final class RestSink extends CopySink {
      * Creates an instance of RestSink class.
      */
     public RestSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

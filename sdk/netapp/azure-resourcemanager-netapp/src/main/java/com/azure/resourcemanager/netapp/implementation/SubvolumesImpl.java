@@ -45,8 +45,8 @@ public final class SubvolumesImpl implements Subvolumes {
 
     public Response<SubvolumeInfo> getWithResponse(String resourceGroupName, String accountName, String poolName,
         String volumeName, String subvolumeName, Context context) {
-        Response<SubvolumeInfoInner> inner = this.serviceClient().getWithResponse(resourceGroupName, accountName,
-            poolName, volumeName, subvolumeName, context);
+        Response<SubvolumeInfoInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SubvolumeInfoImpl(inner.getValue(), this.manager()));
@@ -89,8 +89,8 @@ public final class SubvolumesImpl implements Subvolumes {
 
     public SubvolumeModel getMetadata(String resourceGroupName, String accountName, String poolName, String volumeName,
         String subvolumeName, Context context) {
-        SubvolumeModelInner inner = this.serviceClient().getMetadata(resourceGroupName, accountName, poolName,
-            volumeName, subvolumeName, context);
+        SubvolumeModelInner inner = this.serviceClient()
+            .getMetadata(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
         if (inner != null) {
             return new SubvolumeModelImpl(inner, this.manager());
         } else {

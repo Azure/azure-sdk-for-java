@@ -5,13 +5,17 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the content filtering results for the prompt of a image generation request.
  */
 @Immutable
-public final class ImageGenerationPromptFilterResults {
+public final class ImageGenerationPromptFilterResults implements JsonSerializable<ImageGenerationPromptFilterResults> {
 
     /*
      * Describes language related to anatomical organs and genitals, romantic relationships,
@@ -20,7 +24,6 @@ public final class ImageGenerationPromptFilterResults {
      * prostitution, pornography, and abuse.
      */
     @Generated
-    @JsonProperty(value = "sexual")
     private ContentFilterResult sexual;
 
     /*
@@ -28,7 +31,6 @@ public final class ImageGenerationPromptFilterResults {
      * kill someone or something; describes weapons, etc.
      */
     @Generated
-    @JsonProperty(value = "violence")
     private ContentFilterResult violence;
 
     /*
@@ -39,7 +41,6 @@ public final class ImageGenerationPromptFilterResults {
      * status, personal appearance, and body size.
      */
     @Generated
-    @JsonProperty(value = "hate")
     private ContentFilterResult hate;
 
     /*
@@ -47,21 +48,18 @@ public final class ImageGenerationPromptFilterResults {
      * or damage one’s body, or kill oneself.
      */
     @Generated
-    @JsonProperty(value = "self_harm")
     private ContentFilterResult selfHarm;
 
     /*
      * Describes whether profanity was detected.
      */
     @Generated
-    @JsonProperty(value = "profanity")
     private ContentFilterDetectionResult profanity;
 
     /*
      * Whether a jailbreak attempt was detected in the prompt.
      */
     @Generated
-    @JsonProperty(value = "jailbreak")
     private ContentFilterDetectionResult jailbreak;
 
     /**
@@ -138,5 +136,80 @@ public final class ImageGenerationPromptFilterResults {
     @Generated
     public ContentFilterDetectionResult getJailbreak() {
         return this.jailbreak;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sexual", this.sexual);
+        jsonWriter.writeJsonField("violence", this.violence);
+        jsonWriter.writeJsonField("hate", this.hate);
+        jsonWriter.writeJsonField("self_harm", this.selfHarm);
+        jsonWriter.writeJsonField("profanity", this.profanity);
+        jsonWriter.writeJsonField("jailbreak", this.jailbreak);
+        jsonWriter.writeJsonField("custom_blocklists", this.customBlocklists);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageGenerationPromptFilterResults from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageGenerationPromptFilterResults if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageGenerationPromptFilterResults.
+     */
+    @Generated
+    public static ImageGenerationPromptFilterResults fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageGenerationPromptFilterResults deserializedImageGenerationPromptFilterResults
+                = new ImageGenerationPromptFilterResults();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("sexual".equals(fieldName)) {
+                    deserializedImageGenerationPromptFilterResults.sexual = ContentFilterResult.fromJson(reader);
+                } else if ("violence".equals(fieldName)) {
+                    deserializedImageGenerationPromptFilterResults.violence = ContentFilterResult.fromJson(reader);
+                } else if ("hate".equals(fieldName)) {
+                    deserializedImageGenerationPromptFilterResults.hate = ContentFilterResult.fromJson(reader);
+                } else if ("self_harm".equals(fieldName)) {
+                    deserializedImageGenerationPromptFilterResults.selfHarm = ContentFilterResult.fromJson(reader);
+                } else if ("profanity".equals(fieldName)) {
+                    deserializedImageGenerationPromptFilterResults.profanity
+                        = ContentFilterDetectionResult.fromJson(reader);
+                } else if ("jailbreak".equals(fieldName)) {
+                    deserializedImageGenerationPromptFilterResults.jailbreak
+                        = ContentFilterDetectionResult.fromJson(reader);
+                } else if ("custom_blocklists".equals(fieldName)) {
+                    deserializedImageGenerationPromptFilterResults.customBlocklists
+                        = ContentFilterDetailedResults.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedImageGenerationPromptFilterResults;
+        });
+    }
+
+    /*
+     * Information about customer block lists and if something was detected the associated list ID.
+     */
+    @Generated
+    private ContentFilterDetailedResults customBlocklists;
+
+    /**
+     * Get the customBlocklists property: Information about customer block lists and if something was detected the
+     * associated list ID.
+     *
+     * @return the customBlocklists value.
+     */
+    @Generated
+    public ContentFilterDetailedResults getCustomBlocklists() {
+        return this.customBlocklists;
     }
 }

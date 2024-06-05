@@ -18,7 +18,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Containers metadata topic offset.
  */
 public class ContainersMetadataTopicOffset {
-    public static final String CONTAINERS_RESOURCE_IDS_NAME_KEY = "cosmos.source.metadata.containerRids";
+    public static final String CONTAINERS_RESOURCE_IDS_NAME_KEY = "containerRids";
     public static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     private final List<String> containerRids;

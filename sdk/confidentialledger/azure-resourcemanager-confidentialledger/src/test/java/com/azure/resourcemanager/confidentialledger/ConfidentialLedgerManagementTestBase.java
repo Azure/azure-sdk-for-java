@@ -11,8 +11,10 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import org.junit.jupiter.api.AfterAll;
@@ -22,6 +24,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +37,15 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
     private static TokenCredential credential;
     private static ResourceGroup testResourceGroup;
     private ConfidentialLedgerManagementOperations ledgerOperationsInstance;
+
+    @Override
+    protected void beforeTest() {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
+                .setIgnoredQueryParameters(Arrays.asList("api-version"))));
+        }
+    }
+
     @BeforeAll
     public static void setup() {
         // Authenticate
@@ -75,6 +88,13 @@ public class ConfidentialLedgerManagementTestBase extends TestProxyTestBase {
                 .withDefaultPollInterval(Duration.ofMillis(10))
                 .withHttpClient(interceptorManager.getPlaybackClient())
                 .authenticate(getCredential(), getAzureProfile());
+        }
+
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(new TestProxySanitizer("$..id", null,
+                "00000000-0000-0000-0000-000000000000", TestProxySanitizerType.BODY_KEY));
+            // Disable `Location`, `Operation-Location`, `$..id` and `$..name` from the default list of sanitizers as they are used in the SDK.
+            interceptorManager.removeSanitizers("AZSDK2003", "AZSDK2030", "AZSDK3493", "AZSDK3430");
         }
 
         ledgerOperationsInstance = new ConfidentialLedgerManagementOperations(ledgerManager);

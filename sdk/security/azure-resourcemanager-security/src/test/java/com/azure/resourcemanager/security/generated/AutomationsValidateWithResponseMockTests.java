@@ -6,11 +6,9 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.fluent.models.AutomationInner;
 import com.azure.resourcemanager.security.models.AutomationAction;
@@ -19,7 +17,6 @@ import com.azure.resourcemanager.security.models.AutomationScope;
 import com.azure.resourcemanager.security.models.AutomationSource;
 import com.azure.resourcemanager.security.models.AutomationValidationStatus;
 import com.azure.resourcemanager.security.models.EventSource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -27,49 +24,40 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AutomationsValidateWithResponseMockTests {
     @Test
     public void testValidateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr = "{\"isValid\":true,\"message\":\"oufq\"}";
 
-        String responseStr = "{\"isValid\":false,\"message\":\"fhoxqlyoazyfbk\"}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SecurityManager manager = SecurityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AutomationValidationStatus response = manager.automations()
-            .validateWithResponse("wmvwryvdi", "kiikgpruccwmecbt", new AutomationInner().withLocation("hzcknjxiz")
-                .withTags(mapOf("yjmlxppdndzkfe", "dygzkztxfexwac")).withDescription("trtexegwm").withIsEnabled(true)
-                .withScopes(
-                    Arrays.asList(new AutomationScope().withDescription("whvycfjncin").withScopePath("loqkajwjuri")))
-                .withSources(Arrays.asList(new AutomationSource().withEventSource(EventSource.ASSESSMENTS_SNAPSHOT)
-                    .withRuleSets(Arrays.asList(new AutomationRuleSet(), new AutomationRuleSet(),
-                        new AutomationRuleSet(), new AutomationRuleSet()))))
-                .withActions(Arrays.asList(new AutomationAction(), new AutomationAction(), new AutomationAction())),
+            .validateWithResponse("dj", "ofsv", new AutomationInner().withLocation("gf")
+                .withTags(mapOf("mwdz", "tqscjpvqerqxk", "x", "zlhcu", "kfrwxohlydsnjz", "qpwwvmbjecfwlbgh"))
+                .withDescription("gnywxu")
+                .withIsEnabled(false)
+                .withScopes(Arrays.asList(new AutomationScope().withDescription("mgwtmszcfyzqp").withScopePath("re"),
+                    new AutomationScope().withDescription("urd").withScopePath("gknxmaovrg"),
+                    new AutomationScope().withDescription("lnzffewvqky").withScopePath("cgeipqxxsdyaf"),
+                    new AutomationScope().withDescription("ydsmmabh").withScopePath("lejqzhpvhxp")))
+                .withSources(
+                    Arrays
+                        .asList(new AutomationSource().withEventSource(EventSource.REGULATORY_COMPLIANCE_ASSESSMENT)
+                            .withRuleSets(Arrays.asList(new AutomationRuleSet(), new AutomationRuleSet(),
+                                new AutomationRuleSet()))))
+                .withActions(Arrays.asList(new AutomationAction(), new AutomationAction())),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.isValid());
-        Assertions.assertEquals("fhoxqlyoazyfbk", response.message());
+        Assertions.assertEquals(true, response.isValid());
+        Assertions.assertEquals("oufq", response.message());
     }
 
     // Use "Map.of" if available

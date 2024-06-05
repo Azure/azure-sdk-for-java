@@ -51,6 +51,8 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     private static final String LABEL_PREFIX = "label";
     private static final int PREFIX_LENGTH = 8;
     private static final int RESOURCE_LENGTH = 16;
+    // Disable `("$.key")` and name sanitizer from the list of common sanitizers
+    public static final String[] REMOVE_SANITIZER_ID = {"AZSDK3493", "AZSDK3447"};
 
     public static final String FAKE_CONNECTION_STRING =
         "Endpoint=https://localhost:8080;Id=0000000000000;Secret=fakeSecrePlaceholder";

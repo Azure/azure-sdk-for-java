@@ -72,7 +72,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
-
+    private boolean sanitizersRemoved = false;
 
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
@@ -123,12 +123,18 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             .httpClient(getHttpClient(true, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
+        // Disable `("$..token")` and `name` sanitizer
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers("AZSDK3431", "AZSDK3493", "AZSDK3430");
+            sanitizersRemoved = true;
+        }
+
         if (interceptorManager.isPlaybackMode()) {
             addPolicies(builder);
             return builder;
         }
 
-        if (!interceptorManager.isLiveMode()) {
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -144,12 +150,17 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         addPolicies(builder, policies);
+        // Disable `("$..token")` and `name` sanitizer
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers("AZSDK3431", "AZSDK3493", "AZSDK3430");
+            sanitizersRemoved = true;
+        }
 
         if (interceptorManager.isPlaybackMode()) {
             return builder;
         }
 
-        if (!interceptorManager.isLiveMode()) {
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -185,11 +196,17 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             .httpClient(getHttpClient(wrapWithAssertingClient, interceptorManager, isSync))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
+        // Disable `("$..token")` and `name` sanitizer
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            interceptorManager.removeSanitizers("AZSDK3431", "AZSDK3493", "AZSDK3430");
+            sanitizersRemoved = true;
+        }
+
         if (interceptorManager.isPlaybackMode()) {
             return builder;
         }
 
-        if (!interceptorManager.isLiveMode()) {
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 

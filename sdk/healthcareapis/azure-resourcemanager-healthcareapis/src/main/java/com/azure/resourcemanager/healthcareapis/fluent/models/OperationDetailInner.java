@@ -22,8 +22,7 @@ public final class OperationDetailInner {
     private String name;
 
     /*
-     * Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for
-     * ARM/control-plane operations.
+     * Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane operations.
      */
     @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDataAction;

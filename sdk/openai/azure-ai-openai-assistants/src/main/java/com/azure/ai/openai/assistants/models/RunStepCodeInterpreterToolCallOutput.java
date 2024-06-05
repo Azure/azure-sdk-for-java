@@ -5,29 +5,99 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * An abstract representation of an emitted output from a code interpreter tool.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = RunStepCodeInterpreterToolCallOutput.class)
-@JsonTypeName("RunStepCodeInterpreterToolCallOutput")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "logs", value = RunStepCodeInterpreterLogOutput.class),
-    @JsonSubTypes.Type(name = "image", value = RunStepCodeInterpreterImageOutput.class) })
 @Immutable
-public class RunStepCodeInterpreterToolCallOutput {
+public class RunStepCodeInterpreterToolCallOutput implements JsonSerializable<RunStepCodeInterpreterToolCallOutput> {
 
     /**
      * Creates an instance of RunStepCodeInterpreterToolCallOutput class.
      */
     @Generated
     protected RunStepCodeInterpreterToolCallOutput() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunStepCodeInterpreterToolCallOutput from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunStepCodeInterpreterToolCallOutput if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunStepCodeInterpreterToolCallOutput.
+     */
+    @Generated
+    public static RunStepCodeInterpreterToolCallOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("logs".equals(discriminatorValue)) {
+                    return RunStepCodeInterpreterLogOutput.fromJson(readerToUse.reset());
+                } else if ("image".equals(discriminatorValue)) {
+                    return RunStepCodeInterpreterImageOutput.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static RunStepCodeInterpreterToolCallOutput fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunStepCodeInterpreterToolCallOutput deserializedRunStepCodeInterpreterToolCallOutput
+                = new RunStepCodeInterpreterToolCallOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                reader.skipChildren();
+            }
+            return deserializedRunStepCodeInterpreterToolCallOutput;
+        });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "RunStepCodeInterpreterToolCallOutput";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
     }
 }

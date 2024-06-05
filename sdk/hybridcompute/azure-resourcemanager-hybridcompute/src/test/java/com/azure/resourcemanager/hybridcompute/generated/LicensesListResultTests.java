@@ -9,10 +9,11 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseInner;
 import com.azure.resourcemanager.hybridcompute.models.LicenseCoreType;
 import com.azure.resourcemanager.hybridcompute.models.LicenseDetails;
 import com.azure.resourcemanager.hybridcompute.models.LicenseEdition;
+import com.azure.resourcemanager.hybridcompute.models.LicensesListResult;
 import com.azure.resourcemanager.hybridcompute.models.LicenseState;
 import com.azure.resourcemanager.hybridcompute.models.LicenseTarget;
 import com.azure.resourcemanager.hybridcompute.models.LicenseType;
-import com.azure.resourcemanager.hybridcompute.models.LicensesListResult;
+import com.azure.resourcemanager.hybridcompute.models.VolumeLicenseDetails;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,56 +22,60 @@ import org.junit.jupiter.api.Assertions;
 public final class LicensesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LicensesListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"tenantId\":\"yrtih\",\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Activated\",\"target\":\"Windows"
-                        + " Server"
-                        + " 2012\",\"edition\":\"Datacenter\",\"type\":\"vCore\",\"processors\":706884387,\"assignedLicenses\":2084129316,\"immutableId\":\"lzufcyzkohdbi\"}},\"location\":\"nufhf\",\"tags\":{\"a\":\"y\",\"xwczbyscnp\":\"ithxqhabifpi\"},\"id\":\"x\",\"name\":\"hiv\",\"type\":\"qniwbybrkxvdumj\"}],\"nextLink\":\"tfwvukxgaudc\"}")
-                .toObject(LicensesListResult.class);
-        Assertions.assertEquals("nufhf", model.value().get(0).location());
-        Assertions.assertEquals("y", model.value().get(0).tags().get("a"));
-        Assertions.assertEquals("yrtih", model.value().get(0).tenantId());
+        LicensesListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"tenantId\":\"xgaudccs\",\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Deactivated\",\"target\":\"Windows Server 2012\",\"edition\":\"Standard\",\"type\":\"vCore\",\"processors\":1656493513,\"assignedLicenses\":761147414,\"immutableId\":\"pczwlo\",\"volumeLicenseDetails\":[{},{},{}]}},\"location\":\"mkkvnip\",\"tags\":{\"nchgej\":\"z\",\"huxinpmqnj\":\"podmailzydehojwy\",\"vcputegj\":\"qwixjspro\"},\"id\":\"wmfdatscmdvpjhul\",\"name\":\"uuvmkjozkrwfnd\",\"type\":\"odjpslwejd\"},{\"properties\":{\"provisioningState\":\"Updating\",\"tenantId\":\"oqpsoa\",\"licenseType\":\"ESU\",\"licenseDetails\":{\"state\":\"Activated\",\"target\":\"Windows Server 2012 R2\",\"edition\":\"Datacenter\",\"type\":\"vCore\",\"processors\":276706615,\"assignedLicenses\":2140975130,\"immutableId\":\"fdfdosygexpa\",\"volumeLicenseDetails\":[{},{},{}]}},\"location\":\"hmsbzjhcrzevdp\",\"tags\":{\"jbp\":\"aolthqtrg\",\"jrwzox\":\"zfsinzgvf\"},\"id\":\"j\",\"name\":\"felluwfzitonpe\",\"type\":\"fpjkjlxofp\"}],\"nextLink\":\"hpf\"}")
+            .toObject(LicensesListResult.class);
+        Assertions.assertEquals("mkkvnip", model.value().get(0).location());
+        Assertions.assertEquals("z", model.value().get(0).tags().get("nchgej"));
+        Assertions.assertEquals("xgaudccs", model.value().get(0).tenantId());
         Assertions.assertEquals(LicenseType.ESU, model.value().get(0).licenseType());
-        Assertions.assertEquals(LicenseState.ACTIVATED, model.value().get(0).licenseDetails().state());
+        Assertions.assertEquals(LicenseState.DEACTIVATED, model.value().get(0).licenseDetails().state());
         Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, model.value().get(0).licenseDetails().target());
-        Assertions.assertEquals(LicenseEdition.DATACENTER, model.value().get(0).licenseDetails().edition());
+        Assertions.assertEquals(LicenseEdition.STANDARD, model.value().get(0).licenseDetails().edition());
         Assertions.assertEquals(LicenseCoreType.V_CORE, model.value().get(0).licenseDetails().type());
-        Assertions.assertEquals(706884387, model.value().get(0).licenseDetails().processors());
-        Assertions.assertEquals("tfwvukxgaudc", model.nextLink());
+        Assertions.assertEquals(1656493513, model.value().get(0).licenseDetails().processors());
+        Assertions.assertEquals("hpf", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LicensesListResult model =
-            new LicensesListResult()
+        LicensesListResult model
+            = new LicensesListResult()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new LicenseInner()
-                                .withLocation("nufhf")
-                                .withTags(mapOf("a", "y", "xwczbyscnp", "ithxqhabifpi"))
-                                .withTenantId("yrtih")
-                                .withLicenseType(LicenseType.ESU)
-                                .withLicenseDetails(
-                                    new LicenseDetails()
-                                        .withState(LicenseState.ACTIVATED)
-                                        .withTarget(LicenseTarget.WINDOWS_SERVER_2012)
-                                        .withEdition(LicenseEdition.DATACENTER)
-                                        .withType(LicenseCoreType.V_CORE)
-                                        .withProcessors(706884387))))
-                .withNextLink("tfwvukxgaudc");
+                    Arrays.asList(new LicenseInner().withLocation("mkkvnip")
+                        .withTags(mapOf("nchgej", "z", "huxinpmqnj", "podmailzydehojwy", "vcputegj", "qwixjspro"))
+                        .withTenantId("xgaudccs")
+                        .withLicenseType(LicenseType.ESU)
+                        .withLicenseDetails(new LicenseDetails().withState(LicenseState.DEACTIVATED)
+                            .withTarget(LicenseTarget.WINDOWS_SERVER_2012)
+                            .withEdition(LicenseEdition.STANDARD)
+                            .withType(LicenseCoreType.V_CORE)
+                            .withProcessors(1656493513)
+                            .withVolumeLicenseDetails(Arrays.asList(new VolumeLicenseDetails(),
+                                new VolumeLicenseDetails(), new VolumeLicenseDetails()))),
+                        new LicenseInner().withLocation("hmsbzjhcrzevdp")
+                            .withTags(mapOf("jbp", "aolthqtrg", "jrwzox", "zfsinzgvf"))
+                            .withTenantId("oqpsoa")
+                            .withLicenseType(LicenseType.ESU)
+                            .withLicenseDetails(new LicenseDetails().withState(LicenseState.ACTIVATED)
+                                .withTarget(LicenseTarget.WINDOWS_SERVER_2012_R2)
+                                .withEdition(LicenseEdition.DATACENTER)
+                                .withType(LicenseCoreType.V_CORE)
+                                .withProcessors(276706615)
+                                .withVolumeLicenseDetails(Arrays.asList(new VolumeLicenseDetails(),
+                                    new VolumeLicenseDetails(), new VolumeLicenseDetails())))))
+                .withNextLink("hpf");
         model = BinaryData.fromObject(model).toObject(LicensesListResult.class);
-        Assertions.assertEquals("nufhf", model.value().get(0).location());
-        Assertions.assertEquals("y", model.value().get(0).tags().get("a"));
-        Assertions.assertEquals("yrtih", model.value().get(0).tenantId());
+        Assertions.assertEquals("mkkvnip", model.value().get(0).location());
+        Assertions.assertEquals("z", model.value().get(0).tags().get("nchgej"));
+        Assertions.assertEquals("xgaudccs", model.value().get(0).tenantId());
         Assertions.assertEquals(LicenseType.ESU, model.value().get(0).licenseType());
-        Assertions.assertEquals(LicenseState.ACTIVATED, model.value().get(0).licenseDetails().state());
+        Assertions.assertEquals(LicenseState.DEACTIVATED, model.value().get(0).licenseDetails().state());
         Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, model.value().get(0).licenseDetails().target());
-        Assertions.assertEquals(LicenseEdition.DATACENTER, model.value().get(0).licenseDetails().edition());
+        Assertions.assertEquals(LicenseEdition.STANDARD, model.value().get(0).licenseDetails().edition());
         Assertions.assertEquals(LicenseCoreType.V_CORE, model.value().get(0).licenseDetails().type());
-        Assertions.assertEquals(706884387, model.value().get(0).licenseDetails().processors());
-        Assertions.assertEquals("tfwvukxgaudc", model.nextLink());
+        Assertions.assertEquals(1656493513, model.value().get(0).licenseDetails().processors());
+        Assertions.assertEquals("hpf", model.nextLink());
     }
 
     // Use "Map.of" if available

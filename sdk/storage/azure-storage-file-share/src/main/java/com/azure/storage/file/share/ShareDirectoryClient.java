@@ -6,33 +6,65 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
+import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
+import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
+import com.azure.storage.file.share.implementation.models.DirectoriesForceCloseHandlesHeaders;
+import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.DirectoriesListHandlesHeaders;
+import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataHeaders;
+import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
+import com.azure.storage.file.share.implementation.models.ListFilesIncludeType;
+import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
+import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
+import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
+import com.azure.storage.file.share.models.HandleItem;
+import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
 import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
+import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
-import com.azure.storage.file.share.models.HandleItem;
+import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
-import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
-import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
+import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
 
 /**
  * This class provides a client that contains all the operations for interacting with directory in Azure Storage File
@@ -59,15 +91,45 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
 @ServiceClient(builder = ShareFileClientBuilder.class)
 public class ShareDirectoryClient {
 
-    private final ShareDirectoryAsyncClient shareDirectoryAsyncClient;
+    private static final ClientLogger LOGGER = new ClientLogger(ShareDirectoryClient.class);
+
+    private final AzureFileStorageImpl azureFileStorageClient;
+    private final String shareName;
+    private final String directoryPath;
+    private final String snapshot;
+    private final String accountName;
+    private final ShareServiceVersion serviceVersion;
+    private final AzureSasCredential sasToken;
+    private final String directoryUrl;
 
     /**
-     * Creates a ShareDirectoryClient that wraps a ShareDirectoryAsyncClient and blocks requests.
-     *
-     * @param shareDirectoryAsyncClient ShareDirectoryAsyncClient that is used to send requests
+     * Creates a ShareDirectoryClient.
+     * @param azureFileStorageClient Client that interacts with the service interfaces
+     * @param shareName Name of the share
+     * @param directoryPath Name of the directory
+     * @param snapshot The snapshot of the share
+     * @param accountName Name of the account
+     * @param serviceVersion The version of the service to be used when making requests.
+     * @param sasToken The SAS token used to authenticate the request
      */
-    ShareDirectoryClient(ShareDirectoryAsyncClient shareDirectoryAsyncClient) {
-        this.shareDirectoryAsyncClient = shareDirectoryAsyncClient;
+    ShareDirectoryClient(AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath,
+        String snapshot, String accountName, ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
+        Objects.requireNonNull(shareName, "'shareName' cannot be null.");
+        Objects.requireNonNull(directoryPath);
+        this.shareName = shareName;
+        this.directoryPath = directoryPath;
+        this.snapshot = snapshot;
+        this.azureFileStorageClient = azureFileStorageClient;
+        this.accountName = accountName;
+        this.serviceVersion = serviceVersion;
+        this.sasToken = sasToken;
+
+        StringBuilder directoryUrlString = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
+            .append(shareName).append("/").append(directoryPath);
+        if (snapshot != null) {
+            directoryUrlString.append("?sharesnapshot=").append(snapshot);
+        }
+        this.directoryUrl = directoryUrlString.toString();
     }
 
     /**
@@ -76,7 +138,7 @@ public class ShareDirectoryClient {
      * @return the URL of the storage directory client.
      */
     public String getDirectoryUrl() {
-        return shareDirectoryAsyncClient.getDirectoryUrl();
+        return this.directoryUrl;
     }
 
     /**
@@ -85,7 +147,7 @@ public class ShareDirectoryClient {
      * @return the service version the client is using.
      */
     public ShareServiceVersion getServiceVersion() {
-        return shareDirectoryAsyncClient.getServiceVersion();
+        return this.serviceVersion;
     }
 
     /**
@@ -98,7 +160,14 @@ public class ShareDirectoryClient {
      * @return a ShareFileClient that interacts with the specified share
      */
     public ShareFileClient getFileClient(String fileName) {
-        return new ShareFileClient(shareDirectoryAsyncClient.getFileClient(fileName));
+        String filePath = directoryPath + "/" + fileName;
+        // Support for root directory
+        if (directoryPath.isEmpty()) {
+            filePath = fileName;
+        }
+        return new ShareFileClient(
+            new ShareFileAsyncClient(azureFileStorageClient, shareName, filePath, null, accountName, serviceVersion, sasToken),
+            azureFileStorageClient, shareName, filePath, null, accountName, serviceVersion, sasToken);
     }
 
     /**
@@ -111,7 +180,10 @@ public class ShareDirectoryClient {
      * @return a ShareDirectoryClient that interacts with the specified directory
      */
     public ShareDirectoryClient getSubdirectoryClient(String subdirectoryName) {
-        return new ShareDirectoryClient(shareDirectoryAsyncClient.getSubdirectoryClient(subdirectoryName));
+        boolean needPathDelimiter = !this.directoryPath.isEmpty() && !this.directoryPath.endsWith("/");
+        String subDirectoryPath = this.directoryPath + (needPathDelimiter ? "/" : "") + subdirectoryName;
+        return new ShareDirectoryClient(azureFileStorageClient, shareName, subDirectoryPath, snapshot, accountName,
+            serviceVersion, sasToken);
     }
 
     /**
@@ -150,9 +222,18 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
-        Mono<Response<Boolean>> response = shareDirectoryAsyncClient.existsWithResponse(context);
-
-        return blockWithOptionalTimeout(response, timeout);
+        try {
+            Response<ShareDirectoryProperties> response = getPropertiesWithResponse(timeout, context);
+            return new SimpleResponse<>(response, true);
+        } catch (RuntimeException e) {
+            if (ModelHelper.checkDoesNotExistStatusCode(e) && e instanceof HttpResponseException) {
+                HttpResponse response = ((HttpResponseException) e).getResponse();
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), false);
+            } else {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        }
     }
 
     /**
@@ -215,9 +296,71 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryInfo> createWithResponse(FileSmbProperties smbProperties, String filePermission,
         Map<String, String> metadata, Duration timeout, Context context) {
-        Mono<Response<ShareDirectoryInfo>> response = shareDirectoryAsyncClient
-            .createWithResponse(smbProperties, filePermission, metadata, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return createWithResponse(new ShareDirectoryCreateOptions()
+            .setSmbProperties(smbProperties)
+            .setFilePermission(filePermission)
+            .setMetadata(metadata), timeout, context);
+    }
+
+    /**
+     * Creates a directory in the file share and returns a response of ShareDirectoryInfo to interact with it.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the directory</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createWithResponse#ShareDirectoryCreateOptions-Duration-Context -->
+     * <pre>
+     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
+     * String filePermission = &quot;filePermission&quot;;
+     * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;
+     *     .setFilePermission&#40;filePermission&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;;
+     * Response&lt;ShareDirectoryInfo&gt; response = shareDirectoryClient.createWithResponse&#40;options, Duration.ofSeconds&#40;1&#41;,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * System.out.println&#40;&quot;Completed creating the directory with status code: &quot; + response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createWithResponse#ShareDirectoryCreateOptions-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareDirectoryCreateOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the directory info and the status of creating the directory.
+     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or
+     * directory name is an invalid resource name.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareDirectoryInfo> createWithResponse(ShareDirectoryCreateOptions options, Duration timeout,
+        Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        ShareDirectoryCreateOptions finalOptions = options == null ? new ShareDirectoryCreateOptions() : options;
+        FileSmbProperties properties = finalOptions.getSmbProperties() == null ? new FileSmbProperties()
+            : finalOptions.getSmbProperties();
+
+        // Checks that file permission and file permission key are valid
+        ModelHelper.validateFilePermissionAndKey(finalOptions.getFilePermission(), properties.getFilePermissionKey());
+
+        // If file permission and file permission key are both not set then set default value
+        String finalFilePermission = properties.setFilePermission(finalOptions.getFilePermission(),
+            FileConstants.FILE_PERMISSION_INHERIT);
+        String filePermissionKey = properties.getFilePermissionKey();
+
+        String fileAttributes = properties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
+        String fileCreationTime = properties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
+        String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = properties.getFileChangeTimeString();
+
+        Callable<ResponseBase<DirectoriesCreateHeaders, Void>> operation = () ->
+            this.azureFileStorageClient.getDirectories()
+                .createWithResponse(shareName, directoryPath, fileAttributes, null, finalOptions.getMetadata(),
+                    finalFilePermission,
+                    filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, finalContext);
+
+        return ModelHelper.mapShareDirectoryInfo(sendRequest(operation, timeout, ShareStorageException.class));
     }
 
     /**
@@ -285,8 +428,18 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryInfo> createIfNotExistsWithResponse(ShareDirectoryCreateOptions options,
         Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(shareDirectoryAsyncClient.createIfNotExistsWithResponse(options, context),
-            timeout);
+        try {
+            return createWithResponse(options, timeout, context);
+        } catch (ShareStorageException e) {
+            if (e.getStatusCode() == 409 && e.getErrorCode().equals(ShareErrorCode.RESOURCE_ALREADY_EXISTS)) {
+                HttpResponse res = e.getResponse();
+                return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), null);
+            } else {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        }
     }
 
     /**
@@ -339,8 +492,11 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
-        Mono<Response<Void>> response = shareDirectoryAsyncClient.deleteWithResponse(context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        Callable<Response<Void>> operation = () -> this.azureFileStorageClient.getDirectories()
+            .deleteNoCustomHeadersWithResponse(shareName, directoryPath, null, finalContext);
+
+        return sendRequest(operation, timeout, ShareStorageException.class);
     }
 
     /**
@@ -397,8 +553,19 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> deleteIfExistsWithResponse(Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(shareDirectoryAsyncClient.deleteIfExistsWithResponse(context),
-            timeout);
+        try {
+            Response<Void> response = this.deleteWithResponse(timeout, context);
+            return new SimpleResponse<>(response, true);
+        } catch (ShareStorageException e) {
+            if (e.getStatusCode() == 404 && e.getErrorCode().equals(ShareErrorCode.RESOURCE_NOT_FOUND)) {
+                HttpResponse res = e.getResponse();
+                return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), false);
+            } else {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        }
     }
     /**
      * Retrieves the properties of this directory. The properties includes directory metadata, last modified date, is
@@ -452,9 +619,13 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryProperties> getPropertiesWithResponse(Duration timeout, Context context) {
-        Mono<Response<ShareDirectoryProperties>> response = shareDirectoryAsyncClient
-            .getPropertiesWithResponse(context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        Callable<ResponseBase<DirectoriesGetPropertiesHeaders, Void>> operation = () ->
+            this.azureFileStorageClient.getDirectories().getPropertiesWithResponse(shareName, directoryPath,
+                snapshot, null, finalContext);
+
+        return ModelHelper.mapShareDirectoryPropertiesResponse(sendRequest(operation, timeout,
+            ShareStorageException.class));
     }
 
     /**
@@ -514,11 +685,27 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryInfo> setPropertiesWithResponse(FileSmbProperties smbProperties,
-                                                                  String filePermission,
-                                                                  Duration timeout, Context context) {
-        Mono<Response<ShareDirectoryInfo>> response = shareDirectoryAsyncClient
-            .setPropertiesWithResponse(smbProperties, filePermission, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        String filePermission, Duration timeout, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+
+        // Checks that file permission and file permission key are valid
+        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
+
+        // If file permission and file permission key are both not set then set default value
+        String finalFilePermission = smbProperties.setFilePermission(filePermission, FileConstants.PRESERVE);
+        String filePermissionKey = smbProperties.getFilePermissionKey();
+
+        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
+        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
+        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
+        String fileChangeTime = smbProperties.getFileChangeTimeString();
+        Callable<ResponseBase<DirectoriesSetPropertiesHeaders, Void>> operation = () ->
+            this.azureFileStorageClient.getDirectories().setPropertiesWithResponse(shareName, directoryPath,
+                fileAttributes, null, finalFilePermission, filePermissionKey, fileCreationTime, fileLastWriteTime,
+                fileChangeTime, finalContext);
+
+        return ModelHelper.mapSetPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
 
     /**
@@ -602,9 +789,14 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectorySetMetadataInfo> setMetadataWithResponse(Map<String, String> metadata,
         Duration timeout, Context context) {
-        Mono<Response<ShareDirectorySetMetadataInfo>> response = shareDirectoryAsyncClient
-            .setMetadataWithResponse(metadata, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        Callable<ResponseBase<DirectoriesSetMetadataHeaders, Void>> operation = () ->
+            this.azureFileStorageClient.getDirectories().setMetadataWithResponse(shareName, directoryPath, null,
+                metadata, finalContext);
+
+        return ModelHelper.setShareDirectoryMetadataResponse(sendRequest(operation, timeout,
+            ShareStorageException.class));
+
     }
 
     /**
@@ -706,8 +898,43 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileItem> listFilesAndDirectories(ShareListFilesAndDirectoriesOptions options,
         Duration timeout, Context context) {
-        return new PagedIterable<>(shareDirectoryAsyncClient
-            .listFilesAndDirectoriesWithOptionalTimeout(options, timeout, context));
+        Context finalContext = context == null ? Context.NONE : context;
+
+        final ShareListFilesAndDirectoriesOptions modifiedOptions = options == null
+            ? new ShareListFilesAndDirectoriesOptions() : options;
+
+        List<ListFilesIncludeType> includeTypes = new ArrayList<>();
+        if (modifiedOptions.includeAttributes()) {
+            includeTypes.add(ListFilesIncludeType.ATTRIBUTES);
+        }
+        if (modifiedOptions.includeETag()) {
+            includeTypes.add(ListFilesIncludeType.ETAG);
+        }
+        if (modifiedOptions.includeTimestamps()) {
+            includeTypes.add(ListFilesIncludeType.TIMESTAMPS);
+        }
+        if (modifiedOptions.includePermissionKey()) {
+            includeTypes.add(ListFilesIncludeType.PERMISSION_KEY);
+        }
+
+        // these options must be absent from request if empty or false
+        final List<ListFilesIncludeType> finalIncludeTypes = includeTypes.isEmpty() ? null : includeTypes;
+
+        BiFunction<String, Integer, PagedResponse<ShareFileItem>> retriever = (marker, pageSize) -> {
+            Callable<Response<ListFilesAndDirectoriesSegmentResponse>> operation = () -> this.azureFileStorageClient
+                .getDirectories().listFilesAndDirectoriesSegmentNoCustomHeadersWithResponse(shareName, directoryPath,
+                    modifiedOptions.getPrefix(), snapshot, marker,
+                    pageSize == null ? modifiedOptions.getMaxResultsPerPage() : pageSize, null, finalIncludeTypes,
+                    modifiedOptions.includeExtendedInfo(), finalContext);
+
+            Response<ListFilesAndDirectoriesSegmentResponse> response
+                = sendRequest(operation, timeout, ShareStorageException.class);
+
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                ModelHelper.convertResponseAndGetNumOfResults(response), response.getValue().getNextMarker(), null);
+        };
+
+        return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);
     }
 
     /**
@@ -740,8 +967,26 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HandleItem> listHandles(Integer maxResultsPerPage, boolean recursive, Duration timeout,
         Context context) {
-        return new PagedIterable<>(shareDirectoryAsyncClient
-            .listHandlesWithOptionalTimeout(maxResultsPerPage, recursive, timeout, context));
+        return listHandlesWithOptionalTimeout(maxResultsPerPage, recursive, timeout, context);
+    }
+
+    PagedIterable<HandleItem> listHandlesWithOptionalTimeout(Integer maxResultPerPage, boolean recursive,
+        Duration timeout, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        Function<String, PagedResponse<HandleItem>> retriever = (marker) -> {
+            Callable<ResponseBase<DirectoriesListHandlesHeaders, ListHandlesResponse>> operation =
+                () -> this.azureFileStorageClient.getDirectories().listHandlesWithResponse(shareName, directoryPath,
+                    marker, maxResultPerPage, null, snapshot, recursive, finalContext);
+
+            ResponseBase<DirectoriesListHandlesHeaders, ListHandlesResponse> response
+                = sendRequest(operation, timeout, ShareStorageException.class);
+
+            return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                ModelHelper.transformHandleItems(response.getValue().getHandleList()),
+                response.getValue().getNextMarker(), response.getDeserializedHeaders());
+
+        };
+        return new PagedIterable<>(() -> retriever.apply(null), retriever);
     }
 
     /**
@@ -802,9 +1047,18 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloseHandlesInfo> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
-        Mono<Response<CloseHandlesInfo>> response = shareDirectoryAsyncClient
-            .forceCloseHandleWithResponse(handleId, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+
+        Callable<ResponseBase<DirectoriesForceCloseHandlesHeaders, Void>> operation = () ->
+            this.azureFileStorageClient.getDirectories().forceCloseHandlesWithResponse(shareName, directoryPath,
+                handleId, null, null, snapshot, false, finalContext);
+
+        ResponseBase<DirectoriesForceCloseHandlesHeaders, Void> response
+            = sendRequest(operation, timeout, ShareStorageException.class);
+
+        return new SimpleResponse<>(response,
+            new CloseHandlesInfo(response.getDeserializedHeaders().getXMsNumberOfHandlesClosed(),
+                response.getDeserializedHeaders().getXMsNumberOfHandlesFailed()));
     }
 
     /**
@@ -835,10 +1089,30 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloseHandlesInfo forceCloseAllHandles(boolean recursive, Duration timeout, Context context) {
-        return new PagedIterable<>(shareDirectoryAsyncClient.forceCloseAllHandlesWithTimeout(recursive, timeout,
-            context)).stream().reduce(new CloseHandlesInfo(0, 0),
-                (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
-                    accu.getFailedHandles() + next.getFailedHandles()));
+        Context finalContext = context == null ? Context.NONE : context;
+
+        Function<String, PagedResponse<CloseHandlesInfo>> retriever = (marker) -> {
+            Callable<ResponseBase<DirectoriesForceCloseHandlesHeaders, Void>> operation =
+                () -> this.azureFileStorageClient.getDirectories()
+                    .forceCloseHandlesWithResponse(shareName, directoryPath, "*", null, marker, snapshot,
+                        recursive, finalContext);
+
+            ResponseBase<DirectoriesForceCloseHandlesHeaders, Void> response
+                = sendRequest(operation, timeout, ShareStorageException.class);
+
+            return new PagedResponseBase<>(response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                Collections.singletonList(
+                    new CloseHandlesInfo(response.getDeserializedHeaders().getXMsNumberOfHandlesClosed(),
+                        response.getDeserializedHeaders().getXMsNumberOfHandlesFailed())),
+                response.getDeserializedHeaders().getXMsMarker(),
+                response.getDeserializedHeaders());
+        };
+
+        return new PagedIterable<>(() -> retriever.apply(null), retriever).stream().reduce(new CloseHandlesInfo(0, 0),
+            (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
+                accu.getFailedHandles() + next.getFailedHandles()));
     }
 
     /**
@@ -903,9 +1177,69 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryClient> renameWithResponse(ShareFileRenameOptions options, Duration timeout,
         Context context) {
-        Mono<Response<ShareDirectoryAsyncClient>> mono = shareDirectoryAsyncClient.renameWithResponse(options, context);
-        Response<ShareDirectoryAsyncClient> response = StorageImplUtils.blockWithOptionalTimeout(mono, timeout);
-        return new SimpleResponse<>(response, new ShareDirectoryClient(response.getValue()));
+        StorageImplUtils.assertNotNull("options", options);
+        Context finalContext = context == null ? Context.NONE : context;
+
+        ShareRequestConditions sourceRequestConditions = options.getSourceRequestConditions() == null
+            ? new ShareRequestConditions() : options.getSourceRequestConditions();
+        ShareRequestConditions destinationRequestConditions = options.getDestinationRequestConditions() == null
+            ? new ShareRequestConditions() : options.getDestinationRequestConditions();
+
+        // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
+        SourceLeaseAccessConditions sourceConditions = new SourceLeaseAccessConditions()
+            .setSourceLeaseId(sourceRequestConditions.getLeaseId());
+        DestinationLeaseAccessConditions destinationConditions = new DestinationLeaseAccessConditions()
+            .setDestinationLeaseId(destinationRequestConditions.getLeaseId());
+
+        CopyFileSmbInfo smbInfo;
+        String filePermissionKey;
+        if (options.getSmbProperties() != null) {
+            FileSmbProperties tempSmbProperties = options.getSmbProperties();
+            filePermissionKey = tempSmbProperties.getFilePermissionKey();
+
+            String fileAttributes = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
+            String fileCreationTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
+            String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
+            String fileChangeTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
+            smbInfo = new CopyFileSmbInfo()
+                .setFileAttributes(fileAttributes)
+                .setFileCreationTime(fileCreationTime)
+                .setFileLastWriteTime(fileLastWriteTime)
+                .setFileChangeTime(fileChangeTime)
+                .setIgnoreReadOnly(options.isIgnoreReadOnly());
+        } else {
+            smbInfo = null;
+            filePermissionKey = null;
+        }
+
+        ShareDirectoryClient destinationDirectoryClient = getDirectoryClient(options.getDestinationPath());
+
+        String renameSource = this.sasToken != null ? this.getDirectoryUrl() + "?" + this.sasToken.getSignature()
+            : this.getDirectoryUrl();
+
+        Callable<Response<Void>> operation = () -> destinationDirectoryClient.azureFileStorageClient.getDirectories()
+            .renameNoCustomHeadersWithResponse(destinationDirectoryClient.getShareName(),
+                destinationDirectoryClient.getDirectoryPath(), renameSource, null /* timeout */,
+                options.getReplaceIfExists(), options.isIgnoreReadOnly(), options.getFilePermission(),
+                filePermissionKey, options.getMetadata(), sourceConditions, destinationConditions, smbInfo,
+                finalContext);
+
+        return new SimpleResponse<>(sendRequest(operation, timeout, ShareStorageException.class),
+            destinationDirectoryClient);
+    }
+
+    /**
+     * Takes in a destination and creates a ShareDirectoryClient with a new path
+     * @param destinationPath The destination path
+     * @return A ShareDirectoryClient
+     */
+    ShareDirectoryClient getDirectoryClient(String destinationPath) {
+        if (CoreUtils.isNullOrEmpty(destinationPath)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
+        }
+
+        return new ShareDirectoryClient(this.azureFileStorageClient, getShareName(), destinationPath, null,
+            this.getAccountName(), this.getServiceVersion(), sasToken);
     }
 
     /**
@@ -1108,9 +1442,7 @@ public class ShareDirectoryClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSubdirectoryWithResponse(String subdirectoryName, Duration timeout, Context context) {
-        Mono<Response<Void>> response = shareDirectoryAsyncClient.deleteSubdirectoryWithResponse(subdirectoryName,
-            context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return getSubdirectoryClient(subdirectoryName).deleteWithResponse(timeout, context);
     }
 
     /**
@@ -1172,9 +1504,7 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName, Duration timeout,
         Context context) {
-        Mono<Response<Boolean>> response = shareDirectoryAsyncClient
-            .deleteSubdirectoryIfExistsWithResponse(subdirectoryName, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return getSubdirectoryClient(subdirectoryName).deleteIfExistsWithResponse(timeout, context);
     }
 
     /**
@@ -1411,9 +1741,7 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
-        Mono<Response<Void>> response = shareDirectoryAsyncClient.deleteFileWithResponse(fileName, requestConditions,
-            context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return getFileClient(fileName).deleteWithResponse(requestConditions, timeout, context);
     }
 
     /**
@@ -1510,8 +1838,18 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
-        return  StorageImplUtils.blockWithOptionalTimeout(shareDirectoryAsyncClient
-            .deleteFileIfExistsWithResponse(fileName, requestConditions, context), timeout);
+        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        try {
+            Response<Void> response = deleteFileWithResponse(fileName, requestConditions, timeout, context);
+            return new SimpleResponse<>(response, true);
+        } catch (ShareStorageException e) {
+            if (e.getStatusCode() == 404 && e.getErrorCode().equals(ShareErrorCode.RESOURCE_NOT_FOUND)) {
+                HttpResponse res = e.getResponse();
+                return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), false);
+            } else {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        }
     }
 
     /**
@@ -1540,7 +1878,7 @@ public class ShareDirectoryClient {
      * share.
      */
     public String getShareSnapshotId() {
-        return shareDirectoryAsyncClient.getShareSnapshotId();
+        return this.snapshot;
     }
 
     /**
@@ -1558,7 +1896,7 @@ public class ShareDirectoryClient {
      * @return The share name of the directory.
      */
     public String getShareName() {
-        return shareDirectoryAsyncClient.getShareName();
+        return this.shareName;
     }
 
     /**
@@ -1576,7 +1914,7 @@ public class ShareDirectoryClient {
      * @return The path of the directory.
      */
     public String getDirectoryPath() {
-        return shareDirectoryAsyncClient.getDirectoryPath();
+        return this.directoryPath;
     }
 
     /**
@@ -1585,7 +1923,7 @@ public class ShareDirectoryClient {
      * @return account name associated with this storage resource.
      */
     public String getAccountName() {
-        return this.shareDirectoryAsyncClient.getAccountName();
+        return this.accountName;
     }
 
     /**
@@ -1594,7 +1932,7 @@ public class ShareDirectoryClient {
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
-        return this.shareDirectoryAsyncClient.getHttpPipeline();
+        return azureFileStorageClient.getHttpPipeline();
     }
 
     /**
@@ -1621,7 +1959,7 @@ public class ShareDirectoryClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
-        return this.shareDirectoryAsyncClient.generateSas(shareServiceSasSignatureValues);
+        return generateSas(shareServiceSasSignatureValues, Context.NONE);
     }
 
     /**
@@ -1650,6 +1988,7 @@ public class ShareDirectoryClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
-        return this.shareDirectoryAsyncClient.generateSas(shareServiceSasSignatureValues, context);
+        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getDirectoryPath())
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 }

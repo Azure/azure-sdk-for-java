@@ -19,16 +19,20 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import static java.util.Arrays.asList;
 
 public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(SipRoutingIntegrationTestBase.class);
+
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
     private static final String AZURE_TEST_DOMAIN = Configuration.getGlobalConfiguration()
@@ -117,6 +121,8 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
         }
         if (!interceptorManager.isLiveMode()) {
             addTestProxySanitizers();
+            // Remove `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3493");
         }
 
         return builder;
@@ -143,6 +149,8 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
         }
         if (!interceptorManager.isLiveMode()) {
             addTestProxySanitizers();
+            // Remove `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3493");
         }
 
         return builder;
@@ -154,7 +162,7 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
                 + ".[0-9a-fA-F]{8}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{4}\\\\-[0-9a-fA-F]{12})",
                 ".redacted", TestProxySanitizerType.BODY_REGEX),
             new TestProxySanitizer(domain.indexOf(".") > 0 ? domain.substring(domain.indexOf(".")) : domain,
-                ".testdomain.com", TestProxySanitizerType.BODY_REGEX),
+                ".com", TestProxySanitizerType.BODY_REGEX),
             new TestProxySanitizer("id", null,
                 "REDACTED", TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("phoneNumber", null, "REDACTED",
@@ -192,7 +200,7 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
                 final HttpResponse bufferedResponse = httpResponse.buffer();
 
                 // Should sanitize printed reponse url
-                System.out.println("MS-CV header for " + testName + " request "
+                LOGGER.log(LogLevel.VERBOSE, () -> "MS-CV header for " + testName + " request "
                     + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                 return Mono.just(bufferedResponse);
             });
@@ -203,7 +211,7 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
             return order + ".redacted" + "." + AZURE_TEST_DOMAIN;
         }
 
-        String unique = UUID.randomUUID().toString().replace("-", "");
+        String unique = CoreUtils.randomUuid().toString().replace("-", "");
         return order + "-" + unique + "." + AZURE_TEST_DOMAIN;
     }
 }

@@ -15,18 +15,20 @@ public final class AzureBlobFSDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobFSDatasetTypeProperties model = BinaryData.fromString(
-            "{\"folderPath\":\"datarho\",\"fileName\":\"datakkvxu\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"datazbvb\",\"deserializer\":\"datauvqhxtozfgdkw\",\"\":{\"utui\":\"datarklpiigfuzk\",\"xyll\":\"datajclzjwaqdzqydewu\"}},\"compression\":{\"type\":\"datazevtzqwczoc\",\"level\":\"databek\",\"\":{\"horkslhraqk\":\"datanfpkyvnhiys\",\"flteatnegef\":\"datawlwkfflaqwmwqog\",\"ibt\":\"datajxnjtqbgy\",\"kxunsaujqgbb\":\"datanvxwtdqtcbjdbtqy\"}}}")
+            "{\"folderPath\":\"datayjulskwwnqhq\",\"fileName\":\"datagpwxtvce\",\"format\":{\"type\":\"vbvx\",\"serializer\":\"dataegenlrj\",\"deserializer\":\"datamwevguyflnxel\",\"\":{\"owwe\":\"datafzcde\",\"sfqbirtybcelfjn\":\"datahyfkdilbwqlqa\",\"el\":\"dataodnjyhzfaxskdv\",\"qxsorchaz\":\"datamodpe\"}},\"compression\":{\"type\":\"datao\",\"level\":\"datayhl\",\"\":{\"b\":\"datavhs\",\"gf\":\"datapwxslaj\",\"awkmibu\":\"datagaef\"}}}")
             .toObject(AzureBlobFSDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureBlobFSDatasetTypeProperties model
-            = new AzureBlobFSDatasetTypeProperties().withFolderPath("datarho").withFileName("datakkvxu")
-                .withFormat(new DatasetStorageFormat().withSerializer("datazbvb").withDeserializer("datauvqhxtozfgdkw")
-                    .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
-                .withCompression(new DatasetCompression().withType("datazevtzqwczoc").withLevel("databek")
-                    .withAdditionalProperties(mapOf()));
+            = new AzureBlobFSDatasetTypeProperties().withFolderPath("datayjulskwwnqhq")
+                .withFileName("datagpwxtvce")
+                .withFormat(new DatasetStorageFormat().withSerializer("dataegenlrj")
+                    .withDeserializer("datamwevguyflnxel")
+                    .withAdditionalProperties(mapOf("type", "vbvx")))
+                .withCompression(
+                    new DatasetCompression().withType("datao").withLevel("datayhl").withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(AzureBlobFSDatasetTypeProperties.class);
     }
 

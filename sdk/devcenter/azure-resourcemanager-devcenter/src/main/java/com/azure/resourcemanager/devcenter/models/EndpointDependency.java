@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A domain name and connection details used to access a dependency. */
+/**
+ * A domain name and connection details used to access a dependency.
+ */
 @Immutable
 public final class EndpointDependency {
     /*
@@ -29,14 +31,16 @@ public final class EndpointDependency {
     @JsonProperty(value = "endpointDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<EndpointDetail> endpointDetails;
 
-    /** Creates an instance of EndpointDependency class. */
+    /**
+     * Creates an instance of EndpointDependency class.
+     */
     public EndpointDependency() {
     }
 
     /**
      * Get the domainName property: The domain name of the dependency. Domain names may be fully qualified or may
      * contain a * wildcard.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -46,7 +50,7 @@ public final class EndpointDependency {
     /**
      * Get the description property: Human-readable supplemental information about the dependency and when it is
      * applicable.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -55,7 +59,7 @@ public final class EndpointDependency {
 
     /**
      * Get the endpointDetails property: The list of connection details for this endpoint.
-     *
+     * 
      * @return the endpointDetails value.
      */
     public List<EndpointDetail> endpointDetails() {
@@ -64,7 +68,7 @@ public final class EndpointDependency {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

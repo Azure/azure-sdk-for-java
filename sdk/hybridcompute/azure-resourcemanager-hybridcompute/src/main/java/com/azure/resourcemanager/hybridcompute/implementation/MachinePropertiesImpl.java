@@ -23,14 +23,14 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public final class MachinePropertiesImpl implements MachineProperties {
     private MachinePropertiesInner innerObject;
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    MachinePropertiesImpl(
-        MachinePropertiesInner innerObject,
+    MachinePropertiesImpl(MachinePropertiesInner innerObject,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -94,7 +94,7 @@ public final class MachinePropertiesImpl implements MachineProperties {
         return this.innerModel().agentVersion();
     }
 
-    public String vmId() {
+    public UUID vmId() {
         return this.innerModel().vmId();
     }
 
@@ -122,7 +122,7 @@ public final class MachinePropertiesImpl implements MachineProperties {
         return this.innerModel().osType();
     }
 
-    public String vmUuid() {
+    public UUID vmUuid() {
         return this.innerModel().vmUuid();
     }
 
@@ -137,6 +137,10 @@ public final class MachinePropertiesImpl implements MachineProperties {
 
     public String osSku() {
         return this.innerModel().osSku();
+    }
+
+    public String osEdition() {
+        return this.innerModel().osEdition();
     }
 
     public String domainName() {

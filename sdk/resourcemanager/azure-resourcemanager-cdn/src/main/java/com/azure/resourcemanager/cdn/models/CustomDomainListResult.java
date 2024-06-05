@@ -27,13 +27,15 @@ public final class CustomDomainListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of CustomDomainListResult class. */
+    /**
+     * Creates an instance of CustomDomainListResult class.
+     */
     public CustomDomainListResult() {
     }
 
     /**
      * Get the value property: List of CDN CustomDomains within an endpoint.
-     *
+     * 
      * @return the value value.
      */
     public List<CustomDomainInner> value() {
@@ -42,7 +44,7 @@ public final class CustomDomainListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of custom domain objects if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -51,7 +53,7 @@ public final class CustomDomainListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of custom domain objects if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CustomDomainListResult object itself.
      */
@@ -62,7 +64,7 @@ public final class CustomDomainListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

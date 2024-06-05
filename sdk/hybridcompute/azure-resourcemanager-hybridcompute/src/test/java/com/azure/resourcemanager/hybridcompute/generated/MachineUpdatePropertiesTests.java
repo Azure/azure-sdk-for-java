@@ -14,78 +14,69 @@ import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.OSProfileLinuxConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.OSProfileWindowsConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.PatchModeTypes;
+import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 
 public final class MachineUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MachineUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"locationData\":{\"name\":\"spughftqsxhq\",\"city\":\"j\",\"district\":\"kndxdigrjgu\",\"countryOrRegion\":\"zdmsyqtfi\"},\"osProfile\":{\"computerName\":\"botzingamvppho\",\"windowsConfiguration\":{\"patchSettings\":{\"assessmentMode\":\"AutomaticByPlatform\",\"patchMode\":\"Manual\"}},\"linuxConfiguration\":{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"ImageDefault\"}}},\"cloudMetadata\":{\"provider\":\"wynwcvtbvkayhm\"},\"agentUpgrade\":{\"desiredVersion\":\"yqiatkzwp\",\"correlationId\":\"p\",\"enableAutomaticUpgrade\":true,\"lastAttemptDesiredVersion\":\"a\",\"lastAttemptTimestamp\":\"gvvs\",\"lastAttemptStatus\":\"Failed\",\"lastAttemptMessage\":\"jguq\"},\"parentClusterResourceId\":\"wygzlvdnkfxusem\",\"privateLinkScopeResourceId\":\"zrmuhapfcqdps\"}")
-                .toObject(MachineUpdateProperties.class);
-        Assertions.assertEquals("spughftqsxhq", model.locationData().name());
-        Assertions.assertEquals("j", model.locationData().city());
-        Assertions.assertEquals("kndxdigrjgu", model.locationData().district());
-        Assertions.assertEquals("zdmsyqtfi", model.locationData().countryOrRegion());
-        Assertions
-            .assertEquals(
-                AssessmentModeTypes.AUTOMATIC_BY_PLATFORM, model.osProfile().windowsConfiguration().assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.MANUAL, model.osProfile().windowsConfiguration().patchMode());
-        Assertions
-            .assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.osProfile().linuxConfiguration().assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.osProfile().linuxConfiguration().patchMode());
-        Assertions.assertEquals("yqiatkzwp", model.agentUpgrade().desiredVersion());
-        Assertions.assertEquals("p", model.agentUpgrade().correlationId());
-        Assertions.assertEquals(true, model.agentUpgrade().enableAutomaticUpgrade());
-        Assertions.assertEquals("wygzlvdnkfxusem", model.parentClusterResourceId());
-        Assertions.assertEquals("zrmuhapfcqdps", model.privateLinkScopeResourceId());
+        MachineUpdateProperties model = BinaryData.fromString(
+            "{\"locationData\":{\"name\":\"dg\",\"city\":\"gsj\",\"district\":\"nwqjnoba\",\"countryOrRegion\":\"hdd\"},\"osProfile\":{\"computerName\":\"cegfnmntfp\",\"windowsConfiguration\":{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"AutomaticByPlatform\"}},\"linuxConfiguration\":{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"AutomaticByOS\"}}},\"cloudMetadata\":{\"provider\":\"lxlllchpo\"},\"agentUpgrade\":{\"desiredVersion\":\"evwrdnhfuk\",\"correlationId\":\"52690f54-85dd-4058-ac46-e099d840b775\",\"enableAutomaticUpgrade\":false,\"lastAttemptDesiredVersion\":\"swsmys\",\"lastAttemptTimestamp\":\"2021-05-25T03:52:52Z\",\"lastAttemptStatus\":\"Success\",\"lastAttemptMessage\":\"pfcvlerchpqbmfp\"},\"parentClusterResourceId\":\"abwidfcxsspuun\",\"privateLinkScopeResourceId\":\"xyh\"}")
+            .toObject(MachineUpdateProperties.class);
+        Assertions.assertEquals("dg", model.locationData().name());
+        Assertions.assertEquals("gsj", model.locationData().city());
+        Assertions.assertEquals("nwqjnoba", model.locationData().district());
+        Assertions.assertEquals("hdd", model.locationData().countryOrRegion());
+        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT,
+            model.osProfile().windowsConfiguration().assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_PLATFORM,
+            model.osProfile().windowsConfiguration().patchMode());
+        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT,
+            model.osProfile().linuxConfiguration().assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_OS, model.osProfile().linuxConfiguration().patchMode());
+        Assertions.assertEquals("evwrdnhfuk", model.agentUpgrade().desiredVersion());
+        Assertions.assertEquals(UUID.fromString("52690f54-85dd-4058-ac46-e099d840b775"),
+            model.agentUpgrade().correlationId());
+        Assertions.assertEquals(false, model.agentUpgrade().enableAutomaticUpgrade());
+        Assertions.assertEquals("abwidfcxsspuun", model.parentClusterResourceId());
+        Assertions.assertEquals("xyh", model.privateLinkScopeResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MachineUpdateProperties model =
-            new MachineUpdateProperties()
-                .withLocationData(
-                    new LocationData()
-                        .withName("spughftqsxhq")
-                        .withCity("j")
-                        .withDistrict("kndxdigrjgu")
-                        .withCountryOrRegion("zdmsyqtfi"))
-                .withOsProfile(
-                    new OSProfile()
-                        .withWindowsConfiguration(
-                            new OSProfileWindowsConfiguration()
-                                .withAssessmentMode(AssessmentModeTypes.AUTOMATIC_BY_PLATFORM)
-                                .withPatchMode(PatchModeTypes.MANUAL))
-                        .withLinuxConfiguration(
-                            new OSProfileLinuxConfiguration()
-                                .withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
-                                .withPatchMode(PatchModeTypes.IMAGE_DEFAULT)))
-                .withCloudMetadata(new CloudMetadata())
-                .withAgentUpgrade(
-                    new AgentUpgrade()
-                        .withDesiredVersion("yqiatkzwp")
-                        .withCorrelationId("p")
-                        .withEnableAutomaticUpgrade(true))
-                .withParentClusterResourceId("wygzlvdnkfxusem")
-                .withPrivateLinkScopeResourceId("zrmuhapfcqdps");
+        MachineUpdateProperties model = new MachineUpdateProperties()
+            .withLocationData(
+                new LocationData().withName("dg").withCity("gsj").withDistrict("nwqjnoba").withCountryOrRegion("hdd"))
+            .withOsProfile(new OSProfile()
+                .withWindowsConfiguration(
+                    new OSProfileWindowsConfiguration().withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
+                        .withPatchMode(PatchModeTypes.AUTOMATIC_BY_PLATFORM))
+                .withLinuxConfiguration(
+                    new OSProfileLinuxConfiguration().withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
+                        .withPatchMode(PatchModeTypes.AUTOMATIC_BY_OS)))
+            .withCloudMetadata(new CloudMetadata())
+            .withAgentUpgrade(new AgentUpgrade().withDesiredVersion("evwrdnhfuk")
+                .withCorrelationId(UUID.fromString("52690f54-85dd-4058-ac46-e099d840b775"))
+                .withEnableAutomaticUpgrade(false))
+            .withParentClusterResourceId("abwidfcxsspuun")
+            .withPrivateLinkScopeResourceId("xyh");
         model = BinaryData.fromObject(model).toObject(MachineUpdateProperties.class);
-        Assertions.assertEquals("spughftqsxhq", model.locationData().name());
-        Assertions.assertEquals("j", model.locationData().city());
-        Assertions.assertEquals("kndxdigrjgu", model.locationData().district());
-        Assertions.assertEquals("zdmsyqtfi", model.locationData().countryOrRegion());
-        Assertions
-            .assertEquals(
-                AssessmentModeTypes.AUTOMATIC_BY_PLATFORM, model.osProfile().windowsConfiguration().assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.MANUAL, model.osProfile().windowsConfiguration().patchMode());
-        Assertions
-            .assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.osProfile().linuxConfiguration().assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.osProfile().linuxConfiguration().patchMode());
-        Assertions.assertEquals("yqiatkzwp", model.agentUpgrade().desiredVersion());
-        Assertions.assertEquals("p", model.agentUpgrade().correlationId());
-        Assertions.assertEquals(true, model.agentUpgrade().enableAutomaticUpgrade());
-        Assertions.assertEquals("wygzlvdnkfxusem", model.parentClusterResourceId());
-        Assertions.assertEquals("zrmuhapfcqdps", model.privateLinkScopeResourceId());
+        Assertions.assertEquals("dg", model.locationData().name());
+        Assertions.assertEquals("gsj", model.locationData().city());
+        Assertions.assertEquals("nwqjnoba", model.locationData().district());
+        Assertions.assertEquals("hdd", model.locationData().countryOrRegion());
+        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT,
+            model.osProfile().windowsConfiguration().assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_PLATFORM,
+            model.osProfile().windowsConfiguration().patchMode());
+        Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT,
+            model.osProfile().linuxConfiguration().assessmentMode());
+        Assertions.assertEquals(PatchModeTypes.AUTOMATIC_BY_OS, model.osProfile().linuxConfiguration().patchMode());
+        Assertions.assertEquals("evwrdnhfuk", model.agentUpgrade().desiredVersion());
+        Assertions.assertEquals(UUID.fromString("52690f54-85dd-4058-ac46-e099d840b775"),
+            model.agentUpgrade().correlationId());
+        Assertions.assertEquals(false, model.agentUpgrade().enableAutomaticUpgrade());
+        Assertions.assertEquals("abwidfcxsspuun", model.parentClusterResourceId());
+        Assertions.assertEquals("xyh", model.privateLinkScopeResourceId());
     }
 }

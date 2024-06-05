@@ -12,7 +12,9 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseTarget;
 import com.azure.resourcemanager.hybridcompute.models.LicenseType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the Update properties of a License Profile. */
+/**
+ * Describes the Update properties of a License Profile.
+ */
 @Fluent
 public final class LicenseUpdateProperties {
     /*
@@ -27,13 +29,15 @@ public final class LicenseUpdateProperties {
     @JsonProperty(value = "licenseDetails")
     private LicenseUpdatePropertiesLicenseDetails innerLicenseDetails;
 
-    /** Creates an instance of LicenseUpdateProperties class. */
+    /**
+     * Creates an instance of LicenseUpdateProperties class.
+     */
     public LicenseUpdateProperties() {
     }
 
     /**
      * Get the licenseType property: The type of the license resource.
-     *
+     * 
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -42,7 +46,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Set the licenseType property: The type of the license resource.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the LicenseUpdateProperties object itself.
      */
@@ -53,7 +57,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Get the innerLicenseDetails property: The licenseDetails property.
-     *
+     * 
      * @return the innerLicenseDetails value.
      */
     private LicenseUpdatePropertiesLicenseDetails innerLicenseDetails() {
@@ -62,7 +66,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Get the state property: Describes the state of the license.
-     *
+     * 
      * @return the state value.
      */
     public LicenseState state() {
@@ -71,7 +75,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Set the state property: Describes the state of the license.
-     *
+     * 
      * @param state the state value to set.
      * @return the LicenseUpdateProperties object itself.
      */
@@ -85,7 +89,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Get the target property: Describes the license target server.
-     *
+     * 
      * @return the target value.
      */
     public LicenseTarget target() {
@@ -94,7 +98,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Set the target property: Describes the license target server.
-     *
+     * 
      * @param target the target value to set.
      * @return the LicenseUpdateProperties object itself.
      */
@@ -108,7 +112,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Get the edition property: Describes the edition of the license. The values are either Standard or Datacenter.
-     *
+     * 
      * @return the edition value.
      */
     public LicenseEdition edition() {
@@ -117,7 +121,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Set the edition property: Describes the edition of the license. The values are either Standard or Datacenter.
-     *
+     * 
      * @param edition the edition value to set.
      * @return the LicenseUpdateProperties object itself.
      */
@@ -131,7 +135,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Get the type property: Describes the license core type (pCore or vCore).
-     *
+     * 
      * @return the type value.
      */
     public LicenseCoreType type() {
@@ -140,7 +144,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Set the type property: Describes the license core type (pCore or vCore).
-     *
+     * 
      * @param type the type value to set.
      * @return the LicenseUpdateProperties object itself.
      */
@@ -154,7 +158,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Get the processors property: Describes the number of processors.
-     *
+     * 
      * @return the processors value.
      */
     public Integer processors() {
@@ -163,7 +167,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Set the processors property: Describes the number of processors.
-     *
+     * 
      * @param processors the processors value to set.
      * @return the LicenseUpdateProperties object itself.
      */
@@ -177,7 +181,7 @@ public final class LicenseUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

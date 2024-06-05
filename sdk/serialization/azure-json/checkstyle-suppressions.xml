@@ -6,6 +6,15 @@
 <suppressions>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.json.implementation.DefaultJsonReader.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.json.implementation.DefaultJsonWriter.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.json.implementation.StringBuilderWriter.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.json.models.JsonArray.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.json.models.JsonElement.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.json.models.JsonNumber.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.json.models.JsonObject.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.json.JsonReader.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.json.models.JsonString.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.json.JsonWriteContext.java" />
+
+  <!-- Bug in UseCaughtExceptionCauseCheck where it doesn't recognize addSuppressed exceptions as not being lost. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="com.azure.json.models.JsonNumber" />
 </suppressions>

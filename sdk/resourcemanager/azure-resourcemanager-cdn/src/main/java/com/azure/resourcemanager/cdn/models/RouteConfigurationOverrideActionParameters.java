@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cdn.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the parameters for the route configuration override action. */
+/**
+ * Defines the parameters for the route configuration override action.
+ */
 @Fluent
 public final class RouteConfigurationOverrideActionParameters {
     /*
@@ -29,14 +31,15 @@ public final class RouteConfigurationOverrideActionParameters {
     @JsonProperty(value = "cacheConfiguration")
     private CacheConfiguration cacheConfiguration;
 
-    /** Creates an instance of RouteConfigurationOverrideActionParameters class. */
+    /**
+     * Creates an instance of RouteConfigurationOverrideActionParameters class.
+     */
     public RouteConfigurationOverrideActionParameters() {
-        typeName = "DeliveryRuleRouteConfigurationOverrideActionParameters";
     }
 
     /**
      * Get the typeName property: The typeName property.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -45,7 +48,7 @@ public final class RouteConfigurationOverrideActionParameters {
 
     /**
      * Set the typeName property: The typeName property.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the RouteConfigurationOverrideActionParameters object itself.
      */
@@ -57,7 +60,7 @@ public final class RouteConfigurationOverrideActionParameters {
     /**
      * Get the originGroupOverride property: A reference to the origin group override configuration. Leave empty to use
      * the default origin group on route.
-     *
+     * 
      * @return the originGroupOverride value.
      */
     public OriginGroupOverride originGroupOverride() {
@@ -67,7 +70,7 @@ public final class RouteConfigurationOverrideActionParameters {
     /**
      * Set the originGroupOverride property: A reference to the origin group override configuration. Leave empty to use
      * the default origin group on route.
-     *
+     * 
      * @param originGroupOverride the originGroupOverride value to set.
      * @return the RouteConfigurationOverrideActionParameters object itself.
      */
@@ -79,7 +82,7 @@ public final class RouteConfigurationOverrideActionParameters {
     /**
      * Get the cacheConfiguration property: The caching configuration associated with this rule. To disable caching, do
      * not provide a cacheConfiguration object.
-     *
+     * 
      * @return the cacheConfiguration value.
      */
     public CacheConfiguration cacheConfiguration() {
@@ -89,7 +92,7 @@ public final class RouteConfigurationOverrideActionParameters {
     /**
      * Set the cacheConfiguration property: The caching configuration associated with this rule. To disable caching, do
      * not provide a cacheConfiguration object.
-     *
+     * 
      * @param cacheConfiguration the cacheConfiguration value to set.
      * @return the RouteConfigurationOverrideActionParameters object itself.
      */
@@ -100,7 +103,7 @@ public final class RouteConfigurationOverrideActionParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

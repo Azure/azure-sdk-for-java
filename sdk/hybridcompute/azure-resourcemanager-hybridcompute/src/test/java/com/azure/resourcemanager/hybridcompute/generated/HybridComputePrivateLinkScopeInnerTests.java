@@ -15,29 +15,25 @@ import org.junit.jupiter.api.Assertions;
 public final class HybridComputePrivateLinkScopeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HybridComputePrivateLinkScopeInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"uwsyrsndsytgadg\",\"privateLinkScopeId\":\"aeaeneqnzarrw\",\"privateEndpointConnections\":[{\"id\":\"ijfqkacewiipfp\",\"name\":\"ji\",\"type\":\"wifto\",\"properties\":{\"privateEndpoint\":{\"id\":\"puvks\"},\"privateLinkServiceConnectionState\":{\"status\":\"lsa\",\"description\":\"nynfsynljphuo\",\"actionsRequired\":\"odlqiyntor\"},\"provisioningState\":\"hleosjsw\",\"groupIds\":[\"slyzrpzbchckqq\",\"qioxi\",\"suiizynkedyat\",\"wyhqmibzyhwits\"]}}]},\"location\":\"pyy\",\"tags\":{\"nmabik\":\"dpumnzgmw\"},\"id\":\"sorgj\",\"name\":\"xbldtlwwrlkdmtn\",\"type\":\"vokotllxdyh\"}")
-                .toObject(HybridComputePrivateLinkScopeInner.class);
-        Assertions.assertEquals("pyy", model.location());
-        Assertions.assertEquals("dpumnzgmw", model.tags().get("nmabik"));
-        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.properties().publicNetworkAccess());
+        HybridComputePrivateLinkScopeInner model = BinaryData.fromString(
+            "{\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"provisioningState\":\"sfraoyzko\",\"privateLinkScopeId\":\"tlmngu\",\"privateEndpointConnections\":[{\"id\":\"aldsy\",\"name\":\"ximerqfobwyznk\",\"type\":\"kutwpf\",\"properties\":{\"privateEndpoint\":{\"id\":\"m\"},\"privateLinkServiceConnectionState\":{\"status\":\"skdsnfdsdoakg\",\"description\":\"dlmkkzevdl\",\"actionsRequired\":\"wpusdsttwvogv\"},\"provisioningState\":\"ejdcngqqmoakuf\",\"groupIds\":[\"zr\",\"rdgrtw\",\"enuuzkopbm\"]}},{\"id\":\"rfdwoyu\",\"name\":\"ziuiefozbhdm\",\"type\":\"l\",\"properties\":{\"privateEndpoint\":{\"id\":\"oftrmaequia\"},\"privateLinkServiceConnectionState\":{\"status\":\"icslfaoq\",\"description\":\"piyylhalnswhccsp\",\"actionsRequired\":\"aivwitqscywu\"},\"provisioningState\":\"woluhczbwemhair\",\"groupIds\":[\"gzd\",\"msweypqwdxggicc\",\"n\"]}}]},\"location\":\"huexmk\",\"tags\":{\"dtclusiypb\":\"stvlzywemhzrnc\",\"ukyhejhzis\":\"fgytguslfeadcyg\",\"jzraehtwdwrf\":\"gfpelolppvksrpqv\"},\"id\":\"swibyr\",\"name\":\"dl\",\"type\":\"h\"}")
+            .toObject(HybridComputePrivateLinkScopeInner.class);
+        Assertions.assertEquals("huexmk", model.location());
+        Assertions.assertEquals("stvlzywemhzrnc", model.tags().get("dtclusiypb"));
+        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER, model.properties().publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HybridComputePrivateLinkScopeInner model =
-            new HybridComputePrivateLinkScopeInner()
-                .withLocation("pyy")
-                .withTags(mapOf("nmabik", "dpumnzgmw"))
-                .withProperties(
-                    new HybridComputePrivateLinkScopeProperties()
-                        .withPublicNetworkAccess(PublicNetworkAccessType.ENABLED));
+        HybridComputePrivateLinkScopeInner model = new HybridComputePrivateLinkScopeInner().withLocation("huexmk")
+            .withTags(mapOf("dtclusiypb", "stvlzywemhzrnc", "ukyhejhzis", "fgytguslfeadcyg", "jzraehtwdwrf",
+                "gfpelolppvksrpqv"))
+            .withProperties(new HybridComputePrivateLinkScopeProperties()
+                .withPublicNetworkAccess(PublicNetworkAccessType.SECURED_BY_PERIMETER));
         model = BinaryData.fromObject(model).toObject(HybridComputePrivateLinkScopeInner.class);
-        Assertions.assertEquals("pyy", model.location());
-        Assertions.assertEquals("dpumnzgmw", model.tags().get("nmabik"));
-        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, model.properties().publicNetworkAccess());
+        Assertions.assertEquals("huexmk", model.location());
+        Assertions.assertEquals("stvlzywemhzrnc", model.tags().get("dtclusiypb"));
+        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER, model.properties().publicNetworkAccess());
     }
 
     // Use "Map.of" if available

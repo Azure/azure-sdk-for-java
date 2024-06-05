@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.hybridcompute.generated;
 
-/** Samples for MachineExtensions Delete. */
+/**
+ * Samples for MachineExtensions Delete.
+ */
 public final class MachineExtensionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/extension/Extension_Delete.json
+     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-03-31-preview/examples/extension/Extension_Delete.json
      */
     /**
      * Sample code: Delete a Machine Extension.
-     *
+     * 
      * @param manager Entry point to HybridComputeManager.
      */
     public static void deleteAMachineExtension(com.azure.resourcemanager.hybridcompute.HybridComputeManager manager) {

@@ -17,9 +17,9 @@ import com.azure.resourcemanager.maintenance.fluent.models.ConfigurationAssignme
 public interface ConfigurationAssignmentsForResourceGroupsClient {
     /**
      * Get configuration assignment
-     *
-     * <p>Get configuration assignment for resource..
-     *
+     * 
+     * Get configuration assignment for resource..
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Configuration assignment name.
      * @param context The context to associate with this operation.
@@ -29,14 +29,14 @@ public interface ConfigurationAssignmentsForResourceGroupsClient {
      * @return configuration assignment for resource. along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConfigurationAssignmentInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String configurationAssignmentName, Context context);
+    Response<ConfigurationAssignmentInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String configurationAssignmentName, Context context);
 
     /**
      * Get configuration assignment
-     *
-     * <p>Get configuration assignment for resource..
-     *
+     * 
+     * Get configuration assignment for resource..
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Configuration assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,9 +49,9 @@ public interface ConfigurationAssignmentsForResourceGroupsClient {
 
     /**
      * Create configuration assignment
-     *
-     * <p>Register configuration for resource.
-     *
+     * 
+     * Register configuration for resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Configuration assignment name.
      * @param configurationAssignment The configurationAssignment.
@@ -62,17 +62,14 @@ public interface ConfigurationAssignmentsForResourceGroupsClient {
      * @return configuration Assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConfigurationAssignmentInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String configurationAssignmentName,
-        ConfigurationAssignmentInner configurationAssignment,
-        Context context);
+    Response<ConfigurationAssignmentInner> createOrUpdateWithResponse(String resourceGroupName,
+        String configurationAssignmentName, ConfigurationAssignmentInner configurationAssignment, Context context);
 
     /**
      * Create configuration assignment
-     *
-     * <p>Register configuration for resource.
-     *
+     * 
+     * Register configuration for resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Configuration assignment name.
      * @param configurationAssignment The configurationAssignment.
@@ -82,16 +79,14 @@ public interface ConfigurationAssignmentsForResourceGroupsClient {
      * @return configuration Assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationAssignmentInner createOrUpdate(
-        String resourceGroupName,
-        String configurationAssignmentName,
+    ConfigurationAssignmentInner createOrUpdate(String resourceGroupName, String configurationAssignmentName,
         ConfigurationAssignmentInner configurationAssignment);
 
     /**
      * Create configuration assignment
-     *
-     * <p>Register configuration for resource.
-     *
+     * 
+     * Register configuration for resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Configuration assignment name.
      * @param configurationAssignment The configurationAssignment.
@@ -102,17 +97,14 @@ public interface ConfigurationAssignmentsForResourceGroupsClient {
      * @return configuration Assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConfigurationAssignmentInner> updateWithResponse(
-        String resourceGroupName,
-        String configurationAssignmentName,
-        ConfigurationAssignmentInner configurationAssignment,
-        Context context);
+    Response<ConfigurationAssignmentInner> updateWithResponse(String resourceGroupName,
+        String configurationAssignmentName, ConfigurationAssignmentInner configurationAssignment, Context context);
 
     /**
      * Create configuration assignment
-     *
-     * <p>Register configuration for resource.
-     *
+     * 
+     * Register configuration for resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Configuration assignment name.
      * @param configurationAssignment The configurationAssignment.
@@ -122,16 +114,14 @@ public interface ConfigurationAssignmentsForResourceGroupsClient {
      * @return configuration Assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationAssignmentInner update(
-        String resourceGroupName,
-        String configurationAssignmentName,
+    ConfigurationAssignmentInner update(String resourceGroupName, String configurationAssignmentName,
         ConfigurationAssignmentInner configurationAssignment);
 
     /**
      * Unregister configuration for resource
-     *
-     * <p>Unregister configuration for resource.
-     *
+     * 
+     * Unregister configuration for resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Unique configuration assignment name.
      * @param context The context to associate with this operation.
@@ -141,14 +131,14 @@ public interface ConfigurationAssignmentsForResourceGroupsClient {
      * @return configuration Assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConfigurationAssignmentInner> deleteWithResponse(
-        String resourceGroupName, String configurationAssignmentName, Context context);
+    Response<ConfigurationAssignmentInner> deleteWithResponse(String resourceGroupName,
+        String configurationAssignmentName, Context context);
 
     /**
      * Unregister configuration for resource
-     *
-     * <p>Unregister configuration for resource.
-     *
+     * 
+     * Unregister configuration for resource.
+     * 
      * @param resourceGroupName Resource group name.
      * @param configurationAssignmentName Unique configuration assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

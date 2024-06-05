@@ -4,24 +4,21 @@
 
 package com.azure.resourcemanager.maintenance.generated;
 
-/** Samples for ConfigurationAssignments List. */
+/**
+ * Samples for ConfigurationAssignments List.
+ */
 public final class ConfigurationAssignmentsListSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/stable/2023-04-01/examples/ConfigurationAssignments_List.json
+     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/ConfigurationAssignments_List.json
      */
     /**
      * Sample code: ConfigurationAssignments_List.
-     *
+     * 
      * @param manager Entry point to MaintenanceManager.
      */
     public static void configurationAssignmentsList(com.azure.resourcemanager.maintenance.MaintenanceManager manager) {
-        manager
-            .configurationAssignments()
-            .list(
-                "examplerg",
-                "Microsoft.Compute",
-                "virtualMachineScaleSets",
-                "smdtest1",
+        manager.configurationAssignments()
+            .list("examplerg", "Microsoft.Compute", "virtualMachineScaleSets", "smdtest1",
                 com.azure.core.util.Context.NONE);
     }
 }

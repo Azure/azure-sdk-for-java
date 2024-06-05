@@ -27,6 +27,9 @@ public class GroupsTests extends GraphRbacManagementTest {
         ServicePrincipal servicePrincipal = null;
         ActiveDirectoryGroup group1 = null;
         ActiveDirectoryGroup group2 = null;
+
+        // Disable `$.appId` sanitizer for this test
+        interceptorManager.removeSanitizers("AZSDK3432");
         try {
             user =
                 authorizationManager

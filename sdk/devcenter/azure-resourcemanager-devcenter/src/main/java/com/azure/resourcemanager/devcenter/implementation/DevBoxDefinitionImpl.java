@@ -126,21 +126,16 @@ public final class DevBoxDefinitionImpl
     }
 
     public DevBoxDefinition create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDevBoxDefinitions()
-                .createOrUpdate(
-                    resourceGroupName, devCenterName, devBoxDefinitionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDevBoxDefinitions()
+            .createOrUpdate(resourceGroupName, devCenterName, devBoxDefinitionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DevBoxDefinition create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDevBoxDefinitions()
-                .createOrUpdate(resourceGroupName, devCenterName, devBoxDefinitionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDevBoxDefinitions()
+            .createOrUpdate(resourceGroupName, devCenterName, devBoxDefinitionName, this.innerModel(), context);
         return this;
     }
 
@@ -156,49 +151,41 @@ public final class DevBoxDefinitionImpl
     }
 
     public DevBoxDefinition apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDevBoxDefinitions()
-                .update(resourceGroupName, devCenterName, devBoxDefinitionName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDevBoxDefinitions()
+            .update(resourceGroupName, devCenterName, devBoxDefinitionName, updateBody, Context.NONE);
         return this;
     }
 
     public DevBoxDefinition apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDevBoxDefinitions()
-                .update(resourceGroupName, devCenterName, devBoxDefinitionName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDevBoxDefinitions()
+            .update(resourceGroupName, devCenterName, devBoxDefinitionName, updateBody, context);
         return this;
     }
 
-    DevBoxDefinitionImpl(
-        DevBoxDefinitionInner innerObject, com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
+    DevBoxDefinitionImpl(DevBoxDefinitionInner innerObject,
+        com.azure.resourcemanager.devcenter.DevCenterManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.devCenterName = Utils.getValueFromIdByName(innerObject.id(), "devcenters");
-        this.devBoxDefinitionName = Utils.getValueFromIdByName(innerObject.id(), "devboxdefinitions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.devCenterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "devcenters");
+        this.devBoxDefinitionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "devboxdefinitions");
     }
 
     public DevBoxDefinition refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDevBoxDefinitions()
-                .getWithResponse(resourceGroupName, devCenterName, devBoxDefinitionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDevBoxDefinitions()
+            .getWithResponse(resourceGroupName, devCenterName, devBoxDefinitionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DevBoxDefinition refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDevBoxDefinitions()
-                .getWithResponse(resourceGroupName, devCenterName, devBoxDefinitionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDevBoxDefinitions()
+            .getWithResponse(resourceGroupName, devCenterName, devBoxDefinitionName, context)
+            .getValue();
         return this;
     }
 

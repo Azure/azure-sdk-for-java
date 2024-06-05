@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class SensitivitySettingsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-02-15-preview/examples/
-     * SensitivitySettings/GetSensitivitySettingsList_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-02-15-preview/examples/SensitivitySettings/GetSensitivitySettingsList_example.json
      */
     /**
      * Sample code: Get sensitivity settings list.

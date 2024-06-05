@@ -10,7 +10,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Configuration;
@@ -27,6 +26,7 @@ import java.util.function.Function;
 public class DigitalTwinsTestBase extends TestProxyTestBase {
     private static final String PLAYBACK_ENDPOINT = "https://playback.api.wus2.digitaltwins.azure.net";
     private static final int DEFAULT_WAIT_TIME_IN_SECONDS = 5;
+    private boolean sanitizersRemoved = false;
 
     protected static final String TENANT_ID = Configuration.getGlobalConfiguration()
         .get("DIGITALTWINS_TENANT_ID", "tenantId");
@@ -45,6 +45,12 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
 
         builder.serviceVersion(serviceVersion);
 
+        if (!interceptorManager.isLiveMode() && !sanitizersRemoved) {
+            // Removes `name` and `id` sanitizer from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+            sanitizersRemoved = true;
+        }
+
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
             // Use fake credentials for playback mode.
@@ -52,13 +58,10 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
             // Connect to a special host when running tests in playback mode.
             builder.endpoint(PLAYBACK_ENDPOINT);
             interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Telemetry-Source-Time"))));
-
             return builder;
         }
 
-        // If it is record mode, we add record mode policies to the builder.
-        // There is no isRecordMode method on interceptorManger.
-        if (!interceptorManager.isLiveMode()) {
+        if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -141,9 +144,7 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
     }
 
     void waitIfLive(int waitTimeInSeconds) throws InterruptedException {
-        if (this.getTestMode() == TestMode.LIVE || this.getTestMode() == TestMode.RECORD) {
-            Thread.sleep(waitTimeInSeconds * 1000);
-        }
+        sleepIfRunningAgainstService(waitTimeInSeconds * 1000L);
     }
 
     void waitIfLive() throws InterruptedException {

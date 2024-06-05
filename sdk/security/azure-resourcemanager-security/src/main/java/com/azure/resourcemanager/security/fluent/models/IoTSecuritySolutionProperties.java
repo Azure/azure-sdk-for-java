@@ -174,8 +174,7 @@ public final class IoTSecuritySolutionProperties {
     }
 
     /**
-     * Get the disabledDataSources property: Disabled data sources. Disabling these data sources compromises the
-     * system.
+     * Get the disabledDataSources property: Disabled data sources. Disabling these data sources compromises the system.
      * 
      * @return the disabledDataSources value.
      */
@@ -184,8 +183,7 @@ public final class IoTSecuritySolutionProperties {
     }
 
     /**
-     * Set the disabledDataSources property: Disabled data sources. Disabling these data sources compromises the
-     * system.
+     * Set the disabledDataSources property: Disabled data sources. Disabling these data sources compromises the system.
      * 
      * @param disabledDataSources the disabledDataSources value to set.
      * @return the IoTSecuritySolutionProperties object itself.
@@ -236,8 +234,8 @@ public final class IoTSecuritySolutionProperties {
     }
 
     /**
-     * Get the autoDiscoveredResources property: List of resources that were automatically discovered as relevant to
-     * the security solution.
+     * Get the autoDiscoveredResources property: List of resources that were automatically discovered as relevant to the
+     * security solution.
      * 
      * @return the autoDiscoveredResources value.
      */
@@ -314,12 +312,14 @@ public final class IoTSecuritySolutionProperties {
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property displayName in model IoTSecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property displayName in model IoTSecuritySolutionProperties"));
         }
         if (iotHubs() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property iotHubs in model IoTSecuritySolutionProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property iotHubs in model IoTSecuritySolutionProperties"));
         }
         if (userDefinedResources() != null) {
             userDefinedResources().validate();

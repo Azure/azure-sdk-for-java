@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.support.implementation;
 
-import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -12,7 +11,6 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -29,8 +27,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.support.fluent.ProblemClassificationsClient;
 import com.azure.resourcemanager.support.fluent.models.ProblemClassificationInner;
-import com.azure.resourcemanager.support.fluent.models.ProblemClassificationsClassificationOutputInner;
-import com.azure.resourcemanager.support.models.ProblemClassificationsClassificationInput;
 import com.azure.resourcemanager.support.models.ProblemClassificationsListResult;
 import reactor.core.publisher.Mono;
 
@@ -67,16 +63,6 @@ public final class ProblemClassificationsClientImpl implements ProblemClassifica
     @ServiceInterface(name = "MicrosoftSupportProb")
     public interface ProblemClassificationsService {
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Support/services/{problemServiceName}/classifyProblems")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProblemClassificationsClassificationOutputInner>> classifyProblems(
-            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("problemServiceName") String problemServiceName, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ProblemClassificationsClassificationInput problemClassificationsClassificationInput,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Support/services/{serviceName}/problemClassifications")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -92,140 +78,6 @@ public final class ProblemClassificationsClientImpl implements ProblemClassifica
             @PathParam("serviceName") String serviceName,
             @PathParam("problemClassificationName") String problemClassificationName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-    }
-
-    /**
-     * Classify the right problem classifications (categories) available for a specific Azure service.
-     * 
-     * @param problemServiceName Name of the Azure service for which the problem classifications need to be retrieved.
-     * @param problemClassificationsClassificationInput Input to check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the problem classification Classification API along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProblemClassificationsClassificationOutputInner>> classifyProblemsWithResponseAsync(
-        String problemServiceName,
-        ProblemClassificationsClassificationInput problemClassificationsClassificationInput) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (problemServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter problemServiceName is required and cannot be null."));
-        }
-        if (problemClassificationsClassificationInput == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter problemClassificationsClassificationInput is required and cannot be null."));
-        } else {
-            problemClassificationsClassificationInput.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.classifyProblems(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                problemServiceName, this.client.getApiVersion(), problemClassificationsClassificationInput, accept,
-                context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Classify the right problem classifications (categories) available for a specific Azure service.
-     * 
-     * @param problemServiceName Name of the Azure service for which the problem classifications need to be retrieved.
-     * @param problemClassificationsClassificationInput Input to check.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the problem classification Classification API along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProblemClassificationsClassificationOutputInner>> classifyProblemsWithResponseAsync(
-        String problemServiceName, ProblemClassificationsClassificationInput problemClassificationsClassificationInput,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (problemServiceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter problemServiceName is required and cannot be null."));
-        }
-        if (problemClassificationsClassificationInput == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter problemClassificationsClassificationInput is required and cannot be null."));
-        } else {
-            problemClassificationsClassificationInput.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.classifyProblems(this.client.getEndpoint(), this.client.getSubscriptionId(), problemServiceName,
-            this.client.getApiVersion(), problemClassificationsClassificationInput, accept, context);
-    }
-
-    /**
-     * Classify the right problem classifications (categories) available for a specific Azure service.
-     * 
-     * @param problemServiceName Name of the Azure service for which the problem classifications need to be retrieved.
-     * @param problemClassificationsClassificationInput Input to check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the problem classification Classification API on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProblemClassificationsClassificationOutputInner> classifyProblemsAsync(String problemServiceName,
-        ProblemClassificationsClassificationInput problemClassificationsClassificationInput) {
-        return classifyProblemsWithResponseAsync(problemServiceName, problemClassificationsClassificationInput)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Classify the right problem classifications (categories) available for a specific Azure service.
-     * 
-     * @param problemServiceName Name of the Azure service for which the problem classifications need to be retrieved.
-     * @param problemClassificationsClassificationInput Input to check.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the problem classification Classification API along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProblemClassificationsClassificationOutputInner> classifyProblemsWithResponse(
-        String problemServiceName, ProblemClassificationsClassificationInput problemClassificationsClassificationInput,
-        Context context) {
-        return classifyProblemsWithResponseAsync(problemServiceName, problemClassificationsClassificationInput, context)
-            .block();
-    }
-
-    /**
-     * Classify the right problem classifications (categories) available for a specific Azure service.
-     * 
-     * @param problemServiceName Name of the Azure service for which the problem classifications need to be retrieved.
-     * @param problemClassificationsClassificationInput Input to check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the problem classification Classification API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProblemClassificationsClassificationOutputInner classifyProblems(String problemServiceName,
-        ProblemClassificationsClassificationInput problemClassificationsClassificationInput) {
-        return classifyProblemsWithResponse(problemServiceName, problemClassificationsClassificationInput, Context.NONE)
-            .getValue();
     }
 
     /**
@@ -356,7 +208,7 @@ public final class ProblemClassificationsClientImpl implements ProblemClassifica
     /**
      * Get problem classification details for a specific Azure service.
      * 
-     * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
+     * @param serviceName Name of the Azure service available for support.
      * @param problemClassificationName Name of problem classification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -388,7 +240,7 @@ public final class ProblemClassificationsClientImpl implements ProblemClassifica
     /**
      * Get problem classification details for a specific Azure service.
      * 
-     * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
+     * @param serviceName Name of the Azure service available for support.
      * @param problemClassificationName Name of problem classification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -420,7 +272,7 @@ public final class ProblemClassificationsClientImpl implements ProblemClassifica
     /**
      * Get problem classification details for a specific Azure service.
      * 
-     * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
+     * @param serviceName Name of the Azure service available for support.
      * @param problemClassificationName Name of problem classification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -436,7 +288,7 @@ public final class ProblemClassificationsClientImpl implements ProblemClassifica
     /**
      * Get problem classification details for a specific Azure service.
      * 
-     * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
+     * @param serviceName Name of the Azure service available for support.
      * @param problemClassificationName Name of problem classification.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -453,7 +305,7 @@ public final class ProblemClassificationsClientImpl implements ProblemClassifica
     /**
      * Get problem classification details for a specific Azure service.
      * 
-     * @param serviceName Name of the Azure service for which the problem classifications need to be retrieved.
+     * @param serviceName Name of the Azure service available for support.
      * @param problemClassificationName Name of problem classification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

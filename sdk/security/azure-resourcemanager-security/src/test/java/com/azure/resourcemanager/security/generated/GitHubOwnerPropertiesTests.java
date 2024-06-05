@@ -14,19 +14,19 @@ public final class GitHubOwnerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GitHubOwnerProperties model = BinaryData.fromString(
-            "{\"provisioningStatusMessage\":\"vopwndyqleallk\",\"provisioningStatusUpdateTimeUtc\":\"2021-10-09T13:48:10Z\",\"provisioningState\":\"DeletionFailure\",\"ownerUrl\":\"owkxxpv\",\"gitHubInternalId\":\"dfjmzsyzfhotlh\",\"onboardingState\":\"Onboarded\"}")
+            "{\"provisioningStatusMessage\":\"xkzrn\",\"provisioningStatusUpdateTimeUtc\":\"2021-08-03T14:02Z\",\"provisioningState\":\"PendingDeletion\",\"ownerUrl\":\"huosgwqpsqaz\",\"gitHubInternalId\":\"qodvqgcnbhcbmj\",\"onboardingState\":\"NotApplicable\"}")
             .toObject(GitHubOwnerProperties.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE, model.provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, model.onboardingState());
+        Assertions.assertEquals(DevOpsProvisioningState.PENDING_DELETION, model.provisioningState());
+        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.onboardingState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GitHubOwnerProperties model
-            = new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.DELETION_FAILURE)
-                .withOnboardingState(OnboardingState.ONBOARDED);
+            = new GitHubOwnerProperties().withProvisioningState(DevOpsProvisioningState.PENDING_DELETION)
+                .withOnboardingState(OnboardingState.NOT_APPLICABLE);
         model = BinaryData.fromObject(model).toObject(GitHubOwnerProperties.class);
-        Assertions.assertEquals(DevOpsProvisioningState.DELETION_FAILURE, model.provisioningState());
-        Assertions.assertEquals(OnboardingState.ONBOARDED, model.onboardingState());
+        Assertions.assertEquals(DevOpsProvisioningState.PENDING_DELETION, model.provisioningState());
+        Assertions.assertEquals(OnboardingState.NOT_APPLICABLE, model.onboardingState());
     }
 }

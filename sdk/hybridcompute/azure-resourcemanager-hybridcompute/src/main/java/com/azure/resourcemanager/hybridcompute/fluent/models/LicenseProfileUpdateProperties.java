@@ -5,24 +5,53 @@
 package com.azure.resourcemanager.hybridcompute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileProductType;
+import com.azure.resourcemanager.hybridcompute.models.LicenseProfileSubscriptionStatusUpdate;
+import com.azure.resourcemanager.hybridcompute.models.ProductFeatureUpdate;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** Describe the Update properties of a license profile. */
+/**
+ * Describe the Update properties of a license profile.
+ */
 @Fluent
 public final class LicenseProfileUpdateProperties {
+    /*
+     * The softwareAssurance property.
+     */
+    @JsonProperty(value = "softwareAssurance")
+    private LicenseProfileUpdatePropertiesSoftwareAssurance innerSoftwareAssurance;
+
     /*
      * Hybrid Compute ESU Profile Update properties
      */
     @JsonProperty(value = "esuProfile")
     private EsuProfileUpdateProperties innerEsuProfile;
 
-    /** Creates an instance of LicenseProfileUpdateProperties class. */
+    /*
+     * Hybrid Compute Product Profile Update properties
+     */
+    @JsonProperty(value = "productProfile")
+    private ProductProfileUpdateProperties innerProductProfile;
+
+    /**
+     * Creates an instance of LicenseProfileUpdateProperties class.
+     */
     public LicenseProfileUpdateProperties() {
     }
 
     /**
+     * Get the innerSoftwareAssurance property: The softwareAssurance property.
+     * 
+     * @return the innerSoftwareAssurance value.
+     */
+    private LicenseProfileUpdatePropertiesSoftwareAssurance innerSoftwareAssurance() {
+        return this.innerSoftwareAssurance;
+    }
+
+    /**
      * Get the innerEsuProfile property: Hybrid Compute ESU Profile Update properties.
-     *
+     * 
      * @return the innerEsuProfile value.
      */
     private EsuProfileUpdateProperties innerEsuProfile() {
@@ -30,8 +59,42 @@ public final class LicenseProfileUpdateProperties {
     }
 
     /**
+     * Get the innerProductProfile property: Hybrid Compute Product Profile Update properties.
+     * 
+     * @return the innerProductProfile value.
+     */
+    private ProductProfileUpdateProperties innerProductProfile() {
+        return this.innerProductProfile;
+    }
+
+    /**
+     * Get the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software Assurance
+     * agreement.
+     * 
+     * @return the softwareAssuranceCustomer value.
+     */
+    public Boolean softwareAssuranceCustomer() {
+        return this.innerSoftwareAssurance() == null ? null : this.innerSoftwareAssurance().softwareAssuranceCustomer();
+    }
+
+    /**
+     * Set the softwareAssuranceCustomer property: Specifies if this machine is licensed as part of a Software Assurance
+     * agreement.
+     * 
+     * @param softwareAssuranceCustomer the softwareAssuranceCustomer value to set.
+     * @return the LicenseProfileUpdateProperties object itself.
+     */
+    public LicenseProfileUpdateProperties withSoftwareAssuranceCustomer(Boolean softwareAssuranceCustomer) {
+        if (this.innerSoftwareAssurance() == null) {
+            this.innerSoftwareAssurance = new LicenseProfileUpdatePropertiesSoftwareAssurance();
+        }
+        this.innerSoftwareAssurance().withSoftwareAssuranceCustomer(softwareAssuranceCustomer);
+        return this;
+    }
+
+    /**
      * Get the assignedLicense property: The resource id of the license.
-     *
+     * 
      * @return the assignedLicense value.
      */
     public String assignedLicense() {
@@ -40,7 +103,7 @@ public final class LicenseProfileUpdateProperties {
 
     /**
      * Set the assignedLicense property: The resource id of the license.
-     *
+     * 
      * @param assignedLicense the assignedLicense value to set.
      * @return the LicenseProfileUpdateProperties object itself.
      */
@@ -53,13 +116,89 @@ public final class LicenseProfileUpdateProperties {
     }
 
     /**
+     * Get the subscriptionStatus property: Indicates the subscription status of the product.
+     * 
+     * @return the subscriptionStatus value.
+     */
+    public LicenseProfileSubscriptionStatusUpdate subscriptionStatus() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().subscriptionStatus();
+    }
+
+    /**
+     * Set the subscriptionStatus property: Indicates the subscription status of the product.
+     * 
+     * @param subscriptionStatus the subscriptionStatus value to set.
+     * @return the LicenseProfileUpdateProperties object itself.
+     */
+    public LicenseProfileUpdateProperties
+        withSubscriptionStatus(LicenseProfileSubscriptionStatusUpdate subscriptionStatus) {
+        if (this.innerProductProfile() == null) {
+            this.innerProductProfile = new ProductProfileUpdateProperties();
+        }
+        this.innerProductProfile().withSubscriptionStatus(subscriptionStatus);
+        return this;
+    }
+
+    /**
+     * Get the productType property: Indicates the product type of the license.
+     * 
+     * @return the productType value.
+     */
+    public LicenseProfileProductType productType() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().productType();
+    }
+
+    /**
+     * Set the productType property: Indicates the product type of the license.
+     * 
+     * @param productType the productType value to set.
+     * @return the LicenseProfileUpdateProperties object itself.
+     */
+    public LicenseProfileUpdateProperties withProductType(LicenseProfileProductType productType) {
+        if (this.innerProductProfile() == null) {
+            this.innerProductProfile = new ProductProfileUpdateProperties();
+        }
+        this.innerProductProfile().withProductType(productType);
+        return this;
+    }
+
+    /**
+     * Get the productFeatures property: The list of product feature updates.
+     * 
+     * @return the productFeatures value.
+     */
+    public List<ProductFeatureUpdate> productFeatures() {
+        return this.innerProductProfile() == null ? null : this.innerProductProfile().productFeatures();
+    }
+
+    /**
+     * Set the productFeatures property: The list of product feature updates.
+     * 
+     * @param productFeatures the productFeatures value to set.
+     * @return the LicenseProfileUpdateProperties object itself.
+     */
+    public LicenseProfileUpdateProperties withProductFeatures(List<ProductFeatureUpdate> productFeatures) {
+        if (this.innerProductProfile() == null) {
+            this.innerProductProfile = new ProductProfileUpdateProperties();
+        }
+        this.innerProductProfile().withProductFeatures(productFeatures);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerSoftwareAssurance() != null) {
+            innerSoftwareAssurance().validate();
+        }
         if (innerEsuProfile() != null) {
             innerEsuProfile().validate();
+        }
+        if (innerProductProfile() != null) {
+            innerProductProfile().validate();
         }
     }
 }

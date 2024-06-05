@@ -9,8 +9,7 @@ package com.azure.resourcemanager.datafactory.generated;
  */
 public final class ManagedPrivateEndpointsDeleteSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/
-     * ManagedPrivateEndpoints_Delete.json
+     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ManagedPrivateEndpoints_Delete.json
      */
     /**
      * Sample code: ManagedVirtualNetworks_Delete.
@@ -18,7 +17,8 @@ public final class ManagedPrivateEndpointsDeleteSamples {
      * @param manager Entry point to DataFactoryManager.
      */
     public static void managedVirtualNetworksDelete(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.managedPrivateEndpoints().deleteWithResponse("exampleResourceGroup", "exampleFactoryName",
-            "exampleManagedVirtualNetworkName", "exampleManagedPrivateEndpointName", com.azure.core.util.Context.NONE);
+        manager.managedPrivateEndpoints()
+            .deleteWithResponse("exampleResourceGroup", "exampleFactoryName", "exampleManagedVirtualNetworkName",
+                "exampleManagedPrivateEndpointName", com.azure.core.util.Context.NONE);
     }
 }

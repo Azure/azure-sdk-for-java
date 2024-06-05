@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureMLLinkedServiceTypeProperties {
     /*
-     * The Batch Execution REST URL for an Azure ML Studio Web Service endpoint. Type: string (or Expression with
-     * resultType string).
+     * The Batch Execution REST URL for an Azure ML Studio Web Service endpoint. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "mlEndpoint", required = true)
     private Object mlEndpoint;
@@ -28,43 +27,37 @@ public final class AzureMLLinkedServiceTypeProperties {
     private SecretBase apiKey;
 
     /*
-     * The Update Resource REST URL for an Azure ML Studio Web Service endpoint. Type: string (or Expression with
-     * resultType string).
+     * The Update Resource REST URL for an Azure ML Studio Web Service endpoint. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "updateResourceEndpoint")
     private Object updateResourceEndpoint;
 
     /*
-     * The ID of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure ML
-     * Studio web service. Type: string (or Expression with resultType string).
+     * The ID of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure ML Studio web service. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The key of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure
-     * ML Studio web service.
+     * The key of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure ML Studio web service.
      */
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
-     * string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string.
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string.
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
-     * Type of authentication (Required to specify MSI) used to connect to AzureML. Type: string (or Expression with
-     * resultType string).
+     * Type of authentication (Required to specify MSI) used to connect to AzureML. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "authentication")
     private Object authentication;
@@ -162,8 +155,8 @@ public final class AzureMLLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the servicePrincipalKey property: The key of the service principal used to authenticate against the
-     * ARM-based updateResourceEndpoint of an Azure ML Studio web service.
+     * Get the servicePrincipalKey property: The key of the service principal used to authenticate against the ARM-based
+     * updateResourceEndpoint of an Azure ML Studio web service.
      * 
      * @return the servicePrincipalKey value.
      */
@@ -172,8 +165,8 @@ public final class AzureMLLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the servicePrincipalKey property: The key of the service principal used to authenticate against the
-     * ARM-based updateResourceEndpoint of an Azure ML Studio web service.
+     * Set the servicePrincipalKey property: The key of the service principal used to authenticate against the ARM-based
+     * updateResourceEndpoint of an Azure ML Studio web service.
      * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureMLLinkedServiceTypeProperties object itself.
@@ -206,8 +199,8 @@ public final class AzureMLLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @return the encryptedCredential value.
      */
@@ -216,8 +209,8 @@ public final class AzureMLLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string.
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
+     * using the integration runtime credential manager. Type: string.
      * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureMLLinkedServiceTypeProperties object itself.
@@ -256,12 +249,14 @@ public final class AzureMLLinkedServiceTypeProperties {
      */
     public void validate() {
         if (mlEndpoint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property mlEndpoint in model AzureMLLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property mlEndpoint in model AzureMLLinkedServiceTypeProperties"));
         }
         if (apiKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property apiKey in model AzureMLLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property apiKey in model AzureMLLinkedServiceTypeProperties"));
         } else {
             apiKey().validate();
         }

@@ -5,7 +5,6 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,31 +12,33 @@ import java.util.Collection;
  * file/directory ACLs are bypassed and full permissions are granted. User must also have required RBAC permission.
  */
 public final class ShareTokenIntent extends ExpandableStringEnum<ShareTokenIntent> {
-    /** Static value backup for ShareTokenIntent. */
+    /**
+     * Static value backup for ShareTokenIntent.
+     */
     public static final ShareTokenIntent BACKUP = fromString("backup");
 
     /**
      * Creates a new instance of ShareTokenIntent value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ShareTokenIntent() {}
+    public ShareTokenIntent() {
+    }
 
     /**
      * Creates or finds a ShareTokenIntent from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ShareTokenIntent.
      */
-    @JsonCreator
     public static ShareTokenIntent fromString(String name) {
         return fromString(name, ShareTokenIntent.class);
     }
 
     /**
      * Gets known ShareTokenIntent values.
-     *
+     * 
      * @return known ShareTokenIntent values.
      */
     public static Collection<ShareTokenIntent> values() {

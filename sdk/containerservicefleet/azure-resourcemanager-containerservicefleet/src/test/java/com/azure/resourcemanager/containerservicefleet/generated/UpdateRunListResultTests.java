@@ -20,71 +20,38 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateRunListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateRunListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"updateStrategyId\":\"wtmutduq\",\"strategy\":{\"stages\":[{\"name\":\"pspwgcuertu\"}]},\"managedClusterUpdate\":{\"upgrade\":{\"type\":\"Full\",\"kubernetesVersion\":\"o\"},\"nodeImageSelection\":{\"type\":\"Latest\"}},\"status\":{\"status\":{\"startTime\":\"2021-10-25T23:23:25Z\",\"completedTime\":\"2021-11-07T14:56:07Z\",\"state\":\"Skipped\"},\"stages\":[{},{}],\"nodeImageSelection\":{\"selectedNodeImageVersions\":[{},{},{}]}}},\"eTag\":\"mbe\",\"id\":\"pbhtqqrolfpfpsa\",\"name\":\"gbquxigj\",\"type\":\"jgzjaoyfhrtx\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"updateStrategyId\":\"kujysvlejuvfq\",\"strategy\":{\"stages\":[{\"name\":\"lyxwjkcprbnwbx\"},{\"name\":\"jvtbvpyss\"},{\"name\":\"dnrujqguhmuouqfp\"},{\"name\":\"wzwbnguitn\"}]},\"managedClusterUpdate\":{\"upgrade\":{\"type\":\"Full\",\"kubernetesVersion\":\"zga\"},\"nodeImageSelection\":{\"type\":\"Consistent\"}},\"status\":{\"status\":{\"startTime\":\"2021-07-01T16:43:11Z\",\"completedTime\":\"2021-03-02T10:41:40Z\",\"state\":\"Completed\"},\"stages\":[{},{},{}],\"nodeImageSelection\":{\"selectedNodeImageVersions\":[{},{},{}]}}},\"eTag\":\"vzwdzuhtymwis\",\"id\":\"fthwxmnteiwa\",\"name\":\"pvkmijcmmxdcuf\",\"type\":\"fsrpymzidnse\"}],\"nextLink\":\"xtbzsgfyccsne\"}")
-                .toObject(UpdateRunListResult.class);
-        Assertions.assertEquals("wtmutduq", model.value().get(0).updateStrategyId());
-        Assertions.assertEquals("pspwgcuertu", model.value().get(0).strategy().stages().get(0).name());
-        Assertions
-            .assertEquals(ManagedClusterUpgradeType.FULL, model.value().get(0).managedClusterUpdate().upgrade().type());
-        Assertions.assertEquals("o", model.value().get(0).managedClusterUpdate().upgrade().kubernetesVersion());
-        Assertions
-            .assertEquals(
-                NodeImageSelectionType.LATEST, model.value().get(0).managedClusterUpdate().nodeImageSelection().type());
-        Assertions.assertEquals("xtbzsgfyccsne", model.nextLink());
+        UpdateRunListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"updateStrategyId\":\"mdwzjeiachboo\",\"strategy\":{\"stages\":[{\"name\":\"nrosfqpte\"},{\"name\":\"hzzvypyq\"}]},\"managedClusterUpdate\":{\"upgrade\":{\"type\":\"ControlPlaneOnly\",\"kubernetesVersion\":\"z\"},\"nodeImageSelection\":{\"type\":\"Consistent\"}},\"status\":{\"status\":{\"startTime\":\"2021-02-26T16:18Z\",\"completedTime\":\"2021-08-28T07:05:13Z\",\"state\":\"Stopping\"},\"stages\":[{}],\"nodeImageSelection\":{\"selectedNodeImageVersions\":[{}]}}},\"eTag\":\"crmnohjtckwhds\",\"id\":\"fiyipjxsqwpgrj\",\"name\":\"znorcj\",\"type\":\"vsnb\"}],\"nextLink\":\"qabnmoc\"}")
+            .toObject(UpdateRunListResult.class);
+        Assertions.assertEquals("mdwzjeiachboo", model.value().get(0).updateStrategyId());
+        Assertions.assertEquals("nrosfqpte", model.value().get(0).strategy().stages().get(0).name());
+        Assertions.assertEquals(ManagedClusterUpgradeType.CONTROL_PLANE_ONLY,
+            model.value().get(0).managedClusterUpdate().upgrade().type());
+        Assertions.assertEquals("z", model.value().get(0).managedClusterUpdate().upgrade().kubernetesVersion());
+        Assertions.assertEquals(NodeImageSelectionType.CONSISTENT,
+            model.value().get(0).managedClusterUpdate().nodeImageSelection().type());
+        Assertions.assertEquals("qabnmoc", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateRunListResult model =
-            new UpdateRunListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new UpdateRunInner()
-                                .withUpdateStrategyId("wtmutduq")
-                                .withStrategy(
-                                    new UpdateRunStrategy()
-                                        .withStages(Arrays.asList(new UpdateStage().withName("pspwgcuertu"))))
-                                .withManagedClusterUpdate(
-                                    new ManagedClusterUpdate()
-                                        .withUpgrade(
-                                            new ManagedClusterUpgradeSpec()
-                                                .withType(ManagedClusterUpgradeType.FULL)
-                                                .withKubernetesVersion("o"))
-                                        .withNodeImageSelection(
-                                            new NodeImageSelection().withType(NodeImageSelectionType.LATEST))),
-                            new UpdateRunInner()
-                                .withUpdateStrategyId("kujysvlejuvfq")
-                                .withStrategy(
-                                    new UpdateRunStrategy()
-                                        .withStages(
-                                            Arrays
-                                                .asList(
-                                                    new UpdateStage().withName("lyxwjkcprbnwbx"),
-                                                    new UpdateStage().withName("jvtbvpyss"),
-                                                    new UpdateStage().withName("dnrujqguhmuouqfp"),
-                                                    new UpdateStage().withName("wzwbnguitn"))))
-                                .withManagedClusterUpdate(
-                                    new ManagedClusterUpdate()
-                                        .withUpgrade(
-                                            new ManagedClusterUpgradeSpec()
-                                                .withType(ManagedClusterUpgradeType.FULL)
-                                                .withKubernetesVersion("zga"))
-                                        .withNodeImageSelection(
-                                            new NodeImageSelection().withType(NodeImageSelectionType.CONSISTENT)))))
-                .withNextLink("xtbzsgfyccsne");
+        UpdateRunListResult model = new UpdateRunListResult()
+            .withValue(Arrays.asList(new UpdateRunInner().withUpdateStrategyId("mdwzjeiachboo")
+                .withStrategy(new UpdateRunStrategy().withStages(
+                    Arrays.asList(new UpdateStage().withName("nrosfqpte"), new UpdateStage().withName("hzzvypyq"))))
+                .withManagedClusterUpdate(new ManagedClusterUpdate()
+                    .withUpgrade(new ManagedClusterUpgradeSpec().withType(ManagedClusterUpgradeType.CONTROL_PLANE_ONLY)
+                        .withKubernetesVersion("z"))
+                    .withNodeImageSelection(new NodeImageSelection().withType(NodeImageSelectionType.CONSISTENT)))))
+            .withNextLink("qabnmoc");
         model = BinaryData.fromObject(model).toObject(UpdateRunListResult.class);
-        Assertions.assertEquals("wtmutduq", model.value().get(0).updateStrategyId());
-        Assertions.assertEquals("pspwgcuertu", model.value().get(0).strategy().stages().get(0).name());
-        Assertions
-            .assertEquals(ManagedClusterUpgradeType.FULL, model.value().get(0).managedClusterUpdate().upgrade().type());
-        Assertions.assertEquals("o", model.value().get(0).managedClusterUpdate().upgrade().kubernetesVersion());
-        Assertions
-            .assertEquals(
-                NodeImageSelectionType.LATEST, model.value().get(0).managedClusterUpdate().nodeImageSelection().type());
-        Assertions.assertEquals("xtbzsgfyccsne", model.nextLink());
+        Assertions.assertEquals("mdwzjeiachboo", model.value().get(0).updateStrategyId());
+        Assertions.assertEquals("nrosfqpte", model.value().get(0).strategy().stages().get(0).name());
+        Assertions.assertEquals(ManagedClusterUpgradeType.CONTROL_PLANE_ONLY,
+            model.value().get(0).managedClusterUpdate().upgrade().type());
+        Assertions.assertEquals("z", model.value().get(0).managedClusterUpdate().upgrade().kubernetesVersion());
+        Assertions.assertEquals(NodeImageSelectionType.CONSISTENT,
+            model.value().get(0).managedClusterUpdate().nodeImageSelection().type());
+        Assertions.assertEquals("qabnmoc", model.nextLink());
     }
 }

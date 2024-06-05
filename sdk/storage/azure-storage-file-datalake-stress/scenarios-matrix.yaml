@@ -1,0 +1,224 @@
+matrix:
+  scenarios:
+    # this test downloads 1KB (1024 bytes), small file, no chunking
+    readfilesmall:
+      testScenario: readtofile
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test downloads 1KB (1024 bytes), small file, no chunking with async client
+    readfilesmallasync:
+      testScenario: readtofile
+      sync: false
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test downloads 50MB (1024 * 1024 * 50), large file requiring multiple requests
+    readfilelarge:
+      testScenario: readtofile
+      sync: false
+      sizeBytes: "52428800"
+      parallel: 10
+      faults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # this test downloads 1KB (1024 bytes), small stream, no chunking
+    readsmall:
+      testScenario: read
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test downloads 1KB (1024 bytes), small stream, no chunking with async client
+    readsmallasync:
+      testScenario: read
+      sync: false
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test downloads 50MB (1024 * 1024 * 50), large stream requiring multiple requests
+    readlarge:
+      testScenario: read
+      sync: false
+      sizeBytes: "52428800"
+      parallel: 10
+      faults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # this test downloads 1KB (1024 bytes) to open input stream, no chunking
+    openinputstreamsmall:
+      testScenario: openinputstream
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test downloads 50MB (1024 * 1024 * 50) to open input stream requiring multiple requests
+    openinputstreamlarge:
+      testScenario: openinputstream
+      sync: true
+      sizeBytes: "52428800"
+      parallel: 10
+      faults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes), no chunking
+    appendsmall:
+      testScenario: append
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes) asynchronously, no chunking
+    appendasync:
+      testScenario: append
+      sync: false
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 25MB (1024 * 1024 * 25), requiring multiple requests
+    appendlarge:
+      testScenario: append
+      sync: true
+      sizeBytes: "26214400"
+      parallel: 10
+      faults: true
+      requestFaulted: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes) to output stream, no chunking
+    outputstreamsmall:
+      testScenario: datalakeoutputstream
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 25MB (1024 * 1024 * 25) to output stream, requiring multiple requests
+    outputstreamlarge:
+      testScenario: datalakeoutputstream
+      sync: true
+      sizeBytes: "26214400"
+      parallel: 10
+      faults: true
+      requestFaulted: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes), no chunking
+    flushsmall:
+      testScenario: flush
+      sync: true
+      sizeBytes: 1024
+      parallel: 10
+      faults: true
+      requestFaulted: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes) asynchronously, no chunking
+    flushsmallasync:
+      testScenario: flush
+      sync: false
+      sizeBytes: 1024
+      parallel: 10
+      faults: true
+      requestFaulted: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # this test uploads 25MB (1024 * 1024 * 25), requiring multiple requests
+    flushlarge:
+      testScenario: flush
+      sync: true
+      sizeBytes: "26214400"
+      parallel: 10
+      faults: true
+      requestFaulted: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes), no chunking
+    uploadsmall:
+      testScenario: upload
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes) asynchronously, no chunking
+    uploadsmallasync:
+      testScenario: read
+      sync: false
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 25MB (1024 * 1024 * 25), requiring multiple requests
+    uploadlarge:
+      testScenario: upload
+      sync: true
+      sizeBytes: "26214400"
+      parallel: 10
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes) from a file, no chunking
+    uploadfromfilesmall:
+      testScenario: uploadfromfile
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 50MB (1024 * 1024 * 50) from a file, requiring multiple requests
+    uploadfromfilelarge:
+      testScenario: uploadfromfile
+      sync: true
+      sizeBytes: "52428800"
+      parallel: 25
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."

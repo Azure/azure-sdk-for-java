@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -18,17 +19,20 @@ import java.util.Map;
 /**
  * Azure Data Factory nested object which serves as a compute resource for activities.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = IntegrationRuntime.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = IntegrationRuntime.class, visible = true)
 @JsonTypeName("IntegrationRuntime")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Managed", value = ManagedIntegrationRuntime.class),
     @JsonSubTypes.Type(name = "SelfHosted", value = SelfHostedIntegrationRuntime.class) })
 @Fluent
 public class IntegrationRuntime {
+    /*
+     * Type of integration runtime.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private IntegrationRuntimeType type;
+
     /*
      * Integration runtime description.
      */
@@ -45,6 +49,16 @@ public class IntegrationRuntime {
      * Creates an instance of IntegrationRuntime class.
      */
     public IntegrationRuntime() {
+        this.type = IntegrationRuntimeType.fromString("IntegrationRuntime");
+    }
+
+    /**
+     * Get the type property: Type of integration runtime.
+     * 
+     * @return the type value.
+     */
+    public IntegrationRuntimeType type() {
+        return this.type;
     }
 
     /**

@@ -593,8 +593,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public SyncPoller<PollResult<PrivateEndpointConnectionDescriptionInner>, PrivateEndpointConnectionDescriptionInner>
         beginCreateOrUpdate(String resourceGroupName, String resourceName, String privateEndpointConnectionName,
             PrivateEndpointConnection properties, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, privateEndpointConnectionName, properties,
-            context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, privateEndpointConnectionName, properties,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -614,7 +616,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     private Mono<PrivateEndpointConnectionDescriptionInner> createOrUpdateAsync(String resourceGroupName,
         String resourceName, String privateEndpointConnectionName, PrivateEndpointConnection properties) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, privateEndpointConnectionName, properties)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

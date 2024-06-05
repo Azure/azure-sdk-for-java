@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The update to be applied to the ManagedClusters. */
+/**
+ * The update to be applied to the ManagedClusters.
+ */
 @Fluent
 public final class ManagedClusterUpdate {
     /*
@@ -23,13 +25,15 @@ public final class ManagedClusterUpdate {
     @JsonProperty(value = "nodeImageSelection")
     private NodeImageSelection nodeImageSelection;
 
-    /** Creates an instance of ManagedClusterUpdate class. */
+    /**
+     * Creates an instance of ManagedClusterUpdate class.
+     */
     public ManagedClusterUpdate() {
     }
 
     /**
      * Get the upgrade property: The upgrade to apply to the ManagedClusters.
-     *
+     * 
      * @return the upgrade value.
      */
     public ManagedClusterUpgradeSpec upgrade() {
@@ -38,7 +42,7 @@ public final class ManagedClusterUpdate {
 
     /**
      * Set the upgrade property: The upgrade to apply to the ManagedClusters.
-     *
+     * 
      * @param upgrade the upgrade value to set.
      * @return the ManagedClusterUpdate object itself.
      */
@@ -49,7 +53,7 @@ public final class ManagedClusterUpdate {
 
     /**
      * Get the nodeImageSelection property: The node image upgrade to be applied to the target nodes in update run.
-     *
+     * 
      * @return the nodeImageSelection value.
      */
     public NodeImageSelection nodeImageSelection() {
@@ -58,7 +62,7 @@ public final class ManagedClusterUpdate {
 
     /**
      * Set the nodeImageSelection property: The node image upgrade to be applied to the target nodes in update run.
-     *
+     * 
      * @param nodeImageSelection the nodeImageSelection value to set.
      * @return the ManagedClusterUpdate object itself.
      */
@@ -69,14 +73,13 @@ public final class ManagedClusterUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (upgrade() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property upgrade in model ManagedClusterUpdate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property upgrade in model ManagedClusterUpdate"));
         } else {
             upgrade().validate();
         }

@@ -6,14 +6,17 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.models.ResponseError;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information about content filtering evaluated against generated model output.
  */
 @Immutable
-public final class ContentFilterResultsForChoice {
+public final class ContentFilterResultsForChoice implements JsonSerializable<ContentFilterResultsForChoice> {
 
     /*
      * Describes language related to anatomical organs and genitals, romantic relationships,
@@ -22,7 +25,6 @@ public final class ContentFilterResultsForChoice {
      * prostitution, pornography, and abuse.
      */
     @Generated
-    @JsonProperty(value = "sexual")
     private ContentFilterResult sexual;
 
     /*
@@ -30,7 +32,6 @@ public final class ContentFilterResultsForChoice {
      * kill someone or something; describes weapons, etc.
      */
     @Generated
-    @JsonProperty(value = "violence")
     private ContentFilterResult violence;
 
     /*
@@ -41,7 +42,6 @@ public final class ContentFilterResultsForChoice {
      * status, personal appearance, and body size.
      */
     @Generated
-    @JsonProperty(value = "hate")
     private ContentFilterResult hate;
 
     /*
@@ -49,43 +49,37 @@ public final class ContentFilterResultsForChoice {
      * or damage one’s body, or kill oneself.
      */
     @Generated
-    @JsonProperty(value = "self_harm")
     private ContentFilterResult selfHarm;
 
     /*
      * Describes whether profanity was detected.
      */
     @Generated
-    @JsonProperty(value = "profanity")
     private ContentFilterDetectionResult profanity;
 
     /*
      * Describes detection results against configured custom blocklists.
      */
     @Generated
-    @JsonProperty(value = "custom_blocklists")
-    private List<ContentFilterBlocklistIdResult> customBlocklists;
+    private ContentFilterDetailedResults customBlocklists;
 
     /*
      * Describes an error returned if the content filtering system is
      * down or otherwise unable to complete the operation in time.
      */
     @Generated
-    @JsonProperty(value = "error")
     private ResponseError error;
 
     /*
      * Information about detection of protected text material.
      */
     @Generated
-    @JsonProperty(value = "protected_material_text")
     private ContentFilterDetectionResult protectedMaterialText;
 
     /*
      * Information about detection of protected code material.
      */
     @Generated
-    @JsonProperty(value = "protected_material_code")
     private ContentFilterCitedDetectionResult protectedMaterialCode;
 
     /**
@@ -160,7 +154,7 @@ public final class ContentFilterResultsForChoice {
      * @return the customBlocklists value.
      */
     @Generated
-    public List<ContentFilterBlocklistIdResult> getCustomBlocklists() {
+    public ContentFilterDetailedResults getCustomBlocklists() {
         return this.customBlocklists;
     }
 
@@ -193,5 +187,69 @@ public final class ContentFilterResultsForChoice {
     @Generated
     public ContentFilterCitedDetectionResult getProtectedMaterialCode() {
         return this.protectedMaterialCode;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sexual", this.sexual);
+        jsonWriter.writeJsonField("violence", this.violence);
+        jsonWriter.writeJsonField("hate", this.hate);
+        jsonWriter.writeJsonField("self_harm", this.selfHarm);
+        jsonWriter.writeJsonField("profanity", this.profanity);
+        jsonWriter.writeJsonField("custom_blocklists", this.customBlocklists);
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeJsonField("protected_material_text", this.protectedMaterialText);
+        jsonWriter.writeJsonField("protected_material_code", this.protectedMaterialCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentFilterResultsForChoice from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentFilterResultsForChoice if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContentFilterResultsForChoice.
+     */
+    @Generated
+    public static ContentFilterResultsForChoice fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentFilterResultsForChoice deserializedContentFilterResultsForChoice
+                = new ContentFilterResultsForChoice();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("sexual".equals(fieldName)) {
+                    deserializedContentFilterResultsForChoice.sexual = ContentFilterResult.fromJson(reader);
+                } else if ("violence".equals(fieldName)) {
+                    deserializedContentFilterResultsForChoice.violence = ContentFilterResult.fromJson(reader);
+                } else if ("hate".equals(fieldName)) {
+                    deserializedContentFilterResultsForChoice.hate = ContentFilterResult.fromJson(reader);
+                } else if ("self_harm".equals(fieldName)) {
+                    deserializedContentFilterResultsForChoice.selfHarm = ContentFilterResult.fromJson(reader);
+                } else if ("profanity".equals(fieldName)) {
+                    deserializedContentFilterResultsForChoice.profanity = ContentFilterDetectionResult.fromJson(reader);
+                } else if ("custom_blocklists".equals(fieldName)) {
+                    deserializedContentFilterResultsForChoice.customBlocklists
+                        = ContentFilterDetailedResults.fromJson(reader);
+                } else if ("error".equals(fieldName)) {
+                    deserializedContentFilterResultsForChoice.error = ResponseError.fromJson(reader);
+                } else if ("protected_material_text".equals(fieldName)) {
+                    deserializedContentFilterResultsForChoice.protectedMaterialText
+                        = ContentFilterDetectionResult.fromJson(reader);
+                } else if ("protected_material_code".equals(fieldName)) {
+                    deserializedContentFilterResultsForChoice.protectedMaterialCode
+                        = ContentFilterCitedDetectionResult.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedContentFilterResultsForChoice;
+        });
     }
 }

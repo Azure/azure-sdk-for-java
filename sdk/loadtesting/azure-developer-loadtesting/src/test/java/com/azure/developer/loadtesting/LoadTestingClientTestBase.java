@@ -63,6 +63,8 @@ class LoadTestingClientTestBase extends TestProxyTestBase {
                     "https://REDACTED", TestProxySanitizerType.HEADER));
             sanitizers.add(new TestProxySanitizer(URL_REGEX, "REDACTED", TestProxySanitizerType.BODY_REGEX));
             interceptorManager.addSanitizers(sanitizers);
+            // Remove `operation-location`, `id` and `name` sanitizers from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK2030", "AZSDK3430", "AZSDK3493");
         }
 
         if (getTestMode() == TestMode.PLAYBACK) {

@@ -31,6 +31,8 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
     public void canCRUDServicePrincipal() throws Exception {
         String name = generateRandomResourceName("ssp", 21);
         ServicePrincipal servicePrincipal = null;
+        // Disable `$.appId` sanitizer for this test
+        interceptorManager.removeSanitizers("AZSDK3432");
         try {
             // Create
             servicePrincipal =

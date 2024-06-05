@@ -7,6 +7,7 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -16,10 +17,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html"&gt;Creating a Role to Delegate
  * Permissions to an IAM User (write only)&lt;/a&gt;.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authenticationType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "authenticationType",
+    defaultImpl = AwAssumeRoleAuthenticationDetailsProperties.class,
+    visible = true)
 @JsonTypeName("awsAssumeRole")
 @Fluent
 public final class AwAssumeRoleAuthenticationDetailsProperties extends AuthenticationDetailsProperties {
+    /*
+     * Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use account organization credentials.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "authenticationType", required = true)
+    private AuthenticationType authenticationType = AuthenticationType.AWS_ASSUME_ROLE;
+
     /*
      * The ID of the cloud account
      */
@@ -45,6 +57,17 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
     }
 
     /**
+     * Get the authenticationType property: Connect to your cloud account, for AWS use either account credentials or
+     * role-based authentication. For GCP use account organization credentials.
+     * 
+     * @return the authenticationType value.
+     */
+    @Override
+    public AuthenticationType authenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
      * Get the accountId property: The ID of the cloud account.
      * 
      * @return the accountId value.
@@ -54,8 +77,8 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
     }
 
     /**
-     * Get the awsAssumeRoleArn property: Assumed role ID is an identifier that you can use to create temporary
-     * security credentials.
+     * Get the awsAssumeRoleArn property: Assumed role ID is an identifier that you can use to create temporary security
+     * credentials.
      * 
      * @return the awsAssumeRoleArn value.
      */
@@ -64,8 +87,8 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
     }
 
     /**
-     * Set the awsAssumeRoleArn property: Assumed role ID is an identifier that you can use to create temporary
-     * security credentials.
+     * Set the awsAssumeRoleArn property: Assumed role ID is an identifier that you can use to create temporary security
+     * credentials.
      * 
      * @param awsAssumeRoleArn the awsAssumeRoleArn value to set.
      * @return the AwAssumeRoleAuthenticationDetailsProperties object itself.
@@ -104,12 +127,14 @@ public final class AwAssumeRoleAuthenticationDetailsProperties extends Authentic
     public void validate() {
         super.validate();
         if (awsAssumeRoleArn() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property awsAssumeRoleArn in model AwAssumeRoleAuthenticationDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property awsAssumeRoleArn in model AwAssumeRoleAuthenticationDetailsProperties"));
         }
         if (awsExternalId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property awsExternalId in model AwAssumeRoleAuthenticationDetailsProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property awsExternalId in model AwAssumeRoleAuthenticationDetailsProperties"));
         }
     }
 

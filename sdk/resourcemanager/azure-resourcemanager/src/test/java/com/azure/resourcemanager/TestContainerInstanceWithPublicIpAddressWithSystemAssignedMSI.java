@@ -3,6 +3,8 @@
 
 package com.azure.resourcemanager;
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.containerinstance.models.Container;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
@@ -24,6 +26,8 @@ import org.junit.jupiter.api.Assertions;
 
 public class TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI
     extends TestTemplate<ContainerGroup, ContainerGroups> {
+    private static final ClientLogger LOGGER
+        = new ClientLogger(TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI.class);
 
     @Override
     public ContainerGroup createResource(ContainerGroups containerGroups) throws Exception {
@@ -104,13 +108,13 @@ public class TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI
 
         List<ContainerGroup> containerGroupList =
             containerGroups.listByResourceGroup(rgName).stream().collect(Collectors.toList());
-        Assertions.assertTrue(containerGroupList.size() > 0);
+        Assertions.assertFalse(containerGroupList.isEmpty());
 
         containerGroup.refresh();
 
         Set<Operation> containerGroupOperations = containerGroups.listOperations().stream().collect(Collectors.toSet());
         // Number of supported operation can change hence don't assert with a predefined number.
-        Assertions.assertTrue(containerGroupOperations.size() > 0);
+        Assertions.assertFalse(containerGroupOperations.isEmpty());
 
         return containerGroup;
     }
@@ -211,6 +215,6 @@ public class TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI
             }
         }
 
-        System.out.println(info.toString());
+        LOGGER.log(LogLevel.VERBOSE, info::toString);
     }
 }

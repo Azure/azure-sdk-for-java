@@ -20,6 +20,7 @@ import com.azure.resourcemanager.appservice.models.FunctionDeploymentSlot;
 import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.appservice.models.FunctionRuntimeStack;
 import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appservice.models.SkuName;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
@@ -492,6 +493,8 @@ public class FunctionAppsTests extends AppServiceTest {
 
     @Test
     public void canCreateAndUpdateFunctionAppOnACA() {
+        rgName2 = null;
+
         Region region = Region.US_EAST;
         ResourceGroup resourceGroup = appServiceManager.resourceManager()
             .resourceGroups()
@@ -521,7 +524,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         FunctionApp functionApp = appServiceManager.functionApps().getByResourceGroup(rgName1, webappName1);
 
-        Assertions.assertEquals(managedEnvironmentId, functionApp.managedEnvironmentId());
+        assertResourceIdEquals(managedEnvironmentId, functionApp.managedEnvironmentId());
         Assertions.assertEquals(10, functionApp.maxReplicas());
         Assertions.assertEquals(3, functionApp.minReplicas());
 
@@ -607,6 +610,30 @@ public class FunctionAppsTests extends AppServiceTest {
             .withPrivateRegistryImage("xiaofeiacr.azurecr.io/samples/nginx:latest", "xiaofeiacr.azurecr.io")
             .withCredentials("xiaofeiacr", password)
             .apply();
+    }
+
+    @Test
+    public void canCreateAndUpdatePublicNetworkAccess() {
+        webappName1 = generateRandomResourceName("java-function-", 20);
+        FunctionApp functionApp = appServiceManager.functionApps()
+            .define(webappName1)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName1)
+            .withContainerSize(512)
+            .disablePublicNetworkAccess()
+            .create();
+
+        functionApp.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, functionApp.publicNetworkAccess());
+
+        functionApp.update().enablePublicNetworkAccess().apply();
+        functionApp.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, functionApp.publicNetworkAccess());
+
+        functionApp.update().disablePublicNetworkAccess().apply();
+        functionApp.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, functionApp.publicNetworkAccess());
+
     }
 
     private String createAcaEnvironment(Region region, ResourceGroup resourceGroup) {

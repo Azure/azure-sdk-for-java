@@ -10,38 +10,43 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseDetails;
 import com.azure.resourcemanager.hybridcompute.models.LicenseEdition;
 import com.azure.resourcemanager.hybridcompute.models.LicenseState;
 import com.azure.resourcemanager.hybridcompute.models.LicenseTarget;
+import com.azure.resourcemanager.hybridcompute.models.ProgramYear;
+import com.azure.resourcemanager.hybridcompute.models.VolumeLicenseDetails;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class LicenseDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LicenseDetails model =
-            BinaryData
-                .fromString(
-                    "{\"state\":\"Activated\",\"target\":\"Windows Server 2012"
-                        + " R2\",\"edition\":\"Standard\",\"type\":\"pCore\",\"processors\":365003669,\"assignedLicenses\":1426424508,\"immutableId\":\"ajpsquc\"}")
-                .toObject(LicenseDetails.class);
-        Assertions.assertEquals(LicenseState.ACTIVATED, model.state());
-        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012_R2, model.target());
+        LicenseDetails model = BinaryData.fromString(
+            "{\"state\":\"Deactivated\",\"target\":\"Windows Server 2012\",\"edition\":\"Standard\",\"type\":\"pCore\",\"processors\":1205894698,\"assignedLicenses\":1984499260,\"immutableId\":\"zyf\",\"volumeLicenseDetails\":[{\"programYear\":\"Year 2\",\"invoiceId\":\"mofcq\"},{\"programYear\":\"Year 3\",\"invoiceId\":\"urkdtmlx\"}]}")
+            .toObject(LicenseDetails.class);
+        Assertions.assertEquals(LicenseState.DEACTIVATED, model.state());
+        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, model.target());
         Assertions.assertEquals(LicenseEdition.STANDARD, model.edition());
         Assertions.assertEquals(LicenseCoreType.P_CORE, model.type());
-        Assertions.assertEquals(365003669, model.processors());
+        Assertions.assertEquals(1205894698, model.processors());
+        Assertions.assertEquals(ProgramYear.YEAR_2, model.volumeLicenseDetails().get(0).programYear());
+        Assertions.assertEquals("mofcq", model.volumeLicenseDetails().get(0).invoiceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LicenseDetails model =
-            new LicenseDetails()
-                .withState(LicenseState.ACTIVATED)
-                .withTarget(LicenseTarget.WINDOWS_SERVER_2012_R2)
-                .withEdition(LicenseEdition.STANDARD)
-                .withType(LicenseCoreType.P_CORE)
-                .withProcessors(365003669);
+        LicenseDetails model = new LicenseDetails().withState(LicenseState.DEACTIVATED)
+            .withTarget(LicenseTarget.WINDOWS_SERVER_2012)
+            .withEdition(LicenseEdition.STANDARD)
+            .withType(LicenseCoreType.P_CORE)
+            .withProcessors(1205894698)
+            .withVolumeLicenseDetails(
+                Arrays.asList(new VolumeLicenseDetails().withProgramYear(ProgramYear.YEAR_2).withInvoiceId("mofcq"),
+                    new VolumeLicenseDetails().withProgramYear(ProgramYear.YEAR_3).withInvoiceId("urkdtmlx")));
         model = BinaryData.fromObject(model).toObject(LicenseDetails.class);
-        Assertions.assertEquals(LicenseState.ACTIVATED, model.state());
-        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012_R2, model.target());
+        Assertions.assertEquals(LicenseState.DEACTIVATED, model.state());
+        Assertions.assertEquals(LicenseTarget.WINDOWS_SERVER_2012, model.target());
         Assertions.assertEquals(LicenseEdition.STANDARD, model.edition());
         Assertions.assertEquals(LicenseCoreType.P_CORE, model.type());
-        Assertions.assertEquals(365003669, model.processors());
+        Assertions.assertEquals(1205894698, model.processors());
+        Assertions.assertEquals(ProgramYear.YEAR_2, model.volumeLicenseDetails().get(0).programYear());
+        Assertions.assertEquals("mofcq", model.volumeLicenseDetails().get(0).invoiceId());
     }
 }

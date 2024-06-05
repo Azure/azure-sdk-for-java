@@ -11,12 +11,12 @@ public final class MetadataItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetadataItem model
-            = BinaryData.fromString("{\"name\":\"datagyxkg\",\"value\":\"datay\"}").toObject(MetadataItem.class);
+            = BinaryData.fromString("{\"name\":\"datavej\",\"value\":\"datayu\"}").toObject(MetadataItem.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetadataItem model = new MetadataItem().withName("datagyxkg").withValue("datay");
+        MetadataItem model = new MetadataItem().withName("datavej").withValue("datayu");
         model = BinaryData.fromObject(model).toObject(MetadataItem.class);
     }
 }

@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.migrationdiscoverysap.generated;
 
-import com.azure.resourcemanager.migrationdiscoverysap.fluent.models.ServerInstanceProperties;
 import com.azure.resourcemanager.migrationdiscoverysap.models.ServerInstance;
+import com.azure.resourcemanager.migrationdiscoverysap.models.ServerInstanceProperties;
 
 /**
  * Samples for ServerInstances Update.

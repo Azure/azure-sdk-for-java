@@ -8,13 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The upgrade to apply to a ManagedCluster. */
+/**
+ * The upgrade to apply to a ManagedCluster.
+ */
 @Fluent
 public final class ManagedClusterUpgradeSpec {
     /*
-     * The upgrade type.
-     * Full requires the KubernetesVersion property to be set.
-     * NodeImageOnly requires the KubernetesVersion property not to be set.
+     * ManagedClusterUpgradeType is the type of upgrade to be applied.
      */
     @JsonProperty(value = "type", required = true)
     private ManagedClusterUpgradeType type;
@@ -25,14 +25,15 @@ public final class ManagedClusterUpgradeSpec {
     @JsonProperty(value = "kubernetesVersion")
     private String kubernetesVersion;
 
-    /** Creates an instance of ManagedClusterUpgradeSpec class. */
+    /**
+     * Creates an instance of ManagedClusterUpgradeSpec class.
+     */
     public ManagedClusterUpgradeSpec() {
     }
 
     /**
-     * Get the type property: The upgrade type. Full requires the KubernetesVersion property to be set. NodeImageOnly
-     * requires the KubernetesVersion property not to be set.
-     *
+     * Get the type property: ManagedClusterUpgradeType is the type of upgrade to be applied.
+     * 
      * @return the type value.
      */
     public ManagedClusterUpgradeType type() {
@@ -40,9 +41,8 @@ public final class ManagedClusterUpgradeSpec {
     }
 
     /**
-     * Set the type property: The upgrade type. Full requires the KubernetesVersion property to be set. NodeImageOnly
-     * requires the KubernetesVersion property not to be set.
-     *
+     * Set the type property: ManagedClusterUpgradeType is the type of upgrade to be applied.
+     * 
      * @param type the type value to set.
      * @return the ManagedClusterUpgradeSpec object itself.
      */
@@ -53,7 +53,7 @@ public final class ManagedClusterUpgradeSpec {
 
     /**
      * Get the kubernetesVersion property: The Kubernetes version to upgrade the member clusters to.
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -62,7 +62,7 @@ public final class ManagedClusterUpgradeSpec {
 
     /**
      * Set the kubernetesVersion property: The Kubernetes version to upgrade the member clusters to.
-     *
+     * 
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterUpgradeSpec object itself.
      */
@@ -73,14 +73,13 @@ public final class ManagedClusterUpgradeSpec {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ManagedClusterUpgradeSpec"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ManagedClusterUpgradeSpec"));
         }
     }
 

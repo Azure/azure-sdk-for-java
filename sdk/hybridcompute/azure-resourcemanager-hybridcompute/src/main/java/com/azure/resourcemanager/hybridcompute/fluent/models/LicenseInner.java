@@ -13,7 +13,9 @@ import com.azure.resourcemanager.hybridcompute.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Describes a license in a hybrid machine. */
+/**
+ * Describes a license in a hybrid machine.
+ */
 @Fluent
 public final class LicenseInner extends Resource {
     /*
@@ -28,13 +30,15 @@ public final class LicenseInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of LicenseInner class. */
+    /**
+     * Creates an instance of LicenseInner class.
+     */
     public LicenseInner() {
     }
 
     /**
      * Get the innerProperties property: Hybrid Compute License properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LicenseProperties innerProperties() {
@@ -43,21 +47,25 @@ public final class LicenseInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LicenseInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LicenseInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -66,7 +74,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -75,7 +83,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Get the tenantId property: Describes the tenant id.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -84,7 +92,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Set the tenantId property: Describes the tenant id.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the LicenseInner object itself.
      */
@@ -98,7 +106,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Get the licenseType property: The type of the license resource.
-     *
+     * 
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -107,7 +115,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Set the licenseType property: The type of the license resource.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the LicenseInner object itself.
      */
@@ -121,7 +129,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Get the licenseDetails property: Describes the properties of a License.
-     *
+     * 
      * @return the licenseDetails value.
      */
     public LicenseDetails licenseDetails() {
@@ -130,7 +138,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Set the licenseDetails property: Describes the properties of a License.
-     *
+     * 
      * @param licenseDetails the licenseDetails value to set.
      * @return the LicenseInner object itself.
      */
@@ -144,7 +152,7 @@ public final class LicenseInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

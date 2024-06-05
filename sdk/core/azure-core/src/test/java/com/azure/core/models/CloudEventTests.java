@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -405,6 +406,49 @@ public class CloudEventTests {
             new CloudEvent("/testsrouce", "testtype", BinaryData.fromObject("str", SERIALIZER),
                 CloudEventDataFormat.JSON, "application/json").addExtensionAttribute("name", "value");
         });
+    }
+
+    @Test
+    public void eventsHaveATime() {
+        CloudEvent event = new CloudEvent("/source", "type", BinaryData.fromObject("data", SERIALIZER),
+            CloudEventDataFormat.JSON, "application/json");
+        assertNotNull(event.getTime());
+    }
+
+    @Test
+    public void eventsCanHaveTimeUnset() {
+        CloudEvent event = new CloudEvent("/source", "type", BinaryData.fromObject("data", SERIALIZER),
+            CloudEventDataFormat.JSON, "application/json").setTime(null);
+        assertNull(event.getTime());
+    }
+
+    @ParameterizedTest
+    @MethodSource("externalObjectMapperSupplier")
+    public void externalObjectMapper(String dataString) throws JsonProcessingException {
+        String eventMessage = "[{\"specversion\":\"1.0\",\"type\":\"Microsoft.Storage.BlobCreated\","
+            + "\"source\":\"/subscriptions/{subscription-id}/resourceGroups/{resource-group}/providers/Microsoft.Storage/storageAccounts/{storage-account}\","
+            + "\"id\":\"9aeb0fdf-c01e-0131-0922-9eb54906e209\",\"time\":\"2019-11-18T15:13:39.4589254Z\","
+            + "\"subject\":\"blobServices/default/containers/{storage-container}/blobs/{new-file}\",\"data\":"
+            + dataString + "}]";
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        List<CloudEvent> cloudEvents = objectMapper.readValue(eventMessage,
+            objectMapper.getTypeFactory().constructCollectionLikeType(List.class, CloudEvent.class));
+
+        assertEquals(1, cloudEvents.size());
+        assertEquals(dataString, cloudEvents.get(0).getData().toString());
+    }
+
+    private static Stream<String> externalObjectMapperSupplier() {
+        return Stream.of(
+            "{\"api\":\"PutBlockList\",\"clientRequestId\":\"4c5dd7fb-2c48-4a27-bb30-5361b5de920a\","
+                + "\"requestId\":\"9aeb0fdf-c01e-0131-0922-9eb549000000\",\"eTag\":\"0x8D76C39E4407333\","
+                + "\"contentType\":\"image/png\",\"contentLength\":30699,\"blobType\":\"BlockBlob\","
+                + "\"url\":\"https://account.blob.core.windows.net/container/{new-file}\","
+                + "\"sequencer\":\"000000000000000000000000000099240000000000c41c18\","
+                + "\"storageDiagnostics\":{\"batchId\":\"681fe319-3006-00a8-0022-9e7cde000000\"}}",
+            "true", "123", "123.45", "\"string\"", "[1,2,3]");
     }
 
     private String getTestPayloadFromFile(String fileName) throws IOException {

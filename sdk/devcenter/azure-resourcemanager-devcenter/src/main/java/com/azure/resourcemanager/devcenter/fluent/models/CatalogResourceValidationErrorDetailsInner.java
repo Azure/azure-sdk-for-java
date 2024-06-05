@@ -21,13 +21,15 @@ public final class CatalogResourceValidationErrorDetailsInner {
     @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private List<CatalogErrorDetails> errors;
 
-    /** Creates an instance of CatalogResourceValidationErrorDetailsInner class. */
+    /**
+     * Creates an instance of CatalogResourceValidationErrorDetailsInner class.
+     */
     public CatalogResourceValidationErrorDetailsInner() {
     }
 
     /**
      * Get the errors property: Errors associated with resources synchronized from the catalog.
-     *
+     * 
      * @return the errors value.
      */
     public List<CatalogErrorDetails> errors() {
@@ -36,7 +38,7 @@ public final class CatalogResourceValidationErrorDetailsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

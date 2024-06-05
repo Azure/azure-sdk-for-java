@@ -76,6 +76,11 @@ public class MapsSearchClientTestBase extends TestProxyTestBase {
             builder.endpoint("https://localhost:8080");
         }
 
+        if (!interceptorManager.isLiveMode()) {
+            // Remove `id` and `name` sanitizer from the list of common sanitizers.
+            interceptorManager.removeSanitizers("AZSDK3430", "AZSDK3493");
+        }
+
         return builder;
     }
 

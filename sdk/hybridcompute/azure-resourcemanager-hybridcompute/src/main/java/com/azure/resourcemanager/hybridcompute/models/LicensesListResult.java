@@ -10,7 +10,9 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List license operation response. */
+/**
+ * The List license operation response.
+ */
 @Fluent
 public final class LicensesListResult {
     /*
@@ -20,19 +22,20 @@ public final class LicensesListResult {
     private List<LicenseInner> value;
 
     /*
-     * The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the next page of license
-     * profile.
+     * The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the next page of license profile.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of LicensesListResult class. */
+    /**
+     * Creates an instance of LicensesListResult class.
+     */
     public LicensesListResult() {
     }
 
     /**
      * Get the value property: The list of licenses.
-     *
+     * 
      * @return the value value.
      */
     public List<LicenseInner> value() {
@@ -41,7 +44,7 @@ public final class LicensesListResult {
 
     /**
      * Set the value property: The list of licenses.
-     *
+     * 
      * @param value the value value to set.
      * @return the LicensesListResult object itself.
      */
@@ -53,7 +56,7 @@ public final class LicensesListResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the
      * next page of license profile.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +66,7 @@ public final class LicensesListResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the
      * next page of license profile.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the LicensesListResult object itself.
      */
@@ -74,14 +77,13 @@ public final class LicensesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model LicensesListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model LicensesListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -83,7 +83,12 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             } else if (interceptorManager.isPlaybackMode()) {
                 interceptorManager.addMatchers(Collections.singletonList(
-                    new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Sync-Token"))));
+                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token", "If-Match"))));
+            }
+
+            // Disable `$.key` snanitizer
+            if (!interceptorManager.isLiveMode()) {
+                interceptorManager.removeSanitizers(REMOVE_SANITIZER_ID);
             }
             return builder.buildClient();
         });
@@ -777,15 +782,11 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting updated2 = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
 
         // Create 3 revisions of the same key.
-        try {
-            assertConfigurationEquals(original, client.setConfigurationSettingWithResponse(original, false, Context.NONE).getValue());
-            Thread.sleep(2000);
-            assertConfigurationEquals(updated, client.setConfigurationSettingWithResponse(updated, false, Context.NONE).getValue());
-            Thread.sleep(2000);
-            assertConfigurationEquals(updated2, client.setConfigurationSettingWithResponse(updated2, false, Context.NONE).getValue());
-        } catch (InterruptedException ex) {
-            // Do nothing.
-        }
+        assertConfigurationEquals(original, client.setConfigurationSettingWithResponse(original, false, Context.NONE).getValue());
+        sleepIfRunningAgainstService(2000);
+        assertConfigurationEquals(updated, client.setConfigurationSettingWithResponse(updated, false, Context.NONE).getValue());
+        sleepIfRunningAgainstService(2000);
+        assertConfigurationEquals(updated2, client.setConfigurationSettingWithResponse(updated2, false, Context.NONE).getValue());
 
         // Gets all versions of this value so we can get the one we want at that particular date.
         List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).stream().collect(Collectors.toList());
@@ -886,15 +887,11 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
         final ConfigurationSetting updated2 = new ConfigurationSetting().setKey(original.getKey()).setValue("anotherValue2");
 
         // Create 3 revisions of the same key.
-        try {
-            assertConfigurationEquals(original, client.setConfigurationSettingWithResponse(original, false, Context.NONE).getValue());
-            Thread.sleep(2000);
-            assertConfigurationEquals(updated, client.setConfigurationSettingWithResponse(updated, false, Context.NONE).getValue());
-            Thread.sleep(2000);
-            assertConfigurationEquals(updated2, client.setConfigurationSettingWithResponse(updated2, false, Context.NONE).getValue());
-        } catch (InterruptedException ex) {
-            // Do nothing.
-        }
+        assertConfigurationEquals(original, client.setConfigurationSettingWithResponse(original, false, Context.NONE).getValue());
+        sleepIfRunningAgainstService(2000);
+        assertConfigurationEquals(updated, client.setConfigurationSettingWithResponse(updated, false, Context.NONE).getValue());
+        sleepIfRunningAgainstService(2000);
+        assertConfigurationEquals(updated2, client.setConfigurationSettingWithResponse(updated2, false, Context.NONE).getValue());
 
         // Gets all versions of this value.
         List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).stream().collect(Collectors.toList());

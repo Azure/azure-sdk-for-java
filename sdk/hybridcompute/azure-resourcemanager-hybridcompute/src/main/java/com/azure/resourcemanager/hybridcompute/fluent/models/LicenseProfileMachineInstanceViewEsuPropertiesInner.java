@@ -9,7 +9,9 @@ import com.azure.resourcemanager.hybridcompute.models.LicenseAssignmentState;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileArmEsuPropertiesWithoutAssignedLicense;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties for the Machine ESU profile. */
+/**
+ * Properties for the Machine ESU profile.
+ */
 @Fluent
 public final class LicenseProfileMachineInstanceViewEsuPropertiesInner
     extends LicenseProfileArmEsuPropertiesWithoutAssignedLicense {
@@ -25,13 +27,15 @@ public final class LicenseProfileMachineInstanceViewEsuPropertiesInner
     @JsonProperty(value = "licenseAssignmentState")
     private LicenseAssignmentState licenseAssignmentState;
 
-    /** Creates an instance of LicenseProfileMachineInstanceViewEsuPropertiesInner class. */
+    /**
+     * Creates an instance of LicenseProfileMachineInstanceViewEsuPropertiesInner class.
+     */
     public LicenseProfileMachineInstanceViewEsuPropertiesInner() {
     }
 
     /**
      * Get the assignedLicense property: The assigned license resource.
-     *
+     * 
      * @return the assignedLicense value.
      */
     public LicenseInner assignedLicense() {
@@ -40,7 +44,7 @@ public final class LicenseProfileMachineInstanceViewEsuPropertiesInner
 
     /**
      * Set the assignedLicense property: The assigned license resource.
-     *
+     * 
      * @param assignedLicense the assignedLicense value to set.
      * @return the LicenseProfileMachineInstanceViewEsuPropertiesInner object itself.
      */
@@ -51,7 +55,7 @@ public final class LicenseProfileMachineInstanceViewEsuPropertiesInner
 
     /**
      * Get the licenseAssignmentState property: Describes the license assignment state (Assigned or NotAssigned).
-     *
+     * 
      * @return the licenseAssignmentState value.
      */
     public LicenseAssignmentState licenseAssignmentState() {
@@ -60,19 +64,19 @@ public final class LicenseProfileMachineInstanceViewEsuPropertiesInner
 
     /**
      * Set the licenseAssignmentState property: Describes the license assignment state (Assigned or NotAssigned).
-     *
+     * 
      * @param licenseAssignmentState the licenseAssignmentState value to set.
      * @return the LicenseProfileMachineInstanceViewEsuPropertiesInner object itself.
      */
-    public LicenseProfileMachineInstanceViewEsuPropertiesInner withLicenseAssignmentState(
-        LicenseAssignmentState licenseAssignmentState) {
+    public LicenseProfileMachineInstanceViewEsuPropertiesInner
+        withLicenseAssignmentState(LicenseAssignmentState licenseAssignmentState) {
         this.licenseAssignmentState = licenseAssignmentState;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -7,15 +7,23 @@ package com.azure.resourcemanager.frontdoor.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Type of Front Door resource used in CheckNameAvailability. */
+/**
+ * Type of Front Door resource used in CheckNameAvailability.
+ */
 public enum ResourceType {
-    /** Enum value Microsoft.Network/frontDoors. */
+    /**
+     * Enum value Microsoft.Network/frontDoors.
+     */
     MICROSOFT_NETWORK_FRONT_DOORS("Microsoft.Network/frontDoors"),
 
-    /** Enum value Microsoft.Network/frontDoors/frontendEndpoints. */
+    /**
+     * Enum value Microsoft.Network/frontDoors/frontendEndpoints.
+     */
     MICROSOFT_NETWORK_FRONT_DOORS_FRONTEND_ENDPOINTS("Microsoft.Network/frontDoors/frontendEndpoints");
 
-    /** The actual serialized value for a ResourceType instance. */
+    /**
+     * The actual serialized value for a ResourceType instance.
+     */
     private final String value;
 
     ResourceType(String value) {
@@ -24,7 +32,7 @@ public enum ResourceType {
 
     /**
      * Parses a serialized value to a ResourceType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ResourceType object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum ResourceType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

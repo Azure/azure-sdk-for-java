@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Caching behavior for the requests. */
+/**
+ * Caching behavior for the requests.
+ */
 public final class RuleCacheBehavior extends ExpandableStringEnum<RuleCacheBehavior> {
-    /** Static value HonorOrigin for RuleCacheBehavior. */
+    /**
+     * Static value HonorOrigin for RuleCacheBehavior.
+     */
     public static final RuleCacheBehavior HONOR_ORIGIN = fromString("HonorOrigin");
 
-    /** Static value OverrideAlways for RuleCacheBehavior. */
+    /**
+     * Static value OverrideAlways for RuleCacheBehavior.
+     */
     public static final RuleCacheBehavior OVERRIDE_ALWAYS = fromString("OverrideAlways");
 
-    /** Static value OverrideIfOriginMissing for RuleCacheBehavior. */
+    /**
+     * Static value OverrideIfOriginMissing for RuleCacheBehavior.
+     */
     public static final RuleCacheBehavior OVERRIDE_IF_ORIGIN_MISSING = fromString("OverrideIfOriginMissing");
 
     /**
      * Creates a new instance of RuleCacheBehavior value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class RuleCacheBehavior extends ExpandableStringEnum<RuleCacheBehav
 
     /**
      * Creates or finds a RuleCacheBehavior from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RuleCacheBehavior.
      */
@@ -41,7 +49,7 @@ public final class RuleCacheBehavior extends ExpandableStringEnum<RuleCacheBehav
 
     /**
      * Gets known RuleCacheBehavior values.
-     *
+     * 
      * @return known RuleCacheBehavior values.
      */
     public static Collection<RuleCacheBehavior> values() {

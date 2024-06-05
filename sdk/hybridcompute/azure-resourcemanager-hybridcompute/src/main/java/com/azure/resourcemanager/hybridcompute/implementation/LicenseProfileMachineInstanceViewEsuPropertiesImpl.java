@@ -22,8 +22,7 @@ public final class LicenseProfileMachineInstanceViewEsuPropertiesImpl
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    LicenseProfileMachineInstanceViewEsuPropertiesImpl(
-        LicenseProfileMachineInstanceViewEsuPropertiesInner innerObject,
+    LicenseProfileMachineInstanceViewEsuPropertiesImpl(LicenseProfileMachineInstanceViewEsuPropertiesInner innerObject,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

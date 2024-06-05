@@ -14,34 +14,29 @@ import org.junit.jupiter.api.Assertions;
 public final class WindowsParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WindowsParameters model =
-            BinaryData
-                .fromString(
-                    "{\"classificationsToInclude\":[\"UpdateRollUp\"],\"kbNumbersToInclude\":[\"odebfqkkrbmpu\",\"gr\",\"wflzlfbxzpuzy\",\"ispnqzahmgkbrp\"],\"kbNumbersToExclude\":[\"hibnuqqkpika\",\"rgvtqag\"],\"excludeKbsRequiringReboot\":false,\"maxPatchPublishDate\":\"2021-10-07T08:50:26Z\"}")
-                .toObject(WindowsParameters.class);
-        Assertions
-            .assertEquals(VMGuestPatchClassificationWindows.UPDATE_ROLL_UP, model.classificationsToInclude().get(0));
-        Assertions.assertEquals("odebfqkkrbmpu", model.kbNumbersToInclude().get(0));
-        Assertions.assertEquals("hibnuqqkpika", model.kbNumbersToExclude().get(0));
+        WindowsParameters model = BinaryData.fromString(
+            "{\"classificationsToInclude\":[\"Definition\"],\"kbNumbersToInclude\":[\"yonobgl\",\"ocqxtccmg\",\"udxytlmoyrx\"],\"kbNumbersToExclude\":[\"u\",\"wpzntxhdzh\"],\"excludeKbsRequiringReboot\":false,\"maxPatchPublishDate\":\"2021-02-01T05:56:41Z\"}")
+            .toObject(WindowsParameters.class);
+        Assertions.assertEquals(VMGuestPatchClassificationWindows.DEFINITION, model.classificationsToInclude().get(0));
+        Assertions.assertEquals("yonobgl", model.kbNumbersToInclude().get(0));
+        Assertions.assertEquals("u", model.kbNumbersToExclude().get(0));
         Assertions.assertEquals(false, model.excludeKbsRequiringReboot());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-07T08:50:26Z"), model.maxPatchPublishDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-01T05:56:41Z"), model.maxPatchPublishDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WindowsParameters model =
-            new WindowsParameters()
-                .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationWindows.UPDATE_ROLL_UP))
-                .withKbNumbersToInclude(Arrays.asList("odebfqkkrbmpu", "gr", "wflzlfbxzpuzy", "ispnqzahmgkbrp"))
-                .withKbNumbersToExclude(Arrays.asList("hibnuqqkpika", "rgvtqag"))
-                .withExcludeKbsRequiringReboot(false)
-                .withMaxPatchPublishDate(OffsetDateTime.parse("2021-10-07T08:50:26Z"));
+        WindowsParameters model = new WindowsParameters()
+            .withClassificationsToInclude(Arrays.asList(VMGuestPatchClassificationWindows.DEFINITION))
+            .withKbNumbersToInclude(Arrays.asList("yonobgl", "ocqxtccmg", "udxytlmoyrx"))
+            .withKbNumbersToExclude(Arrays.asList("u", "wpzntxhdzh"))
+            .withExcludeKbsRequiringReboot(false)
+            .withMaxPatchPublishDate(OffsetDateTime.parse("2021-02-01T05:56:41Z"));
         model = BinaryData.fromObject(model).toObject(WindowsParameters.class);
-        Assertions
-            .assertEquals(VMGuestPatchClassificationWindows.UPDATE_ROLL_UP, model.classificationsToInclude().get(0));
-        Assertions.assertEquals("odebfqkkrbmpu", model.kbNumbersToInclude().get(0));
-        Assertions.assertEquals("hibnuqqkpika", model.kbNumbersToExclude().get(0));
+        Assertions.assertEquals(VMGuestPatchClassificationWindows.DEFINITION, model.classificationsToInclude().get(0));
+        Assertions.assertEquals("yonobgl", model.kbNumbersToInclude().get(0));
+        Assertions.assertEquals("u", model.kbNumbersToExclude().get(0));
         Assertions.assertEquals(false, model.excludeKbsRequiringReboot());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-07T08:50:26Z"), model.maxPatchPublishDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-01T05:56:41Z"), model.maxPatchPublishDate());
     }
 }

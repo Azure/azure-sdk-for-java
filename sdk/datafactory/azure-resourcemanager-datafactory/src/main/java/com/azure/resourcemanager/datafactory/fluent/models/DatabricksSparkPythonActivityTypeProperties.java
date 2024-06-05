@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class DatabricksSparkPythonActivityTypeProperties {
     /*
-     * The URI of the Python file to be executed. DBFS paths are supported. Type: string (or Expression with resultType
-     * string).
+     * The URI of the Python file to be executed. DBFS paths are supported. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "pythonFile", required = true)
     private Object pythonFile;
@@ -109,8 +108,9 @@ public final class DatabricksSparkPythonActivityTypeProperties {
      */
     public void validate() {
         if (pythonFile() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property pythonFile in model DatabricksSparkPythonActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property pythonFile in model DatabricksSparkPythonActivityTypeProperties"));
         }
     }
 

@@ -9,7 +9,9 @@ import com.azure.core.management.exception.ManagementError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The status for an operation or group of operations. */
+/**
+ * The status for an operation or group of operations.
+ */
 @Immutable
 public final class UpdateStatus {
     /*
@@ -36,13 +38,15 @@ public final class UpdateStatus {
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError error;
 
-    /** Creates an instance of UpdateStatus class. */
+    /**
+     * Creates an instance of UpdateStatus class.
+     */
     public UpdateStatus() {
     }
 
     /**
      * Get the startTime property: The time the operation or group was started.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -51,7 +55,7 @@ public final class UpdateStatus {
 
     /**
      * Get the completedTime property: The time the operation or group was completed.
-     *
+     * 
      * @return the completedTime value.
      */
     public OffsetDateTime completedTime() {
@@ -60,7 +64,7 @@ public final class UpdateStatus {
 
     /**
      * Get the state property: The State of the operation or group.
-     *
+     * 
      * @return the state value.
      */
     public UpdateState state() {
@@ -69,7 +73,7 @@ public final class UpdateStatus {
 
     /**
      * Get the error property: The error details when a failure is encountered.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -78,7 +82,7 @@ public final class UpdateStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

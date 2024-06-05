@@ -15,6 +15,7 @@ import com.azure.resourcemanager.compute.models.DiskSkuTypes;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.SnapshotSkuType;
+import com.azure.resourcemanager.compute.models.PublicNetworkAccess;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
@@ -145,7 +146,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assertions.assertNull(disk.osType());
         Assertions.assertNotNull(disk.source());
         Assertions.assertEquals(disk.source().type(), CreationSourceType.COPIED_FROM_DISK);
-        Assertions.assertTrue(disk.source().sourceId().equalsIgnoreCase(emptyDisk.id()));
+        assertResourceIdEquals(disk.source().sourceId(), emptyDisk.id());
 
         computeManager.disks().deleteById(emptyDisk.id());
         computeManager.disks().deleteById(disk.id());
@@ -223,7 +224,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assertions.assertNull(snapshot.osType());
         Assertions.assertNotNull(snapshot.source());
         Assertions.assertEquals(snapshot.source().type(), CreationSourceType.COPIED_FROM_DISK);
-        Assertions.assertTrue(snapshot.source().sourceId().equalsIgnoreCase(emptyDisk.id()));
+        assertResourceIdEquals(snapshot.source().sourceId(), emptyDisk.id());
 
         Disk fromSnapshotDisk =
             computeManager
@@ -244,7 +245,7 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         Assertions.assertNull(fromSnapshotDisk.osType());
         Assertions.assertNotNull(fromSnapshotDisk.source());
         Assertions.assertEquals(fromSnapshotDisk.source().type(), CreationSourceType.COPIED_FROM_SNAPSHOT);
-        Assertions.assertTrue(fromSnapshotDisk.source().sourceId().equalsIgnoreCase(snapshot.id()));
+        assertResourceIdEquals(snapshot.source().sourceId(), emptyDisk.id());
     }
 
     // test-proxy playback
@@ -425,5 +426,35 @@ public class ManagedDiskOperationsTests extends ComputeManagementTest {
         disk.update().withHyperVGeneration(HyperVGeneration.V2).apply();
         disk.refresh();
         Assertions.assertEquals(disk.hyperVGeneration(), HyperVGeneration.V2);
+    }
+
+    @Test
+    public void canCreateAndUpdatePublicNetworkAccess() {
+        final String diskName1 = generateRandomResourceName("md-1", 20);
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+
+        // Create an empty  managed disk
+        //
+        Disk disk =
+            computeManager
+                .disks()
+                .define(diskName1)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup.name())
+                .withData()
+                .withSizeInGB(100)
+                .disablePublicNetworkAccess()
+                .create();
+
+        disk.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, disk.publicNetworkAccess());
+
+        disk.update().enablePublicNetworkAccess().apply();
+        disk.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, disk.publicNetworkAccess());
+
+        disk.update().disablePublicNetworkAccess().apply();
+        disk.refresh();
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, disk.publicNetworkAccess());
     }
 }

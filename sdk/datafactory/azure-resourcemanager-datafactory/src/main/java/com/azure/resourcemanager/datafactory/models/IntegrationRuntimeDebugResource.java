@@ -63,8 +63,9 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
     public void validate() {
         super.validate();
         if (properties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property properties in model IntegrationRuntimeDebugResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model IntegrationRuntimeDebugResource"));
         } else {
             properties().validate();
         }

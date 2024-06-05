@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the sever administrator. */
+/**
+ * Type of the sever administrator.
+ */
 public final class AdministratorType extends ExpandableStringEnum<AdministratorType> {
-    /** Static value ActiveDirectory for AdministratorType. */
+    /**
+     * Static value ActiveDirectory for AdministratorType.
+     */
     public static final AdministratorType ACTIVE_DIRECTORY = fromString("ActiveDirectory");
 
     /**
      * Creates a new instance of AdministratorType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class AdministratorType extends ExpandableStringEnum<AdministratorT
 
     /**
      * Creates or finds a AdministratorType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AdministratorType.
      */
@@ -35,7 +39,7 @@ public final class AdministratorType extends ExpandableStringEnum<AdministratorT
 
     /**
      * Gets known AdministratorType values.
-     *
+     * 
      * @return known AdministratorType values.
      */
     public static Collection<AdministratorType> values() {

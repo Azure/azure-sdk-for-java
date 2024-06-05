@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Check zone peers request parameters. */
+/**
+ * Check zone peers request parameters.
+ */
 @Fluent
 public final class CheckZonePeersRequest {
     /*
@@ -23,13 +25,15 @@ public final class CheckZonePeersRequest {
     @JsonProperty(value = "subscriptionIds")
     private List<String> subscriptionIds;
 
-    /** Creates an instance of CheckZonePeersRequest class. */
+    /**
+     * Creates an instance of CheckZonePeersRequest class.
+     */
     public CheckZonePeersRequest() {
     }
 
     /**
      * Get the location property: The Microsoft location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -38,7 +42,7 @@ public final class CheckZonePeersRequest {
 
     /**
      * Set the location property: The Microsoft location.
-     *
+     * 
      * @param location the location value to set.
      * @return the CheckZonePeersRequest object itself.
      */
@@ -49,7 +53,7 @@ public final class CheckZonePeersRequest {
 
     /**
      * Get the subscriptionIds property: The peer Microsoft Azure subscription ID.
-     *
+     * 
      * @return the subscriptionIds value.
      */
     public List<String> subscriptionIds() {
@@ -58,7 +62,7 @@ public final class CheckZonePeersRequest {
 
     /**
      * Set the subscriptionIds property: The peer Microsoft Azure subscription ID.
-     *
+     * 
      * @param subscriptionIds the subscriptionIds value to set.
      * @return the CheckZonePeersRequest object itself.
      */
@@ -69,7 +73,7 @@ public final class CheckZonePeersRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

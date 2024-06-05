@@ -7,6 +7,7 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.fluent.models.FlowletTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -14,10 +15,17 @@ import java.util.List;
 /**
  * Data flow flowlet.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = Flowlet.class, visible = true)
 @JsonTypeName("Flowlet")
 @Fluent
 public final class Flowlet extends DataFlow {
+    /*
+     * Type of data flow.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type = "Flowlet";
+
     /*
      * Flowlet type properties.
      */
@@ -28,6 +36,16 @@ public final class Flowlet extends DataFlow {
      * Creates an instance of Flowlet class.
      */
     public Flowlet() {
+    }
+
+    /**
+     * Get the type property: Type of data flow.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**

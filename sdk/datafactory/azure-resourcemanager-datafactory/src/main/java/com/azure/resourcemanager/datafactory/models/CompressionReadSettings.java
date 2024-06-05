@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
@@ -19,9 +21,9 @@ import java.util.Map;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = CompressionReadSettings.class)
+    defaultImpl = CompressionReadSettings.class,
+    visible = true)
 @JsonTypeName("CompressionReadSettings")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ZipDeflateReadSettings", value = ZipDeflateReadSettings.class),
@@ -29,6 +31,13 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "TarGZipReadSettings", value = TarGZipReadSettings.class) })
 @Fluent
 public class CompressionReadSettings {
+    /*
+     * The Compression setting type.
+     */
+    @JsonTypeId
+    @JsonProperty(value = "type", required = true)
+    private String type;
+
     /*
      * Compression read settings.
      */
@@ -39,6 +48,16 @@ public class CompressionReadSettings {
      * Creates an instance of CompressionReadSettings class.
      */
     public CompressionReadSettings() {
+        this.type = "CompressionReadSettings";
+    }
+
+    /**
+     * Get the type property: The Compression setting type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
     }
 
     /**

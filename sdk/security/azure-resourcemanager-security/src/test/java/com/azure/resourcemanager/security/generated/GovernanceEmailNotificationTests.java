@@ -12,18 +12,18 @@ public final class GovernanceEmailNotificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GovernanceEmailNotification model = BinaryData
-            .fromString("{\"disableManagerEmailNotification\":false,\"disableOwnerEmailNotification\":true}")
+            .fromString("{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":false}")
             .toObject(GovernanceEmailNotification.class);
-        Assertions.assertEquals(false, model.disableManagerEmailNotification());
-        Assertions.assertEquals(true, model.disableOwnerEmailNotification());
+        Assertions.assertEquals(true, model.disableManagerEmailNotification());
+        Assertions.assertEquals(false, model.disableOwnerEmailNotification());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GovernanceEmailNotification model = new GovernanceEmailNotification().withDisableManagerEmailNotification(false)
-            .withDisableOwnerEmailNotification(true);
+        GovernanceEmailNotification model = new GovernanceEmailNotification().withDisableManagerEmailNotification(true)
+            .withDisableOwnerEmailNotification(false);
         model = BinaryData.fromObject(model).toObject(GovernanceEmailNotification.class);
-        Assertions.assertEquals(false, model.disableManagerEmailNotification());
-        Assertions.assertEquals(true, model.disableOwnerEmailNotification());
+        Assertions.assertEquals(true, model.disableManagerEmailNotification());
+        Assertions.assertEquals(false, model.disableOwnerEmailNotification());
     }
 }

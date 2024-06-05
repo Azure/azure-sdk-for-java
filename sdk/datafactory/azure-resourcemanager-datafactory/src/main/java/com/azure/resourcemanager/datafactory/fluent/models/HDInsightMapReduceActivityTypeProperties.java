@@ -244,12 +244,14 @@ public final class HDInsightMapReduceActivityTypeProperties {
             storageLinkedServices().forEach(e -> e.validate());
         }
         if (className() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property className in model HDInsightMapReduceActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property className in model HDInsightMapReduceActivityTypeProperties"));
         }
         if (jarFilePath() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property jarFilePath in model HDInsightMapReduceActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property jarFilePath in model HDInsightMapReduceActivityTypeProperties"));
         }
         if (jarLinkedService() != null) {
             jarLinkedService().validate();

@@ -13,22 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class OSProfileLinuxConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OSProfileLinuxConfiguration model =
-            BinaryData
-                .fromString("{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"ImageDefault\"}}")
-                .toObject(OSProfileLinuxConfiguration.class);
+        OSProfileLinuxConfiguration model = BinaryData
+            .fromString("{\"patchSettings\":{\"assessmentMode\":\"ImageDefault\",\"patchMode\":\"Manual\"}}")
+            .toObject(OSProfileLinuxConfiguration.class);
         Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.patchMode());
+        Assertions.assertEquals(PatchModeTypes.MANUAL, model.patchMode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OSProfileLinuxConfiguration model =
-            new OSProfileLinuxConfiguration()
-                .withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
-                .withPatchMode(PatchModeTypes.IMAGE_DEFAULT);
+        OSProfileLinuxConfiguration model
+            = new OSProfileLinuxConfiguration().withAssessmentMode(AssessmentModeTypes.IMAGE_DEFAULT)
+                .withPatchMode(PatchModeTypes.MANUAL);
         model = BinaryData.fromObject(model).toObject(OSProfileLinuxConfiguration.class);
         Assertions.assertEquals(AssessmentModeTypes.IMAGE_DEFAULT, model.assessmentMode());
-        Assertions.assertEquals(PatchModeTypes.IMAGE_DEFAULT, model.patchMode());
+        Assertions.assertEquals(PatchModeTypes.MANUAL, model.patchMode());
     }
 }

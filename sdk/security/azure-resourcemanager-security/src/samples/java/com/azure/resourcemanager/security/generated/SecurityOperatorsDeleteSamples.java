@@ -9,9 +9,7 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class SecurityOperatorsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/
-     * DeleteSecurityOperatorByName_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-01-01-preview/examples/SecurityOperators/DeleteSecurityOperatorByName_example.json
      */
     /**
      * Sample code: Delete SecurityOperator on subscription.
@@ -20,7 +18,8 @@ public final class SecurityOperatorsDeleteSamples {
      */
     public static void
         deleteSecurityOperatorOnSubscription(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.securityOperators().deleteByResourceGroupWithResponse("CloudPosture", "DefenderCSPMSecurityOperator",
-            com.azure.core.util.Context.NONE);
+        manager.securityOperators()
+            .deleteByResourceGroupWithResponse("CloudPosture", "DefenderCSPMSecurityOperator",
+                com.azure.core.util.Context.NONE);
     }
 }

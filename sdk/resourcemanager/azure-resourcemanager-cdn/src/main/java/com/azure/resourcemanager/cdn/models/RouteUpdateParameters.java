@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cdn.fluent.models.RouteUpdatePropertiesParamete
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The domain JSON object required for domain creation or update. */
+/**
+ * The domain JSON object required for domain creation or update.
+ */
 @Fluent
 public final class RouteUpdateParameters {
     /*
@@ -18,13 +20,15 @@ public final class RouteUpdateParameters {
     @JsonProperty(value = "properties")
     private RouteUpdatePropertiesParameters innerProperties;
 
-    /** Creates an instance of RouteUpdateParameters class. */
+    /**
+     * Creates an instance of RouteUpdateParameters class.
+     */
     public RouteUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the domain to create.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RouteUpdatePropertiesParameters innerProperties() {
@@ -33,7 +37,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Get the endpointName property: The name of the endpoint which holds the route.
-     *
+     * 
      * @return the endpointName value.
      */
     public String endpointName() {
@@ -42,7 +46,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Get the customDomains property: Domains referenced by this endpoint.
-     *
+     * 
      * @return the customDomains value.
      */
     public List<ActivatedResourceReference> customDomains() {
@@ -51,7 +55,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Set the customDomains property: Domains referenced by this endpoint.
-     *
+     * 
      * @param customDomains the customDomains value to set.
      * @return the RouteUpdateParameters object itself.
      */
@@ -65,7 +69,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Get the originGroup property: A reference to the origin group.
-     *
+     * 
      * @return the originGroup value.
      */
     public ResourceReference originGroup() {
@@ -74,7 +78,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Set the originGroup property: A reference to the origin group.
-     *
+     * 
      * @param originGroup the originGroup value to set.
      * @return the RouteUpdateParameters object itself.
      */
@@ -87,9 +91,9 @@ public final class RouteUpdateParameters {
     }
 
     /**
-     * Get the originPath property: A directory path on the origin that AzureFrontDoor can use to retrieve content from,
-     * e.g. contoso.cloudapp.net/originpath.
-     *
+     * Get the originPath property: A directory path on the origin that AzureFrontDoor can use to retrieve content
+     * from, e.g. contoso.cloudapp.net/originpath.
+     * 
      * @return the originPath value.
      */
     public String originPath() {
@@ -97,9 +101,9 @@ public final class RouteUpdateParameters {
     }
 
     /**
-     * Set the originPath property: A directory path on the origin that AzureFrontDoor can use to retrieve content from,
-     * e.g. contoso.cloudapp.net/originpath.
-     *
+     * Set the originPath property: A directory path on the origin that AzureFrontDoor can use to retrieve content
+     * from, e.g. contoso.cloudapp.net/originpath.
+     * 
      * @param originPath the originPath value to set.
      * @return the RouteUpdateParameters object itself.
      */
@@ -113,7 +117,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Get the ruleSets property: rule sets referenced by this endpoint.
-     *
+     * 
      * @return the ruleSets value.
      */
     public List<ResourceReference> ruleSets() {
@@ -122,7 +126,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Set the ruleSets property: rule sets referenced by this endpoint.
-     *
+     * 
      * @param ruleSets the ruleSets value to set.
      * @return the RouteUpdateParameters object itself.
      */
@@ -136,7 +140,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Get the supportedProtocols property: List of supported protocols for this route.
-     *
+     * 
      * @return the supportedProtocols value.
      */
     public List<AfdEndpointProtocols> supportedProtocols() {
@@ -145,7 +149,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Set the supportedProtocols property: List of supported protocols for this route.
-     *
+     * 
      * @param supportedProtocols the supportedProtocols value to set.
      * @return the RouteUpdateParameters object itself.
      */
@@ -159,7 +163,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Get the patternsToMatch property: The route patterns of the rule.
-     *
+     * 
      * @return the patternsToMatch value.
      */
     public List<String> patternsToMatch() {
@@ -168,7 +172,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Set the patternsToMatch property: The route patterns of the rule.
-     *
+     * 
      * @param patternsToMatch the patternsToMatch value to set.
      * @return the RouteUpdateParameters object itself.
      */
@@ -181,9 +185,9 @@ public final class RouteUpdateParameters {
     }
 
     /**
-     * Get the cacheConfiguration property: The caching configuration for this route. To disable caching, do not provide
-     * a cacheConfiguration object.
-     *
+     * Get the cacheConfiguration property: The caching configuration for this route. To disable caching, do not
+     * provide a cacheConfiguration object.
+     * 
      * @return the cacheConfiguration value.
      */
     public AfdRouteCacheConfiguration cacheConfiguration() {
@@ -191,9 +195,9 @@ public final class RouteUpdateParameters {
     }
 
     /**
-     * Set the cacheConfiguration property: The caching configuration for this route. To disable caching, do not provide
-     * a cacheConfiguration object.
-     *
+     * Set the cacheConfiguration property: The caching configuration for this route. To disable caching, do not
+     * provide a cacheConfiguration object.
+     * 
      * @param cacheConfiguration the cacheConfiguration value to set.
      * @return the RouteUpdateParameters object itself.
      */
@@ -207,7 +211,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Get the forwardingProtocol property: Protocol this rule will use when forwarding traffic to backends.
-     *
+     * 
      * @return the forwardingProtocol value.
      */
     public ForwardingProtocol forwardingProtocol() {
@@ -216,7 +220,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Set the forwardingProtocol property: Protocol this rule will use when forwarding traffic to backends.
-     *
+     * 
      * @param forwardingProtocol the forwardingProtocol value to set.
      * @return the RouteUpdateParameters object itself.
      */
@@ -230,7 +234,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Get the linkToDefaultDomain property: whether this route will be linked to the default endpoint domain.
-     *
+     * 
      * @return the linkToDefaultDomain value.
      */
     public LinkToDefaultDomain linkToDefaultDomain() {
@@ -239,7 +243,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Set the linkToDefaultDomain property: whether this route will be linked to the default endpoint domain.
-     *
+     * 
      * @param linkToDefaultDomain the linkToDefaultDomain value to set.
      * @return the RouteUpdateParameters object itself.
      */
@@ -254,7 +258,7 @@ public final class RouteUpdateParameters {
     /**
      * Get the httpsRedirect property: Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this
      * is a easy way to set up this rule and it will be the first rule that gets executed.
-     *
+     * 
      * @return the httpsRedirect value.
      */
     public HttpsRedirect httpsRedirect() {
@@ -264,7 +268,7 @@ public final class RouteUpdateParameters {
     /**
      * Set the httpsRedirect property: Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this
      * is a easy way to set up this rule and it will be the first rule that gets executed.
-     *
+     * 
      * @param httpsRedirect the httpsRedirect value to set.
      * @return the RouteUpdateParameters object itself.
      */
@@ -278,7 +282,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Get the enabledState property: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the enabledState value.
      */
     public EnabledState enabledState() {
@@ -287,7 +291,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Set the enabledState property: Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param enabledState the enabledState value to set.
      * @return the RouteUpdateParameters object itself.
      */
@@ -301,7 +305,7 @@ public final class RouteUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

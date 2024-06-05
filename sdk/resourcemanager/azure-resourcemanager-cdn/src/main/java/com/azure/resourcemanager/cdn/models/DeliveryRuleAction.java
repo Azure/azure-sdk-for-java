@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** An action for the delivery rule. */
+/**
+ * An action for the delivery rule.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -25,17 +27,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "ModifyResponseHeader", value = DeliveryRuleResponseHeaderAction.class),
     @JsonSubTypes.Type(name = "CacheExpiration", value = DeliveryRuleCacheExpirationAction.class),
     @JsonSubTypes.Type(name = "CacheKeyQueryString", value = DeliveryRuleCacheKeyQueryStringAction.class),
-    @JsonSubTypes.Type(name = "RouteConfigurationOverride", value = DeliveryRuleRouteConfigurationOverrideAction.class)
-})
+    @JsonSubTypes.Type(
+        name = "RouteConfigurationOverride",
+        value = DeliveryRuleRouteConfigurationOverrideAction.class) })
 @Immutable
 public class DeliveryRuleAction {
-    /** Creates an instance of DeliveryRuleAction class. */
+    /**
+     * Creates an instance of DeliveryRuleAction class.
+     */
     public DeliveryRuleAction() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

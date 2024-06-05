@@ -5,27 +5,34 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.core.util.CoreUtils;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** Stats for the share. */
-@JacksonXmlRootElement(localName = "ShareStats")
+/**
+ * Stats for the share.
+ */
 @Fluent
-public final class ShareStats {
+public final class ShareStats implements XmlSerializable<ShareStats> {
     /*
-     * The approximate size of the data stored in bytes, rounded up to the nearest gigabyte. Note that this value may
-     * not include all recently created or recently resized files.
+     * The approximate size of the data stored in bytes, rounded up to the nearest gigabyte. Note that this value may not include all recently created or recently resized files.
      */
-    @JsonProperty(value = "ShareUsageBytes", required = true)
     private long shareUsageBytes;
 
-    /** Creates an instance of ShareStats class. */
-    public ShareStats() {}
+    /**
+     * Creates an instance of ShareStats class.
+     */
+    public ShareStats() {
+    }
 
     /**
      * Get the shareUsageBytes property: The approximate size of the data stored in bytes, rounded up to the nearest
      * gigabyte. Note that this value may not include all recently created or recently resized files.
-     *
+     * 
      * @return the shareUsageBytes value.
      */
     public long getShareUsageBytes() {
@@ -35,12 +42,67 @@ public final class ShareStats {
     /**
      * Set the shareUsageBytes property: The approximate size of the data stored in bytes, rounded up to the nearest
      * gigabyte. Note that this value may not include all recently created or recently resized files.
-     *
+     * 
      * @param shareUsageBytes the shareUsageBytes value to set.
      * @return the ShareStats object itself.
      */
     public ShareStats setShareUsageBytes(long shareUsageBytes) {
         this.shareUsageBytes = shareUsageBytes;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ShareStats" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeLongElement("ShareUsageBytes", this.shareUsageBytes);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of ShareStats from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of ShareStats if the XmlReader was pointing to an instance of it, or null if it was pointing
+     * to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the ShareStats.
+     */
+    public static ShareStats fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of ShareStats from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of ShareStats if the XmlReader was pointing to an instance of it, or null if it was pointing
+     * to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the ShareStats.
+     */
+    public static ShareStats fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ShareStats" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            ShareStats deserializedShareStats = new ShareStats();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("ShareUsageBytes".equals(elementName.getLocalPart())) {
+                    deserializedShareStats.shareUsageBytes = reader.getLongElement();
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedShareStats;
+        });
     }
 }

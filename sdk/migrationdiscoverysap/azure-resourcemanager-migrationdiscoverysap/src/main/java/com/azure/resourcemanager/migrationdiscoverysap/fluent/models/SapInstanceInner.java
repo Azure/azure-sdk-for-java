@@ -7,9 +7,7 @@ package com.azure.resourcemanager.migrationdiscoverysap.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.migrationdiscoverysap.models.ProvisioningState;
-import com.azure.resourcemanager.migrationdiscoverysap.models.SapInstanceEnvironment;
-import com.azure.resourcemanager.migrationdiscoverysap.models.SapMigrateError;
+import com.azure.resourcemanager.migrationdiscoverysap.models.SapInstanceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -22,7 +20,7 @@ public final class SapInstanceInner extends Resource {
      * The resource-specific properties for this resource.
      */
     @JsonProperty(value = "properties")
-    private SapInstanceProperties innerProperties;
+    private SapInstanceProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -37,12 +35,23 @@ public final class SapInstanceInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: The resource-specific properties for this resource.
+     * Get the properties property: The resource-specific properties for this resource.
      * 
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private SapInstanceProperties innerProperties() {
-        return this.innerProperties;
+    public SapInstanceProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The resource-specific properties for this resource.
+     * 
+     * @param properties the properties value to set.
+     * @return the SapInstanceInner object itself.
+     */
+    public SapInstanceInner withProperties(SapInstanceProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -73,71 +82,13 @@ public final class SapInstanceInner extends Resource {
     }
 
     /**
-     * Get the systemSid property: This is the SID of SAP System. Keeping this not equal to ID as different landscapes
-     * can have repeated System SID IDs.
-     * 
-     * @return the systemSid value.
-     */
-    public String systemSid() {
-        return this.innerProperties() == null ? null : this.innerProperties().systemSid();
-    }
-
-    /**
-     * Get the environment property: The Environment; PRD, QA, DEV, etc to which SAP system belongs to. Select from the
-     * list of available dropdown values.
-     * 
-     * @return the environment value.
-     */
-    public SapInstanceEnvironment environment() {
-        return this.innerProperties() == null ? null : this.innerProperties().environment();
-    }
-
-    /**
-     * Get the landscapeSid property: This is the SID of the production system in a landscape. An SAP system could
-     * itself be a production SID or a part of a landscape with a different Production SID. This field can be used to
-     * relate non-prod SIDs, other components, SID (WEBDISP) to the prod SID. Enter the value of Production SID.
-     * 
-     * @return the landscapeSid value.
-     */
-    public String landscapeSid() {
-        return this.innerProperties() == null ? null : this.innerProperties().landscapeSid();
-    }
-
-    /**
-     * Get the application property: Enter a business function/department identifier to group multiple SIDs.
-     * 
-     * @return the application value.
-     */
-    public String application() {
-        return this.innerProperties() == null ? null : this.innerProperties().application();
-    }
-
-    /**
-     * Get the provisioningState property: Defines the provisioning states.
-     * 
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the errors property: Defines the errors related to SAP Instance resource.
-     * 
-     * @return the errors value.
-     */
-    public SapMigrateError errors() {
-        return this.innerProperties() == null ? null : this.innerProperties().errors();
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

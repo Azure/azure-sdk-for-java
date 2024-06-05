@@ -75,9 +75,9 @@ public final class PipelinesImpl implements Pipelines {
     public Response<CreateRunResponse> createRunWithResponse(String resourceGroupName, String factoryName,
         String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName,
         Boolean startFromFailure, Map<String, Object> parameters, Context context) {
-        Response<CreateRunResponseInner> inner
-            = this.serviceClient().createRunWithResponse(resourceGroupName, factoryName, pipelineName,
-                referencePipelineRunId, isRecovery, startActivityName, startFromFailure, parameters, context);
+        Response<CreateRunResponseInner> inner = this.serviceClient()
+            .createRunWithResponse(resourceGroupName, factoryName, pipelineName, referencePipelineRunId, isRecovery,
+                startActivityName, startFromFailure, parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CreateRunResponseImpl(inner.getValue(), this.manager()));

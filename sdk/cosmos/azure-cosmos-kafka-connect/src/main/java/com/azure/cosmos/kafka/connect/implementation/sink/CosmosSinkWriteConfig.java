@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.kafka.connect.implementation.sink;
 
+import com.azure.cosmos.kafka.connect.implementation.sink.patch.CosmosPatchConfig;
+
 public class CosmosSinkWriteConfig {
     private final boolean bulkEnabled;
     private final int bulkMaxConcurrentCosmosPartitions;
@@ -11,6 +13,7 @@ public class CosmosSinkWriteConfig {
     private final int maxRetryCount;
 
     private final ToleranceOnErrorLevel toleranceOnErrorLevel;
+    private final CosmosPatchConfig cosmosPatchConfig;
 
     public CosmosSinkWriteConfig(
         boolean bulkEnabled,
@@ -18,7 +21,8 @@ public class CosmosSinkWriteConfig {
         int bulkInitialBatchSize,
         ItemWriteStrategy itemWriteStrategy,
         int maxRetryCount,
-        ToleranceOnErrorLevel toleranceOnErrorLevel) {
+        ToleranceOnErrorLevel toleranceOnErrorLevel,
+        CosmosPatchConfig cosmosPatchConfig) {
 
         this.bulkEnabled = bulkEnabled;
         this.bulkMaxConcurrentCosmosPartitions = bulkMaxConcurrentCosmosPartitions;
@@ -26,6 +30,7 @@ public class CosmosSinkWriteConfig {
         this.itemWriteStrategy = itemWriteStrategy;
         this.maxRetryCount = maxRetryCount;
         this.toleranceOnErrorLevel = toleranceOnErrorLevel;
+        this.cosmosPatchConfig = cosmosPatchConfig;
     }
 
     public boolean isBulkEnabled() {
@@ -50,5 +55,9 @@ public class CosmosSinkWriteConfig {
 
     public ToleranceOnErrorLevel getToleranceOnErrorLevel() {
         return toleranceOnErrorLevel;
+    }
+
+    public CosmosPatchConfig getCosmosPatchConfig() {
+        return cosmosPatchConfig;
     }
 }

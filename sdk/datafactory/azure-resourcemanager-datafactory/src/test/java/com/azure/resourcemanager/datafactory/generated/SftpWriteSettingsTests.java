@@ -13,19 +13,19 @@ public final class SftpWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SftpWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"SftpWriteSettings\",\"operationTimeout\":\"dataj\",\"useTempFileRename\":\"datarorjbyyxkcvahvb\",\"maxConcurrentConnections\":\"dataxtjivwveng\",\"disableMetricsCollection\":\"datayct\",\"copyBehavior\":\"datahgjyholsmahbjc\",\"metadata\":[{\"name\":\"dataqxgbigozrvlkla\",\"value\":\"datalysse\"},{\"name\":\"datappgsfj\",\"value\":\"datagmogmcjn\"},{\"name\":\"dataukbwypcvqfz\",\"value\":\"dataoxgerizflwl\"},{\"name\":\"datavopqpfcdpy\",\"value\":\"datamwpm\"}],\"\":{\"sxfptv\":\"datajj\",\"rdwfhh\":\"datamvrejkvcimq\"}}")
+            "{\"type\":\"rtoxsthjyyiryb\",\"operationTimeout\":\"dataawfwws\",\"useTempFileRename\":\"datakbdozsspfwmf\",\"maxConcurrentConnections\":\"datamkmwdok\",\"disableMetricsCollection\":\"datayilho\",\"copyBehavior\":\"datatdioxgsrhxoyrgv\",\"metadata\":[{\"name\":\"datatmzglbplqhbrar\",\"value\":\"datadepsxufyqcqf\"}],\"\":{\"xgxbgochpxps\":\"dataye\"}}")
             .toObject(SftpWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SftpWriteSettings model = new SftpWriteSettings().withMaxConcurrentConnections("dataxtjivwveng")
-            .withDisableMetricsCollection("datayct").withCopyBehavior("datahgjyholsmahbjc")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("dataqxgbigozrvlkla").withValue("datalysse"),
-                new MetadataItem().withName("datappgsfj").withValue("datagmogmcjn"),
-                new MetadataItem().withName("dataukbwypcvqfz").withValue("dataoxgerizflwl"),
-                new MetadataItem().withName("datavopqpfcdpy").withValue("datamwpm")))
-            .withOperationTimeout("dataj").withUseTempFileRename("datarorjbyyxkcvahvb");
+        SftpWriteSettings model = new SftpWriteSettings().withMaxConcurrentConnections("datamkmwdok")
+            .withDisableMetricsCollection("datayilho")
+            .withCopyBehavior("datatdioxgsrhxoyrgv")
+            .withMetadata(
+                Arrays.asList(new MetadataItem().withName("datatmzglbplqhbrar").withValue("datadepsxufyqcqf")))
+            .withOperationTimeout("dataawfwws")
+            .withUseTempFileRename("datakbdozsspfwmf");
         model = BinaryData.fromObject(model).toObject(SftpWriteSettings.class);
     }
 }

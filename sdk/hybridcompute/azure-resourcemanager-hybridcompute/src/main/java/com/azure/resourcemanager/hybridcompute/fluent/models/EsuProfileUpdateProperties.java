@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcompute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the Update properties of a License Profile. */
+/**
+ * Describes the Update properties of a ESU License Profile.
+ */
 @Fluent
 public final class EsuProfileUpdateProperties {
     /*
@@ -16,13 +18,15 @@ public final class EsuProfileUpdateProperties {
     @JsonProperty(value = "assignedLicense")
     private String assignedLicense;
 
-    /** Creates an instance of EsuProfileUpdateProperties class. */
+    /**
+     * Creates an instance of EsuProfileUpdateProperties class.
+     */
     public EsuProfileUpdateProperties() {
     }
 
     /**
      * Get the assignedLicense property: The resource id of the license.
-     *
+     * 
      * @return the assignedLicense value.
      */
     public String assignedLicense() {
@@ -31,7 +35,7 @@ public final class EsuProfileUpdateProperties {
 
     /**
      * Set the assignedLicense property: The resource id of the license.
-     *
+     * 
      * @param assignedLicense the assignedLicense value to set.
      * @return the EsuProfileUpdateProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class EsuProfileUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

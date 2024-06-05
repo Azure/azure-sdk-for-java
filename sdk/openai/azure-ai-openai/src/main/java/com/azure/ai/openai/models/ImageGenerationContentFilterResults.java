@@ -5,13 +5,18 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the content filtering result for the image generation request.
  */
 @Immutable
-public final class ImageGenerationContentFilterResults {
+public final class ImageGenerationContentFilterResults
+    implements JsonSerializable<ImageGenerationContentFilterResults> {
 
     /*
      * Describes language related to anatomical organs and genitals, romantic relationships,
@@ -20,7 +25,6 @@ public final class ImageGenerationContentFilterResults {
      * prostitution, pornography, and abuse.
      */
     @Generated
-    @JsonProperty(value = "sexual")
     private ContentFilterResult sexual;
 
     /*
@@ -28,7 +32,6 @@ public final class ImageGenerationContentFilterResults {
      * kill someone or something; describes weapons, etc.
      */
     @Generated
-    @JsonProperty(value = "violence")
     private ContentFilterResult violence;
 
     /*
@@ -39,7 +42,6 @@ public final class ImageGenerationContentFilterResults {
      * status, personal appearance, and body size.
      */
     @Generated
-    @JsonProperty(value = "hate")
     private ContentFilterResult hate;
 
     /*
@@ -47,7 +49,6 @@ public final class ImageGenerationContentFilterResults {
      * or damage one’s body, or kill oneself.
      */
     @Generated
-    @JsonProperty(value = "self_harm")
     private ContentFilterResult selfHarm;
 
     /**
@@ -104,5 +105,51 @@ public final class ImageGenerationContentFilterResults {
     @Generated
     public ContentFilterResult getSelfHarm() {
         return this.selfHarm;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sexual", this.sexual);
+        jsonWriter.writeJsonField("violence", this.violence);
+        jsonWriter.writeJsonField("hate", this.hate);
+        jsonWriter.writeJsonField("self_harm", this.selfHarm);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageGenerationContentFilterResults from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageGenerationContentFilterResults if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageGenerationContentFilterResults.
+     */
+    @Generated
+    public static ImageGenerationContentFilterResults fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageGenerationContentFilterResults deserializedImageGenerationContentFilterResults
+                = new ImageGenerationContentFilterResults();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("sexual".equals(fieldName)) {
+                    deserializedImageGenerationContentFilterResults.sexual = ContentFilterResult.fromJson(reader);
+                } else if ("violence".equals(fieldName)) {
+                    deserializedImageGenerationContentFilterResults.violence = ContentFilterResult.fromJson(reader);
+                } else if ("hate".equals(fieldName)) {
+                    deserializedImageGenerationContentFilterResults.hate = ContentFilterResult.fromJson(reader);
+                } else if ("self_harm".equals(fieldName)) {
+                    deserializedImageGenerationContentFilterResults.selfHarm = ContentFilterResult.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedImageGenerationContentFilterResults;
+        });
     }
 }

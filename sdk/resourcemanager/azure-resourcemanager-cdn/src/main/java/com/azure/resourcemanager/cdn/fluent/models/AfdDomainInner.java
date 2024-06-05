@@ -34,13 +34,15 @@ public final class AfdDomainInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of AfdDomainInner class. */
+    /**
+     * Creates an instance of AfdDomainInner class.
+     */
     public AfdDomainInner() {
     }
 
     /**
      * Get the innerProperties property: The JSON object that contains the properties of the domain to create.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AfdDomainProperties innerProperties() {
@@ -49,7 +51,7 @@ public final class AfdDomainInner extends ProxyResource {
 
     /**
      * Get the systemData property: Read only system data.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -59,7 +61,7 @@ public final class AfdDomainInner extends ProxyResource {
     /**
      * Get the domainValidationState property: Provisioning substate shows the progress of custom HTTPS
      * enabling/disabling process step by step. DCV stands for DomainControlValidation.
-     *
+     * 
      * @return the domainValidationState value.
      */
     public DomainValidationState domainValidationState() {
@@ -68,7 +70,7 @@ public final class AfdDomainInner extends ProxyResource {
 
     /**
      * Get the hostname property: The host name of the domain. Must be a domain name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -77,7 +79,7 @@ public final class AfdDomainInner extends ProxyResource {
 
     /**
      * Set the hostname property: The host name of the domain. Must be a domain name.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the AfdDomainInner object itself.
      */
@@ -91,7 +93,7 @@ public final class AfdDomainInner extends ProxyResource {
 
     /**
      * Get the extendedProperties property: Key-Value pair representing migration properties for domains.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
@@ -100,7 +102,7 @@ public final class AfdDomainInner extends ProxyResource {
 
     /**
      * Set the extendedProperties property: Key-Value pair representing migration properties for domains.
-     *
+     * 
      * @param extendedProperties the extendedProperties value to set.
      * @return the AfdDomainInner object itself.
      */
@@ -114,7 +116,7 @@ public final class AfdDomainInner extends ProxyResource {
 
     /**
      * Get the validationProperties property: Values the customer needs to validate domain ownership.
-     *
+     * 
      * @return the validationProperties value.
      */
     public DomainValidationProperties validationProperties() {
@@ -123,7 +125,7 @@ public final class AfdDomainInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public AfdProvisioningState provisioningState() {
@@ -132,7 +134,7 @@ public final class AfdDomainInner extends ProxyResource {
 
     /**
      * Get the deploymentStatus property: The deploymentStatus property.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public DeploymentStatus deploymentStatus() {
@@ -141,7 +143,7 @@ public final class AfdDomainInner extends ProxyResource {
 
     /**
      * Get the profileName property: The name of the profile which holds the domain.
-     *
+     * 
      * @return the profileName value.
      */
     public String profileName() {
@@ -152,7 +154,7 @@ public final class AfdDomainInner extends ProxyResource {
      * Get the tlsSettings property: The configuration specifying how to enable HTTPS for the domain - using
      * AzureFrontDoor managed certificate or user's own certificate. If not specified, enabling ssl uses AzureFrontDoor
      * managed certificate by default.
-     *
+     * 
      * @return the tlsSettings value.
      */
     public AfdDomainHttpsParameters tlsSettings() {
@@ -163,7 +165,7 @@ public final class AfdDomainInner extends ProxyResource {
      * Set the tlsSettings property: The configuration specifying how to enable HTTPS for the domain - using
      * AzureFrontDoor managed certificate or user's own certificate. If not specified, enabling ssl uses AzureFrontDoor
      * managed certificate by default.
-     *
+     * 
      * @param tlsSettings the tlsSettings value to set.
      * @return the AfdDomainInner object itself.
      */
@@ -177,7 +179,7 @@ public final class AfdDomainInner extends ProxyResource {
 
     /**
      * Get the azureDnsZone property: Resource reference to the Azure DNS zone.
-     *
+     * 
      * @return the azureDnsZone value.
      */
     public ResourceReference azureDnsZone() {
@@ -186,7 +188,7 @@ public final class AfdDomainInner extends ProxyResource {
 
     /**
      * Set the azureDnsZone property: Resource reference to the Azure DNS zone.
-     *
+     * 
      * @param azureDnsZone the azureDnsZone value to set.
      * @return the AfdDomainInner object itself.
      */
@@ -199,9 +201,9 @@ public final class AfdDomainInner extends ProxyResource {
     }
 
     /**
-     * Get the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom domain
-     * ownership was prevalidated.
-     *
+     * Get the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom
+     * domain ownership was prevalidated.
+     * 
      * @return the preValidatedCustomDomainResourceId value.
      */
     public ResourceReference preValidatedCustomDomainResourceId() {
@@ -209,9 +211,9 @@ public final class AfdDomainInner extends ProxyResource {
     }
 
     /**
-     * Set the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom domain
-     * ownership was prevalidated.
-     *
+     * Set the preValidatedCustomDomainResourceId property: Resource reference to the Azure resource where custom
+     * domain ownership was prevalidated.
+     * 
      * @param preValidatedCustomDomainResourceId the preValidatedCustomDomainResourceId value to set.
      * @return the AfdDomainInner object itself.
      */
@@ -225,7 +227,7 @@ public final class AfdDomainInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

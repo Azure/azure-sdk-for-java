@@ -5,52 +5,56 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.time.OffsetDateTime;
+import java.util.Objects;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
-/** The object returned in the QueueMessageList array when calling Put Message on a Queue. */
-@JacksonXmlRootElement(localName = "QueueMessage")
+/**
+ * The object returned in the QueueMessageList array when calling Put Message on a Queue.
+ */
 @Fluent
-public final class SendMessageResult {
+public final class SendMessageResult implements XmlSerializable<SendMessageResult> {
     /*
      * The Id of the Message.
      */
-    @JsonProperty(value = "MessageId", required = true)
     private String messageId;
 
     /*
      * The time the Message was inserted into the Queue.
      */
-    @JsonProperty(value = "InsertionTime", required = true)
     private DateTimeRfc1123 insertionTime;
 
     /*
      * The time that the Message will expire and be automatically deleted.
      */
-    @JsonProperty(value = "ExpirationTime", required = true)
     private DateTimeRfc1123 expirationTime;
 
     /*
-     * This value is required to delete the Message. If deletion fails using this popreceipt then the message has been
-     * dequeued by another client.
+     * This value is required to delete the Message. If deletion fails using this popreceipt then the message has been dequeued by another client.
      */
-    @JsonProperty(value = "PopReceipt", required = true)
     private String popReceipt;
 
     /*
      * The time that the message will again become visible in the Queue.
      */
-    @JsonProperty(value = "TimeNextVisible", required = true)
     private DateTimeRfc1123 timeNextVisible;
 
-    /** Creates an instance of SendMessageResult class. */
-    public SendMessageResult() {}
+    /**
+     * Creates an instance of SendMessageResult class.
+     */
+    public SendMessageResult() {
+    }
 
     /**
      * Get the messageId property: The Id of the Message.
-     *
+     * 
      * @return the messageId value.
      */
     public String getMessageId() {
@@ -59,7 +63,7 @@ public final class SendMessageResult {
 
     /**
      * Set the messageId property: The Id of the Message.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the SendMessageResult object itself.
      */
@@ -70,7 +74,7 @@ public final class SendMessageResult {
 
     /**
      * Get the insertionTime property: The time the Message was inserted into the Queue.
-     *
+     * 
      * @return the insertionTime value.
      */
     public OffsetDateTime getInsertionTime() {
@@ -82,7 +86,7 @@ public final class SendMessageResult {
 
     /**
      * Set the insertionTime property: The time the Message was inserted into the Queue.
-     *
+     * 
      * @param insertionTime the insertionTime value to set.
      * @return the SendMessageResult object itself.
      */
@@ -97,7 +101,7 @@ public final class SendMessageResult {
 
     /**
      * Get the expirationTime property: The time that the Message will expire and be automatically deleted.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime getExpirationTime() {
@@ -109,7 +113,7 @@ public final class SendMessageResult {
 
     /**
      * Set the expirationTime property: The time that the Message will expire and be automatically deleted.
-     *
+     * 
      * @param expirationTime the expirationTime value to set.
      * @return the SendMessageResult object itself.
      */
@@ -125,7 +129,7 @@ public final class SendMessageResult {
     /**
      * Get the popReceipt property: This value is required to delete the Message. If deletion fails using this
      * popreceipt then the message has been dequeued by another client.
-     *
+     * 
      * @return the popReceipt value.
      */
     public String getPopReceipt() {
@@ -135,7 +139,7 @@ public final class SendMessageResult {
     /**
      * Set the popReceipt property: This value is required to delete the Message. If deletion fails using this
      * popreceipt then the message has been dequeued by another client.
-     *
+     * 
      * @param popReceipt the popReceipt value to set.
      * @return the SendMessageResult object itself.
      */
@@ -146,7 +150,7 @@ public final class SendMessageResult {
 
     /**
      * Get the timeNextVisible property: The time that the message will again become visible in the Queue.
-     *
+     * 
      * @return the timeNextVisible value.
      */
     public OffsetDateTime getTimeNextVisible() {
@@ -158,7 +162,7 @@ public final class SendMessageResult {
 
     /**
      * Set the timeNextVisible property: The time that the message will again become visible in the Queue.
-     *
+     * 
      * @param timeNextVisible the timeNextVisible value to set.
      * @return the SendMessageResult object itself.
      */
@@ -169,5 +173,72 @@ public final class SendMessageResult {
             this.timeNextVisible = new DateTimeRfc1123(timeNextVisible);
         }
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringElement("MessageId", this.messageId);
+        xmlWriter.writeStringElement("InsertionTime", Objects.toString(this.insertionTime, null));
+        xmlWriter.writeStringElement("ExpirationTime", Objects.toString(this.expirationTime, null));
+        xmlWriter.writeStringElement("PopReceipt", this.popReceipt);
+        xmlWriter.writeStringElement("TimeNextVisible", Objects.toString(this.timeNextVisible, null));
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of SendMessageResult from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of SendMessageResult if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the SendMessageResult.
+     */
+    public static SendMessageResult fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of SendMessageResult from the XmlReader.
+     * 
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     * cases where the model can deserialize from different root element names.
+     * @return An instance of SendMessageResult if the XmlReader was pointing to an instance of it, or null if it was
+     * pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the SendMessageResult.
+     */
+    public static SendMessageResult fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
+        return xmlReader.readObject(finalRootElementName, reader -> {
+            SendMessageResult deserializedSendMessageResult = new SendMessageResult();
+            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                QName elementName = reader.getElementName();
+
+                if ("MessageId".equals(elementName.getLocalPart())) {
+                    deserializedSendMessageResult.messageId = reader.getStringElement();
+                } else if ("InsertionTime".equals(elementName.getLocalPart())) {
+                    deserializedSendMessageResult.insertionTime = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("ExpirationTime".equals(elementName.getLocalPart())) {
+                    deserializedSendMessageResult.expirationTime = reader.getNullableElement(DateTimeRfc1123::new);
+                } else if ("PopReceipt".equals(elementName.getLocalPart())) {
+                    deserializedSendMessageResult.popReceipt = reader.getStringElement();
+                } else if ("TimeNextVisible".equals(elementName.getLocalPart())) {
+                    deserializedSendMessageResult.timeNextVisible = reader.getNullableElement(DateTimeRfc1123::new);
+                } else {
+                    reader.skipElement();
+                }
+            }
+
+            return deserializedSendMessageResult;
+        });
     }
 }

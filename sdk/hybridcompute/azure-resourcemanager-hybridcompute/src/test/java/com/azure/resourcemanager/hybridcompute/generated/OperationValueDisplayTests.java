@@ -10,11 +10,9 @@ import com.azure.resourcemanager.hybridcompute.models.OperationValueDisplay;
 public final class OperationValueDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationValueDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"operation\":\"hsfxoblytkb\",\"resource\":\"pe\",\"description\":\"wfbkrvrns\",\"provider\":\"hqjohxcrsbfova\"}")
-                .toObject(OperationValueDisplay.class);
+        OperationValueDisplay model = BinaryData.fromString(
+            "{\"operation\":\"luicpdggkzzlvmbm\",\"resource\":\"xmodf\",\"description\":\"efyw\",\"provider\":\"pfvmwyhrfou\"}")
+            .toObject(OperationValueDisplay.class);
     }
 
     @org.junit.jupiter.api.Test

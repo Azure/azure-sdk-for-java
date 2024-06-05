@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.frontdoor.fluent.models.LoadBalancingSettingsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Load balancing settings for a backend pool. */
+/**
+ * Load balancing settings for a backend pool.
+ */
 @Fluent
 public final class LoadBalancingSettingsModel extends SubResource {
     /*
@@ -30,13 +32,15 @@ public final class LoadBalancingSettingsModel extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of LoadBalancingSettingsModel class. */
+    /**
+     * Creates an instance of LoadBalancingSettingsModel class.
+     */
     public LoadBalancingSettingsModel() {
     }
 
     /**
      * Get the innerProperties property: Properties of the load balancing settings.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LoadBalancingSettingsProperties innerProperties() {
@@ -45,7 +49,7 @@ public final class LoadBalancingSettingsModel extends SubResource {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -54,7 +58,7 @@ public final class LoadBalancingSettingsModel extends SubResource {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the LoadBalancingSettingsModel object itself.
      */
@@ -65,14 +69,16 @@ public final class LoadBalancingSettingsModel extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LoadBalancingSettingsModel withId(String id) {
         super.withId(id);
@@ -81,9 +87,9 @@ public final class LoadBalancingSettingsModel extends SubResource {
 
     /**
      * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     *
-     * <p>Resource status.
-     *
+     * 
+     * Resource status.
+     * 
      * @return the resourceState value.
      */
     public FrontDoorResourceState resourceState() {
@@ -92,7 +98,7 @@ public final class LoadBalancingSettingsModel extends SubResource {
 
     /**
      * Get the sampleSize property: The number of samples to consider for load balancing decisions.
-     *
+     * 
      * @return the sampleSize value.
      */
     public Integer sampleSize() {
@@ -101,7 +107,7 @@ public final class LoadBalancingSettingsModel extends SubResource {
 
     /**
      * Set the sampleSize property: The number of samples to consider for load balancing decisions.
-     *
+     * 
      * @param sampleSize the sampleSize value to set.
      * @return the LoadBalancingSettingsModel object itself.
      */
@@ -115,7 +121,7 @@ public final class LoadBalancingSettingsModel extends SubResource {
 
     /**
      * Get the successfulSamplesRequired property: The number of samples within the sample period that must succeed.
-     *
+     * 
      * @return the successfulSamplesRequired value.
      */
     public Integer successfulSamplesRequired() {
@@ -124,7 +130,7 @@ public final class LoadBalancingSettingsModel extends SubResource {
 
     /**
      * Set the successfulSamplesRequired property: The number of samples within the sample period that must succeed.
-     *
+     * 
      * @param successfulSamplesRequired the successfulSamplesRequired value to set.
      * @return the LoadBalancingSettingsModel object itself.
      */
@@ -139,7 +145,7 @@ public final class LoadBalancingSettingsModel extends SubResource {
     /**
      * Get the additionalLatencyMilliseconds property: The additional latency in milliseconds for probes to fall into
      * the lowest latency bucket.
-     *
+     * 
      * @return the additionalLatencyMilliseconds value.
      */
     public Integer additionalLatencyMilliseconds() {
@@ -149,7 +155,7 @@ public final class LoadBalancingSettingsModel extends SubResource {
     /**
      * Set the additionalLatencyMilliseconds property: The additional latency in milliseconds for probes to fall into
      * the lowest latency bucket.
-     *
+     * 
      * @param additionalLatencyMilliseconds the additionalLatencyMilliseconds value to set.
      * @return the LoadBalancingSettingsModel object itself.
      */
@@ -163,7 +169,7 @@ public final class LoadBalancingSettingsModel extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

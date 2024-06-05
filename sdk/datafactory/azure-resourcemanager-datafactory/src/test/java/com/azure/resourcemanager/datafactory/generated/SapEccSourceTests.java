@@ -11,16 +11,20 @@ public final class SapEccSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapEccSource model = BinaryData.fromString(
-            "{\"type\":\"SapEccSource\",\"query\":\"datap\",\"httpRequestTimeout\":\"dataegkrjolbaeghak\",\"queryTimeout\":\"datacismrnneklfibn\",\"additionalColumns\":\"datafcl\",\"sourceRetryCount\":\"datafu\",\"sourceRetryWait\":\"datawqzbiukzmfy\",\"maxConcurrentConnections\":\"datayz\",\"disableMetricsCollection\":\"dataf\",\"\":{\"seyxpgkmlnj\":\"datalnfvexiuuqafo\",\"glnfwjslwvexblu\":\"datauaywgcjqnfafp\"}}")
+            "{\"type\":\"pwqzvqtnozw\",\"query\":\"datab\",\"httpRequestTimeout\":\"dataeeeucvvnbymrgel\",\"queryTimeout\":\"datafr\",\"additionalColumns\":\"datanvkqtv\",\"sourceRetryCount\":\"datakaqracvcbrtlt\",\"sourceRetryWait\":\"datahbzbbjxkamitgv\",\"maxConcurrentConnections\":\"datapdv\",\"disableMetricsCollection\":\"datayelrteunkwypu\",\"\":{\"lylzdbrwjlwfthf\":\"datamsygtdfqlfd\",\"jsfgkwrcbgxypr\":\"dataxwi\"}}")
             .toObject(SapEccSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapEccSource model = new SapEccSource().withSourceRetryCount("datafu").withSourceRetryWait("datawqzbiukzmfy")
-            .withMaxConcurrentConnections("datayz").withDisableMetricsCollection("dataf")
-            .withQueryTimeout("datacismrnneklfibn").withAdditionalColumns("datafcl").withQuery("datap")
-            .withHttpRequestTimeout("dataegkrjolbaeghak");
+        SapEccSource model = new SapEccSource().withSourceRetryCount("datakaqracvcbrtlt")
+            .withSourceRetryWait("datahbzbbjxkamitgv")
+            .withMaxConcurrentConnections("datapdv")
+            .withDisableMetricsCollection("datayelrteunkwypu")
+            .withQueryTimeout("datafr")
+            .withAdditionalColumns("datanvkqtv")
+            .withQuery("datab")
+            .withHttpRequestTimeout("dataeeeucvvnbymrgel");
         model = BinaryData.fromObject(model).toObject(SapEccSource.class);
     }
 }

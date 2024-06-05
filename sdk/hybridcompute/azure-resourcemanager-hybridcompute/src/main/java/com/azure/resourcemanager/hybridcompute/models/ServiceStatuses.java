@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcompute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reports the state and behavior of dependent services. */
+/**
+ * Reports the state and behavior of dependent services.
+ */
 @Fluent
 public final class ServiceStatuses {
     /*
@@ -22,13 +24,15 @@ public final class ServiceStatuses {
     @JsonProperty(value = "guestConfigurationService")
     private ServiceStatus guestConfigurationService;
 
-    /** Creates an instance of ServiceStatuses class. */
+    /**
+     * Creates an instance of ServiceStatuses class.
+     */
     public ServiceStatuses() {
     }
 
     /**
      * Get the extensionService property: The state of the extension service on the Arc-enabled machine.
-     *
+     * 
      * @return the extensionService value.
      */
     public ServiceStatus extensionService() {
@@ -37,7 +41,7 @@ public final class ServiceStatuses {
 
     /**
      * Set the extensionService property: The state of the extension service on the Arc-enabled machine.
-     *
+     * 
      * @param extensionService the extensionService value to set.
      * @return the ServiceStatuses object itself.
      */
@@ -49,7 +53,7 @@ public final class ServiceStatuses {
     /**
      * Get the guestConfigurationService property: The state of the guest configuration service on the Arc-enabled
      * machine.
-     *
+     * 
      * @return the guestConfigurationService value.
      */
     public ServiceStatus guestConfigurationService() {
@@ -59,7 +63,7 @@ public final class ServiceStatuses {
     /**
      * Set the guestConfigurationService property: The state of the guest configuration service on the Arc-enabled
      * machine.
-     *
+     * 
      * @param guestConfigurationService the guestConfigurationService value to set.
      * @return the ServiceStatuses object itself.
      */
@@ -70,7 +74,7 @@ public final class ServiceStatuses {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -25,8 +25,7 @@ public final class SecureScoreItemProperties {
     private ScoreDetails innerScore;
 
     /*
-     * The relative weight for each subscription. Used when calculating an aggregated secure score for multiple
-     * subscriptions.
+     * The relative weight for each subscription. Used when calculating an aggregated secure score for multiple subscriptions.
      */
     @JsonProperty(value = "weight", access = JsonProperty.Access.WRITE_ONLY)
     private Long weight;

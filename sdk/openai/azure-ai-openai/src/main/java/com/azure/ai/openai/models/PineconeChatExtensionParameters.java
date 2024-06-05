@@ -5,14 +5,18 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Parameters for configuring Azure OpenAI Pinecone chat extensions. The supported authentication type is APIKey.
  */
 @Fluent
-public final class PineconeChatExtensionParameters {
+public final class PineconeChatExtensionParameters implements JsonSerializable<PineconeChatExtensionParameters> {
 
     /*
      * The authentication method to use when accessing the defined data source.
@@ -23,21 +27,18 @@ public final class PineconeChatExtensionParameters {
      * authentication.
      */
     @Generated
-    @JsonProperty(value = "authentication")
     private OnYourDataAuthenticationOptions authentication;
 
     /*
      * The configured top number of documents to feature for the configured query.
      */
     @Generated
-    @JsonProperty(value = "top_n_documents")
     private Integer topNDocuments;
 
     /*
      * Whether queries should be restricted to use of indexed data.
      */
     @Generated
-    @JsonProperty(value = "in_scope")
     private Boolean inScope;
 
     /*
@@ -45,7 +46,6 @@ public final class PineconeChatExtensionParameters {
      * precision but lower recall of the answer.
      */
     @Generated
-    @JsonProperty(value = "strictness")
     private Integer strictness;
 
     /*
@@ -54,36 +54,31 @@ public final class PineconeChatExtensionParameters {
      * limit for it, and it counts against the overall token limit.
      */
     @Generated
-    @JsonProperty(value = "role_information")
     private String roleInformation;
 
     /*
      * The environment name of Pinecone.
      */
     @Generated
-    @JsonProperty(value = "environment")
-    private String environment;
+    private final String environment;
 
     /*
      * The name of the Pinecone database index.
      */
     @Generated
-    @JsonProperty(value = "index_name")
-    private String indexName;
+    private final String indexName;
 
     /*
      * Customized field mapping behavior to use when interacting with the search index.
      */
     @Generated
-    @JsonProperty(value = "fields_mapping")
-    private PineconeFieldMappingOptions fieldsMapping;
+    private final PineconeFieldMappingOptions fieldsMapping;
 
     /*
      * The embedding dependency for vector search.
      */
     @Generated
-    @JsonProperty(value = "embedding_dependency")
-    private OnYourDataVectorizationSource embeddingDependency;
+    private final OnYourDataVectorizationSource embeddingDependency;
 
     /**
      * Get the authentication property: The authentication method to use when accessing the defined data source.
@@ -260,14 +255,201 @@ public final class PineconeChatExtensionParameters {
      * @param embeddingDependency the embeddingDependency value to set.
      */
     @Generated
-    @JsonCreator
-    public PineconeChatExtensionParameters(@JsonProperty(value = "environment") String environment,
-        @JsonProperty(value = "index_name") String indexName,
-        @JsonProperty(value = "fields_mapping") PineconeFieldMappingOptions fieldsMapping,
-        @JsonProperty(value = "embedding_dependency") OnYourDataVectorizationSource embeddingDependency) {
+    public PineconeChatExtensionParameters(String environment, String indexName,
+        PineconeFieldMappingOptions fieldsMapping, OnYourDataVectorizationSource embeddingDependency) {
         this.environment = environment;
         this.indexName = indexName;
         this.fieldsMapping = fieldsMapping;
         this.embeddingDependency = embeddingDependency;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("environment", this.environment);
+        jsonWriter.writeStringField("index_name", this.indexName);
+        jsonWriter.writeJsonField("fields_mapping", this.fieldsMapping);
+        jsonWriter.writeJsonField("embedding_dependency", this.embeddingDependency);
+        jsonWriter.writeJsonField("authentication", this.authentication);
+        jsonWriter.writeNumberField("top_n_documents", this.topNDocuments);
+        jsonWriter.writeBooleanField("in_scope", this.inScope);
+        jsonWriter.writeNumberField("strictness", this.strictness);
+        jsonWriter.writeStringField("role_information", this.roleInformation);
+        jsonWriter.writeNumberField("max_search_queries", this.maxSearchQueries);
+        jsonWriter.writeBooleanField("allow_partial_result", this.allowPartialResult);
+        jsonWriter.writeArrayField("include_contexts", this.includeContexts,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PineconeChatExtensionParameters from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PineconeChatExtensionParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PineconeChatExtensionParameters.
+     */
+    @Generated
+    public static PineconeChatExtensionParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String environment = null;
+            String indexName = null;
+            PineconeFieldMappingOptions fieldsMapping = null;
+            OnYourDataVectorizationSource embeddingDependency = null;
+            OnYourDataAuthenticationOptions authentication = null;
+            Integer topNDocuments = null;
+            Boolean inScope = null;
+            Integer strictness = null;
+            String roleInformation = null;
+            Integer maxSearchQueries = null;
+            Boolean allowPartialResult = null;
+            List<OnYourDataContextProperty> includeContexts = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("environment".equals(fieldName)) {
+                    environment = reader.getString();
+                } else if ("index_name".equals(fieldName)) {
+                    indexName = reader.getString();
+                } else if ("fields_mapping".equals(fieldName)) {
+                    fieldsMapping = PineconeFieldMappingOptions.fromJson(reader);
+                } else if ("embedding_dependency".equals(fieldName)) {
+                    embeddingDependency = OnYourDataVectorizationSource.fromJson(reader);
+                } else if ("authentication".equals(fieldName)) {
+                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
+                } else if ("top_n_documents".equals(fieldName)) {
+                    topNDocuments = reader.getNullable(JsonReader::getInt);
+                } else if ("in_scope".equals(fieldName)) {
+                    inScope = reader.getNullable(JsonReader::getBoolean);
+                } else if ("strictness".equals(fieldName)) {
+                    strictness = reader.getNullable(JsonReader::getInt);
+                } else if ("role_information".equals(fieldName)) {
+                    roleInformation = reader.getString();
+                } else if ("max_search_queries".equals(fieldName)) {
+                    maxSearchQueries = reader.getNullable(JsonReader::getInt);
+                } else if ("allow_partial_result".equals(fieldName)) {
+                    allowPartialResult = reader.getNullable(JsonReader::getBoolean);
+                } else if ("include_contexts".equals(fieldName)) {
+                    includeContexts
+                        = reader.readArray(reader1 -> OnYourDataContextProperty.fromString(reader1.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            PineconeChatExtensionParameters deserializedPineconeChatExtensionParameters
+                = new PineconeChatExtensionParameters(environment, indexName, fieldsMapping, embeddingDependency);
+            deserializedPineconeChatExtensionParameters.authentication = authentication;
+            deserializedPineconeChatExtensionParameters.topNDocuments = topNDocuments;
+            deserializedPineconeChatExtensionParameters.inScope = inScope;
+            deserializedPineconeChatExtensionParameters.strictness = strictness;
+            deserializedPineconeChatExtensionParameters.roleInformation = roleInformation;
+            deserializedPineconeChatExtensionParameters.maxSearchQueries = maxSearchQueries;
+            deserializedPineconeChatExtensionParameters.allowPartialResult = allowPartialResult;
+            deserializedPineconeChatExtensionParameters.includeContexts = includeContexts;
+            return deserializedPineconeChatExtensionParameters;
+        });
+    }
+
+    /*
+     * The max number of rewritten queries should be send to search provider for one user message. If not specified,
+     * the system will decide the number of queries to send.
+     */
+    @Generated
+    private Integer maxSearchQueries;
+
+    /*
+     * If specified as true, the system will allow partial search results to be used and the request fails if all the
+     * queries fail.
+     * If not specified, or specified as false, the request will fail if any search query fails.
+     */
+    @Generated
+    private Boolean allowPartialResult;
+
+    /*
+     * The included properties of the output context. If not specified, the default value is `citations` and `intent`.
+     */
+    @Generated
+    private List<OnYourDataContextProperty> includeContexts;
+
+    /**
+     * Get the maxSearchQueries property: The max number of rewritten queries should be send to search provider for one
+     * user message. If not specified,
+     * the system will decide the number of queries to send.
+     *
+     * @return the maxSearchQueries value.
+     */
+    @Generated
+    public Integer getMaxSearchQueries() {
+        return this.maxSearchQueries;
+    }
+
+    /**
+     * Set the maxSearchQueries property: The max number of rewritten queries should be send to search provider for one
+     * user message. If not specified,
+     * the system will decide the number of queries to send.
+     *
+     * @param maxSearchQueries the maxSearchQueries value to set.
+     * @return the PineconeChatExtensionParameters object itself.
+     */
+    @Generated
+    public PineconeChatExtensionParameters setMaxSearchQueries(Integer maxSearchQueries) {
+        this.maxSearchQueries = maxSearchQueries;
+        return this;
+    }
+
+    /**
+     * Get the allowPartialResult property: If specified as true, the system will allow partial search results to be
+     * used and the request fails if all the queries fail.
+     * If not specified, or specified as false, the request will fail if any search query fails.
+     *
+     * @return the allowPartialResult value.
+     */
+    @Generated
+    public Boolean isAllowPartialResult() {
+        return this.allowPartialResult;
+    }
+
+    /**
+     * Set the allowPartialResult property: If specified as true, the system will allow partial search results to be
+     * used and the request fails if all the queries fail.
+     * If not specified, or specified as false, the request will fail if any search query fails.
+     *
+     * @param allowPartialResult the allowPartialResult value to set.
+     * @return the PineconeChatExtensionParameters object itself.
+     */
+    @Generated
+    public PineconeChatExtensionParameters setAllowPartialResult(Boolean allowPartialResult) {
+        this.allowPartialResult = allowPartialResult;
+        return this;
+    }
+
+    /**
+     * Get the includeContexts property: The included properties of the output context. If not specified, the default
+     * value is `citations` and `intent`.
+     *
+     * @return the includeContexts value.
+     */
+    @Generated
+    public List<OnYourDataContextProperty> getIncludeContexts() {
+        return this.includeContexts;
+    }
+
+    /**
+     * Set the includeContexts property: The included properties of the output context. If not specified, the default
+     * value is `citations` and `intent`.
+     *
+     * @param includeContexts the includeContexts value to set.
+     * @return the PineconeChatExtensionParameters object itself.
+     */
+    @Generated
+    public PineconeChatExtensionParameters setIncludeContexts(List<OnYourDataContextProperty> includeContexts) {
+        this.includeContexts = includeContexts;
+        return this;
     }
 }

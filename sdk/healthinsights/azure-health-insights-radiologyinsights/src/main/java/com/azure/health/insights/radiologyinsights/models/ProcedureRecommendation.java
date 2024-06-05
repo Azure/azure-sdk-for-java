@@ -27,23 +27,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class ProcedureRecommendation {
 
     /*
-     * Procedure type : generic.
+     * The kind property.
      */
     @Generated
     @JsonTypeId
     @JsonProperty(value = "kind")
-    private String kind;
+    private String kind = "ProcedureRecommendation";
 
     /**
      * Creates an instance of ProcedureRecommendation class.
      */
     @Generated
     protected ProcedureRecommendation() {
-        this.kind = "ProcedureRecommendation";
     }
 
     /**
-     * Get the kind property: Procedure type : generic.
+     * Get the kind property: The kind property.
      *
      * @return the kind value.
      */

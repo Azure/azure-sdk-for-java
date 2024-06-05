@@ -1,5 +1,21 @@
 # Release History
 
+## 1.2.24 (2024-05-29)
+
+### Dependency Updates
+
+- Added new library entries to the BOM:
+  - `azure-ai-translation-text`
+  - `azure-developer-devcenter`
+
+- Updated Azure SDK dependency versions to the latest releases.
+
+## 1.2.23 (2024-04-24)
+
+### Dependency Updates
+
+- Updated Azure SDK dependency versions to the latest releases.
+
 ## 1.2.22 (2024-03-26)
 
 ### Dependency Updates

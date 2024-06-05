@@ -4,14 +4,16 @@
 
 package com.azure.resourcemanager.containerservicefleet.generated;
 
-/** Samples for Fleets ListByResourceGroup. */
+/**
+ * Samples for Fleets ListByResourceGroup.
+ */
 public final class FleetsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2023-10-15/examples/Fleets_ListByResourceGroup.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/fleet/stable/2024-04-01/examples/Fleets_ListByResourceGroup.json
      */
     /**
      * Sample code: Lists the Fleet resources in a resource group.
-     *
+     * 
      * @param manager Entry point to ContainerServiceFleetManager.
      */
     public static void listsTheFleetResourcesInAResourceGroup(

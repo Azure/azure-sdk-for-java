@@ -6,6 +6,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
@@ -120,7 +121,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void indexDoesNotThrowWhenAllActionsSucceedSync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String expectedHotelId = getRandomDocumentKey();
@@ -131,7 +137,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void indexDoesNotThrowWhenAllActionsSucceedAsync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String expectedHotelId = getRandomDocumentKey();
@@ -143,7 +154,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void canIndexWithPascalCaseFieldsSync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchClient client = getClient(BOOKS_INDEX_NAME);
 
         String isbn = getRandomDocumentKey();
@@ -160,7 +176,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void canIndexWithPascalCaseFieldsAsync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchAsyncClient asyncClient = getAsyncClient(BOOKS_INDEX_NAME);
 
         String isbn = getRandomDocumentKey();
@@ -178,7 +199,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void canDeleteBatchByKeysSync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotel1Key = getRandomDocumentKey();
@@ -199,7 +225,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void canDeleteBatchByKeysAsync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotel1Key = getRandomDocumentKey();
@@ -223,7 +254,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void indexDoesNotThrowWhenDeletingDocumentWithExtraFieldsSync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
@@ -243,7 +279,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void indexDoesNotThrowWhenDeletingDocumentWithExtraFieldsAsync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
@@ -266,7 +307,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void indexDoesNotThrowWhenDeletingDynamicDocumentWithExtraFieldsSync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
@@ -287,7 +333,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void indexDoesNotThrowWhenDeletingDynamicDocumentWithExtraFieldsAsync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
@@ -310,7 +361,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void canIndexStaticallyTypedDocumentsSync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotel1Id = getRandomDocumentKey();
@@ -348,7 +404,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void canIndexStaticallyTypedDocumentsAsync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotel1Id = getRandomDocumentKey();
@@ -390,7 +451,12 @@ public class IndexingTests extends SearchTestBase {
 
 
     @Test
+    @LiveOnly
     public void canIndexDynamicDocumentsNotThrowSync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotel1Id = getRandomDocumentKey();
@@ -426,7 +492,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void canIndexDynamicDocumentsNotThrowAsync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotel1Id = getRandomDocumentKey();
@@ -465,7 +536,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void canIndexDynamicDocumentsThrowOnErrorSync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotel1Id = getRandomDocumentKey();
@@ -501,7 +577,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void canIndexDynamicDocumentsThrowOnErrorAsync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotel1Id = getRandomDocumentKey();
@@ -767,7 +848,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void mergeDocumentWithoutExistingKeyThrowsIndexingExceptionSync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
@@ -780,7 +866,12 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
+    @LiveOnly
     public void mergeDocumentWithoutExistingKeyThrowsIndexingExceptionAsync() {
+        // Disable `("$..key")` sanitizer
+        // if (!interceptorManager.isLiveMode()) {
+        //    interceptorManager.removeSanitizers("AZSDK3447"));
+        // }
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();

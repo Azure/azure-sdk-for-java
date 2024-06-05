@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerGtidSetParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerGtidSetParameter model =
-            BinaryData.fromString("{\"gtidSet\":\"esnzwde\"}").toObject(ServerGtidSetParameter.class);
-        Assertions.assertEquals("esnzwde", model.gtidSet());
+        ServerGtidSetParameter model
+            = BinaryData.fromString("{\"gtidSet\":\"wkuofoskghsauu\"}").toObject(ServerGtidSetParameter.class);
+        Assertions.assertEquals("wkuofoskghsauu", model.gtidSet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerGtidSetParameter model = new ServerGtidSetParameter().withGtidSet("esnzwde");
+        ServerGtidSetParameter model = new ServerGtidSetParameter().withGtidSet("wkuofoskghsauu");
         model = BinaryData.fromObject(model).toObject(ServerGtidSetParameter.class);
-        Assertions.assertEquals("esnzwde", model.gtidSet());
+        Assertions.assertEquals("wkuofoskghsauu", model.gtidSet());
     }
 }

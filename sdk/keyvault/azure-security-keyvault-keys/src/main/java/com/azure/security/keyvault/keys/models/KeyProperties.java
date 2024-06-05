@@ -67,6 +67,11 @@ public class KeyProperties implements JsonSerializable<KeyProperties> {
             public void setRecoverableDays(KeyProperties keyProperties, Integer recoverableDays) {
                 keyProperties.recoverableDays = recoverableDays;
             }
+
+            @Override
+            public void setHsmPlatform(KeyProperties keyProperties, String hsmPlatform) {
+                keyProperties.hsmPlatform = hsmPlatform;
+            }
         });
     }
     /**

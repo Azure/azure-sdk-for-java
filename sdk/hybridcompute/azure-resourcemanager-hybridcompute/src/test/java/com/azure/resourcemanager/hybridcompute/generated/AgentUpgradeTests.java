@@ -6,31 +6,28 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcompute.models.AgentUpgrade;
+import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 
 public final class AgentUpgradeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentUpgrade model =
-            BinaryData
-                .fromString(
-                    "{\"desiredVersion\":\"qeojnxqbzvddntw\",\"correlationId\":\"eic\",\"enableAutomaticUpgrade\":false,\"lastAttemptDesiredVersion\":\"pzaoqvuhr\",\"lastAttemptTimestamp\":\"f\",\"lastAttemptStatus\":\"Success\",\"lastAttemptMessage\":\"dglmjthjqkwp\"}")
-                .toObject(AgentUpgrade.class);
-        Assertions.assertEquals("qeojnxqbzvddntw", model.desiredVersion());
-        Assertions.assertEquals("eic", model.correlationId());
-        Assertions.assertEquals(false, model.enableAutomaticUpgrade());
+        AgentUpgrade model = BinaryData.fromString(
+            "{\"desiredVersion\":\"seiphe\",\"correlationId\":\"8086fa74-7f6b-4ef7-8698-514715594f47\",\"enableAutomaticUpgrade\":true,\"lastAttemptDesiredVersion\":\"eyy\",\"lastAttemptTimestamp\":\"2021-09-18T17:01:56Z\",\"lastAttemptStatus\":\"Failed\",\"lastAttemptMessage\":\"lwtgrhpdj\"}")
+            .toObject(AgentUpgrade.class);
+        Assertions.assertEquals("seiphe", model.desiredVersion());
+        Assertions.assertEquals(UUID.fromString("8086fa74-7f6b-4ef7-8698-514715594f47"), model.correlationId());
+        Assertions.assertEquals(true, model.enableAutomaticUpgrade());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentUpgrade model =
-            new AgentUpgrade()
-                .withDesiredVersion("qeojnxqbzvddntw")
-                .withCorrelationId("eic")
-                .withEnableAutomaticUpgrade(false);
+        AgentUpgrade model = new AgentUpgrade().withDesiredVersion("seiphe")
+            .withCorrelationId(UUID.fromString("8086fa74-7f6b-4ef7-8698-514715594f47"))
+            .withEnableAutomaticUpgrade(true);
         model = BinaryData.fromObject(model).toObject(AgentUpgrade.class);
-        Assertions.assertEquals("qeojnxqbzvddntw", model.desiredVersion());
-        Assertions.assertEquals("eic", model.correlationId());
-        Assertions.assertEquals(false, model.enableAutomaticUpgrade());
+        Assertions.assertEquals("seiphe", model.desiredVersion());
+        Assertions.assertEquals(UUID.fromString("8086fa74-7f6b-4ef7-8698-514715594f47"), model.correlationId());
+        Assertions.assertEquals(true, model.enableAutomaticUpgrade());
     }
 }

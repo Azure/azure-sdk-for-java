@@ -91,7 +91,7 @@ Infer radiology insights from a patient's radiology report using an **asynchrono
 - [SampleCriticalResultInferenceAsync.java][ri_async_sample]
 
 ```java com.azure.health.insights.radiologyinsights.inferradiologyinsights
-PollerFlux<PollOperationDetails, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
+PollerFlux<RadiologyInsightsResult, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
         .beginInferRadiologyInsights(createRadiologyInsightsRequest());
 ```
 
@@ -121,7 +121,7 @@ private static List<PatientRecord> createPatientRecords() {
 
     // Use LocalDate to set Date
     patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
-    
+
     patientRecord.setInfo(patientDetails);
 
     Encounter encounter = new Encounter("encounterid1");
@@ -151,7 +151,7 @@ private static List<PatientRecord> createPatientRecords() {
     patientDocument.setSpecialtyType(SpecialtyType.RADIOLOGY);
 
     DocumentAdministrativeMetadata adminMetadata = new DocumentAdministrativeMetadata();
-    FhirR4Extendible orderedProcedure = new FhirR4Extendible();
+    OrderedProcedure orderedProcedure = new OrderedProcedure();
 
     FhirR4CodeableConcept procedureCode = new FhirR4CodeableConcept();
     FhirR4Coding procedureCoding = new FhirR4Coding();
@@ -240,8 +240,8 @@ Display critical result inferences from the example request results.
 ```java com.azure.health.insights.radiologyinsights.displayresults
 List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
 for (RadiologyInsightsPatientResult patientResult : patientResults) {
-    List<FhirR4Extendible1> inferences = patientResult.getInferences();
-    for (FhirR4Extendible1 inference : inferences) {
+    List<RadiologyInsightsInference> inferences = patientResult.getInferences();
+    for (RadiologyInsightsInference inference : inferences) {
         if (inference instanceof CriticalResultInference) {
             CriticalResultInference criticalResultInference = (CriticalResultInference) inference;
             String description = criticalResultInference.getResult().getDescription();

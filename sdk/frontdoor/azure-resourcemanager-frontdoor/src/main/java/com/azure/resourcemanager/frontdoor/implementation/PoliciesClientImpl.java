@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PoliciesClient.
+ */
 public final class PoliciesClientImpl implements PoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final FrontDoorManagementClientImpl client;
 
     /**
      * Initializes an instance of PoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PoliciesClientImpl(FrontDoorManagementClientImpl client) {
@@ -65,217 +71,152 @@ public final class PoliciesClientImpl implements PoliciesClient {
     @Host("{$host}")
     @ServiceInterface(name = "FrontDoorManagementC")
     public interface PoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WebApplicationFirewallPolicyList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WebApplicationFirewallPolicyList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoorWebApplicationFirewallPolicies")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WebApplicationFirewallPolicyList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<WebApplicationFirewallPolicyList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WebApplicationFirewallPolicyInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("policyName") String policyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<WebApplicationFirewallPolicyInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("policyName") String policyName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("policyName") String policyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("policyName") String policyName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") WebApplicationFirewallPolicyInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("policyName") String policyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") TagsObject parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("policyName") String policyName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") TagsObject parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/FrontDoorWebApplicationFirewallPolicies/{policyName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("policyName") String policyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("policyName") String policyName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WebApplicationFirewallPolicyList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WebApplicationFirewallPolicyList>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all of the protection policies within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines a list of WebApplicationFirewallPolicies along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WebApplicationFirewallPolicyInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<WebApplicationFirewallPolicyInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-02-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<WebApplicationFirewallPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<WebApplicationFirewallPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the protection policies within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines a list of WebApplicationFirewallPolicies along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WebApplicationFirewallPolicyInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<WebApplicationFirewallPolicyInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the protection policies within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -284,13 +225,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WebApplicationFirewallPolicyInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the protection policies within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,16 +240,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return defines a list of WebApplicationFirewallPolicies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WebApplicationFirewallPolicyInner> listByResourceGroupAsync(
-        String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+    private PagedFlux<WebApplicationFirewallPolicyInner> listByResourceGroupAsync(String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all of the protection policies within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -322,7 +262,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Lists all of the protection policies within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -331,108 +271,83 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return defines a list of WebApplicationFirewallPolicies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WebApplicationFirewallPolicyInner> listByResourceGroup(
-        String resourceGroupName, Context context) {
+    public PagedIterable<WebApplicationFirewallPolicyInner> listByResourceGroup(String resourceGroupName,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
     }
 
     /**
      * Lists all of the protection policies within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines a list of WebApplicationFirewallPolicies along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebApplicationFirewallPolicyInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-02-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context))
-            .<PagedResponse<WebApplicationFirewallPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                accept, context))
+            .<PagedResponse<WebApplicationFirewallPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the protection policies within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines a list of WebApplicationFirewallPolicies along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebApplicationFirewallPolicyInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the protection policies within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines a list of WebApplicationFirewallPolicies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WebApplicationFirewallPolicyInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the protection policies within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -441,13 +356,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WebApplicationFirewallPolicyInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all of the protection policies within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines a list of WebApplicationFirewallPolicies as paginated response with {@link PagedIterable}.
@@ -459,7 +374,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Lists all of the protection policies within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -473,23 +388,21 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Retrieve protection policy with specified name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines web application firewall policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WebApplicationFirewallPolicyInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String policyName) {
+    private Mono<Response<WebApplicationFirewallPolicyInner>>
+        getByResourceGroupWithResponseAsync(String resourceGroupName, String policyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -499,48 +412,35 @@ public final class PoliciesClientImpl implements PoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-02-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            policyName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, policyName,
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve protection policy with specified name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines web application firewall policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WebApplicationFirewallPolicyInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String policyName, Context context) {
+    private Mono<Response<WebApplicationFirewallPolicyInner>>
+        getByResourceGroupWithResponseAsync(String resourceGroupName, String policyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -550,28 +450,19 @@ public final class PoliciesClientImpl implements PoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                policyName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, policyName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Retrieve protection policy with specified name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -580,15 +471,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return defines web application firewall policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WebApplicationFirewallPolicyInner> getByResourceGroupAsync(
-        String resourceGroupName, String policyName) {
+    private Mono<WebApplicationFirewallPolicyInner> getByResourceGroupAsync(String resourceGroupName,
+        String policyName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, policyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve protection policy with specified name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param context The context to associate with this operation.
@@ -598,14 +489,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return defines web application firewall policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WebApplicationFirewallPolicyInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String policyName, Context context) {
+    public Response<WebApplicationFirewallPolicyInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String policyName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, policyName, context).block();
     }
 
     /**
      * Retrieve protection policy with specified name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -620,24 +511,22 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Create or update policy with specified rule set name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters Policy to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines web application firewall policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String policyName, WebApplicationFirewallPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -647,37 +536,25 @@ public final class PoliciesClientImpl implements PoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-02-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            policyName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, policyName,
+                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update policy with specified rule set name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters Policy to be created.
@@ -685,17 +562,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines web application firewall policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String policyName, WebApplicationFirewallPolicyInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -705,34 +580,24 @@ public final class PoliciesClientImpl implements PoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                policyName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, policyName,
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Create or update policy with specified rule set name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters Policy to be created.
@@ -743,23 +608,18 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, policyName, parameters);
-        return this
-            .client
-            .<WebApplicationFirewallPolicyInner, WebApplicationFirewallPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WebApplicationFirewallPolicyInner.class,
-                WebApplicationFirewallPolicyInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String resourceGroupName, String policyName,
+            WebApplicationFirewallPolicyInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, policyName, parameters);
+        return this.client.<WebApplicationFirewallPolicyInner, WebApplicationFirewallPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), WebApplicationFirewallPolicyInner.class,
+            WebApplicationFirewallPolicyInner.class, this.client.getContext());
     }
 
     /**
      * Create or update policy with specified rule set name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters Policy to be created.
@@ -771,27 +631,19 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String policyName,
-            WebApplicationFirewallPolicyInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String policyName,
+            WebApplicationFirewallPolicyInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, policyName, parameters, context);
-        return this
-            .client
-            .<WebApplicationFirewallPolicyInner, WebApplicationFirewallPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WebApplicationFirewallPolicyInner.class,
-                WebApplicationFirewallPolicyInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, policyName, parameters, context);
+        return this.client.<WebApplicationFirewallPolicyInner, WebApplicationFirewallPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), WebApplicationFirewallPolicyInner.class,
+            WebApplicationFirewallPolicyInner.class, context);
     }
 
     /**
      * Create or update policy with specified rule set name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters Policy to be created.
@@ -808,7 +660,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Create or update policy with specified rule set name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters Policy to be created.
@@ -820,17 +672,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String policyName,
-            WebApplicationFirewallPolicyInner parameters,
+        beginCreateOrUpdate(String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters,
             Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, policyName, parameters, context).getSyncPoller();
     }
 
     /**
      * Create or update policy with specified rule set name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters Policy to be created.
@@ -840,16 +689,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return defines web application firewall policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WebApplicationFirewallPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, policyName, parameters)
-            .last()
+    private Mono<WebApplicationFirewallPolicyInner> createOrUpdateAsync(String resourceGroupName, String policyName,
+        WebApplicationFirewallPolicyInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, policyName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update policy with specified rule set name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters Policy to be created.
@@ -860,16 +708,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return defines web application firewall policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WebApplicationFirewallPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, policyName, parameters, context)
-            .last()
+    private Mono<WebApplicationFirewallPolicyInner> createOrUpdateAsync(String resourceGroupName, String policyName,
+        WebApplicationFirewallPolicyInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, policyName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update policy with specified rule set name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters Policy to be created.
@@ -879,14 +726,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return defines web application firewall policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WebApplicationFirewallPolicyInner createOrUpdate(
-        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters) {
+    public WebApplicationFirewallPolicyInner createOrUpdate(String resourceGroupName, String policyName,
+        WebApplicationFirewallPolicyInner parameters) {
         return createOrUpdateAsync(resourceGroupName, policyName, parameters).block();
     }
 
     /**
      * Create or update policy with specified rule set name within a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters Policy to be created.
@@ -897,32 +744,30 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return defines web application firewall policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WebApplicationFirewallPolicyInner createOrUpdate(
-        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters, Context context) {
+    public WebApplicationFirewallPolicyInner createOrUpdate(String resourceGroupName, String policyName,
+        WebApplicationFirewallPolicyInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, policyName, parameters, context).block();
     }
 
     /**
      * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines web application firewall policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String policyName, TagsObject parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String policyName,
+        TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -932,38 +777,26 @@ public final class PoliciesClientImpl implements PoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-02-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            policyName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, policyName,
+                this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -971,17 +804,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return defines web application firewall policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String policyName, TagsObject parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String policyName,
+        TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -991,35 +822,25 @@ public final class PoliciesClientImpl implements PoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                policyName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, policyName, this.client.getSubscriptionId(),
+            apiVersion, parameters, accept, context);
     }
 
     /**
      * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -1032,20 +853,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
     private PollerFlux<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner>
         beginUpdateAsync(String resourceGroupName, String policyName, TagsObject parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, policyName, parameters);
-        return this
-            .client
-            .<WebApplicationFirewallPolicyInner, WebApplicationFirewallPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WebApplicationFirewallPolicyInner.class,
-                WebApplicationFirewallPolicyInner.class,
-                this.client.getContext());
+        return this.client.<WebApplicationFirewallPolicyInner, WebApplicationFirewallPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), WebApplicationFirewallPolicyInner.class,
+            WebApplicationFirewallPolicyInner.class, this.client.getContext());
     }
 
     /**
      * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -1059,22 +875,17 @@ public final class PoliciesClientImpl implements PoliciesClient {
     private PollerFlux<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner>
         beginUpdateAsync(String resourceGroupName, String policyName, TagsObject parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, policyName, parameters, context);
-        return this
-            .client
-            .<WebApplicationFirewallPolicyInner, WebApplicationFirewallPolicyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WebApplicationFirewallPolicyInner.class,
-                WebApplicationFirewallPolicyInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, policyName, parameters, context);
+        return this.client.<WebApplicationFirewallPolicyInner, WebApplicationFirewallPolicyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), WebApplicationFirewallPolicyInner.class,
+            WebApplicationFirewallPolicyInner.class, context);
     }
 
     /**
      * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -1084,15 +895,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return the {@link SyncPoller} for polling of defines web application firewall policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner> beginUpdate(
-        String resourceGroupName, String policyName, TagsObject parameters) {
+    public SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner>
+        beginUpdate(String resourceGroupName, String policyName, TagsObject parameters) {
         return this.beginUpdateAsync(resourceGroupName, policyName, parameters).getSyncPoller();
     }
 
     /**
      * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -1103,15 +914,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return the {@link SyncPoller} for polling of defines web application firewall policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner> beginUpdate(
-        String resourceGroupName, String policyName, TagsObject parameters, Context context) {
+    public SyncPoller<PollResult<WebApplicationFirewallPolicyInner>, WebApplicationFirewallPolicyInner>
+        beginUpdate(String resourceGroupName, String policyName, TagsObject parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, policyName, parameters, context).getSyncPoller();
     }
 
     /**
      * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -1121,17 +932,16 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return defines web application firewall policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WebApplicationFirewallPolicyInner> updateAsync(
-        String resourceGroupName, String policyName, TagsObject parameters) {
-        return beginUpdateAsync(resourceGroupName, policyName, parameters)
-            .last()
+    private Mono<WebApplicationFirewallPolicyInner> updateAsync(String resourceGroupName, String policyName,
+        TagsObject parameters) {
+        return beginUpdateAsync(resourceGroupName, policyName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -1142,17 +952,16 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return defines web application firewall policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WebApplicationFirewallPolicyInner> updateAsync(
-        String resourceGroupName, String policyName, TagsObject parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, policyName, parameters, context)
-            .last()
+    private Mono<WebApplicationFirewallPolicyInner> updateAsync(String resourceGroupName, String policyName,
+        TagsObject parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, policyName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -1162,15 +971,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return defines web application firewall policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WebApplicationFirewallPolicyInner update(
-        String resourceGroupName, String policyName, TagsObject parameters) {
+    public WebApplicationFirewallPolicyInner update(String resourceGroupName, String policyName,
+        TagsObject parameters) {
         return updateAsync(resourceGroupName, policyName, parameters).block();
     }
 
     /**
      * Patch a specific frontdoor webApplicationFirewall policy for tags update under the specified subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param parameters FrontdoorWebApplicationFirewallPolicy parameters to be patched.
@@ -1181,14 +990,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return defines web application firewall policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WebApplicationFirewallPolicyInner update(
-        String resourceGroupName, String policyName, TagsObject parameters, Context context) {
+    public WebApplicationFirewallPolicyInner update(String resourceGroupName, String policyName, TagsObject parameters,
+        Context context) {
         return updateAsync(resourceGroupName, policyName, parameters, context).block();
     }
 
     /**
      * Deletes Policy.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1199,10 +1008,8 @@ public final class PoliciesClientImpl implements PoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String policyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1212,29 +1019,19 @@ public final class PoliciesClientImpl implements PoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-02-01";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            policyName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, policyName,
+                this.client.getSubscriptionId(), apiVersion, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes Policy.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param context The context to associate with this operation.
@@ -1244,13 +1041,11 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String policyName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String policyName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1260,26 +1055,18 @@ public final class PoliciesClientImpl implements PoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter policyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-02-01";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                policyName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, policyName, this.client.getSubscriptionId(),
+            apiVersion, context);
     }
 
     /**
      * Deletes Policy.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1290,15 +1077,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String policyName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, policyName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes Policy.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param context The context to associate with this operation.
@@ -1308,18 +1093,17 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String policyName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String policyName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, policyName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes Policy.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1334,7 +1118,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Deletes Policy.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param context The context to associate with this operation.
@@ -1344,14 +1128,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String policyName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String policyName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, policyName, context).getSyncPoller();
     }
 
     /**
      * Deletes Policy.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1366,7 +1150,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Deletes Policy.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param context The context to associate with this operation.
@@ -1377,14 +1161,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String policyName, Context context) {
-        return beginDeleteAsync(resourceGroupName, policyName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, policyName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes Policy.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1398,7 +1181,7 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Deletes Policy.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param policyName The name of the Web Application Firewall Policy.
      * @param context The context to associate with this operation.
@@ -1413,14 +1196,15 @@ public final class PoliciesClientImpl implements PoliciesClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines a list of WebApplicationFirewallPolicies along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WebApplicationFirewallPolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -1428,140 +1212,104 @@ public final class PoliciesClientImpl implements PoliciesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<WebApplicationFirewallPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<WebApplicationFirewallPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines a list of WebApplicationFirewallPolicies along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WebApplicationFirewallPolicyInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<WebApplicationFirewallPolicyInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines a list of WebApplicationFirewallPolicies along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WebApplicationFirewallPolicyInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<WebApplicationFirewallPolicyInner>>
+        listBySubscriptionNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<WebApplicationFirewallPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<WebApplicationFirewallPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines a list of WebApplicationFirewallPolicies along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WebApplicationFirewallPolicyInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<WebApplicationFirewallPolicyInner>>
+        listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

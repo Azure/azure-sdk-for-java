@@ -8,41 +8,63 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes operator to be matched. */
+/**
+ * Describes operator to be matched.
+ */
 public final class RequestHeaderOperator extends ExpandableStringEnum<RequestHeaderOperator> {
-    /** Static value Any for RequestHeaderOperator. */
+    /**
+     * Static value Any for RequestHeaderOperator.
+     */
     public static final RequestHeaderOperator ANY = fromString("Any");
 
-    /** Static value Equal for RequestHeaderOperator. */
+    /**
+     * Static value Equal for RequestHeaderOperator.
+     */
     public static final RequestHeaderOperator EQUAL = fromString("Equal");
 
-    /** Static value Contains for RequestHeaderOperator. */
+    /**
+     * Static value Contains for RequestHeaderOperator.
+     */
     public static final RequestHeaderOperator CONTAINS = fromString("Contains");
 
-    /** Static value BeginsWith for RequestHeaderOperator. */
+    /**
+     * Static value BeginsWith for RequestHeaderOperator.
+     */
     public static final RequestHeaderOperator BEGINS_WITH = fromString("BeginsWith");
 
-    /** Static value EndsWith for RequestHeaderOperator. */
+    /**
+     * Static value EndsWith for RequestHeaderOperator.
+     */
     public static final RequestHeaderOperator ENDS_WITH = fromString("EndsWith");
 
-    /** Static value LessThan for RequestHeaderOperator. */
+    /**
+     * Static value LessThan for RequestHeaderOperator.
+     */
     public static final RequestHeaderOperator LESS_THAN = fromString("LessThan");
 
-    /** Static value LessThanOrEqual for RequestHeaderOperator. */
+    /**
+     * Static value LessThanOrEqual for RequestHeaderOperator.
+     */
     public static final RequestHeaderOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
-    /** Static value GreaterThan for RequestHeaderOperator. */
+    /**
+     * Static value GreaterThan for RequestHeaderOperator.
+     */
     public static final RequestHeaderOperator GREATER_THAN = fromString("GreaterThan");
 
-    /** Static value GreaterThanOrEqual for RequestHeaderOperator. */
+    /**
+     * Static value GreaterThanOrEqual for RequestHeaderOperator.
+     */
     public static final RequestHeaderOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
-    /** Static value RegEx for RequestHeaderOperator. */
+    /**
+     * Static value RegEx for RequestHeaderOperator.
+     */
     public static final RequestHeaderOperator REG_EX = fromString("RegEx");
 
     /**
      * Creates a new instance of RequestHeaderOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,7 +73,7 @@ public final class RequestHeaderOperator extends ExpandableStringEnum<RequestHea
 
     /**
      * Creates or finds a RequestHeaderOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RequestHeaderOperator.
      */
@@ -62,7 +84,7 @@ public final class RequestHeaderOperator extends ExpandableStringEnum<RequestHea
 
     /**
      * Gets known RequestHeaderOperator values.
-     *
+     * 
      * @return known RequestHeaderOperator values.
      */
     public static Collection<RequestHeaderOperator> values() {

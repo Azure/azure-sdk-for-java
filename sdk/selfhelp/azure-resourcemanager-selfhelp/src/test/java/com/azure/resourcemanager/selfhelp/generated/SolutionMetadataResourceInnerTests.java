@@ -14,7 +14,7 @@ public final class SolutionMetadataResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionMetadataResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"solutions\":[{\"solutionId\":\"dtocj\",\"solutionType\":\"Diagnostics\",\"description\":\"pmouexhdz\",\"requiredInputs\":[\"qeojnxqbzvddntw\"]},{\"solutionId\":\"eic\",\"solutionType\":\"Diagnostics\",\"description\":\"pzaoqvuhr\",\"requiredInputs\":[\"fcyddg\"]}]},\"id\":\"jthjqkwpyei\",\"name\":\"xmqci\",\"type\":\"q\"}")
+            "{\"properties\":{\"solutions\":[{\"solutionId\":\"dtocj\",\"solutionType\":\"Solutions\",\"description\":\"pmouexhdz\",\"requiredInputs\":[\"qeojnxqbzvddntw\"]},{\"solutionId\":\"eic\",\"solutionType\":\"Diagnostics\",\"description\":\"pzaoqvuhr\",\"requiredInputs\":[\"fcyddg\"]}]},\"id\":\"jthjqkwpyei\",\"name\":\"xmqci\",\"type\":\"q\"}")
             .toObject(SolutionMetadataResourceInner.class);
         Assertions.assertEquals("dtocj", model.solutions().get(0).solutionId());
     }

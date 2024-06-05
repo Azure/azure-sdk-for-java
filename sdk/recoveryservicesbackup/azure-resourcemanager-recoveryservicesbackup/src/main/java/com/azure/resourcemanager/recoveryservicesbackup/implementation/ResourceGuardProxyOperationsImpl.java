@@ -63,8 +63,8 @@ public final class ResourceGuardProxyOperationsImpl implements ResourceGuardProx
 
     public Response<UnlockDeleteResponse> unlockDeleteWithResponse(String vaultName, String resourceGroupName,
         String resourceGuardProxyName, UnlockDeleteRequest parameters, Context context) {
-        Response<UnlockDeleteResponseInner> inner = this.serviceClient().unlockDeleteWithResponse(vaultName,
-            resourceGroupName, resourceGuardProxyName, parameters, context);
+        Response<UnlockDeleteResponseInner> inner = this.serviceClient()
+            .unlockDeleteWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, parameters, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new UnlockDeleteResponseImpl(inner.getValue(), this.manager()));

@@ -27,7 +27,7 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.27'
+use: '@autorest/java@4.1.29'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1d5723dc330e9749d5ded6cb9db5a309b3705fa4/specification/servicebus/data-plane/Microsoft.ServiceBus/stable/2021-05/servicebus.json
 java: true
 output-folder: ..\
@@ -190,4 +190,43 @@ directive:
     transform: >
       delete $.QueueDescriptionEntry.properties.base.xml.prefix;
       delete $.TopicDescriptionEntry.properties.base.xml.prefix;
+```
+
+### Fix RuleDescription definitions
+
+`RuleDescription` gets used as a `$ref` property with different XML names based on the usage. Therefore, it cannot
+define the `XML` name itself. Instead, rely on the Swagger model property name matching the expected XML serialization
+name to support using a different XML element name based on the use case.
+
+Instead of simply adding a new property with the correct name to `CreateRuleBody` and `SubscriptionDescription`, we need
+use a custom transformation to ensure the property ordering is retained, as the property order matters some times.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      delete $.RuleDescription.xml.name;
+
+      const contentProperties = $.CreateRuleBody.properties.content.properties;
+      const newContentProperties = {};
+      Object.keys(contentProperties).forEach(key => {
+        if (key === "ruleDescription") {
+          newContentProperties["RuleDescription"] = contentProperties[key];
+        } else {
+          newContentProperties[key] = contentProperties[key];
+        }
+      });
+      $.CreateRuleBody.properties.content.properties = newContentProperties;
+        
+      const subscriptionProperties = $.SubscriptionDescription.properties;
+      const newSubscriptionProperties = {};
+      Object.keys(subscriptionProperties).forEach(key => {
+        if (key === "defaultRuleDescription") {
+          newSubscriptionProperties["DefaultRuleDescription"] = subscriptionProperties[key];
+        } else {
+          newSubscriptionProperties[key] = subscriptionProperties[key];
+        }
+      });
+      $.SubscriptionDescription.properties = newSubscriptionProperties;
 ```

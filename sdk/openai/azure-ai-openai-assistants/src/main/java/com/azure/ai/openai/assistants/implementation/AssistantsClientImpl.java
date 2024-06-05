@@ -795,13 +795,32 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getFileSync(@HostParam("endpoint") String endpoint, @PathParam("fileId") String fileId,
             @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/files/{fileId}/content")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getFileContent(@HostParam("endpoint") String endpoint,
+            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/files/{fileId}/content")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getFileContentSync(@HostParam("endpoint") String endpoint,
+            @PathParam("fileId") String fileId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
      * Creates a new assistant.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     model: String (Required)
@@ -810,6 +829,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Optional): [
@@ -820,9 +840,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -834,6 +854,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -864,9 +885,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new assistant.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     model: String (Required)
@@ -875,6 +895,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Optional): [
@@ -885,9 +906,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -899,6 +920,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -928,52 +950,25 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of assistants that were previously created.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -988,6 +983,7 @@ public final class AssistantsClientImpl {
      *             instructions: String (Required)
      *             tools (Required): [
      *                  (Required){
+     *                     type: String (Required)
      *                 }
      *             ]
      *             file_ids (Required): [
@@ -1021,52 +1017,25 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of assistants that were previously created.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1081,6 +1050,7 @@ public final class AssistantsClientImpl {
      *             instructions: String (Required)
      *             tools (Required): [
      *                  (Required){
+     *                     type: String (Required)
      *                 }
      *             ]
      *             file_ids (Required): [
@@ -1112,9 +1082,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Retrieves an existing assistant.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1126,6 +1095,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -1155,9 +1125,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Retrieves an existing assistant.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1169,6 +1138,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -1196,9 +1166,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing assistant.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1207,6 +1176,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Optional): [
@@ -1217,9 +1187,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1231,6 +1201,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -1262,9 +1233,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing assistant.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1273,6 +1243,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Optional): [
@@ -1283,9 +1254,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1297,6 +1268,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -1327,9 +1299,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Deletes an assistant.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1357,9 +1328,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Deletes an assistant.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1384,17 +1354,16 @@ public final class AssistantsClientImpl {
 
     /**
      * Attaches a previously uploaded file to an assistant for use by tools that can read files.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     file_id: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1424,17 +1393,16 @@ public final class AssistantsClientImpl {
 
     /**
      * Attaches a previously uploaded file to an assistant for use by tools that can read files.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     file_id: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1464,52 +1432,25 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of files attached to a specific assistant, as used by tools that can read files.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1546,52 +1487,25 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of files attached to a specific assistant, as used by tools that can read files.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1626,9 +1540,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Retrieves a file attached to an assistant.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1658,9 +1571,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Retrieves a file attached to an assistant.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1691,9 +1603,8 @@ public final class AssistantsClientImpl {
     /**
      * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
      * files.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1723,9 +1634,8 @@ public final class AssistantsClientImpl {
     /**
      * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
      * files.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1753,9 +1663,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new thread. Threads contain messages and can be run by assistants.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     messages (Optional): [
@@ -1775,9 +1684,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1808,9 +1717,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new thread. Threads contain messages and can be run by assistants.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     messages (Optional): [
@@ -1830,9 +1738,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1862,9 +1770,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets information about an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1894,9 +1801,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets information about an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1924,9 +1830,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -1934,9 +1839,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1968,9 +1873,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -1978,9 +1882,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2010,9 +1914,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Deletes an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2039,9 +1942,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Deletes an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2066,9 +1968,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new message on a specified thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     role: String(user/assistant) (Required)
@@ -2081,18 +1982,23 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
      *     thread_id: String (Required)
+     *     status: String(in_progress/incomplete/completed) (Required)
+     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *     completed_at: Long (Required)
+     *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2126,9 +2032,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new message on a specified thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     role: String(user/assistant) (Required)
@@ -2141,18 +2046,23 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
      *     thread_id: String (Required)
+     *     status: String(in_progress/incomplete/completed) (Required)
+     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *     completed_at: Long (Required)
+     *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2184,52 +2094,25 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of messages that exist on a thread.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2239,9 +2122,14 @@ public final class AssistantsClientImpl {
      *             object: String (Required)
      *             created_at: long (Required)
      *             thread_id: String (Required)
+     *             status: String(in_progress/incomplete/completed) (Required)
+     *             incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *             completed_at: Long (Required)
+     *             incomplete_at: Long (Required)
      *             role: String(user/assistant) (Required)
      *             content (Required): [
      *                  (Required){
+     *                     type: String (Required)
      *                 }
      *             ]
      *             assistant_id: String (Optional)
@@ -2278,52 +2166,25 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of messages that exist on a thread.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2333,9 +2194,14 @@ public final class AssistantsClientImpl {
      *             object: String (Required)
      *             created_at: long (Required)
      *             thread_id: String (Required)
+     *             status: String(in_progress/incomplete/completed) (Required)
+     *             incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *             completed_at: Long (Required)
+     *             incomplete_at: Long (Required)
      *             role: String(user/assistant) (Required)
      *             content (Required): [
      *                  (Required){
+     *                     type: String (Required)
      *                 }
      *             ]
      *             assistant_id: String (Optional)
@@ -2370,18 +2236,22 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets an existing message from an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
      *     thread_id: String (Required)
+     *     status: String(in_progress/incomplete/completed) (Required)
+     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *     completed_at: Long (Required)
+     *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2415,18 +2285,22 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets an existing message from an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
      *     thread_id: String (Required)
+     *     status: String(in_progress/incomplete/completed) (Required)
+     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *     completed_at: Long (Required)
+     *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2458,9 +2332,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing message on an existing thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -2468,18 +2341,23 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
      *     thread_id: String (Required)
+     *     status: String(in_progress/incomplete/completed) (Required)
+     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *     completed_at: Long (Required)
+     *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2514,9 +2392,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing message on an existing thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -2524,18 +2401,23 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
      *     object: String (Required)
      *     created_at: long (Required)
      *     thread_id: String (Required)
+     *     status: String(in_progress/incomplete/completed) (Required)
+     *     incomplete_details: String(content_filter/max_tokens/run_cancelled/run_failed/run_expired) (Required)
+     *     completed_at: Long (Required)
+     *     incomplete_at: Long (Required)
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2569,52 +2451,25 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of previously uploaded files associated with a message from a thread.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2652,52 +2507,25 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of previously uploaded files associated with a message from a thread.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2734,9 +2562,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets information about a file attachment to a message within a thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2767,9 +2594,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets information about a file attachment to a message within a thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2799,9 +2625,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new run for an assistant thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -2810,16 +2635,18 @@ public final class AssistantsClientImpl {
      *     additional_instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
+     *     stream: Boolean (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2828,6 +2655,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Required)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -2837,17 +2665,24 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -2874,9 +2709,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new run for an assistant thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -2885,16 +2719,18 @@ public final class AssistantsClientImpl {
      *     additional_instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
+     *     stream: Boolean (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2903,6 +2739,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Required)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -2912,17 +2749,24 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -2948,52 +2792,25 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of runs for a specified thread.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -3005,6 +2822,7 @@ public final class AssistantsClientImpl {
      *             assistant_id: String (Required)
      *             status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *             required_action (Optional): {
+     *                 type: String (Required)
      *             }
      *             last_error (Required): {
      *                 code: String (Required)
@@ -3014,17 +2832,24 @@ public final class AssistantsClientImpl {
      *             instructions: String (Required)
      *             tools (Required): [
      *                  (Required){
+     *                     type: String (Required)
      *                 }
      *             ]
      *             file_ids (Required): [
      *                 String (Required)
      *             ]
      *             created_at: long (Required)
-     *             expires_at: OffsetDateTime (Required)
-     *             started_at: OffsetDateTime (Required)
-     *             completed_at: OffsetDateTime (Required)
-     *             cancelled_at: OffsetDateTime (Required)
-     *             failed_at: OffsetDateTime (Required)
+     *             expires_at: Long (Required)
+     *             started_at: Long (Required)
+     *             completed_at: Long (Required)
+     *             cancelled_at: Long (Required)
+     *             failed_at: Long (Required)
+     *             incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *             usage (Required): {
+     *                 completion_tokens: long (Required)
+     *                 prompt_tokens: long (Required)
+     *                 total_tokens: long (Required)
+     *             }
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -3054,52 +2879,25 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of runs for a specified thread.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -3111,6 +2909,7 @@ public final class AssistantsClientImpl {
      *             assistant_id: String (Required)
      *             status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *             required_action (Optional): {
+     *                 type: String (Required)
      *             }
      *             last_error (Required): {
      *                 code: String (Required)
@@ -3120,17 +2919,24 @@ public final class AssistantsClientImpl {
      *             instructions: String (Required)
      *             tools (Required): [
      *                  (Required){
+     *                     type: String (Required)
      *                 }
      *             ]
      *             file_ids (Required): [
      *                 String (Required)
      *             ]
      *             created_at: long (Required)
-     *             expires_at: OffsetDateTime (Required)
-     *             started_at: OffsetDateTime (Required)
-     *             completed_at: OffsetDateTime (Required)
-     *             cancelled_at: OffsetDateTime (Required)
-     *             failed_at: OffsetDateTime (Required)
+     *             expires_at: Long (Required)
+     *             started_at: Long (Required)
+     *             completed_at: Long (Required)
+     *             cancelled_at: Long (Required)
+     *             failed_at: Long (Required)
+     *             incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *             usage (Required): {
+     *                 completion_tokens: long (Required)
+     *                 prompt_tokens: long (Required)
+     *                 total_tokens: long (Required)
+     *             }
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -3158,9 +2964,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets an existing run from an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3169,6 +2974,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Required)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3178,17 +2984,24 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3215,9 +3028,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets an existing run from an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3226,6 +3038,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Required)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3235,17 +3048,24 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3269,9 +3089,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing thread run.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -3279,9 +3098,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3290,6 +3109,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Required)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3299,17 +3119,24 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3337,9 +3164,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing thread run.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -3347,9 +3173,9 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3358,6 +3184,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Required)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3367,17 +3194,24 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3405,9 +3239,8 @@ public final class AssistantsClientImpl {
     /**
      * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
      * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     tool_outputs (Required): [
@@ -3416,11 +3249,12 @@ public final class AssistantsClientImpl {
      *             output: String (Optional)
      *         }
      *     ]
+     *     stream: Boolean (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3429,6 +3263,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Required)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3438,17 +3273,24 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3477,9 +3319,8 @@ public final class AssistantsClientImpl {
     /**
      * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
      * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     tool_outputs (Required): [
@@ -3488,11 +3329,12 @@ public final class AssistantsClientImpl {
      *             output: String (Optional)
      *         }
      *     ]
+     *     stream: Boolean (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3501,6 +3343,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Required)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3510,17 +3353,24 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3547,9 +3397,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Cancels a run of an in progress thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3558,6 +3407,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Required)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3567,17 +3417,24 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3604,9 +3461,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Cancels a run of an in progress thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3615,6 +3471,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Required)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3624,17 +3481,24 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3658,9 +3522,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new assistant thread and immediately starts a run using that new thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -3685,16 +3548,18 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
+     *     stream: Boolean (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3703,6 +3568,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Required)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3712,17 +3578,24 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3748,9 +3621,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new assistant thread and immediately starts a run using that new thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -3775,16 +3647,18 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Required)
      *         }
      *     ]
+     *     stream: Boolean (Optional)
      *     metadata (Optional): {
      *         String: String (Required)
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3793,6 +3667,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Required)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3802,17 +3677,24 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Required)
      *         }
      *     ]
      *     file_ids (Required): [
      *         String (Required)
      *     ]
      *     created_at: long (Required)
-     *     expires_at: OffsetDateTime (Required)
-     *     started_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expires_at: Long (Required)
+     *     started_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     incomplete_details: String(max_completion_tokens/max_prompt_tokens) (Required)
+     *     usage (Required): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3837,9 +3719,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a single run step from a thread run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3850,16 +3731,22 @@ public final class AssistantsClientImpl {
      *     run_id: String (Required)
      *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
      *     step_details (Required): {
+     *         type: String(message_creation/tool_calls) (Required)
      *     }
      *     last_error (Required): {
      *         code: String(server_error/rate_limit_exceeded) (Required)
      *         message: String (Required)
      *     }
      *     created_at: long (Required)
-     *     expired_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     usage (Optional): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3886,9 +3773,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a single run step from a thread run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3899,16 +3785,22 @@ public final class AssistantsClientImpl {
      *     run_id: String (Required)
      *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
      *     step_details (Required): {
+     *         type: String(message_creation/tool_calls) (Required)
      *     }
      *     last_error (Required): {
      *         code: String(server_error/rate_limit_exceeded) (Required)
      *         message: String (Required)
      *     }
      *     created_at: long (Required)
-     *     expired_at: OffsetDateTime (Required)
-     *     completed_at: OffsetDateTime (Required)
-     *     cancelled_at: OffsetDateTime (Required)
-     *     failed_at: OffsetDateTime (Required)
+     *     expired_at: Long (Required)
+     *     completed_at: Long (Required)
+     *     cancelled_at: Long (Required)
+     *     failed_at: Long (Required)
+     *     usage (Optional): {
+     *         completion_tokens: long (Required)
+     *         prompt_tokens: long (Required)
+     *         total_tokens: long (Required)
+     *     }
      *     metadata (Required): {
      *         String: String (Required)
      *     }
@@ -3935,52 +3827,25 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of run steps from a thread run.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -3994,16 +3859,22 @@ public final class AssistantsClientImpl {
      *             run_id: String (Required)
      *             status: String(in_progress/cancelled/failed/completed/expired) (Required)
      *             step_details (Required): {
+     *                 type: String(message_creation/tool_calls) (Required)
      *             }
      *             last_error (Required): {
      *                 code: String(server_error/rate_limit_exceeded) (Required)
      *                 message: String (Required)
      *             }
      *             created_at: long (Required)
-     *             expired_at: OffsetDateTime (Required)
-     *             completed_at: OffsetDateTime (Required)
-     *             cancelled_at: OffsetDateTime (Required)
-     *             failed_at: OffsetDateTime (Required)
+     *             expired_at: Long (Required)
+     *             completed_at: Long (Required)
+     *             cancelled_at: Long (Required)
+     *             failed_at: Long (Required)
+     *             usage (Optional): {
+     *                 completion_tokens: long (Required)
+     *                 prompt_tokens: long (Required)
+     *                 total_tokens: long (Required)
+     *             }
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -4035,52 +3906,25 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of run steps from a thread run.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4094,16 +3938,22 @@ public final class AssistantsClientImpl {
      *             run_id: String (Required)
      *             status: String(in_progress/cancelled/failed/completed/expired) (Required)
      *             step_details (Required): {
+     *                 type: String(message_creation/tool_calls) (Required)
      *             }
      *             last_error (Required): {
      *                 code: String(server_error/rate_limit_exceeded) (Required)
      *                 message: String (Required)
      *             }
      *             created_at: long (Required)
-     *             expired_at: OffsetDateTime (Required)
-     *             completed_at: OffsetDateTime (Required)
-     *             cancelled_at: OffsetDateTime (Required)
-     *             failed_at: OffsetDateTime (Required)
+     *             expired_at: Long (Required)
+     *             completed_at: Long (Required)
+     *             cancelled_at: Long (Required)
+     *             failed_at: Long (Required)
+     *             usage (Optional): {
+     *                 completion_tokens: long (Required)
+     *                 prompt_tokens: long (Required)
+     *                 total_tokens: long (Required)
+     *             }
      *             metadata (Required): {
      *                 String: String (Required)
      *             }
@@ -4132,29 +3982,17 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of previously uploaded files.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>purpose</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A value that, when provided, limits list results to files matching the corresponding purpose. Allowed values:
-     * "fine-tune", "fine-tune-results", "assistants", "assistants_output".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>purpose</td><td>String</td><td>No</td><td>A value that, when provided, limits list results to files
+     * matching the corresponding purpose. Allowed values: "fine-tune", "fine-tune-results", "assistants",
+     * "assistants_output".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4186,29 +4024,17 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of previously uploaded files.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>purpose</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A value that, when provided, limits list results to files matching the corresponding purpose. Allowed values:
-     * "fine-tune", "fine-tune-results", "assistants", "assistants_output".</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>purpose</td><td>String</td><td>No</td><td>A value that, when provided, limits list results to files
+     * matching the corresponding purpose. Allowed values: "fine-tune", "fine-tune-results", "assistants",
+     * "assistants_output".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4240,9 +4066,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Uploads a file for use by other operations.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4273,9 +4098,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Uploads a file for use by other operations.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4304,9 +4128,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Delete a previously uploaded file.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -4333,9 +4156,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Delete a previously uploaded file.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -4360,9 +4182,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Returns information about a specific file. Does not retrieve file content.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4392,9 +4213,8 @@ public final class AssistantsClientImpl {
 
     /**
      * Returns information about a specific file. Does not retrieve file content.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4418,5 +4238,50 @@ public final class AssistantsClientImpl {
     public Response<BinaryData> getFileWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getFileSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Returns information about a specific file. Does not retrieve file content.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * byte[]
+     * }</pre>
+     * 
+     * @param fileId The ID of the file to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getFileContentWithResponseAsync(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.getFileContent(this.getEndpoint(), fileId, accept, requestOptions, context));
+    }
+
+    /**
+     * Returns information about a specific file. Does not retrieve file content.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * byte[]
+     * }</pre>
+     * 
+     * @param fileId The ID of the file to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represent a byte array along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.getFileContentSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
     }
 }

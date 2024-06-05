@@ -7,32 +7,33 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** All Customer-managed key encryption properties for the resource. */
+/**
+ * All Customer-managed key encryption properties for the resource.
+ */
 @Fluent
 public final class CustomerManagedKeyEncryption {
     /*
-     * All identity configuration for Customer-managed key settings defining which identity should be used to auth to
-     * Key Vault.
+     * All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault.
      */
     @JsonProperty(value = "keyEncryptionKeyIdentity")
     private CustomerManagedKeyEncryptionKeyIdentity keyEncryptionKeyIdentity;
 
     /*
-     * key encryption key Url, versioned or non-versioned. Ex:
-     * https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78 or
-     * https://contosovault.vault.azure.net/keys/contosokek.
+     * key encryption key Url, versioned or non-versioned. Ex: https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78 or https://contosovault.vault.azure.net/keys/contosokek.
      */
     @JsonProperty(value = "keyEncryptionKeyUrl")
     private String keyEncryptionKeyUrl;
 
-    /** Creates an instance of CustomerManagedKeyEncryption class. */
+    /**
+     * Creates an instance of CustomerManagedKeyEncryption class.
+     */
     public CustomerManagedKeyEncryption() {
     }
 
     /**
      * Get the keyEncryptionKeyIdentity property: All identity configuration for Customer-managed key settings defining
      * which identity should be used to auth to Key Vault.
-     *
+     * 
      * @return the keyEncryptionKeyIdentity value.
      */
     public CustomerManagedKeyEncryptionKeyIdentity keyEncryptionKeyIdentity() {
@@ -42,12 +43,12 @@ public final class CustomerManagedKeyEncryption {
     /**
      * Set the keyEncryptionKeyIdentity property: All identity configuration for Customer-managed key settings defining
      * which identity should be used to auth to Key Vault.
-     *
+     * 
      * @param keyEncryptionKeyIdentity the keyEncryptionKeyIdentity value to set.
      * @return the CustomerManagedKeyEncryption object itself.
      */
-    public CustomerManagedKeyEncryption withKeyEncryptionKeyIdentity(
-        CustomerManagedKeyEncryptionKeyIdentity keyEncryptionKeyIdentity) {
+    public CustomerManagedKeyEncryption
+        withKeyEncryptionKeyIdentity(CustomerManagedKeyEncryptionKeyIdentity keyEncryptionKeyIdentity) {
         this.keyEncryptionKeyIdentity = keyEncryptionKeyIdentity;
         return this;
     }
@@ -56,7 +57,7 @@ public final class CustomerManagedKeyEncryption {
      * Get the keyEncryptionKeyUrl property: key encryption key Url, versioned or non-versioned. Ex:
      * https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78 or
      * https://contosovault.vault.azure.net/keys/contosokek.
-     *
+     * 
      * @return the keyEncryptionKeyUrl value.
      */
     public String keyEncryptionKeyUrl() {
@@ -67,7 +68,7 @@ public final class CustomerManagedKeyEncryption {
      * Set the keyEncryptionKeyUrl property: key encryption key Url, versioned or non-versioned. Ex:
      * https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78 or
      * https://contosovault.vault.azure.net/keys/contosokek.
-     *
+     * 
      * @param keyEncryptionKeyUrl the keyEncryptionKeyUrl value to set.
      * @return the CustomerManagedKeyEncryption object itself.
      */
@@ -78,7 +79,7 @@ public final class CustomerManagedKeyEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
