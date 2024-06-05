@@ -182,7 +182,7 @@ feature-management:
 
 ### TimeWindowFilter
 
-This filter provides the capability to enable a feature based on a time window. If only `end` is specified, the feature will be considered on until that time. If only `start` is specified, the feature will be considered on at all points after that time. If both are specified the feature will be considered valid between the two times.
+This filter provides the capability to enable a feature based on a time window. If only `end` is specified, the feature will be considered enabled until that time. If only `start` is specified, the feature will be considered enabled at all points after that time. If both are specified the feature will be considered enabled between the two times.
 
 ```yaml
 feature-management:
